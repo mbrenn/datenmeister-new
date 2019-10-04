@@ -39,8 +39,6 @@ namespace DatenMeister.WPF.Forms.Base
 
         private EventHandle _eventHandle;
 
-        protected IExtent _extent;
-
         public ItemExplorerControl()
         {
             InitializeComponent();
@@ -175,7 +173,6 @@ namespace DatenMeister.WPF.Forms.Base
                             NavigationTreeView.ShowAllChildren = true;
                             NavigationHost.RebuildNavigation();
                         });
-
             }
         }
 
@@ -187,11 +184,11 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var watch = new Stopwatch();
             watch.Start();
-            
+
             Items = items;
             UpdateTreeContent();
             RecreateViews();
-            
+
             watch.Stop();
             _logger.Info(watch.ElapsedMilliseconds.ToString("n0") + "ms required for form creation");
         }
@@ -297,17 +294,17 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationHost = NavigationHost
             };
 
-            viewExtensions = viewExtensions.Union(control.GetViewExtensions());
+            viewExtensions = viewExtensions.Union(control.GetViewExtensions()).ToList();
 
             var tabControl = new ItemExplorerTab(form)
             {
                 Control = control,
                 Header = name
             };
-            
+
             control.SetContent(collection, form, viewExtensions);
             tabControl.EvaluateViewExtensions(viewExtensions.Union(control.GetViewExtensions()));
-            
+
             Tabs.Add(tabControl);
 
             // Selects the item, if none of the items are selected
@@ -366,7 +363,7 @@ namespace DatenMeister.WPF.Forms.Base
             var newViewExtensions = new List<ViewExtension>();
             foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
                 newViewExtensions.Add(extension);
-            
+
             NavigationTreeView.EvaluateViewExtensions(newViewExtensions);
         }
 
@@ -375,7 +372,7 @@ namespace DatenMeister.WPF.Forms.Base
             Unregister();
         }
 
-        public IExtent Extent => _extent;
+        public IExtent Extent { get; protected set; }
 
         public IReflectiveCollection Collection => Items;
 

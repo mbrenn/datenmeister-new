@@ -306,7 +306,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var noItemsWithMetaClass =
                 listFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.noItemsWithMetaClass);
-            
+
             // If form  defines constraints upon metaclass, then the filtering will occur here
             var metaClass = listFormDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
 

@@ -57,18 +57,19 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             NavigationTreeView.ShowAllChildren = false;
 
-            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out _extent);
-            if (_extent == null)
+            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out var extent);
+            Extent = extent;
+            if (Extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
                 return;
             }
 
             EventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
-                _extent,
+                Extent,
                 (x, y) => _delayedDispatcher.RequestRefresh());
 
-            SetItems(_extent.elements());
+            SetItems(Extent.elements());
         }
 
         private readonly IWorkspaceLogic _workspaceLogic;
@@ -122,7 +123,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     ViewDefinitionMode.Default);
             }
 
-            var className = "Items";
+            const string className = "Items";
             var viewDefinition = new ViewDefinition(className, form);
             var viewExtensions = new List<ViewExtension>();
 
@@ -158,21 +159,24 @@ namespace DatenMeister.WPF.Forms.Lists
             }
 
             // Sets the button for the new item
-            viewExtensions.Add(new GenericButtonDefinition(
-                "New Item", () => CreateNewElementByUser(null, null)));
+            viewExtensions.Add(
+                new GenericButtonDefinition(
+                    "New Item",
+                    () => CreateNewElementByUser(null, null)));
 
             // Allows the deletion of an item
-            viewExtensions.Add(new RowItemButtonDefinition(
-                "Delete",
-                (guest, item) =>
-                {
-                    if (MessageBox.Show(
-                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                        MessageBoxResult.Yes)
+            viewExtensions.Add(
+                new RowItemButtonDefinition(
+                    "Delete",
+                    (guest, item) =>
                     {
-                        _extent.elements().remove(item);
-                    }
-                }));
+                        if (MessageBox.Show(
+                                "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                            MessageBoxResult.Yes)
+                        {
+                            Extent.elements().remove(item);
+                        }
+                    }));
 
             PrepareNavigation(viewDefinition);
 
@@ -191,7 +195,7 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 NavigatorForItems.NavigateToNewItemForExtent(
                     NavigationHost,
-                    _extent,
+                    Extent,
                     type);
             }
             else
@@ -271,8 +275,8 @@ namespace DatenMeister.WPF.Forms.Lists
                     var filename = dialog.FileName;
                     try
                     {
-                        ExtentExport.ExportToFile(_extent, filename);
-                        MessageBox.Show($"Extent exported with {_extent.elements().Count()} root elements.");
+                        ExtentExport.ExportToFile(Extent, filename);
+                        MessageBox.Show($"Extent exported with {Extent.elements().Count()} root elements.");
                         // ReSharper disable once AssignNullToNotNullAttribute
                         Process.Start(Path.GetDirectoryName(filename));
                     }
@@ -286,7 +290,7 @@ namespace DatenMeister.WPF.Forms.Lists
             void OpenExtentFolder()
             {
                 var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig
+                if (extentManager.GetLoadConfigurationFor(Extent as IUriExtent) is ExtentFileLoaderConfig
                         loadConfiguration && loadConfiguration.filePath != null)
                 {
                     // ReSharper disable once AssignNullToNotNullAttribute
@@ -300,11 +304,11 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void ShowAsTree()
             {
-                if (_extent != null)
+                if (Extent != null)
                 {
                     var window = new TreeViewWindow {Owner = NavigationHost.GetWindow()};
                     window.SetDefaultProperties();
-                    window.SetCollection(_extent.elements());
+                    window.SetCollection(Extent.elements());
                     window.ItemSelected += (x, y) =>
                         NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
                     window.Show();

@@ -24,11 +24,11 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            _extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
-            SetItems(_extent.elements());
+            Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            SetItems(Extent.elements());
 
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(_extent, (x,y) =>
+            EventHandle = eventManager.RegisterFor(Extent, (x,y) =>
             {
                 Tabs.FirstOrDefault()?.Control.UpdateContent();
             });
@@ -46,11 +46,11 @@ namespace DatenMeister.WPF.Forms.Lists
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
                 var workspaceId = SelectedPackage.get("id")?.ToString();
-                view = WorkspaceExtentFormGenerator.RequestFormForExtents(_extent, workspaceId, NavigationHost);
+                view = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, workspaceId, NavigationHost);
             }
             else
             {
-                view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(_extent, NavigationHost);
+                view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(Extent, NavigationHost);
             }
 
             PrepareNavigation(view);

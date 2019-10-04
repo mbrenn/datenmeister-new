@@ -22,7 +22,7 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             Loaded += ExtentList_Loaded;
 
-            _extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
         }
 
         private void ExtentList_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -43,14 +43,14 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             WorkspaceId = workspaceId;
             var workspace =
-                _extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
+                Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
 
             var extents = workspace?.get("extents") as IReflectiveSequence;
             SetItems(extents);
 
             // Registers upon events
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(_extent, (x, y) =>
+            EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
             {
                 Tabs.FirstOrDefault()?.Control.UpdateContent();
             });
@@ -65,7 +65,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (IsExtentSelectedInTreeview)
             {
-                var viewDefinition = WorkspaceExtentFormGenerator.RequestFormForExtents(_extent, WorkspaceId, NavigationHost);
+                var viewDefinition = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId, NavigationHost);
 
                 EvaluateForm(
                     SelectedItems,
@@ -81,7 +81,6 @@ namespace DatenMeister.WPF.Forms.Lists
                     SelectedItems,
                     viewDefinition);
             }
-
         }
 
         public override void OnMouseDoubleClick(IObject element)

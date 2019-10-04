@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Linq;
+using Autofac;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.UserInteractions;
@@ -42,7 +43,11 @@ namespace DatenMeister.Modules.ZipExample
             if (position == PluginLoadingPosition.AfterInitialization)
             {
                 // Load Resource
-                _zipCodeModel.ZipCode = _localTypeSupport.AddInternalType(ZipCodeModel.PackagePath, typeof(ZipCode));
+                var types = _localTypeSupport.AddInternalTypes(
+                    ZipCodeModel.PackagePath,
+                    new[] {typeof(ZipCode), typeof(ZipCodeWithState)});
+                _zipCodeModel.ZipCode = types.ElementAt(0);
+                _zipCodeModel.ZipCodeWithState = types.ElementAt(1);
             }
         }
     }

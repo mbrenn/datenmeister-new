@@ -14,6 +14,11 @@ namespace DatenMeister.Modules.ZipExample
         /// Gets or sets the type for the zipcode
         /// </summary>
         public IElement ZipCode { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the type for the zipcode
+        /// </summary>
+        public IElement ZipCodeWithState { get; set; }
 
         public string ZipCodeUri => ZipCode?.GetUri();
     }

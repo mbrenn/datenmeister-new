@@ -56,7 +56,7 @@ namespace DatenMeister.WPF.Forms.Lists
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
             NavigationTreeView.ShowAllChildren = false;
-            
+
             _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out _extent);
             if (_extent == null)
             {
@@ -66,10 +66,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             EventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                 _extent,
-                (x,y) =>
-                {
-                    _delayedDispatcher.RequestRefresh();
-                });
+                (x, y) => _delayedDispatcher.RequestRefresh());
 
             SetItems(_extent.elements());
         }
@@ -155,17 +152,14 @@ namespace DatenMeister.WPF.Forms.Lists
                         var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
 
                         viewExtensions.Add(new GenericButtonDefinition(
-                            $"New {typeName}", () => { CreateNewElementByUser(newType, parentProperty); }));
+                            $"New {typeName}", () => CreateNewElementByUser(newType, parentProperty)));
                     }
                 }
             }
 
             // Sets the button for the new item
             viewExtensions.Add(new GenericButtonDefinition(
-                "New Item", () =>
-                {
-                    CreateNewElementByUser(null, null);
-                }));
+                "New Item", () => CreateNewElementByUser(null, null)));
 
             // Allows the deletion of an item
             viewExtensions.Add(new RowItemButtonDefinition(
@@ -233,21 +227,21 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new ExtentMenuButtonDefinition(
                     "Show as tree",
-                    x=> ShowAsTree(),
+                    x => ShowAsTree(),
                     null,
                     NavigationCategories.Extents + ".Info"));
 
             viewDefinition.ViewExtensions.Add(
                 new ExtentMenuButtonDefinition(
                     "Export as Xmi",
-                    x=>ExportAsXmi(),
+                    x => ExportAsXmi(),
                     null,
                     NavigationCategories.Extents + ".Export"));
 
             viewDefinition.ViewExtensions.Add(
                 new ExtentMenuButtonDefinition(
                     "Open Extent-Folder",
-                    x=>OpenExtentFolder(),
+                    x => OpenExtentFolder(),
                     null,
                     NavigationCategories.Extents + ".Info"));
 
@@ -312,9 +306,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     window.SetDefaultProperties();
                     window.SetCollection(_extent.elements());
                     window.ItemSelected += (x, y) =>
-                    {
                         NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
-                    };
                     window.Show();
                 }
             }

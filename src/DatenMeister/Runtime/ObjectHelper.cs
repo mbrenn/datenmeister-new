@@ -53,7 +53,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the typed value of the property. 
+        /// Gets the typed value of the property.
         /// </summary>
         /// <typeparam name="T">Type of the property</typeparam>
         /// <param name="value">MOF Object being queried</param>
@@ -158,7 +158,7 @@ namespace DatenMeister.Runtime
             return get<T>(value, property);
         }
 
-        public static T getOrDefault<T>(this IObject value, string property) 
+        public static T getOrDefault<T>(this IObject value, string property)
         {
             if (!value.isSet(property))
             {
@@ -169,7 +169,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the value of a property if the property is set. 
+        /// Gets the value of a property if the property is set.
         /// If the property is no set, then null will be returned
         /// </summary>
         /// <param name="value">Object being queried</param>
@@ -186,7 +186,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the value of a property if the property is set and is not an enumeration. 
+        /// Gets the value of a property if the property is set and is not an enumeration.
         /// If the property is an enumeration, the first element will be returned
         /// If the property is no set, then null will be returned
         /// </summary>
@@ -270,7 +270,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets a certain property value as a reflective collection. 
+        /// Gets a certain property value as a reflective collection.
         /// If the value is not a reflective collection, an exception is thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
@@ -288,7 +288,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets a certain property value as a reflective sequence. 
+        /// Gets a certain property value as a reflective sequence.
         /// If the value is not a reflective sequence, an exception is thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
@@ -363,7 +363,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Returns the value as an IObject. 
+        /// Returns the value as an IObject.
         /// If the object is not an IObject, an exception is thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
@@ -380,7 +380,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Returns the value as an IObject. 
+        /// Returns the value as an IObject.
         /// If the object is not an IObject, an exception is thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
@@ -413,7 +413,7 @@ namespace DatenMeister.Runtime
                 return asExtent;
             }
 
-            // If the object is contained by another object, query the contained objects 
+            // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
             var parent = asElement?.container();
@@ -432,8 +432,8 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the extent of the given object as IUriExtent interface object. 
-        /// If the uriextent cannot be retrieved due to object incompatibilities, 
+        /// Gets the extent of the given object as IUriExtent interface object.
+        /// If the uriextent cannot be retrieved due to object incompatibilities,
         /// an exception will be thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
@@ -456,7 +456,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the uri of a certain element. 
+        /// Gets the uri of a certain element.
         /// </summary>
         /// <param name="element">Element whose uri is queried</param>
         /// <returns>Uri of the element</returns>
@@ -473,8 +473,8 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Queries the property 'property' of the value and expects a list that can be enumerated. 
-        /// After that, the property 'propertyOfChild' is evaluated and checked against the requested value. 
+        /// Queries the property 'property' of the value and expects a list that can be enumerated.
+        /// After that, the property 'propertyOfChild' is evaluated and checked against the requested value.
         /// If the value of the propertyOfChild is the same as 'requestValue', it will be returned.
         /// </summary>
         /// <param name="value">Value, whose property list shall be queried</param>
@@ -515,8 +515,8 @@ namespace DatenMeister.Runtime
         /// <param name="requestValue">The value, that is used as a validation against the property</param>
         /// <returns>Enumeration of objects</returns>
         public  static IEnumerable<IObject> GetByPropertyFromCollection(
-            this IEnumerable<object> asEnumeration, 
-            string propertyOfChild, 
+            this IEnumerable<object> asEnumeration,
+            string propertyOfChild,
             object requestValue)
         {
             foreach (var x in asEnumeration)

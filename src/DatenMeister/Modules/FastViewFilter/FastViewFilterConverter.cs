@@ -9,7 +9,7 @@ namespace DatenMeister.Modules.FastViewFilter
     public class FastViewFilterConverter
     {
         /// <summary>
-        /// Converts the given element to a fast filter. 
+        /// Converts the given element to a fast filter.
         /// </summary>
         /// <param name="element">Element to be converted</param>
         /// <returns>The returned instance or </returns>

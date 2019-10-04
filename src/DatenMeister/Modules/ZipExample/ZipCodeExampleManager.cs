@@ -32,7 +32,7 @@ namespace DatenMeister.Modules.ZipExample
         }
 
         /// <summary>
-        /// Adds a zipcode example 
+        /// Adds a zipcode example
         /// </summary>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
         public IUriExtent AddZipCodeExample(Workspace workspace)

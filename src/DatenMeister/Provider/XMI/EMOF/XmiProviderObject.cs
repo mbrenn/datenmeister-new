@@ -30,7 +30,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <summary>
-        /// Denormalizes the property names, so they can be stored into the xml. 
+        /// Denormalizes the property names, so they can be stored into the xml.
         /// </summary>
         /// <param name="property">Property being used</param>
         /// <returns>The value is being sent to the provider</returns>
@@ -85,7 +85,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             XmlNode = node ?? throw new ArgumentNullException(nameof(node));
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
 
-            // Checks, if an id is given. if not. set it. 
+            // Checks, if an id is given. if not. set it.
             if (!XmiId.HasId(node))
             {
                 XmiId.Set(node, XmiId.CreateNew());
@@ -170,7 +170,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             if (value is UriReference uriReference)
             {
                 return new XElement(
-                    property, 
+                    property,
                     new XAttribute("href", uriReference.Uri));
             }
 
@@ -191,7 +191,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             var propertyAsString = ReturnObjectAsString(normalizedPropertyName);
             var propertyAsReference = ConvertPropertyToReference(normalizedPropertyName);
 
-            return XmlNode.Attribute(propertyAsString) != null 
+            return XmlNode.Attribute(propertyAsString) != null
                    || XmlNode.Attribute(propertyAsReference) != null
                    || XmlNode.Elements(propertyAsString).Any();
         }

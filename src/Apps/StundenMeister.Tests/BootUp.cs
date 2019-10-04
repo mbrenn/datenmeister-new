@@ -19,15 +19,15 @@ namespace StundenMeister.Tests
             {
                 var logic = dm.Resolve<StundenMeisterLogic>();
                 Assert.That(logic, Is.Not.Null);
-                
+
                 Assert.That(StundenMeisterData.TheOne, Is.Not.Null);
                 Assert.That(StundenMeisterData.TheOne.ClassCostCenter, Is.Not.Null);
                 Assert.That(StundenMeisterData.TheOne.ClassCostCenter, Is.Not.Null);
                 Assert.That(
                     StundenMeisterData.TheOne.ClassCostCenter.getOrDefault<string>(
-                        _UML._CommonStructure._NamedElement.name), 
+                        _UML._CommonStructure._NamedElement.name),
                     Is.EqualTo(nameof(CostCenter)));
-                
+
                 Assert.That(StundenMeisterData.TheOne.Extent, Is.Not.Null);
             }
         }

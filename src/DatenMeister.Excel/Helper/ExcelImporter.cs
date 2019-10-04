@@ -39,7 +39,7 @@ namespace DatenMeister.Excel.Helper
         }
 
         /// <summary>
-        /// Gets 
+        /// Gets
         /// </summary>
         /// <param name="sheet"></param>
         /// <returns></returns>

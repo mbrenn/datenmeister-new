@@ -4,7 +4,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
     /// Defines a lookup from MOF element to dotnet type and vice
-    /// versa. This class is used to figure out how the mapping between 
+    /// versa. This class is used to figure out how the mapping between
     /// DotNet types and MOF elements is performed, so the correct type
     /// is always created
     /// </summary>

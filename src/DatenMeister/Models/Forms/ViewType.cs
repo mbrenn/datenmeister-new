@@ -23,7 +23,7 @@ namespace DatenMeister.Models.Forms
         TreeItemDetail,
 
         /// <summary>
-        /// Set, when a object's property is listed in an enumeration as given for a sub elements view for example. 
+        /// Set, when a object's property is listed in an enumeration as given for a sub elements view for example.
         /// </summary>
         ObjectList
     }

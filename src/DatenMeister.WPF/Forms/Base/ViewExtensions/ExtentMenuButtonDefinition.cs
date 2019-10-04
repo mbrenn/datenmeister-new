@@ -14,7 +14,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Gets the action being executed when the user clicked upon the button
         /// </summary>
         public Action<IExtent> OnPressed { get; }
-        
+
         public ExtentMenuButtonDefinition(
             string name,
             Action<IExtent> onPressed,

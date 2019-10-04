@@ -13,7 +13,7 @@ namespace DatenMeister.Provider.XMI.Standards
         /// Gets the name of the attribute for the id
         /// </summary>
         public static XName IdAttributeName { get; } = Namespaces.Xmi + "id";
-        
+
         /// <summary>
         /// Verifies of the given document is valid and does not have duplicates
         /// </summary>

@@ -39,7 +39,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             _checkbox = new CheckBox
             {
                 IsChecked = _propertyValue,
-                IsEnabled = !isReadOnly 
+                IsEnabled = !isReadOnly
             };
 
             fieldFlags.CanBeFocused = true;

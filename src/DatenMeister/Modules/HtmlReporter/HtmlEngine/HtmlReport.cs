@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             _streamWriter = new StreamWriter(stream, Encoding.UTF8);
         }
-        
+
         /// <summary>
         /// Gets or sets the css style sheet being used for that report
         /// </summary>
@@ -60,7 +60,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             {
                 _streamWriter.WriteLine("  <style>");
                 _streamWriter.WriteLine(CssStyleSheet);
-                _streamWriter.WriteLine("  </style>");    
+                _streamWriter.WriteLine("  </style>");
             }
             
             _streamWriter.WriteLine("  <body>");

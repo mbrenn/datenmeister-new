@@ -54,12 +54,12 @@ namespace DatenMeister.Provider
         /// <param name="setFunction">Set function to be used</param>
         public void AddMapping(string propertyName, Func<T, object> getFunction, Action<T, object> setFunction)
         {
-            _mappings[propertyName] = 
+            _mappings[propertyName] =
                 new MappingProperty(
-                    getFunction, 
+                    getFunction,
                     setFunction);
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether the property is set
         /// </summary>

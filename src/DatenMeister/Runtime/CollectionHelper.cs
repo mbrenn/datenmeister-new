@@ -24,8 +24,8 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the first element of the reflective collection. 
-        /// Returns null, if no element is existing. If the given element is not 
+        /// Gets the first element of the reflective collection.
+        /// Returns null, if no element is existing. If the given element is not
         /// a enumeration, the element itself will be returned
         /// </summary>
         /// <param name="value">Value to be queried</param>

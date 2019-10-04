@@ -16,7 +16,7 @@ namespace DatenMeister.SourceGeneration.Console
     {
         public static void Main(string[] args)
         {
-            // First, creates 
+            // First, creates
             CreateSourceForUmlAndMof();
 
             System.Console.Write("Create Sourcecode for Web-Fields...");
@@ -34,7 +34,7 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.Write("Create Sourcecode for Excel...");
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
-                { 
+                {
                     ExtentUrl = "datenmeister:///DatenMeister/Types/Excel",
                     Name = "ExcelModels",
                     Path = "./",
@@ -87,23 +87,23 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy("../../FillTheMOF.cs", "../../../DatenMeister/Core/Filler/FillTheMOF.cs", true);
             File.Copy("../../uml.cs", "../../../DatenMeister/Core/Filler/uml.cs", true);
             File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Core/Filler/FillTheUML.cs", true);
-            
+
             File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister/Models/Forms/FormAndFields.filler.cs", true);
             File.Copy("./FormAndFields.class.cs", "../../../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
             File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister/Models/Forms/FormAndFields.dotnet.cs", true);
-            
+
             File.Copy("./ExcelModels.filler.cs", "../../../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
             File.Copy("./ExcelModels.class.cs", "../../../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
             File.Copy("./ExcelModels.dotnet.cs", "../../../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
-            
+
             File.Copy("./ManagementProvider.filler.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.filler.cs", true);
             File.Copy("./ManagementProvider.class.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
             File.Copy("./ManagementProvider.dotnet.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
-            
+
             File.Copy("./FastViewFilters.filler.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.filler.cs", true);
             File.Copy("./FastViewFilters.class.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
             File.Copy("./FastViewFilters.dotnet.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
- 
+
             File.Copy("./DataViews.filler.cs", "../../../DatenMeister/Models/DataViews/DataViews.filler.cs", true);
             File.Copy("./DataViews.class.cs", "../../../DatenMeister/Models/DataViews/DataViews.class.cs", true);
             File.Copy("./DataViews.dotnet.cs", "../../../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);

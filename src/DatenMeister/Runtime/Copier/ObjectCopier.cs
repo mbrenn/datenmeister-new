@@ -52,15 +52,15 @@ namespace DatenMeister.Runtime.Copier
         private readonly IFactory _factory;
 
         /// <summary>
-        /// Stores the extent of the element to be copied. 
+        /// Stores the extent of the element to be copied.
         /// This information is used to check whether an element shall be copied or a reference
-        /// shall be used. Property values referencing to another extent are not copied... Instead uri 
+        /// shall be used. Property values referencing to another extent are not copied... Instead uri
         /// references are copied
         /// </summary>
         private IExtent _sourceExtent;
 
         /// <summary>
-        /// Initializes a new instance of the ObjectCopier. 
+        /// Initializes a new instance of the ObjectCopier.
         /// </summary>
         /// <param name="factory">Factory being used to get added </param>
         public ObjectCopier(IFactory factory)
@@ -106,7 +106,7 @@ namespace DatenMeister.Runtime.Copier
 
             // Transfers the id, if requested by the copy options
             if (copyOptions.CopyId
-                && sourceElement is IHasId sourceWithId 
+                && sourceElement is IHasId sourceWithId
                 && targetElement is ICanSetId targetCanSetId)
             {
                 targetCanSetId.Id = sourceWithId.Id;
@@ -152,7 +152,7 @@ namespace DatenMeister.Runtime.Copier
                     // If element is not associated to an extent
                     // Or is associated to the source extent (as it should be)
                     // Or if all references shall be cloned
-                    // The element will be copied. 
+                    // The element will be copied.
                     return Copy(valueAsElement, copyOptions);
                 }
                 else

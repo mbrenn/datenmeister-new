@@ -153,7 +153,7 @@ namespace DatenMeister.Tests.Runtime.Extents
 
                 Assert.That(csvExtent.GetExtentType(), Is.EqualTo("CSVExtent"));
                 Assert.That(xmiExtent.GetExtentType(), Is.EqualTo("XMIExtent"));
-                
+
                 dm.UnuseDatenMeister();
             }
         }

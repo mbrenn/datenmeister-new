@@ -11,20 +11,20 @@ namespace DatenMeister.Runtime.Proxies
         protected readonly IUriExtent Extent;
 
         /// <summary>
-        /// Gets or sets the conversion method being used, when content of the 
-        /// reflective collection is being returned. 
+        /// Gets or sets the conversion method being used, when content of the
+        /// reflective collection is being returned.
         /// </summary>
         public Func<IElement, IElement> PublicizeElementFunc { get; set; }
 
         /// <summary>
-        /// Gets or sets the conversion method being used, when content of the 
-        /// reflective collection is being returned. 
+        /// Gets or sets the conversion method being used, when content of the
+        /// reflective collection is being returned.
         /// </summary>
         public Func<IElement, IElement> PrivatizeElementFunc { get; set; }
 
         /// <summary>
-        /// Gets or sets the conversion method being used, when content of the 
-        /// reflective collection is being returned. 
+        /// Gets or sets the conversion method being used, when content of the
+        /// reflective collection is being returned.
         /// </summary>
         public Func<IReflectiveSequence, IReflectiveSequence> PublicizeReflectiveSequenceFunc { get; set; }
 

@@ -13,7 +13,7 @@ namespace DatenMeister.Runtime.Dynamic
     public static class DynamicConverter
     {
         /// <summary>
-        /// Sets the wrapped object into the dynamic value. 
+        /// Sets the wrapped object into the dynamic value.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="objectToBeSet"></param>
@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime.Dynamic
         }
 
         /// <summary>
-        /// Converts the given value to a dynamic object 
+        /// Converts the given value to a dynamic object
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="wrapInObject">Flag, indicating whether the value itself shall be wrapped in</param>

@@ -7,7 +7,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
     /// </summary>
     public class SumAggregator : DoubleAggregationByFunction<double>
     {
-        public SumAggregator() 
+        public SumAggregator()
             : base((a, b) => a + b)
         {
         }

@@ -12,7 +12,7 @@
             this.name = name;
             this.title = title;
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether the field is attached to an attache object or
         /// whether the field will be attached to the detail element

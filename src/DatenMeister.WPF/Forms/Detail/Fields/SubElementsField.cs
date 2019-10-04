@@ -35,8 +35,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         /// <param name="fieldFlags"></param>
         /// <returns>The created UI Element</returns>
         public UIElement CreateElement(
-            IObject value, 
-            IElement fieldData, 
+            IObject value,
+            IElement fieldData,
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {

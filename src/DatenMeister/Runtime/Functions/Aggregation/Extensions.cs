@@ -12,7 +12,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <summary>
         /// Aggregates the list by using the aggregator
         /// </summary>
-        /// <typeparam name="T">Type of the enumeration and 
+        /// <typeparam name="T">Type of the enumeration and
         /// the aggregation</typeparam>
         /// <param name="aggregator">Aggregator function to be used</param>
         /// <param name="items">Items to be aggregated</param>
@@ -32,7 +32,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <summary>
         /// Aggregates the list by using the aggregator
         /// </summary>
-        /// <typeparam name="T">Type of the enumeration and 
+        /// <typeparam name="T">Type of the enumeration and
         /// the aggregation</typeparam>
         /// <param name="items">Items to be aggregated</param>
         /// <param name="aggregator">Aggregator function to be used</param>
@@ -52,7 +52,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <summary>
         /// Aggregates the list by using the aggregator
         /// </summary>
-        /// <typeparam name="T">Type of the enumeration and 
+        /// <typeparam name="T">Type of the enumeration and
         /// the aggregation</typeparam>
         /// <param name="items">Items to be aggregated</param>
         /// <param name="property">Property to be used that retrieve

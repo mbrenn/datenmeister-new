@@ -186,7 +186,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 tabItems,
                 new ViewDefinition(form)
                 {
-                    ViewExtensions = 
+                    ViewExtensions =
                         viewExtensions.Union(viewDefinition.ViewExtensions).ToList()
                 });
         }
@@ -205,7 +205,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigatorForItems.NavigateToNewItemForItem(
                     NavigationHost,
                     SelectedPackage,
-                    type, 
+                    type,
                     parentProperty);
             }
         }

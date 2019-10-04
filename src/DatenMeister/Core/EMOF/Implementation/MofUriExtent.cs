@@ -111,7 +111,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Gets the id of the element as defined in the uri. 
+        /// Gets the id of the element as defined in the uri.
         /// The format of the uri is expected to be like protocol://path#id.
         /// The text after the first '#' is returned
         /// </summary>
@@ -173,7 +173,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                         return element;
                     }
                 }
-                
+
                 var workspaceResult = ResolveByMetaWorkspaces(uri, _Workspace, alreadyVisited);
                 if (workspaceResult != null)
                 {
@@ -213,7 +213,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
         /// <returns>Found element or null, if not found</returns>
         private IElement ResolveByMetaWorkspaces(
-            string uri, 
+            string uri,
             Runtime.Workspaces.Workspace workspace,
             HashSet<Runtime.Workspaces.Workspace> alreadyVisited = null)
         {

@@ -12,7 +12,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="extentCreationFlags">true, if also empty extents will be created, if the file does not exist</param>
         /// <returns>The loaded extent</returns>
         IUriExtent LoadExtent(
-            ExtentLoaderConfig configuration, 
+            ExtentLoaderConfig configuration,
             ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly);
 
 
@@ -25,8 +25,8 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         IUriExtent LoadExtentWithoutAdding(ExtentLoaderConfig configuration);
 
         /// <summary>
-        /// Stores the extent according to the used configuration during loading. 
-        /// If loading was not performed, an exception is thrown. 
+        /// Stores the extent according to the used configuration during loading.
+        /// If loading was not performed, an exception is thrown.
         /// </summary>
         /// <param name="extent"></param>
         void StoreExtent(IExtent extent);
@@ -38,7 +38,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         void DetachExtent(IExtent extent);
 
         /// <summary>
-        /// Deletes the extent from the extent manager and also workspace. The extent manager will 
+        /// Deletes the extent from the extent manager and also workspace. The extent manager will
         /// </summary>
         /// <param name="extent">Extent to be deleted</param>
         void DeleteExtent(IExtent extent);
@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         void StoreAllExtents();
 
         /// <summary>
-        /// Gets the loading configuration for the given extent or null, if 
+        /// Gets the loading configuration for the given extent or null, if
         /// the extent does not contain a configuration
         /// </summary>
         /// <param name="extent">The extent whose configuration is retrieved</param>

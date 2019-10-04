@@ -9,18 +9,18 @@ namespace DatenMeister.Runtime
     {
         /// <summary>
         /// Gets the filled type information of the meta extents being connected
-        /// to the factory. 
+        /// to the factory.
         /// </summary>
         /// <typeparam name="TFilledType">Requested filled type information</typeparam>
         /// <param name="factory">Factory, which is queried</param>
         /// <returns>The resulting filled type</returns>
         public static TFilledType GetMetaInformation<TFilledType>(
-            this IFactory factory) 
+            this IFactory factory)
             where TFilledType : class, new()
         {
             var mofFactory = factory as MofFactory ??
                              throw new ArgumentException(
-                                 "Not of type MofExtent", 
+                                 "Not of type MofExtent",
                                  nameof(factory));
            return mofFactory.Extent.Workspace.GetFromMetaWorkspace<TFilledType>();
         }
@@ -44,7 +44,7 @@ namespace DatenMeister.Runtime
 
         /// <summary>
         /// Creates the element as being retrieved by the TFilledType
-        /// by using the given workspace. 
+        /// by using the given workspace.
         /// </summary>
         /// <typeparam name="TFilledType">Type of the FilledType</typeparam>
         /// <param name="factory">Factory being used to create the instance</param>

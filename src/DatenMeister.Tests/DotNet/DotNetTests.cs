@@ -68,8 +68,8 @@ namespace DatenMeister.Tests.DotNet
 
         public enum TestEnumeration
         {
-            First, 
-            Second, 
+            First,
+            Second,
             Third
         }
 

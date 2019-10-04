@@ -42,11 +42,11 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Sets the default type package which is shown, when the user wants 
+        /// Sets the default type package which is shown, when the user wants
         /// to create a new item
         /// </summary>
         /// <param name="extent">Extent shall get the default type package</param>
-        /// <param name="defaultTypePackage">The element which shall be considered as the 
+        /// <param name="defaultTypePackage">The element which shall be considered as the
         /// default type package</param>
         public static void SetDefaultTypePackage(this IExtent extent, IElement defaultTypePackage)
         {
@@ -111,7 +111,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Removes all elements within the reflective collection 
+        /// Removes all elements within the reflective collection
         /// </summary>
         /// <param name="elements">Elements in which all elements shall be removed</param>
         public static void RemoveAll(this IReflectiveCollection elements)
@@ -159,7 +159,7 @@ namespace DatenMeister.Runtime
         /// <returns>the extent with the element or none</returns>
         public static IUriExtent WithElement(this IEnumerable<IUriExtent> extents, IObject value)
         {
-            // If the object is contained by another object, query the contained objects 
+            // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
             var parent = asElement?.container();

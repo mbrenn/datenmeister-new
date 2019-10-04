@@ -51,9 +51,9 @@ namespace DatenMeister.WPF.Controls
         }
 
         public static readonly DependencyProperty ShowWorkspaceSelectionProperty = DependencyProperty.Register(
-            "ShowWorkspaceSelection", 
-            typeof(bool), 
-            typeof(LocateElementControl), 
+            "ShowWorkspaceSelection",
+            typeof(bool),
+            typeof(LocateElementControl),
             new PropertyMetadata(
                 true,
                 OnShowWorkSpaceSelectionChanged));
@@ -68,15 +68,15 @@ namespace DatenMeister.WPF.Controls
         {
             var control = (LocateElementControl) d;
             var newValue = (bool)e.NewValue;
-            control.txtWorkspace.Visibility = 
+            control.txtWorkspace.Visibility =
                 control.cboWorkspace.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
 
         }
 
         public static readonly DependencyProperty ShowExtentSelectionProperty = DependencyProperty.Register(
-            "ShowExtentSelection", 
-            typeof(bool), 
-            typeof(LocateElementControl), 
+            "ShowExtentSelection",
+            typeof(bool),
+            typeof(LocateElementControl),
             new PropertyMetadata(
                 true,
                 OnShowExtentSelectionChanged));
@@ -335,7 +335,7 @@ namespace DatenMeister.WPF.Controls
         }
 
         /// <summary>
-        /// Sets the given reflection as the root objects. 
+        /// Sets the given reflection as the root objects.
         /// </summary>
         /// <param name="collection">Collection to be shown.</param>
         /// <param name="showOnlyObject">true, if the workspace and extent options are hidden and cannot be selected by the user</param>

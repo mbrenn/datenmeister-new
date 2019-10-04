@@ -16,7 +16,7 @@ namespace DatenMeister.WPF.Windows
         {
             NavigationScope = navigationScope;
         }
-        
+
         /// <summary>
         /// Defines the menuscope
         /// </summary>
@@ -25,19 +25,19 @@ namespace DatenMeister.WPF.Windows
             get;
             set;
         }
-        
+
         /// <summary>
         /// Gets the extent to which the menu is associated. This extent is given to the
         /// action which is called
         /// </summary>
         public IExtent Extent { get; set; }
-        
+
         /// <summary>
         /// Gets the collection to which the menu is associated. This extent is given to the
         /// action which is called
         /// </summary>
         public IReflectiveCollection Collection { get; set; }
-        
+
         /// <summary>
         /// Gets the item to which the menu is associated. This extent is given to the
         /// action which is called
@@ -53,8 +53,8 @@ namespace DatenMeister.WPF.Windows
         {
             // Defines the clickmethod by the definition
             Action clickMethod = null;
-            if (ShowApplicationItems 
-                && definition is ApplicationMenuButtonDefinition applicationMenuButtonDefinition 
+            if (ShowApplicationItems
+                && definition is ApplicationMenuButtonDefinition applicationMenuButtonDefinition
                 && NavigationScope.HasFlag(NavigationScope.Application))
             {
                 clickMethod = applicationMenuButtonDefinition.OnPressed;
@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Windows
             {
                 clickMethod = () => collectionMenuButtonDefinition.OnPressed(Collection);
             }
-            else if(Item != null 
+            else if(Item != null
                 && definition is ItemMenuButtonDefinition itemMenuButtonDefinition
                 && NavigationScope.HasFlag(NavigationScope.Item))
             {

@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets a list of the viewextension for the tree view
         /// </summary>
-        public List<ViewExtension> ViewExtensions { get; } = new List<ViewExtension>(); 
+        public List<ViewExtension> ViewExtensions { get; } = new List<ViewExtension>();
 
         /// <summary>
         /// Gets or sets a value indicating whether a root element shall be introduced
@@ -167,7 +167,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (!IsInitialized)
             {
-                // Save the time... 
+                // Save the time...
                 return;
             }
 
@@ -229,8 +229,8 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Creates the treeview item for the given item. 
-        /// If this item is an object and contains additional items within the properties, 
+        /// Creates the treeview item for the given item.
+        /// If this item is an object and contains additional items within the properties,
         /// these subitems are also creates as TreeViewItemss
         /// </summary>
         /// <param name="item"></param>
@@ -285,7 +285,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var n = 0;
                 var childModels = new List<TreeViewItem>();
                 var propertiesForChildren = ShowAllChildren ?
-                    (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>() : 
+                    (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>() :
                     _propertiesForChildren.ToList();
 
                 foreach (var property in propertiesForChildren)
@@ -344,12 +344,12 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// This event is called, when the user double clicks on an item 
+        /// This event is called, when the user double clicks on an item
         /// </summary>
         public event EventHandler<ItemEventArgs> ItemChosen;
 
         /// <summary>
-        /// This event is called, when the user double clicks on an item 
+        /// This event is called, when the user double clicks on an item
         /// </summary>
         public event EventHandler<ItemEventArgs> ItemSelected;
 
@@ -423,7 +423,7 @@ namespace DatenMeister.WPF.Forms.Base
                     if (itemAsObject.GetOrDefault(property) is IReflectiveCollection childItems)
                     {
                         VisitCopyTreeToClipboard(
-                            childItems, 
+                            childItems,
                             myName + "::",
                             result);
                     }
@@ -445,7 +445,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         public INavigationHost NavigationHost { get; set; }
-        
+
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
             return Array.Empty<ViewExtension>();

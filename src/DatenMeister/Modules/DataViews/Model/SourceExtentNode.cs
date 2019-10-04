@@ -5,6 +5,6 @@
         public string extentUri { get; set; }
 
         public string workspace { get; set; }
-        
+
     }
 }

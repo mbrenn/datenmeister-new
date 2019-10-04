@@ -7,12 +7,12 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
     /// a shown extent or item
     /// </summary>
     public class ApplicationMenuButtonDefinition : NavigationButtonDefinition
-    { 
+    {
         ///<summary>
         /// Gets the action being executed when the user clicked upon the button
         /// </summary>
         public Action OnPressed { get; }
-        
+
         public ApplicationMenuButtonDefinition(
             string name,
             Action onPressed,

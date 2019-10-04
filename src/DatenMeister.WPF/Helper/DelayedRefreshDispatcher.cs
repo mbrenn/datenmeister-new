@@ -8,14 +8,14 @@ namespace DatenMeister.WPF.Helper
     /// <summary>
     /// This class supports the delayed refreshing of forms to prevent unnecessary refreshes of the window content
     /// The refresh is delayed minimally by the min dispatch time. If the update is continuously called, the maximum
-    /// delay time defines delay until which the refresh function is called latest. 
+    /// delay time defines delay until which the refresh function is called latest.
     /// </summary>
     public class DelayedRefreshDispatcher
     {
         private readonly ClassLogger ClassLogger = new ClassLogger(typeof(DelayedRefreshDispatcher));
 
         /// <summary>
-        /// The dispatcher being used 
+        /// The dispatcher being used
         /// </summary>
         private readonly Dispatcher _dispatcher;
 
@@ -94,7 +94,7 @@ namespace DatenMeister.WPF.Helper
         }
 
         /// <summary>
-        /// Checks whether a refresh is necessary 
+        /// Checks whether a refresh is necessary
         /// </summary>
         private void CheckForRefresh()
         {

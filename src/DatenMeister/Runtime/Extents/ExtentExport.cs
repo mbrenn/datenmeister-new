@@ -36,7 +36,7 @@ namespace DatenMeister.Runtime.Extents
         }
 
         /// <summary>
-        /// Exports the given extent to a text string containing the Xml. 
+        /// Exports the given extent to a text string containing the Xml.
         /// </summary>
         /// <param name="extent">Extent to be exported</param>
         /// <returns>The string representing</returns>

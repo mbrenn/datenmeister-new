@@ -15,7 +15,7 @@ namespace DatenMeister.WPF.Windows
 {
     public enum ExcelImportType
     {
-        AsCopy, 
+        AsCopy,
         AsReference
     }
 
@@ -118,7 +118,7 @@ namespace DatenMeister.WPF.Windows
         private enum ContentRange
         {
             None = 0,
-            Rows = 1, 
+            Rows = 1,
             Columns = 1 << 1,
         }
 
@@ -223,7 +223,7 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Gets the configuration as an item 
+        /// Gets the configuration as an item
         /// </summary>
         /// <returns>The configuration object describing the elements</returns>
         public IObject GetConfigurationObject()

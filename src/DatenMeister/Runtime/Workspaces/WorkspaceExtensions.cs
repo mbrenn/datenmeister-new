@@ -14,10 +14,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Indicates that only one meta extent shall be used to figure out whether a meta extent will be used
         /// </summary>
-        JustOne, 
+        JustOne,
 
         /// <summary>
-        /// Indicates that unlimited meta extents will be resolved to find the structure. 
+        /// Indicates that unlimited meta extents will be resolved to find the structure.
         /// </summary>
         Recursively
     }
@@ -61,7 +61,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>The instance of the type</returns>
         public static TFilledType GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
-            Workspace dataLayer, 
+            Workspace dataLayer,
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
@@ -110,12 +110,12 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspaceLogic">Workspacelogic being used</param>
         /// <param name="extent">Extent being added</param>
         /// <returns>true, if addition was succesfsul</returns>
-        public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent) 
+        public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent)
         {
             var contextUri = extent.contextURI();
 
             var found = workspace.extent.FirstOrDefault(
-                x => x is IUriExtent uriExtent 
+                x => x is IUriExtent uriExtent
                 && uriExtent.contextURI() == contextUri);
 
             if (found == null)
@@ -243,7 +243,7 @@ namespace DatenMeister.Runtime.Workspaces
             this IWorkspaceLogic collection,
             string workspaceId,
             string extentUri,
-            out IWorkspace workspace, 
+            out IWorkspace workspace,
             out IExtent extent)
         {
             workspace = collection.Workspaces
@@ -335,7 +335,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         /// <summary>
-        /// Gets the data 
+        /// Gets the data
         /// </summary>
         /// <param name="scope">Scope of dependency container</param>
         /// <returns>The Uml instance being used</returns>

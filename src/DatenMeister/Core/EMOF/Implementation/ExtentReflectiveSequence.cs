@@ -11,7 +11,7 @@ using DatenMeister.Runtime;
 namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
-    /// Implements the reflective sequence for 
+    /// Implements the reflective sequence for
     /// </summary>
     public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
     {
@@ -42,7 +42,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     // Sets also the directly associated extent
                     Extent = _extent
                 };
-                
+
                 yield return resultElement;
             }
         }

@@ -13,7 +13,7 @@ using DatenMeister.Uml.Helper;
 namespace DatenMeister.Provider.DotNet
 {
     /// <summary>
-    /// Takes a .Net Type and converts it to a UML metaclass which can be used within 
+    /// Takes a .Net Type and converts it to a UML metaclass which can be used within
     /// the DatenMeister.
     /// </summary>
     public class DotNetTypeGenerator
@@ -83,7 +83,7 @@ namespace DatenMeister.Provider.DotNet
                 }
 
                 umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
-                
+
                 // Goes through the generalizations
                 var generalization = type.BaseType;
                 if (generalization != null && generalization != typeof(object))
@@ -151,7 +151,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
-        /// Sets the type information for the given property, depending on the property information. 
+        /// Sets the type information for the given property, depending on the property information.
         /// </summary>
         /// <param name="property">Property that is evaluated</param>
         /// <param name="umlProperty">Property which will have the property type stored according UML</param>
@@ -171,7 +171,7 @@ namespace DatenMeister.Provider.DotNet
             }
             else if (property == typeof(bool))
             {
-                var booleanType = UriResolver.Resolve(CoreTypeNames.BooleanType, 
+                var booleanType = UriResolver.Resolve(CoreTypeNames.BooleanType,
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, booleanType);
             }

@@ -101,7 +101,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 {
                     Extent?.AddMetaExtent(extentAsMofUriExtent);
                 }
-                
+
                 uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
             }
 
@@ -120,7 +120,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Creates an element by getting a dotnet value. 
+        /// Creates an element by getting a dotnet value.
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="id">Id of the element that shall be set</param>
@@ -158,14 +158,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Creates an element within the same extent as the given
         /// element 'value' and finds the metaclass via
-        /// the metaclass finder. 
+        /// the metaclass finder.
         /// </summary>
         /// <typeparam name="TFilledType">Type filler being used to find the element</typeparam>
         /// <param name="value">Value which is used to find the associated extent</param>
         /// <param name="metaClassFinder">The function to derive the metaclass out of the filler</param>
         /// <returns>Created element</returns>
         public static IElement CreateElementFor<TFilledType>(
-            IObject value, 
+            IObject value,
             Func<TFilledType, IElement> metaClassFinder)
             where TFilledType : class, new()
         {
@@ -176,7 +176,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Creates an element within the same extent as the given
         /// element 'value' and finds the metaclass via
-        /// the metaclass finder. 
+        /// the metaclass finder.
         /// </summary>
         /// <typeparam name="TFilledType">Type filler being used to find the element</typeparam>
         /// <param name="value">Extent being used for the factory</param>

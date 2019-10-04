@@ -33,7 +33,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
         /// If nothing was found, a full search will be started
         /// </summary>
-        Default = 1, 
+        Default = 1,
 
         /// <summary>
         /// Resolving in which the current workspace will not be looked. The type

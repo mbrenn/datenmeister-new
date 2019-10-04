@@ -17,8 +17,8 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="queryValue">The query value that should match.</param>
         /// <returns>The found object</returns>
         public static IObject GetChildWithProperty(
-            IObject element, 
-            string childrenProperty, 
+            IObject element,
+            string childrenProperty,
             string queryProperty,
             object queryValue)
         {
@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                                      throw new InvalidOperationException(
                                          "Given element is not of IObjectAllProperties and no childrenProperty is set");
 
-                // No go through all 
+                // No go through all
                 return withProperties.getPropertiesBeingSet().Select(property => GetChildWithProperty(element, property, queryProperty, queryValue)).FirstOrDefault(result => result != null);
             }
         }

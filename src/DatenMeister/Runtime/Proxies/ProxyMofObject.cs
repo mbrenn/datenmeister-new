@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Proxies
         }
 
         /// <summary>
-        /// Gets the proxied element which can be used to dereference the 
+        /// Gets the proxied element which can be used to dereference the
         /// content
         /// </summary>
         /// <returns>Returns the proxied element</returns>
@@ -49,7 +49,7 @@ namespace DatenMeister.Runtime.Proxies
         }
 
         /// <summary>
-        /// Gets the properties of the stored object, if the object 
+        /// Gets the properties of the stored object, if the object
         /// supports the interface
         /// </summary>
         /// <returns>Enumeration of objects</returns>

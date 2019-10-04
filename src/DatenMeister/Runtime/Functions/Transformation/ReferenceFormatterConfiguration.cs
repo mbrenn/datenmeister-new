@@ -31,6 +31,6 @@ namespace DatenMeister.Runtime.Functions.Transformation
         /// Gets or sets the value whether real references shall be created instead of a pure namesetting
         /// </summary>
         public bool CreateReferences { get; set; }
-        
+
     }
 }

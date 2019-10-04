@@ -23,7 +23,7 @@ namespace DatenMeister.Provider.ManagementProviders
         }
 
         /// <summary>
-        /// Gets the extent that contains the workspaces 
+        /// Gets the extent that contains the workspaces
         /// </summary>
         /// <param name="scope">Scope for the DatenMeister</param>
         /// <returns>The found uri extent</returns>

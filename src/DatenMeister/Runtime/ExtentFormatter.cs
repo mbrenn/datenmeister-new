@@ -9,7 +9,7 @@ using DatenMeister.Uml.Helper;
 namespace DatenMeister.Runtime
 {
     /// <summary>
-    /// Offers a support function, which converts the data of an extent into a human-readable 
+    /// Offers a support function, which converts the data of an extent into a human-readable
     /// </summary>
     public class ExtentFormatter
     {
@@ -136,7 +136,7 @@ namespace DatenMeister.Runtime
         {
             _currentIndent = _currentIndent.Substring(2);
         }
-        
+
         /// <summary>
         /// Converts the given extent to a text string
         /// </summary>

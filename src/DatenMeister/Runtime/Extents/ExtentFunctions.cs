@@ -29,7 +29,7 @@ namespace DatenMeister.Runtime.Extents
         }
 
         /// <summary>
-        /// Gets an enumeration of creatable types for a given extent. 
+        /// Gets an enumeration of creatable types for a given extent.
         /// It navigates to the meta extent and looks for all classes
         /// </summary>
         /// <param name="collection">The reflectivecollection into which a new instance shall be created</param>
@@ -40,7 +40,7 @@ namespace DatenMeister.Runtime.Extents
         }
 
         /// <summary>
-        /// Gets an enumeration of creatable types for a given extent. 
+        /// Gets an enumeration of creatable types for a given extent.
         /// It navigates to the meta extent and looks for all classes
         /// </summary>
         /// <param name="element">The reflectivecollection into which a new instance shall be created</param>
@@ -51,7 +51,7 @@ namespace DatenMeister.Runtime.Extents
         }
 
         /// <summary>
-        /// Gets an enumeration of creatable types for a given extent. 
+        /// Gets an enumeration of creatable types for a given extent.
         /// It navigates to the meta extent and looks for all classes
         /// </summary>
         /// <param name="extent">The extent into which a new instance shall be created</param>

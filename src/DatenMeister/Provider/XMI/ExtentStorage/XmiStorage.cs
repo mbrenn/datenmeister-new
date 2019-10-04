@@ -61,7 +61,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 Directory.CreateDirectory(directoryPath);
             }
 
-            // We need to create an empty Xmi file... Not the best thing at the moment, but we try it. 
+            // We need to create an empty Xmi file... Not the best thing at the moment, but we try it.
             var xmlDocument = new XDocument(
                 new XElement(XmiProvider.DefaultRootNodeName));
 

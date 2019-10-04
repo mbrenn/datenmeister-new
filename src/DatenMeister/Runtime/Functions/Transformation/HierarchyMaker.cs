@@ -26,7 +26,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
 
             var values = CopyElements(settings);
 
-            // Now: Do the adding of the childrena into a temporary lists and copy 
+            // Now: Do the adding of the childrena into a temporary lists and copy
             foreach (var element in settings.Sequence.Select(x => x as IObject).Where(x => x != null))
             {
                 var id = element.GetOrDefault(settings.IdColumn);
@@ -135,7 +135,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
         }
 
         /// <summary>
-        /// Copies the elements into a dictionary where 
+        /// Copies the elements into a dictionary where
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>

@@ -6,7 +6,7 @@ using System.Windows.Controls.Primitives;
 namespace DatenMeister.WPF.Helper
 {
     /// <summary>
-    /// Extents the combobox by setting the width of the combobox to the largest element. 
+    /// Extents the combobox by setting the width of the combobox to the largest element.
     /// I have no clue, why this function is not included into WPF itself
     /// </summary>
     public class ComboBoxEx : ComboBox

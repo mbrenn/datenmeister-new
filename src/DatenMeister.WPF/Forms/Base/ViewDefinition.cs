@@ -11,7 +11,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// Defines the class for a view in list
     /// </summary>
     public class ViewDefinition
-    { 
+    {
         /// <summary>
         /// Gets or sets the type
         /// </summary>

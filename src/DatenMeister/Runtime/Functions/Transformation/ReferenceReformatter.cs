@@ -66,7 +66,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
                 {
                     created.set(_configuration.SubItemProperty, list);
                 }
-                
+
             }
         }
     }

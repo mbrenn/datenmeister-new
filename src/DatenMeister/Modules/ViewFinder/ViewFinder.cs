@@ -198,8 +198,8 @@ namespace DatenMeister.Modules.ViewFinder
                 if (isMatching)
                 {
                     var foundForm = new FoundForm(
-                        innerForm, 
-                        points);   
+                        innerForm,
+                        points);
                     foundForms.Add(foundForm);
                 }
             }

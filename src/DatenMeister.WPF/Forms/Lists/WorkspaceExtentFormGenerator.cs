@@ -220,7 +220,7 @@ namespace DatenMeister.WPF.Forms.Lists
             void DeleteExtent(INavigationGuest guest, IObject element)
             {
                 if (MessageBox.Show(
-                        "Are you sure, you would like to delete the extent?", 
+                        "Are you sure, you would like to delete the extent?",
                         "Delete Extent",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -323,7 +323,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
             dlg.SetAsRoot(package);
 
-            // User has selected the type 
+            // User has selected the type
             if (dlg.ShowDialog() != true) return null;
             if (!(dlg.SelectedElement is IElement selectedExtentType)) return null;
 

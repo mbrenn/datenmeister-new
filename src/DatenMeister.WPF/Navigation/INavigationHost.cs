@@ -13,12 +13,12 @@ namespace DatenMeister.WPF.Navigation
     public interface INavigationHost
     {
         /// <summary>
-        /// Called, if the host shall navigate to a certain element. 
-        /// All user elements are removed after the call itself. 
+        /// Called, if the host shall navigate to a certain element.
+        /// All user elements are removed after the call itself.
         /// </summary>
         /// <param name="factoryMethod">Factory method creating the navigation element. </param>
         /// <param name="navigationMode">
-        /// Type of the navigation mode. Can create subwindows or 
+        /// Type of the navigation mode. Can create subwindows or
         /// other certain special modes. </param>
         /// <returns>The navigation information being used to receive certain events</returns>
         Task<NavigateToElementDetailResult> NavigateTo(

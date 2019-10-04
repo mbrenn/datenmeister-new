@@ -6,7 +6,7 @@
     public enum ViewLocationType
     {
         /// <summary>
-        /// Defines that the element shall be included in the internal extent. 
+        /// Defines that the element shall be included in the internal extent.
         /// </summary>
         Internal,
 

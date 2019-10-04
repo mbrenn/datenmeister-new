@@ -5,7 +5,7 @@ namespace DatenMeister.Core.EMOF.Interface.Reflection
     /// <summary>
     /// This interface can be implemented by all objects which
     /// knows the extents, to which they are hosted to. This speeds
-    /// up the lookup for datalayers and containing events and should be 
+    /// up the lookup for datalayers and containing events and should be
     /// implemented by every object
     /// </summary>
     public interface IHasExtent

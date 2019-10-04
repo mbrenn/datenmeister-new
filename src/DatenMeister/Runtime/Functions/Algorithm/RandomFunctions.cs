@@ -19,7 +19,7 @@ namespace DatenMeister.Runtime.Functions.Algorithm
 
             return GetRandomString(length, alphanumericCharacters);
         }
-        
+
         /// <summary>
         /// https://stackoverflow.com/questions/38632735/rngcryptoserviceprovider-in-net-core
         /// </summary>

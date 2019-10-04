@@ -15,9 +15,9 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         private string _valueText;
 
         public UIElement CreateElement(
-            IObject value, 
-            IElement fieldData, 
-            DetailFormControl detailForm, 
+            IObject value,
+            IElement fieldData,
+            DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));

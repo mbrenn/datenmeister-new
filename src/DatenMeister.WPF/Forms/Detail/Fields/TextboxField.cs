@@ -14,8 +14,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         private TextBox _contentBlock;
         private string _valueText;
 
-        public UIElement CreateElement(IObject value, 
-            IElement fieldData, 
+        public UIElement CreateElement(IObject value,
+            IElement fieldData,
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {

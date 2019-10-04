@@ -54,7 +54,7 @@ namespace DatenMeister.WPF.Windows
             var name = definition.Name;
             var categoryName = definition.CategoryName;
             var imageName = definition.ImageName;
-            
+
             var clickMethod = CreateClickMethod(definition);
             if (clickMethod == null)
             {
@@ -75,7 +75,7 @@ namespace DatenMeister.WPF.Windows
                 groupName = categoryName.Substring(indexOfSemicolon + 1);
             }
 
-            // If the main window is the datenmeister, then skip 
+            // If the main window is the datenmeister, then skip
             // this navigational element because the standard menu does not contain
             // sufficient hierarchical depth
             /*if (tabName == NavigationCategories.DatenMeister)
@@ -182,7 +182,7 @@ namespace DatenMeister.WPF.Windows
                         Logger.Error($"No further action defined anymore for item{viewExtension.Name}");
                         continue;
                     }
-                    
+
                     foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
                 }

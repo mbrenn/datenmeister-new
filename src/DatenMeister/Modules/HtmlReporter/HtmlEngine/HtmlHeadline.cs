@@ -14,7 +14,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             Level = level;
             Headline = headline;
         }
-        
+
         /// <summary>
         /// Stores the text of the headline
         /// </summary>

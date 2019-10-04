@@ -40,7 +40,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns>The found or loaded extent</returns>
         public static IUriExtent LoadExtentIfNotAlreadyLoaded(
             this IExtentManager extentManager,
-            ExtentLoaderConfig loaderConfiguration, 
+            ExtentLoaderConfig loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)
         {
             var asExtentManager = extentManager as ExtentManager

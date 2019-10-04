@@ -40,7 +40,7 @@ namespace DatenMeister.Provider.DotNet
         public string Id { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the DotNetElement class. 
+        /// Initializes a new instance of the DotNetElement class.
         /// </summary>
         /// <param name="provider">The Dotnet Provider storing the items</param>
         /// <param name="typeLookup">Typelookup to be used to create element</param>

@@ -19,7 +19,7 @@ using DatenMeister.WPF.Forms.Base;
 namespace DatenMeister.Modules.ViewFinder.Helper
 {
     /// <summary>
-    /// Creates a view out of the given extent, elements (collection) or element). 
+    /// Creates a view out of the given extent, elements (collection) or element).
     /// 
     /// </summary>
     public class FormCreator
@@ -76,13 +76,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             OnlyPropertiesIfNoMetaClass = 0x04,
 
             /// <summary>
-            /// Adds the metaclass itself to the form 
+            /// Adds the metaclass itself to the form
             /// </summary>
             AddMetaClass = 0x08,
 
             /// <summary>
             /// Creates only fields that are usable in a list form.
-            /// So most of the time only 'TextFields'. 
+            /// So most of the time only 'TextFields'.
             /// </summary>
             ForListForms = 0x10,
 
@@ -98,7 +98,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             
             _workspaceLogic = _viewLogic?.WorkspaceLogic;
             var userExtent = _viewLogic?.GetUserViewExtent();
-            _factory = userExtent != null 
+            _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
             _formAndFields = userExtent?.GetWorkspace().GetFromMetaWorkspace<_FormAndFields>()
@@ -177,9 +177,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         class FormCreatorCache
         {
             public bool MetaClassAlreadyAdded { get; set; }
-            
+
             public HashSet<IElement> CoveredMetaClasses { get; } = new HashSet<IElement>();
-            
+
             public HashSet<string> CoveredPropertyNames { get; } = new HashSet<string>();
         }
 
@@ -232,22 +232,22 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             foreach (var group in elementsWithMetaClass)
             {
-                // Now try to figure out the metaclass 
+                // Now try to figure out the metaclass
                 var groupedMetaclass = group.Key;
                 IElement form;
                 if (_viewLogic != null)
                 {
                     // Asks the view logic whether it has a list form for the specific metaclass
-                    // It will ask the form creator, if there is no view association directly referencing 
+                    // It will ask the form creator, if there is no view association directly referencing
                     // to the element
                     form = _viewLogic.GetListFormForExtent(
-                        (elements as IHasExtent)?.Extent, 
+                        (elements as IHasExtent)?.Extent,
                         groupedMetaclass,
                         ViewDefinitionMode.Default);
                 }
                 else
                 {
-                    // If no view logic is given, then ask directly the form creator. 
+                    // If no view logic is given, then ask directly the form creator.
                     form = CreateListForm(groupedMetaclass, creationMode);
                 }
 
@@ -319,7 +319,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
-        /// Creates the form out of the given element. 
+        /// Creates the form out of the given element.
         /// </summary>
         /// <param name="form">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
@@ -365,7 +365,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             // Third phase: Add metaclass element itself
             var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
-            if (!cache.MetaClassAlreadyAdded && 
+            if (!cache.MetaClassAlreadyAdded &&
                 isMetaClass &&
                 !form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
@@ -374,7 +374,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             {
                 // Sets the information in cache, that the element was already added
                 cache.MetaClassAlreadyAdded = true;
-                
+
                 // Add the element itself
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(metaClassField);
@@ -399,7 +399,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             if (!(item is IObject itemAsObject))
             {
-                // The object cannot be converted and FormCreator does not support 
+                // The object cannot be converted and FormCreator does not support
                 // non MOF Objects
                 return;
             }
@@ -415,7 +415,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
 
                 cache.CoveredPropertyNames.Add(property);
-                    
+
                 // Checks, whether a form is already existing
                 var column = form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
@@ -519,7 +519,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var uml = _workspaceLogic.GetUmlData();
             var primitiveTypes = _workspaceLogic.GetPrimitiveData();
             var uriResolver = _workspaceLogic.GetTypesWorkspace();
-            
+
             //var uriResolver = propertyType.GetUriResolver();
             _stringType = _stringType ?? primitiveTypes.__String; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
                 ResolveType.Default);*/
@@ -531,12 +531,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 ResolveType.Default);*/
             _dateTimeType = _dateTimeType ?? uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
-            // Checks, if the property is an enumeration. 
+            // Checks, if the property is an enumeration.
             if (propertyType?.metaclass != null)
             {
                 if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration) && !isForListForm)
                 {
-                    // If we have an enumeration (C#: Enum) and the field is not for a list form 
+                    // If we have an enumeration (C#: Enum) and the field is not for a list form
                     var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
                     comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
                     comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
@@ -564,7 +564,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
 
                 if (
-                    !propertyType.@equals(_stringType) && 
+                    !propertyType.@equals(_stringType) &&
                     !propertyType.@equals(_integerType) &&
                     !propertyType.@equals(_realType) &&
                     !propertyType.@equals(_dateTimeType) && // TODO: Needs to be changed to DateTime Type
@@ -595,7 +595,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (propertyType == null)
             {
                 // If we have something else than a primitive type and it is not for a list form
-                IElement element; 
+                IElement element;
                 if (propertyIsEnumeration)
                 {
                     // It can contain multiple elements
@@ -605,12 +605,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 {
                     element = _factory.create(_formAndFields.__ReferenceFieldData);
                 }
-                
+
                 // It can just contain one element
                 element.set(_FormAndFields._SubElementFieldData.name, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.title, propertyName);
                 return element;
-                
+
                 /*// Unknown property type, so just create something
                 var columnNoPropertyType = _factory.create(_formAndFields.__TextFieldData);
                 columnNoPropertyType.set(_FormAndFields._TextFieldData.name, propertyName);
@@ -723,11 +723,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 foreach (var group in elementsWithMetaClass)
                 {
-                    // Now try to figure out the metaclass 
+                    // Now try to figure out the metaclass
                     var groupedMetaclass = group.Key;
                     var form = _viewLogic.GetListFormForExtentForPropertyInObject(
                         element,
-                        extent, 
+                        extent,
                         pair.propertyName,
                         groupedMetaclass,
                         ViewDefinitionMode.Default);

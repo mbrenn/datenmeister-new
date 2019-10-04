@@ -45,7 +45,7 @@ namespace DatenMeister.WPF.Windows
                 task.SetResult(new NavigateToElementDetailResult()
                 {
                     NavigationGuest = MainViewSet as INavigationGuest,
-                    NavigationHost = this, 
+                    NavigationHost = this,
                     Result = NavigationResult.None
                 });
                 return task.Task;

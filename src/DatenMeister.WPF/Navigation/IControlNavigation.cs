@@ -11,7 +11,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Called, when the user closes the form or has finished the application
         /// </summary>
-        event EventHandler Closed; 
+        event EventHandler Closed;
     }
 
     /// <summary>

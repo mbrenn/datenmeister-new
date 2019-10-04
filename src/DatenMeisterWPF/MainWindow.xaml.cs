@@ -42,8 +42,8 @@ namespace DatenMeisterWPF
         {
             InitializeComponent();
             _ribbonHelper = new RibbonHelper(
-                this, 
-                NavigationScope.Application | 
+                this,
+                NavigationScope.Application |
                 NavigationScope.Extent |
                 NavigationScope.Item);
         }
@@ -149,7 +149,7 @@ namespace DatenMeisterWPF
                     "Open Log",
                     OpenLog,
                     null,
-                    NavigationCategories.DatenMeister + ".Tool"),                
+                    NavigationCategories.DatenMeister + ".Tool"),
                 new ApplicationMenuButtonDefinition(
                     "Close",
                     Close,
@@ -199,7 +199,7 @@ namespace DatenMeisterWPF
                 wnd.Show();
             }
         }
-        
+
         /// <summary>
         /// Sets the focus
         /// </summary>

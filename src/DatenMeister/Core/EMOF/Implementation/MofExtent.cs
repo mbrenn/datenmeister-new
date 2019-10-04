@@ -21,7 +21,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties
     {
         /// <summary>
-        /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes. 
+        /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes.
         /// It is only used, if the data is directly set as a .Net object
         /// </summary>
         public IDotNetTypeLookup TypeLookup { get; }
@@ -44,7 +44,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             get => _Workspace;
             set => _Workspace = (Workspace) value;
         }
-        
+
         /// <summary>
         /// Gets the workspace via the interface
         /// </summary>
@@ -97,7 +97,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Initializes a new instance of the Extent 
+        /// Initializes a new instance of the Extent
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
         /// <param name="changeEventManager">The change event manager being used
@@ -182,11 +182,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
             {
-                
+
                 var nullObject = Provider.Get(null)??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
-                
+
                 nullObject.DeleteProperty(property);
             }
             else
@@ -217,7 +217,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
                 {
-                    // Already in 
+                    // Already in
                     return;
                 }
 
@@ -240,7 +240,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Resolves the DotNetType by navigating through the current and the meta instances. 
+        /// Resolves the DotNetType by navigating through the current and the meta instances.
         /// </summary>
         /// <param name="metaclassUri">Uri class to be retrieved</param>
         /// <param name="resolveType">The resolveing strategy</param>
@@ -361,7 +361,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject. 
+        /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject.
         /// An arbitrary object shall be stored into the database
         /// </summary>
         /// <param name="value">Value to be converted</param>
@@ -411,13 +411,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (DotNetHelper.IsOfMofObject(value))
             {
                 var asMofObject = (MofObject) value;
-                
+
                 if (asMofObject.Extent == null)
                 {
                     if (asMofObject.ProviderObject.Provider == extent?.Provider)
                     {
                         // if the given value is created by the provider, but has not been allocated
-                        // to an object until now, it can be used directly. 
+                        // to an object until now, it can be used directly.
                         return asMofObject.ProviderObject;
                     }
 
@@ -461,7 +461,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject. 
+        /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject.
         /// An arbitrary object shall be stored into the database
         /// </summary>
         /// <param name="mofObject">The Mofobject for which the element will be created</param>

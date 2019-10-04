@@ -46,7 +46,7 @@ namespace DatenMeister.Provider.ManagementProviders
         public const string IdNewXmiDetailForm = "#WorkspacesAndExtents.Xmi.New";
 
         /// <summary>
-        /// Creates a form to create a new type. 
+        /// Creates a form to create a new type.
         /// </summary>
         /// <param name="preSelectedPackage">Package that shall be preselected</param>
         /// <param name="types">Types to be added to the form</param>

@@ -13,7 +13,7 @@ namespace DatenMeister.Runtime.Proxies
         }
 
         /// <summary>
-        /// Gets the proxied element which can be used to dereference the 
+        /// Gets the proxied element which can be used to dereference the
         /// content
         /// </summary>
         /// <returns>Returns the proxied element</returns>

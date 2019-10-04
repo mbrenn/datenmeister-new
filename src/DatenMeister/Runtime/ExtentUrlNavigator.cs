@@ -50,14 +50,14 @@ namespace DatenMeister.Runtime
             var extentUri = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
 
             // Verifies that the extent is working
-            if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0) 
+            if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0)
             {
                 return null;
             }
 
             // Verifies whether the context can be found in context uri or alternative Uris
             if (!string.IsNullOrEmpty(extentUri) &&
-                extentUri != _extent.contextURI() && 
+                extentUri != _extent.contextURI() &&
                 !_extent.AlternativeUris.Contains(extentUri))
             {
                 return null;

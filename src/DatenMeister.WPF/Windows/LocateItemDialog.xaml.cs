@@ -17,8 +17,8 @@ namespace DatenMeister.WPF.Windows
 
         /// <summary>
         /// Gets or sets the property, whether the window shall be shown as a toolbox
-        /// or as a dialog. 
-        /// If the window is set as a toolbox, it will not close upon request of 
+        /// or as a dialog.
+        /// If the window is set as a toolbox, it will not close upon request of
         /// user and it will automatically create a detail window in case of selection.
         /// </summary>
         public bool AsToolBox

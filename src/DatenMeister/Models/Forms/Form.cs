@@ -3,7 +3,7 @@
 namespace DatenMeister.Models.Forms
 {
     /// <summary>
-    /// Defines the view of 
+    /// Defines the view of
     /// </summary>
     public class Form
     {

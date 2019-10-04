@@ -199,12 +199,12 @@ namespace DatenMeister.Uml
                     throw new InvalidOperationException($"Found unknown class: {name}");
                 }
 
-                // We strip out the property and id information. 
-                // It is not really required 
+                // We strip out the property and id information.
+                // It is not really required
                 elementInstance.unset(TypeProperty);
             }
 
-            // Now we handle the generalization information. 
+            // Now we handle the generalization information.
             // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
             EvaluateGeneralizations(umlDescendents, UmlClasses["Generalization"]);
             EvaluateGeneralizations(mofDescendents, UmlClasses["Generalization"]);
@@ -286,7 +286,7 @@ namespace DatenMeister.Uml
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
             var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUmlExtent).elements().GetAllDescendants();
             var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMofExtent).elements().GetAllDescendants();
-            var mofMetaClasses = 
+            var mofMetaClasses =
                 mofElements
                     .Cast<IElement>()
                     .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
@@ -319,7 +319,7 @@ namespace DatenMeister.Uml
 
                 // Find it in the higher instance mof
                 IElement metaClass;
-                
+
                 // Translates the uri to the correct one
                 if (name.StartsWith("uml:"))
                 {
@@ -344,8 +344,8 @@ namespace DatenMeister.Uml
 
                 ((IElementSetMetaClass)elementInstance).SetMetaClass(metaClass);
 
-                // We strip out the property and id information. 
-                // It is not really required 
+                // We strip out the property and id information.
+                // It is not really required
                 elementInstance.unset(TypeProperty);
             }
 
@@ -358,13 +358,13 @@ namespace DatenMeister.Uml
         }
 
         /// <summary>
-        /// Evaluates the 
+        /// Evaluates the
         /// </summary>
         /// <param name="umlDescendents"></param>
         /// <param name="metaClassGeneralization">The metaclass being used to find the generalization class type</param>
         private void EvaluateGeneralizations(IEnumerable<IObject> umlDescendents, IElement metaClassGeneralization)
         {
-            // Now we handle the generalization information. 
+            // Now we handle the generalization information.
             // For all classes and associations, whose type is class or associations, get the generalization property and convert it to a list of classes
             foreach (var elementInstance in umlDescendents
                 .Where(x => (x as IElement)?.metaclass?.Equals(metaClassGeneralization) == true))
@@ -399,7 +399,7 @@ namespace DatenMeister.Uml
         }
 
         /// <summary>
-        /// Converts all properties of all objects to the real property function. 
+        /// Converts all properties of all objects to the real property function.
         /// This method is not needed anymore, since we are using now strings as the property reference
         /// and not the real properties anymore
         /// </summary>
@@ -581,7 +581,7 @@ namespace DatenMeister.Uml
         }
 
         /// <summary>
-        /// Performs a full bootstrap by reading the uml classes 
+        /// Performs a full bootstrap by reading the uml classes
         /// </summary>
         /// <param name="filePaths">Paths storing the uml</param>
         /// <param name="workspace">The workspace to which the extents will be aded</param>
@@ -604,7 +604,7 @@ namespace DatenMeister.Uml
         }
 
         /// <summary>
-        /// Defines the file paths for doing the boot strap. 
+        /// Defines the file paths for doing the boot strap.
         /// This avoids the clutterin of arguments
         /// </summary>
         public class FilePaths

@@ -141,7 +141,7 @@ namespace DatenMeister.Uml.Helper
                 {
                     continue;
                 }
-                
+
                 // Property exists
                 var propertyValue = value.get(property);
                 if (!DotNetHelper.IsOfEnumeration(propertyValue))

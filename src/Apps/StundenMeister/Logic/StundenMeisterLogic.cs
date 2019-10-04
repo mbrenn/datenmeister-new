@@ -32,17 +32,17 @@ namespace StundenMeister.Logic
         }
 
         private readonly LocalTypeSupport _localTypeSupport;
-        
+
         private readonly ExtentManager _extentManager;
-        
+
         /// <summary>
         /// Gets the change event manager
         /// </summary>
         public ChangeEventManager EventManager { get; }
 
         public StundenMeisterLogic(
-            LocalTypeSupport localTypeSupport, 
-            ExtentManager extentManager, 
+            LocalTypeSupport localTypeSupport,
+            ExtentManager extentManager,
             ChangeEventManager changeEventManager)
         {
             _localTypeSupport = localTypeSupport;

@@ -27,7 +27,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                         continue;
                     }
 
-                    if (!(_detailElement.get(property) 
+                    if (!(_detailElement.get(property)
                         is IReflectiveCollection valueAsCollection))
                     {
                         continue;

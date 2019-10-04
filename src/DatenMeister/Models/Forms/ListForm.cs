@@ -20,7 +20,7 @@ namespace DatenMeister.Models.Forms
         public string property { get; set; }
 
         public IElement metaClass { get; set; }
-        
+
         public bool noItemsWithMetaClass { get; set; }
 
         /// <summary>

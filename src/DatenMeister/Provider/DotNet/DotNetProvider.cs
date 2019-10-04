@@ -16,7 +16,7 @@ namespace DatenMeister.Provider.DotNet
         internal IDotNetTypeLookup TypeLookup { get; }
 
         private readonly object _syncObject = new object();
-        
+
         private readonly List<DotNetProviderObject> _elements = new List<DotNetProviderObject>();
 
         /// <summary>

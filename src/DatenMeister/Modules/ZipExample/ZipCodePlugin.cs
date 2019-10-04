@@ -26,7 +26,7 @@ namespace DatenMeister.Modules.ZipExample
             _localTypeSupport = localTypeSupport;
             _zipCodeModel = zipCodeModel;
         }
-        
+
         /// <summary>
         /// Integrates the zipcodes into the container builder
         /// </summary>
@@ -41,7 +41,7 @@ namespace DatenMeister.Modules.ZipExample
         {
             if (position == PluginLoadingPosition.AfterInitialization)
             {
-                // Load Resource 
+                // Load Resource
                 _zipCodeModel.ZipCode = _localTypeSupport.AddInternalType(ZipCodeModel.PackagePath, typeof(ZipCode));
             }
         }

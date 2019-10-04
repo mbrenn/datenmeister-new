@@ -85,7 +85,7 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine($"{innerStack.Indentation}name = GetNameOfElement(value);");
             }
 
-            // First, go through the elements 
+            // First, go through the elements
             Result.AppendLine($"{innerStack.Indentation}if (name == \"{name}\") // Looking for package");
             Result.AppendLine($"{innerStack.Indentation}{{");
 

@@ -6,8 +6,8 @@ namespace DatenMeister.Runtime.Proxies
 {
     /// <summary>
     /// Defines a reflective sequence that is just a place holder for a list of objects which can be group
-    /// used within a virtual reflective sequence. 
-    /// The elements that are included into the property are not transformed. 
+    /// used within a virtual reflective sequence.
+    /// The elements that are included into the property are not transformed.
     /// </summary>
     public class PureReflectiveSequence : IReflectiveSequence
     {

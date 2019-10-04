@@ -23,7 +23,7 @@ namespace DatenMeister.WPF.Navigation
         }
 
         /// <summary>
-        /// Opens the extent as 
+        /// Opens the extent as
         /// </summary>
         /// <param name="navigationHost">Host for navigation being to be used</param>
         /// <param name="extentUrl">Url of the extent to be shown</param>
@@ -33,7 +33,7 @@ namespace DatenMeister.WPF.Navigation
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var uri = WorkspaceNames.ExtentManagementExtentUri + "#" + WebUtility.UrlEncode(extentUrl);
             return NavigatorForItems.NavigateToElementDetailView(
-                navigationHost, 
+                navigationHost,
                 workspaceLogic.FindItem(uri));
         }
     }

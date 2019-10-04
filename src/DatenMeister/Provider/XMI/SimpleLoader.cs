@@ -15,7 +15,7 @@ namespace DatenMeister.Provider.XMI
 {
     /// <summary>
     /// Includes a simple XMI loader which is attribute and element driven.
-    /// By loading an xmi file, the attributes and extents are directly stored into an existing Extent. 
+    /// By loading an xmi file, the attributes and extents are directly stored into an existing Extent.
     /// </summary>
     public class SimpleLoader
     {
@@ -31,7 +31,7 @@ namespace DatenMeister.Provider.XMI
         private readonly List<Action> _afterLoadActions = new List<Action>();
 
         /// <summary>
-        /// Initializes a new instance of the 
+        /// Initializes a new instance of the
         /// </summary>
         /// <param name="uriResolver"></param>
         public SimpleLoader(IUriResolver uriResolver = null)
@@ -99,7 +99,7 @@ namespace DatenMeister.Provider.XMI
         }
 
         /// <summary>
-        /// Loads the document from a string. 
+        /// Loads the document from a string.
         /// </summary>
         /// <param name="factory">Factory being used to create the instance</param>
         /// <param name="extent">Extent to which the elements will be added</param>

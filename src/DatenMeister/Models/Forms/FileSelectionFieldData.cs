@@ -10,7 +10,7 @@
         {
         }
 
-        public FileSelectionFieldData(string name, string title) 
+        public FileSelectionFieldData(string name, string title)
             : base (FieldType, name, title)
         {
             
@@ -20,7 +20,7 @@
         /// Defines the field type
         /// </summary>
         public const string FieldType = "FileSelection";
-        
+
         /// <summary>
         /// Gets or sets the default extension
         /// </summary>

@@ -13,7 +13,7 @@ namespace DatenMeister.Provider
         IProvider Provider { get; }
 
         /// <summary>
-        /// Gets or sets the id of the provided object 
+        /// Gets or sets the id of the provided object
         /// </summary>
         string Id { get; set; }
 
@@ -33,7 +33,7 @@ namespace DatenMeister.Provider
         void SetProperty(string property, object value);
 
         /// <summary>
-        /// Empties a list of a property and prepares the property that there is a call for <c>AddProperty</c>. 
+        /// Empties a list of a property and prepares the property that there is a call for <c>AddProperty</c>.
         /// </summary>
         /// <param name="property">Property to be emptied</param>
         void EmptyListForProperty(string property);

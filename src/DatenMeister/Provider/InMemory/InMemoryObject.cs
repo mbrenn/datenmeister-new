@@ -14,7 +14,7 @@ namespace DatenMeister.Provider.InMemory
     public class InMemoryObject : IProviderObject
     {
         public IProvider Provider { get; }
-        
+
         /// <summary>
         /// Stores the temporary factory
         /// </summary>

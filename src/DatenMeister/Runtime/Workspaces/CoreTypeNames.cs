@@ -13,10 +13,10 @@ namespace DatenMeister.Runtime.Workspaces
         public static string StringType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#String";
 
         public static string IntegerType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer";
-        
+
         public static string BooleanType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean";
-        
+
         public static string RealType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real";
-        
+
     }
 }

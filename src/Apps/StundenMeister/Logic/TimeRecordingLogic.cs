@@ -12,11 +12,11 @@ namespace StundenMeister.Logic
     public class TimeRecordingLogic
     {
         private bool hibernationActive => _stundenMeisterLogic.Configuration.HibernationDetectionActive;
-        
+
         private TimeSpan hibernationTime => _stundenMeisterLogic.Configuration.HibernationDetectionTime;
-        
+
         private readonly StundenMeisterLogic _stundenMeisterLogic;
-        
+
         public TimeRecordingLogic(StundenMeisterLogic stundenMeisterLogic)
         {
             _stundenMeisterLogic = stundenMeisterLogic;
@@ -52,7 +52,7 @@ namespace StundenMeister.Logic
                         highest = date;
                     }
                 }
-                
+
                 // Now, deactivate everything, which is not the active one
                 foreach (var item in list)
                 {
@@ -60,11 +60,11 @@ namespace StundenMeister.Logic
                     {
                         continue;
                     }
-                    
+
                     item.set(nameof(TimeRecording.isActive), false);
                 }
             }
-            else 
+            else
             {
                 theActiveOne = list.FirstOrDefault();
             }
@@ -107,13 +107,13 @@ namespace StundenMeister.Logic
                             Title = costCenter.getOrDefault<string>(nameof(CostCenter.id)),
                             CostCenter = costCenter
                         };
-                        
+
                         list.Add(costCenterSet);
                     }
                 }
-                
+
                 var recordingStartDate = recording.getOrDefault<DateTime>(nameof(TimeRecording.startDate));
-                
+
                 if (recordingStartDate >= startDay && recordingStartDate < endDay)
                 {
                     total.Day = total.Day.Add(GetTimeSpanOfRecording(recording));
@@ -122,7 +122,7 @@ namespace StundenMeister.Logic
                         costCenterSet.Day = costCenterSet.Day.Add(GetTimeSpanOfRecording(recording));
                     }
                 }
-                
+
                 if (recordingStartDate >= startWeek && recordingStartDate < endWeek)
                 {
                     total.Week = total.Week.Add(GetTimeSpanOfRecording(recording));
@@ -131,7 +131,7 @@ namespace StundenMeister.Logic
                         costCenterSet.Week = costCenterSet.Week.Add(GetTimeSpanOfRecording(recording));
                     }
                 }
-                
+
                 if (recordingStartDate >= startMonth && recordingStartDate < endMonth)
                 {
                     total.Month = total.Month.Add(GetTimeSpanOfRecording(recording));
@@ -182,7 +182,7 @@ namespace StundenMeister.Logic
         }
 
         /// <summary>
-        /// Ends the current active recording 
+        /// Ends the current active recording
         /// </summary>
         public void EndRecording()
         {
@@ -216,7 +216,7 @@ namespace StundenMeister.Logic
 
             if (_stundenMeisterLogic.Data?.CurrentTimeRecording?.getOrDefault<bool>(nameof(TimeRecording.isActive)) != true)
             {
-                // If, there is no "isActive" time recording, then do not start a new time recording 
+                // If, there is no "isActive" time recording, then do not start a new time recording
                 return;
             }
 
@@ -259,20 +259,20 @@ namespace StundenMeister.Logic
         {
             var currentTimeRecording = StundenMeisterData.TheOne.CurrentTimeRecording;
             // There is an active recording. We have to update the information to show the user the latest
-            // and greatest information. 
+            // and greatest information.
             if (currentTimeRecording == null)
             {
                 // Nothing to do... no active recording
                 return;
             }
-            
+
             var isActive = currentTimeRecording.getOrDefault<bool>(nameof(TimeRecording.isActive));
-                
+
             if (isActive)
             {
                 // Check for current end date
                 var currentEndDate = currentTimeRecording.get<DateTime>(nameof(TimeRecording.endDate));
-                
+
                 // While current time recording is active, advance content
                 var endDate = DateTime.UtcNow;
 
@@ -292,7 +292,7 @@ namespace StundenMeister.Logic
 
         /// <summary>
         /// If the current logic is in hibernation, then the use layer must confirm
-        /// or reject the hibernation before the time estimation will continue 
+        /// or reject the hibernation before the time estimation will continue
         /// </summary>
         /// <param name="continueRecording">true, if the hibernation is confirmed</param>
         public void ConfirmHibernation(bool continueRecording)
@@ -314,13 +314,13 @@ namespace StundenMeister.Logic
             {
                 // Ok, it is OK to continue with timing
                 var endDate = DateTime.UtcNow;
-                
+
                 _stundenMeisterLogic.Data.HibernationDetected = false;
                 currentTimeRecording.set(nameof(TimeRecording.endDate), endDate);
             }
             else
             {
-                // No, the session has ended. 
+                // No, the session has ended.
                 EndRecording();
             }
             
@@ -389,7 +389,7 @@ namespace StundenMeister.Logic
 
             return result;
         }
-        
+
         /// <summary>
         /// Finds the start of the day
         /// </summary>

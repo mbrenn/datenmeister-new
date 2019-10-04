@@ -6,7 +6,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// Gets the content of the string being used as a value for the html
         /// </summary>
         public string Value { get; }
-        
+
         /// <summary>
         /// Gets or sets a flag that spaces are converted to nbsp
         /// </summary>
@@ -32,7 +32,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 
             return Value;
         }
-        
+
         public override string ToString()
         {
             return GetHtmlString();

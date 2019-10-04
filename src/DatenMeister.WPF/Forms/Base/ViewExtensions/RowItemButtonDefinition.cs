@@ -7,8 +7,8 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
     public class RowItemButtonDefinition : ViewExtension
     {
         public RowItemButtonDefinition(
-            string name, 
-            Action<INavigationGuest, IObject> onPressed, 
+            string name,
+            Action<INavigationGuest, IObject> onPressed,
             ItemListViewControl.ButtonPosition position = ItemListViewControl.ButtonPosition.After)
         {
             Name = name;

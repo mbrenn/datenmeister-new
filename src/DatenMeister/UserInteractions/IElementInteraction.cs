@@ -3,7 +3,7 @@
 namespace DatenMeister.UserInteractions
 {
     /// <summary>
-    /// Defines a specific element interaction 
+    /// Defines a specific element interaction
     /// </summary>
     public interface IElementInteraction
     {

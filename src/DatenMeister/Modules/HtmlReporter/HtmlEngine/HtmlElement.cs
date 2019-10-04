@@ -16,10 +16,10 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         {
                 
         }
-        
+
         /// <summary>
         /// Defines the implicit operator to convert a string to an HtmlElement class.
-        /// Here, the string is taken and converted to an HtmlRawString containing the escaped variant of the string. 
+        /// Here, the string is taken and converted to an HtmlRawString containing the escaped variant of the string.
         /// </summary>
         /// <param name="value">String value to be used here</param>
         /// <returns>The HtmlRawString</returns>

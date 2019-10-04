@@ -24,7 +24,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the view definition being used for the tab
         /// </summary>
         public IElement Form { get; set; }
-        
+
         /// <summary>
         /// Stores the content
         /// </summary>
@@ -38,11 +38,11 @@ namespace DatenMeister.WPF.Forms.Base
             get => _content.InnerContent.Content as ItemListViewControl;
             set => _content.InnerContent.Content = value;
         }
-        
+
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
             var helper = new MenuHelper(
-                _content.Menu, 
+                _content.Menu,
                 NavigationScope.Collection | NavigationScope.Item)
             {
                 ShowApplicationItems = false,

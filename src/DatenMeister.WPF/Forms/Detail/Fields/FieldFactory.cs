@@ -98,7 +98,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         /// <param name="flags">Flags of the field dependent on the view. For example a flag that specifies
         /// whether the element shall be focussed</param>
         /// <returns>The created element</returns>
-        public static (IDetailField detailField, UIElement element) 
+        public static (IDetailField detailField, UIElement element)
             GetUIElementFor(IObject value, IElement field, DetailFormControl formControl, FieldParameter flags)
         {
             var fieldElement = CreateField(value, field);

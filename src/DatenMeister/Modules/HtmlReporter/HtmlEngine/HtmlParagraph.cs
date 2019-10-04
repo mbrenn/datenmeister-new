@@ -10,7 +10,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         private string CssClass { get; set; }
 
         /// <summary>
-        /// Gets or sets the paragraph to be stored 
+        /// Gets or sets the paragraph to be stored
         /// </summary>
         private HtmlElement Paragraph { get; }
 

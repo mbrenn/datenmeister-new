@@ -5,16 +5,16 @@ namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
     /// Implements a lookup from MOF metaclassUri to dotnet type and vice
-    /// versa. This class is used to figure out how the mapping between 
+    /// versa. This class is used to figure out how the mapping between
     /// DotNet types and MOF elements is performed, so the correct type
     /// is always created
     /// </summary>
     internal class DotNetTypeLookup : IDotNetTypeLookup
     {
         /// <summary>
-        /// Defines a cache between all objects and their id 
+        /// Defines a cache between all objects and their id
         /// </summary>
-        private readonly Dictionary<object, string> _cacheObjectToId = 
+        private readonly Dictionary<object, string> _cacheObjectToId =
             new Dictionary<object, string>();
 
         private readonly Dictionary<string, Type> _elementsToTypes =
@@ -23,7 +23,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores a mapping between a .Net Type and the guid being used within the extent
         /// </summary>
-        private readonly Dictionary<Type, string> _typesToElements = 
+        private readonly Dictionary<Type, string> _typesToElements =
             new Dictionary<Type, string>();
 
         /// <summary>

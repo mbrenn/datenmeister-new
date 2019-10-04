@@ -8,8 +8,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
     public class DateTimeField : IDetailField
     {
         public UIElement CreateElement(
-            IObject value, 
-            IElement fieldData, 
+            IObject value,
+            IElement fieldData,
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {

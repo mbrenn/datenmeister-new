@@ -17,8 +17,8 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <param name="priority">Index being used to provide the correct sort order.
         /// The higher the number, the higher the priority</param>
         public NavigationButtonDefinition(
-            string name, 
-            NavigationScope navigationScope, 
+            string name,
+            NavigationScope navigationScope,
             string imageName,
             string categoryName,
             int priority = 0)
@@ -28,7 +28,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
             // OnPressed = onPressed;
             ImageName = imageName;
             CategoryName = categoryName;
-            Priority = Math.Min(priority, 65535) * 65536 + 
+            Priority = Math.Min(priority, 65535) * 65536 +
                     name.GetHashCode() % 65535;
         }
 
@@ -90,7 +90,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
                 CategoryName = topCategory + CategoryName.Substring(indexPositionDot);
             }
         }
-        
+
         /// <summary>
         /// Verifies whether two ribbon button definitions can be regarded as absolutely equal
         /// </summary>

@@ -7,7 +7,7 @@
     {
         /// <summary>
         /// Uses the viewfinder to retrieve the view
-        /// </summary> 
+        /// </summary>
         Default = 0x03,
 
         /// <summary>

@@ -9,7 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
-    /// Implements a reflective sequence as given by the MOF specification. 
+    /// Implements a reflective sequence as given by the MOF specification.
     /// The sequence needs to be correlated to a Mof Object
     /// </summary>
     public class MofReflectiveSequence : IReflectiveSequence, IHasExtent
@@ -17,7 +17,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         private readonly string _property;
 
         /// <summary>
-        /// Gets the mof object being assigned to the 
+        /// Gets the mof object being assigned to the
         /// </summary>
         public MofObject MofObject { get; }
 

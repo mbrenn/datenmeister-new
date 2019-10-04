@@ -80,7 +80,7 @@ namespace DatenMeister.WPF.Navigation
         }
 
         /// <summary>
-        /// Resets the complete DatenMeister application... Will lead to a restart of the application 
+        /// Resets the complete DatenMeister application... Will lead to a restart of the application
         /// </summary>
         /// <param name="navigationHost">Navigation host to be used</param>
         public static void ResetDatenMeister(INavigationHost navigationHost)
@@ -94,8 +94,8 @@ namespace DatenMeister.WPF.Navigation
                 return;
             }
 
-            // Ok... what to do now? 
-            // Collect all files... 
+            // Ok... what to do now?
+            // Collect all files...
             var files = new List<string>();
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var extentManager = GiveMe.Scope.Resolve<IExtentManager>();

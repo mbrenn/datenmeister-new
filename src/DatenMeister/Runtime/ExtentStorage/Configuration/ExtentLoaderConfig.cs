@@ -3,7 +3,7 @@
 namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
     /// <summary>
-    /// Defines the storage configuration, which allows the extent getting loaded and saved. 
+    /// Defines the storage configuration, which allows the extent getting loaded and saved.
     /// The configuration has to be maintained during the runtime for loading and storing
     /// </summary>
     public class ExtentLoaderConfig

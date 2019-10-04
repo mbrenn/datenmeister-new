@@ -5,7 +5,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     /// <summary>
     /// Defines the interface to store an extent persistently whether in a database or
-    /// in the file. 
+    /// in the file.
     /// The application can use this implementation to load and store a file on startup
     /// and end of application
     /// </summary>

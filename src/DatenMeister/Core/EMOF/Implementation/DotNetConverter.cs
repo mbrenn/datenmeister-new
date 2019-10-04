@@ -22,7 +22,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetConverter));
 
         /// <summary>
-        /// Stores the MOF Factory being used to create the MOF object. This is dependent upon the extent. 
+        /// Stores the MOF Factory being used to create the MOF object. This is dependent upon the extent.
         /// </summary>
         private readonly MofFactory _factory;
 
@@ -69,7 +69,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            // Check, if the element already existed 
+            // Check, if the element already existed
             if (_visitedElements.Contains(value))
             {
                 return null;
@@ -126,7 +126,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Sets the given object into the MofObject. 
+        /// Sets the given object into the MofObject.
         /// </summary>
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
@@ -137,7 +137,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Sets the given object into the MofObject. 
+        /// Sets the given object into the MofObject.
         /// </summary>
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
@@ -156,7 +156,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="requestedId">Id of the element that shall be put</param>
         /// <returns>The converted element as a MofObject</returns>
         public static IObject ConvertFromDotNetObject(
-            IUriExtent receiver, 
+            IUriExtent receiver,
             object value,
             IElement metaclass = null,
             string requestedId = null)
@@ -165,7 +165,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Converts the given .Net Object in value to a MofObject. The intermediate InMemory Extent is used. 
+        /// Converts the given .Net Object in value to a MofObject. The intermediate InMemory Extent is used.
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="metaclass">Metaclass being used to create the element</param>

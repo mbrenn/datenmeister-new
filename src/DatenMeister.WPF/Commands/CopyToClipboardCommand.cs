@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Commands
             var selectedItems = hasSelectedItems.GetSelectedItems() ?? new[] {hasSelectedItems.GetSelectedItem()};
             Execute(selectedItems, copyType);
         }
-        
+
         /// <summary>
         ///     Gets the currently selected element and copies it to the clipboard
         /// </summary>

@@ -5,11 +5,11 @@ using DatenMeister.Uml.Helper;
 namespace DatenMeister.Models.Forms
 {
     /// <summary>
-    /// Performs an allocation between the view and a specific metaclass which supports the retrieval of default views. 
+    /// Performs an allocation between the view and a specific metaclass which supports the retrieval of default views.
     /// </summary>
     public class ViewAssociation
     {
-        public ViewType viewType { get; set; } 
+        public ViewType viewType { get; set; }
 
         public IObject metaClass { get; set; }
 

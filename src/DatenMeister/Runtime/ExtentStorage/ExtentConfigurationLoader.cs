@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
 
         /// <summary>
-        /// Gets the information about the loaded extents, 
+        /// Gets the information about the loaded extents,
         /// and filepath where to look after
         /// </summary>
         private ExtentStorageData ExtentStorageData { get; }
@@ -81,7 +81,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             return loaded;
         }
-        
+
         /// <summary>
         /// Stores the configuration of the extents into the given file
         /// </summary>
@@ -116,7 +116,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     Name = "metadata"
                 };
-                
+
                 xmlExtent.Add(xmlMetaData);
                 rootNode.Add(xmlExtent);
             }

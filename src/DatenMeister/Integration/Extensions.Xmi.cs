@@ -9,7 +9,7 @@ namespace DatenMeister.Integration
     public static partial class Extensions
     {
 		/// <summary>
-        /// Creates a new xmi extent and adds it to the 
+        /// Creates a new xmi extent and adds it to the
         /// </summary>
         /// <param name="scope">Scope being used</param>
         /// <param name="uri">Uri being used</param>
@@ -23,7 +23,7 @@ namespace DatenMeister.Integration
 		}
 
         /// <summary>
-        /// CReates the 
+        /// CReates the
         /// </summary>
         /// <param name="scope"></param>
         /// <param name="uri"></param>

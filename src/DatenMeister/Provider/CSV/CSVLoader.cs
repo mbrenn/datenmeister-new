@@ -99,7 +99,7 @@ namespace DatenMeister.Provider.CSV
                     var values = SplitLine(line, settings);
 
                     var csvObject = extent.CreateElement(metaClass?.GetUri());
-                    
+
                     // we now have the created object, let's fill it
                     var valueCount = values.Count;
                     for (var n = 0; n < valueCount; n++)
@@ -199,8 +199,8 @@ namespace DatenMeister.Provider.CSV
         /// <param name="values"></param>
         /// <param name="conversion">Converter to be used, to show the content</param>
         private void WriteRow(
-            TextWriter streamWriter, 
-            CSVSettings settings, 
+            TextWriter streamWriter,
+            CSVSettings settings,
             IEnumerable<string> values,
             Func<string, object> conversion)
         {

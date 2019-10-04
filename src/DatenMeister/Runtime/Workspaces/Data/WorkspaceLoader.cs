@@ -28,8 +28,8 @@ namespace DatenMeister.Runtime.Workspaces.Data
         }
 
         /// <summary>
-        /// Loads the workspaces from the given file. 
-        /// If the workspace is already existing, the annotation will be overridden. 
+        /// Loads the workspaces from the given file.
+        /// If the workspace is already existing, the annotation will be overridden.
         /// If not, it will be created.
         /// </summary>
         /// <returns>The loaded workspace</returns>
@@ -44,7 +44,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
                     // Not existing
                     return null;
                 }
-            
+
                 foreach (var workspaceInfo in workspaceData.workspaces)
                 {
                     var foundWorkspace = WorkspaceLogic.GetWorkspace(workspaceInfo.id);

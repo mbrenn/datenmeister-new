@@ -22,7 +22,7 @@ namespace DatenMeister.Modules.TypeSupport
 {
     /// <summary>
     /// Support for local types. Local types are types that are initialized at start-up
-    /// of the DatenMeister and will not be stored into 
+    /// of the DatenMeister and will not be stored into
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping|PluginLoadingPosition.AfterLoadingOfExtents)]
@@ -51,9 +51,9 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="packageMethods">The methods for the packages</param>
         /// <param name="integrationSettings">The Integration settings</param>
         public LocalTypeSupport(
-            IWorkspaceLogic workspaceLogic, 
-            ExtentCreator extentCreator, 
-            PackageMethods packageMethods, 
+            IWorkspaceLogic workspaceLogic,
+            ExtentCreator extentCreator,
+            PackageMethods packageMethods,
             IntegrationSettings integrationSettings)
         {
             _workspaceLogic = workspaceLogic;
@@ -82,7 +82,7 @@ namespace DatenMeister.Modules.TypeSupport
 
         private void CreateInternalTypeExtent()
         {
-            // Creates the workspace and extent for the types layer which are belonging to the types  
+            // Creates the workspace and extent for the types layer which are belonging to the types
             var extentTypes = new MofUriExtent(
                 new InMemoryProvider(),
                 WorkspaceNames.UriInternalTypesExtent);
@@ -91,7 +91,7 @@ namespace DatenMeister.Modules.TypeSupport
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
 
             // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
-            
+
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
                 WorkspaceNames.UriPrimitiveTypesExtent);
@@ -127,7 +127,7 @@ namespace DatenMeister.Modules.TypeSupport
         }
 
         /// <summary>
-        /// Creates the user type extent storing the types for the user. 
+        /// Creates the user type extent storing the types for the user.
         /// If the extent is already existing, debugs the number of found extents
         /// </summary>
         private void CreatesUserTypeExtent()
@@ -136,7 +136,7 @@ namespace DatenMeister.Modules.TypeSupport
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent,
                 "DatenMeister.Types_User",
-                "Uml.Classes", 
+                "Uml.Classes",
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
             );
 
@@ -180,7 +180,7 @@ namespace DatenMeister.Modules.TypeSupport
         }
 
         /// <summary>
-        /// Adds a local type 
+        /// Adds a local type
         /// </summary>
         /// <param name="types">Type to be added</param>
         /// <param name="packageName">Defines the package name to which the elements shall be created</param>
@@ -334,7 +334,7 @@ namespace DatenMeister.Modules.TypeSupport
         }
 
         /// <summary>
-        /// Gets the extent containing the 
+        /// Gets the extent containing the
         /// </summary>
         /// <param name="workspace"></param>
         /// <returns></returns>
@@ -344,7 +344,7 @@ namespace DatenMeister.Modules.TypeSupport
         }
 
         /// <summary>
-        /// Gets the extent containing the 
+        /// Gets the extent containing the
         /// </summary>
         /// <param name="workspace"></param>
         /// <returns></returns>

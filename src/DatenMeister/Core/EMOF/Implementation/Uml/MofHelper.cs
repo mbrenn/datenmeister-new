@@ -11,7 +11,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
     {
         /// <summary>
         /// Checks whether the value at the given property for the element is the default value.
-        /// This infers that the value does not have to be set within the underlying database. 
+        /// This infers that the value does not have to be set within the underlying database.
         /// </summary>
         /// <param name="element">Element to be queried</param>
         /// <param name="property">Property to which the element would be set</param>
@@ -43,7 +43,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
         }
 
         /// <summary>
-        /// Gets the default value for the given type. 
+        /// Gets the default value for the given type.
         /// </summary>
         /// <param name="type">Type, whose default value is queried</param>
         /// <returns>The default value</returns>

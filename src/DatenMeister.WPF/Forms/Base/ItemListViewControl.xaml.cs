@@ -159,7 +159,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     Owner = Window.GetWindow(this)
                 };
-                
+
                 dlg.UpdateContent(reflectiveCollection);
                 dlg.ShowDialog();
             }
@@ -204,7 +204,7 @@ namespace DatenMeister.WPF.Forms.Base
                         DefaultExt = "csv",
                         Filter = "CSV-Files|*.csv|All Files|*.*"
                     };
-                    
+
                     if (dlg.ShowDialog(Window.GetWindow(this)) == true)
                     {
                         var loader = new CSVLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
@@ -295,7 +295,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Takes the given collection and uses the information in the ListForm to filter
         /// the collection of the items.
-        /// Here, the metaclass is used. 
+        /// Here, the metaclass is used.
         /// </summary>
         /// <param name="collection">Collection to be handled</param>
         /// <param name="listFormDefinition">List Form Definition to be used</param>
@@ -321,7 +321,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var x = collection.WhenMetaClassIs(null);
                     return x;
                 }
-                
+
                 return collection;
             }
         }
@@ -330,7 +330,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Updates the content by going through the fields and items
         /// </summary>
         public void SetContent(
-            IReflectiveCollection items, 
+            IReflectiveCollection items,
             IObject formDefinition,
             IEnumerable<ViewExtension> viewExtensions)
         {
@@ -419,7 +419,7 @@ namespace DatenMeister.WPF.Forms.Base
                     items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                 }
 
-                // Goes through the fast filters and filters the items 
+                // Goes through the fast filters and filters the items
                 foreach (var fastfilter in GetFastFilters())
                 {
                     var converter = FastViewFilterConverter.Convert(fastfilter);
@@ -493,7 +493,7 @@ namespace DatenMeister.WPF.Forms.Base
                         {
                             if (!noMessageBox) MessageBox.Show(exc.Message);
 
-                            // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception. 
+                            // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
                             noMessageBox = true;
                             (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
                             noMessageBox = false;

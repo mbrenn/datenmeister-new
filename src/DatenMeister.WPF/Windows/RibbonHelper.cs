@@ -48,8 +48,8 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Loads the icon repository. 
-        /// If DatenMeister.Icons is existing, then the full and cool icons will be used. 
+        /// Loads the icon repository.
+        /// If DatenMeister.Icons is existing, then the full and cool icons will be used.
         /// </summary>
         public void LoadIconRepository()
         {
@@ -230,7 +230,7 @@ namespace DatenMeister.WPF.Windows
                         Logger.Error($"No further action defined anymore for item{viewExtension.Name}");
                         continue;
                     }
-                    
+
                     foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
                 }

@@ -57,7 +57,7 @@ namespace DatenMeister.Modules.UserManagement
                 WorkspaceNames.NameManagement,
                 ExtentUri,
                 ExtentName,
-                null, 
+                null,
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
 
             if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))

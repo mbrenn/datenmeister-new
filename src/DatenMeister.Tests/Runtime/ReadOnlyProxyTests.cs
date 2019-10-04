@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(element.get(property1), Is.Not.Null);
 
             Assert.Throws<ReadOnlyAccessException>(() => ((IElementSetMetaClass) element).SetMetaClass(null));
-        }   
+        }
 
         /// <summary>
         /// Creates a simple extent containing three elements with four properties

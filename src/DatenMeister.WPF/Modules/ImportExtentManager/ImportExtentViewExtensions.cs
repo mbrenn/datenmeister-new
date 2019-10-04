@@ -65,7 +65,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     });
 
                 if (controlNavigation.Result == NavigationResult.Saved)
-                { 
+                {
                     var selectedExtent = controlNavigation.DetailElement.getOrDefault<IElement>("selectedExtent");
                     if (selectedExtent == null)
                     {
@@ -109,7 +109,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 }
                 else
                 {
-                    // Now, we got the item extent... 
+                    // Now, we got the item extent...
                     var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
                     var loadedExtent = extentManager.LoadExtentWithoutAdding(result);
                     if (loadedExtent != null)

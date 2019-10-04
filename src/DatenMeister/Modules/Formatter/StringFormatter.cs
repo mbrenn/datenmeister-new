@@ -42,9 +42,9 @@ namespace DatenMeister.Modules.Formatter
                     else
                     {
                         builder.Append(text.Substring(
-                            currentPosition, 
+                            currentPosition,
                             posBracketOpen - currentPosition));
-                        
+
                         var innerVariable = text.Substring(
                             posBracketOpen + 2,
                             posBracketClosed - posBracketOpen - 2);

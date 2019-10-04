@@ -60,7 +60,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         /// <summary>
         /// Gets or sets the container for the Detail Element. It will be used to
-        /// delete the item, if required. 
+        /// delete the item, if required.
         /// </summary>
         public IReflectiveCollection DetailElementContainer => NavigationHost.DetailElementContainer;
 
@@ -73,7 +73,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
         /// </summary>
         public bool AllowNewProperties { get; set; }
-        
+
         /// <summary>
         /// Gets the attached element which is allocated in the navigation host
         /// </summary>
@@ -86,7 +86,7 @@ namespace DatenMeister.WPF.Forms.Base
             EffectiveForm?.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth) ?? 0.0,
             EffectiveForm?.getOrDefault<double>(_FormAndFields._DetailForm.defaultHeight) ?? 0.0
         );
-        
+
         /// <summary>
         /// Gets the list of the item fields being used to store the information into the item
         /// </summary>
@@ -189,8 +189,8 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         if (
                             MessageBox.Show(
-                                "Do you want to delete the item?", 
-                                "Delete item", 
+                                "Do you want to delete the item?",
+                                "Delete item",
                                 MessageBoxButton.YesNo) ==
                             MessageBoxResult.Yes)
                         {
@@ -430,7 +430,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Adds the buttons for the interactionhandlers. 
+        /// Adds the buttons for the interactionhandlers.
         /// </summary>
         private void AddRowsForInteractionHandlers()
         {
@@ -566,7 +566,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var fieldUiElement = fieldValue.CreateElement(
                         DetailElement,
                         fieldData,
-                        this, 
+                        this,
                         flags);
 
                     ItemFields.Add(new NewPropertyField(

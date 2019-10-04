@@ -12,8 +12,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
     public class ReadOnlyListField : IDetailField
     {
         public UIElement CreateElement(
-            IObject valueElement, 
-            IElement fieldData, 
+            IObject valueElement,
+            IElement fieldData,
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {

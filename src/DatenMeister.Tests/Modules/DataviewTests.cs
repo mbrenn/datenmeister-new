@@ -70,7 +70,7 @@ namespace DatenMeister.Tests.Modules
                 Assert.That(elements.All(x=> x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
                 Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
                 Assert.That(elements.Length, Is.GreaterThan(0));
-                
+
                 // Go to Non-Contain
                 propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.DoesNotContain);
                 elements = extent.elements().OfType<IElement>().ToArray();

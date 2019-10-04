@@ -7,7 +7,7 @@ namespace DatenMeister.Runtime.Workspaces
     public interface IWorkspace
     {
         /// <summary>
-        /// Gets an instance of the filled type by using the filler. 
+        /// Gets an instance of the filled type by using the filler.
         /// The instance will be cached on first call of the method
         /// </summary>
         /// <typeparam name="TFiller">Filler to be used to create the filled type</typeparam>
@@ -18,8 +18,8 @@ namespace DatenMeister.Runtime.Workspaces
             where TFilledType : class, new();
 
         /// <summary>
-        /// Gets a cached instance of the filled type. 
-        /// This cached instance has to be created by the Create method before. If not found, 
+        /// Gets a cached instance of the filled type.
+        /// This cached instance has to be created by the Create method before. If not found,
         /// null will be returned
         /// </summary>
         /// <typeparam name="TFilledType">Type of the filled type</typeparam>

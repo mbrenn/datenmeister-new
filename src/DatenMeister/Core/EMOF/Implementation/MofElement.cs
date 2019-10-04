@@ -18,13 +18,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Initialized a new instance of the MofElement class which is an abstraction of the provided database. 
+        /// Initialized a new instance of the MofElement class which is an abstraction of the provided database.
         /// </summary>
         /// <param name="providedObject">Provided object by database</param>
         /// <param name="extent">Extent to which the object is allocated to</param>
         /// <param name="referenceElement"></param>
         public MofElement(
-            IProviderObject providedObject, 
+            IProviderObject providedObject,
             MofExtent extent,
             IElement referenceElement = null)
             : base(providedObject, extent)
@@ -70,7 +70,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (_cachedMetaClass != null)
             {
                 return _cachedMetaClass;
-                
+
             }
             var uri = ProviderObject.MetaclassUri;
             if (string.IsNullOrEmpty(uri))
@@ -106,7 +106,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             set => ProviderObject.SetContainer(((MofObject)value).ProviderObject);
         }
-        
+
         /// <summary>
         /// Sets the meta class for the given element
         /// </summary>

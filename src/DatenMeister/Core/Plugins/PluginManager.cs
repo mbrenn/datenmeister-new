@@ -15,7 +15,7 @@ namespace DatenMeister.Core.Plugins
         private static readonly ClassLogger Logger = new ClassLogger(typeof(PluginManager));
 
         /// <summary>
-        /// Gets or sets va value indicating whtether at least one exception occured during the loading. 
+        /// Gets or sets va value indicating whtether at least one exception occured during the loading.
         /// </summary>
         public bool NoExceptionDuringLoading { get; set; }
 
@@ -25,9 +25,9 @@ namespace DatenMeister.Core.Plugins
             LoadAssembliesFromFolder(directoryName);
         }
 
-        /// <summary> 
-        /// Loads all referenced assemblies 
-        /// </summary> 
+        /// <summary>
+        /// Loads all referenced assemblies
+        /// </summary>
         public static void LoadAllReferencedAssemblies()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
@@ -37,14 +37,14 @@ namespace DatenMeister.Core.Plugins
             }
         }
 
-        /// <summary> 
-        /// Loads all referenced assembly of the given assembly and all subassemblies 
-        /// </summary> 
-        /// <param name="assembly"></param> 
+        /// <summary>
+        /// Loads all referenced assembly of the given assembly and all subassemblies
+        /// </summary>
+        /// <param name="assembly"></param>
         private static void LoadReferencedAssembly(Assembly assembly)
         {
-            // All assemblies, which do not start with Microsoft or System.  
-            // We will not find any extent or something like that within these assemblies.  
+            // All assemblies, which do not start with Microsoft or System.
+            // We will not find any extent or something like that within these assemblies.
             foreach (var name in assembly.GetReferencedAssemblies()
                 .Where(x => !IsDotNetLibrary(x)))
             {
@@ -152,7 +152,7 @@ namespace DatenMeister.Core.Plugins
             {
                 try
                 {
-                    // Go through all types and check, if the type has implemented the interface for the pluging 
+                    // Go through all types and check, if the type has implemented the interface for the pluging
                     pluginList.AddRange(
                         assembly.GetTypes()
                             .Where(type => type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
@@ -273,12 +273,12 @@ namespace DatenMeister.Core.Plugins
             return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterLoadingOfExtents;
         }
 
-        /// <summary> 
-        /// Gets true, if the given library is a dotnet library which  
-        /// starts with System, Microsoft or mscorlib.   
-        /// </summary> 
-        /// <param name="assemblyName">Name of the assembly</param> 
-        /// <returns></returns> 
+        /// <summary>
+        /// Gets true, if the given library is a dotnet library which
+        /// starts with System, Microsoft or mscorlib.
+        /// </summary>
+        /// <param name="assemblyName">Name of the assembly</param>
+        /// <returns></returns>
         private static bool IsDotNetLibrary(AssemblyName assemblyName)
         {
             return assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
@@ -286,12 +286,12 @@ namespace DatenMeister.Core.Plugins
                    assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        /// <summary> 
-        /// Gets true, if the given library is a dotnet library which  
-        /// starts with System, Microsoft or mscorlib.   
-        /// </summary> 
-        /// <param name="assemblyName">Name of the assembly</param> 
-        /// <returns>true, if the given library is a .Net Library</returns> 
+        /// <summary>
+        /// Gets true, if the given library is a dotnet library which
+        /// starts with System, Microsoft or mscorlib.
+        /// </summary>
+        /// <param name="assemblyName">Name of the assembly</param>
+        /// <returns>true, if the given library is a .Net Library</returns>
         private static bool IsDotNetLibrary(string assemblyName)
         {
             return assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||

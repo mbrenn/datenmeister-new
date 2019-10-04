@@ -11,7 +11,7 @@ namespace DatenMeister.Provider.DotNet
     public static class DotNetProviderExtensions
     {
         /// <summary>
-        /// Creates a Mof Element reflecting the .Net Element out of the given extent. 
+        /// Creates a Mof Element reflecting the .Net Element out of the given extent.
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">Defines the extent being associated to the DotNetElement</param>
@@ -86,7 +86,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
-        /// Verifies the type of the given element and creates a DotNetElement if the given 
+        /// Verifies the type of the given element and creates a DotNetElement if the given
         /// value is not null and is not a primitive type
         /// </summary>
         /// <param name="dotNetTypeLookup">The .NetType Lookup being used</param>

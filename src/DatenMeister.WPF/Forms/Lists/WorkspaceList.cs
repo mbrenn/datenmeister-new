@@ -60,7 +60,7 @@ namespace DatenMeister.WPF.Forms.Lists
         }
 
         /// <summary>
-        /// Prepares the navigation 
+        /// Prepares the navigation
         /// </summary>
         /// <param name="viewDefinition">Definition of the view</param>
         private void PrepareNavigation(ViewDefinition viewDefinition)

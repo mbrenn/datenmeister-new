@@ -73,7 +73,7 @@ namespace DatenMeister.Tests.Uml
 
                 ClassifierMethods.AddGeneralization(
                     classSpecialized,
-                    classGeneralized); 
+                    classGeneralized);
 
                 var generalizations = ClassifierMethods.GetGeneralizations(classGeneralized).ToList();
                 Assert.That(generalizations.Count, Is.EqualTo(0));
@@ -101,7 +101,7 @@ namespace DatenMeister.Tests.Uml
 
                 Assert.That(fullName, Is.Not.Null);
                 Assert.That(fullName, Is.EqualTo("UML::Classification::Feature"));
-                
+
                 var umlExtent = workspaceCollection.GetWorkspace(WorkspaceNames.NameUml).FindExtent(WorkspaceNames.UriUmlExtent);
                 // now the other way
                 var foundElement = NamedElementMethods.GetByFullName(umlExtent.elements(), fullName);

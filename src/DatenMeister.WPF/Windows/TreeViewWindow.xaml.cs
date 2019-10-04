@@ -62,14 +62,14 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Prepares the navigation of the host. The function is called by the navigation 
-        /// host. 
+        /// Prepares the navigation of the host. The function is called by the navigation
+        /// host.
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
             return new ViewExtension[] { };
         }
-        
+
         /// <summary>
         /// Evaluates the given view extensions.
         /// Currently, the TreeViewWindow does not support viewextensions

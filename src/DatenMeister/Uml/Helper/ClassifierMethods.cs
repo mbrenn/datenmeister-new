@@ -16,7 +16,7 @@ namespace DatenMeister.Uml.Helper
     public static class ClassifierMethods
     {
         /// <summary>
-        /// Returns a list of all properties within the classifier. 
+        /// Returns a list of all properties within the classifier.
         /// Also properties from generalized classes will be returned
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
@@ -41,7 +41,7 @@ namespace DatenMeister.Uml.Helper
                     }
 
                     alreadyIn.Add(name);
-                    
+
                     yield return item;
                 }
             }
@@ -103,9 +103,9 @@ namespace DatenMeister.Uml.Helper
                         }
 
                         alreadyVisited.Add(general);
-                        
+
                         yield return general;
-                        
+
                         // Checks if the general also has generalization
                         foreach (var childGeneral in GetGeneralizations(general, alreadyVisited))
                         {
@@ -147,8 +147,8 @@ namespace DatenMeister.Uml.Helper
                         }
 
                         visitedElements.Add(elementInExtent);
-                        
-                        // Checks, if the element contains a generalization 
+
+                        // Checks, if the element contains a generalization
                         if (GetGeneralizations(classInstance).Contains(element))
                         {
                             yield return elementInExtent;
@@ -243,10 +243,10 @@ namespace DatenMeister.Uml.Helper
 
             var newGeneralization = factory.create(uml.Classification.__Generalization);
             specializedClassifier.AddCollectionItem(
-                _UML._Classification._Classifier.generalization, 
+                _UML._Classification._Classifier.generalization,
                 newGeneralization);
             newGeneralization.set(
-                _UML._Classification._Generalization.general, 
+                _UML._Classification._Generalization.general,
                 generalizedClassifier);
             /*newGeneralization.set(
                 _UML._Classification._Generalization.specific, 

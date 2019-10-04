@@ -49,7 +49,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 collectionToBeAggregated,
                 groupByColumn,
                 aggregateColumns,
-                aggregators, 
+                aggregators,
                 aggregatedColumns);
         }
 
@@ -58,10 +58,10 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// </summary>
         /// <param name="collectionToBeAggregated">
         /// The reflective collection that shall be aggregated</param>
-        /// <param name="groupByColumn">The column that shall be 
+        /// <param name="groupByColumn">The column that shall be
         /// used to group the values</param>
         /// <param name="aggregateColumns">The value that is used</param>
-        /// <param name="aggregatorFunc">The function being used to 
+        /// <param name="aggregatorFunc">The function being used to
         /// create a new aggregator</param>
         /// <param name="aggregatedColumns">List of property names to which the aggregated values wll be stored</param>
         private void Aggregate(
@@ -91,7 +91,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                     "The number of columns to functions are not equal: listAggregatedColumns.Count != listAggregators.Count");
             }
 
-            var aggregatedValues = 
+            var aggregatedValues =
                 new Dictionary<object, List<IAggregator>>();
             foreach (var element in collectionToBeAggregated.Cast<IObject>())
             {

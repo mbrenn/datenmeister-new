@@ -48,8 +48,8 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}/// <param name=\"filledStructure\">The form and fields structure</param>");
             Result.AppendLine($"{stack.Indentation}/// <param name=\"extent\">And finally extent to which the types shall be registered</param>");
             Result.AppendLine(
-                $"{stack.Indentation}public static void Assign(" + 
-                "_UML uml, IFactory factory, IReflectiveCollection collection, " + 
+                $"{stack.Indentation}public static void Assign(" +
+                "_UML uml, IFactory factory, IReflectiveCollection collection, " +
                 $"_{packageName} filledStructure, MofUriExtent extent)");
             Result.AppendLine($"{stack.Indentation}{{");
 
@@ -68,7 +68,7 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine($"{stack.Indentation}collection.add(typeAsElement);");
                 Result.AppendLine($"{stack.Indentation}filledStructure.__{type.Name} = typeAsElement;");
                 Result.AppendLine($"{stack.Indentation}extent.TypeLookup.Add(typeAsElement, type);");
-                
+
 
                 stack = stack.Owner;
                 Result.AppendLine($"{stack.Indentation}}}"); // Inner scope

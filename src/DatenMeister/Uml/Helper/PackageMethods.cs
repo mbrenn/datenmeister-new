@@ -29,7 +29,7 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
-        /// Gets or creates a package by following the path. 
+        /// Gets or creates a package by following the path.
         /// </summary>
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
@@ -49,7 +49,7 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
-        /// Gets or creates a package by following the path. 
+        /// Gets or creates a package by following the path.
         /// </summary>
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
@@ -115,7 +115,7 @@ namespace DatenMeister.Uml.Helper
                 {
                     childElement = factory.create(metaClass);
                     childElement.set(nameProperty, elementName);
-                    
+
                     // Set ID, for the new element
                     if (childElement is ICanSetId cansetId)
                     {
@@ -215,7 +215,7 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
-        /// Imports a package by a manifest resource 
+        /// Imports a package by a manifest resource
         /// </summary>
         /// <param name="manifestType">Type of the assembly containing the
         /// manifest. It eases the life instead of given the assembly</param>
@@ -239,7 +239,7 @@ namespace DatenMeister.Uml.Helper
                 {
                     throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
                 }
-                
+
                 var document = XDocument.Load(stream);
                 var pseudoProvider = new XmiProvider(document);
                 var pseudoExtent = new MofUriExtent(pseudoProvider)

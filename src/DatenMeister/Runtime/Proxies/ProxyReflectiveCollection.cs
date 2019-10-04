@@ -14,17 +14,17 @@ namespace DatenMeister.Runtime.Proxies
         protected IReflectiveCollection Collection { get; set; }
 
         /// <summary>
-        /// Gets or sets the conversion method being used, when content of the 
-        /// reflective collection is being extracted out of the reflective collection. 
+        /// Gets or sets the conversion method being used, when content of the
+        /// reflective collection is being extracted out of the reflective collection.
         /// </summary>
         public Func<object, object> PublicizeElementFunc { get; set; }
 
         /// <summary>
-        /// Gets or sets the conversion method being used, when content of the 
-        /// reflective collection is being stored into the reflective collection. 
+        /// Gets or sets the conversion method being used, when content of the
+        /// reflective collection is being stored into the reflective collection.
         /// </summary>
         public Func<object, object> PrivatizeElementFunc { get; set; }
-        
+
         public ProxyReflectiveCollection(IReflectiveCollection collection)
         {
             Collection = collection;
@@ -81,8 +81,8 @@ namespace DatenMeister.Runtime.Proxies
             Func<IElement, TElementType> publicizeElement,
             Func<IObject, TObjectType> publicizeObject,
             Func<TElementType, IElement> privatizeElement,
-            Func<TObjectType, IObject> privatizeObject) 
-            where TObjectType : class 
+            Func<TObjectType, IObject> privatizeObject)
+            where TObjectType : class
             where TElementType : class
         {
             PublicizeElementFunc = x =>

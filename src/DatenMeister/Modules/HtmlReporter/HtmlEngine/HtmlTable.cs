@@ -13,7 +13,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// Stores the list of cells
         /// </summary>
         private readonly List<HtmlTableRow> _rows = new List<HtmlTableRow>();
-        
+
         /// <summary>
         /// Initializes a new instance of the HtmlTable class
         /// </summary>

@@ -7,7 +7,7 @@ using DatenMeister.WPF.Forms.Base.ViewExtensions;
 namespace DatenMeister.WPF.Navigation
 {
     /// <summary>
-    /// Defines the interface for the given controls. 
+    /// Defines the interface for the given controls.
     /// The control can request certain navigation elements from the host
     /// (like ribbons or menus).
     /// </summary>
@@ -19,8 +19,8 @@ namespace DatenMeister.WPF.Navigation
         INavigationHost NavigationHost { get; set; }
 
         /// <summary>
-        /// Prepares the navigation of the host. The function is called by the navigation 
-        /// host. 
+        /// Prepares the navigation of the host. The function is called by the navigation
+        /// host.
         /// </summary>
         IEnumerable<ViewExtension> GetViewExtensions();
 
@@ -47,7 +47,7 @@ namespace DatenMeister.WPF.Navigation
     {
         IReflectiveCollection Collection { get; }
     }
-    
+
     /// <summary>
     /// This interface allows the retrieval of an item which is the focus of the current navigation guest
     /// </summary>

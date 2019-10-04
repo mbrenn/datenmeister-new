@@ -17,7 +17,7 @@ namespace DatenMeister.Core.Plugins
         /// After MOF and XMI are boot strapped. This position is used to define new objects
         /// </summary>
         AfterBootstrapping = 2,
-        
+
         /// <summary>
         /// Called, after the initialization of all the internal information but before the extents
         /// are explicitly loaded

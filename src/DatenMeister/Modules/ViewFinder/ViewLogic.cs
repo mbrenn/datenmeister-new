@@ -26,10 +26,10 @@ namespace DatenMeister.Modules.ViewFinder
     public class ViewLogic : IDatenMeisterPlugin
     {
         /// <summary>
-        /// Stores the type of the extent containing the views 
+        /// Stores the type of the extent containing the views
         /// </summary>
         private const string ViewExtentType = "DatenMeister.Views";
-        
+
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
         private readonly IntegrationSettings _integrationSettings;
@@ -47,7 +47,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
-        /// Integrates the the view logic into the workspace. 
+        /// Integrates the the view logic into the workspace.
         /// </summary>
         public void Start(PluginLoadingPosition position)
         {
@@ -210,9 +210,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// Stores the cached form and fields
         /// </summary>
         private _FormAndFields _cachedFormAndField;
-        
+
         /// <summary>
-        /// Gets the form and field instance which contains the references to 
+        /// Gets the form and field instance which contains the references to
         /// the metaclasses
         /// </summary>
         /// <param name="viewExtent">Extent of the view</param>
@@ -273,7 +273,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            // Ok, now perform the creation... 
+            // Ok, now perform the creation...
             var formCreator = new FormCreator(this);
             return formCreator.CreateExtentForm(extent, FormCreator.CreationMode.All);
         }
@@ -299,7 +299,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="viewDefinitionMode">The view definition mode</param>
         /// <returns>The found or created list form</returns>
         public IElement GetListFormForExtent(
-            IExtent extent, 
+            IExtent extent,
             IElement metaClass,
             ViewDefinitionMode viewDefinitionMode)
         {
@@ -320,7 +320,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            // Ok, now perform the creation... 
+            // Ok, now perform the creation...
             var formCreator = new FormCreator(this);
             return formCreator.CreateListForm(metaClass, FormCreator.CreationMode.All);
         }
@@ -334,7 +334,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>The list form for the list</returns>
         public IElement GetListFormForElementsProperty(
             IObject element,
-            string property, 
+            string property,
             ViewDefinitionMode viewDefinitionMode = ViewDefinitionMode.Default)
         {
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
@@ -372,7 +372,7 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         /// <summary>
-        /// Gets the list view next to the item explorer control 
+        /// Gets the list view next to the item explorer control
         /// </summary>
         /// <param name="element">Element for which the list view will be created</param>
         /// <param name="extent">Extent containing the object</param>
@@ -404,10 +404,10 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         protected IElement GetItemTreeFormForObjectsProperties(
-            IObject element, 
-            string elementProperty, 
+            IObject element,
+            string elementProperty,
             IElement propertyMetaClass,
-            IUriExtent extent, 
+            IUriExtent extent,
             ViewDefinitionMode viewDefinitionMode)
         {
 

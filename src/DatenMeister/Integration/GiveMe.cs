@@ -25,7 +25,7 @@ namespace DatenMeister.Integration
             => Task.Run(() => DatenMeister(settings));
 
         /// <summary>
-        /// Returns a fully initialized DatenMeister for use. 
+        /// Returns a fully initialized DatenMeister for use.
         /// </summary>
         /// <param name="settings">Integration settings for the initialization of DatenMeister</param>
         /// <returns>The initialized DatenMeister that can be used</returns>
@@ -56,7 +56,7 @@ namespace DatenMeister.Integration
         /// <summary>
         /// Gets the default database path
         /// </summary>
-        public static string DefaultDatabasePath => 
+        public static string DefaultDatabasePath =>
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 "datenmeister/data");

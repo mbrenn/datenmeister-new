@@ -28,7 +28,7 @@ namespace DatenMeister.Models.Forms
                 typeof(ViewType),
                 typeof(Form),
                 typeof(DetailForm),
-                typeof(ListForm), 
+                typeof(ListForm),
                 typeof(ExtentForm)
             };
         }

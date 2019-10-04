@@ -34,18 +34,18 @@ namespace DatenMeister.WPF.Windows
 
         /// <summary>
         /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
-        /// This event has to be invoked by the child elements. 
+        /// This event has to be invoked by the child elements.
         /// </summary>
         public event EventHandler<ItemEventArgs> Saved;
 
         /// <summary>
         /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
-        /// This event has to be invoked by the child elements. 
+        /// This event has to be invoked by the child elements.
         /// </summary>
         public event EventHandler<ItemEventArgs> Cancelled;
 
         /// <summary>
-        /// Stores the value whether the saved or cancelled event is already thrown. 
+        /// Stores the value whether the saved or cancelled event is already thrown.
         /// This information is used to decide whether to throw an event when user closes the dialogue
         /// </summary>
         private bool _finalEventsThrown;
@@ -82,7 +82,7 @@ namespace DatenMeister.WPF.Windows
         private MenuHelper MenuHelper { get; }
 
         /// <summary>
-        /// Initializes a new instance of the DetailFormWindow class. 
+        /// Initializes a new instance of the DetailFormWindow class.
         /// </summary>
         public DetailFormWindow()
         {
@@ -124,10 +124,10 @@ namespace DatenMeister.WPF.Windows
         public void RebuildNavigation()
         {
             var navigationGuest = MainContent?.Content as INavigationGuest;
-            
+
             // 1) Ask myself
             var extensions = GetDefaultExtension().ToList();
-            
+
             // 2) Ask the navigation guest
             var otherExtensions = navigationGuest?.GetViewExtensions();
             if (otherExtensions != null)
@@ -152,7 +152,7 @@ namespace DatenMeister.WPF.Windows
             }
 
             // Now navigation guest and the window itself can work upon the view extensions
-            // The navigation guest gets a chance for the views 
+            // The navigation guest gets a chance for the views
             var extensionList = extensions.ToList();
             navigationGuest?.EvaluateViewExtensions(extensionList);
 
@@ -170,7 +170,7 @@ namespace DatenMeister.WPF.Windows
         private IEnumerable<ViewExtension> GetDefaultExtension()
         {
             yield return new ApplicationMenuButtonDefinition(
-                "Close", 
+                "Close",
                 CloseWindow,
                 null,
                 NavigationCategories.DatenMeister,
@@ -244,7 +244,7 @@ namespace DatenMeister.WPF.Windows
 
         /// <summary>
         /// Takes the content of the window and resizes the window
-        /// to the detail form elements. 
+        /// to the detail form elements.
         /// </summary>
         public void SwitchToMinimumSize()
         {
@@ -278,9 +278,9 @@ namespace DatenMeister.WPF.Windows
             }
 
             _finalEventsThrown = true;
-            Saved?.Invoke(this, 
+            Saved?.Invoke(this,
                 new ItemEventArgs(
-                detailElement, 
+                detailElement,
                 attachedElement));
         }
 
@@ -342,7 +342,7 @@ namespace DatenMeister.WPF.Windows
                     NavigationHost = this,
                     EffectiveForm = EffectiveForm
                 };
-                
+
                 control.UpdateContent();
                 SetMainContent(control);
 
@@ -351,11 +351,11 @@ namespace DatenMeister.WPF.Windows
                 {
                     Title = title;
                 }
-                
+
                 RebuildNavigation();
             }
         }
-        
+
         /// <summary>
         /// Sets the effective form by using the viewdefinition
         /// </summary>

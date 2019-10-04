@@ -26,7 +26,7 @@ namespace DatenMeister.Provider.XMI
             _extent = new MofExtent(
                 new XmiProvider());
         }
-        
+
         /// <summary>
         /// Converts the given element to an xml element
         /// </summary>
@@ -60,7 +60,7 @@ namespace DatenMeister.Provider.XMI
             var copier = new ObjectCopier(factory);
             var rootItem = (MofObject) factory.create(null);
 
-            var list = 
+            var list =
                 elements.Cast<IElement>()
                     .Select(element => copier.Copy(element))
                     .Cast<object>().ToList();

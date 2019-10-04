@@ -14,12 +14,12 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
     public class ItemFormatter
     {
         private readonly HtmlReport _htmlEngine;
-        
+
         /// <summary>
         /// Defines the logger being used for this class
         /// </summary>
         private readonly ILogger _logger = new ClassLogger(typeof(ItemFormatter));
-            
+
         /// <summary>
         /// Initializes a new instance of the ItemFormatter class
         /// </summary>
@@ -103,7 +103,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         }
 
         /// <summary>
-        /// Formats a single item 
+        /// Formats a single item
         /// </summary>
         /// <param name="item">Item to be formatted</param>
         /// <param name="detailForm">The detailform being used for formatting</param>
@@ -149,7 +149,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
 
                 // Skip titles with null value
                 if (fieldName == null) continue;
-                
+
                 table.AddRow(
                     new HtmlTableCell(title),
                     new HtmlTableCell(

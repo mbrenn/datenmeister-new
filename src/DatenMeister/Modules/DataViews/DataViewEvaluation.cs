@@ -213,7 +213,7 @@ namespace DatenMeister.Modules.DataViews
         }
 
         /// <summary>
-        /// Filters the elements of the reflective sequence according the rules 
+        /// Filters the elements of the reflective sequence according the rules
         /// </summary>
         /// <param name="input">Elements to be filtered</param>
         /// <param name="property">Property upon which the filtering shall be done</param>

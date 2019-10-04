@@ -1,7 +1,7 @@
 ﻿namespace DatenMeister.Core.Plugins
 {
     /// <summary>
-    /// Defines the interface for the plugins. 
+    /// Defines the interface for the plugins.
     /// The corresponding types implementing this interface are activated by the dependency injection
     /// </summary>
     public interface IDatenMeisterPlugin

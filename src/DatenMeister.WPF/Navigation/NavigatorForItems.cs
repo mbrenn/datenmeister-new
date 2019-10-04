@@ -51,7 +51,7 @@ namespace DatenMeister.WPF.Navigation
 
         /// <summary>
         /// If the detail element is empty, then the metaclass can be set, so a new element will be created which is derived
-        /// by the metaclass. 
+        /// by the metaclass.
         /// </summary>
         public IElement MetaClass { get; set; }
 
@@ -125,7 +125,7 @@ namespace DatenMeister.WPF.Navigation
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             var navigateToItemConfig = new NavigateToItemConfig
             {
-                FormDefinition = 
+                FormDefinition =
                     viewLogic.GetInternalViewExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
             };
 
@@ -162,7 +162,7 @@ namespace DatenMeister.WPF.Navigation
             string workspaceId,
             string extentUrl)
         {
-            return window.NavigateTo(() => 
+            return window.NavigateTo(() =>
                     new ItemsInExtentList {WorkspaceId = workspaceId, ExtentUrl = extentUrl},
                 NavigationMode.List);
         }
@@ -178,7 +178,7 @@ namespace DatenMeister.WPF.Navigation
         /// <returns>The task for navigation support</returns>
         public static Task<NavigateToElementDetailResult> NavigateToItems(
             INavigationHost window,
-            IReflectiveCollection collection, 
+            IReflectiveCollection collection,
             IElement metaClassForForm)
         {
             return window.NavigateTo(() =>
@@ -189,17 +189,17 @@ namespace DatenMeister.WPF.Navigation
                     var viewExtensions = new List<ViewExtension>();
                     viewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
                         window,
-                        metaClassForForm, 
+                        metaClassForForm,
                         collection));
-                    
+
                     var control = new ItemListViewControl();
-                    control.SetContent(collection, usedForm, 
+                    control.SetContent(collection, usedForm,
                         viewExtensions);
                     return control;
                 },
                 NavigationMode.List);
         }
-        
+
         /// <summary>
         /// Navigates to a plain item list with all the given items
         /// in the collection. A meta class is also given to create the appropriate form for these
@@ -210,7 +210,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="metaClassForForm">Metaclass being used for the form</param>
         /// <returns>The task for navigation support</returns>
         public static Task<NavigateToElementDetailResult> NavigateToItems(
-            IReflectiveCollection collection, 
+            IReflectiveCollection collection,
             IElement metaClassForForm)
         {
             var window = new ListFormWindow();
@@ -231,7 +231,7 @@ namespace DatenMeister.WPF.Navigation
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToNewItemForExtent(
             INavigationHost window,
-            IExtent extent, 
+            IExtent extent,
             IElement metaclass)
         {
             var detailResult =
@@ -338,7 +338,7 @@ namespace DatenMeister.WPF.Navigation
                                 dropField.set(_FormAndFields._DropDownFieldData.values, list);
                                 fields.add(0, dropField);
 
-                                // Adds the line to separate it from the other side 
+                                // Adds the line to separate it from the other side
                                 var lineField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__SeparatorLineFieldData);
                                 fields.add(1, lineField);
                             }
@@ -348,8 +348,8 @@ namespace DatenMeister.WPF.Navigation
 
                 if ( detailControlView.Result == NavigationResult.Saved)
                 {
-                    var selectedProperty = config.ContainerProperty != null ? 
-                        config.ContainerProperty : 
+                    var selectedProperty = config.ContainerProperty != null ?
+                        config.ContainerProperty :
                         detailControlView.AttachedElement.getOrDefault<string>("ParentProperty");
 
                     if (string.IsNullOrEmpty(selectedProperty))
@@ -380,8 +380,8 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToCreateNewItem(
-            INavigationHost window, 
-            IExtent extent, 
+            INavigationHost window,
+            IExtent extent,
             IElement metaclass)
         {
             var result = new ControlNavigation();
@@ -422,7 +422,7 @@ namespace DatenMeister.WPF.Navigation
         /// Creates a new item for the given extent being located in the workspace and adds it to the given item
         /// </summary>
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="extent">Extent which will be used for the factory to create the new item. 
+        /// <param name="extent">Extent which will be used for the factory to create the new item.
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
@@ -459,14 +459,14 @@ namespace DatenMeister.WPF.Navigation
         }
 
         /// <summary>
-        /// Creates a new item for the given extent and reflective collection by metaclass 
+        /// Creates a new item for the given extent and reflective collection by metaclass
         /// </summary>
         /// <param name="window">Navigation extent of window</param>
         /// <param name="collection">Extent to which the item will be added</param>
         /// <param name="metaClass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
         public static IControlNavigationNewItem NavigateToNewItemForCollection(
-            INavigationHost window, 
+            INavigationHost window,
             IReflectiveCollection collection,
             IElement metaclass)
         {

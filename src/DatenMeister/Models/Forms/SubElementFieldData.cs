@@ -19,7 +19,7 @@ namespace DatenMeister.Models.Forms
         public string metaClassUri { get; set; }
 
         /// <summary>
-        /// Gets or sets the fields being shown in the subelements. If null, the fields will be automatically generated. 
+        /// Gets or sets the fields being shown in the subelements. If null, the fields will be automatically generated.
         /// </summary>
         public Form form { get; set; }
 

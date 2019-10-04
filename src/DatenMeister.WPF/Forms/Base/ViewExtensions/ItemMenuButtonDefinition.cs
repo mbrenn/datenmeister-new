@@ -12,7 +12,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Gets the action being executed when the user clicked upon the button
         /// </summary>
         public Action<IObject> OnPressed { get; }
-        
+
         public ItemMenuButtonDefinition(
             string name,
             Action<IObject> onPressed,
@@ -22,6 +22,6 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         {
             OnPressed = onPressed;
         }
-        
+
     }
 }

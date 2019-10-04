@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Functions.Interfaces
         {
             
         }
-        
+
         public AggregatorByFunction(
             T start, Func<T, TItem, T> aggregation)
         {

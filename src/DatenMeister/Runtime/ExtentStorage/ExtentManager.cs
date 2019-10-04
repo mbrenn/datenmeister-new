@@ -39,7 +39,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     }
 
     /// <summary>
-    /// This logic handles the loading and storing of extents automatically. 
+    /// This logic handles the loading and storing of extents automatically.
     /// This loader is responsible to retrieve an extent by the given ExtentLoaderConfig
     /// and storing it afterwards at the same location
     /// </summary>
@@ -67,9 +67,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly IntegrationSettings _integrationSettings;
 
         public ExtentManager(
-            ExtentStorageData data, 
+            ExtentStorageData data,
             IConfigurationToExtentStorageMapper map,
-            ILifetimeScope diScope, 
+            ILifetimeScope diScope,
             IWorkspaceLogic workspaceLogic,
             IntegrationSettings integrationSettings)
         {
@@ -82,7 +82,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         /// <summary>
         /// Loads the extent by using the extent storage by using the configuration and finding
-        /// the correct storage engine 
+        /// the correct storage engine
         /// </summary>
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="createAlsoEmpty">true, if also empty extents will be created, if the file does not exist</param>
@@ -146,7 +146,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             // Loads the extent
             var loadedProviderInfo = extentLoader.LoadProvider(configuration, extentCreationFlags);
 
-            // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will 
+            // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will
             if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace)
             {
                 {
@@ -195,7 +195,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Gets the loading configuration for the given extent or null, if 
+        /// Gets the loading configuration for the given extent or null, if
         /// the extent does not contain a configuration
         /// </summary>
         /// <param name="extent">The extent whose configuration is retrieved</param>
@@ -225,8 +225,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Stores the extent according to the used configuration during loading. 
-        /// If loading was not performed, an exception is thrown. 
+        /// Stores the extent according to the used configuration during loading.
+        /// If loading was not performed, an exception is thrown.
         /// </summary>
         /// <param name="extent">Extent to be stored</param>
         public void StoreExtent(IExtent extent)
@@ -266,7 +266,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Deletes the extent from the extent manager but also from the internal database of loading information. 
+        /// Deletes the extent from the extent manager but also from the internal database of loading information.
         /// </summary>
         /// <param name="extent">Extent to be removed</param>
         public void DeleteExtent(IExtent extent)
@@ -277,7 +277,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 // Removes the loading information of the extent
                 DetachExtent(extent);
-                
+
                 // Removes the extent from the workspace
                 workspace.RemoveExtent(extent);
 
@@ -291,7 +291,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         public void LoadAllExtents()
         {
             lock (_extentStorageData.LoadedExtents)
-            { 
+            {
                 var configurationLoader = new ExtentConfigurationLoader(_extentStorageData, this, _map);
                 List<Tuple<ExtentLoaderConfig, XElement>> loaded = null;
                 try
@@ -393,7 +393,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// against the metaworkspaces of workspace id</param>
         /// <returns>true, if the workspace is found</returns>
         private bool IsMetaWorkspaceInList(
-            string workspaceId, 
+            string workspaceId,
             ICollection<string> workspaceList)
         {
             var workspace = WorkspaceLogic.GetWorkspace(workspaceId);
@@ -427,7 +427,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Stores all extents 
+        /// Stores all extents
         /// </summary>
         public void StoreAllExtents()
         {

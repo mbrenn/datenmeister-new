@@ -15,7 +15,7 @@ using DatenMeister.WPF.Navigation;
 namespace DatenMeister.WPF.Forms.Detail.Fields
 {
     /// <summary>
-    /// Implements a reference field which is shown the currently selected instance and allows the user to select 
+    /// Implements a reference field which is shown the currently selected instance and allows the user to select
     /// another instance to set the appropriate property
     /// </summary>
     public class ReferenceField : IDetailField
@@ -24,8 +24,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         private LocateElementControl _control;
 
         public UIElement CreateElement(
-            IObject value, 
-            IElement fieldData, 
+            IObject value,
+            IElement fieldData,
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
@@ -69,8 +69,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     {
                         var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                         workspaceLogic.RetrieveWorkspaceAndExtent(
-                            workspace, 
-                            extent, 
+                            workspace,
+                            extent,
                             out var foundWorkspace,
                             out var foundExtent);
                         if (foundWorkspace != null && foundExtent != null)

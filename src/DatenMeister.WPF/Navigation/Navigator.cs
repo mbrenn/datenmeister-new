@@ -11,9 +11,9 @@ namespace DatenMeister.WPF.Navigation
     public enum NavigationMode
     {
         /// <summary>
-        /// Shows a list of items 
+        /// Shows a list of items
         /// </summary>
-        List, 
+        List,
 
         /// <summary>
         /// Shows a detailled view of items
@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Navigation
         };
 
         public const string DatenMeisterNavigation = "DatenMeister" + ".Navigation";
-        
+
         public const string Form = "Form";
     }
 
@@ -129,8 +129,8 @@ namespace DatenMeister.WPF.Navigation
             };
 
             detailFormWindow.SetContent(
-                navigateToItemConfig.DetailElement, 
-                new ViewDefinition(navigateToItemConfig.FormDefinition), 
+                navigateToItemConfig.DetailElement,
+                new ViewDefinition(navigateToItemConfig.FormDefinition),
                 navigateToItemConfig.DetailElementContainer);
 
             detailFormWindow.Cancelled += (x, y) =>
@@ -163,8 +163,8 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationMode">Mode of the navigation</param>
         /// <returns>Creates a new window which can be used by the user. </returns>
         public static Task<NavigateToElementDetailResult> NavigateByCreatingAWindow(
-            Window parentWindow, 
-            Func<UserControl> factoryMethod, 
+            Window parentWindow,
+            Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();

@@ -24,14 +24,14 @@ namespace DatenMeister.WPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für ItemBrowser.xaml
     /// </summary>
-    public partial class ItemExplorerControl : UserControl, 
+    public partial class ItemExplorerControl : UserControl,
         INavigationGuest, ICanUnregister, IExtentNavigationGuest, ICollectionNavigationGuest, IItemNavigationGuest
     {
         /// <summary>
         /// Stores the logger
         /// </summary>
         private readonly ClassLogger _logger = new ClassLogger(typeof(ItemExplorerControl));
-        
+
         /// <summary>
         ///     Stores the information about the active tab controls
         /// </summary>
@@ -239,7 +239,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             NavigateToElement(element);
         }
-        
+
         /// <summary>
         ///     Evaluates the extent form by passing through the tabs and creating the necessary views of each tab
         ///     If the subform is constrained by a property or metaclass, the collection itself is filtered within the
@@ -283,7 +283,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="form">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
         public ItemExplorerTab AddTab(
-            IReflectiveCollection collection, 
+            IReflectiveCollection collection,
             IElement form,
             IEnumerable<ViewExtension> viewExtensions)
         {
@@ -376,7 +376,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         public IExtent Extent => _extent;
-        
+
         public IReflectiveCollection Collection => Items;
 
         public IObject Item => SelectedPackage ?? Extent;

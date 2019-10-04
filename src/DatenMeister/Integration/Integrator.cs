@@ -72,7 +72,7 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(_settings).As<IntegrationSettings>();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
-            // Creates the database path for the DatenMeister. 
+            // Creates the database path for the DatenMeister.
             // and avoids to have a non-rooted path because it will lead to double creation of assemblies
             if (!Path.IsPathRooted(_settings.DatabasePath))
             {
@@ -87,11 +87,11 @@ namespace DatenMeister.Integration
             var watch = new Stopwatch();
             watch.Start();
 
-            // Finds the loader for a certain extent type  
+            // Finds the loader for a certain extent type
             var storageMap = new ConfigurationToExtentStorageMapper();
             kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
 
-            // Defines the extent storage data  
+            // Defines the extent storage data
             var extentStorageData = new ExtentStorageData
             {
                 FilePath = PathExtents
@@ -107,7 +107,7 @@ namespace DatenMeister.Integration
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
             kernel.RegisterInstance(changeEventManager).As<ChangeEventManager>();
-            
+
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
             {
@@ -166,7 +166,7 @@ namespace DatenMeister.Integration
                     workspaceData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
                 umlWatch.Stop();
-                
+
                 Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
                 pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterBootstrapping);
@@ -174,7 +174,7 @@ namespace DatenMeister.Integration
                 // Now goes through all classes and add the configuration support
                 storageMap.LoadAllExtentStorageConfigurationsFromAssembly();
 
-                // Creates the workspace and extent for the types layer which are belonging to the types  
+                // Creates the workspace and extent for the types layer which are belonging to the types
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
@@ -187,7 +187,7 @@ namespace DatenMeister.Integration
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
                     packageMethods.GetPackagedObjects(
-                        localTypeSupport.InternalTypes.elements(), 
+                        localTypeSupport.InternalTypes.elements(),
                         "DatenMeister::Forms"),
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
@@ -199,14 +199,14 @@ namespace DatenMeister.Integration
                     workspaceData.Uml.Get<_UML>(),
                     mofFactory,
                     packageMethods.GetPackagedObjects(
-                        localTypeSupport.InternalTypes.elements(), 
+                        localTypeSupport.InternalTypes.elements(),
                         "DatenMeister::Management"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
-                
+
                 // Finally loads the plugin
                 pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
 
@@ -216,7 +216,7 @@ namespace DatenMeister.Integration
                     var workspaceLoader = scope.Resolve<WorkspaceLoader>();
                     workspaceLoader.Load();
 
-                    // Loads all extents after all plugins were started  
+                    // Loads all extents after all plugins were started
                     try
                     {
                         scope.Resolve<IExtentManager>().LoadAllExtents();

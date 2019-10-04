@@ -59,7 +59,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         /// <summary>
         /// Gets the extents. The source of the extent list is the _extent combined with the
-        /// enumeration of plugins. 
+        /// enumeration of plugins.
         /// </summary>
         public IEnumerable<IExtent> extent
         {
@@ -176,7 +176,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         /// <summary>
-        /// Removes the extent from the workspace 
+        /// Removes the extent from the workspace
         /// </summary>
         /// <param name="extentForRemoval">Extent to be removed</param>
         /// <returns>true, if the extent could be removed</returns>
@@ -296,8 +296,8 @@ namespace DatenMeister.Runtime.Workspaces
 
         public override string ToString()
         {
-            return !string.IsNullOrEmpty(annotation) 
-                ? $"({id}) {annotation}" 
+            return !string.IsNullOrEmpty(annotation)
+                ? $"({id}) {annotation}"
                 : $"({id})";
         }
 

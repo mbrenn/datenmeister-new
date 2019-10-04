@@ -5,7 +5,7 @@ namespace DatenMeister.Models.Forms
     public class DropDownFieldData : FieldData
     {
         /// <summary>
-        /// Gets the values being used 
+        /// Gets the values being used
         /// </summary>
         public IList<ValuePair> values { get; set; } = new List<ValuePair>();
 

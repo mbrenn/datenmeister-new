@@ -230,7 +230,7 @@ namespace DatenMeister.Runtime.Workspaces
         public void AddExtent(Workspace workspace, IUriExtent newExtent)
         {
             workspace.AddExtent(newExtent);
-            if (newExtent is MofExtent mofExtent 
+            if (newExtent is MofExtent mofExtent
                 && mofExtent.ChangeEventManager != _changeEventManager)
             {
                 mofExtent.ChangeEventManager = _changeEventManager;

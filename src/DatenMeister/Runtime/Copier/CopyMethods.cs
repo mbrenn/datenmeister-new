@@ -35,7 +35,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="targetPropertyName">Name of the property to which the elements will be added</param>
         /// <param name="copyOptions">Copies the options</param>
         public static void CopyToElementsProperty(
-            IReflectiveCollection collection, 
+            IReflectiveCollection collection,
             IObject targetElement,
             string targetPropertyName,
             CopyOption copyOptions)
@@ -83,9 +83,9 @@ namespace DatenMeister.Runtime.Copier
             string targetProperty)
         {
             CopyToTargetWorkspace(
-                sourceExtent.elements(), 
-                sourcePath, 
-                targetExtent.elements(), 
+                sourceExtent.elements(),
+                sourcePath,
+                targetExtent.elements(),
                 targetPath,
                 targetProperty);
         }

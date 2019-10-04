@@ -47,7 +47,7 @@ namespace DatenMeister.Tests
         }
 
         /// <summary>
-        /// Gets the integration settings 
+        /// Gets the integration settings
         /// </summary>
         /// <param name="dropDatabase">true, if the database shall be dropped</param>
         /// <returns>The created integration settings</returns>

@@ -19,7 +19,7 @@ namespace DatenMeister.Runtime
     public static class DotNetHelper
     {
         /// <summary>
-        /// Evaluates whether the given type is a primitive type. 
+        /// Evaluates whether the given type is a primitive type.
         /// A primitive type is considered all numbers, strings, timespan and DateTime
         /// </summary>
         /// <param name="type">Type to be evaluated</param>
@@ -39,7 +39,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Evaluates whether the given type is a primitive type. 
+        /// Evaluates whether the given type is a primitive type.
         /// A primitive type is considered all numbers, strings, timespan and DateTime
         /// </summary>
         /// <param name="value">Value to be evaluated</param>
@@ -73,7 +73,7 @@ namespace DatenMeister.Runtime
 
             return null;
         }
-        
+
         /// <summary>
         /// Evaluates whether the given type is an enumeration but is not a string
         /// </summary>
@@ -162,7 +162,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Checks whether the given 
+        /// Checks whether the given
         /// </summary>
         /// <param name="value"></param>
         /// <returns>true, if the element is a string</returns>
@@ -281,17 +281,17 @@ namespace DatenMeister.Runtime
 
 
         /// <summary>
-        /// Gets whether the given property of the object is falser or not set. 
+        /// Gets whether the given property of the object is falser or not set.
         /// This method eases the verification whether we have an object
         /// </summary>
         /// <param name="value">Value to be verified</param>
         /// <param name="property">Property to be queried</param>
         /// <returns>true, if the given property is null or not set</returns>
-        public static bool IsTrue(IObject value, string property) 
+        public static bool IsTrue(IObject value, string property)
             => value.isSet(property) && AsBoolean(value.get(property));
 
         /// <summary>
-        /// Gets whether the given property of the object is falser or not set. 
+        /// Gets whether the given property of the object is falser or not set.
         /// This method eases the verification whether we have an object
         /// </summary>
         /// <param name="value">Value to be verified</param>
@@ -374,8 +374,8 @@ namespace DatenMeister.Runtime
 
             if (value is IObject valueAsObject)
             {
-                // If, for whatever reason, the user adds a MOF object into a native object. Might most often occur, 
-                // if a native object references a MOF object and no native representation makes sense. 
+                // If, for whatever reason, the user adds a MOF object into a native object. Might most often occur,
+                // if a native object references a MOF object and no native representation makes sense.
                 return valueAsObject;
             }
             

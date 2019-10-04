@@ -20,7 +20,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private MofExtent _extent;
 
-        /// <summary> 
+        /// <summary>
         /// Gets the extent of the mof object
         /// </summary>
         public MofExtent Extent
@@ -40,8 +40,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
-        /// Stores the extent that is used to create the element. 
-        /// This extent is used for type lookup and other referencing things. 
+        /// Stores the extent that is used to create the element.
+        /// This extent is used for type lookup and other referencing things.
         /// </summary>
         public MofExtent ReferencedExtent { get; set; }
 
@@ -56,7 +56,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IProviderObject ProviderObject { get; }
 
         /// <summary>
-        /// Initializes a new instance of the MofObject class. 
+        /// Initializes a new instance of the MofObject class.
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
         /// <param name="referencedExtent">The extent being used to access the item</param>
@@ -89,7 +89,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (first == null || second == null)
             {
-                // If one is at least null, it shall be 
+                // If one is at least null, it shall be
                 return false;
             }
 
@@ -156,8 +156,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="noReferences">True, if references shall be resolved</param>
         /// <returns>The converted object</returns>
         internal static object ConvertToMofObject(
-            MofObject container, 
-            string property, 
+            MofObject container,
+            string property,
             object value,
             bool noReferences = false)
         {
@@ -220,7 +220,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var valueForSetting = MofExtent.ConvertForSetting(this, child);
                     ProviderObject.AddToProperty(property, valueForSetting);
 
-                    // Checks, if the element that has been set is not associated to a container. 
+                    // Checks, if the element that has been set is not associated to a container.
                     // If the element is not associated, set the container.
                     if (valueForSetting is IProviderObject valueAsProviderObject &&
                         !valueAsProviderObject.HasContainer())
@@ -234,8 +234,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 var valueForSetting = MofExtent.ConvertForSetting(this, value);
                 ProviderObject.SetProperty(property, valueForSetting);
 
-                // Checks, if the element that has been set is not associated to a container. 
-                // If the element is not associated, set the container. 
+                // Checks, if the element that has been set is not associated to a container.
+                // If the element is not associated, set the container.
                 if (valueForSetting is IProviderObject valueAsProviderObject &&
                     !valueAsProviderObject.HasContainer())
                 {
@@ -256,7 +256,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (child is IElement childAsElement && childForProviders is IProviderObject childProviderObject)
             {
                 if( childAsElement.GetExtentOf() == null && !childProviderObject.HasContainer())
-                { 
+                {
                     SetContainer(parentProviderObject, childProviderObject);
                 }
             }

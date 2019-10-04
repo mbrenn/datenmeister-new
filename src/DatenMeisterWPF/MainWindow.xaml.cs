@@ -189,7 +189,7 @@ namespace DatenMeisterWPF
             _ribbonHelper.Collection = MainControl.Content is ICollectionNavigationGuest collectionNavigationGuest ? collectionNavigationGuest.Collection : null;
             _ribbonHelper.Extent = MainControl.Content is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null;
             _ribbonHelper.EvaluateExtensions(viewExtensions);
-            
+
             // And on the guest
             guest?.EvaluateViewExtensions(viewExtensions);
 
@@ -232,9 +232,6 @@ namespace DatenMeisterWPF
         }
 
         /// <inheritdoc />
-        public Window GetWindow()
-        {
-            return this;
-        }
+        public Window GetWindow() => this;
     }
 }

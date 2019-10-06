@@ -63,6 +63,7 @@ namespace DatenMeister.WPF.Windows
             get => LocateElementControl.ShowWorkspaceSelection;
             set => LocateElementControl.ShowWorkspaceSelection = value;
         }
+
         public bool ShowExtentSelection
         {
             get => LocateElementControl.ShowExtentSelection;
@@ -144,9 +145,9 @@ namespace DatenMeister.WPF.Windows
             LocateElementControl.SelectExtent(extentUri);
         }
 
-        public void SetAsRoot(IReflectiveCollection package)
+        public void SetAsRoot(IObject element)
         {
-            LocateElementControl.SetAsRoot(package);
+            LocateElementControl.SetAsRoot(element);
         }
     }
 }

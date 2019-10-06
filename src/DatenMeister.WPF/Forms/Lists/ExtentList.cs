@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using Autofac;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
@@ -45,30 +43,25 @@ namespace DatenMeister.WPF.Forms.Lists
             var workspace =
                 Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
 
-            var extents = workspace?.get("extents") as IReflectiveSequence;
-            SetItems(extents);
+            SetRootItem(workspace);
 
             // Registers upon events
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
-            {
-                Tabs.FirstOrDefault()?.Control.UpdateContent();
-            });
+                Tabs.FirstOrDefault()?.Control.UpdateContent());
         }
 
         protected override void OnRecreateViews()
         {
-            if (SelectedItems == null)
-            {
+            if (SelectedItem == null)
                 return;
-            }
 
             if (IsExtentSelectedInTreeview)
             {
                 var viewDefinition = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId, NavigationHost);
 
                 EvaluateForm(
-                    SelectedItems,
+                    SelectedItem,
                     viewDefinition);
             }
             else
@@ -78,7 +71,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var viewDefinition = new ViewDefinition(form);
 
                 EvaluateForm(
-                    SelectedItems,
+                    SelectedItem,
                     viewDefinition);
             }
         }

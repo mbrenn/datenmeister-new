@@ -70,7 +70,6 @@ namespace DatenMeister.WPF.Controls
             var newValue = (bool)e.NewValue;
             control.txtWorkspace.Visibility =
                 control.cboWorkspace.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
-
         }
 
         public static readonly DependencyProperty ShowExtentSelectionProperty = DependencyProperty.Register(
@@ -313,7 +312,7 @@ namespace DatenMeister.WPF.Controls
                         items.TreeView.IsEnabled = false;
                         break;
                     case IExtent extent:
-                        items.ItemsSource = extent.elements();
+                        items.ItemsSource = extent;
                         items.TreeView.IsEnabled = true;
                         break;
                     default:
@@ -337,14 +336,14 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Sets the given reflection as the root objects.
         /// </summary>
-        /// <param name="collection">Collection to be shown.</param>
+        /// <param name="value">Value to be shown.</param>
         /// <param name="showOnlyObject">true, if the workspace and extent options are hidden and cannot be selected by the user</param>
-        public void SetAsRoot(IReflectiveCollection collection, bool showOnlyObject = true)
+        public void SetAsRoot(IObject value, bool showOnlyObject = true)
         {
             ShowWorkspaceSelection = !showOnlyObject;
             ShowExtentSelection = !showOnlyObject;
 
-            items.ItemsSource = collection;
+            items.ItemsSource = value;
         }
     }
 }

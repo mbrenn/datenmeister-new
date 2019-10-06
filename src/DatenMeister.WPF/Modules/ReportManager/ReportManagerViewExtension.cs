@@ -1,18 +1,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Windows;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ReportManager
@@ -23,7 +20,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         {
             // Check if the current query is about the detail form
             if (viewExtensionTargetInformation.NavigationHost is DetailFormWindow
-            && viewExtensionTargetInformation.NavigationGuest is DetailFormControl detailFormControl)
+                && viewExtensionTargetInformation.NavigationGuest is DetailFormControl detailFormControl)
             {
                 yield return
                     new ItemMenuButtonDefinition(
@@ -51,13 +48,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
             {
                 yield return new ItemMenuButtonDefinition(
                     "Report as Html",
-                    x=>
+                    x =>
                     {
                         if (x is IExtent asExtent)
                         {
                             CreateReportForExplorerView(
                                 explorerControl.EffectiveForm,
-                                explorerControl.Items ?? asExtent.elements());
+                                asExtent.elements());
                         }
                         else
                         {
@@ -82,7 +79,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         {
             var id = StringManipulation.RandomString(10);
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
-            
+
             using (var report = new HtmlReport(tmpPath))
             {
                 report.StartReport("List");
@@ -99,7 +96,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         {
             var id = StringManipulation.RandomString(10);
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
-            
+
             using (var report = new HtmlReport(tmpPath))
             {
                 report.StartReport("Detail: " + selectedItem);

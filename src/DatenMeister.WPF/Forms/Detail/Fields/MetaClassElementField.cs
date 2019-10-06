@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Markup;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;

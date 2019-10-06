@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;

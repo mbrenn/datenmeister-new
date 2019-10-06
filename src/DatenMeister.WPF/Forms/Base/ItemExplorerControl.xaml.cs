@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -50,11 +51,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IElement EffectiveForm { get; private set; }
 
-        /// <summary>
-        ///     Gets or sets the items to be shown. These items are shown also in the navigation view and will
-        ///     not be modified, even if the user clicks on the navigation tree.
-        /// </summary>
-        public IReflectiveCollection Items { get; protected set; }
+        public IObject RootItem { get; protected set; }
+
+        public IObject SelectedItem { get; protected set; }
 
         /// <summary>
         ///     Defines the item that the user currently has selected on the object tree
@@ -66,12 +65,6 @@ namespace DatenMeister.WPF.Forms.Base
         ///     treeview.
         /// </summary>
         public bool IsExtentSelectedInTreeview { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets the items to be shown in the detail view. Usually, they are the same as the items.
-        ///     If the user clicks on the navigation tree, a subview of the items may be shown
-        /// </summary>
-        public IReflectiveCollection SelectedItems { get; set; }
 
         /// <summary>
         /// Gets or sets the view extensions of the form currently being set
@@ -179,13 +172,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Sets the items to be shown in the reflective collection
         /// </summary>
-        /// <param name="items"></param>
-        public void SetItems(IReflectiveCollection items)
+        /// <param name="value"></param>
+        public void SetRootItem(IObject value)
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            Items = items;
+            RootItem = value;
             UpdateTreeContent();
             RecreateViews();
 
@@ -226,10 +219,10 @@ namespace DatenMeister.WPF.Forms.Base
         protected void UpdateTreeContent()
         {
             NavigationTreeView.SetDefaultProperties();
-            NavigationTreeView.ItemsSource = Items;
+            NavigationTreeView.ItemsSource = RootItem;
             SelectedPackage = null;
             IsExtentSelectedInTreeview = true;
-            SelectedItems = Items;
+            SelectedItem = RootItem;
         }
 
         public virtual void OnMouseDoubleClick(IObject element)
@@ -242,10 +235,10 @@ namespace DatenMeister.WPF.Forms.Base
         ///     If the subform is constrained by a property or metaclass, the collection itself is filtered within the
         ///     this call
         /// </summary>
-        /// <param name="collection">Collection of the item which shall be created</param>
+        /// <param name="value">Value which shall be shown</param>
         /// <param name="viewDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
         public void EvaluateForm(
-            IReflectiveCollection collection,
+            IObject value,
             ViewDefinition viewDefinition)
         {
             EffectiveForm = viewDefinition.Element;
@@ -266,7 +259,7 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var viewExtension in viewDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
 
-                AddTab(collection, tab, tabViewExtensions);
+                AddTab(value, tab, tabViewExtensions);
             }
 
             ViewExtensions = viewDefinition.ViewExtensions;
@@ -280,7 +273,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="form">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
         public ItemExplorerTab AddTab(
-            IReflectiveCollection collection,
+            IObject value,
             IElement form,
             IEnumerable<ViewExtension> viewExtensions)
         {
@@ -302,7 +295,12 @@ namespace DatenMeister.WPF.Forms.Base
                 Header = name
             };
 
-            control.SetContent(collection, form, viewExtensions);
+            // TODO: To be done
+            if (value is IExtent extent)
+                control.SetContent(extent.elements(), form, viewExtensions);
+            else
+                control.SetContent(new PropertiesAsReflectiveCollection(value), form, viewExtensions);
+
             tabControl.EvaluateViewExtensions(viewExtensions.Union(control.GetViewExtensions()));
 
             Tabs.Add(tabControl);
@@ -326,14 +324,14 @@ namespace DatenMeister.WPF.Forms.Base
             SelectedPackage = e.Item;
             if (e.Item != null)
             {
-                SelectedItems = new PropertiesAsReflectiveCollection(e.Item);
+                SelectedItem = e.Item;
                 IsExtentSelectedInTreeview = false;
                 RecreateViews();
             }
             else
             {
                 // When user has selected the root element or no other item, all items are shown
-                SelectedItems = Items;
+                SelectedItem = RootItem;
                 IsExtentSelectedInTreeview = true;
                 RecreateViews();
             }
@@ -374,7 +372,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         public IExtent Extent { get; protected set; }
 
-        public IReflectiveCollection Collection => Items;
+        public IReflectiveCollection Collection => (RootItem as IExtent)?.elements();
 
         public IObject Item => SelectedPackage ?? Extent;
     }

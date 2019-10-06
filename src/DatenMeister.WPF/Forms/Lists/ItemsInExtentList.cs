@@ -69,7 +69,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 Extent,
                 (x, y) => _delayedDispatcher.RequestRefresh());
 
-            SetItems(Extent.elements());
+            SetRootItem(Extent);
         }
 
         private readonly IWorkspaceLogic _workspaceLogic;
@@ -79,7 +79,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            CreateFormForItems(SelectedItems);
+            CreateFormForItems();
         }
 
         /// <summary>
@@ -104,22 +104,21 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         ///     Creates the tab for the given items and the metaclass that shell be shown
         /// </summary>
-        /// <param name="tabItems">Items for the tab</param>
-        private void CreateFormForItems(IReflectiveCollection tabItems)
+        private void CreateFormForItems()
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             IElement form;
 
-            if (Items == SelectedItems)
+            if (RootItem == SelectedItem || SelectedItem == null)
             {
                 // Finds the view by the extent type
-                form = viewLogic.GetExtentForm((Items as IHasExtent)?.Extent as IUriExtent, ViewDefinitionMode.Default);
+                form = viewLogic.GetExtentForm(RootItem as IUriExtent, ViewDefinitionMode.Default);
             }
             else
             {
                 // User has selected a sub element and its children shall be shown
                 form = viewLogic.GetItemTreeFormForObject(
-                    SelectedPackage,
+                    SelectedItem,
                     ViewDefinitionMode.Default);
             }
 
@@ -181,7 +180,7 @@ namespace DatenMeister.WPF.Forms.Lists
             PrepareNavigation(viewDefinition);
 
             EvaluateForm(
-                tabItems,
+                SelectedItem,
                 new ViewDefinition(form)
                 {
                     ViewExtensions =
@@ -308,7 +307,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     var window = new TreeViewWindow {Owner = NavigationHost.GetWindow()};
                     window.SetDefaultProperties();
-                    window.SetCollection(Extent.elements());
+                    window.SetRootItem(Extent);
                     window.ItemSelected += (x, y) =>
                         NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
                     window.Show();

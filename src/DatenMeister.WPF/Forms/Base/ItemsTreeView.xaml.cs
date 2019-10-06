@@ -7,11 +7,17 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
+using Clipboard = System.Windows.Clipboard;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MessageBox = System.Windows.Forms.MessageBox;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -20,7 +26,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// </summary>
     public partial class ItemsTreeView : UserControl, INavigationGuest
     {
-        private IReflectiveCollection _itemsSource;
+        private IObject _itemsSource;
 
         private readonly HashSet<object> _alreadyVisited = new HashSet<object>();
 
@@ -89,7 +95,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private readonly HashSet<string> _propertiesForChildren = new HashSet<string>();
 
-        private Dictionary<IObject, TreeViewItem> _mappingItems = new Dictionary<IObject, TreeViewItem>();
+        private readonly Dictionary<IObject, TreeViewItem> _mappingItems = new Dictionary<IObject, TreeViewItem>();
 
         /// <summary>
         /// Stores the previously selected item when the tree is rebuilt.
@@ -107,7 +113,7 @@ namespace DatenMeister.WPF.Forms.Base
             InitializeComponent();
         }
 
-        public IReflectiveCollection ItemsSource
+        public IObject ItemsSource
         {
             get => _itemsSource;
             set
@@ -201,21 +207,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var n = 0;
                 _alreadyVisited.Clear();
                 _mappingItems.Clear();
-                foreach (var item in ItemsSource)
-                {
-                    // Create treeview
-                    var treeViewItem = CreateTreeViewItem(item);
-                    if (treeViewItem != null)
-                    {
-                        model.Add(treeViewItem);
-                        n++;
-                    }
-
-                    if (n >= MaxItemsPerLevel)
-                    {
-                        break;
-                    }
-                }
+                model.Add(CreateTreeViewItem(ItemsSource));
 
                 container.ItemsSource = model;
             }
@@ -241,7 +233,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 return null;
             }
-            
+
             _alreadyVisited.Add(item);
 
             // Perform filtering of the item
@@ -284,9 +276,10 @@ namespace DatenMeister.WPF.Forms.Base
 
                 var n = 0;
                 var childModels = new List<TreeViewItem>();
-                var propertiesForChildren = ShowAllChildren ?
-                    (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>() :
-                    _propertiesForChildren.ToList();
+                var propertiesForChildren =
+                    ShowAllChildren
+                        ? (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>()
+                        : _propertiesForChildren.ToList();
 
                 foreach (var property in propertiesForChildren)
                 {
@@ -382,7 +375,6 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void TreeView_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-
         }
 
         private void CopyTreeToClipboard_OnClick()
@@ -393,20 +385,24 @@ namespace DatenMeister.WPF.Forms.Base
             var items = _itemsSource;
 
             _alreadyVisited.Clear();
-            VisitCopyTreeToClipboard(items, currentText, result);
 
-            Clipboard.SetText(result.ToString());
+            if (ItemsSource is IExtent extent)
+            {
+                VisitCopyTreeToClipboard(extent.elements(), currentText, result);
+                Clipboard.SetText(result.ToString());
+            }
+
+            else
+            {
+                MessageBox.Show("The Root Object is not of type extent. The element could not be copied.");
+            }
         }
 
         private void VisitCopyTreeToClipboard(IReflectiveCollection items, string currentText, StringBuilder result)
         {
-            foreach (var item in items)
+            foreach (var item in
+                items.Where(item => !_alreadyVisited.Contains(item)))
             {
-                if (_alreadyVisited.Contains(item))
-                {
-                    continue;
-                }
-
                 _alreadyVisited.Add(item);
 
                 var itemAsObject = item as IObject;
@@ -447,9 +443,7 @@ namespace DatenMeister.WPF.Forms.Base
         public INavigationHost NavigationHost { get; set; }
 
         public IEnumerable<ViewExtension> GetViewExtensions()
-        {
-            return Array.Empty<ViewExtension>();
-        }
+            => Array.Empty<ViewExtension>();
 
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {

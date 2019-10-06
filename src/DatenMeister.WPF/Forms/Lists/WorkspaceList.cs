@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
@@ -25,13 +24,11 @@ namespace DatenMeister.WPF.Forms.Lists
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
             Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
-            SetItems(Extent.elements());
+            SetRootItem(Extent);
 
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(Extent, (x,y) =>
-            {
-                Tabs.FirstOrDefault()?.Control.UpdateContent();
-            });
+                Tabs.FirstOrDefault()?.Control.UpdateContent());
         }
 
         /// <summary>
@@ -40,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Lists
         protected override void OnRecreateViews()
         {
             ViewDefinition view;
-            
+
             var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
             if (selectedItemMetaClass != null
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
@@ -56,7 +53,7 @@ namespace DatenMeister.WPF.Forms.Lists
             PrepareNavigation(view);
 
             // Sets the workspaces
-            EvaluateForm(SelectedItems, view);
+            EvaluateForm(SelectedItem, view);
         }
 
         /// <summary>

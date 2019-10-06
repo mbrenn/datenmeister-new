@@ -67,7 +67,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             var formDefinition = asElement.getOrDefault<IElement>("form");
 
                             itemExplorerControl?.AddTab(
-                                itemExplorerControl.Items,
+                                itemExplorerControl.RootItem,
                                 formDefinition,
                                 null);
 
@@ -95,7 +95,6 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             dlg.UpdateContent(itemExplorerControl.EffectiveForm);
 
                             dlg.ShowDialog();
-
                         },
                         "",
                         NavigationCategories.Form + ".Definition");

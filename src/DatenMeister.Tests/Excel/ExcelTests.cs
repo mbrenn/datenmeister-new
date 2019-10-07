@@ -115,7 +115,7 @@ namespace DatenMeister.Tests.Excel
                 };
 
                 var extentManager = dm.Resolve<IExtentManager>();
-                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOnly);
+                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
                 var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;

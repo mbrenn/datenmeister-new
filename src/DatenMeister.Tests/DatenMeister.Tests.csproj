@@ -81,6 +81,7 @@
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />
     <Compile Include="Runtime\WorkspaceTests.cs" />
     <Compile Include="Uml\TestMofUmlWorkspaceIntegration.cs" />
+    <Compile Include="Uml\UmlDotNetTypeCreatorTests.cs" />
     <Compile Include="Uml\TestUmlMethods.cs" />
     <Compile Include="Web\TestAutoColumnCreator.cs" />
     <Compile Include="WorkspaceTests.cs" />

@@ -134,6 +134,7 @@ namespace DatenMeister.Uml.Helper
             {
                 throw new InvalidOperationException("Classifier is not known in metaextent");
             }
+
             if (workspace != null)
             {
                 // Go through each element within the found scope
@@ -141,10 +142,7 @@ namespace DatenMeister.Uml.Helper
                 {
                     if (classInstance.@equals(elementInExtent))
                     {
-                        if (visitedElements.Contains(elementInExtent))
-                        {
-                            continue;
-                        }
+                        if (visitedElements.Contains(elementInExtent)) continue;
 
                         visitedElements.Add(elementInExtent);
 
@@ -156,7 +154,7 @@ namespace DatenMeister.Uml.Helper
                     }
                 }
             }
-            
+
             yield return element;
         }
 

@@ -104,12 +104,12 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var dataWorkspace = workspaceLogic.GetDataWorkspace();
 
                 var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
-                var setDefaultTypePackage = zipExample.GetDefaultTypePackage();
+                var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
 
                 Assert.That(setDefaultTypePackage, Is.Not.Null);
                 Assert.That(zipCodeModel, Is.Not.Null);
 
-                Assert.That(setDefaultTypePackage, Is.EqualTo(zipCodeModel));
+                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
             }
         }
 

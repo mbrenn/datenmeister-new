@@ -219,7 +219,7 @@ namespace DatenMeister.Runtime
         /// <param name="toBeAdded"></param>
         public static void AddCollectionItem(this IObject value, string property, object toBeAdded)
         {
-            var reflection = new MofReflectiveSequence(value as MofObject,  property);
+            var reflection = new MofReflectiveSequence((MofObject) value, property);
             reflection.add(toBeAdded);
         }
 

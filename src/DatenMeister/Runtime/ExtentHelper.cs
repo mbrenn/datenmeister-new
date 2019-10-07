@@ -48,9 +48,9 @@ namespace DatenMeister.Runtime
         /// <param name="extent">Extent shall get the default type package</param>
         /// <param name="defaultTypePackage">The element which shall be considered as the
         /// default type package</param>
-        public static void SetDefaultTypePackage(this IExtent extent, IElement defaultTypePackage)
+        public static void SetDefaultTypePackages(this IExtent extent, IEnumerable<IElement> defaultTypePackages)
         {
-            extent.set(DatenmeisterDefaultTypePackage, defaultTypePackage);
+            extent.set(DatenmeisterDefaultTypePackage, defaultTypePackages);
         }
 
         /// <summary>
@@ -58,9 +58,15 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="extent">Extent to be used</param>
         /// <returns>The found element</returns>
-        public static IElement GetDefaultTypePackage(this IExtent extent)
+        public static IEnumerable<IElement> GetDefaultTypePackages(this IExtent extent)
         {
-            return extent?.GetOrDefault(DatenmeisterDefaultTypePackage) as IElement;
+            var result = extent.GetOrDefault(DatenmeisterDefaultTypePackage);
+            if (!(result is IReflectiveCollection collection))
+            {
+                return Array.Empty<IElement>();
+            }
+
+            return collection.OfType<IElement>();
         }
 
         public static IElement Resolve(this IExtent extent, IElement element)

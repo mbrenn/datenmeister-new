@@ -77,7 +77,7 @@ namespace DatenMeister.Modules.ZipExample
             }
 
             File.Copy(originalFilename, filename);
-            
+
             // Creates the configuration
             var defaultConfiguration = new CSVExtentLoaderConfig
             {
@@ -107,7 +107,7 @@ namespace DatenMeister.Modules.ZipExample
             var zipCodeTypePackage =
                 _workspaceLogic.GetTypesWorkspace().FindElementByUri(
                     "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) as IElement;
-            loadedExtent.SetDefaultTypePackage(zipCodeTypePackage);
+            loadedExtent.SetDefaultTypePackages(new[] {zipCodeTypePackage});
 
             return loadedExtent;
         }

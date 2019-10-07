@@ -124,8 +124,7 @@ namespace DatenMeister.WPF.Navigation
 
             var detailFormWindow = new DetailFormWindow
             {
-                Owner = navigationHost.GetWindow(),
-                DetailElementContainer = navigateToItemConfig.DetailElementContainer
+                Owner = navigationHost.GetWindow()
             };
 
             detailFormWindow.SetContent(
@@ -225,7 +224,7 @@ namespace DatenMeister.WPF.Navigation
                         task.SetResult(result);
                     };
 
-                    asDetailFormControl.UpdateContent();
+                    asDetailFormControl.UpdateView();
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
 
                     detailFormWindow.Show();

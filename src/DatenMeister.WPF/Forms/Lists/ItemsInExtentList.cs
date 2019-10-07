@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
-            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateAllViews);
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
@@ -85,9 +85,9 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Updates all views without regenerating the tabulators, which are already set
         /// </summary>
-        public override void UpdateAllViews()
+        public override void UpdateView()
         {
-            base.UpdateAllViews();
+            base.UpdateView();
             if (ShowAllItemsInOneTab)
             {
                 return;

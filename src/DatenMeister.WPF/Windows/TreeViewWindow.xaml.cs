@@ -77,5 +77,10 @@ namespace DatenMeister.WPF.Windows
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
         }
+
+        public void UpdateView()
+        {
+            ObjectTreeView.UpdateView();
+        }
     }
 }

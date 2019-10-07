@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -14,6 +15,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
@@ -107,7 +109,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 2) Gets the view extensions of the selected tab of the detail form
             var selectedTab = ItemTabControl.SelectedItem as ItemExplorerTab;
-            var selectedTabViewExtensions = selectedTab?.Control?.GetViewExtensions();
+            var selectedTabViewExtensions = selectedTab?.ControlAsNavigationGuest?.GetViewExtensions();
 
             if (selectedTabViewExtensions != null)
             {
@@ -137,7 +139,7 @@ namespace DatenMeister.WPF.Forms.Base
             yield return
                 new ExtentMenuButtonDefinition(
                     "Refresh",
-                    x => UpdateAllViews(),
+                    x => UpdateView(),
                     Icons.Refresh,
                     NavigationCategories.Form + ".View");
 
@@ -187,10 +189,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Updates all views without recreating the items.
         /// </summary>
-        public virtual void UpdateAllViews()
+        public virtual void UpdateView()
         {
             UpdateTreeContent();
-            foreach (var tab in Tabs) tab.Control.UpdateContent();
+            foreach (var tab in Tabs) tab.ControlAsNavigationGuest.UpdateView();
         }
 
         /// <summary>
@@ -235,9 +237,12 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         /// <param name="value">Value which shall be shown</param>
         /// <param name="viewDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
+        /// <param name="container">Container to which the element is contained by.
+        /// This information is used to remove the item</param>
         public void EvaluateForm(
             IObject value,
-            ViewDefinition viewDefinition)
+            ViewDefinition viewDefinition,
+            IReflectiveCollection container = null)
         {
             EffectiveForm = viewDefinition.Element;
             var tabs = viewDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
@@ -257,7 +262,7 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var viewExtension in viewDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
 
-                AddTab(value, tab, tabViewExtensions);
+                AddTab(value, tab, tabViewExtensions, container);
             }
 
             ViewExtensions = viewDefinition.ViewExtensions;
@@ -267,47 +272,78 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Adds a new tab to the form
         /// </summary>
-        /// <param name="collection">Collection being used</param>
+        /// <param name="value">Value to be shown in the explorer control view</param>
         /// <param name="form">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
+        /// <param name="container">Container to which the element is contained by.
+        /// This information is used to remove the item</param>
         public ItemExplorerTab AddTab(
             IObject value,
             IElement form,
-            IEnumerable<ViewExtension> viewExtensions)
+            IEnumerable<ViewExtension> viewExtensions,
+            IReflectiveCollection container = null)
         {
             // Gets the default view for the given tab
             var name = form.getOrDefault<string>(_FormAndFields._Form.title) ??
                        form.getOrDefault<string>(_FormAndFields._Form.name);
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
 
-            // Creates the layoutcontrol for the given view
-            var control = new ItemListViewControl
+
+            UserControl createdUserControl = null;
+            if (form.getMetaClass().@equals(formAndFields.__DetailForm))
             {
-                NavigationHost = NavigationHost
-            };
+                var control = new DetailFormControl
+                {
+                    NavigationHost = NavigationHost
+                };
 
-            viewExtensions = viewExtensions.Union(control.GetViewExtensions()).ToList();
+                control.SetContent(value, form, container);
+                createdUserControl = control;
+            }
+            else if (form.getMetaClass().@equals(formAndFields.__ListForm))
+            {
+                // Creates the layoutcontrol for the given view
+                var control = new ItemListViewControl
+                {
+                    NavigationHost = NavigationHost
+                };
+
+                viewExtensions = viewExtensions.Union(control.GetViewExtensions()).ToList();
+
+                // Sets the content for the tabs
+                if (value is IExtent extent)
+                {
+                    IReflectiveCollection elements = extent.elements();
+                    elements = FilterByMetaClass(elements, form);
+                    control.SetContent(elements, form, viewExtensions);
+                }
+                else
+                {
+                    IReflectiveCollection elements = GetPropertiesAsReflection(value, form);
+                    elements = FilterByMetaClass(elements, form);
+                    control.SetContent(elements, form, viewExtensions);
+                }
+
+                createdUserControl = control;
+            }
+
+            if (createdUserControl == null)
+            {
+                _logger.Warn($"No user control was created: {value} {form}");
+                return null;
+            }
 
             var tabControl = new ItemExplorerTab(form)
             {
-                Control = control,
+                Control = createdUserControl,
                 Header = name
             };
 
-            // Sets the content for the tabs
-            if (value is IExtent extent)
+            if (createdUserControl is INavigationGuest navigationGuest)
             {
-                IReflectiveCollection elements = extent.elements();
-                elements = FilterByMetaClass(elements, form);
-                control.SetContent(elements, form, viewExtensions);
+                tabControl.EvaluateViewExtensions(viewExtensions.Union(
+                    navigationGuest.GetViewExtensions()).ToList());
             }
-            else
-            {
-                IReflectiveCollection elements = GetPropertiesAsReflection(value, form);
-                elements = FilterByMetaClass(elements, form);
-                control.SetContent(elements, form, viewExtensions);
-            }
-
-            tabControl.EvaluateViewExtensions(viewExtensions.Union(control.GetViewExtensions()));
 
             Tabs.Add(tabControl);
 

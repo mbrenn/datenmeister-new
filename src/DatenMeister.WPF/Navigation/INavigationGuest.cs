@@ -30,6 +30,11 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="viewExtensions">View Extensions to be evaluated</param>
         void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions);
+
+        /// <summary>
+        ///  Updates the content
+        /// </summary>
+        void UpdateView();
     }
 
     /// <summary>

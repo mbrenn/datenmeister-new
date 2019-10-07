@@ -27,8 +27,9 @@ namespace DatenMeister.WPF.Forms.Lists
             SetRootItem(Extent);
 
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(Extent, (x,y) =>
-                Tabs.FirstOrDefault()?.Control.UpdateContent());
+            EventHandle = eventManager.RegisterFor(Extent,
+                (x,y) =>
+                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView());
         }
 
         /// <summary>

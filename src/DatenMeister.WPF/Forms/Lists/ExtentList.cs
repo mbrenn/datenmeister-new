@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Forms.Lists
             // Registers upon events
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
-                Tabs.FirstOrDefault()?.Control.UpdateContent());
+                Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView());
         }
 
         protected override void OnRecreateViews()

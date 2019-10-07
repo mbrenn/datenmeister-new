@@ -169,7 +169,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Updates the complete view of the item tree
         /// </summary>
-        private void UpdateView()
+        public void UpdateView()
         {
             if (!IsInitialized)
             {

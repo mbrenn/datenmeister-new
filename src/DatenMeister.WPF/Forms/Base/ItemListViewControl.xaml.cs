@@ -82,7 +82,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         public ItemListViewControl()
         {
-            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateContent);
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
             InitializeComponent();
         }
@@ -312,7 +312,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             EffectiveForm = formDefinition;
             ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
-            UpdateContent();
+            UpdateView();
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     This method is called, when the used clicks on the left side or
         ///     an additional item was created/edited or removed.
         /// </summary>
-        public void UpdateContent()
+        public void UpdateView()
         {
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
@@ -673,7 +673,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             _searchText = SearchField.Text;
-            UpdateContent();
+            UpdateView();
         }
 
         /// <summary>
@@ -804,7 +804,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             EffectiveForm.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
             UpdateFastFilterTexts();
-            UpdateContent();
+            UpdateView();
         }
 
         private void UpdateFastFilterTexts()
@@ -827,7 +827,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     fastFilters.remove(filter);
                     UpdateFastFilterTexts();
-                    UpdateContent();
+                    UpdateView();
                 };
 
                 FastViewFilterPanel.Children.Add(text);

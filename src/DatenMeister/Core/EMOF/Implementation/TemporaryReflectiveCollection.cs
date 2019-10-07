@@ -13,8 +13,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets a value whether the temporary collection is read-only and hinders adding new items
         /// </summary>
-        protected  bool IsReadOnly { get; set; }
-
+        protected bool IsReadOnly { get; set; }
 
         public TemporaryReflectiveCollection()
         {
@@ -28,15 +27,11 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
-        {
-            return Values.GetEnumerator();
-        }
+            => Values.GetEnumerator();
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Values.GetEnumerator();
-        }
+            => Values.GetEnumerator();
 
         /// <summary>
         /// Checks whether this reflective collection is read-only and throws an exception if yes
@@ -44,9 +39,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         private void CheckForReadOnly()
         {
             if (IsReadOnly)
-            {
                 throw new InvalidOperationException("The temporary reflective collection is read-only");
-            }
         }
 
         /// <inheritdoc />
@@ -61,7 +54,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public virtual bool addAll(IReflectiveSequence value)
         {
             CheckForReadOnly();
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -83,13 +76,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         public virtual bool remove(object value)
         {
             CheckForReadOnly();
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public virtual int size()
-        {
-            return Values.Count();
-        }
+        public virtual int size() 
+            => Values.Count();
     }
 }

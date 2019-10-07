@@ -273,7 +273,7 @@ namespace DatenMeister.Uml.Helper
                 var pseudoProvider = new XmiProvider(document);
                 var pseudoExtent = new MofUriExtent(pseudoProvider)
                 {
-                    Workspace = targetExtent.GetWorkspace()
+                    Workspace = (Workspace) targetExtent.GetWorkspace()
                 };
 
                 var sourcePackage = GetOrCreatePackageStructure(

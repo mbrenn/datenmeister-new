@@ -49,15 +49,11 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+            => GetEnumerator();
 
         /// <inheritdoc />
         public bool add(object value)
-        {
-           return AddInternal(value, -1);
-        }
+            => AddInternal(value, -1);
 
         /// <inheritdoc />
         public bool addAll(IReflectiveSequence value)
@@ -102,9 +98,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public int size()
-        {
-            return _extent.Provider.GetRootObjects().Count();
-        }
+            => _extent.Provider.GetRootObjects().Count();
 
         /// <inheritdoc />
         public void add(int index, object value)
@@ -149,9 +143,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public object get(int index)
-        {
-            return _extent.Provider.GetRootObjects().ElementAt(index);
-        }
+            => _extent.Provider.GetRootObjects().ElementAt(index);
 
         /// <inheritdoc />
         public void remove(int index)

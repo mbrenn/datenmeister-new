@@ -69,15 +69,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("providedObject.Provider");
             }
-            
+
             ReferencedExtent = referencedExtent;
         }
 
         /// <inheritdoc />
         public override bool Equals(object obj)
-        {
-            return @equals(obj);
-        }
+            => @equals(obj);
 
         /// <summary>
         /// Verifies if the two elements reference to the same instance
@@ -139,10 +137,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object other)
-        {
-            return AreEqual(this, other as IObject);
-        }
+        public bool @equals(object other) 
+            => AreEqual(this, other as IObject);
 
         /// <inheritdoc />
         // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
@@ -150,9 +146,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public object get(string property)
-        {
-            return get(property, false);
-        }
+            => get(property, false);
 
         // ReSharper disable once InconsistentNaming
         public object get(string property, bool noReferences)
@@ -184,34 +178,30 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 return value;
             }
-            
-            if (value is IProviderObject resultAsProviderObject)
-            {
-                var result = new MofElement(resultAsProviderObject, container.ReferencedExtent, container as MofElement)
-                {
-                    Extent = container.Extent
-                };
 
-                return result;
-            }
-
-            if (value is IEnumerable<object>)
+            switch (value)
             {
-                return new MofReflectiveSequence(container, property);
-            }
-            
-            if (value is UriReference valueAsUriReference)
-            {
-                if (noReferences)
+                case IProviderObject resultAsProviderObject:
                 {
-                    return valueAsUriReference;
+                    var result = new MofElement(resultAsProviderObject, container.ReferencedExtent, container as MofElement)
+                    {
+                        Extent = container.Extent
+                    };
+
+                    return result;
                 }
-
-                var extentResolver = container.Extent as IUriResolver ?? container.ReferencedExtent as IUriResolver;
-                return extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default);
+                case IEnumerable<object> _:
+                    return new MofReflectiveSequence(container, property);
+                case UriReference valueAsUriReference when noReferences:
+                    return valueAsUriReference;
+                case UriReference valueAsUriReference:
+                {
+                    var extentResolver = container.Extent as IUriResolver ?? container.ReferencedExtent as IUriResolver;
+                    return extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default);
+                }
+                default:
+                    throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
             }
-
-            throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
         }
 
         /// <inheritdoc />
@@ -263,13 +253,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Sets the container of the child object to the this instance
         /// </summary>
+        /// <param name="parentProviderObject">The parent object containing the child after the allocation</param>
         /// <param name="child">Child as potential IElement object</param>
         /// <param name="childForProviders">Child as potential provider object</param>
         internal static void SetContainer(IProviderObject parentProviderObject, object child, object childForProviders)
         {
             if (child is IElement childAsElement && childForProviders is IProviderObject childProviderObject)
             {
-                if( childAsElement.GetExtentOf() == null && !childProviderObject.HasContainer())
+                if (childAsElement.GetExtentOf() == null && !childProviderObject.HasContainer())
                 {
                     SetContainer(parentProviderObject, childProviderObject);
                 }
@@ -318,29 +309,22 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public bool isSet(string property)
-        {
-            return ProviderObject.IsPropertySet(property);
-        }
+            => ProviderObject.IsPropertySet(property);
 
         /// <inheritdoc />
         public void unset(string property)
         {
             ProviderObject.DeleteProperty(property);
-
             _extent?.ChangeEventManager?.SendChangeEvent(this);
         }
 
         /// <inheritdoc />
         public IEnumerable<string> getPropertiesBeingSet()
-        {
-            return ProviderObject.GetProperties();
-        }
+            => ProviderObject.GetProperties();
 
         /// <inheritdoc />
         public override string ToString()
-        {
-            return NamedElementMethods.GetName(this);
-        }
+            => NamedElementMethods.GetName(this);
 
         public IObject CreatedBy(MofExtent extent)
         {

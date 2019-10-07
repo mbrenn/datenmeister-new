@@ -108,7 +108,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 if (DotNetHelper.IsOfEnumeration(innerValue))
                 {
                     var list = new List<object>();
-                    var enumeration = (IEnumerable)innerValue;
+                    var enumeration = (IEnumerable) innerValue;
                     foreach (var innerElementValue in enumeration)
                     {
                         list.Add(ConvertToMofIfNotPrimitive(innerElementValue));
@@ -132,9 +132,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
         public static object ConvertToMofObject(MofUriExtent receiver, object value, string requestedId = null)
-        {
-            return new DotNetConverter(receiver).ConvertToMofIfNotPrimitive(value, requestedId);
-        }
+            => new DotNetConverter(receiver).ConvertToMofIfNotPrimitive(value, requestedId);
 
         /// <summary>
         /// Sets the given object into the MofObject.
@@ -143,9 +141,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
         public static object ConvertToMofObject(IUriExtent receiver, object value, string requestedId = null)
-        {
-            return ConvertToMofObject((MofUriExtent)receiver, value, requestedId);
-        }
+            => ConvertToMofObject((MofUriExtent) receiver, value, requestedId);
 
         /// <summary>
         /// Converts the given .Net Object in value to a MofObject
@@ -160,9 +156,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             object value,
             IElement metaclass = null,
             string requestedId = null)
-        {
-            return new DotNetConverter((MofUriExtent)receiver).ConvertToMofObject(value, metaclass, requestedId);
-        }
+            => new DotNetConverter((MofUriExtent) receiver).ConvertToMofObject(value, metaclass, requestedId);
 
         /// <summary>
         /// Converts the given .Net Object in value to a MofObject. The intermediate InMemory Extent is used.
@@ -175,9 +169,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             object value,
             IElement metaclass = null,
             string requestedId = null)
-        {
-            return ConvertFromDotNetObject(InMemoryProvider.TemporaryExtent, value, metaclass, requestedId);
-        }
+            => ConvertFromDotNetObject(InMemoryProvider.TemporaryExtent, value, metaclass, requestedId);
 
         /// <summary>
         /// Converts the MOF element to a .Net element by using the explicit DotNet Type Lookup
@@ -216,7 +208,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return ConvertToDotNetObject(element, type);
-
         }
 
         /// <summary>
@@ -226,16 +217,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object</returns>
         public static T ConvertToDotNetObject<T>(IObject value)
-        {
-            return (T) ConvertToDotNetObject(value, typeof(T));
-        }
+            => (T) ConvertToDotNetObject(value, typeof(T));
 
         /// <summary>
         /// Converts the given MOF Object into a .Net Object
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="type">Type of the element to be converted</param>
-        /// <param name="converter">Defines the converter instance</param>
         /// <returns>The converted object</returns>
         public static object ConvertToDotNetObject(IObject value, Type type)
         {
@@ -262,7 +250,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsBoolean(propertyValue));
                     }
-                    else if(reflectedProperty.PropertyType.IsEnum)
+                    else if (reflectedProperty.PropertyType.IsEnum)
                     {
                         var propertyValueType = propertyValue?.GetType();
                         if (propertyValueType == reflectedProperty.PropertyType)

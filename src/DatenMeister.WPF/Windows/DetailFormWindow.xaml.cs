@@ -151,13 +151,9 @@ namespace DatenMeister.WPF.Windows
         public void SetFocus()
         {
             if (MainContent == null)
-            {
                 Focus();
-            }
             else
-            {
                 MainContent.Focus();
-            }
         }
 
         /// <inheritdoc />
@@ -190,15 +186,11 @@ namespace DatenMeister.WPF.Windows
 
                 var name = NamedElementMethods.GetName(control.DetailElement);
                 if (!string.IsNullOrEmpty(name))
-                {
                     Title = $"Edit element: {name}";
-                }
             }
 
             if (element is IHasTitle title)
-            {
                 Title = title.Title;
-            }
         }
 
         /// <summary>
@@ -314,6 +306,18 @@ namespace DatenMeister.WPF.Windows
                 var control = new DetailFormControl();
                 control.SetContent(detailElement, effectiveForm, container);
                 control.UpdateView();
+                control.ElementSaved += (x, y) =>
+                {
+                    OnSaved(control.DetailElement, control.AttachedElement);
+                    Close();
+                };
+
+                control.AddGenericButton("Cancel", () =>
+                {
+                    OnCancelled(control.DetailElement, control.AttachedElement);
+                    Close();
+                }).IsCancel = true;
+
                 SetMainContent(control);
 
                 var title = effectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.title);

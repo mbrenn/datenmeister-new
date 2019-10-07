@@ -99,6 +99,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             var secondAsShadow = second as MofObjectShadow;
             var firstAsElement = first as MofElement;
             var secondAsElement = second as MofElement;
+            var firstAsUriExtent = first as MofUriExtent;
+            var secondAsUriExtent = second as MofUriExtent;
 
             if (firstAsMofObject != null && secondAsMofObject != null)
             {
@@ -118,6 +120,18 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (secondAsShadow != null && firstAsElement != null)
             {
                 return secondAsShadow.Uri == firstAsElement.GetUri();
+            }
+
+            if (firstAsUriExtent != null && secondAsUriExtent != null)
+            {
+                // Context uri of both are equal
+                return firstAsUriExtent.contextURI() == secondAsUriExtent.contextURI();
+            }
+
+            if (firstAsUriExtent != null || secondAsUriExtent != null)
+            {
+                // One is a uri extent but the other one is not, so it is sure that both are not equal
+                return false;
             }
 
             throw new InvalidOperationException(

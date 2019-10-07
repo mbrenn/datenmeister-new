@@ -169,10 +169,8 @@ namespace DatenMeister.WPF.Navigation
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
 
-            if (parentWindow == null)
-            {
+            if (parentWindow == null) 
                 throw new InvalidOperationException("No parent window is not allowed");
-            }
 
             var userControl = factoryMethod();
             result.NavigationHost = parentWindow as INavigationHost;

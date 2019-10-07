@@ -298,6 +298,7 @@ namespace DatenMeister.WPF.Forms.Base
                 };
 
                 control.SetContent(value, form, container);
+                control.ElementSaved += (x, y) => MessageBox.Show("Element saved.");
                 createdUserControl = control;
             }
             else if (form.getMetaClass().@equals(formAndFields.__ListForm))

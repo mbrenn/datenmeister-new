@@ -121,12 +121,9 @@ namespace DatenMeister.WPF.Forms.Base
                     return _internalTitle;
                 }
 
-                if (DetailElement == null)
-                {
-                    return "New item";
-                }
-
-                return $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
+                return DetailElement == null
+                    ? "New item"
+                    : $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
             }
 
             set => _internalTitle = value;
@@ -452,9 +449,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var panel = new StackPanel();
                 foreach (var button in buttons)
-                {
                     panel.Children.Add(button);
-                }
 
                 CreateRowForField(new TextBlock {Text = "Actions:"}, panel);
             }
@@ -472,8 +467,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (selectable)
             {
-                valueTextBlock.ContextMenu =
-                    new ContextMenu();
+                valueTextBlock.ContextMenu = new ContextMenu();
 
                 var copyToClipboardAdd = new MenuItem {Header = "Copy to Clipboard"};
                 valueTextBlock.ContextMenu.Items.Add(copyToClipboardAdd);
@@ -580,17 +574,6 @@ namespace DatenMeister.WPF.Forms.Base
                 });
             }
 
-            AddGenericButton("Cancel", () =>
-            {
-                var window = Window.GetWindow(this);
-                if (window is DetailFormWindow detailFormWindow)
-                {
-                    detailFormWindow.OnCancelled(DetailElement, AttachedElement);
-                }
-
-                window?.Close();
-            }).IsCancel = true;
-
             AddGenericButton(saveText, () =>
             {
                 try
@@ -598,13 +581,6 @@ namespace DatenMeister.WPF.Forms.Base
                     StoreDialogContentIntoElement(DetailElement);
 
                     OnElementSaved();
-                    var window = Window.GetWindow(this);
-                    if (window is DetailFormWindow detailFormWindow)
-                    {
-                        detailFormWindow.OnSaved(DetailElement, AttachedElement);
-                    }
-
-                    window?.Close();
                 }
                 catch (Exception exc)
                 {

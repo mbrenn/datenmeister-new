@@ -269,7 +269,7 @@ namespace DatenMeister.WPF.Forms.Base
                     CopyContentAsXmi,
                     null,
                     "Selection");
-            
+
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.View)
@@ -282,47 +282,13 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 foreach (var extension in plugin.GetViewExtensions(extentData))
                 {
-                   yield return extension;
+                    yield return extension;
                 }
             }
         }
 
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
-        }
-
-        /// <summary>
-        /// Takes the given collection and uses the information in the ListForm to filter
-        /// the collection of the items.
-        /// Here, the metaclass is used.
-        /// </summary>
-        /// <param name="collection">Collection to be handled</param>
-        /// <param name="listFormDefinition">List Form Definition to be used</param>
-        /// <returns>The filtered reflective collection</returns>
-        public static IReflectiveCollection FilterItems(
-            IReflectiveCollection collection,
-            IObject listFormDefinition)
-        {
-            var noItemsWithMetaClass =
-                listFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.noItemsWithMetaClass);
-
-            // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = listFormDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
-
-            if (metaClass != null)
-            {
-                return collection.WhenMetaClassIs(metaClass);
-            }
-            else
-            {
-                if (noItemsWithMetaClass)
-                {
-                    var x = collection.WhenMetaClassIs(null);
-                    return x;
-                }
-
-                return collection;
-            }
         }
 
         /// <summary>
@@ -342,7 +308,7 @@ namespace DatenMeister.WPF.Forms.Base
                     (extent, element) => { _delayedDispatcher.RequestRefresh(); });
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
-            Items = FilterItems(items, formDefinition);
+            Items = items;
 
             EffectiveForm = formDefinition;
             ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions

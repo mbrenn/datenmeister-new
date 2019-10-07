@@ -189,25 +189,11 @@ namespace DatenMeister.WPF.Forms.Base
             _previouslySelectedItem = (TreeView.SelectedItem as TreeViewItem)?.Tag;
 
             var container = TreeView as ItemsControl;
-            if (ShowRoot)
-            {
-                var rootItem = new TreeViewItem
-                {
-                    Header = "Root",
-                    Tag = null,
-                    IsExpanded = true
-                };
-
-                container.ItemsSource = new[] {rootItem};
-                container = rootItem;
-            }
-
             lock (_alreadyVisited)
             {
-                var n = 0;
                 _alreadyVisited.Clear();
                 _mappingItems.Clear();
-                model.Add(CreateTreeViewItem(ItemsSource));
+                model.Add(CreateTreeViewItem(ItemsSource, true));
 
                 container.ItemsSource = model;
             }
@@ -225,9 +211,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// If this item is an object and contains additional items within the properties,
         /// these subitems are also creates as TreeViewItemss
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        private TreeViewItem CreateTreeViewItem(object item)
+        /// <param name="item">Item to be converted to a treeview</param>
+        /// <param name="isRoot">true, if this is the root element. This means that the element is expanded. </param>
+        /// <returns>The created element</returns>
+        private TreeViewItem CreateTreeViewItem(object item, bool isRoot = false)
         {
             if (_alreadyVisited.Contains(item))
             {
@@ -261,20 +248,37 @@ namespace DatenMeister.WPF.Forms.Base
             // Filtering agrees to the item, so it will be added
             var treeViewItem = new TreeViewItem
             {
-                Header = item.ToString(),
-                Tag = item
+                Header = item is IExtent ? "Root" : item.ToString(),
+                Tag = item,
+                IsExpanded = isRoot
             };
 
-            if (_previouslySelectedItem != null && _previouslySelectedItem.Equals(item))
+            if (_previouslySelectedItem?.Equals(item) == true)
             {
                 _newSelectedItem = treeViewItem;
             }
 
-            if (item is IObject itemAsObject)
+            if (item is IExtent extent)
+            {
+                _mappingItems[extent] = treeViewItem;
+                var childModels = new List<TreeViewItem>();
+                var n = 0;
+                foreach (var element in extent.elements())
+                {
+                    childModels.Add(CreateTreeViewItem(element));
+                    n++;
+                    if (n >= MaxItemsPerLevel) break;
+                }
+
+                treeViewItem.ItemsSource = childModels;
+            }
+            else if (item is IObject itemAsObject)
             {
                 _mappingItems[itemAsObject] = treeViewItem;
 
                 var n = 0;
+
+                // Gets the properties
                 var childModels = new List<TreeViewItem>();
                 var propertiesForChildren =
                     ShowAllChildren
@@ -283,9 +287,12 @@ namespace DatenMeister.WPF.Forms.Base
 
                 foreach (var property in propertiesForChildren)
                 {
+                    // Goes through the properties
                     var propertyValue = itemAsObject.GetOrDefault(property);
                     if (propertyValue is IReflectiveCollection childItems)
                     {
+                        // If, we have a collection of properties, add the enumeration of the properties
+                        // to the treeview (as long as we don't have too many items)
                         foreach (var childItem in childItems)
                         {
                             var childTreeViewItem = CreateTreeViewItem(childItem);
@@ -299,8 +306,7 @@ namespace DatenMeister.WPF.Forms.Base
                             if (n >= MaxItemsPerLevel) break;
                         }
                     }
-
-                    if (propertyValue is IElement element)
+                    else if (propertyValue is IElement element)
                     {
                         var childTreeViewItem = CreateTreeViewItem(element);
                         if (childTreeViewItem != null)
@@ -382,7 +388,6 @@ namespace DatenMeister.WPF.Forms.Base
             var result = new StringBuilder();
 
             var currentText = "";
-            var items = _itemsSource;
 
             _alreadyVisited.Clear();
 
@@ -391,7 +396,6 @@ namespace DatenMeister.WPF.Forms.Base
                 VisitCopyTreeToClipboard(extent.elements(), currentText, result);
                 Clipboard.SetText(result.ToString());
             }
-
             else
             {
                 MessageBox.Show("The Root Object is not of type extent. The element could not be copied.");

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms.VisualStyles;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -295,11 +293,19 @@ namespace DatenMeister.WPF.Forms.Base
                 Header = name
             };
 
-            // TODO: To be done
+            // Sets the content for the tabs
             if (value is IExtent extent)
-                control.SetContent(extent.elements(), form, viewExtensions);
+            {
+                IReflectiveCollection elements = extent.elements();
+                elements = FilterByMetaClass(elements, form);
+                control.SetContent(elements, form, viewExtensions);
+            }
             else
-                control.SetContent(new PropertiesAsReflectiveCollection(value), form, viewExtensions);
+            {
+                IReflectiveCollection elements = GetPropertiesAsReflection(value, form);
+                elements = FilterByMetaClass(elements, form);
+                control.SetContent(elements, form, viewExtensions);
+            }
 
             tabControl.EvaluateViewExtensions(viewExtensions.Union(control.GetViewExtensions()));
 
@@ -312,6 +318,46 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             return tabControl;
+        }
+
+        private IReflectiveCollection GetPropertiesAsReflection(IObject value, IObject listFormDefinition)
+        {
+            var propertyName = listFormDefinition.getOrDefault<string>(nameof(ListForm.property));
+            if (propertyName == null)
+            {
+                return new PropertiesAsReflectiveCollection(value);
+            }
+
+            return new PropertiesAsReflectiveCollection(value, propertyName);
+        }
+
+        /// <summary>
+        /// Gets the collection and return the collection by the filtered metaclasses. If the metaclass
+        /// is not defined, then null is returned
+        /// </summary>
+        /// <param name="collection">Collection to be filtered</param>
+        /// <param name="listFormDefinition">The list form definition defining the meta class</param>
+        /// <returns>The filtered metaclasses</returns>
+        private IReflectiveCollection FilterByMetaClass(IReflectiveCollection collection, IObject listFormDefinition)
+        {
+            var noItemsWithMetaClass =
+                listFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.noItemsWithMetaClass);
+
+            // If form  defines constraints upon metaclass, then the filtering will occur here
+            var metaClass = listFormDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
+
+            if (metaClass != null)
+            {
+                return collection.WhenMetaClassIs(metaClass);
+            }
+
+            if (noItemsWithMetaClass)
+            {
+                var x = collection.WhenMetaClassIs(null);
+                return x;
+            }
+
+            return collection;
         }
 
         private void NavigationTreeView_OnItemChosen(object sender, ItemEventArgs e)

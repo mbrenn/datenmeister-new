@@ -109,7 +109,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
             IElement form;
 
-            if (RootItem == SelectedItem || SelectedItem == null)
+            if (Equals(RootItem, SelectedItem) || SelectedItem == null)
             {
                 // Finds the view by the extent type
                 form = viewLogic.GetExtentForm(RootItem as IUriExtent, ViewDefinitionMode.Default);

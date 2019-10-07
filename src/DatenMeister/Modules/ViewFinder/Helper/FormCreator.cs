@@ -524,14 +524,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var uriResolver = _workspaceLogic.GetTypesWorkspace();
 
             //var uriResolver = propertyType.GetUriResolver();
-            _stringType = _stringType ?? primitiveTypes.__String; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#String",
-                ResolveType.Default);*/
-            _integerType = _integerType ?? primitiveTypes.__Integer; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Integer",
-                ResolveType.Default);*/
-            _booleanType = _booleanType ?? primitiveTypes.__Boolean; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean",
-                ResolveType.Default);*/
-            _realType = _realType ?? primitiveTypes.__Real; /*uriResolver.Resolve(WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real",
-                ResolveType.Default);*/
+            _stringType = _stringType ?? primitiveTypes.__String;
+            _integerType = _integerType ?? primitiveTypes.__Integer;
+            _booleanType = _booleanType ?? primitiveTypes.__Boolean;
+            _realType = _realType ?? primitiveTypes.__Real;
             _dateTimeType = _dateTimeType ?? uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
@@ -663,13 +659,15 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var propertiesWithoutCollection =
                 (from p in properties
                     where !element.IsPropertyOfType<IReflectiveCollection>(p)
-                    let propertyContent = element.get<IReflectiveCollection>(p)
+                    let propertyContent = element.get(p)
                     where propertyContent != null
                     select new {propertyName = p, propertyContent}).ToList();
 
             if (propertiesWithoutCollection.Any())
             {
                 var detailForm = _factory.create(_formAndFields.__DetailForm);
+                detailForm.set(_FormAndFields._DetailForm.name, "Detail");
+                
                 var fields = new List<IElement>();
 
                 foreach (var pair in propertiesWithoutCollection)

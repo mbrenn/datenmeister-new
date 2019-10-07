@@ -43,13 +43,13 @@ namespace DatenMeister.WPF.Windows
 
         public string MessageText
         {
-            get => (string)GetValue(MessageTextProperty);
+            get => (string) GetValue(MessageTextProperty);
             set => SetValue(MessageTextProperty, value);
         }
 
         private static void OnMessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((LocateItemDialog)d).txtTitle.Text = (string)e.NewValue;
+            ((LocateItemDialog) d).txtTitle.Text = (string) e.NewValue;
         }
 
         public LocateItemDialog()
@@ -95,14 +95,16 @@ namespace DatenMeister.WPF.Windows
         private void AcceptAndCloseDialog()
         {
             SelectedElement = LocateElementControl.SelectedElement;
-            DialogResult = true;
-            
+            if (_asToolBox)
+                OnItemChosen(SelectedElement);
+            else
+                DialogResult = true;
+
             // Opens the dialog
             if (!(Owner is INavigationHost navigationHost))
-            {
                 throw new InvalidOperationException("Owner is not set or ist not a navigation host");
-            }
 
+            navigationHost.SetFocus();
             Close();
         }
 
@@ -112,27 +114,10 @@ namespace DatenMeister.WPF.Windows
             Close();
         }
 
-        private void Items_OnItemChosen(object sender, ItemEventArgs e)
-        {
-            if (e.Item != null)
-            {
-                if (AsToolBox)
-                {
-                    if (!(Owner is INavigationHost navigationHost))
-                    {
-                        throw new InvalidOperationException("Owner is not set or ist not a navigation host");
-                    }
-
-                    NavigatorForItems.NavigateToElementDetailView(
-                        navigationHost,
-                        e.Item);
-                }
-                else
-                {
-                    AcceptAndCloseDialog();
-                }
-            }
-        }
+        /// <summary>
+        /// Defines the event that is called when the user has chosen an item
+        /// </summary>
+        public event EventHandler<ItemEventArgs> ItemChosen;
 
         public void SelectWorkspace(string workspaceId)
         {
@@ -147,6 +132,11 @@ namespace DatenMeister.WPF.Windows
         public void SetAsRoot(IObject element)
         {
             LocateElementControl.SetAsRoot(element);
+        }
+
+        protected virtual void OnItemChosen(IObject chosenElement)
+        {
+            ItemChosen?.Invoke(this, new ItemEventArgs(chosenElement));
         }
     }
 }

@@ -54,7 +54,8 @@ namespace DatenMeister.WPF.Navigation
     }
 
     public class ItemEventArgs : EventArgs
-    {        /// <summary>
+    {
+        /// <summary>
         /// Initializes a new instance of the NewItemEventArgs
         /// </summary>
         /// <param name="item"></param>

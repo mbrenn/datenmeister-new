@@ -38,15 +38,24 @@ namespace DatenMeister.WPF.Navigation
             return null;
         }
 
-        public static void LocateAndOpen(INavigationHost mainWindow)
+        /// <summary>
+        /// Lets the user decide for an item and if he selects it, it will be opened
+        /// </summary>
+        /// <param name="navigationHost">The navigation host to be used</param>
+        public static void LocateAndOpen(INavigationHost navigationHost)
         {
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
                 AsToolBox = true,
-                Owner = mainWindow as Window
+                Owner = navigationHost as Window
             };
-            
+
+            dlg.ItemChosen += (x, y)
+                => NavigatorForItems.NavigateToElementDetailView(
+                    navigationHost,
+                    y.Item);
+
             dlg.Show();
         }
 

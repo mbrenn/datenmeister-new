@@ -47,6 +47,18 @@ namespace DatenMeister.Tests.Uml
                 Assert.That(zipCodeWithStateSpecialization, Is.Not.Null);
                 Assert.That(zipCodeWithStateSpecialization.Count, Is.EqualTo(1));
                 Assert.That(zipCodeWithStateSpecialization.Contains(zipCodesWithState), Is.True);
+
+                Assert.That(
+                    ClassifierMethods.IsSpecializedClassifierOf(
+                        zipCodesWithState,
+                        zipCodes),
+                    Is.True);
+
+                Assert.That(
+                    ClassifierMethods.IsSpecializedClassifierOf(
+                        zipCodes,
+                        zipCodesWithState),
+                    Is.False);
             }
         }
     }

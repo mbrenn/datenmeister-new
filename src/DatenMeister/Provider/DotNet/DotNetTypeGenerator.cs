@@ -26,6 +26,8 @@ namespace DatenMeister.Provider.DotNet
 
         public IUriResolver UriResolver => _targetExtent as IUriResolver;
 
+        private static ClassLogger _logger = new ClassLogger(typeof(DotNetTypeGenerator));
+
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
         /// </summary>
@@ -89,6 +91,12 @@ namespace DatenMeister.Provider.DotNet
                 if (generalization != null && generalization != typeof(object))
                 {
                     var generalizedClass = ((MofExtent) _targetExtent).ToResolvedElement(generalization);
+
+                    if (generalizedClass == null)
+                    {
+                        throw new InvalidOperationException($"Generalization for {type} -> {generalization} was not found");
+                    }
+
                     // We got a generalization
                     ClassifierMethods.AddGeneralization(_umlHost, umlClass, generalizedClass);
                 }

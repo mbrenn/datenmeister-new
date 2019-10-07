@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -25,7 +26,7 @@ namespace DatenMeister.Uml.Helper
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
             alreadyIn = alreadyIn ?? new HashSet<string>();
-            
+
             var propertyOwnedAttribute = _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
 
             if (classifier.isSet(propertyOwnedAttribute))
@@ -68,7 +69,6 @@ namespace DatenMeister.Uml.Helper
 
             var properties = GetPropertiesOfClassifier(classifier);
             return properties.FirstOrDefault(x => x.get<string>(_UML._CommonStructure._NamedElement.name) == propertyName);
-            
         }
 
         /// <summary>
@@ -86,31 +86,29 @@ namespace DatenMeister.Uml.Helper
 
             if (classifier.isSet(propertyGeneralization))
             {
-                // Check for generalizations
-                if (classifier.isSet(propertyGeneralization))
+                var generalizations = classifier.getOrDefault<IReflectiveCollection>(propertyGeneralization);
+                foreach (var generalization in generalizations.Cast<IElement>())
                 {
-                    var generalizations = classifier.get(propertyGeneralization) as IEnumerable;
-                    foreach (var generalization in generalizations.Cast<IElement>())
+                    var general = generalization.getOrDefault<IElement>(propertyGeneral);
+                    if (general == null)
                     {
-                        if (!(generalization.get(propertyGeneral) is IElement general))
-                        {
-                            throw new InvalidOperationException("Somehow I got a null.... Generalizations needs to be verified");
-                        }
+                        throw new InvalidOperationException(
+                            "Somehow I got a null.... Generalizations needs to be verified");
+                    }
 
-                        if (alreadyVisited.Contains(general))
-                        {
-                            continue;
-                        }
+                    if (alreadyVisited.Contains(general))
+                    {
+                        continue;
+                    }
 
-                        alreadyVisited.Add(general);
+                    alreadyVisited.Add(general);
 
-                        yield return general;
+                    yield return general;
 
-                        // Checks if the general also has generalization
-                        foreach (var childGeneral in GetGeneralizations(general, alreadyVisited))
-                        {
-                            yield return childGeneral;
-                        }
+                    // Checks if the general also has generalization
+                    foreach (var childGeneral in GetGeneralizations(general, alreadyVisited))
+                    {
+                        yield return childGeneral;
                     }
                 }
             }
@@ -135,27 +133,26 @@ namespace DatenMeister.Uml.Helper
                 throw new InvalidOperationException("Classifier is not known in metaextent");
             }
 
+            yield return element;
+
             if (workspace != null)
             {
                 // Go through each element within the found scope
-                foreach (var elementInExtent in AllDescendentsQuery.GetDescendents(workspace.GetAllElements()).OfType<IElement>())
+                foreach (var elementInExtent in
+                    AllDescendentsQuery.GetDescendents(workspace.GetAllElements())
+                        .OfType<IElement>()
+                        .Where(elementInExtent => classInstance.@equals(elementInExtent.getMetaClass()))
+                        .Where(elementInExtent => !visitedElements.Contains(elementInExtent)))
                 {
-                    if (classInstance.@equals(elementInExtent))
+                    visitedElements.Add(elementInExtent);
+
+                    // Checks, if the element contains a generalization
+                    if (GetGeneralizations(elementInExtent).Contains(element))
                     {
-                        if (visitedElements.Contains(elementInExtent)) continue;
-
-                        visitedElements.Add(elementInExtent);
-
-                        // Checks, if the element contains a generalization
-                        if (GetGeneralizations(classInstance).Contains(element))
-                        {
-                            yield return elementInExtent;
-                        }
+                        yield return elementInExtent;
                     }
                 }
             }
-
-            yield return element;
         }
 
         /// <summary>
@@ -168,7 +165,6 @@ namespace DatenMeister.Uml.Helper
         {
             return GetPropertiesOfClassifier(classifier).Select(x => x.get("name").ToString());
         }
-
 
         /// <summary>
         /// Gets or sets a value whether the given element is a derived type of the fullname.
@@ -231,6 +227,9 @@ namespace DatenMeister.Uml.Helper
         /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
         public static IElement AddGeneralization(_UML uml, IElement specializedClassifier, IElement generalizedClassifier)
         {
+            if (specializedClassifier == null) throw new ArgumentNullException(nameof(specializedClassifier));
+            if (generalizedClassifier == null) throw new ArgumentNullException(nameof(generalizedClassifier));
+
             if (GetGeneralizations(specializedClassifier).Contains(generalizedClassifier))
             {
                 // Nothing to do

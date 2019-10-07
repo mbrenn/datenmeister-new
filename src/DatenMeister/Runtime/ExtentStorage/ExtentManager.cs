@@ -220,7 +220,22 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             lock (_extentStorageData.LoadedExtents)
             {
-                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(_map.ConfigurationTypes, PackagePathTypesExtentLoaderConfig);
+                var list = new List<Type>();
+
+                // Captures the generalizations
+                foreach (var type in _map.ConfigurationTypes)
+                {
+                    var baseType = type;
+                    while (baseType != null && typeof(object) != baseType)
+                    {
+                        list.Add(baseType);
+                        baseType = baseType.BaseType;
+                    }
+                }
+
+                list = list.AsEnumerable().Reverse().Distinct().ToList();
+
+                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(list, PackagePathTypesExtentLoaderConfig);
             }
         }
 

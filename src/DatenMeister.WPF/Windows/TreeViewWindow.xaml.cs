@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
@@ -28,9 +27,9 @@ namespace DatenMeister.WPF.Windows
             InitializeComponent();
         }
 
-        public void SetCollection(IReflectiveCollection collection)
+        public void SetRootItem(IObject value)
         {
-            ObjectTreeView.ItemsSource = collection;
+            ObjectTreeView.ItemsSource = value;
         }
 
         public void AddPropertyForChild(params string[] properties)
@@ -77,7 +76,11 @@ namespace DatenMeister.WPF.Windows
         /// <param name="viewExtensions">Viewextensions being evaluated</param>
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
-            
+        }
+
+        public void UpdateView()
+        {
+            ObjectTreeView.UpdateView();
         }
     }
 }

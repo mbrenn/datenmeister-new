@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
@@ -33,11 +32,16 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets or sets the control
         /// </summary>
-        public ItemListViewControl Control
+        public UserControl Control
         {
-            get => _content.InnerContent.Content as ItemListViewControl;
+            get => _content.InnerContent.Content as UserControl;
             set => _content.InnerContent.Content = value;
         }
+
+        /// <summary>
+        /// Gets the enclosed control as INavigationGuest
+        /// </summary>
+        public INavigationGuest ControlAsNavigationGuest => Control as INavigationGuest;
 
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
@@ -53,7 +57,7 @@ namespace DatenMeister.WPF.Forms.Base
                     : null,
                 Extent = Control is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null
             };
-            
+
             helper.EvaluateExtensions(viewExtensions);
         }
     }

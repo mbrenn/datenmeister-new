@@ -34,7 +34,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the logger
         /// </summary>
-        private static readonly ClassLogger logger = new ClassLogger(typeof(DetailFormControl));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(DetailFormControl));
 
         /// <summary>
         /// Stores  the number of fields
@@ -56,13 +56,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement => NavigationHost.DetailElement;
+        public IObject DetailElement { get; set; }
 
         /// <summary>
         /// Gets or sets the container for the Detail Element. It will be used to
         /// delete the item, if required.
         /// </summary>
-        public IReflectiveCollection DetailElementContainer => NavigationHost.DetailElementContainer;
+        public IReflectiveCollection DetailElementContainer { get; set; }
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
@@ -77,7 +77,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the attached element which is allocated in the navigation host
         /// </summary>
-        public IElement AttachedElement => NavigationHost.AttachedElement;
+        public IElement AttachedElement {get; set; }
 
         /// <summary>
         ///     Gets the default size
@@ -97,10 +97,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public List<IDetailField> AttachedItemFields { get; } = new List<IDetailField>();
 
-        public IObject GetSelectedItem()
-        {
-            return DetailElement;
-        }
+        public IObject GetSelectedItem() => DetailElement;
 
         public IEnumerable<IObject> GetSelectedItems()
         {
@@ -110,16 +107,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets or sets the navigation host
         /// </summary>
-        public IDetailNavigationHost NavigationHost { get; set; }
-
-        /// <summary>
-        /// Defines the navigation host
-        /// </summary>
-        INavigationHost INavigationGuest.NavigationHost
-        {
-            get => NavigationHost;
-            set => NavigationHost = (IDetailNavigationHost) value;
-        }
+        public INavigationHost NavigationHost { get; set; }
 
         /// <summary>
         /// Gets the title for the control
@@ -133,12 +121,9 @@ namespace DatenMeister.WPF.Forms.Base
                     return _internalTitle;
                 }
 
-                if (DetailElement == null)
-                {
-                    return "New item";
-                }
-
-                return $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
+                return DetailElement == null
+                    ? "New item"
+                    : $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
             }
 
             set => _internalTitle = value;
@@ -225,7 +210,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var temporaryExtent = InMemoryProvider.TemporaryExtent;
                     var factory = new MofFactory(temporaryExtent);
                     EffectiveForm = dlg.GetCurrentContentAsMof(factory);
-                    UpdateContent();
+                    UpdateView();
                 };
 
                 dlg.ShowDialog();
@@ -251,7 +236,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var pasteContent = new PasteToClipboardCommand(element);
                 pasteContent.Execute();
-                UpdateContent();
+                UpdateView();
             }
 
             void ShowAsXmi(IObject element)
@@ -306,10 +291,24 @@ namespace DatenMeister.WPF.Forms.Base
             OnViewDefined();
         }
 
+        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection collection = null)
+        {
+            DetailElement = value;
+            EffectiveForm = detailForm;
+            DetailElementContainer = collection;
+            UpdateView();
+        }
+
+        public void SetForm(IObject detailForm)
+        {
+            EffectiveForm = detailForm;
+            UpdateView();
+        }
+
         /// <summary>
         ///     Updates the content
         /// </summary>
-        public void UpdateContent()
+        public void UpdateView()
         {
             RefreshViewDefinition();
 
@@ -414,11 +413,11 @@ namespace DatenMeister.WPF.Forms.Base
                 if (!anyFocused && flags.CanBeFocused && contentBlock != null)
                 {
                     // For what ever, we have to set the focus via the invoking and not directly
-                    Dispatcher.BeginInvoke((Action) (() =>
+                    Dispatcher?.BeginInvoke((Action) (() =>
                     {
                         if (!contentBlock.Focus())
                         {
-                            logger.Debug("No keyboard focus set");
+                            Logger.Debug("No keyboard focus set");
                         }
                     }));
 
@@ -450,9 +449,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var panel = new StackPanel();
                 foreach (var button in buttons)
-                {
                     panel.Children.Add(button);
-                }
 
                 CreateRowForField(new TextBlock {Text = "Actions:"}, panel);
             }
@@ -470,8 +467,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (selectable)
             {
-                valueTextBlock.ContextMenu =
-                    new ContextMenu();
+                valueTextBlock.ContextMenu = new ContextMenu();
 
                 var copyToClipboardAdd = new MenuItem {Header = "Copy to Clipboard"};
                 valueTextBlock.ContextMenu.Items.Add(copyToClipboardAdd);
@@ -578,18 +574,6 @@ namespace DatenMeister.WPF.Forms.Base
                 });
             }
 
-            AddGenericButton("Cancel", () =>
-            {
-                var window = Window.GetWindow(this);
-                if (window is DetailFormWindow detailFormWindow)
-                {
-                    detailFormWindow.OnCancelled(DetailElement, AttachedElement);
-                }
-
-                window?.Close();
-
-            }).IsCancel = true;
-
             AddGenericButton(saveText, () =>
             {
                 try
@@ -597,14 +581,6 @@ namespace DatenMeister.WPF.Forms.Base
                     StoreDialogContentIntoElement(DetailElement);
 
                     OnElementSaved();
-                    var window = Window.GetWindow(this);
-                    if (window is DetailFormWindow detailFormWindow)
-                    {
-                        detailFormWindow.OnSaved(DetailElement, AttachedElement);
-                    }
-
-                    window?.Close();
-
                 }
                 catch (Exception exc)
                 {
@@ -629,10 +605,8 @@ namespace DatenMeister.WPF.Forms.Base
                 _fieldUiElement = fieldUiElement;
             }
 
-            public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
-            {
+            public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags) =>
                 throw new NotImplementedException();
-            }
 
             public void CallSetAction(IObject element)
             {
@@ -685,7 +659,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var button = new ViewButton {Content = name};
 
-            button.Pressed += (x, y) => { onPressed(); };
+            button.Pressed += (x, y) => onPressed();
             ButtonBar.Children.Add(button);
             return button;
         }

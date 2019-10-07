@@ -75,7 +75,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     return result;
                 }
             };
-            
+
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Add Workspace",
@@ -320,7 +320,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
             var package =
-                packageMethods.GetPackagedObjects(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
+                packageMethods.GetPackageStructure(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
             dlg.SetAsRoot(package);
 
             // User has selected the type

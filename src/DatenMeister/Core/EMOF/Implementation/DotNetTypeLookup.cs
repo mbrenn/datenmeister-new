@@ -72,8 +72,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             lock (_cacheObjectToId)
             {
-                string id;
-                if (!_cacheObjectToId.TryGetValue(value, out id))
+                if (!_cacheObjectToId.TryGetValue(value, out var id))
                 {
                     id = Guid.NewGuid().ToString();
                     _cacheObjectToId[value] = id;

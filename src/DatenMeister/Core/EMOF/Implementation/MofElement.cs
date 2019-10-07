@@ -52,9 +52,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">Extent to be set as start for references</param>
         /// <returns>The element itself for chaining</returns>
         public MofElement SetReferencedExtent(IUriExtent extent)
-        {
-            return SetReferencedExtent((MofExtent) extent);
-        }
+            => SetReferencedExtent((MofExtent) extent);
 
         /// <inheritdoc />
         public IElement metaclass => getMetaClass();
@@ -70,8 +68,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (_cachedMetaClass != null)
             {
                 return _cachedMetaClass;
-
             }
+
             var uri = ProviderObject.MetaclassUri;
             if (string.IsNullOrEmpty(uri))
             {
@@ -79,11 +77,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = (ReferencedExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses);
-            if (result == null)
-            {
-                result = new MofObjectShadow(uri);
-            }
+            var result = (ReferencedExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses)
+                         ?? new MofObjectShadow(uri);
 
             _cachedMetaClass = result;
             return result;
@@ -104,7 +99,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public IObject Container
         {
-            set => ProviderObject.SetContainer(((MofObject)value).ProviderObject);
+            set => ProviderObject.SetContainer(((MofObject) value).ProviderObject);
         }
 
         /// <summary>

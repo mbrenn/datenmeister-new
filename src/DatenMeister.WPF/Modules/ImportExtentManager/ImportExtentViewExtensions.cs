@@ -93,21 +93,17 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
                     var itemCountBefore = sourceExtent.elements().Count();
-                    _plugin.PerformImport(sourceExtent, itemInExtentList.Items);
+                    _plugin.PerformImport(sourceExtent, (itemInExtentList.RootItem as IExtent)?.elements());
                     var itemCountAfter = sourceExtent.elements().Count();
 
                     MessageBox.Show($"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
-                };
+                }
             }
 
             async void ImportNewExtent(IExtent extent)
             {
                 var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(viewExtensionTargetInformation.NavigationHost);
-                if (result == null)
-                {
-                    return;
-                }
-                else
+                if (result != null)
                 {
                     // Now, we got the item extent...
                     var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
@@ -115,10 +111,11 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     if (loadedExtent != null)
                     {
                         var itemCountBefore = loadedExtent.elements().Count();
-                        _plugin.PerformImport(loadedExtent, itemInExtentList.Items);
+                        _plugin.PerformImport(loadedExtent, (itemInExtentList.RootItem as IExtent)?.elements());
                         var itemCountAfter = loadedExtent.elements().Count();
 
-                        MessageBox.Show($"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
+                        MessageBox.Show(
+                            $"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
                     }
                     else
                     {

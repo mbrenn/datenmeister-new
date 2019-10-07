@@ -29,18 +29,11 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+            => GetEnumerator();
 
         /// <inheritdoc />
         public IEnumerator<object> GetEnumerator()
-        {
-            foreach (var item in Enumerate())
-            {
-                yield return item;
-            }
-        }
+            => Enumerate().GetEnumerator();
 
         /// <summary>
         /// Performs an enumeration of all members of the collection
@@ -135,9 +128,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public int size()
-        {
-            return GetPropertyAsEnumerable().Count();
-        }
+            => GetPropertyAsEnumerable().Count();
 
         /// <inheritdoc />
         public void add(int index, object value)
@@ -151,7 +142,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object get(int index)
         {
-            var providerObject =  GetPropertyAsEnumerable().ElementAt(index);
+            var providerObject = GetPropertyAsEnumerable().ElementAt(index);
             return MofObject.ConvertToMofObject(MofObject, _property, providerObject);
         }
 

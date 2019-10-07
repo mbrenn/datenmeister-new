@@ -19,10 +19,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             var element = extent.TypeLookup.ToElement(type);
             if (string.IsNullOrEmpty(element))
-            {
                 return null;
-            }
-            
+
             return extent.GetUriResolver().Resolve(element, ResolveType.Default);
         }
     }

@@ -97,6 +97,10 @@ namespace DatenMeister.Provider.DotNet
                 var properties = new List<IObject>();
                 foreach (var property in type.GetProperties())
                 {
+                    // If property is inherited, do not include the property
+                    if (property.DeclaringType != type)
+                        continue;
+
                     var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
                     if (umlProperty is MofElement propertyAsElement)
                     {

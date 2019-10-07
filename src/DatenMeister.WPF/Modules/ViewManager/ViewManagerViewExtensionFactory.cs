@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
         {
             var navigationGuest = viewExtensionTargetInformation.NavigationGuest;
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
-            var detailFormControl = viewExtensionTargetInformation.NavigationHost as DetailFormWindow;
+            var detailFormControl = viewExtensionTargetInformation.NavigationGuest as DetailFormControl;
 
             if (viewExtensionTargetInformation.NavigationHost != null)
             {
@@ -49,35 +49,38 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
             if (itemExplorerControl != null || detailFormControl != null)
             {
-                var openView = new ExtentMenuButtonDefinition(
-                    "Change Form",
-                    async x =>
-                    {
-                        var action = await Navigator.CreateDetailWindow(
-                            viewExtensionTargetInformation.NavigationHost,
-                            new NavigateToItemConfig
-                            {
-                                DetailElement = InMemoryObject.CreateEmpty(),
-                                FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
-                                    .element("#ViewManagerFindView")
-                            });
-
-                        if (action.Result == NavigationResult.Saved && action.DetailElement is IElement asElement)
+                if (detailFormControl != null)
+                {
+                    var openView = new ExtentMenuButtonDefinition(
+                        "Change Form",
+                        async x =>
                         {
-                            var formDefinition = asElement.getOrDefault<IElement>("form");
+                            var action = await Navigator.CreateDetailWindow(
+                                viewExtensionTargetInformation.NavigationHost,
+                                new NavigateToItemConfig
+                                {
+                                    DetailElement = InMemoryObject.CreateEmpty(),
+                                    FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
+                                        .element("#ViewManagerFindView")
+                                });
 
-                            itemExplorerControl?.AddTab(
-                                itemExplorerControl.Items,
-                                formDefinition,
-                                null);
+                            if (action.Result == NavigationResult.Saved && action.DetailElement is IElement asElement)
+                            {
+                                var formDefinition = asElement.getOrDefault<IElement>("form");
 
-                            detailFormControl?.SetForm(formDefinition);
-                        }
-                    },
-                    "",
-                    NavigationCategories.Form + ".Definition");
+                                itemExplorerControl?.AddTab(
+                                    itemExplorerControl.RootItem,
+                                    formDefinition,
+                                    null);
 
-                yield return openView;
+                                detailFormControl.SetForm(formDefinition);
+                            }
+                        },
+                        "",
+                        NavigationCategories.Form + ".Definition");
+
+                    yield return openView;
+                }
 
                 if (itemExplorerControl != null)
                 {
@@ -95,7 +98,6 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             dlg.UpdateContent(itemExplorerControl.EffectiveForm);
 
                             dlg.ShowDialog();
-
                         },
                         "",
                         NavigationCategories.Form + ".Definition");

@@ -25,7 +25,7 @@ namespace DatenMeister.WPF.Windows
     /// <summary>
     ///     Interaktionslogik für DetailFormWindow.xaml
     /// </summary>
-    public partial class DetailFormWindow : Window, IDetailNavigationHost
+    public partial class DetailFormWindow : Window, INavigationHost
     {
         /// <summary>
         /// Defines the logger for the DetailFormWindow
@@ -56,27 +56,6 @@ namespace DatenMeister.WPF.Windows
         private ViewDefinition _viewDefinition;
 
         /// <summary>
-        /// Stores the effective form
-        /// </summary>
-        public IElement EffectiveForm { get; private set; }
-
-        /// <summary>
-        /// Stores the form element
-        /// </summary>
-        public IObject DetailElement { get; private set; }
-
-        /// <summary>
-        /// Stores the attached element
-        /// </summary>
-        public IElement AttachedElement { get; }
-
-        /// <summary>
-        /// Gets or sets the container element in which the DetailElement is allocated to.
-        /// This information is used to delete the item if required
-        /// </summary>
-        public IReflectiveCollection DetailElementContainer { get; set; }
-
-        /// <summary>
         /// Gets a helper for menu
         /// </summary>
         private MenuHelper MenuHelper { get; }
@@ -98,25 +77,8 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public UIElement MainControl => MainContent.Content as UIElement;
 
-        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
-        {
-            return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
-        }
-
-        /// <summary>
-        /// Opens the form by creating the inner dialog
-        /// </summary>
-        /// <param name="element"></param>
-        /// <param name="viewDefinition"></param>
-        /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject element, ViewDefinition viewDefinition, IReflectiveCollection container = null)
-        {
-            DetailElement = element ?? InMemoryObject.CreateEmpty();
-            DetailElementContainer = container;
-            _viewDefinition = viewDefinition;
-
-            CreateDetailForm();
-        }
+        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode) 
+            => Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
 
         /// <summary>
         /// Rebuilds the navigation by going through all view extensions
@@ -157,7 +119,7 @@ namespace DatenMeister.WPF.Windows
             navigationGuest?.EvaluateViewExtensions(extensionList);
 
             // The menuhelper itself is asked to work upon the view
-            MenuHelper.Item = DetailElement;
+            MenuHelper.Item = ( navigationGuest as IItemNavigationGuest)?.Item;
             MenuHelper.ShowApplicationItems = true;
             MenuHelper.NavigationScope = NavigationScope.Application | NavigationScope.Item;
             MenuHelper.EvaluateExtensions(extensionList);
@@ -189,20 +151,13 @@ namespace DatenMeister.WPF.Windows
         public void SetFocus()
         {
             if (MainContent == null)
-            {
                 Focus();
-            }
             else
-            {
                 MainContent.Focus();
-            }
         }
 
         /// <inheritdoc />
-        public Window GetWindow()
-        {
-            return this;
-        }
+        public Window GetWindow() => this;
 
         private void DetailFormWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -231,15 +186,11 @@ namespace DatenMeister.WPF.Windows
 
                 var name = NamedElementMethods.GetName(control.DetailElement);
                 if (!string.IsNullOrEmpty(name))
-                {
                     Title = $"Edit element: {name}";
-                }
             }
 
             if (element is IHasTitle title)
-            {
                 Title = title.Title;
-            }
         }
 
         /// <summary>
@@ -280,8 +231,8 @@ namespace DatenMeister.WPF.Windows
             _finalEventsThrown = true;
             Saved?.Invoke(this,
                 new ItemEventArgs(
-                detailElement,
-                attachedElement));
+                    detailElement,
+                    attachedElement));
         }
 
         public void OnCancelled(IObject detailElement, IObject attachedElement)
@@ -307,13 +258,15 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Sets the form and updates the content of the detail form
+        /// Opens the form by creating the inner dialog
         /// </summary>
-        /// <param name="formDefinition"></param>
-        public void SetForm(IElement formDefinition)
+        /// <param name="element"></param>
+        /// <param name="viewDefinition"></param>
+        /// <param name="container">Container being used when the item is added</param>
+        public void SetContent(IObject element, ViewDefinition viewDefinition, IReflectiveCollection container = null)
         {
-            _viewDefinition = new ViewDefinition(formDefinition);
-            CreateDetailForm();
+            element = element ?? InMemoryObject.CreateEmpty();
+            CreateDetailForm(element, viewDefinition, container);
         }
 
         /// <summary>
@@ -330,23 +283,44 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm()
+        private void CreateDetailForm(IObject detailElement, ViewDefinition viewDefinition, IReflectiveCollection container = null)
         {
-            QueryEffectiveForm();
-            if (EffectiveForm != null)
+            _viewDefinition = viewDefinition;
+            IObject effectiveForm = viewDefinition.Element;
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+
+            if (_viewDefinition.Mode == ViewDefinitionMode.Default)
             {
-                var control = new DetailFormControl
+                effectiveForm = viewLogic.GetDetailForm(detailElement, detailElement.GetUriExtentOf(), _viewDefinition.Mode);
+            }
+            else if (_viewDefinition.Mode == ViewDefinitionMode.Specific)
+            {
+                effectiveForm = _viewDefinition.Element;
+            }
+
+            // Clones the EffectiveForm
+            effectiveForm = ObjectCopier.Copy(new MofFactory(effectiveForm), effectiveForm);
+
+            if (effectiveForm != null)
+            {
+                var control = new DetailFormControl();
+                control.SetContent(detailElement, effectiveForm, container);
+                control.UpdateView();
+                control.ElementSaved += (x, y) =>
                 {
-                    AllowNewProperties =
-                        EffectiveForm.getOrNull<bool>(nameof(_FormAndFields._DetailForm.allowNewProperties)) == true,
-                    NavigationHost = this,
-                    EffectiveForm = EffectiveForm
+                    OnSaved(control.DetailElement, control.AttachedElement);
+                    Close();
                 };
 
-                control.UpdateContent();
+                control.AddGenericButton("Cancel", () =>
+                {
+                    OnCancelled(control.DetailElement, control.AttachedElement);
+                    Close();
+                }).IsCancel = true;
+
                 SetMainContent(control);
 
-                var title = EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.title);
+                var title = effectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.title);
                 if (!string.IsNullOrEmpty(title))
                 {
                     Title = title;
@@ -354,26 +328,6 @@ namespace DatenMeister.WPF.Windows
 
                 RebuildNavigation();
             }
-        }
-
-        /// <summary>
-        /// Sets the effective form by using the viewdefinition
-        /// </summary>
-        private void QueryEffectiveForm()
-        {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-
-            if (_viewDefinition.Mode == ViewDefinitionMode.Default)
-            {
-                EffectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), _viewDefinition.Mode);
-            }
-            else if (_viewDefinition.Mode == ViewDefinitionMode.Specific)
-            {
-                EffectiveForm = _viewDefinition.Element;
-            }
-
-            // Clones the EffectiveForm
-            EffectiveForm = ObjectCopier.Copy(new MofFactory(EffectiveForm), EffectiveForm);
         }
     }
 }

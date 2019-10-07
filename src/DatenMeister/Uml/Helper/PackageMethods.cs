@@ -29,6 +29,27 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
+        /// Gets a package by following the path.
+        /// </summary>
+        /// <param name="rootElements">Collection in which the package shall be created</param>
+        /// <param name="packagePath">Path to the package</param>
+        /// <returns>Found element</returns>
+        public IElement GetPackageStructure(
+            IReflectiveCollection rootElements,
+            string packagePath)
+        {
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent) rootElements).Extent, MetaRecursive.Recursively);
+            return GetOrCreatePackageStructure(
+                rootElements,
+                new MofFactory(rootElements),
+                packagePath,
+                _UML._CommonStructure._NamedElement.name,
+                _UML._Packages._Package.packagedElement,
+                uml.Packages.__Package,
+                false);
+        }
+
+        /// <summary>
         /// Gets or creates a package by following the path.
         /// </summary>
         /// <param name="rootElements">Collection in which the package shall be created</param>
@@ -80,7 +101,8 @@ namespace DatenMeister.Uml.Helper
             string packagePath,
             string nameProperty,
             string childProperty,
-            IElement metaClass = null)
+            IElement metaClass = null,
+            bool flagCreate = true)
         {
             if (rootElements == null) throw new ArgumentNullException(nameof(rootElements));
 
@@ -113,16 +135,23 @@ namespace DatenMeister.Uml.Helper
                 // Creates the child element
                 if (childElement == null)
                 {
-                    childElement = factory.create(metaClass);
-                    childElement.set(nameProperty, elementName);
-
-                    // Set ID, for the new element
-                    if (childElement is ICanSetId cansetId)
+                    if (flagCreate)
                     {
-                        cansetId.Id = id;
-                    }
+                        childElement = factory.create(metaClass);
+                        childElement.set(nameProperty, elementName);
 
-                    rootElements.add(childElement);
+                        // Set ID, for the new element
+                        if (childElement is ICanSetId cansetId)
+                        {
+                            cansetId.Id = id;
+                        }
+
+                        rootElements.add(childElement);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
 
                 // Sets and finds the child property by the given name
@@ -244,7 +273,7 @@ namespace DatenMeister.Uml.Helper
                 var pseudoProvider = new XmiProvider(document);
                 var pseudoExtent = new MofUriExtent(pseudoProvider)
                 {
-                    Workspace = targetExtent.GetWorkspace()
+                    Workspace = (Workspace) targetExtent.GetWorkspace()
                 };
 
                 var sourcePackage = GetOrCreatePackageStructure(

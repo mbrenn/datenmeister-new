@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
@@ -24,14 +23,13 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            _extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
-            SetItems(_extent.elements());
+            Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            SetRootItem(Extent);
 
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(_extent, (x,y) =>
-            {
-                Tabs.FirstOrDefault()?.Control.UpdateContent();
-            });
+            EventHandle = eventManager.RegisterFor(Extent,
+                (x,y) =>
+                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView());
         }
 
         /// <summary>
@@ -40,23 +38,23 @@ namespace DatenMeister.WPF.Forms.Lists
         protected override void OnRecreateViews()
         {
             ViewDefinition view;
-            
+
             var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
             if (selectedItemMetaClass != null
                 && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
             {
                 var workspaceId = SelectedPackage.get("id")?.ToString();
-                view = WorkspaceExtentFormGenerator.RequestFormForExtents(_extent, workspaceId, NavigationHost);
+                view = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, workspaceId, NavigationHost);
             }
             else
             {
-                view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(_extent, NavigationHost);
+                view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(Extent, NavigationHost);
             }
 
             PrepareNavigation(view);
 
             // Sets the workspaces
-            EvaluateForm(SelectedItems, view);
+            EvaluateForm(SelectedItem, view);
         }
 
         /// <summary>

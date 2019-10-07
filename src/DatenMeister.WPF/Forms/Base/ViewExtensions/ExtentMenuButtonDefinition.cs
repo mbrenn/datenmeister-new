@@ -1,5 +1,4 @@
 using System;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 
 namespace DatenMeister.WPF.Forms.Base.ViewExtensions

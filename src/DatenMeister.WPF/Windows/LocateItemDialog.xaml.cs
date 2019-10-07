@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
@@ -130,9 +129,9 @@ namespace DatenMeister.WPF.Windows
             LocateElementControl.SelectExtent(extentUri);
         }
 
-        public void SetAsRoot(IReflectiveCollection package)
+        public void SetAsRoot(IObject element)
         {
-            LocateElementControl.SetAsRoot(package);
+            LocateElementControl.SetAsRoot(element);
         }
 
         protected virtual void OnItemChosen(IObject chosenElement)

@@ -34,15 +34,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the workspace to which the extent is allocated
         /// </summary>
-        protected Workspace _Workspace { get; set; }
-
-        /// <summary>
-        /// Gets or sets the workspace to which the extent is allocated
-        /// </summary>
-        public IWorkspace Workspace
+        public Workspace Workspace
         {
-            get => _Workspace;
-            set => _Workspace = (Workspace) value;
+            get;
+            set;
         }
 
         /// <summary>
@@ -111,7 +106,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             TypeLookup = new DotNetTypeLookup();
             MetaXmiElement = new MofObject(
                 new XmiProviderObject(new XElement("meta"), xmiProvider),
-                    this);
+                this);
         }
 
         /// <inheritdoc />
@@ -182,7 +177,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
             {
-
                 var nullObject = Provider.Get(null)??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
@@ -196,16 +190,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool useContainment()
-        {
-            return false;
-        }
+        public bool useContainment() => false;
 
         /// <inheritdoc />
-        public IReflectiveSequence elements()
-        {
-            return new ExtentReflectiveSequence(this);
-        }
+        public IReflectiveSequence elements() => new ExtentReflectiveSequence(this);
 
         /// <summary>
         /// Adds an extent as a meta extent, so it will also be used to retrieve the element
@@ -266,7 +254,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            var resolve = ResolveDotNetTypeByMetaWorkspaces(metaclassUri, _Workspace);
+            var resolve = ResolveDotNetTypeByMetaWorkspaces(metaclassUri, Workspace);
             return resolve;
         }
 
@@ -340,7 +328,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // If still not found, look into the meta workspaces. Nevertheless, no recursion
-            var metaWorkspaces = _Workspace?.MetaWorkspaces;
+            var metaWorkspaces = Workspace?.MetaWorkspaces;
             if (metaWorkspaces != null)
             {
                 foreach (var metaWorkspace in metaWorkspaces)
@@ -357,7 +345,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return null;
-
         }
 
         /// <summary>
@@ -367,9 +354,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
         public object ConvertForSetting(object value)
-        {
-            return ConvertForSetting(value, this, null);
-        }
+            => ConvertForSetting(value, this, null);
 
         /// <summary>
         /// Converts the given value to an element that can be used be for the provider object

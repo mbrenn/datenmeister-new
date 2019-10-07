@@ -29,7 +29,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
             if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)
             {
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
-                var extent = itemInExtentList.Items.GetAssociatedExtent();
+                var extent = itemInExtentList.RootItem.GetExtentOf();
                 var extentType = extent?.GetExtentType();
                 if (extentType != "Uml.Classes")
                 {

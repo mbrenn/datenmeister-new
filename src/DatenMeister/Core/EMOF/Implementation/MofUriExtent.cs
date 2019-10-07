@@ -152,7 +152,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if ((resolveType & ResolveType.NoWorkspace) == 0)
                 {
-                    var workspaceResult = _Workspace?.Resolve(uri, resolveType, false);
+                    var workspaceResult = Workspace?.Resolve(uri, resolveType, false);
                     if (workspaceResult != null)
                     {
                         return workspaceResult;
@@ -174,7 +174,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
                 }
 
-                var workspaceResult = ResolveByMetaWorkspaces(uri, _Workspace, alreadyVisited);
+                var workspaceResult = ResolveByMetaWorkspaces(uri, Workspace, alreadyVisited);
                 if (workspaceResult != null)
                 {
                     return workspaceResult;

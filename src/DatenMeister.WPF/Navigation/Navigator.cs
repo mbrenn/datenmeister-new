@@ -124,8 +124,7 @@ namespace DatenMeister.WPF.Navigation
 
             var detailFormWindow = new DetailFormWindow
             {
-                Owner = navigationHost.GetWindow(),
-                DetailElementContainer = navigateToItemConfig.DetailElementContainer
+                Owner = navigationHost.GetWindow()
             };
 
             detailFormWindow.SetContent(
@@ -170,10 +169,8 @@ namespace DatenMeister.WPF.Navigation
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
 
-            if (parentWindow == null)
-            {
+            if (parentWindow == null) 
                 throw new InvalidOperationException("No parent window is not allowed");
-            }
 
             var userControl = factoryMethod();
             result.NavigationHost = parentWindow as INavigationHost;
@@ -225,7 +222,7 @@ namespace DatenMeister.WPF.Navigation
                         task.SetResult(result);
                     };
 
-                    asDetailFormControl.UpdateContent();
+                    asDetailFormControl.UpdateView();
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
 
                     detailFormWindow.Show();

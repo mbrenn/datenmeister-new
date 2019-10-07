@@ -138,22 +138,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IObject createFromString(IElement dataType, string value)
-        {
-            throw new NotImplementedException();
-        }
+        public IObject createFromString(IElement dataType, string value) 
+            => throw new NotImplementedException();
 
         /// <inheritdoc />
-        public string convertToString(IElement dataType, IObject value)
-        {
-            throw new NotImplementedException();
-        }
+        public string convertToString(IElement dataType, IObject value) 
+            => throw new NotImplementedException();
 
 
-        public static MofFactory CreateByExtent(IUriExtent loadedExtent)
-        {
-            return new MofFactory(loadedExtent);
-        }
+        public static MofFactory CreateByExtent(IUriExtent loadedExtent) 
+            => new MofFactory(loadedExtent);
 
         /// <summary>
         /// Creates an element within the same extent as the given

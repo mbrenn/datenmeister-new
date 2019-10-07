@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
 {

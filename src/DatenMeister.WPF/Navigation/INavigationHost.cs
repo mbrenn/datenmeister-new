@@ -43,18 +43,4 @@ namespace DatenMeister.WPF.Navigation
         /// <returns></returns>
         Window GetWindow();
     }
-
-    public interface IDetailNavigationHost : INavigationHost
-    {
-        IObject DetailElement { get; }
-
-        IElement AttachedElement { get; }
-
-        IElement EffectiveForm { get; }
-
-        /// <summary>
-        /// Gets the detail element container
-        /// </summary>
-        IReflectiveCollection DetailElementContainer { get; }
-    }
 }

@@ -87,7 +87,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="path">Path to be used to loaded the extent configuration</param>
         public void StoreConfiguration()
-        {                // Skip saving, if loading has failed
+        {
+            // Skip saving, if loading has failed
             if (ExtentStorageData.FailedLoading)
             {
                 Logger.Warn(

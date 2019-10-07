@@ -23,31 +23,32 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public void LoadExcel()
         {
-            var dm = GiveMe.DatenMeister();
-            var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"));
-
-            Console.WriteLine(excelExtent.ToString());
-            foreach (var sheet in excelExtent.GetRootObjects())
+            using(var dm = GiveMe.DatenMeister())
             {
-                var allProperties = ((IEnumerable<object>)sheet.GetProperty("items")).First() as IProviderObject;
-                Assert.That(sheet.GetProperty("name").ToString(), Is.EqualTo("Tabelle1"));
-                Assert.That(allProperties, Is.Not.Null);
+                var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"));
 
-                Assert.That(allProperties.GetProperties().Count(), Is.EqualTo(2));
-                Assert.That(allProperties.GetProperties().ElementAt(0), Is.EqualTo("Wert"));
-
-                foreach (var item in (IEnumerable<object>)sheet.GetProperty("items"))
+                Console.WriteLine(excelExtent.ToString());
+                foreach (var sheet in excelExtent.GetRootObjects())
                 {
-                    var itemAsElement = (IProviderObject)item;
+                    var allProperties = ((IEnumerable<object>) sheet.GetProperty("items")).First() as IProviderObject;
+                    Assert.That(sheet.GetProperty("name").ToString(), Is.EqualTo("Tabelle1"));
+                    Assert.That(allProperties, Is.Not.Null);
 
-                    var value1 = Convert.ToInt32(itemAsElement.GetProperty("Wert"));
-                    var value2 = Convert.ToInt32(itemAsElement.GetProperty("Quadratzahl"));
-                    Assert.That(value1 * value1 - value2, Is.EqualTo(0));
+                    Assert.That(allProperties.GetProperties().Count(), Is.EqualTo(2));
+                    Assert.That(allProperties.GetProperties().ElementAt(0), Is.EqualTo("Wert"));
+
+                    foreach (var item in (IEnumerable<object>) sheet.GetProperty("items"))
+                    {
+                        var itemAsElement = (IProviderObject) item;
+
+                        var value1 = Convert.ToInt32(itemAsElement.GetProperty("Wert"));
+                        var value2 = Convert.ToInt32(itemAsElement.GetProperty("Quadratzahl"));
+                        Assert.That(value1 * value1 - value2, Is.EqualTo(0));
+                    }
+
+                    Assert.That(((IEnumerable<object>) sheet.GetProperty("items")).Count(), Is.GreaterThan(10));
                 }
-
-                Assert.That(((IEnumerable<object>)sheet.GetProperty("items")).Count(), Is.GreaterThan(10));
             }
         }
 
@@ -80,7 +81,6 @@ namespace DatenMeister.Tests.Excel
                 dm.UnuseDatenMeister();
             }
 
-
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
@@ -97,7 +97,6 @@ namespace DatenMeister.Tests.Excel
                 Assert.That(value2, Is.EqualTo(4));
             }
         }
-
 
         [Test]
         public void PerformExcelImport()

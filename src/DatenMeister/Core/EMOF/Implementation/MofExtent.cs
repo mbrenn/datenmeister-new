@@ -129,7 +129,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
-                return MofObject.ConvertToMofObject(null, property, nullObject.GetProperty(property));
+                return MofObject.ConvertToMofObject(
+                    new MofObject(nullObject, this),
+                    property,
+                    nullObject.GetProperty(property));
             }
 
             return MetaXmiElement.get(property);

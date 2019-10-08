@@ -55,7 +55,7 @@ namespace DatenMeister.Runtime
 
         public static void AddDefaultTypePackages(this IExtent extent, IEnumerable<IElement> defaultTypePackages)
         {
-            var found = GetDefaultTypePackages(extent).ToList();
+            var found = GetDefaultTypePackages(extent)?.ToList() ?? new List<IElement>();
             foreach (var newPackage in defaultTypePackages.Where(newPackage => !found.Contains(newPackage)))
             {
                 found.Add(newPackage);

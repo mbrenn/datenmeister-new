@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var xmlExtent = new XmiProvider();
             var uriExtent = new MofUriExtent(xmlExtent, "datenmeister:///test/");
             var mofFactory = new MofFactory(uriExtent);
-            
+
             var xmlElement = mofFactory.create(null);
             xmlElement.set("X", "y");
             xmlElement.set("Person", mofElement);
@@ -94,7 +94,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var mofObject3 = mofFactory.create(null);
             var mofObject4 = mofFactory.create(null);
 
-            var mofContainer = mofFactory.create(null); ;
+            var mofContainer = mofFactory.create(null);
 
             mofContainer.set("items", new List<object>());
             mofContainer.set("items2", new List<object>());
@@ -123,12 +123,12 @@ namespace DatenMeister.Tests.Xmi.EMOF
             mofReflectiveSequence.add(mofObject1);
             mofReflectiveSequence.add(mofObject2);
 
-
             var otherMofReflectiveSequence = mofContainer.get("items2") as IReflectiveSequence;
             Assert.That(otherMofReflectiveSequence, Is.Not.Null);
+            Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(0));
             otherMofReflectiveSequence.addAll(mofReflectiveSequence);
-            Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(4));
-            Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(4));
+            Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(2));
+            Assert.That(otherMofReflectiveSequence.ToArray().Count, Is.EqualTo(2));
 
             otherMofReflectiveSequence.clear();
             Assert.That(otherMofReflectiveSequence.size(), Is.EqualTo(0));

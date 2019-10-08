@@ -150,6 +150,13 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (value is XmiProviderObject valueAsXmlObject)
             {
+                if (valueAsXmlObject.XmlNode.Parent != null)
+                {
+                    valueAsXmlObject = new XmiProviderObject(
+                        new XElement(valueAsXmlObject.XmlNode),
+                        (XmiProvider) Provider);
+                }
+
                 valueAsXmlObject.XmlNode.Name = property;
                 return valueAsXmlObject.XmlNode;
             }

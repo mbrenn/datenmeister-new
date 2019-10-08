@@ -64,7 +64,7 @@ namespace DatenMeister.Runtime
         public static IExtent GetAssociatedExtent(this IReflectiveCollection collection)
         {
             var mofReflection = collection as IHasExtent ??
-                                throw new ArgumentException("Not of type IHasExtent", nameof(collection));
+                                throw new ArgumentException(@"Not of type IHasExtent", nameof(collection));
             return mofReflection.Extent;
         }
     }

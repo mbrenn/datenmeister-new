@@ -37,20 +37,31 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="extent">Type of the extent to be set</param>
         public static string GetExtentType(this IExtent extent)
-        {
-            return extent?.GetOrDefault(ExtentType)?.ToString() ?? string.Empty;
-        }
+            => extent?.GetOrDefault(ExtentType)?.ToString() ?? string.Empty;
 
         /// <summary>
         /// Sets the default type package which is shown, when the user wants
         /// to create a new item
         /// </summary>
         /// <param name="extent">Extent shall get the default type package</param>
-        /// <param name="defaultTypePackage">The element which shall be considered as the
+        /// <param name="defaultTypePackages">The elements which shall be considered as the
         /// default type package</param>
         public static void SetDefaultTypePackages(this IExtent extent, IEnumerable<IElement> defaultTypePackages)
         {
-            extent.set(DatenmeisterDefaultTypePackage, defaultTypePackages);
+            extent.set(
+                DatenmeisterDefaultTypePackage,
+                defaultTypePackages);
+        }
+
+        public static void AddDefaultTypePackages(this IExtent extent, IEnumerable<IElement> defaultTypePackages)
+        {
+            var found = GetDefaultTypePackages(extent).ToList();
+            foreach (var newPackage in defaultTypePackages.Where(newPackage => !found.Contains(newPackage)))
+            {
+                found.Add(newPackage);
+            }
+
+            extent.SetDefaultTypePackages(found);
         }
 
         /// <summary>
@@ -145,13 +156,11 @@ namespace DatenMeister.Runtime
                     var itemAsObjectExt = item as IObjectAllProperties;
                     var properties = itemAsObjectExt.getPropertiesBeingSet();
 
-                    foreach (var property in properties)
+                    foreach (var property in properties
+                        .Where(property => !result.Contains(property)))
                     {
-                        if (!result.Contains(property))
-                        {
-                            result.Add(property);
-                            yield return property;
-                        }
+                        result.Add(property);
+                        yield return property;
                     }
                 }
             }
@@ -186,9 +195,8 @@ namespace DatenMeister.Runtime
 
             foreach (var extent in uriExtents)
             {
-                if (extent is IExtentCachesObject)
+                if (extent is IExtentCachesObject extentAsObjectCache)
                 {
-                    var extentAsObjectCache = extent as IExtentCachesObject;
                     if (extentAsObjectCache.HasObject(value))
                     {
                         return extent;

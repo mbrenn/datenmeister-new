@@ -63,13 +63,17 @@ namespace DatenMeister.Modules.ViewFinder
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:
-                    _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                    var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserViewExtent,
                         "DatenMeister.Views_User",
                         ViewExtentType,
                         _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
                     );
+
+                    var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+
+                    extent.AddDefaultTypePackages(new[] {formAndFields.__Form});
                     break;
             }
         }

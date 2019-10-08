@@ -18,7 +18,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the extent interface according the MOF specification
     /// </summary>
-    public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties
+    public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties, IHasExtent
     {
         /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes.
@@ -129,7 +129,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
-                return nullObject.GetProperty(property);
+                return MofObject.ConvertToMofObject(null, property, nullObject.GetProperty(property));
             }
             else
             {
@@ -146,7 +146,19 @@ namespace DatenMeister.Core.EMOF.Implementation
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
-                nullObject.SetProperty(property, value);
+                if (DotNetHelper.IsOfEnumeration(value))
+                {
+                    nullObject.EmptyListForProperty(property);
+                    foreach (var child in (IEnumerable<object>) value)
+                    {
+                        var valueForSetting = ConvertForSetting(this, child);
+                        nullObject.AddToProperty(property, valueForSetting);
+                    }
+                }
+                else
+                {
+                    nullObject.SetProperty(property, value);
+                }
             }
             else
             {
@@ -365,11 +377,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The converted object being ready for Provider</returns>
         public static object ConvertForSetting(object value, MofExtent extent, MofObject container)
         {
-            if (extent == null)
-            {
-                throw new ArgumentNullException(nameof(extent));
-            }
-
             if (value == null)
             {
                 return null;
@@ -395,11 +402,14 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             if (DotNetHelper.IsOfMofObject(value))
             {
+                if (extent == null)
+                    throw new InvalidOperationException("Extent is null but MofObject given");
+
                 var asMofObject = (MofObject) value;
 
                 if (asMofObject.Extent == null)
                 {
-                    if (asMofObject.ProviderObject.Provider == extent?.Provider)
+                    if (asMofObject.ProviderObject.Provider == extent.Provider)
                     {
                         // if the given value is created by the provider, but has not been allocated
                         // to an object until now, it can be used directly.
@@ -449,30 +459,55 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject.
         /// An arbitrary object shall be stored into the database
         /// </summary>
-        /// <param name="mofObject">The Mofobject for which the element will be created</param>
+        /// <param name="value">The Mofobject for which the element will be created</param>
         /// <param name="childValue">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public static object ConvertForSetting(MofObject mofObject, object childValue)
+        public static object ConvertForSetting(IObject value, object childValue)
         {
-            var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, mofObject);
+            if (value == null) throw new ArgumentNullException(nameof(value));
 
-            if (result is IProviderObject)
+            if (value is MofObject mofObject)
             {
-                if (childValue is MofObject childValueAsObject)
+                var result = ConvertForSetting(childValue, mofObject?.ReferencedExtent, mofObject);
+
+                if (result is IProviderObject)
                 {
-                    // Sets the extent of the newly added object which will be associated to the mofObject
-                    // This value must be set, so the new information is propagated to the MofObjects
-                    childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
-                    childValueAsObject.Extent = mofObject.Extent;
+                    if (childValue is MofObject childValueAsObject)
+                    {
+                        // Sets the extent of the newly added object which will be associated to the mofObject
+                        // This value must be set, so the new information is propagated to the MofObjects
+                        childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
+                        childValueAsObject.Extent = mofObject?.Extent;
+                    }
                 }
+
+                return result;
             }
 
-            return result;
+            if (value is MofExtent extent)
+            {
+                var result = ConvertForSetting(childValue, extent, null);
+
+                if (result is IProviderObject)
+                {
+                    if (childValue is MofObject childValueAsObject)
+                    {
+                        // Sets the extent of the newly added object which will be associated to the mofObject
+                        // This value must be set, so the new information is propagated to the MofObjects
+                        childValueAsObject.ReferencedExtent = extent;
+                        childValueAsObject.Extent = extent;
+                    }
+                }
+
+                return result;
+            }
+
+            throw new NotImplementedException("Type of ${value.GetType()} is not known");
         }
 
-        public IEnumerable<string> getPropertiesBeingSet()
-        {
-            return Provider.Get(null).GetProperties();
-        }
+        public IEnumerable<string> getPropertiesBeingSet() 
+            => Provider.Get(null).GetProperties();
+
+        public IExtent Extent => this;
     }
 }

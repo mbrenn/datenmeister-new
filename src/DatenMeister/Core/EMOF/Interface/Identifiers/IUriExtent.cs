@@ -7,7 +7,6 @@ namespace DatenMeister.Core.EMOF.Interface.Identifiers
         string contextURI();
 
         string uri(IElement element);
-
         IElement element(string uri);
     }
 }

@@ -15,7 +15,6 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.Modules.ViewFinder.Helper
 {

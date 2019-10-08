@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -36,9 +35,7 @@ namespace DatenMeister.Modules.ZipExample
         /// </summary>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
         public IUriExtent AddZipCodeExample(Workspace workspace)
-        {
-            return AddZipCodeExample(workspace.id);
-        }
+            => AddZipCodeExample(workspace.id);
 
         public IUriExtent AddZipCodeExample(string workspaceId)
         {
@@ -101,7 +98,7 @@ namespace DatenMeister.Modules.ZipExample
                 }
             };
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration, ExtentCreationFlags.LoadOnly);
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration);
             loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
 
             var zipCodeTypePackage =

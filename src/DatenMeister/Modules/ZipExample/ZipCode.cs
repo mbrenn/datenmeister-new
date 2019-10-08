@@ -1,4 +1,7 @@
-﻿namespace DatenMeister.Modules.ZipExample
+﻿// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+namespace DatenMeister.Modules.ZipExample
 {
     public class ZipCode
     {

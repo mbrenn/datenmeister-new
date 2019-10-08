@@ -12,6 +12,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
@@ -145,10 +146,10 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
                 .defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-                {
-                    listItems.Add(CreateButtonForType(type));
-                }
+                listItems.AddRange(
+                    from type in defaultTypesForNewItems.OfType<IElement>()
+                    from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                    select CreateButtonForType(newSpecializationType));
             }
 
             // If user clicks on the button, an empty reflective collection is created

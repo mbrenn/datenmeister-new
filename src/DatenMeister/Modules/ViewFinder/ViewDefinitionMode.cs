@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.WPF.Forms.Base
+﻿namespace DatenMeister.Modules.ViewFinder
 {
     /// <summary>
     /// Defines possible types of the list view control type

@@ -39,9 +39,7 @@ namespace DatenMeister.Integration
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
 
         public static string GetPathToWorkspaces(IntegrationSettings settings)
-        {
-            return Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
-        }
+            => Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
 
         /// <summary>
         /// Calculates the path to the extents
@@ -49,9 +47,7 @@ namespace DatenMeister.Integration
         /// <param name="settings">Settings to be set</param>
         /// <returns>The path</returns>
         public static string GetPathToExtents(IntegrationSettings settings)
-        {
-            return Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
-        }
+            => Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
 
         public Integrator(IntegrationSettings settings)
         {
@@ -76,9 +72,15 @@ namespace DatenMeister.Integration
             // and avoids to have a non-rooted path because it will lead to double creation of assemblies
             if (!Path.IsPathRooted(_settings.DatabasePath))
             {
-                var assemblyDirectoryName = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var assembly = Assembly.GetEntryAssembly() ??
+                               throw new InvalidOperationException("Entry assembly is null");
+
+                var assemblyDirectoryName = Path.GetDirectoryName(assembly.Location) ??
+                                            throw new InvalidOperationException("Assembly Directory NAme is null");
+
                 _settings.DatabasePath = Path.Combine(assemblyDirectoryName, _settings.DatabasePath);
             }
+
             if (!Directory.Exists(_settings.DatabasePath))
             {
                 Directory.CreateDirectory(_settings.DatabasePath);

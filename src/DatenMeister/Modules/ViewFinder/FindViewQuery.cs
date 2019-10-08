@@ -1,6 +1,8 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 
+// ReSharper disable InconsistentNaming
+
 namespace DatenMeister.Modules.ViewFinder
 {
     public class FindViewQuery

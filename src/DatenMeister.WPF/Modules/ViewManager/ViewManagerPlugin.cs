@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.Plugins;
+using DatenMeister.Excel.Annotations;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
@@ -8,11 +9,12 @@ namespace DatenMeister.WPF.Modules.ViewManager
     /// <summary>
     /// Defines the plugin for the view manager
     /// </summary>
+    [UsedImplicitly]
     public class ViewManagerPlugin : IDatenMeisterPlugin
     {
-        private PackageMethods _packageMethods;
+        private readonly PackageMethods _packageMethods;
 
-        private ViewLogic _viewLogic;
+        private readonly ViewLogic _viewLogic;
 
         public const string PackageName = "ViewManager";
 

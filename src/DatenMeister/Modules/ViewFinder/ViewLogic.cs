@@ -14,15 +14,14 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.Modules.ViewFinder
 {
     /// <summary>
     /// Defines the access to the view logic and abstracts the access to the view extent
     /// </summary>
-    // ReSharper disable once ClassNeverInstantiated.Global
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ViewLogic : IDatenMeisterPlugin
     {
         /// <summary>
@@ -185,8 +184,8 @@ namespace DatenMeister.Modules.ViewFinder
             var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
             return internalViewExtent.elements()
-                    .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
+                .Union(userViewExtent.elements())
+                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
                 .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
         }
 
@@ -202,7 +201,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             return internalViewExtent.elements()
                 .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] { _UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement })
+                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
                 .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);
         }
 
@@ -223,7 +222,7 @@ namespace DatenMeister.Modules.ViewFinder
             {
                 return _cachedFormAndField;
             }
-            
+
             viewExtent = viewExtent ?? GetUserViewExtent();
             _cachedFormAndField =
                 _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
@@ -375,7 +374,6 @@ namespace DatenMeister.Modules.ViewFinder
         /// Gets the list view next to the item explorer control
         /// </summary>
         /// <param name="element">Element for which the list view will be created</param>
-        /// <param name="extent">Extent containing the object</param>
         /// <param name="viewDefinitionMode">Defines the method how to retrieve the form</param>
         /// <returns>Found extent form</returns>
         public IElement GetItemTreeFormForObject(IObject element, ViewDefinitionMode viewDefinitionMode)
@@ -410,7 +408,6 @@ namespace DatenMeister.Modules.ViewFinder
             IUriExtent extent,
             ViewDefinitionMode viewDefinitionMode)
         {
-
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 var viewFinder = new ViewFinder(this);
@@ -424,9 +421,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }).FirstOrDefault();
 
                 if (foundForm != null)
-                {
                     return foundForm;
-                }
             }
 
             throw new InvalidOperationException();
@@ -456,18 +451,14 @@ namespace DatenMeister.Modules.ViewFinder
                 }).FirstOrDefault();
 
                 if (foundForm != null)
-                {
                     return foundForm;
-                }
             }
-
 
             var formCreator = new FormCreator(this);
             var createdForm =
                 formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, FormCreator.CreationMode.All);
 
             return createdForm;
-
         }
     }
 }

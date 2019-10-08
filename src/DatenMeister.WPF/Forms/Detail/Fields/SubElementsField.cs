@@ -44,12 +44,14 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             _element = value;
             _fieldData = fieldData;
             _navigationHost = detailForm.NavigationHost;
+            if (_navigationHost == null) throw new InvalidOperationException("detailform.NavigationHost is null");
+
             _propertyName = _fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
             _panel = new StackPanel
             {
                 Orientation = Orientation.Vertical
             };
-            
+
             CreatePanelElement();
 
             fieldFlags.CanBeFocused = true;
@@ -73,7 +75,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
             valueOfElement = valueOfElement ?? _element.GetAsReflectiveCollection(_propertyName);
             var valueCount = valueOfElement.Count();
-            
+
             var listViewControl = new ItemListViewControl
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -146,10 +148,14 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
                 .defaultTypesForNewElements) is IReflectiveCollection defaultTypesForNewItems)
             {
+                var specializedTypes =
+                    (from type in defaultTypesForNewItems.OfType<IElement>()
+                        from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                        select newSpecializationType).Distinct();
+
                 listItems.AddRange(
-                    from type in defaultTypesForNewItems.OfType<IElement>()
-                    from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                    select CreateButtonForType(newSpecializationType));
+                    from x in specializedTypes
+                    select CreateButtonForType(x));
             }
 
             // If user clicks on the button, an empty reflective collection is created
@@ -190,7 +196,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 () =>
                 {
                     var elements =
-                        NavigatorForItems.NavigateToCreateNewItem(_navigationHost,
+                        NavigatorForItems.NavigateToCreateNewItem(
+                            _navigationHost,
                             (_element as MofObject)?.ReferencedExtent, type);
                     elements.NewItemCreated += (x, y) =>
                     {

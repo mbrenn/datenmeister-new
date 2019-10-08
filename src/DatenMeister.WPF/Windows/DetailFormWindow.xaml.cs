@@ -303,7 +303,8 @@ namespace DatenMeister.WPF.Windows
 
             if (effectiveForm != null)
             {
-                var control = new DetailFormControl();
+                var control = new DetailFormControl {NavigationHost = this};
+
                 control.SetContent(detailElement, effectiveForm, container);
                 control.UpdateView();
                 control.ElementSaved += (x, y) =>

@@ -172,7 +172,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="extent">Extent to be parsed</param>
         /// <param name="creationMode">The creation mode being used</param>
         /// <returns>The created element</returns>
-        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode) 
+        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
             => CreateExtentForm(extent.elements(), creationMode);
 
         private class FormCreatorCache
@@ -194,7 +194,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         {
             var cache = new FormCreatorCache();
 
-            if (elements == null) 
+            if (elements == null)
                 throw new ArgumentNullException(nameof(elements));
 
             var tabs = new List<IElement>();
@@ -233,6 +233,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 foreach (var item in elementsWithoutMetaClass)
                     AddToForm(form, item, creationMode, cache);
 
+                SetDefaultTypes(form);
+
                 tabs.Add(form);
             }
 
@@ -258,12 +260,23 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
 
                 form.set(_FormAndFields._ListForm.metaClass, group.Key);
+
+                SetDefaultTypes(form);
+
                 tabs.Add(form);
             }
 
             result.set(_FormAndFields._ExtentForm.tab, tabs);
 
             return result;
+
+            void SetDefaultTypes(IElement form)
+            {
+                var extent = elements.GetAssociatedExtent();
+                var defaultTypePackages = extent?.GetDefaultTypePackages();
+                if (defaultTypePackages != null)
+                    form.set(_FormAndFields._ListForm.defaultTypesForNewElements, defaultTypePackages);
+            }
         }
 
         /// <summary>
@@ -334,6 +347,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="form">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
+        /// <param name="cache">Cache being used to store intermediate items</param>
         private void AddToForm(IElement form, object item, CreationMode creationMode, FormCreatorCache cache)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
@@ -399,6 +413,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="form">Form to be extended</param>
         /// <param name="item">Item to be evaluated</param>
         /// <param name="creationMode">The creation mode that is used</param>
+        /// <param name="cache">Cache being used to store intermediate items</param>
         private void AddToFormByProperties(IElement form, object item, CreationMode creationMode, FormCreatorCache cache)
         {
             if (!(item is IObjectAllProperties itemAsAllProperties))

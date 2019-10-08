@@ -131,10 +131,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                                      "Provider does not support setting of extent properties");
                 return MofObject.ConvertToMofObject(null, property, nullObject.GetProperty(property));
             }
-            else
-            {
-                return MetaXmiElement.get(property);
-            }
+
+            return MetaXmiElement.get(property);
         }
 
         /// <inheritdoc />
@@ -172,7 +170,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
             {
-                var nullObject = Provider.Get(null)??
+                var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
                 return nullObject.IsPropertySet(property);
@@ -189,7 +187,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
             {
-                var nullObject = Provider.Get(null)??
+                var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
 
@@ -468,7 +466,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             if (value is MofObject mofObject)
             {
-                var result = ConvertForSetting(childValue, mofObject?.ReferencedExtent, mofObject);
+                var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, mofObject);
 
                 if (result is IProviderObject)
                 {
@@ -477,7 +475,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                         // Sets the extent of the newly added object which will be associated to the mofObject
                         // This value must be set, so the new information is propagated to the MofObjects
                         childValueAsObject.ReferencedExtent = mofObject.Extent ?? mofObject.ReferencedExtent;
-                        childValueAsObject.Extent = mofObject?.Extent;
+                        childValueAsObject.Extent = mofObject.Extent;
                     }
                 }
 
@@ -505,7 +503,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             throw new NotImplementedException("Type of ${value.GetType()} is not known");
         }
 
-        public IEnumerable<string> getPropertiesBeingSet() 
+        public IEnumerable<string> getPropertiesBeingSet()
             => Provider.Get(null).GetProperties();
 
         public IExtent Extent => this;

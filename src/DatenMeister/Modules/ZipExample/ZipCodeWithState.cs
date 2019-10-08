@@ -8,6 +8,6 @@
         /// <summary>
         /// State to which the zipcode belongs
         /// </summary>
-        public string State { get; set; }
+        public string state { get; set; }
     }
 }

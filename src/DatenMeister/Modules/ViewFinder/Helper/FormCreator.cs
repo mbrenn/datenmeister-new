@@ -259,7 +259,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
 
                 form.set(_FormAndFields._ListForm.metaClass, group.Key);
-
                 tabs.Add(form);
             }
 
@@ -322,6 +321,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             result.set(_FormAndFields._ListForm.title, $"{NamedElementMethods.GetName(metaClass)}");
             AddToFormByMetaclass(result, metaClass, creationMode);
+
+            var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
+            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
+            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
+
             return result;
         }
 
@@ -667,7 +671,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             {
                 var detailForm = _factory.create(_formAndFields.__DetailForm);
                 detailForm.set(_FormAndFields._DetailForm.name, "Detail");
-                
+
                 var fields = new List<IElement>();
 
                 foreach (var pair in propertiesWithoutCollection)

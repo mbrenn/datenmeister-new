@@ -305,7 +305,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (items is IHasExtent asExtent)
                 _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                     asExtent.Extent,
-                    (extent, element) => { _delayedDispatcher.RequestRefresh(); });
+                    (extent, element) => _delayedDispatcher.RequestRefresh());
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
             Items = items;

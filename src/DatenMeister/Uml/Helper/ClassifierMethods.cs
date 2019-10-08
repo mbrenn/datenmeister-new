@@ -121,8 +121,12 @@ namespace DatenMeister.Uml.Helper
         /// <param name="element">Element to be </param>
         /// <param name="visitedElements">Contains the elements that already have been visited.
         /// If the element has been visited, then no recursion is done</param>
+        /// <param name="withoutItself">Flag indicating whether the value itself shall also be returned</param>
         /// <returns></returns>
-        public static IEnumerable<IElement> GetSpecializations(IElement element, HashSet<IElement> visitedElements = null)
+        public static IEnumerable<IElement> GetSpecializations(
+            IElement element,
+            HashSet<IElement> visitedElements = null,
+            bool withoutItself = false)
         {
             visitedElements = visitedElements ?? new HashSet<IElement>();
             var extent = (element as IHasExtent)?.Extent;
@@ -133,7 +137,7 @@ namespace DatenMeister.Uml.Helper
                 throw new InvalidOperationException("Classifier is not known in metaextent");
             }
 
-            yield return element;
+            if (!withoutItself) yield return element;
 
             if (workspace != null)
             {

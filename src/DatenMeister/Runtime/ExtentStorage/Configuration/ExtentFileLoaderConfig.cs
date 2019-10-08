@@ -1,4 +1,5 @@
-﻿namespace DatenMeister.Runtime.ExtentStorage.Configuration
+﻿// ReSharper disable InconsistentNaming
+namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
     public class ExtentFileLoaderConfig : ExtentLoaderConfig
     {
@@ -9,9 +10,6 @@
 
         /// <summary>Gibt eine Zeichenfolge zurück, die das aktuelle Objekt darstellt.</summary>
         /// <returns>Eine Zeichenfolge, die das aktuelle Objekt darstellt.</returns>
-        public override string ToString()
-        {
-            return $"{GetType().Name} - {System.IO.Path.GetFileName(filePath)}";
-        }
+        public override string ToString() => $"{GetType().Name} - {System.IO.Path.GetFileName(filePath)}";
     }
 }

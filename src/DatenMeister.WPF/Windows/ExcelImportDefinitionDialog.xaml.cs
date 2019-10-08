@@ -45,10 +45,10 @@ namespace DatenMeister.WPF.Windows
             txtFileName.Text = Path.GetFileName(filePath);
 
             _importer = new ExcelImporter(
-                new ExcelImportSettings { filePath = filePath }
+                new ExcelImportSettings {filePath = filePath}
             );
 
-            await Task.Run(() => { _importer.LoadExcel(); });
+            await Task.Run(() => _importer.LoadExcel());
 
             DataContext = _importer.Settings;
 
@@ -109,10 +109,8 @@ namespace DatenMeister.WPF.Windows
             dgrExcelDataGrid.ItemsSource = items;
         }
 
-        private bool IsExcelNotLoaded()
-        {
-            return !IsInitialized || _importer?.Settings == null || !_importer.IsExcelLoaded;
-        }
+        private bool IsExcelNotLoaded() =>
+            !IsInitialized || _importer?.Settings == null || !_importer.IsExcelLoaded;
 
         [Flags]
         private enum ContentRange
@@ -141,7 +139,7 @@ namespace DatenMeister.WPF.Windows
 
             txtOffsetRow.Text = "0";
             txtOffsetColumn.Text = "0";
-            GuessContentRange(ContentRange.Columns| ContentRange.Rows);
+            GuessContentRange(ContentRange.Columns | ContentRange.Rows);
             UpdateDataPreview();
         }
 
@@ -227,8 +225,6 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         /// <returns>The configuration object describing the elements</returns>
         public IObject GetConfigurationObject()
-        {
-            return _importer.Settings.GetSettingsAsMofObject();
-        }
+            => _importer.Settings.GetSettingsAsMofObject();
     }
 }

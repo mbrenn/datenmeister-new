@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
             {
                 var result = new ApplicationMenuButtonDefinition(
                     "Goto User Views",
-                    () => Navigation.NavigatorForItems.NavigateToItemsInExtent(
+                    () => NavigatorForItems.NavigateToItemsInExtent(
                         viewExtensionTargetInformation.NavigationHost,
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserViewExtent),

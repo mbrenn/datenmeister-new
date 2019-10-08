@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Autofac;
 using BurnSystems.Logging;
@@ -17,14 +18,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="map"></param>
         public static void LoadAllExtentStorageConfigurationsFromAssembly(this IConfigurationToExtentStorageMapper map)
         {
-            foreach (var pair in PluginManager.GetTypesOfAssemblies<ConfiguredByAttribute>())
+            foreach (var type in
+                from pair
+                    in PluginManager.GetTypesOfAssemblies<ConfiguredByAttribute>()
+                let type = pair.Key
+                where !map.ContainsConfigurationFor(pair.Value.ConfigurationType)
+                select type)
             {
-                var type = pair.Key;
-                if (map.ContainsConfigurationFor(pair.Value.ConfigurationType))
-                {
-                    continue;
-                }
-
                 map.MapExtentLoaderType(type);
             }
         }

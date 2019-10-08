@@ -270,14 +270,8 @@ namespace DatenMeister.Runtime.Workspaces
             return workspace;
         }
 
-        public static IWorkspaceLogic GetDefaultLogic()
-        {
-            return new WorkspaceLogic(InitDefault());
-        }
+        public static IWorkspaceLogic GetDefaultLogic() => new WorkspaceLogic(InitDefault());
 
-        public static IWorkspaceLogic GetEmptyLogic()
-        {
-            return new WorkspaceLogic(new WorkspaceData());
-        }
+        public static IWorkspaceLogic GetEmptyLogic() => new WorkspaceLogic(new WorkspaceData());
     }
 }

@@ -3,9 +3,9 @@
 namespace DatenMeister.Provider.CSV.Runtime
 {
     // ReSharper disable once InconsistentNaming
-    public class CSVExtentLoaderConfig : ExtentFileLoaderConfig
+    public class CsvExtentLoaderConfig : ExtentFileLoaderConfig
     {
-        public CSVSettings Settings { get; set; } = new CSVSettings();
+        public CsvSettings Settings { get; set; } = new CsvSettings();
 
         public override string ToString()
         {

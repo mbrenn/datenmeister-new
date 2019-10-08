@@ -19,11 +19,6 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Creates a C# source code. Not to be used for recursive
         ///     call since the namespace is just once created
         /// </summary>
-        /// <param name="element">
-        ///     Regards the given element as a package
-        ///     and returns a full namespace for the package.
-        /// </param>
-        /// <param name="stack">Used as the callstack</param>
         public override void Walk(IUriExtent extent)
         {
             Result.AppendLine("using System.Collections.Generic;");
@@ -118,7 +113,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for class");
             Result.AppendLine($"{stack.Indentation}{{");
 
-            string fullName; 
+            string fullName;
             if (stack.Level == 1)
             {
                 // Removes the name of the package of the first hierarchy level
@@ -129,7 +124,7 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 fullName = $"{stack.Fullname}.__{name}";
             }
-            
+
 
             var ifStack = stack.NextWithoutLevelIncrease;
             var ifForeachStack = ifStack.NextWithoutLevelIncrease;
@@ -154,7 +149,6 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}if(name == \"{name}\") // Looking for property");
             Result.AppendLine($"{stack.Indentation}{{");
             Result.AppendLine($"{stack.NextIndentation}tree{stack.Fullname}._{name} = value;");
-            
 
             base.WalkProperty(propertyInstance, stack);
 

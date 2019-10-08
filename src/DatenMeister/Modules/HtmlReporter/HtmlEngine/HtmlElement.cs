@@ -14,7 +14,6 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// </summary>
         protected HtmlElement()
         {
-                
         }
 
         /// <summary>

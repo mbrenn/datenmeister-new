@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -32,10 +33,10 @@ namespace DatenMeister.Runtime.Copier
             copyOptions = copyOptions ?? CopyOptions.None;
 
             var copier = new ObjectCopier(_factory);
-            foreach (var element in sourceSequence)
+            foreach (var copiedElement in sourceSequence
+                .Select(element => element as IElement)
+                .Select(elementAsElement => copier.Copy(elementAsElement, copyOptions)))
             {
-                var elementAsElement = element as IElement;
-                var copiedElement = copier.Copy(elementAsElement, copyOptions);
                 targetSequence.add(copiedElement);
             }
         }
@@ -45,10 +46,10 @@ namespace DatenMeister.Runtime.Copier
             copyOptions = copyOptions ?? CopyOptions.None;
 
             var copier = new ObjectCopier(_factory);
-            foreach (var element in sourceSequence)
+            foreach (var copiedElement in sourceSequence
+                .Select(element => element as IElement)
+                .Select(elementAsElement => copier.Copy(elementAsElement, copyOptions)))
             {
-                var elementAsElement = element as IElement;
-                var copiedElement = copier.Copy(elementAsElement, copyOptions);
                 targetSequence.add(copiedElement);
             }
         }

@@ -42,7 +42,7 @@ namespace DatenMeister.SourcecodeGenerator
                 "DatenMeister.Core.EMOF.Implementation",
                 "DatenMeister.Provider.InMemory"
             });
-            
+
             base.Walk(extent);
         }
 
@@ -87,6 +87,7 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Parses the packages
         /// </summary>
         /// <param name="classInstance">The class that shall be retrieved</param>
+        /// <param name="stack">Stack being used to walk through</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
             var asElement = classInstance as IElement;
@@ -110,7 +111,7 @@ namespace DatenMeister.SourcecodeGenerator
             base.WalkProperty(propertyObject, stack);
 
             var nameAsObject = propertyObject.get("name");
-            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            var name = nameAsObject?.ToString() ?? string.Empty;
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
             Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
             Result.AppendLine();

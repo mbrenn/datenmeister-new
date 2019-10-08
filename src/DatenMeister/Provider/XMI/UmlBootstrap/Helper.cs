@@ -89,7 +89,7 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
         /// <returns>Enumeration of objects of the given type</returns>
         private static IEnumerable<IObject> XmlGetElementsOfType(IObject element, string typeName)
         {
-            return XmlGetElementsOfTypes(element, new[] { typeName});
+            return XmlGetElementsOfTypes(element, new[] {typeName});
         }
 
         /// <summary>
@@ -112,11 +112,13 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
                 var propertyValue = element.get(property);
-                var propertyAsEnumerable = propertyValue as IEnumerable;
+                if (!(propertyValue is IEnumerable propertyAsEnumerable))
+                    continue;
+
                 foreach (var innerValue in propertyAsEnumerable)
                 {
                     var innerValueAsObject = innerValue as IObject;
-                    if (innerValueAsObject != null && innerValueAsObject.isSet(attributeXmi))
+                    if (innerValueAsObject?.isSet(attributeXmi) == true)
                     {
                         var type = innerValueAsObject.get(attributeXmi).ToString();
                         if (typeNamesList.Count(x => type == x) > 0)
@@ -127,6 +129,7 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
                 }
             }
         }
+
         public static IEnumerable<IObject> GetSubProperties(IObject element)
         {
             var elementAsExt = (IObjectAllProperties)element;
@@ -138,13 +141,11 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
                 var propertyValue = element.get(property);
-                var propertyAsEnumerable = propertyValue as IEnumerable;
-                if (propertyAsEnumerable != null)
+                if (propertyValue is IEnumerable propertyAsEnumerable)
                 {
                     foreach (var innerValue in propertyAsEnumerable)
                     {
-                        var innerValueAsObject = innerValue as IObject;
-                        if (innerValueAsObject != null)
+                        if (innerValue is IObject innerValueAsObject)
                         {
                             yield return innerValueAsObject;
                         }
@@ -158,9 +159,7 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public static string XmiGetName(this XElement element)
-        {
-            return element.Attribute("name")?.Value;
-        }
+        public static string XmiGetName(this XElement element) =>
+            element.Attribute("name")?.Value;
     }
 }

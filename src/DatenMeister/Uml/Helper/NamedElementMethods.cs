@@ -17,7 +17,7 @@ namespace DatenMeister.Uml.Helper
     /// </summary>
     public class NamedElementMethods
     {
-        private const int MaxDepth            = 1000;
+        private const int MaxDepth = 1000;
 
         /// <summary>
         /// Gets the full path to the given element. It traverses through the container values of the
@@ -75,10 +75,8 @@ namespace DatenMeister.Uml.Helper
         /// <param name="extent">Extent to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IUriExtent extent, string fullName)
-        {
-            return GetByFullName(extent.elements(), fullName);
-        }
+        public static IElement GetByFullName(IUriExtent extent, string fullName) =>
+            GetByFullName(extent.elements(), fullName);
 
         /// <summary>
         /// Gets the given element by the fullname by traversing through the name attributes
@@ -161,6 +159,7 @@ namespace DatenMeister.Uml.Helper
                 }
             }
         }
+
         /// <summary>
         /// Gets the name of the given object
         /// </summary>
@@ -206,8 +205,8 @@ namespace DatenMeister.Uml.Helper
             }
 
             return
-                !(element is IObject asObject) ?
-                    element.ToString()
+                !(element is IObject asObject)
+                    ? element.ToString()
                     : GetName(asObject);
         }
     }

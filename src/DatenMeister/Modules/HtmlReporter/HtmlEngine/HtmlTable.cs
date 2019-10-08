@@ -14,14 +14,6 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// </summary>
         private readonly List<HtmlTableRow> _rows = new List<HtmlTableRow>();
 
-        /// <summary>
-        /// Initializes a new instance of the HtmlTable class
-        /// </summary>
-        public HtmlTable()
-        {
-            
-        }
-
         public HtmlTableRow AddRow(params HtmlElement[] cells)
         {
             var result = new HtmlTableRow(cells);
@@ -43,7 +35,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             {
                 builder.AppendLine(row.ToString());
             }
-            
+
             builder.AppendLine("</table>");
 
             return builder.ToString();

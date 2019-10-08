@@ -7,11 +7,6 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
     {
         private List<HtmlElement> Cells { get; } = new List<HtmlElement>();
 
-        public HtmlTableRow()
-        {
-            
-        }
-
         public HtmlTableRow(IEnumerable<HtmlElement> cells)
         {
             Cells.AddRange(cells);

@@ -28,9 +28,7 @@ namespace DatenMeister.Integration
         }
 
         public object ResolveComponent(IComponentRegistration registration, IEnumerable<Parameter> parameters)
-        {
-            return _lifetimeScopeImplementation.ResolveComponent(registration, parameters);
-        }
+            => _lifetimeScopeImplementation.ResolveComponent(registration, parameters);
 
         public IComponentRegistry ComponentRegistry => _lifetimeScopeImplementation.ComponentRegistry;
 
@@ -41,10 +39,8 @@ namespace DatenMeister.Integration
             _lifetimeScopeImplementation.Dispose();
         }
 
-        public ILifetimeScope BeginLifetimeScope()
-        {
-            return _lifetimeScopeImplementation.BeginLifetimeScope();
-        }
+        public ILifetimeScope BeginLifetimeScope() =>
+            _lifetimeScopeImplementation.BeginLifetimeScope();
 
         public IDisposer Disposer => _lifetimeScopeImplementation.Disposer;
 

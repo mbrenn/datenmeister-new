@@ -16,10 +16,8 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="value">Property being queried</param>
         /// <returns>Type of the property</returns>
-        public static IElement GetPropertyType(IObject value)
-        {
-            return value?.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
-        }
+        public static IElement GetPropertyType(IObject value) =>
+            value?.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
 
         /// <summary>
         /// Gets the value whether the property is a collection by
@@ -36,7 +34,7 @@ namespace DatenMeister.Uml.Helper
                 var temp = value.getOrDefault<IElement>(_UML._CommonStructure._MultiplicityElement.upperValue);
                 multiplicity = temp?.getOrDefault<string>(_UML._Values._LiteralInteger.value);
             }
-            
+
             if (multiplicity == "*")
             {
                 return true;
@@ -48,10 +46,10 @@ namespace DatenMeister.Uml.Helper
             }
 
             if (Int32.TryParse(
-                    multiplicity,
-                    NumberStyles.Integer,
-                    CultureInfo.InvariantCulture,
-                    out var multiplicityNumber))
+                multiplicity,
+                NumberStyles.Integer,
+                CultureInfo.InvariantCulture,
+                out var multiplicityNumber))
             {
                 return multiplicityNumber > 1;
             }

@@ -22,13 +22,9 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         public override string ToString()
         {
             if (string.IsNullOrEmpty(CssClass))
-            {
                 return $"<p>{Paragraph}</p>";
-            }
-            else
-            {
-                return $"<p class=\"{WebUtility.HtmlEncode(CssClass)}\">{Paragraph}</p>";
-            }
+
+            return $"<p class=\"{WebUtility.HtmlEncode(CssClass)}\">{Paragraph}</p>";
         }
     }
 }

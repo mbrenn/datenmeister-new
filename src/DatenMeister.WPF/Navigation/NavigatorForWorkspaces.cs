@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -55,7 +56,7 @@ namespace DatenMeister.WPF.Navigation
             if (formElement == null)
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
-                var managementProvider =  GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
                 formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
             }
 
@@ -141,10 +142,11 @@ namespace DatenMeister.WPF.Navigation
             File.Delete(Integrator.GetPathToExtents(integrationSettings));
 
             // Restarts the DatenMeister
-            var location = Assembly.GetEntryAssembly().Location;
+            var entryAssembly = Assembly.GetEntryAssembly() ?? throw new InvalidOperationException("Assembly.GetEntryAssembly is null");
+            var location = entryAssembly.Location;
             if (Path.GetExtension(location).EndsWith("exe"))
             {
-                Process.Start(Assembly.GetEntryAssembly().Location);
+                Process.Start(entryAssembly.Location);
             }
             else
             {

@@ -52,10 +52,7 @@ namespace DatenMeister.Runtime.Proxies
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public void Add(T item)
         {
@@ -93,10 +90,7 @@ namespace DatenMeister.Runtime.Proxies
             }
         }
 
-        public bool Remove(T item)
-        {
-            return _collection.remove(_unwrapFunc(item));
-        }
+        public bool Remove(T item) => _collection.remove(_unwrapFunc(item));
 
         public int Count => _collection.size();
 
@@ -145,7 +139,7 @@ namespace DatenMeister.Runtime.Proxies
 
         public T this[int index]
         {
-            get { return _wrapFunc(_collection.ElementAt(index)); }
+            get => _wrapFunc(_collection.ElementAt(index));
             set
             {
                 if (_sequence != null)

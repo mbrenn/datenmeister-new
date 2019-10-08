@@ -11,6 +11,7 @@ namespace DatenMeister.Provider.XMI
     // ReSharper disable once UnusedMember.Global
     // ReSharper disable once InconsistentNaming
     [PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
+    // ReSharper disable once UnusedMember.Global
     public class XmiPlugin : IDatenMeisterPlugin
     {
         private readonly IConfigurationToExtentStorageMapper _storageMapper;

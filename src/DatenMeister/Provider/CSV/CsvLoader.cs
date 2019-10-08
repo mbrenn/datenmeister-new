@@ -12,11 +12,11 @@ namespace DatenMeister.Provider.CSV
     /// <summary>
     ///     Loads and stores the the extent from an CSV file
     /// </summary>
-    public class CSVLoader
+    public class CsvLoader
     {
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        public CSVLoader(IWorkspaceLogic workspaceLogic)
+        public CsvLoader(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
         }
@@ -28,7 +28,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="path">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
-        public void Load(IProvider extent, string path, CSVSettings settings)
+        public void Load(IProvider extent, string path, CsvSettings settings)
         {
             using (var fileStream = new FileStream(path, FileMode.Open))
             {
@@ -43,7 +43,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="stream">Path being used to load the extent</param>
         /// <param name="settings">Settings to load the extent</param>
         /// <returns>The loaded extent</returns>
-        public void Load(IProvider extent, Stream stream, CSVSettings settings)
+        public void Load(IProvider extent, Stream stream, CsvSettings settings)
         {
             ReadFromStream(extent, stream, settings);
         }
@@ -54,11 +54,11 @@ namespace DatenMeister.Provider.CSV
         /// <param name="extent">Extet being stored</param>
         /// <param name="stream">Stream being used to read in</param>
         /// <param name="settings">Settings being used to store it.</param>
-        private void ReadFromStream(IProvider extent, Stream stream, CSVSettings settings)
+        private void ReadFromStream(IProvider extent, Stream stream, CsvSettings settings)
         {
             if (settings == null)
             {
-                settings = new CSVSettings();
+                settings = new CsvSettings();
             }
 
             var columns = settings.Columns;
@@ -131,7 +131,7 @@ namespace DatenMeister.Provider.CSV
         ///     Splits a CSV line into columns
         /// </summary>
         /// <returns>List of column values</returns>
-        private static IList<string> SplitLine(string line, CSVSettings settings)
+        private static IList<string> SplitLine(string line, CsvSettings settings)
         {
             return line.Split(new[] {settings.Separator}, StringSplitOptions.None);
         }
@@ -142,7 +142,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="extent">Extent to be stored</param>
         /// <param name="path">Path, where file shall be stored</param>
         /// <param name="settings">Settings being used</param>
-        public void Save(IProvider extent, string path, CSVSettings settings)
+        public void Save(IProvider extent, string path, CsvSettings settings)
         {
             // Open File
             using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(settings.Encoding)))
@@ -157,7 +157,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="streamWriter">Stream, where data will be stored</param>
         /// <param name="extent">Extent being stored</param>
         /// <param name="settings">Settings of the csv</param>
-        public void SaveToStream(TextWriter streamWriter, IProvider extent, CSVSettings settings)
+        public void SaveToStream(TextWriter streamWriter, IProvider extent, CsvSettings settings)
         {
             var columns = new List<string>();
 
@@ -174,6 +174,7 @@ namespace DatenMeister.Provider.CSV
                 // If no value can be retrieved, the already set columns will be retrieved, which is an empty list
                 columns = extent.GetRootObjects().ElementAtOrDefault(0)?.GetProperties()?.ToList() ?? columns;
             }
+
             // Writes the header
             if (settings.HasHeader)
             {
@@ -200,7 +201,7 @@ namespace DatenMeister.Provider.CSV
         /// <param name="conversion">Converter to be used, to show the content</param>
         private void WriteRow(
             TextWriter streamWriter,
-            CSVSettings settings,
+            CsvSettings settings,
             IEnumerable<string> values,
             Func<string, object> conversion)
         {

@@ -27,7 +27,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         {
             // Creates the necessary collection
             _mofFactory = new MofFactory(_extent);
-            
+
             Aggregate(
                 collectionToBeAggregated,
                 groupByColumn,

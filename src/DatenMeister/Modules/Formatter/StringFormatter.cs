@@ -37,7 +37,6 @@ namespace DatenMeister.Modules.Formatter
                     {
                         builder.Append(text.Substring(currentPosition));
                         currentPosition = text.Length;
-
                     }
                     else
                     {

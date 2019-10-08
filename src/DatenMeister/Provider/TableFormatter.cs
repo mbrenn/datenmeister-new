@@ -54,23 +54,19 @@ namespace DatenMeister.Provider
             {
                 Output(property, columnWidth[property]);
             }
+
             _result.AppendLine();
 
             foreach (var property in properties)
             {
                 Output(string.Empty, columnWidth[property], "-");
             }
+
             _result.AppendLine();
 
 
-            foreach (var element in collection)
+            foreach (var asObject in collection.OfType<IObject>())
             {
-                var asObject = element as IObject;
-                if (asObject == null)
-                {
-                    continue;
-                }
-
                 foreach (var property in properties)
                 {
                     var value = asObject.GetOrDefault(property);

@@ -17,6 +17,5 @@ namespace DatenMeister.Runtime.Workspaces
         public static string BooleanType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Boolean";
 
         public static string RealType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#Real";
-
     }
 }

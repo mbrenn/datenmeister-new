@@ -33,12 +33,10 @@ namespace DatenMeister.WPF.Windows
             /// </summary>
             /// <returns></returns>
             public override string ToString()
-            {
-                return $"HelperItem: {Definition}";
-            }
+                => $"HelperItem: {Definition}";
         }
 
-        public MenuHelper(Menu menu, NavigationScope navigationScope) : base (navigationScope)
+        public MenuHelper(Menu menu, NavigationScope navigationScope) : base(navigationScope)
         {
             _menu = menu;
         }
@@ -123,14 +121,7 @@ namespace DatenMeister.WPF.Windows
                 Button = button,
                 ClickEvent = (x, y) =>
                 {
-                    if (clickMethod == null)
-                    {
-                        Logger.Error("No method defined which is called after a click");
-                    }
-                    else
-                    {
-                        clickMethod();
-                    }
+                    clickMethod();
                 }
             };
             _buttons.Add(item);

@@ -30,10 +30,8 @@ namespace DatenMeister.Runtime.Extents
         /// </summary>
         /// <param name="extent">Extent to be exported</param>
         /// <returns>The document representing the export as a decoupled element</returns>
-        public static XDocument ExportToXml(IExtent extent)
-        {
-            return ((XmiProvider) ExportToXmiExtent(extent).Provider).Document;
-        }
+        public static XDocument ExportToXml(IExtent extent) =>
+            ((XmiProvider) ExportToXmiExtent(extent).Provider).Document;
 
         /// <summary>
         /// Exports the given extent to a text string containing the Xml.

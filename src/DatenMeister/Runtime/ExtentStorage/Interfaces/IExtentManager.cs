@@ -15,7 +15,6 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
             ExtentLoaderConfig configuration,
             ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly);
 
-
         /// <summary>
         /// Imports an extent without adding it into he database.
         /// This is used to perform a temporary loading

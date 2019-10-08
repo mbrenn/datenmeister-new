@@ -11,11 +11,11 @@ namespace DatenMeister.Provider.CSV
     // ReSharper disable once UnusedMember.Global
     // ReSharper disable once InconsistentNaming
     [PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
-    public class CSVPlugin : IDatenMeisterPlugin
+    public class CsvPlugin : IDatenMeisterPlugin
     {
         private readonly IConfigurationToExtentStorageMapper _configurationToExtentStorageMapper;
 
-        public CSVPlugin(IConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
+        public CsvPlugin(IConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
         {
             _configurationToExtentStorageMapper = configurationToExtentStorageMapper;
         }

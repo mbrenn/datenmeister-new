@@ -2,9 +2,9 @@
 
 namespace DatenMeister.Provider.CSV
 {
-    public class CSVSettings
+    public class CsvSettings
     {
-        public CSVSettings()
+        public CsvSettings()
         {
             Encoding = "UTF-8";
             HasHeader = true;

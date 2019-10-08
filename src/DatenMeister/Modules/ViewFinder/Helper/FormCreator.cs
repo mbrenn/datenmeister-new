@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
-using BurnSystems.Logging;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -12,7 +8,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
@@ -44,11 +39,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// Stores the information for form and fields including all metaclasses
         /// </summary>
         private readonly _FormAndFields _formAndFields;
-
-        /// <summary>
-        /// Defines the logger
-        /// </summary>
-        private static readonly ILogger Logger = new ClassLogger(typeof(FormCreator));
 
         private IElement _stringType;
         private IElement _integerType;

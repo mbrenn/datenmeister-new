@@ -176,7 +176,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             mofObject1.set("name", "Martin");
             mofObject1.set("lastname", "Brenn");
-            
+
             mofObject2.set("name", "Another");
             mofObject2.set("lastname", "Brenner");
 

@@ -62,7 +62,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
                 _streamWriter.WriteLine(CssStyleSheet);
                 _streamWriter.WriteLine("  </style>");
             }
-            
+
             _streamWriter.WriteLine("  <body>");
         }
 
@@ -86,10 +86,10 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             {
                 throw new InvalidOperationException("The Report is already disposed");
             }
-            
+
             _streamWriter.WriteLine("  </body>");
             _streamWriter.WriteLine("</html>");
-            
+
             Dispose();
         }
 

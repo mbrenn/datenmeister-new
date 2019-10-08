@@ -43,7 +43,6 @@ namespace DatenMeister.Provider.DotNet
         /// Initializes a new instance of the DotNetElement class.
         /// </summary>
         /// <param name="provider">The Dotnet Provider storing the items</param>
-        /// <param name="typeLookup">Typelookup to be used to create element</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
         public DotNetProviderObject(DotNetProvider provider, object value, string metaClassUri)
@@ -57,10 +56,8 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public bool IsPropertySet(string property)
-        {
-            return _type.GetProperty(property) != null;
-        }
+        public bool IsPropertySet(string property) =>
+            _type.GetProperty(property) != null;
 
         /// <inheritdoc />
         public object GetProperty(string property)
@@ -108,10 +105,8 @@ namespace DatenMeister.Provider.DotNet
             member.SetValue(_value, DotNetProviderExtensions.ConvertToNative(value));
         }
 
-        public IList GetPropertyAsList(string property)
-        {
-            return GetValueOfProperty(property) as IList;
-        }
+        public IList GetPropertyAsList(string property) =>
+            GetValueOfProperty(property) as IList;
 
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
@@ -143,15 +138,11 @@ namespace DatenMeister.Provider.DotNet
             return result;
         }
 
-        public bool HasContainer()
-        {
-            return false;
-        }
+        public bool HasContainer() =>
+            false;
 
-        public IProviderObject GetContainer()
-        {
-            return null;
-        }
+        public IProviderObject GetContainer() =>
+            null;
 
         public void SetContainer(IProviderObject value)
         {

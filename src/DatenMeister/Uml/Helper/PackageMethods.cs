@@ -59,7 +59,7 @@ namespace DatenMeister.Uml.Helper
             IReflectiveCollection rootElements,
             string packagePath)
         {
-            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent)rootElements).Extent, MetaRecursive.Recursively);
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent) rootElements).Extent, MetaRecursive.Recursively);
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
@@ -95,6 +95,8 @@ namespace DatenMeister.Uml.Helper
         /// <param name="nameProperty">The name property which contain the name for the element</param>
         /// <param name="childProperty">The child property which contain the subelements</param>
         /// <param name="metaClass">The Metaclass being used to create the child packages</param>
+        /// <param name="flagCreate">true, if the structure shall be really created.
+        /// If false, null will be returned if the package is not found</param>
         public static IElement GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             IFactory factory,
@@ -107,7 +109,7 @@ namespace DatenMeister.Uml.Helper
             if (rootElements == null) throw new ArgumentNullException(nameof(rootElements));
 
             var elementNames = packagePath
-                .Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries)
+                .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim()).ToList();
 
             var id = "_package";
@@ -204,10 +206,8 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="package">Package to be evaluated</param>
         /// <returns>ReflectiveCollection containing the packaged elements</returns>
-        public static IReflectiveCollection GetPackagedObjects(IObject package)
-        {
-            return package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
-        }
+        public static IReflectiveCollection GetPackagedObjects(IObject package) =>
+            package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
 
         /// <summary>
         /// Imports a set of element into the the target package by creating the additional

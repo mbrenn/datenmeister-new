@@ -206,7 +206,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                     if (dlg.ShowDialog(Window.GetWindow(this)) == true)
                     {
-                        var loader = new CSVLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
+                        var loader = new CsvLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
                         var memoryProvider = new InMemoryProvider();
                         var temporary = new MofUriExtent(memoryProvider, "datenmeister:///temp");
                         var copier = new ExtentCopier(new MofFactory(temporary));
@@ -215,7 +215,7 @@ namespace DatenMeister.WPF.Forms.Base
                         loader.Save(
                             memoryProvider,
                             dlg.FileName,
-                            new CSVSettings());
+                            new CsvSettings());
 
                         MessageBox.Show($"CSV Export completed. \r\n{temporary.elements().Count()} Items exported.");
                     }

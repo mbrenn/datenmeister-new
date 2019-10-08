@@ -23,6 +23,7 @@ namespace DatenMeister.Provider.XMI
         /// Stores the uri resolver being used to figure out the href instances.
         /// </summary>
         private readonly IUriResolver _uriResolver;
+
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
         /// <summary>
@@ -115,10 +116,8 @@ namespace DatenMeister.Provider.XMI
         /// </summary>
         /// <param name="factory">Factory to be used</param>
         /// <param name="element">Element being used</param>
-        public IObject LoadFromXmlNode(IFactory factory, XElement element)
-        {
-            return LoadElement(factory, element);
-        }
+        public IObject LoadFromXmlNode(IFactory factory, XElement element) =>
+            LoadElement(factory, element);
 
         /// <summary>
         ///     Loads the specific element with a very simple loading algorithm

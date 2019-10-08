@@ -32,17 +32,11 @@ namespace DatenMeister.Modules.DataViews
         {
             var metaClass = (IElement)_workspaceLogic.GetTypesWorkspace().FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView");
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
-            foreach (var extent in managementWorkspace.extent.OfType<IUriExtent>())
+            foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
+                .Where(extent => extent.contextURI() != WorkspaceNames.ExtentManagementExtentUri)
+                .SelectMany(extent => extent.elements().GetAllDescendants().WhenMetaClassIs(metaClass).Cast<IElement>()))
             {
-                if (extent.contextURI() == WorkspaceNames.ExtentManagementExtentUri)
-                {
-                    continue;
-                }
-
-                foreach (var dataView in extent.elements().GetAllDescendants().WhenMetaClassIs(metaClass).Cast<IElement>())
-                {
-                    yield return dataView;
-                }
+                yield return dataView;
             }
         }
 

@@ -36,11 +36,9 @@ namespace DatenMeister.Runtime.Functions.Transformation
                     var parentId = element.get(settings.OldParentColumn);
                     if (parentId != null)
                     {
-                        IObject found;
-                        if (values.TryGetValue(parentId, out found))
+                        if (values.TryGetValue(parentId, out _))
                         {
-                            List<object> foundList;
-                            if (!lists.TryGetValue(parentId, out foundList))
+                            if (!lists.TryGetValue(parentId, out var foundList))
                             {
                                 foundList = new List<object>();
                                 lists[parentId] = foundList;
@@ -90,7 +88,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
             Debug.Assert(settings.Sequence != null);
             Debug.Assert(settings.TargetFactory != null);
             Debug.Assert(settings.TargetSequence != null);
-            
+
             // Copies the elements
             var copiedElements = CopyElements(settings);
             var isChild = new HashSet<IObject>();
@@ -101,8 +99,8 @@ namespace DatenMeister.Runtime.Functions.Transformation
                 var element = pair.Value;
                 var childrenId = element.GetOrDefault(settings.OldChildrenColumn)
                     ?.ToString()
-                    ?.Split(new[] {settings.ChildIdSeparator}, StringSplitOptions.RemoveEmptyEntries)
-                    ?.Select(x => x.Trim());
+                    .Split(new[] {settings.ChildIdSeparator}, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim());
 
                 if (childrenId == null)
                 {
@@ -151,6 +149,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
                     values[element.get(settings.IdColumn)] = copier.Copy(element);
                 }
             }
+
             return values;
         }
     }

@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime
                              throw new ArgumentException(
                                  @"Not of type MofExtent",
                                  nameof(factory));
-           return mofFactory.Extent.Workspace.GetFromMetaWorkspace<TFilledType>();
+            return mofFactory.Extent.Workspace.GetFromMetaWorkspace<TFilledType>();
         }
 
         /// <summary>

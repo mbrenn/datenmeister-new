@@ -137,7 +137,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object other) 
+        public bool @equals(object other)
             => AreEqual(this, other as IObject);
 
         /// <inheritdoc />

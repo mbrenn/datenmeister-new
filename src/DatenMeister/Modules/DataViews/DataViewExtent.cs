@@ -24,35 +24,27 @@ namespace DatenMeister.Modules.DataViews
             _dataViewLogic = dataViewLogic ?? throw new ArgumentNullException(nameof(dataViewLogic));
         }
 
-        public bool @equals(object other)
-        {
-            return _dataViewElement.@equals(other);
-        }
+        public bool @equals(object other) =>
+            _dataViewElement.@equals(other);
 
-        public object get(string property)
-        {
-            return _dataViewElement.get(property);
-        }
+        public object get(string property) =>
+            _dataViewElement.get(property);
 
         public void set(string property, object value)
         {
             _dataViewElement.set(property, value);
         }
 
-        public bool isSet(string property)
-        {
-            return _dataViewElement.isSet(property);
-        }
+        public bool isSet(string property) =>
+            _dataViewElement.isSet(property);
 
         public void unset(string property)
         {
             _dataViewElement.unset(property);
         }
 
-        public bool useContainment()
-        {
-            return false;
-        }
+        public bool useContainment() =>
+            false;
 
         public IReflectiveSequence elements()
         {
@@ -69,15 +61,11 @@ namespace DatenMeister.Modules.DataViews
             }
         }
 
-        public string contextURI()
-        {
-            return _dataViewElement.getOrDefault<string>(_DataViews._DataView.uri);
-        }
+        public string contextURI() =>
+            _dataViewElement.getOrDefault<string>(_DataViews._DataView.uri);
 
-        public string uri(IElement element)
-        {
-            return element.GetUri();
-        }
+        public string uri(IElement element) =>
+            element.GetUri();
 
         public IElement element(string uri)
         {

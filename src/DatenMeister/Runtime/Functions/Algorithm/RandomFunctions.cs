@@ -37,7 +37,7 @@ namespace DatenMeister.Runtime.Functions.Algorithm
             var characterArray = characterSet.Distinct().ToArray();
             if (characterArray.Length == 0)
                 throw new ArgumentException(@"characterSet must not be empty", nameof(characterSet));
-            
+
             var bytes = new byte[length * 8];
             RandomNumberGenerator.Create().GetBytes(bytes);
             var result = new char[length];
@@ -49,6 +49,5 @@ namespace DatenMeister.Runtime.Functions.Algorithm
 
             return new string(result);
         }
-
     }
 }

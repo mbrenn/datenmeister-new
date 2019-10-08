@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -85,7 +86,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the configuration of the extents into the given file
         /// </summary>
-        /// <param name="path">Path to be used to loaded the extent configuration</param>
         public void StoreConfiguration()
         {
             // Skip saving, if loading has failed
@@ -109,6 +109,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var xmlData = SerializeToXElement(extent.Configuration);
                 xmlData.Name = "config";
                 // Stores the .Net datatype to allow restore of the right element
+                Debug.Assert(extent?.Configuration?.GetType() != null);
                 xmlData.Add(new XAttribute("configType", extent.Configuration.GetType().FullName));
                 xmlExtent.Add(xmlData);
 

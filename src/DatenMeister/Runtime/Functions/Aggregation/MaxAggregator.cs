@@ -7,7 +7,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
     {
         public MaxAggregator() : base(Math.Max)
         {
-            Start = Double.MinValue;
+            Start = double.MinValue;
         }
     }
 }

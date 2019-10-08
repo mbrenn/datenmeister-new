@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 {
                     xmlDocument = XDocument.Load(xmiConfiguration.filePath);
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     Logger.Warn(exc.ToString());
                     xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
@@ -55,7 +55,9 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
         private static XDocument CreateEmptyXmiDocument(XmiStorageConfiguration xmiConfiguration)
         {
             // Creates directory if necessary
-            var directoryPath = Path.GetDirectoryName(xmiConfiguration.filePath);
+            var directoryPath = Path.GetDirectoryName(xmiConfiguration.filePath)
+                                ?? throw new InvalidOperationException("directoryPath is null");
+
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
@@ -75,15 +77,11 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             if (configuration is XmiStorageConfiguration xmiConfiguration)
             {
                 if (!(extent is XmiProvider xmlExtent))
-                {
                     throw new InvalidOperationException("Only XmlUriExtents are supported");
-                }
 
                 // Deletes existing file
                 if (File.Exists(xmiConfiguration.filePath))
-                {
                     File.Delete(xmiConfiguration.filePath);
-                }
 
                 // Loads existing file
                 using (var fileStream = File.OpenWrite(xmiConfiguration.filePath))

@@ -68,7 +68,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 
             foreach (var property in elementAsIObjectExt.getPropertiesBeingSet())
             {
-                if (byFollowingProperties != null && !byFollowingProperties.Contains(property))
+                if (byFollowingProperties?.Contains(property) == false)
                 {
                     // Skip the properties that are not defined in the given collection
                     continue;

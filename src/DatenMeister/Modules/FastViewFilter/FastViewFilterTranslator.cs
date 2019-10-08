@@ -17,7 +17,6 @@ namespace DatenMeister.Modules.FastViewFilter
 
         public string TranslateType(IObject metaClassType)
         {
-
             if (metaClassType.Equals(_FastViewFilters.TheOne.__PropertyContainsFilter))
             {
                 return "Property contains...";

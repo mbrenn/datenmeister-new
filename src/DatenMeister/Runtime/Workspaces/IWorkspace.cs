@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core.Filler;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+// ReSharper disable InconsistentNaming
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -23,7 +24,6 @@ namespace DatenMeister.Runtime.Workspaces
         /// null will be returned
         /// </summary>
         /// <typeparam name="TFilledType">Type of the filled type</typeparam>
-        /// <param name="layer">Layer whose filled type shall be retrieved</param>
         /// <returns>The found instance</returns>
         TFilledType Get<TFilledType>()
             where TFilledType : class, new();
@@ -31,13 +31,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Clears the cache, so a new instance can be created
         /// </summary>
-        /// <param name="layer">Layer, whose cache needs to be deleted</param>
         void ClearCache();
 
         /// <summary>
         /// Sets a filled type which is already prepared
         /// </summary>
-        /// <param name="layer">Datalayer being filled</param>
         /// <param name="value">Value to be set for the datalayer</param>
         void Set<TFilledType>(TFilledType value)
             where TFilledType : class, new();

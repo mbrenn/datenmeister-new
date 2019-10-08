@@ -47,10 +47,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                                   ?? throw new InvalidOperationException("extentManager is not ExtentManager");
             var workspaceLogic = asExtentManager.WorkspaceLogic;
             var workspace = workspaceLogic.GetWorkspace(loaderConfiguration.workspaceId);
-            
+
             var foundExtent = workspace?.extent.OfType<IUriExtent>().FirstOrDefault(
                 x => x.contextURI() == loaderConfiguration.extentUri);
-            
+
             return foundExtent ?? extentManager.LoadExtent(loaderConfiguration, flags);
         }
     }

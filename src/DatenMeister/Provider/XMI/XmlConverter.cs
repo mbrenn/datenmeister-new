@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.XMI
             var copier = new ObjectCopier(new MofFactory(_extent));
 
             var result = (MofElement) copier.Copy(element);
-            var xmlNode = ((XmiProviderObject)result.ProviderObject).XmlNode;
+            var xmlNode = ((XmiProviderObject) result.ProviderObject).XmlNode;
             if (SkipIds)
             {
                 foreach (var node in xmlNode.DescendantNodesAndSelf().OfType<XElement>())

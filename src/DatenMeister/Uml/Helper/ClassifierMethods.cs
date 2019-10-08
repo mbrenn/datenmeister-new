@@ -5,7 +5,6 @@ using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Runtime;
@@ -117,7 +116,6 @@ namespace DatenMeister.Uml.Helper
         /// <summary>
         /// Gets all specializations of the given element and the element itself
         /// </summary>
-        /// <param name="extent">Extent being used to find all elements</param>
         /// <param name="element">Element to be </param>
         /// <param name="visitedElements">Contains the elements that already have been visited.
         /// If the element has been visited, then no recursion is done</param>

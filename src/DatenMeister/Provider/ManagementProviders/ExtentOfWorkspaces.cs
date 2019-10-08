@@ -28,20 +28,16 @@ namespace DatenMeister.Provider.ManagementProviders
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic { get; }
 
-        public IProviderObject CreateElement(string metaClassUri)
-        {
+        public IProviderObject CreateElement(string metaClassUri) =>
             throw new System.NotImplementedException();
-        }
 
         public void AddElement(IProviderObject valueAsObject, int index = -1)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool DeleteElement(string id)
-        {
+        public bool DeleteElement(string id) =>
             throw new System.NotImplementedException();
-        }
 
         public void DeleteAllElements()
         {
@@ -74,9 +70,6 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities()
-        {
-            return 0;
-        }
+        public ProviderCapability GetCapabilities() => ProviderCapability.None;
     }
 }

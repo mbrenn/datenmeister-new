@@ -37,29 +37,25 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveCollection WhenMetaClassIs(
             this IReflectiveCollection collection,
             IElement metaClass)
-        {
-            return new FilterOnMetaClass(collection, metaClass);
-        }
+            =>
+                new FilterOnMetaClass(collection, metaClass);
 
         public static IReflectiveCollection WhenMetaClassIsOneOf(
             this IReflectiveCollection collection,
             params IElement[] metaClasses)
-        {
-            return new FilterOnMetaClass(collection, metaClasses);
-        }
+            =>
+                new FilterOnMetaClass(collection, metaClasses);
 
         public static IReflectiveCollection WhenMetaClassIsNotSet(
             this IReflectiveCollection collection)
-        {
-            return new FilterOnMetaClassIsNotSet(collection);
-        }
+            =>
+                new FilterOnMetaClassIsNotSet(collection);
 
         public static IReflectiveCollection WhenPropertyIsSet(
             this IReflectiveCollection collection,
             string propertyName)
-        {
-            return new FilterOnPropertyIsSet(collection, propertyName);
-        }
+            =>
+                new FilterOnPropertyIsSet(collection, propertyName);
 
         public static IReflectiveCollection WhenPropertyHasValue<T>(
             this IReflectiveCollection collection,
@@ -89,13 +85,12 @@ namespace DatenMeister.Runtime.Functions.Queries
             IEnumerable<string> properties,
             string value,
             StringComparison comparer = StringComparison.CurrentCulture)
-        {
-            return new FilterOnMultipleProperties(
-                collection,
-                properties,
-                value,
-                comparer);
-        }
+            =>
+                new FilterOnMultipleProperties(
+                    collection,
+                    properties,
+                    value,
+                    comparer);
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively
@@ -104,9 +99,8 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <returns>A reflective collection, containing all items</returns>
         public static IReflectiveSequence GetAllDescendants(
             this IReflectiveCollection collection)
-        {
-            return new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
-        }
+            =>
+                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively
@@ -117,9 +111,8 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveSequence GetAllDescendants(
             this IReflectiveCollection collection,
             IEnumerable<string> byFollowingProperties)
-        {
-            return new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>().ToList());
-        }
+            =>
+                new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>().ToList());
 
         /// <summary>
         /// Groups all properties by performing an aggregation
@@ -136,14 +129,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             string aggregateColumn,
             Func<IAggregator> aggregatorFunc,
             string aggregatedColumn)
-        {
-            return new GroupByReflectiveCollection(
-                collection,
-                groupByColumn,
-                aggregateColumn,
-                aggregatorFunc,
-                aggregatedColumn);
-        }
+            =>
+                new GroupByReflectiveCollection(
+                    collection,
+                    groupByColumn,
+                    aggregateColumn,
+                    aggregatorFunc,
+                    aggregatedColumn);
 
         /// <summary>
         /// Orders the reflective section by the given property
@@ -154,16 +146,14 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveCollection OrderBy(
             this IReflectiveCollection collection,
             string property)
-        {
-            return new OrderByProperty(collection, property);
-        }
+            =>
+                new OrderByProperty(collection, property);
 
         public static IReflectiveCollection FilterDistinct(
             this IReflectiveCollection collection,
             string property)
-        {
-            return new DistinctReflectiveCollection(collection, property);
-        }
+            =>
+                new DistinctReflectiveCollection(collection, property);
 
         /// <summary>
         /// Unionizes two reflective collections into one collection
@@ -174,8 +164,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IReflectiveCollection Union(
             this IReflectiveCollection first,
             IReflectiveCollection second)
-        {
-            return new UnionQuery(first, second);
-        }
+            =>
+                new UnionQuery(first, second);
     }
 }

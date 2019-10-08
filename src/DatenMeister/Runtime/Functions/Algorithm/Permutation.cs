@@ -51,6 +51,7 @@ namespace DatenMeister.Runtime.Functions.Algorithm
                     {
                         yield return result;
                     }
+
                     Swap(list,k,i);
                 }
             }
@@ -69,6 +70,7 @@ namespace DatenMeister.Runtime.Functions.Algorithm
             {
                 result *= n;
             }
+
             return result;
         }
     }

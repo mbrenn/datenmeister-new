@@ -24,9 +24,7 @@ namespace DatenMeister.Modules.DataViews
 
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        private List<IElement> _visitedViewNodes = new List<IElement>();
-
-        private int _referenceCount = 0;
+        private int _referenceCount;
 
         private const int MaximumReferenceCount = 1000;
 
@@ -54,7 +52,7 @@ namespace DatenMeister.Modules.DataViews
                 Logger.Warn("Maximum number of references are evaluated in dataview evaluation");
                 return new PureReflectiveSequence();
             }
-            
+
 
             var dataview = _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews, _DataViews>();
             var metaClass = viewNode.getMetaClass();
@@ -65,29 +63,19 @@ namespace DatenMeister.Modules.DataViews
             }
 
             if (metaClass.@equals(dataview.__SourceExtentNode))
-            {
                 return GetElementsForSourceExtent(viewNode);
-            }
 
             if (metaClass.@equals(dataview.__SelectPathNode))
-            {
                 return GetElementsForPathNode(viewNode);
-            }
 
             if (metaClass.@equals(dataview.__FlattenNode))
-            {
                 return GetElementsForFlattenNode(viewNode);
-            }
 
             if (metaClass.@equals(dataview.__FilterTypeNode))
-            {
                 return GetElementsForFilterTypeNode(viewNode);
-            }
 
             if (metaClass.@equals(dataview.__FilterPropertyNode))
-            {
                 return GetElementsForFilterPropertyNode(viewNode);
-            }
 
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
 
@@ -173,7 +161,6 @@ namespace DatenMeister.Modules.DataViews
             }
 
             return new TemporaryReflectiveSequence(input.WhenMetaClassIs(type));
-
         }
 
         private IReflectiveSequence GetElementsForFilterPropertyNode(IElement viewNode)
@@ -232,7 +219,7 @@ namespace DatenMeister.Modules.DataViews
 
                 var elementValue = element.get(property).ToString();
 
-                var isIn = false;
+                bool isIn;
                 switch (comparisonMode)
                 {
                     case ComparisonMode.Equal:

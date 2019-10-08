@@ -36,6 +36,5 @@ namespace DatenMeister.Runtime.Functions.Queries
             _first.clear();
             _second.clear();
         }
-
     }
 }

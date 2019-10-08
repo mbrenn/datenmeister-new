@@ -123,7 +123,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             {
                 var extentManager = dm.Resolve<IExtentManager>();
                 var csvExtent = extentManager.LoadExtent(
-                    new CSVExtentLoaderConfig
+                    new CsvExtentLoaderConfig
                     {
                         filePath = "./test.csv",
                         extentUri = csvExtentUri

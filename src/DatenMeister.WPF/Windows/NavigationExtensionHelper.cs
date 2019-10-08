@@ -60,20 +60,20 @@ namespace DatenMeister.WPF.Windows
                 clickMethod = applicationMenuButtonDefinition.OnPressed;
             }
             else if (Extent != null
-                && definition is ExtentMenuButtonDefinition extentMenuButtonDefinition
-                && NavigationScope.HasFlag(NavigationScope.Extent))
+                     && definition is ExtentMenuButtonDefinition extentMenuButtonDefinition
+                     && NavigationScope.HasFlag(NavigationScope.Extent))
             {
                 clickMethod = () => extentMenuButtonDefinition.OnPressed(Extent);
             }
             else if (Collection != null
-                && definition is CollectionMenuButtonDefinition collectionMenuButtonDefinition
-                && NavigationScope.HasFlag(NavigationScope.Collection))
+                     && definition is CollectionMenuButtonDefinition collectionMenuButtonDefinition
+                     && NavigationScope.HasFlag(NavigationScope.Collection))
             {
                 clickMethod = () => collectionMenuButtonDefinition.OnPressed(Collection);
             }
-            else if(Item != null
-                && definition is ItemMenuButtonDefinition itemMenuButtonDefinition
-                && NavigationScope.HasFlag(NavigationScope.Item))
+            else if (Item != null
+                     && definition is ItemMenuButtonDefinition itemMenuButtonDefinition
+                     && NavigationScope.HasFlag(NavigationScope.Item))
             {
                 clickMethod = () => itemMenuButtonDefinition.OnPressed(Item);
             }

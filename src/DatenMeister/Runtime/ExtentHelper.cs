@@ -195,6 +195,7 @@ namespace DatenMeister.Runtime
 
             foreach (var extent in uriExtents)
             {
+                // ReSharper disable once SuspiciousTypeConversion.Global
                 if (extent is IExtentCachesObject extentAsObjectCache)
                 {
                     if (extentAsObjectCache.HasObject(value))
@@ -227,7 +228,7 @@ namespace DatenMeister.Runtime
         public static IElement FindInMeta<TFilledType>(this IExtent extent, Func<TFilledType, IElement> type)
             where TFilledType : class, new()
         {
-            var filledType = ((MofExtent)extent).Workspace.GetFromMetaWorkspace<TFilledType>();
+            var filledType = ((MofExtent) extent).Workspace.GetFromMetaWorkspace<TFilledType>();
             return filledType == null ? null : type(filledType);
         }
     }

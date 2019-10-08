@@ -9,13 +9,12 @@ namespace DatenMeister.DotNet
 {
     public class ResourceHelper
     {
-
         public static string LoadStringFromAssembly(Type typeInAssembly, string resourcePath)
         {
             using (var stream =
                 typeInAssembly.Assembly.GetManifestResourceStream(resourcePath))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException("Stream is empty")))
                 {
                     return reader.ToString();
                 }

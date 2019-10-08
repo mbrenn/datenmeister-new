@@ -16,7 +16,7 @@ namespace DatenMeister.WPF.Navigation
         List,
 
         /// <summary>
-        /// Shows a detailled view of items
+        /// Shows a detailed view of items
         /// </summary>
         Detail
     }
@@ -41,7 +41,8 @@ namespace DatenMeister.WPF.Navigation
         /// Defines the order of the ribbon for standard items.
         /// All other ribbons will be stored after that
         /// </summary>
-        public static readonly string[] RibbonOrder = {
+        public static readonly string[] RibbonOrder =
+        {
             DatenMeister,
             "Extent",
             "Item"
@@ -57,7 +58,6 @@ namespace DatenMeister.WPF.Navigation
     /// </summary>
     public enum NavigationResult
     {
-
         /// <summary>
         /// User has done nothing, since the navigation type does not offer such kind of userdialog feedback
         /// </summary>
@@ -169,7 +169,7 @@ namespace DatenMeister.WPF.Navigation
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
 
-            if (parentWindow == null) 
+            if (parentWindow == null)
                 throw new InvalidOperationException("No parent window is not allowed");
 
             var userControl = factoryMethod();

@@ -33,11 +33,10 @@ namespace DatenMeister.Provider.InMemory
         {
             _extentElement = new InMemoryObject(this);
         }
+
         /// <inheritdoc />
-        public IProviderObject CreateElement(string metaClassUri)
-        {
-            return new InMemoryObject(this, metaClassUri);
-        }
+        public IProviderObject CreateElement(string metaClassUri) =>
+            new InMemoryObject(this, metaClassUri);
 
         /// <inheritdoc />
         public void AddElement(IProviderObject valueAsObject, int index = -1)
@@ -54,7 +53,6 @@ namespace DatenMeister.Provider.InMemory
                     _elements.Insert(index, toBeAdded);
                 }
             }
-
         }
 
         /// <inheritdoc />
@@ -102,9 +100,6 @@ namespace DatenMeister.Provider.InMemory
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities()
-        {
-            return 0;
-        }
+        public ProviderCapability GetCapabilities() => ProviderCapability.None;
     }
 }

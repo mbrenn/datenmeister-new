@@ -64,13 +64,12 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             IAggregator aggregator,
             string property)
         {
-            foreach (var item in items.Cast<IObject>())
+            foreach (var item in items
+                .Cast<IObject>()
+                .Where(item => item.isSet(property)))
             {
-                if (item.isSet(property))
-                {
-                    aggregator.Add(
-                        (T) Convert.ChangeType(item.get(property), typeof(T)));
-                }
+                aggregator.Add(
+                    (T) Convert.ChangeType(item.get(property), typeof(T)));
             }
 
             return (T) aggregator.Result;

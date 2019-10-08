@@ -76,7 +76,7 @@ namespace DatenMeister.Modules.ZipExample
             File.Copy(originalFilename, filename);
 
             // Creates the configuration
-            var defaultConfiguration = new CSVExtentLoaderConfig
+            var defaultConfiguration = new CsvExtentLoaderConfig
             {
                 extentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 filePath = filename,

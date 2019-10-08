@@ -12,7 +12,7 @@ namespace DatenMeister.WPF.Helper
     /// </summary>
     public class DelayedRefreshDispatcher
     {
-        private readonly ClassLogger ClassLogger = new ClassLogger(typeof(DelayedRefreshDispatcher));
+        private static readonly ClassLogger ClassLogger = new ClassLogger(typeof(DelayedRefreshDispatcher));
 
         /// <summary>
         /// The dispatcher being used

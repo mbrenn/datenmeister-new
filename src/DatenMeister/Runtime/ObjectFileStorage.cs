@@ -16,10 +16,7 @@ namespace DatenMeister.Runtime
         /// all possibly inherited types need to be returned within this overloadable method
         /// </summary>
         /// <returns>The types that might be serialized/deserialized</returns>
-        public virtual Type[] GetAdditionalTypes()
-        {
-            return null;
-        }
+        public virtual Type[] GetAdditionalTypes() => null;
 
         public T Load(string filePath)
         {
@@ -31,13 +28,15 @@ namespace DatenMeister.Runtime
             using (var fileStream = new FileStream(filePath, FileMode.Open))
             {
                 var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
-                return (T)serializer.Deserialize(fileStream);
+                return (T) serializer.Deserialize(fileStream);
             }
         }
 
         public void Save(string filePath, T collection)
         {
-            var directoryName = Path.GetDirectoryName(filePath);
+            var directoryName = Path.GetDirectoryName(filePath)
+                                ?? throw new InvalidOperationException("directoryName is null");
+            
             if (!Directory.Exists(directoryName))
             {
                 Directory.CreateDirectory(directoryName);

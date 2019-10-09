@@ -9,6 +9,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
@@ -33,97 +34,120 @@ namespace DatenMeister.WPF.Modules.ViewManager
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
             var detailFormControl = viewExtensionTargetInformation.NavigationGuest as DetailFormControl;
 
-            if (viewExtensionTargetInformation.NavigationHost != null)
+            if (viewExtensionTargetInformation.NavigationHost is IApplicationWindow)
             {
-                var result = new ApplicationMenuButtonDefinition(
-                    "Goto User Views",
-                    () => NavigatorForItems.NavigateToItemsInExtent(
-                        viewExtensionTargetInformation.NavigationHost,
-                        WorkspaceNames.NameManagement,
-                        WorkspaceNames.UriUserViewExtent),
-                    string.Empty,
-                    NavigationCategories.DatenMeisterNavigation);
-
-                yield return result;
+                yield return GetForApplicationWindow(viewExtensionTargetInformation);
             }
 
             if (itemExplorerControl != null || detailFormControl != null)
             {
                 if (detailFormControl != null)
                 {
-                    var openView = new ExtentMenuButtonDefinition(
-                        "Change Form",
-                        async x =>
-                        {
-                            var action = await Navigator.CreateDetailWindow(
-                                viewExtensionTargetInformation.NavigationHost,
-                                new NavigateToItemConfig
-                                {
-                                    DetailElement = InMemoryObject.CreateEmpty(),
-                                    FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
-                                        .element("#ViewManagerFindView")
-                                });
-
-                            if (action.Result == NavigationResult.Saved && action.DetailElement is IElement asElement)
-                            {
-                                var formDefinition = asElement.getOrDefault<IElement>("form");
-
-                                itemExplorerControl?.AddTab(
-                                    itemExplorerControl.RootItem,
-                                    formDefinition,
-                                    null);
-
-                                detailFormControl.SetForm(formDefinition);
-                            }
-                        },
-                        "",
-                        NavigationCategories.Form + ".Definition");
-
-                    yield return openView;
+                    foreach (var viewExtension in
+                        GetForDetailWindow(viewExtensionTargetInformation, itemExplorerControl, detailFormControl))
+                    {
+                        yield return viewExtension;
+                    }
                 }
 
                 if (itemExplorerControl != null)
                 {
-                    var showFormDefinition = new ExtentMenuButtonDefinition(
-                        "Show Form Definition",
-                        x =>
-                        {
-                            var dlg = new ItemXmlViewWindow
-                            {
-                                /*SupportWriting = true,*/
-                                Owner = Window.GetWindow(itemExplorerControl.NavigationHost.GetWindow())
-                            };
-                            dlg.SupportWriting = false;
-
-                            dlg.UpdateContent(itemExplorerControl.EffectiveForm);
-
-                            dlg.ShowDialog();
-                        },
-                        "",
-                        NavigationCategories.Form + ".Definition");
-
-                    yield return showFormDefinition;
-
-                    var copyFormDefinition = new ExtentMenuButtonDefinition(
-                        "Save Form Definition",
-                        x =>
-                        {
-                            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-                            var target = viewLogic.GetUserViewExtent();
-                            var copier = new ObjectCopier(new MofFactory(target));
-
-                            var copiedForm = copier.Copy(itemExplorerControl.EffectiveForm);
-                            target.elements().add(copiedForm);
-
-                            NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
-                                copiedForm);
-                        },
-                        "",
-                        NavigationCategories.Form + ".Definition");
-
-                    yield return copyFormDefinition;
+                    foreach (var viewExtension in GetForItemExplorerControl(itemExplorerControl))
+                    {
+                        yield return viewExtension;
+                    }
                 }
             }
+        }
+
+        private static IEnumerable<ViewExtension> GetForItemExplorerControl(ItemExplorerControl itemExplorerControl)
+        {
+            var showFormDefinition = new ExtentMenuButtonDefinition(
+                "Show Form Definition",
+                x =>
+                {
+                    var dlg = new ItemXmlViewWindow
+                    {
+                        /*SupportWriting = true,*/
+                        Owner = Window.GetWindow(itemExplorerControl.NavigationHost.GetWindow()),
+                        SupportWriting = false
+                    };
+
+                    dlg.UpdateContent(itemExplorerControl.EffectiveForm);
+
+                    dlg.ShowDialog();
+                },
+                "",
+                NavigationCategories.Form + ".Definition");
+
+            yield return showFormDefinition;
+
+            var copyFormDefinition = new ExtentMenuButtonDefinition(
+                "Save Form Definition",
+                x =>
+                {
+                    var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                    var target = viewLogic.GetUserViewExtent();
+                    var copier = new ObjectCopier(new MofFactory(target));
+
+                    var copiedForm = copier.Copy(itemExplorerControl.EffectiveForm);
+                    target.elements().add(copiedForm);
+
+                    NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
+                        copiedForm);
+                },
+                "",
+                NavigationCategories.Form + ".Definition");
+
+            yield return copyFormDefinition;
+        }
+
+        private static IEnumerable<ViewExtension> GetForDetailWindow(ViewExtensionTargetInformation viewExtensionTargetInformation,
+            ItemExplorerControl itemExplorerControl, DetailFormControl detailFormControl)
+        {
+            var openView = new ExtentMenuButtonDefinition(
+                "Change Form",
+                async x =>
+                {
+                    var action = await Navigator.CreateDetailWindow(
+                        viewExtensionTargetInformation.NavigationHost,
+                        new NavigateToItemConfig
+                        {
+                            DetailElement = InMemoryObject.CreateEmpty(),
+                            FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
+                                .element("#ViewManagerFindView")
+                        });
+
+                    if (action.Result == NavigationResult.Saved && action.DetailElement is IElement asElement)
+                    {
+                        var formDefinition = asElement.getOrDefault<IElement>("form");
+
+                        itemExplorerControl?.AddTab(
+                            itemExplorerControl.RootItem,
+                            formDefinition,
+                            null);
+
+                        detailFormControl.SetForm(formDefinition);
+                    }
+                },
+                "",
+                NavigationCategories.Form + ".Definition");
+
+            yield return openView;
+        }
+
+        private static ViewExtension GetForApplicationWindow(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        {
+            var result = new ApplicationMenuButtonDefinition(
+                "Goto User Views",
+                () => NavigatorForItems.NavigateToItemsInExtent(
+                    viewExtensionTargetInformation.NavigationHost,
+                    WorkspaceNames.NameManagement,
+                    WorkspaceNames.UriUserViewExtent),
+                string.Empty,
+                NavigationCategories.DatenMeisterNavigation);
+
+            return result;
         }
     }
 }

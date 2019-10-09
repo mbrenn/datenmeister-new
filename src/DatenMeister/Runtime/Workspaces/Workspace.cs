@@ -8,13 +8,14 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
+// ReSharper disable InconsistentNaming
+
 namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
     /// Defines a workspace according to the Mof specification
     /// MOF Facility Object Lifecycle (MOFFOL)
     /// </summary>
-    /// <typeparam name="T">Type of the extents being handled</typeparam>
     public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Workspace));
@@ -23,6 +24,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         private readonly List<IExtent> _extent = new List<IExtent>();
 
+        // ReSharper disable once CollectionNeverUpdated.Local
         private readonly List<ITag> _properties = new List<ITag>();
 
         /// <summary>
@@ -70,12 +72,9 @@ namespace DatenMeister.Runtime.Workspaces
                     yield return localExtent;
                 }
 
-                foreach (var plugin in ExtentPlugins)
+                foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
                 {
-                    foreach (var pluginExtent in plugin)
-                    {
-                        yield return pluginExtent;
-                    }
+                    yield return pluginExtent;
                 }
             }
         }
@@ -130,7 +129,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="newExtent">The extent to be added</param>
         public void AddExtent(IUriExtent newExtent)
         {
-            var asMofExtent = (MofExtent)newExtent;
+            var asMofExtent = (MofExtent) newExtent;
             if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
             if (asMofExtent.Workspace != null)
             {
@@ -294,22 +293,17 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public override string ToString()
-        {
-            return !string.IsNullOrEmpty(annotation)
+        public override string ToString() =>
+            !string.IsNullOrEmpty(annotation)
                 ? $"({id}) {annotation}"
                 : $"({id})";
-        }
 
         public IEnumerable<string> getPropertiesBeingSet()
         {
             yield return "id";
         }
 
-        public bool @equals(object other)
-        {
-            throw new NotImplementedException();
-        }
+        public bool @equals(object other) => throw new NotImplementedException();
 
         public object get(string property)
         {
@@ -326,10 +320,7 @@ namespace DatenMeister.Runtime.Workspaces
             throw new NotImplementedException();
         }
 
-        public bool isSet(string property)
-        {
-            return property == "id";
-        }
+        public bool isSet(string property) => property == "id";
 
         public void unset(string property)
         {
@@ -347,9 +338,9 @@ namespace DatenMeister.Runtime.Workspaces
             return result;
         }
 
-        public IElement ResolveById(string id)
+        public IElement ResolveById(string elementId)
         {
-            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(id)).FirstOrDefault(found => found != null);
+            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId)).FirstOrDefault(found => found != null);
         }
     }
 }

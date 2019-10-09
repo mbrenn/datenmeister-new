@@ -1,4 +1,5 @@
-﻿namespace DatenMeister.Runtime.Workspaces
+﻿// ReSharper disable InconsistentNaming
+namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
     ///     This class is used to reference a single object within the database
@@ -16,9 +17,7 @@
             this.item = item;
         }
 
-        public override string ToString()
-        {
-            return $"{ws} - {extent} - {item}";
-        }
+        public override string ToString() =>
+            $"{ws} - {extent} - {item}";
     }
 }

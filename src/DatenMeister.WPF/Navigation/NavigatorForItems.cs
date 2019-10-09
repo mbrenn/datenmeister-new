@@ -86,16 +86,15 @@ namespace DatenMeister.WPF.Navigation
             IObject element,
             Action<DetailFormControl> afterCreated = null,
             string title = null)
-        {
-            return NavigateToElementDetailViewAsync(
-                window,
-                new NavigateToItemConfig
-                {
-                    Title = title,
-                    DetailElement = element,
-                    AfterCreatedFunction = afterCreated
-                });
-        }
+            =>
+                NavigateToElementDetailViewAsync(
+                    window,
+                    new NavigateToItemConfig
+                    {
+                        Title = title,
+                        DetailElement = element,
+                        AfterCreatedFunction = afterCreated
+                    });
 
 
         /// <summary>
@@ -107,9 +106,8 @@ namespace DatenMeister.WPF.Navigation
         public static Task<NavigateToElementDetailResult> NavigateToElementDetailViewAsync(
             INavigationHost window,
             NavigateToItemConfig navigateToItemConfig)
-        {
-            return Navigator.CreateDetailWindow(window, navigateToItemConfig);
-        }
+            =>
+                Navigator.CreateDetailWindow(window, navigateToItemConfig);
 
         /// <summary>
         /// Opens the dialog in which the user can create a new xmi extent
@@ -253,17 +251,16 @@ namespace DatenMeister.WPF.Navigation
             IObject element,
             IElement metaclass,
             string parentProperty = null)
-        {
-            return NavigateToNewItemForItem(
-                window,
-                new NavigateToItemConfig
-                {
-                    ContainerElement = element,
-                    MetaClass = metaclass,
-                    ContainerProperty = parentProperty
-                }
-            );
-        }
+            =>
+                NavigateToNewItemForItem(
+                    window,
+                    new NavigateToItemConfig
+                    {
+                        ContainerElement = element,
+                        MetaClass = metaclass,
+                        ContainerProperty = parentProperty
+                    });
+
         /// <summary>
         /// Creates a new item and adds the item to the given container element.
         /// The property to which the container will be determined is set by the Container Property
@@ -275,15 +272,13 @@ namespace DatenMeister.WPF.Navigation
         public static IControlNavigationNewItem NavigateToNewItemForItem(
             INavigationHost window,
             NavigateToItemConfig config)
-        { 
+        {
             var result = new ControlNavigation();
             if (config.MetaClass == null)
             {
                 var createableTypes = new CreatableTypeNavigator();
-                createableTypes.Closed += (x, y) =>
-                {
-                    CreateElementItself(createableTypes.SelectedType);
-                };
+                createableTypes.Closed += (x, y)
+                    => CreateElementItself(createableTypes.SelectedType);
 
                 _ = createableTypes.NavigateToSelectCreateableType(window, config.ContainerElement.GetExtentOf());
             }
@@ -305,12 +300,11 @@ namespace DatenMeister.WPF.Navigation
                     window,
                     newElement,
                     (form) =>
-                    {
                         form.ViewDefined += (x, y) =>
                         {
                             // Gets the view definition
                             var fields = y.View
-                                    .get<IReflectiveSequence>(_FormAndFields._Form.field);
+                                .get<IReflectiveSequence>(_FormAndFields._Form.field);
                             var formFactory = new MofFactory(fields);
 
                             if (config.ContainerProperty == null) // ParentProperty is not given, so user gives property
@@ -341,15 +335,13 @@ namespace DatenMeister.WPF.Navigation
                                 var lineField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__SeparatorLineFieldData);
                                 fields.add(1, lineField);
                             }
-                        };
-                    },
+                        },
                     "New Item");
 
-                if ( detailControlView.Result == NavigationResult.Saved)
+                if (detailControlView.Result == NavigationResult.Saved)
                 {
-                    var selectedProperty = config.ContainerProperty != null ?
-                        config.ContainerProperty :
-                        detailControlView.AttachedElement.getOrDefault<string>("ParentProperty");
+                    var selectedProperty = config.ContainerProperty
+                                           ?? detailControlView.AttachedElement.getOrDefault<string>("ParentProperty");
 
                     if (string.IsNullOrEmpty(selectedProperty))
                     {
@@ -363,7 +355,7 @@ namespace DatenMeister.WPF.Navigation
                     // collection.add(newElement);
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));
                     result.OnClosed();
-                };
+                }
             }
 
             return result;
@@ -389,10 +381,8 @@ namespace DatenMeister.WPF.Navigation
             if (metaclass == null)
             {
                 var createableTypes = new CreatableTypeNavigator();
-                createableTypes.Closed += (x, y) =>
-                {
-                   CreateElementItself(createableTypes.SelectedType);
-                };
+                createableTypes.Closed += (x, y)
+                    => CreateElementItself(createableTypes.SelectedType);
 
                 _ = createableTypes.NavigateToSelectCreateableType(window, extent);
             }
@@ -431,7 +421,7 @@ namespace DatenMeister.WPF.Navigation
             IElement metaclass)
         {
             var result = NavigateToCreateNewItem(window, extent, metaclass);
-            result.NewItemCreated += (x, y) => { extent.elements().add(y.NewItem); };
+            result.NewItemCreated += (x, y) => extent.elements().add(y.NewItem);
             return result;
         }
 
@@ -462,7 +452,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Navigation extent of window</param>
         /// <param name="collection">Extent to which the item will be added</param>
-        /// <param name="metaClass">Metaclass to be added</param>
+        /// <param name="metaclass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
         public static IControlNavigationNewItem NavigateToNewItemForCollection(
             INavigationHost window,
@@ -475,10 +465,7 @@ namespace DatenMeister.WPF.Navigation
             if (metaclass == null)
             {
                 var createableTypes = new CreatableTypeNavigator();
-                createableTypes.Closed += (x, y) =>
-                {
-                    CreateElementItself(createableTypes.SelectedType);
-                };
+                createableTypes.Closed += (x, y) => CreateElementItself(createableTypes.SelectedType);
 
                 _ = createableTypes.NavigateToSelectCreateableType(window, collection.GetAssociatedExtent());
             }
@@ -493,12 +480,12 @@ namespace DatenMeister.WPF.Navigation
 
                 var detailControlView = await NavigateToElementDetailView(window, newElement, title: "New Item");
 
-                if ( detailControlView.Result == NavigationResult.Saved)
+                if (detailControlView.Result == NavigationResult.Saved)
                 {
                     collection.add(newElement);
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));
                     result.OnClosed();
-                };
+                }
             }
 
             return result;

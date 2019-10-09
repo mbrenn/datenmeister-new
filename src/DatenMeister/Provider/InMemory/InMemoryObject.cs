@@ -47,7 +47,7 @@ namespace DatenMeister.Provider.InMemory
         public static MofElement CreateEmpty(string metaClass, IExtent uriExtent = null)
         {
             var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-            var element = factory.create(null) as MofElement;
+            var element = (MofElement) factory.create(null);
             element.SetMetaClass(metaClass);
             return element;
         }
@@ -108,10 +108,8 @@ namespace DatenMeister.Provider.InMemory
             throw new MofException("Property not found: " + property);
         }
 
-        public bool IsPropertySet(string property)
-        {
-            return _values.ContainsKey(property);
-        }
+        public bool IsPropertySet(string property) =>
+            _values.ContainsKey(property);
 
         public void SetProperty(string property, object value)
         {
@@ -119,19 +117,15 @@ namespace DatenMeister.Provider.InMemory
             _values[property] = value;
         }
 
-        public bool DeleteProperty(string property)
-        {
-            return _values.Remove(property);
-        }
+        public bool DeleteProperty(string property) =>
+            _values.Remove(property);
 
         /// <summary>
         ///     Returns an enumeration with all properties which are currently set
         /// </summary>
         /// <returns>Enumeration of all objects</returns>
-        public IEnumerable<string> GetProperties()
-        {
-            return _values.Keys;
-        }
+        public IEnumerable<string> GetProperties() =>
+            _values.Keys;
 
         public override string ToString()
         {
@@ -176,7 +170,7 @@ namespace DatenMeister.Provider.InMemory
             {
                 result.Insert(index, value);
             }
-            
+
             return true;
         }
 
@@ -205,15 +199,11 @@ namespace DatenMeister.Provider.InMemory
             return result.Remove(value);
         }
 
-        public bool HasContainer()
-        {
-            return _container != null;
-        }
+        public bool HasContainer() =>
+            _container != null;
 
-        public IProviderObject GetContainer()
-        {
-            return _container;
-        }
+        public IProviderObject GetContainer() =>
+            _container;
 
         public void SetContainer(IProviderObject value)
         {

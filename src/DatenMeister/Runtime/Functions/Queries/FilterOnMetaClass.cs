@@ -60,13 +60,9 @@ namespace DatenMeister.Runtime.Functions.Queries
             var isIn = false;
             var metaClass = valueAsObject?.getMetaClass();
             if (metaClass == null && _filteredMetaClass == null)
-            {
                 isIn = true;
-            }
-            else if (metaClass != null && _filteredMetaClass != null &&  _filteredMetaClass.Contains(metaClass))
-            {
-                isIn = true;
-            }
+            else if (metaClass != null && _filteredMetaClass?.Contains(metaClass) == true) isIn = true;
+
             return isIn;
         }
     }

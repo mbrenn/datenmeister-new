@@ -23,12 +23,12 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
             
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CsvProviderLoader(null));
+            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CSVExtentLoaderConfig
+            var configuration = new CsvExtentLoaderConfig
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
                 extentUri = "datenmeister:///local/",
@@ -62,12 +62,12 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
 
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof(CSVExtentLoaderConfig), scope => new CsvProviderLoader(null));
+            mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CSVExtentLoaderConfig
+            var configuration = new CsvExtentLoaderConfig
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
                 extentUri = "datenmeister:///local/",

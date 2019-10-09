@@ -20,9 +20,9 @@ namespace DatenMeister.Runtime
         {
             var mofFactory = factory as MofFactory ??
                              throw new ArgumentException(
-                                 "Not of type MofExtent",
+                                 @"Not of type MofExtent",
                                  nameof(factory));
-           return mofFactory.Extent.Workspace.GetFromMetaWorkspace<TFilledType>();
+            return mofFactory.Extent.Workspace.GetFromMetaWorkspace<TFilledType>();
         }
 
         /// <summary>

@@ -36,30 +36,15 @@ namespace DatenMeister.Runtime.Proxies
             PrivatizeElementFunc = x => x;
         }
 
-        public virtual string contextURI()
-        {
-            return Extent.contextURI();
-        }
+        public virtual string contextURI() => Extent.contextURI();
 
-        public virtual IElement element(string uri)
-        {
-            return PublicizeElementFunc(Extent.element(uri));
-        }
+        public virtual IElement element(string uri) => PublicizeElementFunc(Extent.element(uri));
 
-        public virtual IReflectiveSequence elements()
-        {
-            return PublicizeReflectiveSequenceFunc(Extent.elements());
-        }
+        public virtual IReflectiveSequence elements() => PublicizeReflectiveSequenceFunc(Extent.elements());
 
-        public virtual string uri(IElement element)
-        {
-            return Extent.uri(PrivatizeElementFunc(element));
-        }
+        public virtual string uri(IElement element) => Extent.uri(PrivatizeElementFunc(element));
 
-        public virtual bool useContainment()
-        {
-            return Extent.useContainment();
-        }
+        public virtual bool useContainment() => Extent.useContainment();
 
         public ProxyUriExtent ActivateObjectConversion()
         {
@@ -77,26 +62,16 @@ namespace DatenMeister.Runtime.Proxies
         {
             PublicizeElementFunc = publicizeElement;
             PublicizeReflectiveSequenceFunc = publicizeReflectiveSequence;
-            PrivatizeElementFunc = x =>
-            {
-                var element = x as TElementType;
-                return element != null ?privatizeElement(element) : x;
-            };
+            PrivatizeElementFunc = x => x is TElementType element ? privatizeElement(element) : x;
 
             return this;
         }
 
         /// <inheritdoc />
-        public bool @equals(object other)
-        {
-            return Extent.@equals(other);
-        }
+        public bool @equals(object other) => Extent.@equals(other);
 
         /// <inheritdoc />
-        public object get(string property)
-        {
-            return Extent.get(property);
-        }
+        public object get(string property) => Extent.get(property);
 
         /// <inheritdoc />
         public void set(string property, object value)
@@ -105,10 +80,7 @@ namespace DatenMeister.Runtime.Proxies
         }
 
         /// <inheritdoc />
-        public bool isSet(string property)
-        {
-            return Extent.isSet(property);
-        }
+        public bool isSet(string property) => Extent.isSet(property);
 
         /// <inheritdoc />
         public void unset(string property)

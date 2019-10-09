@@ -88,27 +88,19 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public string contextURI()
-        {
-            return UriOfExtent;
-        }
+            => UriOfExtent;
 
         /// <inheritdoc />
         public string uri(IElement element)
-        {
-            return _navigator.uri(element);
-        }
+            => _navigator.uri(element);
 
         /// <inheritdoc />
         public IElement element(string uri)
-        {
-            return _navigator.element(uri);
-        }
+            => _navigator.element(uri);
 
         /// <inheritdoc />
         public override string ToString()
-        {
-            return $"UriExent: {contextURI()}";
-        }
+            => $"UriExent: {contextURI()}";
 
         /// <summary>
         /// Gets the id of the element as defined in the uri.
@@ -161,17 +153,16 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             var alreadyVisited = new HashSet<Runtime.Workspaces.Workspace>();
-            
+
             if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
             {
                 // Now look into the explicit extents, if no specific constraint is given
-                foreach (var metaExtent in MetaExtents)
+                foreach (var element in
+                    MetaExtents
+                        .Select(metaExtent => metaExtent.element(uri))
+                        .Where(element => element != null))
                 {
-                    var element = metaExtent.element(uri);
-                    if (element != null)
-                    {
-                        return element;
-                    }
+                    return element;
                 }
 
                 var workspaceResult = ResolveByMetaWorkspaces(uri, Workspace, alreadyVisited);
@@ -191,13 +182,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                         continue;
                     }
 
-                    foreach (var extent in workspace.extent.OfType<IUriExtent>())
+                    foreach (var result in
+                        workspace.extent
+                            .OfType<IUriExtent>()
+                            .Select(extent => extent.element(uri))
+                            .Where(result => result != null))
                     {
-                        var result = extent.element(uri);
-                        if (result != null)
-                        {
-                            return result;
-                        }
+                        return result;
                     }
                 }
             }
@@ -231,13 +222,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 foreach (var metaWorkspace in metaWorkspaces)
                 {
-                    foreach (var metaExtent in metaWorkspace.extent.OfType<IUriExtent>())
+                    foreach (var element in
+                        metaWorkspace.extent
+                            .OfType<IUriExtent>()
+                            .Select(metaExtent => metaExtent.element(uri))
+                            .Where(element => element != null))
                     {
-                        var element = metaExtent.element(uri);
-                        if (element != null)
-                        {
-                            return element;
-                        }
+                        return element;
                     }
 
                     var elementByMeta = ResolveByMetaWorkspaces(uri, metaWorkspace, alreadyVisited);

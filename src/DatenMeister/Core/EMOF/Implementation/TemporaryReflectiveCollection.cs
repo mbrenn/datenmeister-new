@@ -80,7 +80,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public virtual int size() 
+        public virtual int size()
             => Values.Count();
     }
 }

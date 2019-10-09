@@ -12,7 +12,6 @@ namespace DatenMeister.Runtime.Functions.Interfaces
 
         public AggregatorByFunction()
         {
-            
         }
 
         public AggregatorByFunction(

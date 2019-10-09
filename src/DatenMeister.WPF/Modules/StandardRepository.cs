@@ -11,12 +11,12 @@ namespace DatenMeister.WPF.Modules
         {
             try
             {
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.UriSource =
-                        new Uri("pack://application:,,,/DatenMeisterWPF;component/assets/icons/dialog-question.png");
-                    image.EndInit();
-                    return image;
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.UriSource =
+                    new Uri("pack://application:,,,/DatenMeisterWPF;component/assets/icons/dialog-question.png");
+                image.EndInit();
+                return image;
             }
             catch (Exception exc)
             {

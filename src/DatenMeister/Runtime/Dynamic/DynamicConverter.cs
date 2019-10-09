@@ -21,7 +21,7 @@ namespace DatenMeister.Runtime.Dynamic
         {
             if (value != null)
             {
-                if (!(value is ExpandoObject valueAsExpandoObject))
+                if (!(value is ExpandoObject))
                 {
                     throw new InvalidOperationException("The given value is not of type ExpandObject");
                 }
@@ -83,18 +83,10 @@ namespace DatenMeister.Runtime.Dynamic
 
         private static object ConvertValue(object propertyValue, bool wrapInObject)
         {
-            if (DotNetHelper.IsNull(propertyValue))
-            {
-                return null;
-            }
-            if (DotNetHelper.IsOfPrimitiveType(propertyValue))
-            {
-                return propertyValue;
-            }
-            if (DotNetHelper.IsOfMofObject(propertyValue))
-            {
-                return ToDynamic(propertyValue as IObject, wrapInObject);
-            }
+            if (DotNetHelper.IsNull(propertyValue)) return null;
+            if (DotNetHelper.IsOfPrimitiveType(propertyValue)) return propertyValue;
+            if (DotNetHelper.IsOfMofObject(propertyValue)) return ToDynamic(propertyValue as IObject, wrapInObject);
+
             if (DotNetHelper.IsOfEnumeration(propertyValue))
             {
                 var enumeration = propertyValue as IEnumerable;

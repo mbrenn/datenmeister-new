@@ -77,7 +77,7 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public UIElement MainControl => MainContent.Content as UIElement;
 
-        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode) 
+        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
             => Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
 
         /// <summary>
@@ -105,13 +105,9 @@ namespace DatenMeister.WPF.Windows
                 NavigationHost = this
             };
 
-            foreach (var plugin in viewExtensionPlugins)
-            {
-                foreach (var extension in plugin.GetViewExtensions(data))
-                {
-                    extensions.Add(extension);
-                }
-            }
+            extensions.AddRange(
+                viewExtensionPlugins.SelectMany(
+                    plugin => plugin.GetViewExtensions(data)));
 
             // Now navigation guest and the window itself can work upon the view extensions
             // The navigation guest gets a chance for the views
@@ -119,7 +115,7 @@ namespace DatenMeister.WPF.Windows
             navigationGuest?.EvaluateViewExtensions(extensionList);
 
             // The menuhelper itself is asked to work upon the view
-            MenuHelper.Item = ( navigationGuest as IItemNavigationGuest)?.Item;
+            MenuHelper.Item = (navigationGuest as IItemNavigationGuest)?.Item;
             MenuHelper.ShowApplicationItems = true;
             MenuHelper.NavigationScope = NavigationScope.Application | NavigationScope.Item;
             MenuHelper.EvaluateExtensions(extensionList);
@@ -213,7 +209,7 @@ namespace DatenMeister.WPF.Windows
                 height = 1000;
             }
 
-            MainMenu.Measure(new Size(width,height));
+            MainMenu.Measure(new Size(width, height));
             var heightOffset = MainMenu.DesiredSize.Height;
 
             control.Measure(new Size(width, height - heightOffset));
@@ -303,7 +299,8 @@ namespace DatenMeister.WPF.Windows
 
             if (effectiveForm != null)
             {
-                var control = new DetailFormControl();
+                var control = new DetailFormControl {NavigationHost = this};
+
                 control.SetContent(detailElement, effectiveForm, container);
                 control.UpdateView();
                 control.ElementSaved += (x, y) =>

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BurnSystems;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -18,7 +17,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// <summary>
         /// Defines the logger being used for this class
         /// </summary>
-        private readonly ILogger _logger = new ClassLogger(typeof(ItemFormatter));
+        private static readonly ILogger Logger = new ClassLogger(typeof(ItemFormatter));
 
         /// <summary>
         /// Initializes a new instance of the ItemFormatter class
@@ -57,7 +56,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
 
             if (fields == null)
             {
-                _logger.Warn("The given tabulator does not contain fields");
+                Logger.Warn("The given tabulator does not contain fields");
                 return;
             }
 
@@ -115,7 +114,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                 new HtmlTableCell("Value") {IsHeading = true});
 
             CreateRowForFields(item, detailForm, table);
-            
+
             var tabs = detailForm.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.tab);
             if (tabs != null)
             {
@@ -124,7 +123,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                     CreateRowForFields(item, tab, table);
                 }
             }
-            
+
             _htmlEngine.Add(table);
         }
 
@@ -140,8 +139,9 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
             if (fields == null)
             {
-                throw  new InvalidOperationException("Fields are null...");
+                throw new InvalidOperationException("Fields are null...");
             }
+
             foreach (var field in fields.OfType<IElement>())
             {
                 var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);

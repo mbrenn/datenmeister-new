@@ -15,6 +15,7 @@ namespace DatenMeister.WPF.Windows
         private IReflectiveCollection _usedReflectiveCollection;
 
         private IObject _usedObject;
+
         public bool SupportWriting
         {
             get => UpdateButton.Visibility == Visibility.Collapsed;
@@ -51,7 +52,6 @@ namespace DatenMeister.WPF.Windows
             _usedObject = null;
 
             UpdateContent();
-
         }
 
         /// <summary>
@@ -113,8 +113,8 @@ namespace DatenMeister.WPF.Windows
                 MessageBox.Show("Invalid content: \r\n\r\n" + exc);
             }
         }
-        /*
 
+        /*
         /// <summary>
         /// Event arguments being used when the user performs an update
         /// </summary>

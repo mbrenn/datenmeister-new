@@ -40,9 +40,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
                     if (_configuration.FixedProperty.Contains(property))
                     {
                         if (element.isSet(property))
-                        {
                             created.set(property, element.get(property));
-                        }
                     }
                     else
                     {
@@ -50,9 +48,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
                         {
                             var value = element.get(property);
                             if (string.IsNullOrEmpty(value as string))
-                            {
                                 continue;
-                            }
 
                             var inner = factory.create(null);
                             inner.set(_configuration.ReferenceProperty, property);
@@ -63,10 +59,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
                 }
 
                 if (list.Count > 0)
-                {
                     created.set(_configuration.SubItemProperty, list);
-                }
-
             }
         }
     }

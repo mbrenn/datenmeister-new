@@ -122,7 +122,7 @@ namespace DatenMeister.Runtime.Copier
                 }
                 else
                 {
-                    var newList = new object[] {setProperty, copiedElement};
+                    var newList = new[] {setProperty, copiedElement};
                     targetElement.set(targetProperty, newList);
                 }
             }

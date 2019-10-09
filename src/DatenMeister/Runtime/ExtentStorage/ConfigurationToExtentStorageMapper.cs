@@ -25,10 +25,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="typeConfiguration">Type of the configuration object, inheriting the <c>ExtentLoaderConfig</c></param>
         /// <returns>true, if mapping exists</returns>
-        public bool HasMappingFor(Type typeConfiguration)
-        {
-            return _mapping.ContainsKey(typeConfiguration);
-        }
+        public bool HasMappingFor(Type typeConfiguration) =>
+            _mapping.ContainsKey(typeConfiguration);
 
         /// <summary>
         /// Adds the mapping by defining the type of the configuration object and the corresponding ExtentStorageLoader
@@ -52,14 +50,12 @@ namespace DatenMeister.Runtime.ExtentStorage
                 Logger.Error($"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
                 throw new InvalidOperationException($"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
             }
-            
+
             return foundType(scope);
         }
 
-        public bool ContainsConfigurationFor(Type typeConfiguration)
-        {
-            return _mapping.ContainsKey(typeConfiguration);
-        }
+        public bool ContainsConfigurationFor(Type typeConfiguration) =>
+            _mapping.ContainsKey(typeConfiguration);
 
         /// <inheritdoc />
         public IEnumerable<Type> ConfigurationTypes => _mapping.Keys;

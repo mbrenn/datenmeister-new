@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -26,8 +25,6 @@ namespace DatenMeister.Provider.DotNet
 
         public IUriResolver UriResolver => _targetExtent as IUriResolver;
 
-        private static ClassLogger _logger = new ClassLogger(typeof(DotNetTypeGenerator));
-
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
         /// </summary>
@@ -45,8 +42,6 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
         /// </summary>
-        /// <param name="factoryForTypes">The factory being used to create the instances for
-        /// class, properties and other MOF elements</param>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
         public DotNetTypeGenerator(IExtent targetExtent, _UML umlHost)
@@ -175,7 +170,7 @@ namespace DatenMeister.Provider.DotNet
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, stringType);
             }
-            else if (property == typeof(int) || property == typeof(long) || property== typeof(short))
+            else if (property == typeof(int) || property == typeof(long) || property == typeof(short))
             {
                 var integerType = UriResolver.Resolve(CoreTypeNames.IntegerType,
                     ResolveType.NoMetaWorkspaces);

@@ -34,7 +34,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
                 return true;
             }
 
-            if ( value is string stringValue && string.IsNullOrEmpty(stringValue))
+            if (value is string stringValue && string.IsNullOrEmpty(stringValue))
             {
                 return true;
             }
@@ -80,7 +80,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
             }
 
             throw new ArgumentException(
-                $"Type of element is not supported {type.FullName}",
+                $@"Type of element is not supported {type.FullName}",
                 nameof(type));
         }
     }

@@ -46,14 +46,13 @@ namespace DatenMeister.Core.Plugins
             // All assemblies, which do not start with Microsoft or System.
             // We will not find any extent or something like that within these assemblies.
             foreach (var name in assembly.GetReferencedAssemblies()
-                .Where(x => !IsDotNetLibrary(x)))
+                .Where(x => !IsDotNetLibrary(x))
+                .Where(x => AppDomain.CurrentDomain.GetAssemblies().All(a =>
+                    !string.Equals(a.GetName().Name, x.Name, StringComparison.CurrentCultureIgnoreCase))))
             {
-                if (AppDomain.CurrentDomain.GetAssemblies().All(a => !string.Equals(a.GetName().Name, name.Name, StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    var innerAssembly = Assembly.Load(name);
-                    Logger.Info($"Loaded (2): {innerAssembly}");
-                    LoadReferencedAssembly(innerAssembly);
-                }
+                var innerAssembly = Assembly.Load(name);
+                Logger.Info($"Loaded (2): {innerAssembly}");
+                LoadReferencedAssembly(innerAssembly);
             }
         }
 
@@ -169,7 +168,7 @@ namespace DatenMeister.Core.Plugins
             while (pluginList.Count != 0)
             {
                 // Go through the list and check which plugins can be loaded in current round
-                foreach (var plugin in pluginList.ToList().OrderBy(x=>x.GetType().FullName))
+                foreach (var plugin in pluginList.ToList().OrderBy(x => x.GetType().FullName))
                 {
                     //
                     // Checks whether the current plugin is dependent upon another non-loaded plugin
@@ -207,7 +206,6 @@ namespace DatenMeister.Core.Plugins
                         }
                         catch (Exception exc)
                         {
-
                             NoExceptionDuringLoading = false;
                             Logger.Error($"Failed plugin: {exc}");
 
@@ -253,7 +251,7 @@ namespace DatenMeister.Core.Plugins
         {
             foreach (var attribute in type.GetCustomAttributes(typeof(PluginLoadingAttribute), false))
             {
-                return (PluginLoadingAttribute)attribute;
+                return (PluginLoadingAttribute) attribute;
             }
 
             return null;
@@ -279,12 +277,10 @@ namespace DatenMeister.Core.Plugins
         /// </summary>
         /// <param name="assemblyName">Name of the assembly</param>
         /// <returns></returns>
-        private static bool IsDotNetLibrary(AssemblyName assemblyName)
-        {
-            return assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
-                   assemblyName.FullName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
-                   assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
-        }
+        private static bool IsDotNetLibrary(AssemblyName assemblyName) =>
+            assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+            assemblyName.FullName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+            assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets true, if the given library is a dotnet library which
@@ -292,11 +288,9 @@ namespace DatenMeister.Core.Plugins
         /// </summary>
         /// <param name="assemblyName">Name of the assembly</param>
         /// <returns>true, if the given library is a .Net Library</returns>
-        private static bool IsDotNetLibrary(string assemblyName)
-        {
-            return assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
-                   assemblyName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
-                   assemblyName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
-        }
+        private static bool IsDotNetLibrary(string assemblyName) =>
+            assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
+            assemblyName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+            assemblyName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
     }
 }

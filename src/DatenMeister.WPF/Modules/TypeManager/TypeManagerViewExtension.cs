@@ -50,12 +50,10 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     yield return new ApplicationMenuButtonDefinition(
                         "Create new Class",
                         () =>
-                        {
                             NavigatorForItems.NavigateToCreateNewItemInExtent(
                                 viewExtensionTargetInformation.NavigationHost,
                                 extent,
-                                extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
-                        },
+                                extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)),
                         string.Empty,
                         NavigationCategories.Type + "." + "Manager");
                 }
@@ -65,13 +63,12 @@ namespace DatenMeister.WPF.Modules.TypeManager
                         new ApplicationMenuButtonDefinition(
                             "Create new Property",
                             () =>
-                            {
                                 NavigatorForItems.NavigateToNewItemForPropertyCollection(
                                     viewExtensionTargetInformation.NavigationHost,
                                     selectedPackage,
                                     _UML._StructuredClassifiers._Class.ownedAttribute,
-                                    extent.FindInMeta<_UML>(x => x.Classification.__Property));
-                            },
+                                    extent.FindInMeta<_UML>(x => x.Classification.__Property))
+                            ,
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");
                 }
@@ -81,26 +78,20 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     () =>
                     {
                         if (selectedPackage == null)
-                        {
                             NavigatorForItems.NavigateToCreateNewItemInExtent(
                                 viewExtensionTargetInformation.NavigationHost,
                                 extent,
                                 extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                        }
                         else
-                        {
                             NavigatorForItems.NavigateToNewItemForPropertyCollection(
                                 viewExtensionTargetInformation.NavigationHost,
                                 itemInExtentList.SelectedPackage,
                                 _UML._StructuredClassifiers._Class.ownedAttribute,
                                 extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                        }
-
                     },
                     string.Empty,
                     NavigationCategories.Type + "." + "Manager");
             }
-
         }
     }
 }

@@ -7,13 +7,8 @@ using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample
 {
-    public class ZipCodeInteractionHandler :  BaseElementInteractionHandler
+    public class ZipCodeInteractionHandler : BaseElementInteractionHandler
     {
-        public ZipCodeInteractionHandler()
-        {
-                
-        }
-
         public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
         {
             if (IsRelevant(element))
@@ -22,9 +17,7 @@ namespace DatenMeister.Modules.ZipExample
                 var name = element.GetOrDefault(nameof(ZipCode.name))?.ToString();
 
                 if (string.IsNullOrEmpty(zipCode) || string.IsNullOrEmpty(name))
-                {
                     yield break;
-                }
 
                 var query = $"{zipCode} {name}";
                 yield return new DefaultElementInteraction(

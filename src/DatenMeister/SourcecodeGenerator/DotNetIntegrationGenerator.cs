@@ -61,7 +61,7 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine($"{stack.Indentation}{{"); // Inner scope
 
                 stack = stack.Next;
-                var fullName = type.FullName.Replace('+', '.');
+                var fullName = type.FullName?.Replace('+', '.');
 
                 Result.AppendLine($"{stack.Indentation}var type = typeof({fullName});");
                 Result.AppendLine($"{stack.Indentation}var typeAsElement = generator.CreateTypeFor(type);");
@@ -72,7 +72,6 @@ namespace DatenMeister.SourcecodeGenerator
 
                 stack = stack.Owner;
                 Result.AppendLine($"{stack.Indentation}}}"); // Inner scope
-
             }
 
             stack = stack.Owner;

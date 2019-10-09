@@ -27,7 +27,7 @@ namespace DatenMeister.WPF.Windows
 
             TheLog.MessageLogged += Action;
 
-            Closed += (x, y) => { TheLog.MessageLogged -= Action; };
+            Closed += (x, y) => TheLog.MessageLogged -= Action;
         }
 
         private void UpdateMessageContent()

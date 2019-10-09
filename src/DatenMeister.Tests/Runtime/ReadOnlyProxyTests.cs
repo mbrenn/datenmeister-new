@@ -47,12 +47,12 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(CSVExtentTests.PathForTemporaryDataFile, csvFile);
 
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CsvProviderLoader(null));
+            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var workspaceData = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData), new IntegrationSettings());
-            var configuration = new CSVExtentLoaderConfig
+            var configuration = new CsvExtentLoaderConfig
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
                 extentUri = "datenmeister:///local/",

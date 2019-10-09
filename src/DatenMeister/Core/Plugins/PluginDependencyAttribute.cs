@@ -18,7 +18,6 @@ namespace DatenMeister.Core.Plugins
         /// Initializes a new instance of the PluginDependency attribute class
         /// </summary>
         /// <param name="dependentType">Defines teh type upon which this plugin is dependent upon</param>
-        /// <param name="pluginEntry">Defines the plugin execution position</param>
         public PluginDependencyAttribute(Type dependentType)
         {
             DependentType = dependentType;

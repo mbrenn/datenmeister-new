@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -36,9 +35,7 @@ namespace DatenMeister.Modules.ZipExample
         /// </summary>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
         public IUriExtent AddZipCodeExample(Workspace workspace)
-        {
-            return AddZipCodeExample(workspace.id);
-        }
+            => AddZipCodeExample(workspace.id);
 
         public IUriExtent AddZipCodeExample(string workspaceId)
         {
@@ -77,9 +74,9 @@ namespace DatenMeister.Modules.ZipExample
             }
 
             File.Copy(originalFilename, filename);
-            
+
             // Creates the configuration
-            var defaultConfiguration = new CSVExtentLoaderConfig
+            var defaultConfiguration = new CsvExtentLoaderConfig
             {
                 extentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 filePath = filename,
@@ -101,13 +98,13 @@ namespace DatenMeister.Modules.ZipExample
                 }
             };
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration, ExtentCreationFlags.LoadOnly);
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration);
             loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
 
             var zipCodeTypePackage =
                 _workspaceLogic.GetTypesWorkspace().FindElementByUri(
                     "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) as IElement;
-            loadedExtent.SetDefaultTypePackage(zipCodeTypePackage);
+            loadedExtent.SetDefaultTypePackages(new[] {zipCodeTypePackage});
 
             return loadedExtent;
         }

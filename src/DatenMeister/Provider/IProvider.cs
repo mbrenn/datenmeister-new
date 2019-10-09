@@ -10,6 +10,11 @@ namespace DatenMeister.Provider
     public enum ProviderCapability
     {
         /// <summary>
+        /// No special capability
+        /// </summary>
+        None = 0x00,
+
+        /// <summary>
         /// Will be set, if the provider is capable to store the information about possible meta information within the
         /// extent itself. Is this flag is not set, the data will be stored by the extent itself and saved within the
         /// uri extent loading file

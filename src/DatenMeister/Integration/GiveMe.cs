@@ -46,9 +46,7 @@ namespace DatenMeister.Integration
             Scope = new DatenMeisterScope(container.BeginLifetimeScope());
 
             Scope.BeforeDisposing += (x, y) =>
-            {
                 Scope.UnuseDatenMeister();
-            };
 
             return Scope;
         }

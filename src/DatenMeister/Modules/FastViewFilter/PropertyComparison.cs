@@ -40,7 +40,6 @@ namespace DatenMeister.Modules.FastViewFilter
                 default:
                     return true;
             }
-
         }
     }
 }

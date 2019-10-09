@@ -15,6 +15,7 @@ namespace DatenMeister.Provider.Xml
     public class XmlToExtentConverter
     {
         private readonly XmlReferenceSettings _settings;
+
         private MofFactory _factory;
 
         /// <summary>
@@ -57,6 +58,7 @@ namespace DatenMeister.Provider.Xml
         /// </summary>
         /// <param name="xmlElement">Xml element to be converted</param>
         /// <param name="mofElement">Element which shall be filled</param>
+        /// <param name="innerName">The name for hte inner element</param>
         private void Convert(XElement xmlElement, IElement mofElement, string innerName)
         {
             // Converts the attributes

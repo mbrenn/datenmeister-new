@@ -52,10 +52,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         /// <param name="propertyName">The name of the property to be converted</param>
         /// <returns>The proeprty with added-ref</returns>
-        private static string ConvertPropertyToReference(string propertyName)
-        {
-            return propertyName + "-ref";
-        }
+        private static string ConvertPropertyToReference(string propertyName) =>
+            propertyName + "-ref";
 
         /// <summary>
         /// Gets the Xml Node
@@ -150,6 +148,13 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (value is XmiProviderObject valueAsXmlObject)
             {
+                if (valueAsXmlObject.XmlNode.Parent != null)
+                {
+                    valueAsXmlObject = new XmiProviderObject(
+                        new XElement(valueAsXmlObject.XmlNode),
+                        (XmiProvider) Provider);
+                }
+
                 valueAsXmlObject.XmlNode.Name = property;
                 return valueAsXmlObject.XmlNode;
             }
@@ -178,7 +183,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public string MetaclassUri {
+        public string MetaclassUri
+        {
             get => XmlNode.Attribute(TypeAttribute)?.Value;
             set => XmlNode.SetAttributeValue(TypeAttribute, value);
         }
@@ -340,10 +346,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         /// <param name="property">Property to be queried</param>
         /// <returns>The size of the list</returns>
-        private int GetSizeOfList(string property)
-        {
-            return XmlNode.Elements(property).Count();
-        }
+        private int GetSizeOfList(string property) =>
+            XmlNode.Elements(property).Count();
 
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
@@ -372,35 +376,31 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             if (value is XmiProviderObject valueAsXmlElement)
             {
-                foreach (var subElement in XmlNode.Elements(normalizePropertyName))
+                foreach (var subElement in
+                    XmlNode.Elements(normalizePropertyName)
+                        .Where(subElement => XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode)))
                 {
-                    if (XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode))
-                    {
-                        subElement.Remove();
-                        return true;
-                    }
+                    subElement.Remove();
+                    return true;
                 }
             }
             else
             {
                 var valueAsString = ReturnObjectAsString(value);
-                foreach (var subElement in XmlNode.Elements(normalizePropertyName))
+                foreach (var subElement in
+                    XmlNode.Elements(normalizePropertyName)
+                        .Where(subElement => subElement.Value.Equals(valueAsString)))
                 {
-                    if (subElement.Value.Equals(valueAsString))
-                    {
-                        subElement.Remove();
-                        return true;
-                    }
+                    subElement.Remove();
+                    return true;
                 }
             }
 
             return false;
         }
 
-        public bool HasContainer()
-        {
-            return XmlNode.Parent != null;
-        }
+        public bool HasContainer() =>
+            XmlNode.Parent != null;
 
         /// <summary>
         /// Gets the container of the object

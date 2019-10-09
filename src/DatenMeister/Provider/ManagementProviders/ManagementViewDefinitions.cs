@@ -49,7 +49,8 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Creates a form to create a new type.
         /// </summary>
         /// <param name="preSelectedPackage">Package that shall be preselected</param>
-        /// <param name="types">Types to be added to the form</param>
+        /// <param name="workspace">The workspace to which the type shall be found</param>
+        /// <param name="extent">The extent to which the type shall be found</param>
         /// <returns>The created type</returns>
         public IElement GetFindTypeForm(IObject preSelectedPackage, IWorkspace workspace = null, IExtent extent = null)
         {

@@ -19,15 +19,11 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
             throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
-        public override bool add(object value)
-        {
+        public override bool add(object value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
-        }
 
-        public override bool addAll(IReflectiveSequence value)
-        {
+        public override bool addAll(IReflectiveSequence value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
-        }
 
         public override void clear()
         {
@@ -39,14 +35,10 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
             throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
-        public override bool remove(object value)
-        {
+        public override bool remove(object value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
-        }
 
-        public override object set(int index, object value)
-        {
+        public override object set(int index, object value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
-        }
     }
 }

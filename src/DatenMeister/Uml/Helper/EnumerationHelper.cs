@@ -41,6 +41,5 @@ namespace DatenMeister.Uml.Helper
             return values.OfType<IObject>()
                 .Select(x => x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name));
         }
-
     }
 }

@@ -32,7 +32,6 @@ namespace DatenMeister.Uml
         private static readonly string IdProperty;
 
         private Dictionary<string, IElement> MofClasses { get; } = new Dictionary<string, IElement>();
-
         private Dictionary<string, IElement> UmlClasses { get; } = new Dictionary<string, IElement>();
         private Dictionary<string, IElement> UmlAssociations { get; } = new Dictionary<string, IElement>();
 
@@ -164,6 +163,7 @@ namespace DatenMeister.Uml
                 {
                     UmlClasses[name] = classInstance;
                 }
+
                 if (typeValue == "uml:Association")
                 {
                     UmlAssociations[name] = classInstance;
@@ -227,7 +227,7 @@ namespace DatenMeister.Uml
             var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
             var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveTypesInfrastructure).ToList();
             var allElements =
-                    umlDescendents
+                umlDescendents
                     .Union(primitiveDescendents)
                     .ToList();
 
@@ -271,13 +271,10 @@ namespace DatenMeister.Uml
                 var name = classInstance.get("name").ToString();
                 var typeValue = classInstance.isSet(TypeProperty) ? classInstance.get(TypeProperty).ToString() : null;
                 if (typeValue == "uml:Class")
-                {
                     UmlClasses[name] = classInstance;
-                }
+
                 if (typeValue == "uml:Association")
-                {
                     UmlAssociations[name] = classInstance;
-                }
             }
 
             // After having the classes from MOF and UML, go through all classes and set
@@ -309,9 +306,9 @@ namespace DatenMeister.Uml
                     .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class");
 
             var umlNameCache = umlMetaClasses
-                    .ToDictionary(x => x.get("name").ToString(), x => x);
+                .ToDictionary(x => x.get("name").ToString(), x => x);
             var mofNameCache = mofMetaClasses
-                    .ToDictionary(x => x.get("name").ToString(), x => x);
+                .ToDictionary(x => x.get("name").ToString(), x => x);
 
             foreach (var elementInstance in allElements.Where(x => x.isSet(TypeProperty)))
             {
@@ -325,7 +322,6 @@ namespace DatenMeister.Uml
                 {
                     name = name.Substring(4);
                     metaClass = umlNameCache[name];
-
                 }
                 else if (name.StartsWith("mofext:"))
                 {
@@ -342,7 +338,7 @@ namespace DatenMeister.Uml
                     throw new InvalidOperationException($"Metaclass for {name} is not found");
                 }
 
-                ((IElementSetMetaClass)elementInstance).SetMetaClass(metaClass);
+                ((IElementSetMetaClass) elementInstance).SetMetaClass(metaClass);
 
                 // We strip out the property and id information.
                 // It is not really required
@@ -488,7 +484,7 @@ namespace DatenMeister.Uml
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
             var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMofExtent);
             mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
-            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent); 
+            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent);
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi");
 
@@ -503,15 +499,13 @@ namespace DatenMeister.Uml
             if (!isSlim)
             {
                 var loader = new SimpleLoader(dataLayer);
-                if (paths == null || paths.LoadFromEmbeddedResources)
+                if (paths?.LoadFromEmbeddedResources != false)
                 {
-                    loader.LoadFromEmbeddedResource(new MofFactory(primitiveExtent),  primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
+                    loader.LoadFromEmbeddedResource(new MofFactory(primitiveExtent), primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
                     loader.LoadFromEmbeddedResource(new MofFactory(umlExtent), umlExtent, "DatenMeister.XmiFiles.UML.xmi");
 
                     if (mode == BootstrapMode.Mof)
-                    {
                         loader.LoadFromEmbeddedResource(new MofFactory(mofExtent), mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
-                    }
                 }
                 else
                 {
@@ -523,7 +517,7 @@ namespace DatenMeister.Uml
                     }
                 }
             }
-            
+
             var bootStrapper = new Bootstrapper(workspaceLogic);
             if (isSlim)
             {

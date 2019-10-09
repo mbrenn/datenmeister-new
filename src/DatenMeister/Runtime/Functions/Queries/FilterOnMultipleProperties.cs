@@ -39,18 +39,13 @@ namespace DatenMeister.Runtime.Functions.Queries
                 foreach (var property in properties)
                 {
                     if (valueAsObject.isSet(property) == false)
-                    {
                         continue;
-                    }
 
                     var propertyAsText = valueAsObject.get(property);
                     if (!DotNetHelper.IsOfPrimitiveType(propertyAsText))
-                    {
                         continue;
-                    }
 
-
-                    if (propertyAsText.ToString()?.IndexOf(_searchString, _comparison) >= 0)
+                    if (propertyAsText.ToString().IndexOf(_searchString, _comparison) >= 0)
                     {
                         yield return valueAsObject;
                         break;
@@ -68,7 +63,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                 foreach (var property in _properties)
                 {
                     if (valueAsObject?.isSet(property) == true &&
-                        valueAsObject.get(property)?.ToString()?.Contains(_searchString) == true)
+                        valueAsObject.get(property)?.ToString().Contains(_searchString) == true)
                     {
                         result++;
                         break;

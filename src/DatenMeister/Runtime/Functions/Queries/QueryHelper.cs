@@ -37,6 +37,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                 return withProperties.getPropertiesBeingSet().Select(property => GetChildWithProperty(element, property, queryProperty, queryValue)).FirstOrDefault(result => result != null);
             }
         }
+
         /// <summary>
         /// Gets the first child object of the element while queryProperty's value is the same as queryValue.
         /// The name of the element's property containing a reflective collection is specified in childrenProperty

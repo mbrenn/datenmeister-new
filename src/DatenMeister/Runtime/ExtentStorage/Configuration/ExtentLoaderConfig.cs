@@ -1,5 +1,7 @@
 ﻿using DatenMeister.Runtime.Workspaces;
 
+// ReSharper disable InconsistentNaming
+
 namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
     /// <summary>

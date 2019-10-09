@@ -49,13 +49,14 @@ namespace DatenMeister.WPF.Controls
             get => items.SelectedElement;
         }
 
-        public static readonly DependencyProperty ShowWorkspaceSelectionProperty = DependencyProperty.Register(
-            "ShowWorkspaceSelection",
-            typeof(bool),
-            typeof(LocateElementControl),
-            new PropertyMetadata(
-                true,
-                OnShowWorkSpaceSelectionChanged));
+        public static readonly DependencyProperty ShowWorkspaceSelectionProperty =
+            DependencyProperty.Register(
+                "ShowWorkspaceSelection",
+                typeof(bool),
+                typeof(LocateElementControl),
+                new PropertyMetadata(
+                    true,
+                    OnShowWorkSpaceSelectionChanged));
 
         public bool ShowWorkspaceSelection
         {
@@ -66,7 +67,7 @@ namespace DatenMeister.WPF.Controls
         private static void OnShowWorkSpaceSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (LocateElementControl) d;
-            var newValue = (bool)e.NewValue;
+            var newValue = (bool) e.NewValue;
             control.txtWorkspace.Visibility =
                 control.cboWorkspace.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -129,13 +130,12 @@ namespace DatenMeister.WPF.Controls
                     return;
                 }
 
-                foreach (var cboItem in cboWorkspace.ItemsSource)
+                foreach (var cboItem in cboWorkspace.ItemsSource
+                    .Cast<object>()
+                    .Where(cboItem => (cboItem as ComboBoxItem)?.Tag == value))
                 {
-                    if ((cboItem as ComboBoxItem)?.Tag == value)
-                    {
-                        cboExtent.SelectedItem = cboItem;
-                        break;
-                    }
+                    cboExtent.SelectedItem = cboItem;
+                    break;
                 }
             }
         }
@@ -154,13 +154,12 @@ namespace DatenMeister.WPF.Controls
                     return;
                 }
 
-                foreach (var cboItem in cboExtent.ItemsSource)
+                foreach (var cboItem in cboExtent.ItemsSource
+                    .Cast<object>()
+                    .Where(cboItem => (cboItem as ComboBoxItem)?.Tag == value))
                 {
-                    if ((cboItem as ComboBoxItem)?.Tag == value)
-                    {
-                        cboExtent.SelectedItem = cboItem;
-                        break;
-                    }
+                    cboExtent.SelectedItem = cboItem;
+                    break;
                 }
             }
         }

@@ -137,7 +137,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object other) 
+        public bool @equals(object other)
             => AreEqual(this, other as IObject);
 
         /// <inheritdoc />
@@ -203,6 +203,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");
             }
         }
+
 
         /// <inheritdoc />
         public void set(string property, object value)

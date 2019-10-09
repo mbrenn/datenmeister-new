@@ -41,10 +41,8 @@ namespace DatenMeister.Provider.XMI.Standards
         /// Creates a new id which is unique.
         /// </summary>
         /// <returns>The new id</returns>
-        public static string CreateNew()
-        {
-            return Guid.NewGuid().ToString();
-        }
+        public static string CreateNew() =>
+            Guid.NewGuid().ToString();
 
         /// <summary>
         /// Gets the id of a certain Xml Element
@@ -72,9 +70,7 @@ namespace DatenMeister.Provider.XMI.Standards
         /// </summary>
         /// <param name="node">Node to be evaluated</param>
         /// <returns>true, if element has an id</returns>
-        public static bool HasId(XElement node)
-        {
-            return node.Attribute(Namespaces.Xmi + "id") != null;
-        }
+        public static bool HasId(XElement node) =>
+            node.Attribute(Namespaces.Xmi + "id") != null;
     }
 }

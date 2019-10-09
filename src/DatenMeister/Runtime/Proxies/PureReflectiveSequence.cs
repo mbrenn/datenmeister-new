@@ -74,7 +74,10 @@ namespace DatenMeister.Runtime.Proxies
 
         public int size()
         {
-            return _elements.Count;
+            lock (_elements)
+            {
+                return _elements.Count;
+            }
         }
 
         public void add(int index, object value)

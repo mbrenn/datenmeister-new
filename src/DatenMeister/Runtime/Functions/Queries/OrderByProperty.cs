@@ -30,14 +30,10 @@ namespace DatenMeister.Runtime.Functions.Queries
         }
 
         public bool add(object value)
-        {
-            return _parent.add(value);
-        }
+            => _parent.add(value);
 
-        public bool addAll(IReflectiveSequence value)
-        {
-            return _parent.addAll(value);
-        }
+        public bool addAll(IReflectiveSequence value) =>
+            _parent.addAll(value);
 
         public void clear()
         {
@@ -53,24 +49,18 @@ namespace DatenMeister.Runtime.Functions.Queries
             }
         }
 
-        public bool remove(object value)
-        {
-            return _parent.remove(value);
-        }
+        public bool remove(object value) => _parent.remove(value);
 
-        public int size()
-        {
-            return _parent.size();
-        }
+        public int size() =>
+            _parent.size();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() =>
+            GetEnumerator();
 
         /// <summary>
         /// Gets the extent associated to the parent extent
         /// </summary>
-        public IExtent Extent => (_parent as IHasExtent)?.Extent;
+        public IExtent Extent =>
+            (_parent as IHasExtent)?.Extent;
     }
 }

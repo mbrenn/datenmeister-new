@@ -34,10 +34,8 @@ namespace DatenMeister.Runtime.Extents
         /// </summary>
         /// <param name="collection">The reflectivecollection into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
-        public CreateableTypeResult GetCreatableTypes(IReflectiveCollection collection)
-        {
-            return GetCreatableTypes(((IHasExtent) collection).Extent);
-        }
+        public CreateableTypeResult GetCreatableTypes(IReflectiveCollection collection) =>
+            GetCreatableTypes(((IHasExtent) collection).Extent);
 
         /// <summary>
         /// Gets an enumeration of creatable types for a given extent.
@@ -45,10 +43,8 @@ namespace DatenMeister.Runtime.Extents
         /// </summary>
         /// <param name="element">The reflectivecollection into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
-        public CreateableTypeResult GetCreatableTypes(IElement element)
-        {
-            return GetCreatableTypes(((IHasExtent)element).Extent);
-        }
+        public CreateableTypeResult GetCreatableTypes(IElement element) =>
+            GetCreatableTypes(((IHasExtent) element).Extent);
 
         /// <summary>
         /// Gets an enumeration of creatable types for a given extent.
@@ -70,7 +66,6 @@ namespace DatenMeister.Runtime.Extents
                 // We did not find the corresponding class type
                 return new CreateableTypeResult
                 {
-
                     MetaLayer = typeLayer,
                     CreatableTypes = new IElement[] { }
                 };

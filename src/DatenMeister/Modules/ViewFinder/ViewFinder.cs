@@ -7,6 +7,8 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
+// ReSharper disable HeuristicUnreachableCode
+
 namespace DatenMeister.Modules.ViewFinder
 {
     /// <summary>
@@ -21,7 +23,6 @@ namespace DatenMeister.Modules.ViewFinder
 #if VIEWLOGICINFO
         private const bool ActivateDebuggingForViewRetrieval = true;
 #warning Internal Debugging Info activated
-
 #else
         private const bool ActivateDebuggingForViewRetrieval = false;
 #endif
@@ -32,7 +33,6 @@ namespace DatenMeister.Modules.ViewFinder
         /// Initializes a new instance of the ViewFinder class
         /// </summary>
         /// <param name="viewLogic">View logic</param>
-        /// <param name="formCreator">Form Creator being used</param>
         public ViewFinder(
             ViewLogic viewLogic)
         {
@@ -48,9 +48,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="metaClass">Metaclass which is currently in interest</param>
         /// <returns>Found list form for the properties of the item</returns>
         public IElement FindListFormForTreeItemDetailView(IObject element, string property, IElement metaClass)
-        {
-            throw new InvalidOperationException();
-        }
+            => throw new InvalidOperationException();
 
         private class FoundForm
         {
@@ -68,13 +66,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Finds the view matching to the most of the items
         /// </summary>
-        /// <param name="viewType">The view type to be found</param>
-        /// <param name="extentType">The extent type whose view is queried. May be null, if not relevant</param>
-        /// <param name="metaClassName">The uri of the metaclass whose view is queried. May be null, if not relevant</param>
-        /// <param name="metaClass">The element of the metaclass whose view is queried. May be null, if not relevant</param>
+        /// <param name="query">Query being used to find the correct form</param>
         /// <returns>The found view or null, if not found</returns>
-        public IEnumerable<IElement> FindFormsFor(
-            FindViewQuery query)
+        public IEnumerable<IElement> FindFormsFor(FindViewQuery query)
         {
             var viewAssociations = _viewLogic.GetAllViewAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
@@ -176,7 +170,7 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 // ParentProperty
-                if (!string.IsNullOrEmpty(query.parentProperty)&& !string.IsNullOrEmpty(innerParentProperty))
+                if (!string.IsNullOrEmpty(query.parentProperty) && !string.IsNullOrEmpty(innerParentProperty))
                 {
                     if (query.parentProperty.Equals(innerParentProperty))
                     {
@@ -204,8 +198,9 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            return foundForms.OrderByDescending(x=>x.Points).Select(x=>x.Form);
+            return foundForms.OrderByDescending(x => x.Points).Select(x => x.Form);
         }
+
         /// <summary>
         /// Writes the information to the debugger, if the ActivateDebuggingForViewRetrieval is configured as true
         /// </summary>
@@ -222,6 +217,5 @@ namespace DatenMeister.Modules.ViewFinder
         }
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ViewFinder));
-
     }
 }

@@ -67,8 +67,6 @@ namespace DatenMeister.WPF.Windows
 
         /// <inheritdoc />
         public Window GetWindow()
-        {
-            return this;
-        }
+            => this;
     }
 }

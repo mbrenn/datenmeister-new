@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -12,16 +11,13 @@ namespace DatenMeister.Runtime
 {
     public static class CollectionHelper
     {
-        public static IList<T> ToList<T>(this IReflectiveCollection collection)
-        {
-            return new ReflectiveList<T>(collection);
-        }
+        public static IList<T> ToList<T>(this IReflectiveCollection collection) =>
+            new ReflectiveList<T>(collection);
 
         public static IList<T> ToList<T>(this IReflectiveCollection collection, Func<object, T> wrapFunc,
             Func<T, object> unwrapFunc)
-        {
-            return new ReflectiveList<T>(collection, wrapFunc, unwrapFunc);
-        }
+            =>
+                new ReflectiveList<T>(collection, wrapFunc, unwrapFunc);
 
         /// <summary>
         /// Gets the first element of the reflective collection.
@@ -64,7 +60,7 @@ namespace DatenMeister.Runtime
         public static IExtent GetAssociatedExtent(this IReflectiveCollection collection)
         {
             var mofReflection = collection as IHasExtent ??
-                                throw new ArgumentException("Not of type IHasExtent", nameof(collection));
+                                throw new ArgumentException(@"Not of type IHasExtent", nameof(collection));
             return mofReflection.Extent;
         }
     }

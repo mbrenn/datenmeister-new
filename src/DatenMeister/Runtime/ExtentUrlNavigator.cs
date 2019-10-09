@@ -7,6 +7,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
 
+// ReSharper disable InconsistentNaming
+
 namespace DatenMeister.Runtime
 {
     /// <summary>
@@ -95,6 +97,7 @@ namespace DatenMeister.Runtime
                     // According to MOF Specification, return null, if not found
                     return null;
                 }
+
                 if (posQuestion != -1)
                 {
                     var fullName = uri.Substring(posQuestion + 1);
@@ -110,7 +113,6 @@ namespace DatenMeister.Runtime
 
                 Logger.Fatal("No hash and no question mark");
                 throw new NotImplementedException("No hash and no question mark");
-
             }
             catch (UriFormatException exc)
             {
@@ -118,7 +120,6 @@ namespace DatenMeister.Runtime
                     $"Exception while parsing URI {nameof(uri)}: {exc.Message}");
 
                 return null;
-
             }
         }
 

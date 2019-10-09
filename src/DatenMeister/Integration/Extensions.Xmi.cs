@@ -8,19 +8,19 @@ namespace DatenMeister.Integration
 {
     public static partial class Extensions
     {
-		/// <summary>
+        /// <summary>
         /// Creates a new xmi extent and adds it to the
         /// </summary>
         /// <param name="scope">Scope being used</param>
         /// <param name="uri">Uri being used</param>
         /// <returns>The created xmi extent</returns>
         public static IUriExtent CreateXmiExtent(
-			this IDatenMeisterScope scope,
+            this IDatenMeisterScope scope,
             string uri)
-		{
+        {
             var xmlProvider = new XmiProvider();
-		    return new MofUriExtent(xmlProvider, uri);
-		}
+            return new MofUriExtent(xmlProvider, uri);
+        }
 
         /// <summary>
         /// CReates the

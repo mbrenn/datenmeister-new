@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -16,6 +17,7 @@ using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
@@ -273,35 +275,36 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Adds a new tab to the form
         /// </summary>
         /// <param name="value">Value to be shown in the explorer control view</param>
-        /// <param name="form">Form to be used for the tabulator</param>
+        /// <param name="tabForm">Form to be used for the tabulator</param>
         /// <param name="viewExtensions">Stores the view extensions</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
         public ItemExplorerTab AddTab(
             IObject value,
-            IElement form,
+            IElement tabForm,
             IEnumerable<ViewExtension> viewExtensions,
             IReflectiveCollection container = null)
         {
             // Gets the default view for the given tab
-            var name = form.getOrDefault<string>(_FormAndFields._Form.title) ??
-                       form.getOrDefault<string>(_FormAndFields._Form.name);
+            var name = tabForm.getOrDefault<string>(_FormAndFields._Form.title) ??
+                       tabForm.getOrDefault<string>(_FormAndFields._Form.name);
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var usedViewExtensions = viewExtensions.ToList();
 
 
             UserControl createdUserControl = null;
-            if (form.getMetaClass().@equals(formAndFields.__DetailForm))
+            if (tabForm.getMetaClass().@equals(formAndFields.__DetailForm))
             {
                 var control = new DetailFormControl
                 {
                     NavigationHost = NavigationHost
                 };
 
-                control.SetContent(value, form, container);
+                control.SetContent(value, tabForm, container);
                 control.ElementSaved += (x, y) => MessageBox.Show("Element saved.");
                 createdUserControl = control;
             }
-            else if (form.getMetaClass().@equals(formAndFields.__ListForm))
+            else if (tabForm.getMetaClass().@equals(formAndFields.__ListForm))
             {
                 // Creates the layoutcontrol for the given view
                 var control = new ItemListViewControl
@@ -309,20 +312,111 @@ namespace DatenMeister.WPF.Forms.Base
                     NavigationHost = NavigationHost
                 };
 
-                viewExtensions = viewExtensions.Union(control.GetViewExtensions()).ToList();
+                var defaultTypesForNewItems =
+                    tabForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+
+                // Stores the menu items for the context menu
+                var menuItems = new List<MenuItem>();
+                var menuItem = new MenuItem
+                {
+                    Header = "New Item"
+                };
+                menuItem.Click += (x, y) => CreateNewElementByUser(null, null);
+                menuItems.Add(menuItem);
+
+                // Sets the generic buttons to create the new types
+                if (defaultTypesForNewItems != null)
+                {
+                    foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                    {
+                        // Check if type is a directly type or the DefaultTypeForNewElement
+                        if (type.metaclass.@equals(
+                            GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
+                                x => x.__DefaultTypeForNewElement)))
+                        {
+                            var newType =
+                                type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                            var parentProperty =
+                                type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
+
+                            Create(newType, parentProperty);
+                        }
+                        else
+                        {
+                            Create(type, null);
+                        }
+
+                        void Create(IElement newType, string parentProperty)
+                        {
+                            var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
+
+                            usedViewExtensions.Add(new GenericButtonDefinition(
+                                $"New {typeName}", () => CreateNewElementByUser(newType, parentProperty)));
+
+                            foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
+                            {
+                                // Stores the menu items for the context menu
+                                menuItem = new MenuItem
+                                {
+                                    Header = $"New {newSpecializationType}"
+                                };
+
+                                menuItem.Click += (x, y) => CreateNewElementByUser(newSpecializationType, null);
+                                menuItems.Add(menuItem);
+                            }
+                        }
+                    }
+                }
+
+                // Sets the button for the new item
+                usedViewExtensions.Add(
+                    new GenericButtonDefinition(
+                        "New Item",
+                        () => _ = new ContextMenu {ItemsSource = menuItems, IsOpen = true}));
+
+                // Allows the deletion of an item
+                usedViewExtensions.Add(
+                    new RowItemButtonDefinition(
+                        "Delete",
+                        (guest, item) =>
+                        {
+                            if (MessageBox.Show(
+                                    "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                                MessageBoxResult.Yes)
+                            {
+                                Extent.elements().remove(item);
+                            }
+                        }));
+
+                usedViewExtensions.AddRange(control.GetViewExtensions());
+
+                void CreateNewElementByUser(IElement type, string parentProperty)
+                {
+                    if (IsExtentSelectedInTreeview)
+                        NavigatorForItems.NavigateToNewItemForExtent(
+                            NavigationHost,
+                            Extent,
+                            type);
+                    else
+                        NavigatorForItems.NavigateToNewItemForItem(
+                            NavigationHost,
+                            SelectedPackage,
+                            type,
+                            parentProperty);
+                }
 
                 // Sets the content for the tabs
                 if (value is IExtent extent)
                 {
                     IReflectiveCollection elements = extent.elements();
-                    elements = FilterByMetaClass(elements, form);
-                    control.SetContent(elements, form, viewExtensions);
+                    elements = FilterByMetaClass(elements, tabForm);
+                    control.SetContent(elements, tabForm, usedViewExtensions);
                 }
                 else
                 {
-                    IReflectiveCollection elements = GetPropertiesAsReflection(value, form);
-                    elements = FilterByMetaClass(elements, form);
-                    control.SetContent(elements, form, viewExtensions);
+                    IReflectiveCollection elements = GetPropertiesAsReflection(value, tabForm);
+                    elements = FilterByMetaClass(elements, tabForm);
+                    control.SetContent(elements, tabForm, usedViewExtensions);
                 }
 
                 createdUserControl = control;
@@ -330,11 +424,11 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (createdUserControl == null)
             {
-                _logger.Warn($"No user control was created: {value} {form}");
+                _logger.Warn($"No user control was created: {value} {tabForm}");
                 return null;
             }
 
-            var tabControl = new ItemExplorerTab(form)
+            var tabControl = new ItemExplorerTab(tabForm)
             {
                 Control = createdUserControl,
                 Header = name
@@ -342,8 +436,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (createdUserControl is INavigationGuest navigationGuest)
             {
-                tabControl.EvaluateViewExtensions(viewExtensions.Union(
-                    navigationGuest.GetViewExtensions()).ToList());
+                usedViewExtensions.AddRange(navigationGuest.GetViewExtensions());
+                tabControl.EvaluateViewExtensions(usedViewExtensions);
             }
 
             Tabs.Add(tabControl);

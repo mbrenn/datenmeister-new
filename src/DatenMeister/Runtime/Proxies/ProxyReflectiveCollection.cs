@@ -67,15 +67,11 @@ namespace DatenMeister.Runtime.Proxies
             return Collection.remove(value);
         }
 
-        public virtual int size()
-        {
-            return Collection.size();
-        }
+        public virtual int size() =>
+            Collection.size();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() =>
+            GetEnumerator();
 
         public ProxyReflectiveCollection ActivateObjectConversion<TObjectType, TElementType>(
             Func<IElement, TElementType> publicizeElement,
@@ -88,9 +84,7 @@ namespace DatenMeister.Runtime.Proxies
             PublicizeElementFunc = x =>
             {
                 if (x is IElement asElement)
-                {
                     return publicizeElement(asElement);
-                }
 
                 return x is IObject asObject ? publicizeObject(asObject) : x;
             };
@@ -98,9 +92,7 @@ namespace DatenMeister.Runtime.Proxies
             PrivatizeElementFunc = x =>
             {
                 if (x is TElementType asElement)
-                {
                     return privatizeElement(asElement);
-                }
 
                 return x is TObjectType asObject ? privatizeObject(asObject) : x;
             };

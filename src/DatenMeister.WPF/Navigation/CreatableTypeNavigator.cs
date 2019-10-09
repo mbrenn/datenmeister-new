@@ -36,7 +36,7 @@ namespace DatenMeister.WPF.Navigation
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
 
-            var defaultTypePackage = extent.GetDefaultTypePackage();
+            var defaultTypePackage = extent.GetDefaultTypePackages();
             IWorkspace metaWorkspace = null;
             IExtent metaExtent = null;
             if (defaultTypePackage == null)
@@ -59,11 +59,11 @@ namespace DatenMeister.WPF.Navigation
 
             var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalViewExtent());
             //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
-            var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
+            var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage?.FirstOrDefault(), metaWorkspace, metaExtent);
 
             var navigateToItemConfig = new NavigateToItemConfig()
             {
-                DetailElement =  element,
+                DetailElement = element,
                 FormDefinition = formPathToType
             };
 

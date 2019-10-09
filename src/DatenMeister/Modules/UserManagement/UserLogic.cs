@@ -19,6 +19,7 @@ namespace DatenMeister.Modules.UserManagement
     public class UserLogic
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
+
         /// <summary>
         /// Defines the default extent for the users
         /// </summary>
@@ -60,7 +61,7 @@ namespace DatenMeister.Modules.UserManagement
                 null,
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
 
-            if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))
+            if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement))
             {
                 // Create new settings
                 var factory = new MofFactory(extent);
@@ -106,13 +107,10 @@ namespace DatenMeister.Modules.UserManagement
 
         public void AddUser(string username, string password)
         {
-            
         }
 
-        public bool VerifyUser(string username, string password)
-        {
-            return true;
-        }
+        public bool VerifyUser(string username, string password) =>
+            true;
 
         public void ChangePassword(string username, string password)
         {

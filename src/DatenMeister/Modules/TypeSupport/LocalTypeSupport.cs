@@ -9,7 +9,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
-using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -25,7 +24,7 @@ namespace DatenMeister.Modules.TypeSupport
     /// of the DatenMeister and will not be stored into
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    [PluginLoading(PluginLoadingPosition.AfterBootstrapping|PluginLoadingPosition.AfterLoadingOfExtents)]
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class LocalTypeSupport : IDatenMeisterPlugin
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(LocalTypeSupport));
@@ -229,7 +228,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="type">Type to be added</param>
         public IElement AddInternalTypes(Type type)
         {
-            return AddInternalTypes(new[]{type}).First();
+            return AddInternalTypes(new[] {type}).First();
         }
 
         /// <summary>
@@ -239,7 +238,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="type">Type to be added</param>
         public IElement AddInternalType(string packageName, Type type)
         {
-            return AddInternalTypes(packageName, new[] { type }).First();
+            return AddInternalTypes(packageName, new[] {type}).First();
         }
 
         /// <summary>
@@ -294,7 +293,6 @@ namespace DatenMeister.Modules.TypeSupport
             }
 
             return null;
-
         }
 
         /// <summary>
@@ -302,7 +300,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <returns>Extent containing the internal types which are rebuilt at each DatenMeister start-up</returns>
         public IUriExtent GetInternalTypeExtent()
-        { 
+        {
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
             var internalTypeExtent = GetInternalTypeExtent(workspace);
             return internalTypeExtent;
@@ -338,19 +336,15 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="workspace"></param>
         /// <returns></returns>
-        public static IUriExtent GetInternalTypeExtent(IWorkspace workspace)
-        {
-            return workspace.FindExtent(WorkspaceNames.UriInternalTypesExtent);
-        }
+        public static IUriExtent GetInternalTypeExtent(IWorkspace workspace) =>
+            workspace.FindExtent(WorkspaceNames.UriInternalTypesExtent);
 
         /// <summary>
         /// Gets the extent containing the
         /// </summary>
         /// <param name="workspace"></param>
         /// <returns></returns>
-        public static IUriExtent GetUserTypeExtent(IWorkspace workspace)
-        {
-            return workspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
-        }
+        public static IUriExtent GetUserTypeExtent(IWorkspace workspace) =>
+            workspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
     }
 }

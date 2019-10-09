@@ -181,6 +181,7 @@ namespace DatenMeister.Runtime.Copier
         /// </summary>
         /// <param name="factory">Factory to be used to create the element</param>
         /// <param name="element">Element to be copied</param>
+        /// <param name="copyOptions">Options for copying</param>
         /// <returns>The created element that will be copied</returns>
         public static IElement Copy(IFactory factory, IObject element, CopyOption copyOptions = null)
         {
@@ -193,8 +194,8 @@ namespace DatenMeister.Runtime.Copier
         /// <summary>
         /// Copies the given element by using the factory
         /// </summary>
-        /// <param name="factory">Factory to be used to create the element</param>
-        /// <param name="element">Element to be copied</param>
+        /// <param name="source">Element to be copied</param>
+        /// <param name="target">Target of the element</param>
         /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>The created element that will be copied</returns>
         public static void CopyPropertiesStatic(IObject source, IObject target, CopyOption copyOptions = null)
@@ -219,6 +220,7 @@ namespace DatenMeister.Runtime.Copier
         /// Copies the element for a temporary usage. Here, the in memory Object will be used
         /// </summary>
         /// <param name="value">Value to copied</param>
+        /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>Element being copied</returns>
         public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption copyOptions = null)
         {
@@ -231,7 +233,6 @@ namespace DatenMeister.Runtime.Copier
             }
 
             return temp;
-
         }
     }
 }

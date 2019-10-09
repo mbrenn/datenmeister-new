@@ -17,22 +17,16 @@ namespace DatenMeister.Runtime.Proxies
         /// content
         /// </summary>
         /// <returns>Returns the proxied element</returns>
-        public new IElement GetProxiedElement()
-        {
-            return Element;
-        }
+        public new IElement GetProxiedElement() =>
+            Element;
 
         public virtual IElement metaclass => Element.metaclass;
 
-        public virtual IElement container()
-        {
-            return Element.container();
-        }
+        public virtual IElement container() =>
+            Element.container();
 
-        public virtual IElement getMetaClass()
-        {
-            return Element.getMetaClass();
-        }
+        public virtual IElement getMetaClass() =>
+            Element.getMetaClass();
 
         public IObject Container
         {

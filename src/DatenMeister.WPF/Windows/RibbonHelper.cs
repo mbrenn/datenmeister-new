@@ -42,9 +42,7 @@ namespace DatenMeister.WPF.Windows
             /// </summary>
             /// <returns></returns>
             public override string ToString()
-            {
-                return $"HelperItem: {Definition}";
-            }
+                => $"HelperItem: {Definition}";
         }
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
-        public RibbonHelper(IHasRibbon mainWindow, NavigationScope navigationScope) : base (navigationScope)
+        public RibbonHelper(IHasRibbon mainWindow, NavigationScope navigationScope) : base(navigationScope)
         {
             _mainWindow = mainWindow;
         }
@@ -86,7 +84,7 @@ namespace DatenMeister.WPF.Windows
             var name = definition.Name;
             var categoryName = definition.CategoryName;
             var imageName = definition.ImageName;
-            
+
             var clickMethod = CreateClickMethod(definition);
             if (clickMethod == null)
             {
@@ -150,7 +148,7 @@ namespace DatenMeister.WPF.Windows
                     }
                 }
             }
-            
+
             var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);
             if (@group == null)
             {
@@ -173,17 +171,10 @@ namespace DatenMeister.WPF.Windows
                 Button = button,
                 ClickEvent = (x, y) =>
                 {
-                    if (clickMethod == null)
-                    {
-                        Logger.Error("No method defined which is called after a click");
-                    }
-                    else
-                    {
-                        clickMethod();
-                    }
+                    clickMethod();
                 }
             };
-            
+
             _buttons.Add(item);
             button.Click += item.ClickEvent;
 

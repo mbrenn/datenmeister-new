@@ -11,10 +11,12 @@ namespace DatenMeister.Provider.ManagementProviders
     {
         static ExtentObject()
         {
-            MetaclassUriPath = ((MofObjectShadow)_ManagementProvider.TheOne.__Extent).Uri;
+            MetaclassUriPath = ((MofObjectShadow) _ManagementProvider.TheOne.__Extent).Uri;
         }
 
-        public ExtentObject(IProvider provider, Workspace parentWorkspace, IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
+        public ExtentObject(IProvider provider,
+            Workspace parentWorkspace,
+            IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
         {
             AddMapping(
                 "uri",
@@ -43,7 +45,7 @@ namespace DatenMeister.Provider.ManagementProviders
 
             AddContainerMapping(
                 (x) => new WorkspaceObject(provider, parentWorkspace),
-                (_, value) => { return; }
+                (_, value) => { }
             );
         }
 

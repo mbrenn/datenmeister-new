@@ -124,58 +124,6 @@ namespace DatenMeister.WPF.Forms.Lists
 
             const string className = "Items";
             var viewDefinition = new ViewDefinition(className, form);
-            var viewExtensions = new List<ViewExtension>();
-
-            // Sets the generic buttons to create the new types
-            if (form?.GetOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
-                is IReflectiveCollection defaultTypesForNewItems)
-            {
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-                {
-                    // Check if type is a directly type or the DefaultTypeForNewElement
-                    if (type.metaclass.@equals(
-                        _workspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
-                            x => x.__DefaultTypeForNewElement)))
-                    {
-                        var newType = type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
-                        var parentProperty = type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
-
-                        Create(newType, parentProperty);
-                    }
-                    else
-                    {
-                        Create(type, null);
-                    }
-
-                    void Create(IElement newType, string parentProperty)
-                    {
-                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
-
-                        viewExtensions.Add(new GenericButtonDefinition(
-                            $"New {typeName}", () => CreateNewElementByUser(newType, parentProperty)));
-                    }
-                }
-            }
-
-            // Sets the button for the new item
-            viewExtensions.Add(
-                new GenericButtonDefinition(
-                    "New Item",
-                    () => CreateNewElementByUser(null, null)));
-
-            // Allows the deletion of an item
-            viewExtensions.Add(
-                new RowItemButtonDefinition(
-                    "Delete",
-                    (guest, item) =>
-                    {
-                        if (MessageBox.Show(
-                                "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                            MessageBoxResult.Yes)
-                        {
-                            Extent.elements().remove(item);
-                        }
-                    }));
 
             PrepareNavigation(viewDefinition);
 
@@ -183,28 +131,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 SelectedItem,
                 new ViewDefinition(form)
                 {
-                    ViewExtensions =
-                        viewExtensions.Union(viewDefinition.ViewExtensions).ToList()
+                    ViewExtensions = viewDefinition.ViewExtensions
                 });
-        }
-
-        private void CreateNewElementByUser(IElement type, string parentProperty)
-        {
-            if (IsExtentSelectedInTreeview)
-            {
-                NavigatorForItems.NavigateToNewItemForExtent(
-                    NavigationHost,
-                    Extent,
-                    type);
-            }
-            else
-            {
-                NavigatorForItems.NavigateToNewItemForItem(
-                    NavigationHost,
-                    SelectedPackage,
-                    type,
-                    parentProperty);
-            }
         }
 
         /// <summary>

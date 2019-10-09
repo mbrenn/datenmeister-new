@@ -110,9 +110,6 @@ namespace DatenMeister.Provider.DotNet
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities()
-        {
-            return 0;
-        }
+        public ProviderCapability GetCapabilities() => ProviderCapability.None;
     }
 }

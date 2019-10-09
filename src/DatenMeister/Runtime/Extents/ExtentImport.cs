@@ -28,10 +28,10 @@ namespace DatenMeister.Runtime.Extents
 
             var resultingExtent = _extentManager.LoadExtent(new XmiStorageConfiguration
             {
-                extentUri =  importSettings.newExtentUri,
+                extentUri = importSettings.newExtentUri,
                 filePath = importSettings.fileToBeExported,
                 workspaceId = importSettings.Workspace
-                    }, ExtentCreationFlags.LoadOnly);
+            });
 
             return resultingExtent;
         }

@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Uml.Helper;
+// ReSharper disable InconsistentNaming
 
 namespace DatenMeister.Runtime
 {
@@ -49,7 +49,6 @@ namespace DatenMeister.Runtime
             }
 
             return false;
-
         }
 
         /// <summary>
@@ -65,32 +64,32 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(string))
             {
-                return (T)(object)DotNetHelper.AsString(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T)(object)DotNetHelper.AsInteger(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T)(object)DotNetHelper.AsDouble(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return (T)(object)DotNetHelper.AsBoolean(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property));
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                return (T)(value.GetAsSingle(property) as IObject);
+                return (T) (value.GetAsSingle(property) as IObject);
             }
 
-            if ( typeof(T) == typeof(IElement))
+            if (typeof(T) == typeof(IElement))
             {
-                return (T)(value.GetAsSingle(property) as IElement);
+                return (T) (value.GetAsSingle(property) as IElement);
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))
@@ -100,17 +99,17 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(IReflectiveSequence))
             {
-                return (T)(object)new MofReflectiveSequence((MofObject)value, property);
+                return (T) (object) new MofReflectiveSequence((MofObject) value, property);
             }
 
             if (typeof(T) == typeof(DateTime))
             {
                 if (DateTime.TryParse(value.GetAsSingle(property).ToString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
                 {
-                    return (T)(object) result;
+                    return (T) (object) result;
                 }
 
-                return (T)(object) DateTime.MinValue;
+                return (T) (object) DateTime.MinValue;
             }
 
             if (typeof(T).IsEnum)
@@ -219,7 +218,7 @@ namespace DatenMeister.Runtime
         /// <param name="toBeAdded"></param>
         public static void AddCollectionItem(this IObject value, string property, object toBeAdded)
         {
-            var reflection = new MofReflectiveSequence(value as MofObject,  property);
+            var reflection = new MofReflectiveSequence((MofObject) value, property);
             reflection.add(toBeAdded);
         }
 
@@ -248,7 +247,7 @@ namespace DatenMeister.Runtime
                 .Where(value.isSet))
             {
                 var propertyValue = value.get(property);
-                result[property] = propertyValue == null ? "null" : propertyValue.ToString();
+                result[property] = propertyValue?.ToString() ?? "null";
             }
 
             return result;
@@ -312,7 +311,7 @@ namespace DatenMeister.Runtime
         /// <param name="property">Name of the property</param>
         /// <returns>The reflective collection containing the property</returns>
         private static IReflectiveCollection CreateReflectiveCollectionObject(this IObject mofObject, string property)
-            => new MofReflectiveSequence((MofObject)mofObject, property);
+            => new MofReflectiveSequence((MofObject) mofObject, property);
 
         /// <summary>
         /// Gets a certain property value as a reflective sequence.
@@ -359,7 +358,7 @@ namespace DatenMeister.Runtime
                 return resultAsEnumerable;
             }
 
-            return result == null ? new object[]{} : new[] {result};
+            return result == null ? new object[] { } : new[] {result};
         }
 
         /// <summary>
@@ -514,7 +513,7 @@ namespace DatenMeister.Runtime
         /// <param name="propertyOfChild">Property that is queried</param>
         /// <param name="requestValue">The value, that is used as a validation against the property</param>
         /// <returns>Enumeration of objects</returns>
-        public  static IEnumerable<IObject> GetByPropertyFromCollection(
+        public static IEnumerable<IObject> GetByPropertyFromCollection(
             this IEnumerable<object> asEnumeration,
             string propertyOfChild,
             object requestValue)
@@ -530,15 +529,11 @@ namespace DatenMeister.Runtime
             }
         }
 
-        public static IUriResolver GetUriResolver(this IObject element)
-        {
-            return (element as MofObject)?.Extent as IUriResolver;
-        }
+        public static IUriResolver GetUriResolver(this IObject element) =>
+            (element as MofObject)?.Extent as IUriResolver;
 
-        public static IUriResolver GetUriResolver(this IExtent element)
-        {
-            return element as IUriResolver;
-        }
+        public static IUriResolver GetUriResolver(this IExtent element) =>
+            element as IUriResolver;
 
         /// <summary>
         /// Gets all possible properties of the given element.

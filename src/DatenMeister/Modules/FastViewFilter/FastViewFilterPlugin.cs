@@ -8,6 +8,7 @@ namespace DatenMeister.Modules.FastViewFilter
     /// Implements the plugin adding the fast views
     /// </summary>
     [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
+    // ReSharper disable once UnusedMember.Global
     public class FastViewFilterPlugin : IDatenMeisterPlugin
     {
         /// <summary>

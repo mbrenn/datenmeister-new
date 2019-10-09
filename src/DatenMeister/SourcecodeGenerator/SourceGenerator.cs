@@ -14,7 +14,6 @@ namespace DatenMeister.SourcecodeGenerator
         public static void GenerateSourceFor(SourceGeneratorOptions options, _UML uml = null)
         {
             uml = uml ?? new _UML(); // Verifies that a uml is existing
-            var primitiveTypes = new _PrimitiveTypes();
 
             ////////////////////////////////////////
             // First of all, create all Mof types, representing the objects under concern
@@ -43,7 +42,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             // Creates the source parser which is needed to navigate through the package
             var sourceParser = new ElementSourceParser(uml);
-            
+
             ////////////////////////////////////////
             // Creates the class tree
             var classTreeGenerator = new ClassTreeGenerator(sourceParser)

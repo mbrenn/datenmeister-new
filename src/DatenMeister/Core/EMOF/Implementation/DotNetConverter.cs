@@ -19,7 +19,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Defines the logger
         /// </summary>
-        public static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetConverter));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetConverter));
 
         /// <summary>
         /// Stores the MOF Factory being used to create the MOF object. This is dependent upon the extent.

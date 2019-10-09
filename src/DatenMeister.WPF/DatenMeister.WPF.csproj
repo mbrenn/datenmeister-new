@@ -104,6 +104,7 @@
     <Compile Include="Forms\Detail\Fields\SeparatorLineField.cs" />
     <Compile Include="Forms\Detail\Fields\SubElementsField.cs" />
     <Compile Include="Forms\Detail\Fields\TextboxField.cs" />
+    <Compile Include="Forms\IApplicationWindow.cs" />
     <Compile Include="Forms\IntroScreen.xaml.cs">
       <DependentUpon>IntroScreen.xaml</DependentUpon>
     </Compile>

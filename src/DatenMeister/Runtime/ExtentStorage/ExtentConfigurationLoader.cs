@@ -63,7 +63,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var configType = xmlConfig.Attribute("configType")?.Value ?? throw new InvalidOperationException("configType not found");
 
                 // Gets the type of the configuration in the white list to avoid any unwanted security issue
-                var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName == configType);
+                var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName?.ToLower() == configType.ToLower());
                 if (found == null)
                 {
                     Logger.Fatal($"Unknown Configuration Type: {configType}");

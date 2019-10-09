@@ -24,7 +24,7 @@ namespace DatenMeisterWPF
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INavigationHost, IHasRibbon
+    public partial class MainWindow : Window, INavigationHost, IHasRibbon, IApplicationWindow
     {
         private readonly RibbonHelper _ribbonHelper;
 

@@ -114,6 +114,51 @@ namespace DatenMeister.Tests.Runtime.Extents
         }
 
         [Test]
+        public void TestAddDefaultExtentType()
+        {
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            {
+                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+                var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
+                var typesWorkspace = workspaceLogic.GetTypesWorkspace();
+                var zipCodeModel =
+                    typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
+                                                    ZipCodeModel.PackagePath) as IElement;
+                Assert.That(zipCodeModel, Is.Not.Null);
+
+                var dataWorkspace = workspaceLogic.GetDataWorkspace();
+                
+                var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
+                
+                // Per Default, one is included
+                var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+                Assert.That(setDefaultTypePackage, Is.Not.Null);
+                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
+                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+
+                // Checks, if adding another one does not work
+                zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
+                setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+                Assert.That(setDefaultTypePackage, Is.Not.Null);
+                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
+                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+
+                // Checks, if removing works
+                zipExample.SetDefaultTypePackages(new IElement[] { });
+                setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+                Assert.That(setDefaultTypePackage, Is.Not.Null);
+                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(0));
+                
+                // Checks, if adding works now correctly
+                zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
+                setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+                Assert.That(setDefaultTypePackage, Is.Not.Null);
+                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
+                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            }
+        }
+
+        [Test]
         public void TestStoringOfExtentTypes()
         {
             const string csvExtentUri = "dm:///csvtest";

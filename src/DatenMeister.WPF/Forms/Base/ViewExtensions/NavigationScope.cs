@@ -18,7 +18,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// This item or this menu references to the complete extent
         /// </summary>
         Extent = 0x02,
-
+        
         /// <summary>
         /// This item or this menu references to the a selected item and its collection of the given extent
         /// </summary>

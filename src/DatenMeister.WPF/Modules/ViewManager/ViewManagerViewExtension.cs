@@ -14,13 +14,14 @@ using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.ViewManager
 {
     /// <summary>
     /// Contains the factory for the view extensions
     /// </summary>
-    public class ViewManagerViewExtensionFactory : IViewExtensionFactory
+    public class ViewManagerViewExtension : IViewExtensionFactory
     {
         /// <summary>
         /// Gets the view extension
@@ -60,7 +61,8 @@ namespace DatenMeister.WPF.Modules.ViewManager
             }
         }
 
-        private static IEnumerable<ViewExtension> GetForItemExplorerControl(ItemExplorerControl itemExplorerControl)
+        private static IEnumerable<ViewExtension> GetForItemExplorerControl(
+            ItemExplorerControl itemExplorerControl)
         {
             var showFormDefinition = new ExtentMenuButtonDefinition(
                 "Show Form Definition",
@@ -100,6 +102,20 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 NavigationCategories.Form + ".Definition");
 
             yield return copyFormDefinition;
+
+            // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
+            var extent = itemExplorerControl.RootItem.GetExtentOf();
+            var extentType = extent?.GetExtentType();
+            if (extentType == ViewLogic.ViewExtentType)
+            {
+                yield return new ItemMenuButtonDefinition(
+                    "Create Form by Classifier",
+                    (x) =>
+                        NavigatorForDialogs.LocateAndOpen(
+                            itemExplorerControl.NavigationHost),
+                    null,
+                    "Form Manager.Create");
+            }
         }
 
         private static IEnumerable<ViewExtension> GetForDetailWindow(ViewExtensionTargetInformation viewExtensionTargetInformation,

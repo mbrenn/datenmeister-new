@@ -27,7 +27,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Stores the type of the extent containing the views
         /// </summary>
-        private const string ViewExtentType = "DatenMeister.Views";
+        public const string ViewExtentType = "DatenMeister.Views";
 
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;

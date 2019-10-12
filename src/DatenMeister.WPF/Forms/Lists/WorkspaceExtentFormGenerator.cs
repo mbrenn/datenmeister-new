@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
@@ -149,9 +150,11 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
                 var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
-                result = viewLogic.GetExtentFormForSubforms(
-                    viewLogic.GetListFormForExtent(extent, formAndFields.__Extent,
-                        ViewDefinitionMode.Default));
+                var listForm = viewLogic.GetListFormForExtent(extent, formAndFields.__Extent,
+                    ViewDefinitionMode.Default);
+                listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
+
+                result = viewLogic.GetExtentFormForSubforms(listForm);
             }
 
             var viewDefinition = new ViewDefinition("Extents", result)

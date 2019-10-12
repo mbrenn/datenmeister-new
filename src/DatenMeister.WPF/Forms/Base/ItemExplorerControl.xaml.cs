@@ -375,18 +375,21 @@ namespace DatenMeister.WPF.Forms.Base
                         () => _ = new ContextMenu {ItemsSource = menuItems, IsOpen = true}));
 
                 // Allows the deletion of an item
-                usedViewExtensions.Add(
-                    new RowItemButtonDefinition(
-                        "Delete",
-                        (guest, item) =>
-                        {
-                            if (MessageBox.Show(
-                                    "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                                MessageBoxResult.Yes)
+                if (tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) != true)
+                {
+                    usedViewExtensions.Add(
+                        new RowItemButtonDefinition(
+                            "Delete",
+                            (guest, item) =>
                             {
-                                Extent.elements().remove(item);
-                            }
-                        }));
+                                if (MessageBox.Show(
+                                        "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                                    MessageBoxResult.Yes)
+                                {
+                                    Extent.elements().remove(item);
+                                }
+                            }));
+                }
 
                 usedViewExtensions.AddRange(control.GetViewExtensions());
 

@@ -7,7 +7,7 @@
                          name="listWorkspaces" title="Workspace List"
                          p1:id="WorkspacesAndExtents.Workspaces.List">
             <tab p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm"
-                 title="Workspace">
+                 title="Workspace" inhibitDeleteItems="True">
                 <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
                        title="ID" name="id"/>
                 <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"

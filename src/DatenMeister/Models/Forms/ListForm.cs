@@ -29,6 +29,11 @@ namespace DatenMeister.Models.Forms
         public bool inhibitNewItems { get; set; }
 
         /// <summary>
+        /// Gets or sets a value whether the delete button shall be shown. 
+        /// </summary>
+        public bool inhibitDeleteItems { get; set; }
+
+        /// <summary>
         ///     Stores an enumeration of default types that can be used for creation
         /// </summary>
         public IList<DefaultTypeForNewElement> defaultTypesForNewElements { get; set; }

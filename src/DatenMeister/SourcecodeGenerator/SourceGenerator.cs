@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator
@@ -34,6 +35,9 @@ namespace DatenMeister.SourcecodeGenerator
                 {
                     elements.Add(typeObject);
                 }
+
+                extent.elements().add(typeObject);
+                extent.TypeLookup.Add(typeObject.GetUri(), type);
             }
 
             // And adds the converted elements to package and the package to the temporary MOF Extent

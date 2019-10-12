@@ -270,7 +270,7 @@ namespace DatenMeister.WPF.Forms.Lists
             }
 
             return viewDefinition;
-            
+
             void ShowItems(INavigationGuest navigationGuest, IObject extentElement)
             {
                 var listViewControl = (ItemListViewControl) navigationGuest;

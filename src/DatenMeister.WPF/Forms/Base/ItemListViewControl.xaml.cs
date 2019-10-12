@@ -134,10 +134,8 @@ namespace DatenMeister.WPF.Forms.Base
         ///     GEts the currently selected item
         /// </summary>
         /// <returns>Item being selected</returns>
-        public IObject GetSelectedItem()
-        {
-            return GetSelectedItems().FirstOrDefault();
-        }
+        public IObject GetSelectedItem() 
+            => GetSelectedItems().FirstOrDefault();
 
         /// <summary>
         ///     Gets or sets the host for the list view item. The navigation

@@ -4,6 +4,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Windows;
 
@@ -60,18 +61,37 @@ namespace DatenMeister.WPF.Navigation
         }
 
         /// <summary>
+        /// Locates a certain item by setting the workspace and extent uri
+        /// </summary>
+        /// <param name="navigationHost">Navigation host to be used</param>
+        /// <param name="workspaceName">Name of the workspace which shall be pre-selected</param>
+        /// <param name="extentUri">Uri of the workspace </param>
+        /// <returns>The selected workpsace by the user or null, if the user has not selected a workspace</returns>
+        public static IObject Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
+        {
+            var workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspace(workspaceName);
+            IExtent extent = null;
+            if (workspace != null)
+            {
+                extent = workspace.FindExtent(extentUri);
+            }
+
+            return Locate(navigationHost, workspace, extent);
+        }
+
+        /// <summary>
         /// Locates a certain item
         /// </summary>
-        /// <param name="mainWindow">Navigation host to be used</param>
+        /// <param name="navigtionHost">Navigation host to be used</param>
         /// <param name="workspace">Defines the workspace to which shall be navigated</param>
         /// <param name="defaultExtent">Extent that shall be opened per default</param>
         /// <returns></returns>
-        public static IObject Locate(INavigationHost mainWindow, IWorkspace workspace = null, IExtent defaultExtent = null)
+        public static IObject Locate(INavigationHost navigtionHost, IWorkspace workspace = null, IExtent defaultExtent = null)
         {
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
-                Owner = mainWindow.GetWindow()
+                Owner = navigtionHost.GetWindow()
             };
 
 

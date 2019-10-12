@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -109,12 +112,59 @@ namespace DatenMeister.WPF.Modules.ViewManager
             if (extentType == ViewLogic.ViewExtentType)
             {
                 yield return new ItemMenuButtonDefinition(
-                    "Create Form by Classifier",
-                    (x) =>
-                        NavigatorForDialogs.LocateAndOpen(
-                            itemExplorerControl.NavigationHost),
+                    "Create Extent Form by Classifier",
+                    (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ExtentForm),
                     null,
                     "Form Manager.Create");
+
+                yield return new ItemMenuButtonDefinition(
+                    "Create Detail Form by Classifier",
+                    (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.DetailForm),
+                    null,
+                    "Form Manager.Create");
+            }
+        }
+
+        enum CreateFormByClassifierType
+        {
+            DetailForm,
+            ExtentForm
+        }
+
+        /// <summary>
+        /// Creates a form by using the classifier
+        /// </summary>
+        /// <param name="itemExplorerControl">Navigational element to create the windows</param>
+        /// <param name="type">Type of the form to be created</param>
+        private static void AskUserAndCreateFormInstance(ItemExplorerControl itemExplorerControl, CreateFormByClassifierType type)
+        {
+            if (NavigatorForDialogs.Locate(
+                itemExplorerControl.NavigationHost,
+                WorkspaceNames.NameTypes,
+                WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
+            {
+                var formCreator = GiveMe.Scope.Resolve<FormCreator>();
+                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var userViewExtent = viewLogic.GetUserViewExtent();
+
+                IElement createdForm;
+                switch (type)
+                {
+                    case CreateFormByClassifierType.DetailForm:
+                        createdForm = formCreator.CreateDetailFormByMetaClass(locatedItem);
+                        break;
+                    case CreateFormByClassifierType.ExtentForm:
+                        createdForm = formCreator.CreateExtentFormByMetaClass(locatedItem);
+                        break;
+                    default:
+                        throw new InvalidOperationException();
+                }
+
+                userViewExtent.elements().add(createdForm);
+
+                NavigatorForItems.NavigateToElementDetailView(
+                    itemExplorerControl.NavigationHost,
+                    createdForm);
             }
         }
 

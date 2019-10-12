@@ -634,6 +634,67 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
+        /// Gets the extent form for the given metaclass
+        /// </summary>
+        /// <param name="metaClass">The meta class for which the extent form shall be created</param>
+        /// <returns>The created extent form</returns>
+        public IElement CreateExtentFormByMetaClass(IElement metaClass)
+        {
+            var extentForm = _factory.create(_formAndFields.__ExtentForm);
+            extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(metaClass));
+
+            var tabs = new List<IElement>();
+
+            // Get all properties of the elements
+            var properties = ClassifierMethods.GetPropertiesOfClassifier(metaClass).ToList();
+            if (properties == null)
+            {
+                throw new InvalidOperationException("ExtentForm cannot be created because given element does not have properties");
+            }
+
+            var propertiesWithCollection =
+                (from p in properties
+                    where PropertyHelper.IsCollection(p)
+                    select new {propertyName = NamedElementMethods.GetName(p), property = p}).ToList();
+
+            var propertiesWithoutCollection =
+                (from p in properties
+                    where !PropertyHelper.IsCollection(p)
+                    select new {propertyName = NamedElementMethods.GetName(p), property = p}).ToList();
+
+            if (propertiesWithoutCollection.Any())
+            {
+                var detailForm = _factory.create(_formAndFields.__DetailForm);
+                detailForm.set(_FormAndFields._DetailForm.name, "Detail");
+
+                var fields = new List<IElement>();
+
+                foreach (var property in propertiesWithoutCollection)
+                {
+                    var field = GetFieldForProperty(property.property, CreationMode.All);
+                    fields.Add(field);
+                }
+
+                detailForm.set(_FormAndFields._DetailForm.field, fields);
+                tabs.Add(detailForm);
+            }
+
+            foreach (var pair in propertiesWithCollection)
+            {
+                // Now try to figure out the metaclass
+                var form = CreateListForm(
+                    pair.property,
+                    CreationMode.ByMetaClass);
+
+                tabs.Add(form);
+            }
+
+            extentForm.set(_FormAndFields._ExtentForm.tab, tabs);
+
+            return extentForm;
+        }
+
+        /// <summary>
         /// Creates the extent form for a specific object which is selected in the item explorer view.
         /// </summary>
         /// <param name="element">Element which shall be shown</param>

@@ -356,8 +356,6 @@ namespace DatenMeister.WPF.Forms.Base
                         true);
                 }
             }
-
-            AddDefaultButtons();
         }
 
         /// <summary>
@@ -540,8 +538,17 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
+        /// Clears the existing generic buttons
+        /// </summary>
+        public void ClearGenericButtons()
+        {
+            ButtonBar.Children.Clear();
+        }
+
+        /// <summary>
         ///     Adds the default cancel and save buttons
         /// </summary>
+        /// <param name="saveText">Text which is shown on the save button. Default value is "Save"</param>
         public void AddDefaultButtons(string saveText = null)
         {
             saveText = saveText ?? EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
@@ -696,6 +703,8 @@ namespace DatenMeister.WPF.Forms.Base
 
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> extensions)
         {
+            ClearGenericButtons();
+            AddDefaultButtons();
             foreach (var extension in extensions)
             {
                 if (extension is ItemButtonDefinition itemButtonDefinition)

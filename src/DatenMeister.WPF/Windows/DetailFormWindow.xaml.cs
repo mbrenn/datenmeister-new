@@ -134,6 +134,10 @@ namespace DatenMeister.WPF.Windows
                 NavigationCategories.DatenMeister,
                 2000);
 
+            yield return new ItemButtonDefinition(
+                "Cancel",
+                x => CloseWindow());
+
             // Local methods for the buttons
             void CloseWindow()
             {

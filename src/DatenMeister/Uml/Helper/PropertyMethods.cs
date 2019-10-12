@@ -9,7 +9,7 @@ namespace DatenMeister.Uml.Helper
     /// <summary>
     /// Defines some helper classes for property objects
     /// </summary>
-    public static class PropertyHelper
+    public static class PropertyMethods
     {
         /// <summary>
         /// Gets the type of the property

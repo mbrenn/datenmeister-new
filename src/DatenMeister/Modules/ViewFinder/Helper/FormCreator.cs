@@ -521,10 +521,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>The field data</returns>
         public IElement GetFieldForProperty(IElement property, CreationMode creationMode)
         {
-            var propertyType = PropertyHelper.GetPropertyType(property);
+            var propertyType = PropertyMethods.GetPropertyType(property);
             var isForListForm = creationMode.HasFlag(CreationMode.ForListForms);
             var propertyName = property.get<string>("name");
-            var propertyIsEnumeration = PropertyHelper.IsCollection(property);
+            var propertyIsEnumeration = PropertyMethods.IsCollection(property);
 
             // Check, if field property is an enumeration
             var uml = _workspaceLogic.GetUmlData();
@@ -548,7 +548,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
                     comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
 
-                    var values = EnumerationHelper.GetEnumValues(propertyType);
+                    var values = EnumerationMethods.GetEnumValues(propertyType);
                     comboBox.set(
                         _FormAndFields._DropDownFieldData.values,
                         values.Select(x =>

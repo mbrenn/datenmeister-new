@@ -11,7 +11,7 @@ namespace DatenMeister.Uml.Helper
     /// <summary>
     /// Defines the helper methods applicable to the Enumeration
     /// </summary>
-    public class EnumerationHelper
+    public class EnumerationMethods
     {
         /// <summary>
         /// Gets the enumeration values as the complete objects

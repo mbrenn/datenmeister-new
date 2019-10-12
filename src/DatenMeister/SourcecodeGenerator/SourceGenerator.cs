@@ -2,11 +2,13 @@
 using System.IO;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -24,6 +26,7 @@ namespace DatenMeister.SourcecodeGenerator
             // Creates the package
             var package = factory.create(uml.Packages.__Package);
             package.set("name", options.Name);
+            extent.elements().add(package);
 
             // Do the conversion from dotnet types to real MOF Types
             var dotNetProvider = new DotNetTypeGenerator(factory, uml, extent);
@@ -36,13 +39,10 @@ namespace DatenMeister.SourcecodeGenerator
                     elements.Add(typeObject);
                 }
 
-                extent.elements().add(typeObject);
+                // And adds the converted elements to package and the package to the temporary MOF Extent
+                PackageMethods.AddObjectToPackage(package, typeObject);
                 extent.TypeLookup.Add(typeObject.GetUri(), type);
             }
-
-            // And adds the converted elements to package and the package to the temporary MOF Extent
-            package.set(_UML._Packages._Package.packagedElement, elements);
-            extent.elements().add(package);
 
             // Creates the source parser which is needed to navigate through the package
             var sourceParser = new ElementSourceParser(uml);

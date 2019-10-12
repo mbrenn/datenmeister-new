@@ -462,6 +462,9 @@ namespace DatenMeister.Models.Forms
             public static string @inhibitNewItems = "inhibitNewItems";
             public IElement _inhibitNewItems = null;
 
+            public static string @inhibitDeleteItems = "inhibitDeleteItems";
+            public IElement _inhibitDeleteItems = null;
+
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
             public IElement _defaultTypesForNewElements = null;
 

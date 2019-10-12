@@ -648,6 +648,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._inhibitNewItems = value;
                                 }
+                                if(name == "inhibitDeleteItems") // Looking for property
+                                {
+                                    tree.ListForm._inhibitDeleteItems = value;
+                                }
                                 if(name == "defaultTypesForNewElements") // Looking for property
                                 {
                                     tree.ListForm._defaultTypesForNewElements = value;

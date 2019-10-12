@@ -12,6 +12,19 @@ using DatenMeister.Uml.Helper;
 namespace DatenMeister.Provider.DotNet
 {
     /// <summary>
+    /// Defines the options for the DotNet Type Generator
+    /// </summary>
+    public class DotNetTypeGeneratorOptions
+    {
+        /// <summary>
+        /// Gets or sets a value indicating whether the properties
+        /// of the inherited classes shall be integrated into the existing class or
+        /// whether the generalizations shall be used.
+        /// </summary>
+        public bool IntegrateInheritedProperties { get; set; } = true;
+    }
+
+    /// <summary>
     /// Takes a .Net Type and converts it to a UML metaclass which can be used within
     /// the DatenMeister.
     /// </summary>
@@ -69,8 +82,10 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="type">Type to be converted</param>
         /// <returns>The created meta class</returns>
-        public IElement CreateTypeFor(Type type)
+        public IElement CreateTypeFor(Type type, DotNetTypeGeneratorOptions options = null)
         {
+            options = options ?? new DotNetTypeGeneratorOptions();
+
             if (type.IsClass)
             {
                 var umlClass = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
@@ -81,27 +96,31 @@ namespace DatenMeister.Provider.DotNet
 
                 umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
 
-                // Goes through the generalizations
-                var generalization = type.BaseType;
-                if (generalization != null && generalization != typeof(object))
+                // Goes through the generalizations, if configured
+                if (options.IntegrateInheritedProperties)
                 {
-                    var generalizedClass = ((MofExtent) _targetExtent).ToResolvedElement(generalization);
-
-                    if (generalizedClass == null)
+                    var generalization = type.BaseType;
+                    if (generalization != null && generalization != typeof(object))
                     {
-                        throw new InvalidOperationException($"Generalization for {type} -> {generalization} was not found");
-                    }
+                        var generalizedClass = ((MofExtent) _targetExtent).ToResolvedElement(generalization);
 
-                    // We got a generalization
-                    ClassifierMethods.AddGeneralization(_umlHost, umlClass, generalizedClass);
+                        if (generalizedClass == null)
+                        {
+                            throw new InvalidOperationException(
+                                $"Generalization for {type} -> {generalization} was not found");
+                        }
+
+                        // We got a generalization
+                        ClassifierMethods.AddGeneralization(_umlHost, umlClass, generalizedClass);
+                    }
                 }
 
                 // Goes through all the properties
                 var properties = new List<IObject>();
                 foreach (var property in type.GetProperties())
                 {
-                    // If property is inherited, do not include the property
-                    if (property.DeclaringType != type)
+                    // If property is inherited, do not include the property, if not configured
+                    if (property.DeclaringType != type && options.IntegrateInheritedProperties)
                         continue;
 
                     var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);

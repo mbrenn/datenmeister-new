@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -30,18 +27,21 @@ namespace DatenMeister.SourcecodeGenerator
 
             // Do the conversion from dotnet types to real MOF Types
             var dotNetProvider = new DotNetTypeGenerator(factory, uml, extent);
-            var elements = new List<IElement>();
             foreach (var type in options.Types)
             {
-                var typeObject = dotNetProvider.CreateTypeFor(type);
+                var typeObject = dotNetProvider.CreateTypeFor(
+                    type,
+                    new DotNetTypeGeneratorOptions
+                    {
+                        IntegrateInheritedProperties = false
+                    });
+
                 if (typeObject != null)
                 {
-                    elements.Add(typeObject);
+                    // And adds the converted elements to package and the package to the temporary MOF Extent
+                    PackageMethods.AddObjectToPackage(package, typeObject);
+                    extent.TypeLookup.Add(typeObject.GetUri(), type);
                 }
-
-                // And adds the converted elements to package and the package to the temporary MOF Extent
-                PackageMethods.AddObjectToPackage(package, typeObject);
-                extent.TypeLookup.Add(typeObject.GetUri(), type);
             }
 
             // Creates the source parser which is needed to navigate through the package
@@ -63,8 +63,7 @@ namespace DatenMeister.SourcecodeGenerator
             ////////////////////////////////////////
             // Creates now the filler
             var fillerGenerator = new FillClassTreeByExtentCreator(options.Name + "Filler", sourceParser)
-            {
-                Namespace = options.Namespace,
+            {Namespace = options.Namespace,
                 ClassNameOfTree = classTreeGenerator.UsedClassName
             };
 

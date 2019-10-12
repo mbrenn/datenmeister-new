@@ -11,9 +11,9 @@ namespace DatenMeister.Excel
     public static class IntegrateExcelModels
     {
         /// <summary>
-        /// Assigns the types of form and fields by converting the
-        /// .Net objects to DatenMeister elements and adds them into
-        /// the filler, the collection and also into the lookup.
+        /// Assigns the types of form and fields by converting the 
+        /// .Net objects to DatenMeister elements and adds them into 
+        /// the filler, the collection and also into the lookup. 
         /// </summary>
         /// <param name="uml">The uml metamodel to be used</param>
         /// <param name="factory">Factory being used for creation</param>

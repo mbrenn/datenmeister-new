@@ -73,6 +73,22 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         protected ICollection<ViewExtension> ViewExtensions { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets the form that is overriding the default form
+        /// </summary>
+        protected IObject OverridingForm { get; set; }
+
+        /// <summary>
+        /// Sets the form that shall be shown instead of the default form as created by the inheriting items
+        /// </summary>
+        /// <param name="form"></param>
+        public void SetOverridingForm(IObject form)
+        {
+            OverridingForm = form;
+            RecreateViews();
+        }
+
         /// <summary>
         ///     Gets or sets the eventhandle for the content of the control
         /// </summary>
@@ -241,7 +257,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="viewDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
-        public void EvaluateForm(
+        protected void EvaluateForm(
             IObject value,
             ViewDefinition viewDefinition,
             IReflectiveCollection container = null)

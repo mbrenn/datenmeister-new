@@ -106,6 +106,22 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
             yield return copyFormDefinition;
 
+            var changeFormDefinition = new ExtentMenuButtonDefinition(
+                "Change Form Definition",
+                x =>
+                {
+                    var form = NavigatorForDialogs.Locate(
+                        itemExplorerControl.NavigationHost,
+                        WorkspaceNames.NameManagement,
+                        WorkspaceNames.UriUserViewExtent);
+                    
+                    itemExplorerControl.SetOverridingForm(form);
+                },
+                "",
+                NavigationCategories.Form + ".Definition");
+
+            yield return changeFormDefinition;
+
             // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
             var extent = itemExplorerControl.RootItem.GetExtentOf();
             var extentType = extent?.GetExtentType();

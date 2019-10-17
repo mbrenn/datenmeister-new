@@ -123,7 +123,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 return DetailElement == null
                     ? "New item"
-                    : $"Edit Item: {NamedElementMethods.GetName(DetailElement)}";
+                    : $"Edit Item: {NamedElementMethods.GetFullName(DetailElement)}";
             }
 
             set => _internalTitle = value;

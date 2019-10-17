@@ -654,12 +654,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             var propertiesWithCollection =
                 (from p in properties
-                    where PropertyHelper.IsCollection(p)
+                    where PropertyMethods.IsCollection(p)
                     select new {propertyName = NamedElementMethods.GetName(p), property = p}).ToList();
 
             var propertiesWithoutCollection =
                 (from p in properties
-                    where !PropertyHelper.IsCollection(p)
+                    where !PropertyMethods.IsCollection(p)
                     select new {propertyName = NamedElementMethods.GetName(p), property = p}).ToList();
 
             if (propertiesWithoutCollection.Any())

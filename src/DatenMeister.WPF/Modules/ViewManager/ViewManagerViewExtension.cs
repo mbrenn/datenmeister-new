@@ -67,7 +67,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
         private static IEnumerable<ViewExtension> GetForItemExplorerControl(
             ItemExplorerControl itemExplorerControl)
         {
-            var showFormDefinition = new ExtentMenuButtonDefinition(
+            yield return new ExtentMenuButtonDefinition(
                 "Show Form Definition",
                 x =>
                 {
@@ -85,9 +85,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 "",
                 NavigationCategories.Form + ".Definition");
 
-            yield return showFormDefinition;
-
-            var copyFormDefinition = new ExtentMenuButtonDefinition(
+            yield return new ExtentMenuButtonDefinition(
                 "Save Form Definition",
                 x =>
                 {
@@ -104,9 +102,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 "",
                 NavigationCategories.Form + ".Definition");
 
-            yield return copyFormDefinition;
-
-            var changeFormDefinition = new ExtentMenuButtonDefinition(
+            yield return new ExtentMenuButtonDefinition(
                 "Change Form Definition",
                 x =>
                 {
@@ -119,8 +115,12 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 },
                 "",
                 NavigationCategories.Form + ".Definition");
-
-            yield return changeFormDefinition;
+            
+            yield return new ExtentMenuButtonDefinition(
+                "Reset Form Definition",
+                x=> itemExplorerControl.ClearOverridingForm(), 
+                string.Empty,
+                NavigationCategories.Form + ".Definition");
 
             // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
             var extent = itemExplorerControl.RootItem.GetExtentOf();

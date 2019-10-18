@@ -51,7 +51,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets the definition of the current form
         /// </summary>
-        public IElement EffectiveForm { get; private set; }
+        public IObject EffectiveForm { get; private set; }
 
         public IObject RootItem { get; protected set; }
 
@@ -86,6 +86,15 @@ namespace DatenMeister.WPF.Forms.Base
         public void SetOverridingForm(IObject form)
         {
             OverridingForm = form;
+            RecreateViews();
+        }
+
+        /// <summary>
+        /// Clears the overriding form, so the default views are used 
+        /// </summary>
+        public void ClearOverridingForm()
+        {
+            OverridingForm = null;
             RecreateViews();
         }
 

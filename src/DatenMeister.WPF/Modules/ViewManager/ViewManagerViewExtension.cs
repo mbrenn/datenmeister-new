@@ -132,6 +132,12 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 "Set as default for metaclass",
                 x =>
                 {
+                    if (itemExplorerControl.OverridingForm == null)
+                    {
+                        MessageBox.Show(
+                            "The used form is automatically selected. This automatic selection cannot be put as a standard");
+                        return;
+                    }
                     var window = itemExplorerControl.NavigationHost.GetWindow();
                     if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
                     {
@@ -179,6 +185,8 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         viewAssociation.set(_FormAndFields._ViewAssociation.form, itemExplorerControl.EffectiveForm);
                         viewAssociation.set(_FormAndFields._ViewAssociation.viewType, ViewType.TreeItemExtent);
                         userViewExtent.elements().add(viewAssociation);
+
+                        MessageBox.Show("View Association created");
                     }
                 },
                 string.Empty,

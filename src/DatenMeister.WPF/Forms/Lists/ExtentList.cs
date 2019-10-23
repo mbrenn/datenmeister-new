@@ -56,9 +56,13 @@ namespace DatenMeister.WPF.Forms.Lists
             if (SelectedItem == null)
                 return;
 
+            ViewDefinition overridingDefinition = 
+                OverridingForm == null ? null : new ViewDefinition(OverridingForm);
+
             if (IsExtentSelectedInTreeview)
             {
-                var viewDefinition = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId, NavigationHost);
+                var viewDefinition = overridingDefinition ?? 
+                                     WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId, NavigationHost);
 
                 EvaluateForm(
                     SelectedItem,
@@ -68,7 +72,8 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
                 var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, ViewDefinitionMode.Default);
-                var viewDefinition = new ViewDefinition(form);
+                var viewDefinition = overridingDefinition ?? 
+                                     new ViewDefinition(form);
 
                 EvaluateForm(
                     SelectedItem,

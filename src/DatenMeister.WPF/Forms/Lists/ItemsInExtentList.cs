@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Exceptions;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -39,8 +41,14 @@ namespace DatenMeister.WPF.Forms.Lists
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
+        /// <summary>
+        /// Gets or sets the workspace id
+        /// </summary>
         public string WorkspaceId { get; set; }
 
+        /// <summary>
+        /// Gets or sets extent Url for the item being shown
+        /// </summary>
         public string ExtentUrl { get; set; }
 
         /// <summary>
@@ -152,6 +160,14 @@ namespace DatenMeister.WPF.Forms.Lists
                 new ExtentMenuButtonDefinition(
                     "Extent Info",
                     (x) => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
+                    null,
+                    NavigationCategories.Extents + ".Info"));
+                    
+
+            viewDefinition.ViewExtensions.Add(
+                new ExtentMenuButtonDefinition(
+                    "Extent Properties",
+                    (x) => NavigatorForExtents.OpenPropertiesOfExtent(NavigationHost, x),
                     null,
                     NavigationCategories.Extents + ".Info"));
 

@@ -138,6 +138,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                             "The used form is automatically selected. This automatic selection cannot be put as a standard");
                         return;
                     }
+                    
                     var window = itemExplorerControl.NavigationHost.GetWindow();
                     if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
                     {

@@ -1,7 +1,11 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Automation;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Lists;
 
@@ -35,6 +39,26 @@ namespace DatenMeister.WPF.Navigation
             return NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
                 workspaceLogic.FindItem(uri));
+        }
+
+        /// <summary>
+        /// Opens the extent as
+        /// </summary>
+        /// <param name="navigationHost">Host for navigation being to be used</param>
+        /// <param name="extent">Url of the extent to be shown</param>
+        /// <returns>Navigation to be used</returns>
+        public static Task<NavigateToElementDetailResult> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
+        {
+            if (extent is MofExtent mofExtent)
+            {
+                return NavigatorForItems.NavigateToElementDetailView(
+                    navigationHost,
+                    mofExtent.GetMetaObject());
+            }
+
+            return NavigatorForItems.NavigateToElementDetailView(
+                navigationHost,
+                new ExtentPropertyObject(extent));
         }
     }
 }

@@ -40,7 +40,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     NavigationCategories.Extents + ".Import");
 
                 yield return new ExtentMenuButtonDefinition(
-                    "Import new Extent",
+                    "Import by new Extent",
                     ImportNewExtent,
                     null,
                     NavigationCategories.Extents + ".Import");

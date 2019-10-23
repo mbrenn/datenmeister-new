@@ -507,8 +507,22 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         public IEnumerable<string> getPropertiesBeingSet()
-            => Provider.Get(null).GetProperties();
-
+        {
+            
+            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
+                ProviderCapability.StoreMetaDataInExtent)
+            {
+                var nullObject = Provider.Get(null) ??
+                                 throw new InvalidOperationException(
+                                     "Provider does not support setting of extent properties");
+                return nullObject.GetProperties();
+            }
+            else
+            {
+                return MetaXmiElement.getPropertiesBeingSet();
+            }
+        }
+        
         public IExtent Extent => this;
     }
 }

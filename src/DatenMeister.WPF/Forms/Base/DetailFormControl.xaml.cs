@@ -333,7 +333,7 @@ namespace DatenMeister.WPF.Forms.Base
             // Adds metadata
             if (DetailElement != null)
             {
-                var mofElement = (MofElement) DetailElement;
+                var mofElement = DetailElement as MofElement; // Used to get the uri including id
                 var uriExtent = DetailElement.GetUriExtentOf();
 
                 var hideMetaClass = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.hideMetaInformation);
@@ -346,7 +346,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var fullName = NamedElementMethods.GetFullName(DetailElement);
                     CreateRowForField("Extent:", uriExtentText, true);
                     CreateRowForField("Full Name:", fullName, true);
-                    CreateRowForField("Url w/ ID:", mofElement.GetUri(), true);
+                    CreateRowForField("Url w/ ID:", mofElement?.GetUri() ?? "Not known", true);
                     CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
                     var metaClass = (DetailElement as IElement)?.getMetaClass();

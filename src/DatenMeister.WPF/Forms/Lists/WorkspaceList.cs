@@ -6,6 +6,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
@@ -39,16 +40,23 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             ViewDefinition view;
 
-            var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
-            if (selectedItemMetaClass != null
-                && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
+            if (OverridingForm != null)
             {
-                var workspaceId = SelectedPackage.get("id")?.ToString();
-                view = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, workspaceId, NavigationHost);
+                view = new ViewDefinition(OverridingForm);
             }
             else
             {
-                view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(Extent, NavigationHost);
+                var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
+                if (selectedItemMetaClass != null
+                    && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
+                {
+                    var workspaceId = SelectedPackage.get("id")?.ToString();
+                    view = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, workspaceId, NavigationHost);
+                }
+                else
+                {
+                    view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(Extent, NavigationHost);
+                }
             }
 
             PrepareNavigation(view);

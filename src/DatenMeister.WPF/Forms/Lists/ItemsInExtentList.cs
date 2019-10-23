@@ -39,8 +39,14 @@ namespace DatenMeister.WPF.Forms.Lists
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
+        /// <summary>
+        /// Gets or sets the workspace id
+        /// </summary>
         public string WorkspaceId { get; set; }
 
+        /// <summary>
+        /// Gets or sets extent Url for the item being shown
+        /// </summary>
         public string ExtentUrl { get; set; }
 
         /// <summary>

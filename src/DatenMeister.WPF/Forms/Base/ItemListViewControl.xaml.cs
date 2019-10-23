@@ -161,37 +161,6 @@ namespace DatenMeister.WPF.Forms.Base
                 dlg.ShowDialog();
             }
 
-            void ShowFormDefinition()
-            {
-                var dlg = new ItemXmlViewWindow
-                {
-                    /*SupportWriting = true,*/
-                    Owner = Window.GetWindow(this)
-                };
-                dlg.UpdateContent(EffectiveForm);
-
-                dlg.UpdateButtonPressed += (x, y) =>
-                {
-                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
-                    var factory = new MofFactory(temporaryExtent);
-                    EffectiveForm = dlg.GetCurrentContentAsMof(factory);
-                };
-
-                dlg.ShowDialog();
-            }
-
-            void CopyForm()
-            {
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-                var target = viewLogic.GetUserViewExtent();
-                var copier = new ObjectCopier(new MofFactory(target));
-
-                var copiedForm = copier.Copy(EffectiveForm);
-                target.elements().add(copiedForm);
-
-                NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
-            }
-
             void ExportToCSV(IReflectiveCollection items)
             {
                 try

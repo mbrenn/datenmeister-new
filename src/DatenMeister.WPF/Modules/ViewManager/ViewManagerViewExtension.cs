@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
@@ -115,12 +121,69 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 },
                 "",
                 NavigationCategories.Form + ".Definition");
-            
+
             yield return new ExtentMenuButtonDefinition(
                 "Reset Form Definition",
-                x=> itemExplorerControl.ClearOverridingForm(), 
+                x => itemExplorerControl.ClearOverridingForm(),
                 string.Empty,
                 NavigationCategories.Form + ".Definition");
+            
+            yield return new ExtentMenuButtonDefinition(
+                "Set as default for metaclass",
+                x =>
+                {
+                    var window = itemExplorerControl.NavigationHost.GetWindow();
+                    if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
+                    {
+                        var selectedExtentType = selectedExtent.GetExtentType();
+                        if (string.IsNullOrEmpty(selectedExtentType))
+                        {
+                            MessageBox.Show("Given Extent does not contain an extent type, so rule cannot be created");
+                            return;
+                        }
+
+                        if (MessageBox.Show(
+                                $"The current view will be defined as the standard view for the extent type: {selectedExtentType}. \r\n\r\n Is this correct?",
+                                "Confirmation",
+                                MessageBoxButton.YesNo) == MessageBoxResult.No)
+                        {
+                            return;
+                        }
+
+                        var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                        var userViewExtent = viewLogic.GetUserViewExtent();
+                        var factory = new MofFactory(userViewExtent);
+                        var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+
+                        foreach (var foundElement in userViewExtent
+                            .elements()
+                            .GetAllDescendants()
+                            .WhenMetaClassIs(formAndFields.__ViewAssociation)
+                            .WhenPropertyHasValue(_FormAndFields._ViewAssociation.extentType, selectedExtentType)
+                            .OfType<IElement>())
+                        {
+                            var container = foundElement.container();
+                            if (container != null)
+                            {
+                                container.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
+                                    ?.remove(foundElement);
+                            }
+                            else
+                            {
+                                userViewExtent.elements().remove(foundElement);
+                            }
+                        }
+
+                        var viewAssociation = factory.create(formAndFields.__ViewAssociation);
+                        viewAssociation.set(_FormAndFields._ViewAssociation.extentType, selectedExtentType);
+                        viewAssociation.set(_FormAndFields._ViewAssociation.form, itemExplorerControl.EffectiveForm);
+                        viewAssociation.set(_FormAndFields._ViewAssociation.viewType, ViewType.TreeItemExtent);
+                        userViewExtent.elements().add(viewAssociation);
+                    }
+                },
+                string.Empty,
+                NavigationCategories.Form + ".Definition"
+                );
 
             // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
             var extent = itemExplorerControl.RootItem.GetExtentOf();

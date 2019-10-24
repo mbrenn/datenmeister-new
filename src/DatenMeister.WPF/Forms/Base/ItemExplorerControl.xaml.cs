@@ -14,6 +14,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -77,7 +78,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public IElement OverridingForm { get; private set; }
+        public ViewDefinition OverridingViewDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -85,7 +86,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="form"></param>
         public void SetOverridingForm(IElement form)
         {
-            OverridingForm = form;
+            OverridingViewDefinition = new ViewDefinition(form);
             RecreateViews();
         }
 
@@ -94,10 +95,19 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void ClearOverridingForm()
         {
-            OverridingForm = null;
+            OverridingViewDefinition = null;
             RecreateViews();
         }
 
+        /// <summary>
+        /// Forces the generation of the form via the form creator
+        /// </summary>
+        public void ForceAutoGenerationOfForm()
+        {
+            OverridingViewDefinition = new ViewDefinition(ViewDefinitionMode.AllProperties);
+            RecreateViews();
+        }
+        
         /// <summary>
         ///     Gets or sets the eventhandle for the content of the control
         /// </summary>

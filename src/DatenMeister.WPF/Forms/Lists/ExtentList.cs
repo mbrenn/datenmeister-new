@@ -56,8 +56,7 @@ namespace DatenMeister.WPF.Forms.Lists
             if (SelectedItem == null)
                 return;
 
-            ViewDefinition overridingDefinition = 
-                OverridingForm == null ? null : new ViewDefinition(OverridingForm);
+            var overridingDefinition = OverridingViewDefinition;
 
             if (IsExtentSelectedInTreeview)
             {

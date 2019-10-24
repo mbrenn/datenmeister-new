@@ -400,7 +400,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         public bool HasContainer() =>
-            XmlNode.Parent != null;
+            XmlNode.Parent != null && XmlNode.Parent != XmlNode.Document?.Root;
 
         /// <summary>
         /// Gets the container of the object
@@ -408,7 +408,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns></returns>
         public IProviderObject GetContainer()
         {
-            if (XmlNode.Parent != null)
+            if (HasContainer())
             {
                 return new XmiProviderObject(XmlNode.Parent, (XmiProvider) Provider);
             }

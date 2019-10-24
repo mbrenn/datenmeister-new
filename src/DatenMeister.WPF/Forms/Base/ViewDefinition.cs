@@ -36,7 +36,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="mode">Stores the type as given</param>
         public ViewDefinition(string name, IObject element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
         {
-            if (element == null)
+            if (element == null && mode == ViewDefinitionMode.Specific)
             {
                 Mode = ViewDefinitionMode.Default;
                 Name = name;
@@ -51,7 +51,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         public ViewDefinition(IObject element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
         {
-            if (element == null)
+            if (element == null && mode == ViewDefinitionMode.Specific)
             {
                 Mode = ViewDefinitionMode.Default;
             }

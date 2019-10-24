@@ -123,7 +123,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                     }
                     else
                     {
-                        itemExplorerControl.SetOverridingForm(form);    
+                        itemExplorerControl.SetOverridingForm(form);
                     }
                 },
                 "",
@@ -134,19 +134,18 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 x => itemExplorerControl.ClearOverridingForm(),
                 string.Empty,
                 NavigationCategories.Form + ".Definition");
-            
+
             yield return new ExtentMenuButtonDefinition(
                 "Set as default for metaclass",
                 x =>
                 {
-                    if (itemExplorerControl.OverridingForm == null)
+                    if (itemExplorerControl.OverridingViewDefinition?.Element == null)
                     {
                         MessageBox.Show(
                             "The used form is automatically selected. This automatic selection cannot be put as a standard");
                         return;
                     }
-                    
-                    var window = itemExplorerControl.NavigationHost.GetWindow();
+
                     if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
                     {
                         var selectedExtentType = selectedExtent.GetExtentType();
@@ -167,26 +166,9 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
                         var userViewExtent = viewLogic.GetUserViewExtent();
                         var factory = new MofFactory(userViewExtent);
-                        var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+                        var formAndFields = viewLogic.GetFormAndFieldInstance();
 
-                        foreach (var foundElement in userViewExtent
-                            .elements()
-                            .GetAllDescendantsIncludingThemselves()
-                            .WhenMetaClassIs(formAndFields.__ViewAssociation)
-                            .WhenPropertyHasValue(_FormAndFields._ViewAssociation.extentType, selectedExtentType)
-                            .OfType<IElement>())
-                        {
-                            var container = foundElement.container();
-                            if (container != null)
-                            {
-                                container.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
-                                    ?.remove(foundElement);
-                            }
-                            else
-                            {
-                                userViewExtent.elements().remove(foundElement);
-                            }
-                        }
+                        viewLogic.RemoveViewAssociation(selectedExtentType);
 
                         var viewAssociation = factory.create(formAndFields.__ViewAssociation);
                         viewAssociation.set(_FormAndFields._ViewAssociation.extentType, selectedExtentType);
@@ -199,7 +181,41 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 },
                 string.Empty,
                 NavigationCategories.Form + ".Definition"
-                );
+            );
+
+            yield return new ExtentMenuButtonDefinition(
+                "Clear default association",
+                x =>
+                {
+                    if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
+                    {
+                        var selectedExtentType = selectedExtent.GetExtentType();
+                        if (string.IsNullOrEmpty(selectedExtentType))
+                        {
+                            MessageBox.Show("Given Extent does not contain an extent type, so rule cannot be created");
+                            return;
+                        }
+
+                        var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+
+                        if (viewLogic.RemoveViewAssociation(selectedExtentType))
+                        {
+                            MessageBox.Show("View Association deleted");
+                        }
+                        else
+                        {
+                            MessageBox.Show("No default view association was found.");
+                        }
+                    }
+                },
+                string.Empty,
+                NavigationCategories.Form + ".Definition");
+
+            yield return new ExtentMenuButtonDefinition(
+                "Autogenerate form",
+                x => { itemExplorerControl.ForceAutoGenerationOfForm(); },
+                string.Empty,
+                NavigationCategories.Form + ".Definition");
 
             // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
             var extent = itemExplorerControl.RootItem.GetExtentOf();

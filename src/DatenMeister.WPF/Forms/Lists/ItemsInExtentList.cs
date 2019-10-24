@@ -120,12 +120,13 @@ namespace DatenMeister.WPF.Forms.Lists
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
             IElement form = null;
 
+            var overridingMode = OverridingViewDefinition?.Mode ?? ViewDefinitionMode.Default;
             // Check if the used form shall be overridden
-            if (OverridingForm != null)
+            if (OverridingViewDefinition != null && overridingMode == ViewDefinitionMode.Specific)
             {
                 // Check the type
-                form = OverridingForm;
-                if (isRootItem)
+                form = OverridingViewDefinition.Element as IElement;
+                if (form != null && isRootItem)
                 {
                     if (!ClassifierMethods.IsSpecializedClassifierOf(
                         form.getMetaClass(), 
@@ -144,14 +145,14 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Extent is currently selected
                     // Finds the view by the extent type
-                    form = viewLogic.GetExtentForm(RootItem as IUriExtent, ViewDefinitionMode.Default);
+                    form = viewLogic.GetExtentForm(RootItem as IUriExtent, overridingMode);
                 }
                 else
                 {
                     // User has selected a sub element and its children shall be shown
                     form = viewLogic.GetItemTreeFormForObject(
                         SelectedItem,
-                        ViewDefinitionMode.Default);
+                        overridingMode);
                 }
             }
 

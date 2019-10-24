@@ -150,7 +150,9 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
                 var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
-                var listForm = viewLogic.GetListFormForExtent(extent, formAndFields.__Extent,
+                var listForm = viewLogic.GetListFormForExtent(
+                    extent, 
+                    formAndFields.__Extent,
                     ViewDefinitionMode.Default);
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
 

@@ -103,9 +103,9 @@ namespace DatenMeister.Modules.ViewFinder
                 // Now go through each property and get the points
 
                 // ExtentType
-                if (!string.IsNullOrEmpty(query.extentType) && !string.IsNullOrEmpty(innerExtentType))
+                if (!string.IsNullOrEmpty(query.extentType) || !string.IsNullOrEmpty(innerExtentType))
                 {
-                    if (query.extentType.Equals(innerExtentType))
+                    if (query.extentType?.Equals(innerExtentType) == true)
                     {
                         InternalDebug("-- MATCH: ExtentType: " + query.extentType + ", ViewAssociation ExtentType: " +
                                       innerExtentType);
@@ -120,9 +120,9 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 // MetaClass
-                if (query.metaClass != null && innerMetaClass != null)
+                if (query.metaClass != null || innerMetaClass != null)
                 {
-                    if (query.metaClass.@equals(innerMetaClass))
+                    if (query.metaClass?.@equals(innerMetaClass) == true)
                     {
                         InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(query.metaClass) +
                                       ", ViewAssociation innerMetaClass: " +
@@ -151,9 +151,9 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 // ´ParentMetaClass
-                if (query.parentMetaClass != null && innerParentMetaClass != null)
+                if (query.parentMetaClass != null || innerParentMetaClass != null)
                 {
-                    if (query.parentMetaClass.@equals(innerParentMetaClass))
+                    if (query.parentMetaClass?.@equals(innerParentMetaClass) == true)
                     {
                         InternalDebug("-- MATCH: parentMetaClass: " + NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", ViewAssociation parentMetaClass: " +
@@ -170,9 +170,9 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 // ParentProperty
-                if (!string.IsNullOrEmpty(query.parentProperty) && !string.IsNullOrEmpty(innerParentProperty))
+                if (!string.IsNullOrEmpty(query.parentProperty) || !string.IsNullOrEmpty(innerParentProperty))
                 {
-                    if (query.parentProperty.Equals(innerParentProperty))
+                    if (query.parentProperty?.Equals(innerParentProperty) == true)
                     {
                         InternalDebug("-- MATCH: ParentProperty: " + query.parentProperty + ", ViewAssociation ParentProperty: " +
                                       innerParentProperty);

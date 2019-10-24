@@ -22,6 +22,7 @@ using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Helper;
@@ -115,19 +116,43 @@ namespace DatenMeister.WPF.Forms.Lists
         private void CreateFormForItems()
         {
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            IElement form;
+            var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            IElement form = null;
 
-            if (Equals(RootItem, SelectedItem) || SelectedItem == null)
+            // Check if the used form shall be overridden
+            if (OverridingForm != null)
             {
-                // Finds the view by the extent type
-                form = viewLogic.GetExtentForm(RootItem as IUriExtent, ViewDefinitionMode.Default);
+                // Check the type
+                form = OverridingForm;
+                if (isRootItem)
+                {
+                    if (!ClassifierMethods.IsSpecializedClassifierOf(
+                        form.getMetaClass(), 
+                        formAndFields.__ExtentForm))
+                    {
+                        MessageBox.Show("Overriding form is not of type ExtentForm. ");
+                        form = null;
+                    }
+                }
             }
-            else
+            
+            // If the form shall not be overridden, find it by the standard logic
+            if (form == null)
             {
-                // User has selected a sub element and its children shall be shown
-                form = viewLogic.GetItemTreeFormForObject(
-                    SelectedItem,
-                    ViewDefinitionMode.Default);
+                if (isRootItem)
+                {
+                    // Extent is currently selected
+                    // Finds the view by the extent type
+                    form = viewLogic.GetExtentForm(RootItem as IUriExtent, ViewDefinitionMode.Default);
+                }
+                else
+                {
+                    // User has selected a sub element and its children shall be shown
+                    form = viewLogic.GetItemTreeFormForObject(
+                        SelectedItem,
+                        ViewDefinitionMode.Default);
+                }
             }
 
             const string className = "Items";

@@ -115,9 +115,16 @@ namespace DatenMeister.WPF.Modules.ViewManager
                     var form = NavigatorForDialogs.Locate(
                         itemExplorerControl.NavigationHost,
                         WorkspaceNames.NameManagement,
-                        WorkspaceNames.UriUserViewExtent);
-                    
-                    itemExplorerControl.SetOverridingForm(form);
+                        WorkspaceNames.UriUserViewExtent) as IElement;
+
+                    if (form == null)
+                    {
+                        itemExplorerControl.ClearOverridingForm();
+                    }
+                    else
+                    {
+                        itemExplorerControl.SetOverridingForm(form);    
+                    }
                 },
                 "",
                 NavigationCategories.Form + ".Definition");
@@ -164,7 +171,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
                         foreach (var foundElement in userViewExtent
                             .elements()
-                            .GetAllDescendants()
+                            .GetAllDescendantsIncludingThemselves()
                             .WhenMetaClassIs(formAndFields.__ViewAssociation)
                             .WhenPropertyHasValue(_FormAndFields._ViewAssociation.extentType, selectedExtentType)
                             .OfType<IElement>())

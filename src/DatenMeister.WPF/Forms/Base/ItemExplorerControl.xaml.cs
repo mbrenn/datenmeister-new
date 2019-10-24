@@ -77,13 +77,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public IObject OverridingForm { get; private set; }
+        public IElement OverridingForm { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
         /// </summary>
         /// <param name="form"></param>
-        public void SetOverridingForm(IObject form)
+        public void SetOverridingForm(IElement form)
         {
             OverridingForm = form;
             RecreateViews();
@@ -97,7 +97,6 @@ namespace DatenMeister.WPF.Forms.Base
             OverridingForm = null;
             RecreateViews();
         }
-       
 
         /// <summary>
         ///     Gets or sets the eventhandle for the content of the control

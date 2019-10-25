@@ -102,9 +102,10 @@ namespace DatenMeister.Modules.ViewFinder
                 // Now go through each property and get the points
 
                 // ExtentType
-                if (!string.IsNullOrEmpty(query.extentType) || !string.IsNullOrEmpty(associationExtentType))
+                if (!string.IsNullOrEmpty(associationExtentType))
                 {
-                    if (query.extentType?.Equals(associationExtentType) == true)
+                    if (!string.IsNullOrEmpty(query.extentType)
+                        && query.extentType.Equals(associationExtentType))
                     {
                         InternalDebug("-- MATCH: ExtentType: " + query.extentType + ", ViewAssociation ExtentType: " +
                                       associationExtentType);
@@ -112,16 +113,17 @@ namespace DatenMeister.Modules.ViewFinder
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: ExtentType: " + query.extentType + ", ViewAssociation ExtentType: " +
+                        InternalDebug("-- NO MATCH: ExtentType: " + query.extentType +
+                                      ", ViewAssociation ExtentType: " +
                                       associationExtentType);
                         isMatching = false;
                     }
                 }
 
                 // MetaClass
-                if (query.metaClass != null || associationMetaClass != null)
+                if (associationMetaClass != null)
                 {
-                    if (query.metaClass?.@equals(associationMetaClass) == true)
+                    if (query.metaClass != null && query.metaClass?.@equals(associationMetaClass) == true)
                     {
                         InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(query.metaClass) +
                                       ", ViewAssociation innerMetaClass: " +
@@ -150,9 +152,9 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 // ´ParentMetaClass
-                if (query.parentMetaClass != null || associationParentMetaclass != null)
+                if (associationParentMetaclass != null)
                 {
-                    if (query.parentMetaClass?.@equals(associationParentMetaclass) == true)
+                    if (query.parentMetaClass != null && query.parentMetaClass?.@equals(associationParentMetaclass) == true)
                     {
                         InternalDebug("-- MATCH: parentMetaClass: " + NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", ViewAssociation parentMetaClass: " +
@@ -169,9 +171,9 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 // ParentProperty
-                if (!string.IsNullOrEmpty(query.parentProperty) || !string.IsNullOrEmpty(associationParentProperty))
+                if (!string.IsNullOrEmpty(associationParentProperty))
                 {
-                    if (query.parentProperty?.Equals(associationParentProperty) == true)
+                    if (!string.IsNullOrEmpty(query.parentProperty) && query.parentProperty?.Equals(associationParentProperty) == true)
                     {
                         InternalDebug("-- MATCH: ParentProperty: " + query.parentProperty + ", ViewAssociation ParentProperty: " +
                                       associationParentProperty);

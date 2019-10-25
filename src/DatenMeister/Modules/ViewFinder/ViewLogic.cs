@@ -206,8 +206,7 @@ namespace DatenMeister.Modules.ViewFinder
             return internalViewExtent.elements()
                 .Union(userViewExtent.elements())
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);
-        }
+                .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);}
 
         /// <summary>
         /// Stores the cached form and fields
@@ -227,7 +226,7 @@ namespace DatenMeister.Modules.ViewFinder
                 return _cachedFormAndField;
             }
 
-            viewExtent = viewExtent ?? GetUserViewExtent();
+            viewExtent ??= GetUserViewExtent();
             _cachedFormAndField =
                 _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
             return _cachedFormAndField;

@@ -76,7 +76,7 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>true, if element has been successfully copied</returns>
         public IElement Copy(IObject element, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             // Gets the source extent
             _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent;
@@ -95,7 +95,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="copyOptions">Options to be copied</param>
         public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
@@ -131,7 +131,7 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>The object that has been copied</returns>
         private object CopyValue(object value, IElement containingElement, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
             var noRecursion = copyOptions.NoRecursion;
 
             if (value == null)
@@ -185,7 +185,7 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>The created element that will be copied</returns>
         public static IElement Copy(IFactory factory, IObject element, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(factory);
             return copier.Copy(element, copyOptions);
@@ -200,7 +200,7 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>The created element that will be copied</returns>
         public static void CopyPropertiesStatic(IObject source, IObject target, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(new MofFactory(target));
             copier.CopyProperties(source, target, copyOptions);
@@ -225,7 +225,7 @@ namespace DatenMeister.Runtime.Copier
         public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption copyOptions = null)
         {
             var temp = new TemporaryReflectiveCollection();
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             foreach (var item in value.OfType<IObject>())
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable 
+
+using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
@@ -25,13 +27,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="referenceElement"></param>
         public MofElement(
             IProviderObject providedObject,
-            MofExtent extent,
-            IElement referenceElement = null)
+            MofExtent? extent,
+            IElement? referenceElement = null)
             : base(providedObject, extent)
         {
             if (ReferencedExtent == null)
             {
-                ReferencedExtent = ((MofElement) referenceElement)?.ReferencedExtent;
+                ReferencedExtent = (referenceElement as MofElement)?.ReferencedExtent;
             }
         }
 
@@ -55,15 +57,15 @@ namespace DatenMeister.Core.EMOF.Implementation
             => SetReferencedExtent((MofExtent) extent);
 
         /// <inheritdoc />
-        public IElement metaclass => getMetaClass();
+        public IElement? metaclass => getMetaClass();
 
         /// <summary>
         /// Stores the cached metaclass to speed-up lookup
         /// </summary>
-        private IElement _cachedMetaClass;
+        private IElement? _cachedMetaClass;
 
         /// <inheritdoc />
-        public IElement getMetaClass()
+        public IElement? getMetaClass()
         {
             if (_cachedMetaClass != null)
             {
@@ -85,7 +87,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement container()
+        public IElement? container()
         {
             var containerElement = ProviderObject.GetContainer();
             return containerElement != null

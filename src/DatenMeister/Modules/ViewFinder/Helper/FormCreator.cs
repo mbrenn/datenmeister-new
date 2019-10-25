@@ -532,11 +532,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var uriResolver = _workspaceLogic.GetTypesWorkspace();
 
             //var uriResolver = propertyType.GetUriResolver();
-            _stringType = _stringType ?? primitiveTypes.__String;
-            _integerType = _integerType ?? primitiveTypes.__Integer;
-            _booleanType = _booleanType ?? primitiveTypes.__Boolean;
-            _realType = _realType ?? primitiveTypes.__Real;
-            _dateTimeType = _dateTimeType ?? uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+            _stringType ??= primitiveTypes.__String;
+            _integerType ??= primitiveTypes.__Integer;
+            _booleanType ??= primitiveTypes.__Boolean;
+            _realType ??= primitiveTypes.__Real;
+            _dateTimeType ??= uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
             if (propertyType?.metaclass != null)

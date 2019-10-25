@@ -21,7 +21,7 @@ namespace DatenMeister.Runtime.Copier
 
         public void Copy(IExtent source, IExtent target, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
             var sourceSequence = source.elements();
             var targetSequence = target.elements();
 
@@ -30,7 +30,7 @@ namespace DatenMeister.Runtime.Copier
 
         public void Copy(IReflectiveCollection sourceSequence, IReflectiveCollection targetSequence, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(_factory);
             foreach (var copiedElement in sourceSequence
@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Copier
 
         public void Copy(IEnumerable<object> sourceSequence, IReflectiveCollection targetSequence, CopyOption copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(_factory);
             foreach (var copiedElement in sourceSequence

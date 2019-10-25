@@ -8,6 +8,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <Configurations>Debug;Release;ViewLogicAdditional</Configurations>
     <Nullable>disable</Nullable>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;VIEWLOGICINFO</DefineConstants>

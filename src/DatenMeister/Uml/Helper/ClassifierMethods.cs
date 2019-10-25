@@ -24,7 +24,7 @@ namespace DatenMeister.Uml.Helper
         public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier, HashSet<string> alreadyIn = null)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
-            alreadyIn = alreadyIn ?? new HashSet<string>();
+            alreadyIn ??= new HashSet<string>();
 
             var propertyOwnedAttribute = _UML._StructuredClassifiers._StructuredClassifier.ownedAttribute;
 
@@ -79,7 +79,7 @@ namespace DatenMeister.Uml.Helper
         /// <returns>Enumeration of elements</returns>
         public static IEnumerable<IElement> GetGeneralizations(IElement classifier, HashSet<IElement> alreadyVisited = null)
         {
-            alreadyVisited = alreadyVisited ?? new HashSet<IElement>();
+            alreadyVisited ??= new HashSet<IElement>();
             var propertyGeneralization = _UML._Classification._Classifier.generalization;
             var propertyGeneral = _UML._Classification._Generalization.general;
 
@@ -126,7 +126,7 @@ namespace DatenMeister.Uml.Helper
             HashSet<IElement> visitedElements = null,
             bool withoutItself = false)
         {
-            visitedElements = visitedElements ?? new HashSet<IElement>();
+            visitedElements ??= new HashSet<IElement>();
             var extent = (element as IHasExtent)?.Extent;
             var workspace = extent?.GetWorkspace();
             var classInstance = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);

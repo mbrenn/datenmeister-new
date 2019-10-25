@@ -76,24 +76,23 @@ namespace DatenMeister.Modules.ViewFinder
 
             var foundForms = new List<FoundForm>();
 
-            foreach (
-                var element in viewAssociations)
+            foreach (var element in viewAssociations)
             {
                 InternalDebug("-");
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
-                var innerExtentType = element.getOrDefault<string>(_FormAndFields._ViewAssociation.extentType);
-                var innerMetaClass = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.metaClass);
-                var innerViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ??
+                var associationExtentType = element.getOrDefault<string>(_FormAndFields._ViewAssociation.extentType);
+                var associationMetaClass = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.metaClass);
+                var associationViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ??
                                     ViewType.Detail;
-                var innerParentMetaClass =
+                var associationParentMetaclass =
                     element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.parentMetaClass);
-                var innerParentProperty =
+                var associationParentProperty =
                     element.getOrDefault<string>(_FormAndFields._ViewAssociation.parentProperty);
-                var innerForm = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.form);
+                var associationForm = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.form);
 
-                if (innerForm == null)
+                if (associationForm == null)
                 {
                     Logger.Warn("Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
                 }
@@ -103,85 +102,85 @@ namespace DatenMeister.Modules.ViewFinder
                 // Now go through each property and get the points
 
                 // ExtentType
-                if (!string.IsNullOrEmpty(query.extentType) || !string.IsNullOrEmpty(innerExtentType))
+                if (!string.IsNullOrEmpty(query.extentType) || !string.IsNullOrEmpty(associationExtentType))
                 {
-                    if (query.extentType?.Equals(innerExtentType) == true)
+                    if (query.extentType?.Equals(associationExtentType) == true)
                     {
                         InternalDebug("-- MATCH: ExtentType: " + query.extentType + ", ViewAssociation ExtentType: " +
-                                      innerExtentType);
+                                      associationExtentType);
                         points++;
                     }
                     else
                     {
                         InternalDebug("-- NO MATCH: ExtentType: " + query.extentType + ", ViewAssociation ExtentType: " +
-                                      innerExtentType);
+                                      associationExtentType);
                         isMatching = false;
                     }
                 }
 
                 // MetaClass
-                if (query.metaClass != null || innerMetaClass != null)
+                if (query.metaClass != null || associationMetaClass != null)
                 {
-                    if (query.metaClass?.@equals(innerMetaClass) == true)
+                    if (query.metaClass?.@equals(associationMetaClass) == true)
                     {
                         InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(query.metaClass) +
                                       ", ViewAssociation innerMetaClass: " +
-                                      NamedElementMethods.GetName(innerMetaClass));
+                                      NamedElementMethods.GetName(associationMetaClass));
                         points++;
                     }
                     else
                     {
                         InternalDebug("-- NO MATCH: metaClass: " + NamedElementMethods.GetName(query.metaClass) +
                                       ", ViewAssociation innerMetaClass: " +
-                                      NamedElementMethods.GetName(innerMetaClass));
+                                      NamedElementMethods.GetName(associationMetaClass));
                         isMatching = false;
                     }
                 }
 
                 // ViewType
-                if (!query.viewType.Equals(innerViewType))
+                if (!query.viewType.Equals(associationViewType))
                 {
                     InternalDebug("-- NO MATCH: viewType: " + query.viewType + ", ViewAssociation viewType: " +
-                                  innerViewType);
+                                  associationViewType);
                     isMatching = false;
                 }
                 else
                 {
-                    InternalDebug("-- MATCH: viewType: " + query.viewType + ", ViewAssociation viewType: " + innerViewType);
+                    InternalDebug("-- MATCH: viewType: " + query.viewType + ", ViewAssociation viewType: " + associationViewType);
                 }
 
                 // ´ParentMetaClass
-                if (query.parentMetaClass != null || innerParentMetaClass != null)
+                if (query.parentMetaClass != null || associationParentMetaclass != null)
                 {
-                    if (query.parentMetaClass?.@equals(innerParentMetaClass) == true)
+                    if (query.parentMetaClass?.@equals(associationParentMetaclass) == true)
                     {
                         InternalDebug("-- MATCH: parentMetaClass: " + NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", ViewAssociation parentMetaClass: " +
-                                      NamedElementMethods.GetName(innerParentMetaClass));
+                                      NamedElementMethods.GetName(associationParentMetaclass));
                         points++;
                     }
                     else
                     {
                         InternalDebug("-- NO MATCH: parentMetaClass: " + NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", ViewAssociation parentMetaClass: " +
-                                      NamedElementMethods.GetName(innerParentMetaClass));
+                                      NamedElementMethods.GetName(associationParentMetaclass));
                         isMatching = false;
                     }
                 }
 
                 // ParentProperty
-                if (!string.IsNullOrEmpty(query.parentProperty) || !string.IsNullOrEmpty(innerParentProperty))
+                if (!string.IsNullOrEmpty(query.parentProperty) || !string.IsNullOrEmpty(associationParentProperty))
                 {
-                    if (query.parentProperty?.Equals(innerParentProperty) == true)
+                    if (query.parentProperty?.Equals(associationParentProperty) == true)
                     {
                         InternalDebug("-- MATCH: ParentProperty: " + query.parentProperty + ", ViewAssociation ParentProperty: " +
-                                      innerParentProperty);
+                                      associationParentProperty);
                         points++;
                     }
                     else
                     {
                         InternalDebug("-- NO MATCH: ParentProperty: " + query.parentProperty + ", ViewAssociation ParentProperty: " +
-                                      innerParentProperty);
+                                      associationParentProperty);
                         isMatching = false;
                     }
                 }
@@ -192,7 +191,7 @@ namespace DatenMeister.Modules.ViewFinder
                 if (isMatching)
                 {
                     var foundForm = new FoundForm(
-                        innerForm,
+                        associationForm,
                         points);
                     foundForms.Add(foundForm);
                 }

@@ -18,6 +18,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -169,7 +170,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                         var factory = new MofFactory(userViewExtent);
                         var formAndFields = viewLogic.GetFormAndFieldInstance();
 
-                        viewLogic.RemoveViewAssociation(selectedExtentType);
+                        viewLogic.RemoveViewAssociationForExtentType(selectedExtentType);
 
                         var viewAssociation = factory.create(formAndFields.__ViewAssociation);
                         viewAssociation.set(_FormAndFields._ViewAssociation.extentType, selectedExtentType);
@@ -199,7 +200,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
                         var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
 
-                        if (viewLogic.RemoveViewAssociation(selectedExtentType))
+                        if (viewLogic.RemoveViewAssociationForExtentType(selectedExtentType))
                         {
                             MessageBox.Show("View Association deleted");
                         }
@@ -301,6 +302,19 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 ClearOverridingForm,
                 null,
                 NavigationCategories.Form);
+
+            yield return new ApplicationMenuButtonDefinition(
+                "Set as default for metaclass",
+                SetAsDefaultForMetaclass,
+                string.Empty,
+                NavigationCategories.Form
+            );
+
+            yield return new ApplicationMenuButtonDefinition(
+                "Clear default association",
+                ClearAssociation,
+                null,
+                NavigationCategories.Form);
             
             void ChangeFormDefinition()
             {
@@ -322,6 +336,72 @@ namespace DatenMeister.WPF.Modules.ViewManager
             void ClearOverridingForm()
             {
                 detailWindow.ClearOverridingForm();
+            }
+
+            void ClearAssociation()
+            {
+                var detailElement = detailWindow.DetailElement as IElement;
+                var metaClass = detailElement?.metaclass;
+                if (metaClass == null)
+                {
+                    MessageBox.Show(
+                        "The current detail element does not contain a metaclass.\r\nThis means that the association cannot be removed.");
+                    return;
+                }
+
+                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                if (viewLogic.RemoveViewAssociationForDetailMetaClass(metaClass))
+                {
+                    MessageBox.Show("View Association deleted");
+                }
+                else
+                {
+                    MessageBox.Show("No default view association was found.");
+                }
+            }
+
+            void SetAsDefaultForMetaclass()
+            {
+                if (detailWindow.OverridingViewDefinition?.Element == null)
+                {
+                    MessageBox.Show(
+                        "The used form is automatically selected. This automatic selection cannot be put as a standard");
+                    return;
+                }
+
+
+                var detailElement = detailWindow.DetailElement as IElement;
+                var metaClass = detailElement?.metaclass;
+
+                if (metaClass == null)
+                {
+                    MessageBox.Show(
+                        "The current detail element does not contain a metaclass.\r\nThis means that the association cannot be removed.");
+                    return;
+                }
+
+                if (MessageBox.Show(
+                        $"The current view will be defined as the standard view for the metaclass: {NamedElementMethods.GetFullName(metaClass)}. \r\n\r\n Is this correct?",
+                        "Confirmation",
+                        MessageBoxButton.YesNo) == MessageBoxResult.No)
+                {
+                    return;
+                }
+
+                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var userViewExtent = viewLogic.GetUserViewExtent();
+                var factory = new MofFactory(userViewExtent);
+                var formAndFields = viewLogic.GetFormAndFieldInstance();
+
+                viewLogic.RemoveViewAssociationForDetailMetaClass(metaClass);
+
+                var viewAssociation = factory.create(formAndFields.__ViewAssociation);
+                viewAssociation.set(_FormAndFields._ViewAssociation.metaClass, metaClass);
+                viewAssociation.set(_FormAndFields._ViewAssociation.form, detailWindow.OverridingViewDefinition.Element);
+                viewAssociation.set(_FormAndFields._ViewAssociation.viewType, ViewType.Detail);
+                userViewExtent.elements().add(viewAssociation);
+
+                MessageBox.Show("View Association created");
             }
         }
 

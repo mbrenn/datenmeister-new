@@ -208,7 +208,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             Runtime.Workspaces.Workspace workspace,
             HashSet<Runtime.Workspaces.Workspace> alreadyVisited = null)
         {
-            alreadyVisited = alreadyVisited ?? new HashSet<Runtime.Workspaces.Workspace>();
+            alreadyVisited ??= new HashSet<Runtime.Workspaces.Workspace>();
             if (alreadyVisited.Contains(workspace))
             {
                 return null;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable 
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +36,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the workspace to which the extent is allocated
         /// </summary>
-        public Workspace Workspace
+        public Workspace? Workspace
         {
             get;
             set;
@@ -43,7 +45,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the workspace via the interface
         /// </summary>
-        IWorkspace IHasWorkspace.Workspace => Workspace;
+        IWorkspace? IHasWorkspace.Workspace => Workspace;
 
         /// <summary>
         /// Stores a list of other extents that shall also be considered as meta extents
@@ -53,7 +55,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the change event manager for the objects within
         /// </summary>
-        internal ChangeEventManager ChangeEventManager { get; set; }
+        internal ChangeEventManager? ChangeEventManager { get; set; }
 
         /// <summary>
         /// Gets the meta object representing the meta object. Setting, querying a list or getting
@@ -97,15 +99,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="provider">Provider being used for the extent</param>
         /// <param name="changeEventManager">The change event manager being used
         /// to notify the system about changes in the event</param>
-        public MofExtent(IProvider provider, ChangeEventManager changeEventManager = null)
+        public MofExtent(IProvider provider, ChangeEventManager? changeEventManager = null)
         {
             ChangeEventManager = changeEventManager;
 
-            var xmiProvider = new XmiProvider();
+            var rootProvider = new XmiProvider();
             Provider = provider;
             TypeLookup = new DotNetTypeLookup();
             MetaXmiElement = new MofObject(
-                new XmiProviderObject(new XElement("meta"), xmiProvider),
+                new XmiProviderObject(new XElement("meta"), rootProvider),
                 this);
         }
 
@@ -121,7 +123,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public object get(string property)
+        public object? get(string property)
         {
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
@@ -246,7 +248,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="metaclassUri">Uri class to be retrieved</param>
         /// <param name="resolveType">The resolveing strategy</param>
         /// <returns>Resolved .Net Type as IElement</returns>
-        public Type ResolveDotNetType(string metaclassUri, ResolveType resolveType)
+        public Type? ResolveDotNetType(string metaclassUri, ResolveType resolveType)
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
             {
@@ -278,18 +280,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="workspace">Workspace whose meta workspaces were queried</param>
         /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
         /// <returns>Found element or null, if not found</returns>
-        private Type ResolveDotNetTypeByMetaWorkspaces(
+        private Type? ResolveDotNetTypeByMetaWorkspaces(
             string metaclassUri,
-            Workspace workspace,
-            HashSet<Workspace> alreadyVisited = null)
+            Workspace? workspace,
+            HashSet<Workspace>? alreadyVisited = null)
         {
-            alreadyVisited = alreadyVisited ?? new HashSet<Workspace>();
-            if (alreadyVisited.Contains(workspace))
+            alreadyVisited ??= new HashSet<Workspace>();
+            if (workspace != null && alreadyVisited.Contains(workspace))
             {
                 return null;
             }
 
-            alreadyVisited.Add(workspace);
+            if (workspace != null)
+            {
+                alreadyVisited.Add(workspace);
+            }
 
             // If still not found, look into the meta workspaces. Nevertheless, no recursion
             var metaWorkspaces = workspace?.MetaWorkspaces;
@@ -322,7 +327,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="type">Type to be converted</param>
         /// <returns>Retrieved meta class uri</returns>
-        public string GetMetaClassUri(Type type)
+        public string? GetMetaClassUri(Type type)
         {
             var result = TypeLookup.ToElement(type);
             if (!string.IsNullOrEmpty(result))
@@ -366,7 +371,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public object ConvertForSetting(object value)
+        public object? ConvertForSetting(object value)
             => ConvertForSetting(value, this, null);
 
         /// <summary>
@@ -376,7 +381,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">Extent being used to create the factory or being used for .Net TypeLookup</param>
         /// <param name="container">Container which will host the newly created object</param>
         /// <returns>The converted object being ready for Provider</returns>
-        public static object ConvertForSetting(object value, MofExtent extent, MofObject container)
+        public static object? ConvertForSetting(object value, MofExtent? extent, MofObject? container)
         {
             if (value == null)
             {
@@ -463,7 +468,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">The Mofobject for which the element will be created</param>
         /// <param name="childValue">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public static object ConvertForSetting(IObject value, object childValue)
+        public static object? ConvertForSetting(IObject value, object childValue)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 

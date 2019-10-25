@@ -84,7 +84,7 @@ namespace DatenMeister.Provider.DotNet
         /// <returns>The created meta class</returns>
         public IElement CreateTypeFor(Type type, DotNetTypeGeneratorOptions options = null)
         {
-            options = options ?? new DotNetTypeGeneratorOptions();
+            options ??= new DotNetTypeGeneratorOptions();
 
             if (type.IsClass)
             {

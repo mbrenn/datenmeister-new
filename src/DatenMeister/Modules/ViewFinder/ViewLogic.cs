@@ -217,7 +217,7 @@ namespace DatenMeister.Modules.ViewFinder
         public bool RemoveViewAssociation(string selectedExtentType, IExtent viewExtent = null)
         {
             var result = false;
-            viewExtent = viewExtent ?? GetUserViewExtent();
+            viewExtent ??= GetUserViewExtent();
             
             var formAndFields = GetFormAndFieldInstance(viewExtent);
             foreach (var foundElement in viewExtent
@@ -262,7 +262,7 @@ namespace DatenMeister.Modules.ViewFinder
                 return _cachedFormAndField;
             }
 
-            viewExtent = viewExtent ?? GetUserViewExtent();
+            viewExtent ??= GetUserViewExtent();
             _cachedFormAndField =
                 _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
             return _cachedFormAndField;

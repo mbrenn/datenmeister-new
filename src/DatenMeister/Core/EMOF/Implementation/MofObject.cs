@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable 
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using DatenMeister.Core.EMOF.Implementation.Uml;
@@ -18,12 +20,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the extent
         /// </summary>
-        private MofExtent _extent;
+        private MofExtent? _extent;
 
         /// <summary>
         /// Gets the extent of the mof object
         /// </summary>
-        public MofExtent Extent
+        public MofExtent? Extent
         {
             get => _extent;
             set
@@ -43,12 +45,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Stores the extent that is used to create the element.
         /// This extent is used for type lookup and other referencing things.
         /// </summary>
-        public MofExtent ReferencedExtent { get; set; }
+        public MofExtent? ReferencedExtent { get; set; }
 
         /// <summary>
         /// Gets the extent of the mof object
         /// </summary>
-        IExtent IHasExtent.Extent => Extent;
+        IExtent? IHasExtent.Extent => Extent;
 
         /// <summary>
         /// Gets the provided object
@@ -60,7 +62,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
         /// <param name="referencedExtent">The extent being used to access the item</param>
-        public MofObject(IProviderObject providedObject, MofExtent referencedExtent)
+        public MofObject(IProviderObject providedObject, MofExtent? referencedExtent)
         {
             ProviderObject = providedObject ?? throw new ArgumentNullException(nameof(providedObject));
 
@@ -83,7 +85,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="first"></param>
         /// <param name="second"></param>
         /// <returns></returns>
-        public static bool AreEqual(IObject first, IObject second)
+        public static bool AreEqual(IObject? first, IObject? second)
         {
             if (first == null || second == null)
             {
@@ -145,11 +147,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         public override int GetHashCode() => ProviderObject?.GetHashCode() ?? base.GetHashCode();
 
         /// <inheritdoc />
-        public object get(string property)
+        public object? get(string property)
             => get(property, false);
 
         // ReSharper disable once InconsistentNaming
-        public object get(string property, bool noReferences)
+        public object? get(string property, bool noReferences)
         {
             var result = ProviderObject.GetProperty(property);
             return ConvertToMofObject(this, property, result, noReferences);
@@ -163,7 +165,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be converted</param>
         /// <param name="noReferences">True, if references shall be resolved</param>
         /// <returns>The converted object</returns>
-        internal static object ConvertToMofObject(
+        internal static object? ConvertToMofObject(
             MofObject container,
             string property,
             object value,

@@ -13,7 +13,7 @@ namespace DatenMeister.SourcecodeGenerator
     {
         public static void GenerateSourceFor(SourceGeneratorOptions options, _UML uml = null)
         {
-            uml = uml ?? new _UML(); // Verifies that a uml is existing
+            uml ??= new _UML(); // Verifies that a uml is existing
 
             ////////////////////////////////////////
             // First of all, create all Mof types, representing the objects under concern

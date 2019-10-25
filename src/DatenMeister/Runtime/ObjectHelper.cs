@@ -281,7 +281,7 @@ namespace DatenMeister.Runtime
             string property)
         {
             var result = value.getOrDefault<IReflectiveCollection>(property);
-            result = result ?? CreateReflectiveCollectionObject(value, property);
+            result ??= CreateReflectiveCollectionObject(value, property);
 
             return result;
         }
@@ -299,7 +299,7 @@ namespace DatenMeister.Runtime
             string property)
         {
             var result = value.getOrDefault<IReflectiveSequence>(property);
-            result = result ?? (IReflectiveSequence) CreateReflectiveCollectionObject(value, property);
+            result ??= (IReflectiveSequence) CreateReflectiveCollectionObject(value, property);
 
             return result;
         }

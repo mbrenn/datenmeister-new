@@ -19,7 +19,7 @@ namespace DatenMeister.Integration
         /// <returns>Extent to be used</returns>
         public static IUriExtent LoadCsv(this IDatenMeisterScope scope, string uri, string path, CsvSettings settings = null)
         {
-            settings = settings ?? new CsvSettings();
+            settings ??= new CsvSettings();
 
             var provider = scope.Resolve<CsvLoader>();
 

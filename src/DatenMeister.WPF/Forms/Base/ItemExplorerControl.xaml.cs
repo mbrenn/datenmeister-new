@@ -54,6 +54,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IObject EffectiveForm { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the root item for the explorer view. The properties of the root item are
+        /// walked through to get the child items
+        /// </summary>
         public IObject RootItem { get; protected set; }
 
         public IObject SelectedItem { get; protected set; }

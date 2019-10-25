@@ -130,7 +130,7 @@
     <Compile Include="Modules\TypeManager\TypeManagerViewExtension.cs" />
     <Compile Include="Modules\ViewManager\NavigatorForViews.cs" />
     <Compile Include="Modules\ViewManager\ViewManagerPlugin.cs" />
-    <Compile Include="Modules\ViewManager\ViewManagerViewExtension.cs" />
+    <Compile Include="Modules\ViewManager\FormManagerViewExtension.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\CreatableTypeNavigator.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />

@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
     /// <summary>
     /// Contains the factory for the view extensions
     /// </summary>
-    public class ViewManagerViewExtension : IViewExtensionFactory
+    public class FormManagerViewExtension : IViewExtensionFactory
     {
         /// <summary>
         /// Gets the view extension
@@ -41,31 +41,32 @@ namespace DatenMeister.WPF.Modules.ViewManager
             ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
             var navigationGuest = viewExtensionTargetInformation.NavigationGuest;
+            var navigationHost = viewExtensionTargetInformation.NavigationHost;
+            
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
-            var detailFormControl = viewExtensionTargetInformation.NavigationGuest as DetailFormControl;
+            var detailFormControl = navigationGuest as DetailFormControl;
+            var detailFormWindow = navigationHost as DetailFormWindow;
 
-            if (viewExtensionTargetInformation.NavigationHost is IApplicationWindow)
+            if (navigationHost is IApplicationWindow)
             {
                 yield return GetForApplicationWindow(viewExtensionTargetInformation);
             }
 
-            if (itemExplorerControl != null || detailFormControl != null)
+            if (detailFormWindow != null)
             {
-                if (detailFormControl != null)
+                foreach (var viewExtension in GetForDetailWindow(
+                    viewExtensionTargetInformation,
+                    detailFormWindow))
                 {
-                    foreach (var viewExtension in
-                        GetForDetailWindow(viewExtensionTargetInformation, itemExplorerControl, detailFormControl))
-                    {
-                        yield return viewExtension;
-                    }
+                    yield return viewExtension;
                 }
+            }
 
-                if (itemExplorerControl != null)
+            if (itemExplorerControl != null)
+            {
+                foreach (var viewExtension in GetForItemExplorerControl(itemExplorerControl))
                 {
-                    foreach (var viewExtension in GetForItemExplorerControl(itemExplorerControl))
-                    {
-                        yield return viewExtension;
-                    }
+                    yield return viewExtension;
                 }
             }
         }
@@ -136,7 +137,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 NavigationCategories.Form + ".Definition");
 
             yield return new ExtentMenuButtonDefinition(
-                "Set as default for metaclass",
+                "Set as default for extenttype",
                 x =>
                 {
                     if (itemExplorerControl.OverridingViewDefinition?.Element == null)
@@ -279,40 +280,56 @@ namespace DatenMeister.WPF.Modules.ViewManager
             }
         }
 
-        private static IEnumerable<ViewExtension> GetForDetailWindow(ViewExtensionTargetInformation viewExtensionTargetInformation,
-            ItemExplorerControl itemExplorerControl, DetailFormControl detailFormControl)
+        /// <summary>
+        /// Gets the view extenstions for the detail window
+        /// </summary>
+        /// <param name="viewExtensionTargetInformation">The information about guests and hosts</param>
+        /// <param name="detailWindow"></param>
+        /// <returns></returns>
+        private static IEnumerable<ViewExtension> GetForDetailWindow(
+            ViewExtensionTargetInformation viewExtensionTargetInformation,
+            DetailFormWindow detailWindow)
         {
-            var openView = new ExtentMenuButtonDefinition(
-                "Change Form",
-                async x =>
+            yield return new ApplicationMenuButtonDefinition(
+                "Change Form Definition",
+                ChangeFormDefinition,
+                null,
+                NavigationCategories.Form);
+
+            yield return new ApplicationMenuButtonDefinition(
+                "Reset Form Definition",
+                ClearOverridingForm,
+                null,
+                NavigationCategories.Form);
+            
+            void ChangeFormDefinition()
+            {
+                var form = NavigatorForDialogs.Locate(
+                    detailWindow,
+                    WorkspaceNames.NameManagement,
+                    WorkspaceNames.UriUserViewExtent) as IElement;
+
+                if (form == null)
                 {
-                    var action = await Navigator.CreateDetailWindow(
-                        viewExtensionTargetInformation.NavigationHost,
-                        new NavigateToItemConfig
-                        {
-                            DetailElement = InMemoryObject.CreateEmpty(),
-                            FormDefinition = GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
-                                .element("#ViewManagerFindView")
-                        });
-
-                    if (action.Result == NavigationResult.Saved && action.DetailElement is IElement asElement)
-                    {
-                        var formDefinition = asElement.getOrDefault<IElement>("form");
-
-                        itemExplorerControl?.AddTab(
-                            itemExplorerControl.RootItem,
-                            formDefinition,
-                            null);
-
-                        detailFormControl.SetForm(formDefinition);
-                    }
-                },
-                "",
-                NavigationCategories.Form + ".Definition");
-
-            yield return openView;
+                    detailWindow.ClearOverridingForm();
+                }
+                else
+                {
+                    detailWindow.SetOverridingForm(form);
+                }
+            }
+            
+            void ClearOverridingForm()
+            {
+                detailWindow.ClearOverridingForm();
+            }
         }
 
+        /// <summary>
+        /// Gets the navigation for the application window
+        /// </summary>
+        /// <param name="viewExtensionTargetInformation"></param>
+        /// <returns></returns>
         private static ViewExtension GetForApplicationWindow(ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
             var result = new ApplicationMenuButtonDefinition(

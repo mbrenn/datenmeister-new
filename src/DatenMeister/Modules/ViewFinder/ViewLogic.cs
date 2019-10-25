@@ -206,7 +206,81 @@ namespace DatenMeister.Modules.ViewFinder
             return internalViewExtent.elements()
                 .Union(userViewExtent.elements())
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);}
+                .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);
+        }
+        
+        /// <summary>
+        /// Removes the view association from the database
+        /// </summary>
+        /// <param name="selectedExtentType">Extent type which is currently selected</param>
+        /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
+        public bool RemoveViewAssociationForExtentType(string selectedExtentType, IExtent viewExtent = null)
+        {
+            var result = false;
+            viewExtent ??= GetUserViewExtent();
+            
+            var formAndFields = GetFormAndFieldInstance(viewExtent);
+            foreach (var foundElement in viewExtent
+                .elements()
+                .GetAllDescendantsIncludingThemselves()
+                .WhenMetaClassIs(formAndFields.__ViewAssociation)
+                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.extentType, selectedExtentType)
+                .OfType<IElement>())
+            {
+                RemoveElement(viewExtent, foundElement);
+
+                result = true;
+            }
+
+            return result;
+        }
+        
+        /// <summary>
+        /// Removes the view association from the database
+        /// </summary>
+        /// <param name="metaClass">The metaclass which shall be used for the detailled form</param>
+        /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
+        public bool RemoveViewAssociationForDetailMetaClass(IElement metaClass, IExtent viewExtent = null)
+        {
+            var result = false;
+            viewExtent ??= GetUserViewExtent();
+            
+            var formAndFields = GetFormAndFieldInstance(viewExtent);
+            foreach (var foundElement in viewExtent
+                .elements()
+                .GetAllDescendantsIncludingThemselves()
+                .WhenMetaClassIs(formAndFields.__ViewAssociation)
+                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.metaClass, metaClass)
+                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.viewType, ViewType.Detail)
+                .OfType<IElement>())
+            {
+                RemoveElement(viewExtent, foundElement);
+
+                result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Removes the element from the given extent.
+        /// This is more a helper method 
+        /// </summary>
+        /// <param name="viewExtent">The extent in which the element is located</param>
+        /// <param name="foundElement">The found element</param>
+        private static void RemoveElement(IExtent viewExtent, IElement foundElement)
+        {
+            var container = foundElement.container();
+            if (container != null)
+            {
+                container.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement)
+                    ?.remove(foundElement);
+            }
+            else
+            {
+                viewExtent.elements().remove(foundElement);
+            }
+        }
 
         /// <summary>
         /// Stores the cached form and fields

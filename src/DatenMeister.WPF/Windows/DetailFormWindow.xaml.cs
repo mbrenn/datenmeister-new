@@ -9,12 +9,14 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Excel.Annotations;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -51,14 +53,51 @@ namespace DatenMeister.WPF.Windows
         private bool _finalEventsThrown;
 
         /// <summary>
-        /// Stores the detail element
+        /// Stores the view definition as requested by the creator of the window.
+        /// This view definition may be overridden by the OverridingViewDefinition
         /// </summary>
-        private ViewDefinition _viewDefinition;
+        private ViewDefinition _requestedViewDefinition;
 
         /// <summary>
         /// Gets a helper for menu
         /// </summary>
         private MenuHelper MenuHelper { get; }
+        
+        public IObject DetailElement { get; set; }
+        
+        /// <summary>
+        /// Stores the collection being used as a container
+        /// </summary>
+        public IReflectiveCollection ContainerCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the form that is overriding the default form
+        /// </summary>
+        public ViewDefinition OverridingViewDefinition { get; private set; }
+
+        /// <summary>
+        /// Sets the form that shall be shown instead of the default form as created by the inheriting items
+        /// </summary>
+        /// <param name="form"></param>
+        public void SetOverridingForm(IElement form)
+        {
+            OverridingViewDefinition = new ViewDefinition(form);
+            RecreateView();
+        }
+
+        /// <summary>
+        /// Clears the overriding form, so the default views are used 
+        /// </summary>
+        public void ClearOverridingForm()
+        {
+            OverridingViewDefinition = null;
+            RecreateView();
+        }
+
+        public IEnumerable<IObject> GetSelectedItems()
+        {
+            yield return DetailElement;
+        }
 
         /// <summary>
         /// Initializes a new instance of the DetailFormWindow class.
@@ -265,7 +304,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="container">Container being used when the item is added</param>
         public void SetContent(IObject element, ViewDefinition viewDefinition, IReflectiveCollection container = null)
         {
-            element = element ?? InMemoryObject.CreateEmpty();
+            element ??= InMemoryObject.CreateEmpty();
             CreateDetailForm(element, viewDefinition, container);
         }
 
@@ -285,27 +324,55 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         private void CreateDetailForm(IObject detailElement, ViewDefinition viewDefinition, IReflectiveCollection container = null)
         {
-            _viewDefinition = viewDefinition;
-            IObject effectiveForm = viewDefinition.Element;
+            DetailElement = detailElement;
+            ContainerCollection = container;
+            _requestedViewDefinition = viewDefinition;
+            
+            RecreateView();
+        }
+
+        private void RecreateView()
+        {
+            IObject effectiveForm = null;
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
 
-            if (_viewDefinition.Mode == ViewDefinitionMode.Default)
+            // Checks, if there is an overriding form 
+            if (OverridingViewDefinition != null)
             {
-                effectiveForm = viewLogic.GetDetailForm(detailElement, detailElement.GetUriExtentOf(), _viewDefinition.Mode);
-            }
-            else if (_viewDefinition.Mode == ViewDefinitionMode.Specific)
-            {
-                effectiveForm = _viewDefinition.Element;
+                if (OverridingViewDefinition.Mode == ViewDefinitionMode.Specific)
+                {
+                    effectiveForm = OverridingViewDefinition.Element;
+                }
+                else
+                {
+                    effectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), OverridingViewDefinition.Mode);
+                }
             }
 
-            // Clones the EffectiveForm
+            // If not, take the standard procedure
+            if (effectiveForm == null)
+            {
+                if (_requestedViewDefinition.Mode == ViewDefinitionMode.Specific)
+                {
+                    effectiveForm = _requestedViewDefinition.Element;
+                }
+                else
+                {
+                    effectiveForm =
+                        viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(),
+                            _requestedViewDefinition.Mode);
+                }
+            }
+
+            // Clones the EffectiveForm, so modification are possible afterwards by plugins without changing
+            // the original form
             effectiveForm = ObjectCopier.Copy(new MofFactory(effectiveForm), effectiveForm);
 
             if (effectiveForm != null)
             {
                 var control = new DetailFormControl {NavigationHost = this};
 
-                control.SetContent(detailElement, effectiveForm, container);
+                control.SetContent(DetailElement, effectiveForm, ContainerCollection);
                 control.UpdateView();
                 control.ElementSaved += (x, y) =>
                 {

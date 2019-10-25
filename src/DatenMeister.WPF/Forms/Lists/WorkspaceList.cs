@@ -5,9 +5,11 @@ using System.Windows.Documents;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -38,13 +40,24 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            ViewDefinition view;
+            ViewDefinition view = null;
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
 
-            if (OverridingForm != null)
+            if (OverridingViewDefinition?.Mode == ViewDefinitionMode.Specific)
             {
-                view = new ViewDefinition(OverridingForm);
+                view = OverridingViewDefinition;
+                
+                // Checks, if the given form is correct
+                if (!ClassifierMethods.IsSpecializedClassifierOf(
+                    (OverridingViewDefinition.Element as IElement)?.getMetaClass(), 
+                    formAndFields.__ExtentForm))
+                {
+                    MessageBox.Show("Overriding form is not of type ExtentForm.");
+                    view = null;
+                }
             }
-            else
+
+            if (view == null)
             {
                 var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
                 if (selectedItemMetaClass != null

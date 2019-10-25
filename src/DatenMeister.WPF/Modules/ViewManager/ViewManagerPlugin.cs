@@ -27,7 +27,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
         /// <inheritdoc />
         public void Start(PluginLoadingPosition position)
         {
-            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ViewManagerViewExtension());
+            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new FormManagerViewExtension());
 
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),

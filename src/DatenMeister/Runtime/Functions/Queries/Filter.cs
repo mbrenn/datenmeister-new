@@ -103,16 +103,44 @@ namespace DatenMeister.Runtime.Functions.Queries
                 new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
 
         /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively.
+        /// The elements of the collection themselves will also be returned
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <returns>A reflective collection, containing all items</returns>
+        public static IReflectiveSequence GetAllDescendantsIncludingThemselves(
+            this IReflectiveCollection collection)
+        {
+            return new TemporaryReflectiveSequence(
+                collection.AsEnumerable().Union(
+                    AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList()));
+            
+        }
+
+        /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
-        /// <param name="byFollowingProperties">Columns that shall be followed. This prevents the following of properties</param>
+        /// <param name="byFollowingProperties">Properties that shall be followed. This prevents the following of properties</param>
         /// <returns>A reflective collection, containing all items</returns>
         public static IReflectiveSequence GetAllDescendants(
             this IReflectiveCollection collection,
             IEnumerable<string> byFollowingProperties)
             =>
                 new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection, byFollowingProperties).Cast<object>().ToList());
+
+        /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="byFollowingProperty">Property that shall be followed. This prevents the following of properties</param>
+        /// <returns>A reflective collection, containing all items</returns>
+        public static IReflectiveSequence GetAllDescendants(
+            this IReflectiveCollection collection,
+            string byFollowingProperty)
+            =>
+                new TemporaryReflectiveSequence(AllDescendentsQuery
+                    .GetDescendents(collection, new[] {byFollowingProperty}).Cast<object>().ToList());
 
         /// <summary>
         /// Groups all properties by performing an aggregation

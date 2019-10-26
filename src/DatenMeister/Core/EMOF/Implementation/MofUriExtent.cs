@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable 
+
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -55,7 +57,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, ChangeEventManager changeEventManager = null) :
+        public MofUriExtent(IProvider provider, ChangeEventManager? changeEventManager = null) :
             base(provider, changeEventManager)
         {
             _navigator = new ExtentUrlNavigator<MofElement>(this);
@@ -68,7 +70,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, string uri, ChangeEventManager changeEventManager = null) :
+        public MofUriExtent(IProvider provider, string uri, ChangeEventManager? changeEventManager = null) :
             this(provider, changeEventManager)
         {
             UriOfExtent = uri;
@@ -121,7 +123,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
             var result = ResolveInternal(uri, resolveType);
             if (result == null && traceFailing)
@@ -132,7 +134,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             return result;
         }
 
-        private IElement ResolveInternal(string uri, ResolveType resolveType)
+        private IElement? ResolveInternal(string uri, ResolveType resolveType)
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
             {
@@ -203,18 +205,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="workspace">Workspace whose meta workspaces were queried</param>
         /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
         /// <returns>Found element or null, if not found</returns>
-        private IElement ResolveByMetaWorkspaces(
+        private IElement? ResolveByMetaWorkspaces(
             string uri,
-            Runtime.Workspaces.Workspace workspace,
-            HashSet<Runtime.Workspaces.Workspace> alreadyVisited = null)
+            Runtime.Workspaces.Workspace? workspace,
+            HashSet<Runtime.Workspaces.Workspace>? alreadyVisited = null)
         {
             alreadyVisited ??= new HashSet<Runtime.Workspaces.Workspace>();
-            if (alreadyVisited.Contains(workspace))
+            if (workspace != null && alreadyVisited.Contains(workspace))
             {
                 return null;
             }
 
-            alreadyVisited.Add(workspace);
+            if (workspace != null)
+            {
+                alreadyVisited.Add(workspace);
+            }
 
             // If still not found, look into the meta workspaces. Nevertheless, no recursion
             var metaWorkspaces = workspace?.MetaWorkspaces;

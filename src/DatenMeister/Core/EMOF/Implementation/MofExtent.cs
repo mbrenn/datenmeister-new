@@ -432,16 +432,16 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                     return result.ProviderObject;
                 }
-                else
-                {
-                    // It is a reference
-                    var reference = new UriReference
-                    {
-                        Uri = ((MofUriExtent) asMofObject.Extent).uri(asMofObject as IElement)
-                    };
 
-                    return reference;
-                }
+                
+                // It is a reference
+                var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type MofElement");
+                var reference = new UriReference
+                {
+                    Uri = ((MofUriExtent) asMofObject.Extent).uri(asElement)
+                };
+
+                return reference;
             }
 
             if (DotNetHelper.IsOfEnumeration(value))
@@ -511,6 +511,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             throw new NotImplementedException("Type of ${value.GetType()} is not known");
         }
 
+        /// <summary>
+        /// Gets all the properties that are set in the meta information of the extent
+        /// </summary>
+        /// <returns>Enumeration of strings</returns>
         public IEnumerable<string> getPropertiesBeingSet()
         {
             

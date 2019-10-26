@@ -18,14 +18,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="traceFailing">True, if a trace event shall be thrown, if
         /// the resolving did not succeed</param>
         /// <returns>The found element or null, if no element was found</returns>
-        IElement Resolve(string uri, ResolveType resolveType, bool traceFailing = true);
+        IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true);
 
         /// <summary>
         /// Resolves a certain element by id
         /// </summary>
         /// <param name="id">Path to be queried</param>
         /// <returns>The found element for the id</returns>
-        IElement ResolveById(string id);
+        IElement? ResolveById(string id);
     }
 
     [Flags]

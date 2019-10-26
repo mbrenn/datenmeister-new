@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -20,7 +22,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the Mof Extent being connected to the factory
         /// </summary>
-        public MofExtent Extent { get; }
+        public MofExtent? Extent { get; }
 
         /// <summary>
         /// Initializes a new instance of the Factory
@@ -102,7 +104,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     Extent?.AddMetaExtent(extentAsMofUriExtent);
                 }
 
-                uriMetaClass = ((MofUriExtent) elementAsMetaClass?.Extent)?.uri(metaClass);
+                uriMetaClass = (elementAsMetaClass?.Extent as MofUriExtent)?.uri(metaClass) ?? string.Empty;
             }
 
             if (Extent == null)
@@ -125,11 +127,20 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be converted</param>
         /// <param name="id">Id of the element that shall be set</param>
         /// <returns>The created .Net object</returns>
-        public IObject createFrom(object value, string id = null)
+        public IObject createFrom(object value, string id = "")
         {
-            var result = (IProviderObject) Extent.ConvertForSetting(value);
+            if (Extent == null)
+            {
+                throw new InvalidOperationException("Extent must set to convert a .Net Type value");
+            }
 
-            if (result != null && !string.IsNullOrEmpty(id))
+            var result = Extent.ConvertForSetting(value) as IProviderObject;
+            if (result == null)
+            {
+                throw new InvalidOperationException("Object could not be converted to an I");
+            }
+
+            if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id;
             }

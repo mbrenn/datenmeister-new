@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Core.EMOF.Interface.Reflection
+﻿#nullable enable 
+
+namespace DatenMeister.Core.EMOF.Interface.Reflection
 {
     /// <summary>
     ///     Implements the interface according to MOF Core Specificaton 2.5, clause 9.4
@@ -7,7 +9,7 @@
     {
         bool equals(object other);
 
-        object get(string property);
+        object? get(string property);
 
         void set(string property, object value);
 

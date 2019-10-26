@@ -1,3 +1,5 @@
+#nullable enable 
+
 using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
@@ -23,7 +25,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool equals(object other)
             => MofObject.AreEqual(this, other as IObject);
 
-        public object get(string property) => null;
+        public object? get(string property) => null;
 
         public void set(string property, object value)
         {
@@ -37,11 +39,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             throw new NotImplementedException("This is just a shadow object which cannot store data");
         }
 
-        public IElement metaclass => getMetaClass();
+        public IElement? metaclass => getMetaClass();
 
-        public IElement getMetaClass() => null;
+        public IElement? getMetaClass() => null;
 
-        public IElement container() => null;
+        public IElement? container() => null;
 
         public override string ToString()
             => $"Shadow: {Uri}";

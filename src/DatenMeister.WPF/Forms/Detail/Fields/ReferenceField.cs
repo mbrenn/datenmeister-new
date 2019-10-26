@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -20,8 +22,30 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
     /// </summary>
     public class ReferenceField : IDetailField
     {
+        /// <summary>
+        /// Stores the name of the field
+        /// </summary>
         private string _name;
+        
+        /// <summary>
+        /// Stores the name of the property that is used
+        /// </summary>
+        private string _fieldName;
+        
+        /// <summary>
+        /// Defines the form control in which the element is hosted
+        /// </summary>
+        private DetailFormControl _detailFormControl;
+        
+        /// <summary>
+        /// The control element 
+        /// </summary>
         private LocateElementControl _control;
+        
+        /// <summary>
+        /// The value that is modified
+        /// </summary>
+        private IObject _value;
 
         public UIElement CreateElement(
             IObject value,
@@ -31,6 +55,9 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         {
             var isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
+            _fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
+            _detailFormControl = detailForm;
+            _value = value;
 
             // Checks, whether the reference shall be included as an inline selection
             if (isInline)
@@ -97,38 +124,26 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             {
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)},
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}
+                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)}, // Text field
+                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}, // Select button
+                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}, // Remove button
                 }
             };
 
-            var fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
-            var foundItem = value.GetOrDefault(fieldName) as IElement;
+            
+            var foundItem = value.GetOrDefault(_fieldName) as IElement;
 
             var itemText = new TextBlock
             {
-                VerticalAlignment = VerticalAlignment.Center,
-                TextDecorations = TextDecorations.Underline
+                VerticalAlignment = VerticalAlignment.Center
             };
 
             UpdateTextOfTextBlock(foundItem, itemText);
-
-            var openButton = new Button {Content = "Open"};
-            itemText.MouseDown += (sender, args) =>
+            
+            if (foundItem != null)
             {
-                if (!(value.GetOrDefault(fieldName) is IElement itemToOpen))
-                {
-                    MessageBox.Show("No item selected");
-                }
-                else
-                {
-                    NavigatorForItems.NavigateToElementDetailView(
-                        detailForm.NavigationHost,
-                        itemToOpen);
-                }
-            };
+                
+            }
 
             var selectButton = new Button {Content = "Select"};
             selectButton.Click += (sender, args) =>
@@ -140,20 +155,18 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     (value as IHasExtent)?.Extent);
                 if (selectedItem != null)
                 {
-                    value.set(fieldName, selectedItem);
+                    value.set(_fieldName, selectedItem);
                     UpdateTextOfTextBlock(selectedItem, itemText);
                 }
             };
 
             var removeButton = new Button {Content = "Remove"};
-            removeButton.Click += (sender, args) => { value.unset(fieldName); };
+            removeButton.Click += (sender, args) => { value.unset(_fieldName); };
 
             // Adds the ui elements
-            Grid.SetColumn(openButton, 1);
-            Grid.SetColumn(selectButton, 2);
+            Grid.SetColumn(selectButton, 1);
             Grid.SetColumn(removeButton, 2);
             panel.Children.Add(itemText);
-            panel.Children.Add(openButton);
             panel.Children.Add(selectButton);
             panel.Children.Add(removeButton);
 
@@ -170,17 +183,41 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             }
         }
 
-        private static void UpdateTextOfTextBlock(IObject foundItem, TextBlock itemText)
+        /// <summary>
+        /// Updates the text of the text block. 
+        /// </summary>
+        /// <param name="value">The item which is used to set the textfield</param>
+        /// <param name="textBlock">The textblock which shall be followed</param>
+        /// <returns>true, if an item was given</returns>
+        private bool UpdateTextOfTextBlock(IObject value, TextBlock textBlock)
         {
-            if (foundItem == null)
+            if (value == null)
             {
-                itemText.Text = "No item";
-                itemText.FontStyle = FontStyles.Italic;
+                textBlock.Text = "No item";
+                textBlock.FontStyle = FontStyles.Italic;
+                
+                return false;
             }
             else
             {
-                itemText.Text = foundItem.ToString();
-                itemText.FontStyle = new FontStyle();
+                textBlock.Text = value.ToString();
+                textBlock.TextDecorations = TextDecorations.Underline;
+                textBlock.MouseDown += TextBlockOnMouseDown; 
+                return true;
+            }
+        }
+
+        private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!(_value.GetOrDefault(_fieldName) is IElement itemToOpen))
+            {
+                MessageBox.Show("No item selected");
+            }
+            else
+            {
+                NavigatorForItems.NavigateToElementDetailView(
+                    _detailFormControl.NavigationHost,
+                    itemToOpen);
             }
         }
     }

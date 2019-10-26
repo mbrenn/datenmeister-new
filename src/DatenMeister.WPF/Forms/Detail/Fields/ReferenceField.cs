@@ -92,74 +92,73 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 fieldFlags.CanBeFocused = true;
                 return _control;
             }
-            else
+
+            var panel = new Grid
             {
-                var panel = new Grid
+                ColumnDefinitions =
                 {
-                    ColumnDefinitions =
-                    {
-                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)},
-                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
-                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
-                        new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}
-                    }
-                };
+                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)},
+                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
+                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)},
+                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}
+                }
+            };
 
-                var fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
-                var foundItem = value.GetOrDefault(fieldName) as IElement;
+            var fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
+            var foundItem = value.GetOrDefault(fieldName) as IElement;
 
-                var itemText = new TextBlock
+            var itemText = new TextBlock
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                TextDecorations = TextDecorations.Underline
+            };
+
+            UpdateTextOfTextBlock(foundItem, itemText);
+
+            var openButton = new Button {Content = "Open"};
+            itemText.MouseDown += (sender, args) =>
+            {
+                if (!(value.GetOrDefault(fieldName) is IElement itemToOpen))
                 {
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-
-                UpdateTextOfTextBlock(foundItem, itemText);
-
-                var openButton = new Button {Content = "Open"};
-                openButton.Click += (sender, args) =>
+                    MessageBox.Show("No item selected");
+                }
+                else
                 {
-                    if (!(value.GetOrDefault(fieldName) is IElement itemToOpen))
-                    {
-                        MessageBox.Show("No item selected");
-                    }
-                    else
-                    {
-                        NavigatorForItems.NavigateToElementDetailView(
-                            detailForm.NavigationHost,
-                            itemToOpen);
-                    }
-                };
-
-                var selectButton = new Button {Content = "Select"};
-                selectButton.Click += (sender, args) =>
-                {
-                    // TODO: Select the one, of the currently referenced field
-                    var selectedItem = NavigatorForDialogs.Locate(
+                    NavigatorForItems.NavigateToElementDetailView(
                         detailForm.NavigationHost,
-                        null /* workspace */,
-                        (value as IHasExtent)?.Extent);
-                    if (selectedItem != null)
-                    {
-                        value.set(fieldName, selectedItem);
-                        UpdateTextOfTextBlock(selectedItem, itemText);
-                    }
-                };
+                        itemToOpen);
+                }
+            };
 
-                var removeButton = new Button {Content = "Remove"};
-                removeButton.Click += (sender, args) => { value.unset(fieldName); };
+            var selectButton = new Button {Content = "Select"};
+            selectButton.Click += (sender, args) =>
+            {
+                // TODO: Select the one, of the currently referenced field
+                var selectedItem = NavigatorForDialogs.Locate(
+                    detailForm.NavigationHost,
+                    null /* workspace */,
+                    (value as IHasExtent)?.Extent);
+                if (selectedItem != null)
+                {
+                    value.set(fieldName, selectedItem);
+                    UpdateTextOfTextBlock(selectedItem, itemText);
+                }
+            };
 
-                // Adds the ui elements
-                Grid.SetColumn(openButton, 1);
-                Grid.SetColumn(selectButton, 2);
-                Grid.SetColumn(removeButton, 2);
-                panel.Children.Add(itemText);
-                panel.Children.Add(openButton);
-                panel.Children.Add(selectButton);
-                panel.Children.Add(removeButton);
+            var removeButton = new Button {Content = "Remove"};
+            removeButton.Click += (sender, args) => { value.unset(fieldName); };
 
-                fieldFlags.CanBeFocused = true;
-                return panel;
-            }
+            // Adds the ui elements
+            Grid.SetColumn(openButton, 1);
+            Grid.SetColumn(selectButton, 2);
+            Grid.SetColumn(removeButton, 2);
+            panel.Children.Add(itemText);
+            panel.Children.Add(openButton);
+            panel.Children.Add(selectButton);
+            panel.Children.Add(removeButton);
+
+            fieldFlags.CanBeFocused = true;
+            return panel;
         }
 
         public void CallSetAction(IObject element)

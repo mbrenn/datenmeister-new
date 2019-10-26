@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿#nullable enable
+
+using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -23,29 +25,24 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
     public class ReferenceField : IDetailField
     {
         /// <summary>
-        /// Stores the name of the field
+        /// Stores the name of the property of the field
         /// </summary>
-        private string _name;
-        
-        /// <summary>
-        /// Stores the name of the property that is used
-        /// </summary>
-        private string _fieldName;
+        private string? _name;
         
         /// <summary>
         /// Defines the form control in which the element is hosted
         /// </summary>
-        private DetailFormControl _detailFormControl;
+        private DetailFormControl? _detailFormControl;
         
         /// <summary>
         /// The control element 
         /// </summary>
-        private LocateElementControl _control;
+        private LocateElementControl? _control;
         
         /// <summary>
         /// The value that is modified
         /// </summary>
-        private IObject _value;
+        private IObject? _value;
 
         public UIElement CreateElement(
             IObject value,
@@ -53,11 +50,22 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
+            if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
+            
             var isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
-            _fieldName = fieldData.get(_FormAndFields._FieldData.name).ToString();
             _detailFormControl = detailForm;
             _value = value;
+
+            if (_name == null)
+            {
+                return new TextBlock
+                {
+                    Text = "Bad configuration: _name == null"
+                };
+            }
 
             // Checks, whether the reference shall be included as an inline selection
             if (isInline)
@@ -131,7 +139,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             };
 
             
-            var foundItem = value.GetOrDefault(_fieldName) as IElement;
+            var foundItem = value.GetOrDefault(_name) as IElement;
 
             var itemText = new TextBlock
             {
@@ -155,13 +163,13 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     (value as IHasExtent)?.Extent);
                 if (selectedItem != null)
                 {
-                    value.set(_fieldName, selectedItem);
+                    value.set(_name, selectedItem);
                     UpdateTextOfTextBlock(selectedItem, itemText);
                 }
             };
 
             var removeButton = new Button {Content = "Remove"};
-            removeButton.Click += (sender, args) => { value.unset(_fieldName); };
+            removeButton.Click += (sender, args) => { value.unset(_name); };
 
             // Adds the ui elements
             Grid.SetColumn(selectButton, 1);
@@ -176,6 +184,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
         public void CallSetAction(IObject element)
         {
+            if(_name == null) throw new InvalidOperationException("_name == null");
+            
             var selectedElement = _control?.SelectedElement;
             if (selectedElement != null)
             {
@@ -189,27 +199,26 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         /// <param name="value">The item which is used to set the textfield</param>
         /// <param name="textBlock">The textblock which shall be followed</param>
         /// <returns>true, if an item was given</returns>
-        private bool UpdateTextOfTextBlock(IObject value, TextBlock textBlock)
+        private void UpdateTextOfTextBlock(IObject? value, TextBlock textBlock)
         {
             if (value == null)
             {
                 textBlock.Text = "No item";
                 textBlock.FontStyle = FontStyles.Italic;
-                
-                return false;
+
+                return;
             }
-            else
-            {
-                textBlock.Text = value.ToString();
-                textBlock.TextDecorations = TextDecorations.Underline;
-                textBlock.MouseDown += TextBlockOnMouseDown; 
-                return true;
-            }
+
+            textBlock.Text = value.ToString();
+            textBlock.TextDecorations = TextDecorations.Underline;
+            textBlock.MouseDown += TextBlockOnMouseDown;
         }
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!(_value.GetOrDefault(_fieldName) is IElement itemToOpen))
+            if ( _detailFormControl == null ) throw new InvalidOperationException("_detailFormControl == null");
+            
+            if (!(_value.GetOrDefault(_name) is IElement itemToOpen))
             {
                 MessageBox.Show("No item selected");
             }

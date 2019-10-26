@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -32,7 +35,9 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 }
 
                 var inner = 0;
-                var valueAsEnumeration = (IEnumerable<object>) value;
+                if (!(value is IEnumerable<object> valueAsEnumeration))
+                    throw new InvalidOperationException("Not an enumeration");
+                
                 foreach (var innerValue in valueAsEnumeration)
                 {
                     contentBlock.RowDefinitions.Add(new RowDefinition());

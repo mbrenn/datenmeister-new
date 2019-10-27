@@ -41,15 +41,32 @@ namespace DatenMeister.WPF.Windows
         public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
             "MessageText", typeof(string), typeof(LocateItemDialog), new PropertyMetadata(default(string), OnMessageTextChanged));
 
+        public static readonly DependencyProperty SelectButtonTextProperty = DependencyProperty.Register(
+            "SelectButtonText", typeof(string), typeof(LocateItemDialog), new PropertyMetadata(default(string), OnSelectButtonTextChanged));
+
         public string MessageText
         {
             get => (string) GetValue(MessageTextProperty);
             set => SetValue(MessageTextProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the text of the Selection Button
+        /// </summary>
+        public string SelectButtonText
+        {
+            get => (string) GetValue(SelectButtonTextProperty);
+            set => SetValue(SelectButtonTextProperty, value);
+        }
+
         private static void OnMessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ((LocateItemDialog) d).txtTitle.Text = (string) e.NewValue;
+        }
+
+        private static void OnSelectButtonTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LocateItemDialog) d).SelectionButton.Content = (string) e.NewValue;
         }
 
         public LocateItemDialog()

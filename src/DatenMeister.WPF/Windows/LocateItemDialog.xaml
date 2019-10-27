@@ -17,7 +17,7 @@
         <controls:LocateElementControl x:Name="LocateElementControl" Grid.Row="1" />
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">    
             <Button Click="Cancel_Click">Cancel</Button>
-            <Button Click="Open_Click">Open</Button>
+            <Button Click="Open_Click" x:Name="SelectionButton">Open</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -81,6 +81,9 @@ namespace DatenMeister.WPF.Forms.Lists
             SetRootItem(Extent);
         }
 
+        /// <summary>
+        /// Stores the workspace logic
+        /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
@@ -206,6 +209,13 @@ namespace DatenMeister.WPF.Forms.Lists
 
             viewDefinition.ViewExtensions.Add(
                 new ExtentMenuButtonDefinition(
+                    "Save Extent",
+                    SaveExtent,
+                    null,
+                    NavigationCategories.Extents + ".Info"));
+
+            viewDefinition.ViewExtensions.Add(
+                new ExtentMenuButtonDefinition(
                     "Export as Xmi",
                     x => ExportAsXmi(),
                     null,
@@ -282,6 +292,14 @@ namespace DatenMeister.WPF.Forms.Lists
                         NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
                     window.Show();
                 }
+            }
+
+            void SaveExtent(IExtent extent)
+            {
+                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                extentManager.StoreExtent(extent);
+                MessageBox.Show("Extent saved");
+                
             }
         }
     }

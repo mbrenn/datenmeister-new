@@ -259,6 +259,8 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             var extentStorage = _map.CreateFor(_diScope, information.Configuration);
             extentStorage.StoreProvider(((MofUriExtent) information.Extent).Provider, information.Configuration);
+            
+            (extent as MofExtent)?.SignalUpdateOfContent(false);
         }
 
         /// <summary>

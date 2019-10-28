@@ -164,6 +164,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 TabViewExtensionsFunction = (form) => new List<ViewExtension>
                 {
                     new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
+                    new RowItemButtonDefinition("Save", SaveExtent),
                     new RowItemButtonDefinition("Delete", DeleteExtent)
                 }
             };
@@ -306,6 +307,18 @@ namespace DatenMeister.WPF.Forms.Lists
                         MessageBox.Show(exc.Message);
                     }
                 }
+            }
+
+            void SaveExtent(INavigationGuest navigationGuest, IObject item)
+            {
+                var uri = item.getOrDefault<string>(nameof(Extent.uri));
+                var storeExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, uri);
+                
+                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                extentManager.StoreExtent(storeExtent);
+
+                MessageBox.Show("Extent saved");
+                navigationGuest.UpdateView();
             }
         }
 

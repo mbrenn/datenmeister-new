@@ -11,6 +11,8 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         public string type { get; set; }
 
         public string extentType { get; set; }
+        
+        public bool isModified { get; set; }
 
         /// <summary>
         /// Gets the alternative uris of the extent

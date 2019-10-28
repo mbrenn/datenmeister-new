@@ -86,6 +86,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 AlternativeUris.Add(alternativeUri);
             }
+            
+            SignalUpdateOfContent();
         }
 
         /// <inheritdoc />

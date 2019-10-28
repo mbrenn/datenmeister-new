@@ -147,12 +147,10 @@ namespace DatenMeister.Runtime.ExtentStorage
             // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will
             if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace)
             {
-                {
-                    return (
-                        (IUriExtent) WorkspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
-                            loadedProviderInfo.UsedConfig.extentUri),
-                        true);
-                }
+                return (
+                    (IUriExtent) WorkspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
+                        loadedProviderInfo.UsedConfig.extentUri),
+                    true);
             }
 
             var loadedProvider = loadedProviderInfo.Provider;
@@ -166,7 +164,9 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException("Extent for configuration could not be loaded");
             }
 
-            return (new MofUriExtent(loadedProvider, configuration.extentUri), false);
+            var extent = new MofUriExtent(loadedProvider, configuration.extentUri);
+            extent.SignalUpdateOfContent(false);
+            return (extent, false);
         }
 
         /// <summary>

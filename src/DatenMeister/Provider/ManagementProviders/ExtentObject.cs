@@ -21,22 +21,27 @@ namespace DatenMeister.Provider.ManagementProviders
             AddMapping(
                 "uri",
                 e => e.contextURI(),
-                (e, v) => throw new InvalidOperationException("Uri cannot be set"));
+                (e, v) => throw new InvalidOperationException("uri cannot be set"));
 
             AddMapping(
                 "count",
                 e => e.elements().size(),
-                (e, v) => throw new InvalidOperationException("Count cannot be set"));
+                (e, v) => throw new InvalidOperationException("count cannot be set"));
 
             AddMapping(
                 "type",
                 e => (e as MofExtent)?.Provider.GetType().Name,
-                (e, v) => throw new InvalidOperationException("Count cannot be set"));
+                (e, v) => throw new InvalidOperationException("type cannot be set"));
 
             AddMapping(
                 "extentType",
                 e => (e as MofExtent)?.GetExtentType(),
                 (e, v) => (e as MofExtent)?.SetExtentType(v?.ToString()));
+
+            AddMapping(
+                "isModified",
+                e => (e as MofExtent)?.IsModified == true,
+                (e, v) => throw new InvalidOperationException("isModified cannot be set"));
 
             AddMapping(
                 "alternativeUris",

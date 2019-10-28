@@ -89,7 +89,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 var result = _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
 
-                _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+                UpdateContent();
                 return result;
             }
 
@@ -121,8 +121,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                     _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
                     valueAsObject.Extent = _extent;
 
-                    _extent?.ChangeEventManager?.SendChangeEvent(_extent);
                     _extent?.ChangeEventManager?.SendChangeEvent(valueAsObject);
+                    UpdateContent();
                     return true;
                 }
 
@@ -136,8 +136,9 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             _extent.Provider.AddElement((IProviderObject) _extent.ConvertForSetting(value), index);
-
-            _extent.ChangeEventManager?.SendChangeEvent(_extent);
+            
+            UpdateContent();
+            
             return true;
         }
 
@@ -149,7 +150,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void remove(int index)
         {
             remove(_extent.Provider.GetRootObjects().ElementAt(index));
-            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+            UpdateContent();
         }
 
         /// <inheritdoc />
@@ -164,9 +165,19 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = get(index);
             remove(index);
             set(index, value);
-            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+            
+            UpdateContent();
 
             return result;
+        }
+
+        /// <summary>
+        /// Updates the content
+        /// </summary>
+        protected void UpdateContent()
+        {
+            _extent.ChangeEventManager?.SendChangeEvent(_extent);
+            _extent.SignalUpdateOfContent();
         }
     }
 }

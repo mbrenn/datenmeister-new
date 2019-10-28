@@ -250,7 +250,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            _extent?.ChangeEventManager?.SendChangeEvent(this);
+            UpdateContent();
         }
 
         /// <summary>
@@ -318,6 +318,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void unset(string property)
         {
             ProviderObject.DeleteProperty(property);
+            
             _extent?.ChangeEventManager?.SendChangeEvent(this);
         }
 
@@ -333,6 +334,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             ReferencedExtent = extent ?? throw new ArgumentNullException(nameof(extent));
             return this;
+        }
+
+        internal void UpdateContent()
+        {
+            _extent?.ChangeEventManager?.SendChangeEvent(this);
+            _extent?.SignalUpdateOfContent();
         }
     }
 }

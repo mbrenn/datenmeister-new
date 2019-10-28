@@ -56,6 +56,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the change event manager for the objects within
         /// </summary>
         internal ChangeEventManager? ChangeEventManager { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the flag indicating whether the extent is modified
+        /// </summary>
+        public bool IsModified { get; private set; }
 
         /// <summary>
         /// Gets the meta object representing the meta object. Setting, querying a list or getting
@@ -136,7 +141,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     property,
                     nullObject.GetProperty(property));
             }
-
+            
             return MetaXmiElement.get(property);
         }
 
@@ -167,6 +172,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 MetaXmiElement.set(property, value);
             }
+            
+            SignalUpdateOfContent();
         }
 
         /// <inheritdoc />
@@ -202,6 +209,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 MetaXmiElement.unset(property);
             }
+            
+            SignalUpdateOfContent();
         }
 
         /// <inheritdoc />
@@ -533,5 +542,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
         
         public IExtent Extent => this;
+        
+        
+        /// <summary>
+        /// Indicates that the content of the extent is updated 
+        /// </summary>
+        /// <param name="isModified">true, if the modification flag shall be set to true</param>
+        internal void SignalUpdateOfContent(bool isModified = true)
+        {
+            IsModified = isModified;
+        }
     }
 }

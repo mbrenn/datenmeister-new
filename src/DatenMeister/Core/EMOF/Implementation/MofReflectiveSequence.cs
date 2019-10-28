@@ -75,7 +75,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            UpdateContent();
 
             return result;
         }
@@ -105,7 +105,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             MofObject.ProviderObject.EmptyListForProperty(_property);
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            UpdateContent();
         }
 
         /// <inheritdoc />
@@ -122,7 +122,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 result = MofObject.ProviderObject.RemoveFromProperty(_property, value);
             }
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            UpdateContent();
             return result;
         }
 
@@ -136,7 +136,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
             MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded, index);
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            UpdateContent();
         }
 
         /// <inheritdoc />
@@ -153,7 +153,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 _property,
                 ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property)).ElementAt(index));
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            UpdateContent();
         }
 
         /// <inheritdoc />
@@ -171,5 +171,14 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public IExtent Extent => MofObject.Extent ?? MofObject.ReferencedExtent;
+
+        /// <summary>
+        /// Updates the content
+        /// </summary>
+        public void UpdateContent()
+        {
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            MofObject.Extent?.SignalUpdateOfContent();
+        }
     }
 }

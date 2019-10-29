@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +28,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// </summary>
     public partial class ItemsTreeView : UserControl, INavigationGuest
     {
-        private IObject _itemsSource;
+        private IObject? _itemsSource;
 
         private readonly HashSet<object> _alreadyVisited = new HashSet<object>();
 
@@ -92,12 +94,12 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the metaclasses that will be used as filtering
         /// </summary>
-        private IEnumerable<IElement> _filterMetaClasses;
+        private IEnumerable<IElement>? _filterMetaClasses;
 
         /// <summary>
         /// Gets or sets the metaclasses that will be used as filtering
         /// </summary>
-        public IEnumerable<IElement> FilterMetaClasses
+        public IEnumerable<IElement>? FilterMetaClasses
         {
             get => _filterMetaClasses;
             set
@@ -123,19 +125,19 @@ namespace DatenMeister.WPF.Forms.Base
         /// Stores the previously selected item when the tree is rebuilt.
         /// This allows the refocussing to the item
         /// </summary>
-        private object _previouslySelectedItem;
+        private object? _previouslySelectedItem;
 
         /// <summary>
         /// Stores the item that shall be selected, after the items have been created
         /// </summary>
-        private TreeViewItem _newSelectedItem;
+        private TreeViewItem? _newSelectedItem;
 
         public ItemsTreeView()
         {
             InitializeComponent();
         }
 
-        public IObject ItemsSource
+        public IObject? ItemsSource
         {
             get => _itemsSource;
             set
@@ -145,7 +147,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public IObject SelectedElement
+        public IObject? SelectedElement
         {
             get
             {
@@ -158,7 +160,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
             set
             {
-                if (_mappingItems.TryGetValue(value, out var treeviewItem))
+                if ( value != null && _mappingItems.TryGetValue(value, out var treeviewItem))
                 {
                     treeviewItem.IsSelected = true;
                 }
@@ -215,7 +217,9 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _alreadyVisited.Clear();
                 _mappingItems.Clear();
-                model.Add(CreateTreeViewItem(ItemsSource, true));
+                var found = CreateTreeViewItem(ItemsSource, true);
+                if ( found != null)
+                    model.Add(found);
 
                 container.ItemsSource = model;
             }
@@ -236,7 +240,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="item">Item to be converted to a treeview</param>
         /// <param name="isRoot">true, if this is the root element. This means that the element is expanded. </param>
         /// <returns>The created element</returns>
-        private TreeViewItem CreateTreeViewItem(object item, bool isRoot = false)
+        private TreeViewItem? CreateTreeViewItem(object item, bool isRoot = false)
         {
             if (_alreadyVisited.Contains(item))
             {
@@ -297,7 +301,9 @@ namespace DatenMeister.WPF.Forms.Base
                 var n = 0;
                 foreach (var element in extent.elements())
                 {
-                    childModels.Add(CreateTreeViewItem(element));
+                    var created = CreateTreeViewItem(element);
+                    if (created != null)
+                        childModels.Add(created);
                     n++;
                     if (n >= MaxItemsPerLevel) break;
                 }
@@ -377,12 +383,12 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// This event is called, when the user double clicks on an item
         /// </summary>
-        public event EventHandler<ItemEventArgs> ItemChosen;
+        public event EventHandler<ItemEventArgs>? ItemChosen;
 
         /// <summary>
         /// This event is called, when the user double clicks on an item
         /// </summary>
-        public event EventHandler<ItemEventArgs> ItemSelected;
+        public event EventHandler<ItemEventArgs>? ItemSelected;
 
         private void treeView_MouseDoubleClicked(object sender, MouseButtonEventArgs e)
         {
@@ -476,7 +482,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost? NavigationHost { get; set; }
 
         public IEnumerable<ViewExtension> GetViewExtensions()
             => Array.Empty<ViewExtension>();

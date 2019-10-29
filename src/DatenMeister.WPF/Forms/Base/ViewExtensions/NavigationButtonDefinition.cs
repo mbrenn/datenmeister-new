@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 
 namespace DatenMeister.WPF.Forms.Base.ViewExtensions
@@ -12,6 +14,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Initializes a new instance of the RibbonButtonDefinition class
         /// </summary>
         /// <param name="name">Name of the button being shown</param>
+        /// <param name="navigationScope">Defines the scope for the navigation</param>
         /// <param name="imageName">Name of the image to be shown</param>
         /// <param name="categoryName">Name of the category being used</param>
         /// <param name="priority">Index being used to provide the correct sort order.
@@ -52,6 +55,11 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Gets the name of the image
         /// </summary>
         public string ImageName { get; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating whether the navigation button is enabled 
+        /// </summary>
+        public bool IsEnabled { get; set; } = true;
 
         /// <summary>
         /// Gets the name of category

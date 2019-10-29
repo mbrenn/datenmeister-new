@@ -33,6 +33,28 @@ namespace DatenMeister.WPF.Forms.Base
         public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
             "ShowRoot", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(default(bool)));
 
+        public static readonly DependencyProperty ShowMetaClassesProperty = DependencyProperty.Register(
+            "ShowMetaClasses", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(default(bool), OnShowMetaClassesChange));
+
+        private static void OnShowMetaClassesChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is ItemsTreeView itemsTreeView))
+            {
+                throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
+            }
+            
+            itemsTreeView.UpdateView();
+            itemsTreeView._cacheShowMetaClasses = (bool) e.NewValue;
+        }
+
+        public bool ShowMetaClasses
+        {
+            get => (bool) GetValue(ShowMetaClassesProperty);
+            set => SetValue(ShowMetaClassesProperty, value);
+        }
+
+        private bool _cacheShowMetaClasses;
+
         /// <summary>
         /// Gets a list of the viewextension for the tree view
         /// </summary>
@@ -246,9 +268,19 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Filtering agrees to the item, so it will be added
+            var itemHeader = item is IExtent ? "Root" : item.ToString();
+            if (_cacheShowMetaClasses)
+            {
+                if (item is IElement element)
+                {
+                    var metaClass = element.getMetaClass();
+                    itemHeader += " [" + (metaClass != null ? metaClass.ToString() : "Unclassified") + "]";
+                }
+            }
+            
             var treeViewItem = new TreeViewItem
             {
-                Header = item is IExtent ? "Root" : item.ToString(),
+                Header = itemHeader,
                 Tag = item,
                 IsExpanded = isRoot
             };

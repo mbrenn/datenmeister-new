@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +63,25 @@ namespace DatenMeister.WPF.Controls
         {
             get => (bool) GetValue(ShowWorkspaceSelectionProperty);
             set => SetValue(ShowWorkspaceSelectionProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowMetaClassesProperty = DependencyProperty.Register(
+            "ShowMetaClasses", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool), OnShowMetaClassesChange));
+
+        private static void OnShowMetaClassesChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is LocateElementControl locateElementControl))
+            {
+                throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
+            }
+            
+            locateElementControl.items.ShowMetaClasses = (bool) e.NewValue;
+        }
+
+        public bool ShowMetaClasses
+        {
+            get => (bool) GetValue(ShowMetaClassesProperty);
+            set => SetValue(ShowMetaClassesProperty, value);
         }
 
         private static void OnShowWorkSpaceSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -5,7 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:base="clr-namespace:DatenMeister.WPF.Forms.Base"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Unloaded="ItemExplorerControl_OnUnloaded">
+             d:DesignHeight="450" d:DesignWidth="800" Unloaded="ItemExplorerControl_OnUnloaded"
+             xmlns:dmforms="clr-namespace:DatenMeister.WPF.Forms.Base">
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="dmforms:ViewButton">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+            <Setter Property="Width" Value="80"></Setter>
+        </Style>
+    </UserControl.Resources>
     <DockPanel>
         <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>

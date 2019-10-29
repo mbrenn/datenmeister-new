@@ -133,11 +133,10 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 ColumnDefinitions =
                 {
                     new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)}, // Text field
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}, // Select button
-                    new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Auto)}, // Remove button
+                    new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Select button
+                    new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Remove button
                 }
             };
-
             
             var foundItem = value.GetOrDefault(_name) as IElement;
 
@@ -147,13 +146,12 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             };
 
             UpdateTextOfTextBlock(foundItem, itemText);
-            
-            if (foundItem != null)
-            {
-                
-            }
 
-            var selectButton = new Button {Content = "Select"};
+            var selectButton = new Button
+            {
+                Content = "Select",
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
             selectButton.Click += (sender, args) =>
             {
                 // TODO: Select the one, of the currently referenced field
@@ -168,7 +166,12 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 }
             };
 
-            var removeButton = new Button {Content = "Remove"};
+            var removeButton = new Button
+            {
+                Content = "Remove",
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+            
             removeButton.Click += (sender, args) => { value.unset(_name); };
 
             // Adds the ui elements
@@ -211,13 +214,14 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
             textBlock.Text = value.ToString();
             textBlock.TextDecorations = TextDecorations.Underline;
+            textBlock.Cursor = Cursors.Hand;
             textBlock.MouseDown += TextBlockOnMouseDown;
         }
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if ( _detailFormControl == null ) throw new InvalidOperationException("_detailFormControl == null");
-            
+            if (_detailFormControl == null) throw new InvalidOperationException("_detailFormControl == null");
+
             if (!(_value.GetOrDefault(_name) is IElement itemToOpen))
             {
                 MessageBox.Show("No item selected");

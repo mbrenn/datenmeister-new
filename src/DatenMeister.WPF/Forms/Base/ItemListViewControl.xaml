@@ -9,8 +9,12 @@
              Unloaded="ItemListViewControl_OnUnloaded">
     <UserControl.Resources>
         <DataTemplate x:Key="TemplateColumnButton">
-            <Button Click="ButtonBase_OnClick" Loaded="RowButton_OnInitialized" VerticalAlignment="Top">Edit</Button>
+            <Button Click="ButtonBase_OnClick" Loaded="RowButton_OnInitialized" VerticalAlignment="Top" Padding="5,2,5,2">Edit</Button>
         </DataTemplate>
+        <Style x:Key="DataGridCellCentered" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5,2,5,2" />
+        </Style>
     </UserControl.Resources>
 
     <DockPanel>

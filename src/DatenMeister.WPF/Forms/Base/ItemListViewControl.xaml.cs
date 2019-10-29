@@ -352,12 +352,12 @@ namespace DatenMeister.WPF.Forms.Base
                 }
 
                 // Goes through the fast filters and filters the items
-                foreach (var fastfilter in GetFastFilters())
+                foreach (var fastFilter in GetFastFilters())
                 {
-                    var converter = FastViewFilterConverter.Convert(fastfilter);
+                    var converter = FastViewFilterConverter.Convert(fastFilter);
                     if (converter == null)
                     {
-                        Logger.Warn("FastViewFilter is not known: " + fastfilter);
+                        Logger.Warn("FastViewFilter is not known: " + fastFilter);
                         continue;
                     }
 
@@ -483,7 +483,8 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     Header = title,
                     Binding = new Binding(name),
-                    IsReadOnly = isReadOnly
+                    IsReadOnly = isReadOnly,
+                    ElementStyle = (Style) TryFindResource("DataGridCellCentered")
                 };
 
                 DataGrid.Columns.Add(dataColumn);

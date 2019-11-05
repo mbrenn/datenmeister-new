@@ -199,7 +199,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 case UriReference valueAsUriReference:
                 {
                     var extentResolver = container.Extent as IUriResolver ?? container.ReferencedExtent as IUriResolver;
-                    return extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default);
+                    var resolved = extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default);
+                    return resolved ?? new MofObjectShadow(valueAsUriReference.Uri);
                 }
                 default:
                     throw new NotImplementedException($"Type of {value.GetType()} currently not supported.");

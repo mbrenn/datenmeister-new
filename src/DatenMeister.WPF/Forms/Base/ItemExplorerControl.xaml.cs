@@ -526,8 +526,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (noItemsWithMetaClass)
             {
-                var x = collection.WhenMetaClassIs(null);
-                return x;
+                return collection.WhenMetaClassIs(null);
             }
 
             return collection;

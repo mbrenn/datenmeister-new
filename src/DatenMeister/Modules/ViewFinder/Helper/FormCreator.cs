@@ -146,7 +146,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
         /// <summary>
         /// Creates an extent form containing the subforms
-        /// </summary>
+        /// </summary>    
         /// <returns>The created extent</returns>
         public IElement CreateExtentForm(params IElement[] subForms)
         {
@@ -197,9 +197,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 .Where(x =>
                 {
                     var element = x as IElement;
-                    return element != null && element.getMetaClass() == null
-                           || x is MofObjectShadow objectShadow && objectShadow.getMetaClass() == null
-                           || element == null;
+                    var metaClass = element?.getMetaClass();
+                    return metaClass == null;
                 })
                 .ToList();
 
@@ -208,9 +207,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 .GroupBy(x =>
                 {
                     var metaClass = x.getMetaClass();
-                    return metaClass is MofObjectShadow ? null : metaClass;
+                    return metaClass;
                 })
-                .Where(x => x.Key != null);
+                .Where(x => x.Key != null)
+                .ToList();
 
             if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
             {

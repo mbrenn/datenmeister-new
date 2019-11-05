@@ -162,7 +162,8 @@ namespace DatenMeister.WPF.Windows
             var button = new RibbonButton
             {
                 Label = name,
-                LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName)
+                LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName),
+                IsEnabled = definition.IsEnabled
             };
 
             var item = new RibbonHelperItem
@@ -224,6 +225,7 @@ namespace DatenMeister.WPF.Windows
 
                     foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
+                    foundTuple.Button.IsEnabled = viewExtension.IsEnabled;
                 }
                 else
                 {

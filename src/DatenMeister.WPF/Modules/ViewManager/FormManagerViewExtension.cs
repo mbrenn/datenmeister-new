@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ViewFinder.Helper;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
@@ -45,7 +39,6 @@ namespace DatenMeister.WPF.Modules.ViewManager
             var navigationHost = viewExtensionTargetInformation.NavigationHost;
             
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
-            var detailFormControl = navigationGuest as DetailFormControl;
             var detailFormWindow = navigationHost as DetailFormWindow;
 
             if (navigationHost is IApplicationWindow)
@@ -87,7 +80,6 @@ namespace DatenMeister.WPF.Modules.ViewManager
                     };
 
                     dlg.UpdateContent(itemExplorerControl.EffectiveForm);
-
                     dlg.ShowDialog();
                 },
                 "",
@@ -183,7 +175,10 @@ namespace DatenMeister.WPF.Modules.ViewManager
                 },
                 string.Empty,
                 NavigationCategories.Form + ".Definition"
-            );
+            )
+            {
+                IsEnabled = itemExplorerControl.OverridingViewDefinition?.Element != null
+            };
 
             yield return new ExtentMenuButtonDefinition(
                 "Clear default association",
@@ -211,7 +206,10 @@ namespace DatenMeister.WPF.Modules.ViewManager
                     }
                 },
                 string.Empty,
-                NavigationCategories.Form + ".Definition");
+                NavigationCategories.Form + ".Definition")
+            {
+                IsEnabled = itemExplorerControl.OverridingViewDefinition?.Element != null
+            };
 
             yield return new ExtentMenuButtonDefinition(
                 "Autogenerate form",

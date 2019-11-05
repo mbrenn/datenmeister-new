@@ -131,11 +131,15 @@ namespace DatenMeister.WPF.Forms.Lists
                 form = OverridingViewDefinition.Element as IElement;
                 if (form != null && isRootItem)
                 {
+                    var formMetaClass = form.getMetaClass();
+                    
                     if (!ClassifierMethods.IsSpecializedClassifierOf(
-                        form.getMetaClass(), 
+                        formMetaClass, 
                         formAndFields.__ExtentForm))
                     {
-                        MessageBox.Show("Overriding form is not of type ExtentForm. ");
+                        var formName = formMetaClass?.ToString() ?? "Unclassified";
+                        
+                        MessageBox.Show($"Overriding form is not of type ExtentForm, overriding form is of type {formName}");
                         form = null;
                     }
                 }

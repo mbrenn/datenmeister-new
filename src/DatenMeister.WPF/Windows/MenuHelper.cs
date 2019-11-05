@@ -112,7 +112,8 @@ namespace DatenMeister.WPF.Windows
 
             var button = new MenuItem
             {
-                Header = name
+                Header = name,
+                IsEnabled = definition.IsEnabled
             };
 
             var item = new MenuHelperItem

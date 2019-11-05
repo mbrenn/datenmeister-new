@@ -36,7 +36,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="txtTitle" FontSize="24"></TextBlock>
-        <controls:LocateElementControl x:Name="LocateElementControl" Grid.Row="1" />
+        <controls:LocateElementControl x:Name="LocateElementControl" Grid.Row="1"  ShowMetaClasses="true"/>
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">    
             <Button Click="Cancel_Click" Width="80">Cancel</Button>
             <Button Click="Open_Click" x:Name="SelectionButton" Width="80">Open</Button>

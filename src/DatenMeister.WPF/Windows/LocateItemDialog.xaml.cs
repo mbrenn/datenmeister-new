@@ -127,7 +127,9 @@ namespace DatenMeister.WPF.Windows
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
+            if (!_asToolBox)
+                DialogResult = false;
+
             Close();
         }
 

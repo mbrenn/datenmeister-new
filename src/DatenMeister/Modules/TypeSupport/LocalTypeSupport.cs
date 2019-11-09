@@ -71,6 +71,9 @@ namespace DatenMeister.Modules.TypeSupport
             {
                 case PluginLoadingPosition.AfterBootstrapping:
                     CreateInternalTypeExtent();
+                    
+                    var defaultTypeIntegrator = new DefaultTypeIntegrator(_workspaceLogic, _integrationSettings);
+                    defaultTypeIntegrator.CreateDefaultTypes();
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     // Creates the extent for the user types which is permanently stored on disk. The user is capable to create his own types
@@ -88,41 +91,6 @@ namespace DatenMeister.Modules.TypeSupport
             var typeWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
             extentTypes.SetExtentType("Uml.Classes");
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
-
-            // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
-
-            var primitiveTypes = new MofUriExtent(
-                new InMemoryProvider(),
-                WorkspaceNames.UriPrimitiveTypesExtent);
-            primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
-            primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
-
-            if (!_integrationSettings.PerformSlimIntegration)
-            {
-                var foundPackage =
-                    _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
-                _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
-
-                CopyMethods.CopyToElementsProperty(
-                    _workspaceLogic.GetUmlWorkspace()
-                        .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
-                        .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
-                    foundPackage,
-                    _UML._Packages._Package.packagedElement,
-                    CopyOptions.CopyId);
-
-                // Create the Primitive Type for the .Net-Type: DateTime
-                var internalUserExtent = GetInternalTypeExtent();
-                var factory = new MofFactory(internalUserExtent);
-                var package =
-                    _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
-                var umlData = _workspaceLogic.GetUmlData();
-
-                var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);
-                ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
-                dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
-                PackageMethods.AddObjectToPackage(package, dateTime);
-            }
         }
 
         /// <summary>
@@ -301,11 +269,9 @@ namespace DatenMeister.Modules.TypeSupport
         /// <returns>Extent containing the internal types which are rebuilt at each DatenMeister start-up</returns>
         public IUriExtent GetInternalTypeExtent()
         {
-            var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
-            var internalTypeExtent = GetInternalTypeExtent(workspace);
-            return internalTypeExtent;
+            return GetInternalTypeExtent(_workspaceLogic);
         }
-
+        
         /// <summary>
         /// Gets the extent containing the types being created by the user
         /// </summary>
@@ -329,6 +295,17 @@ namespace DatenMeister.Modules.TypeSupport
                 .OfType<IUriExtent>()
                 .Where(x => x.contextURI() != WorkspaceNames.UriInternalTypesExtent)
                 .ToList();
+        }
+
+        /// <summary>
+        /// Gets the extent containing the
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace logic being used</param>
+        /// <returns></returns>
+        public static IUriExtent GetInternalTypeExtent(IWorkspaceLogic workspaceLogic)
+        {
+            var workspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            return GetInternalTypeExtent(workspace);
         }
 
         /// <summary>

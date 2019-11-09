@@ -552,8 +552,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="saveText">Text which is shown on the save button. Default value is "Save"</param>
         public void AddDefaultButtons(string saveText = null)
         {
-            saveText = saveText ?? EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
-            saveText = saveText ?? "Save";
+            saveText ??= EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
+            saveText ??= "Save";
 
             if (AllowNewProperties)
             {

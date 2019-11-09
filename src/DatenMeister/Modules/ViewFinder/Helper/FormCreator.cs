@@ -139,7 +139,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
             }
 
-            AddToFormByMetaclass(createdForm, metaClass, creationMode);
+            if (!AddToFormByMetaclass(createdForm, metaClass, creationMode))
+            {
+                createdForm.set(_FormAndFields._DetailForm.allowNewProperties, true);
+            }
 
             return createdForm;
         }
@@ -375,6 +378,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 && itemAsAllProperties != null)
             {
                 AddToFormByProperties(form, item, creationMode, cache);
+                form.set(_FormAndFields._DetailForm.allowNewProperties, true);
             }
 
             // Third phase: Add metaclass element itself

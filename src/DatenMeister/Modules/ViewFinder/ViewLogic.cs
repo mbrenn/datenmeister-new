@@ -351,7 +351,9 @@ namespace DatenMeister.Modules.ViewFinder
 
             // Ok, now perform the creation...
             var formCreator = new FormCreator(this);
-            return formCreator.CreateExtentForm(extent, FormCreator.CreationMode.All);
+            return formCreator.CreateExtentForm(
+                extent, 
+                FormCreator.CreationMode.All | FormCreator.CreationMode.ForListForms);
         }
 
         /// <summary>

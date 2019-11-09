@@ -3,8 +3,11 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.DefaultTypes;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
@@ -13,12 +16,14 @@ namespace DatenMeister.Modules.TypeSupport
     public class DefaultTypeIntegrator
     {
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly LocalTypeSupport _localTypeSupport;
         private readonly IntegrationSettings _integrationSettings;
         private readonly PackageMethods _packageMethods;
 
-        public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, IntegrationSettings integrationSettings)
+        public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, LocalTypeSupport localTypeSupport, IntegrationSettings integrationSettings)
         {
             _workspaceLogic = workspaceLogic;
+            _localTypeSupport = localTypeSupport;
             _integrationSettings = integrationSettings;
             _packageMethods = new PackageMethods(_workspaceLogic);
         }
@@ -64,6 +69,9 @@ namespace DatenMeister.Modules.TypeSupport
                 ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
                 dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
                 PackageMethods.AddObjectToPackage(package, dateTime);
+                
+                // Create the class for the default types
+                _localTypeSupport.AddInternalType("Default", typeof(Package));
             }
         }
     }

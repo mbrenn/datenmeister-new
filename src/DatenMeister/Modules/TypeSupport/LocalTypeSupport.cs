@@ -72,7 +72,7 @@ namespace DatenMeister.Modules.TypeSupport
                 case PluginLoadingPosition.AfterBootstrapping:
                     CreateInternalTypeExtent();
                     
-                    var defaultTypeIntegrator = new DefaultTypeIntegrator(_workspaceLogic, _integrationSettings);
+                    var defaultTypeIntegrator = new DefaultTypeIntegrator(_workspaceLogic, this, _integrationSettings);
                     defaultTypeIntegrator.CreateDefaultTypes();
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:

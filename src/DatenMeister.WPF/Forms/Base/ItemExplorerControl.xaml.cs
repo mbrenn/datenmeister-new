@@ -180,7 +180,7 @@ namespace DatenMeister.WPF.Forms.Base
             yield return
                 new ExtentMenuButtonDefinition(
                     "Refresh",
-                    x => UpdateView(),
+                    x => RecreateViews(),
                     Icons.Refresh,
                     NavigationCategories.Form + ".View");
 

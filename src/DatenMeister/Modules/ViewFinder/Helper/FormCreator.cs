@@ -245,6 +245,14 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         (elements as IHasExtent)?.Extent,
                         groupedMetaclass,
                         ViewDefinitionMode.Default);
+
+                    if (creationMode.HasFlag(CreationMode.ByProperties))
+                    {
+                        foreach (var element in group)
+                        {
+                            AddToFormByProperties(form, element, creationMode, cache);
+                        }
+                    }
                 }
                 else
                 {

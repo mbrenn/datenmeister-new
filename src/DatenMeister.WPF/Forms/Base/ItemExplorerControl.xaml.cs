@@ -330,7 +330,6 @@ namespace DatenMeister.WPF.Forms.Base
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
             var usedViewExtensions = viewExtensions.ToList();
 
-
             UserControl createdUserControl = null;
             if (tabForm.getMetaClass().@equals(formAndFields.__DetailForm))
             {

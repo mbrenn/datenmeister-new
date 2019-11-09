@@ -134,46 +134,40 @@ namespace DatenMeister.Runtime.Copier
             copyOptions ??= CopyOptions.None;
             var noRecursion = copyOptions.NoRecursion;
 
-            if (value == null)
+            switch (value)
             {
-                return null;
-            }
-
-            if (value is IElement valueAsElement)
-            {
-                if (noRecursion)
-                {
+                case null:
+                case IElement _ when noRecursion:
                     return null;
-                }
-
-                var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
-                if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
+                
+                case MofObjectShadow asMofObjectShadow:
+                    return asMofObjectShadow;
+                
+                case IElement valueAsElement:
                 {
-                    // If element is not associated to an extent
-                    // Or is associated to the source extent (as it should be)
-                    // Or if all references shall be cloned
-                    // The element will be copied.
-                    return Copy(valueAsElement, copyOptions);
+                    var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
+                    if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
+                    {
+                        // If element is not associated to an extent
+                        // Or is associated to the source extent (as it should be)
+                        // Or if all references shall be cloned
+                        // The element will be copied.
+                        return Copy(valueAsElement, copyOptions);
+                    }
+                    else
+                    {
+                        // See above... Don't copy the elements which are references by another extent
+                        return value;
+                    }
                 }
-                else
-                {
-                    // See above... Don't copy the elements which are references by another extent
+                case IReflectiveCollection _ when noRecursion:
+                    return null;
+                case IReflectiveCollection valueAsCollection:
+                    return valueAsCollection
+                        .Select(innerValue => CopyValue(innerValue, containingElement, copyOptions));
+                default:
                     return value;
-                }
             }
-
-            if (value is IReflectiveCollection valueAsCollection)
-            {
-                if (noRecursion)
-                {
-                    return null;
-                }
-
-                return valueAsCollection
-                    .Select(innerValue => CopyValue(innerValue, containingElement, copyOptions));
-            }
-
-            return value;
         }
 
         /// <summary>

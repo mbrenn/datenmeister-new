@@ -9,7 +9,7 @@ namespace DatenMeister.Models.DefaultTypes
         /// <summary>
         /// Gets or sets the name of the packaged element
         /// </summary>
-        public string name { get; set; }
+        public string? name { get; set; }
         
         /// <summary>
         /// Gets or sets the packaged elements of the extent

@@ -244,6 +244,8 @@ namespace DatenMeister.WPF.Forms.Base
             Tabs.Clear();
             OnRecreateViews();
             NavigationHost.RebuildNavigation();
+
+            RebuildNavigationForTreeView();
         }
 
         /// <summary>
@@ -592,5 +594,53 @@ namespace DatenMeister.WPF.Forms.Base
         public IReflectiveCollection Collection => (RootItem as IExtent)?.elements();
 
         public IObject Item => SelectedPackage ?? Extent;
+        
+        
+        /// <summary>
+        /// Queries the plugins and asks for the navigation buttons for the treeview area 
+        /// </summary>
+        private void RebuildNavigationForTreeView()
+        {
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            
+            // Gets the elements of the plugin
+            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Application)
+            {
+                NavigationHost = NavigationHost,
+                NavigationGuest = NavigationTreeView
+            };
+            
+            // Creates the buttons for the treeview
+            ClearTreeViewUiElement();
+            
+            foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
+                .OfType<ItemButtonDefinition>())
+            {
+                var button = new Button
+                {
+                    Content = buttonView.Name
+                };
+                
+                button.Click += (x, y) => buttonView.OnPressed(NavigationTreeView.SelectedElement);
+                AddTreeViewUiElement(button);
+            }
+        }
+
+        /// <summary>
+        /// Adds a new element to the tree view element area
+        /// </summary>
+        /// <param name="element">Element to be added</param>
+        public void AddTreeViewUiElement(UIElement element)
+        {
+            TreeViewButtonArea.Children.Add(element);
+        }
+
+        /// <summary>
+        /// Clears the area
+        /// </summary>
+        public void ClearTreeViewUiElement()
+        {
+            TreeViewButtonArea.Children.Clear();
+        }
     }
 }

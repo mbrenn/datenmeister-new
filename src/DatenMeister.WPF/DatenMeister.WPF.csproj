@@ -118,6 +118,8 @@
     <Compile Include="GuiObjectCollection.cs" />
     <Compile Include="Helper\ComboBoxEx.cs" />
     <Compile Include="Helper\DelayedRefreshDispatcher.cs" />
+    <Compile Include="Modules\DefaultTypes\DefaultTypesExtension.cs" />
+    <Compile Include="Modules\DefaultTypes\DefaultTypesPlugin.cs" />
     <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />
     <Compile Include="Modules\ImportExtentManager\ImportExtentManagerPlugin.cs" />

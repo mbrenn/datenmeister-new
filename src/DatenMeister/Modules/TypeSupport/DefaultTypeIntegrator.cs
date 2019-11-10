@@ -4,10 +4,8 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.DefaultTypes;
-using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 

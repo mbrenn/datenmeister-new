@@ -7,6 +7,11 @@ namespace DatenMeister.Models.DefaultTypes
     public class Package
     {
         /// <summary>
+        /// Gets or sets the name of the packaged element
+        /// </summary>
+        public string name { get; set; }
+        
+        /// <summary>
         /// Gets or sets the packaged elements of the extent
         /// </summary>
         public IEnumerable<IElement>? packagedElement { get; set; }

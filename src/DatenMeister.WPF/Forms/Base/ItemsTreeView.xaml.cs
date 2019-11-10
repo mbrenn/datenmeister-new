@@ -135,7 +135,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the root element
         /// </summary>
-        public IObject RootElement => _itemsSource;
+        public IObject? RootElement => _itemsSource;
 
         public ItemsTreeView()
         {

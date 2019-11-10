@@ -185,6 +185,14 @@ namespace DatenMeister.Runtime.Workspaces
             return workspaceCollection.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
         }
 
+        public static Workspace GetOrCreateWorkspace(
+            this IWorkspaceLogic workspaceLogic,
+            string name)
+        {
+            var workspace = workspaceLogic.GetWorkspace(name);
+            return workspace ?? workspaceLogic.AddWorkspace(new Workspace(name));
+        }
+
         /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database
         /// </summary>

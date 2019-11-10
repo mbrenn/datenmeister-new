@@ -9,7 +9,7 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public interface IWorkspaceLogic
     {
-        void AddWorkspace(Workspace workspace);
+        Workspace AddWorkspace(Workspace workspace);
 
         /// <summary>
         /// Removes a workspace containing the id

@@ -756,8 +756,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     if (objectMetaClass != null)
                     {
                         var property = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
-                        var field = GetFieldForProperty(property, CreationMode.All);
-                        fields.Add(field);
+                        if (property != null)
+                        {
+                            var field = GetFieldForProperty(property, CreationMode.All);
+                            fields.Add(field);
+                        }
                     }
                 }
 

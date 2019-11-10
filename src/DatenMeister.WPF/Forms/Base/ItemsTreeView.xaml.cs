@@ -132,6 +132,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private TreeViewItem? _newSelectedItem;
 
+        /// <summary>
+        /// Gets the root element
+        /// </summary>
+        public IObject RootElement => _itemsSource;
+
         public ItemsTreeView()
         {
             InitializeComponent();
@@ -156,7 +161,7 @@ namespace DatenMeister.WPF.Forms.Base
                     return treeViewItem.Tag as IObject;
                 }
 
-                return null;
+                return ItemsSource;
             }
             set
             {
@@ -218,7 +223,7 @@ namespace DatenMeister.WPF.Forms.Base
                 _alreadyVisited.Clear();
                 _mappingItems.Clear();
                 var found = CreateTreeViewItem(ItemsSource, true);
-                if ( found != null)
+                if (found != null)
                     model.Add(found);
 
                 container.ItemsSource = model;

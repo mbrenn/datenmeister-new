@@ -13,7 +13,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         Application,
 
         /// <summary>
-        /// The view extension is queried for a detailled element
+        /// The view extension is queried for a detailed element
         /// </summary>
         Detail,
 

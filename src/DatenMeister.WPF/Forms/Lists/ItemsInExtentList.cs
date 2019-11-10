@@ -195,7 +195,6 @@ namespace DatenMeister.WPF.Forms.Lists
                     (x) => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
                     null,
                     NavigationCategories.Extents + ".Info"));
-                    
 
             viewDefinition.ViewExtensions.Add(
                 new ExtentMenuButtonDefinition(

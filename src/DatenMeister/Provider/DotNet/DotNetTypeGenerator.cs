@@ -227,6 +227,11 @@ namespace DatenMeister.Provider.DotNet
                         new MofObjectShadow($"#{property.FullName}"));
                 }
             }
+            else if (property == typeof(IObject) || property == typeof(IElement))
+            {
+                // Element is not defined by the given type, so set null
+                umlProperty.set(_UML._CommonStructure._TypedElement.type, null);                
+            }
             else
             {
                 // Ok... new type

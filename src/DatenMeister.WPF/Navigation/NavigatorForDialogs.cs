@@ -66,7 +66,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost">Navigation host to be used</param>
         /// <param name="workspaceName">Name of the workspace which shall be pre-selected</param>
         /// <param name="extentUri">Uri of the workspace </param>
-        /// <returns>The selected workpsace by the user or null, if the user has not selected a workspace</returns>
+        /// <returns>The selected workspace by the user or null, if the user has not selected a workspace</returns>
         public static IObject Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
         {
             var workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspace(workspaceName);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
@@ -18,36 +19,41 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Stores the temporary factory
         /// </summary>
-        private static IFactory _temporaryFactory;
+        private static IFactory? _temporaryFactory;
 
         /// <summary>
         /// Stores the temporary factory
         /// </summary>
-        public static IFactory TemporaryFactory => _temporaryFactory ?? (_temporaryFactory = new MofFactory(InMemoryProvider.TemporaryExtent));
+        public static IFactory TemporaryFactory => _temporaryFactory ??= new MofFactory(InMemoryProvider.TemporaryExtent);
 
         /// <summary>
         /// Stores the container being associated to the in memory object
         /// </summary>
-        private IProviderObject _container;
+        private IProviderObject? _container;
 
         /// <summary>
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty(IExtent uriExtent = null)
+        public static MofElement? CreateEmpty(IExtent? uriExtent = null)
         {
             var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-            return factory.create(null) as MofElement;
+            if (!(factory.create(null) is MofElement element)) 
+                throw new InvalidOperationException("factory.create returned null");
+
+            return element;
         }
 
         /// <summary>
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty(string metaClass, IExtent uriExtent = null)
+        public static MofElement? CreateEmpty(string metaClass, IExtent? uriExtent = null)
         {
             var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-            var element = (MofElement) factory.create(null);
+            var element = (MofElement?) factory.create(null);
+            if (element == null) throw new InvalidOperationException("factory.create returned null");
+                
             element.SetMetaClass(metaClass);
             return element;
         }
@@ -60,7 +66,10 @@ namespace DatenMeister.Provider.InMemory
         public static IObject CreateEmpty(IElement type)
         {
             var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
-            return mofFactory.create(type);
+            var element= mofFactory.create(type);
+            if (element == null) throw new InvalidOperationException("factory.create returned null");
+            
+            return element;
         }
 
         /// <summary>
@@ -76,11 +85,11 @@ namespace DatenMeister.Provider.InMemory
         /// </summary>
         /// <param name="provider">Provider being the host for the element</param>
         /// <param name="metaclassUri">Uri of the metaclass</param>
-        public InMemoryObject(IProvider provider, string metaclassUri = null)
+        public InMemoryObject(IProvider provider, string? metaclassUri = null)
         {
             Provider = provider;
             Id = Guid.NewGuid().ToString();
-            MetaclassUri = metaclassUri;
+            MetaclassUri = metaclassUri ?? string.Empty;
         }
 
         private static void CheckValue(object value)
@@ -176,7 +185,7 @@ namespace DatenMeister.Provider.InMemory
 
         private List<object> GetListOfProperty(string property)
         {
-            List<object> result = null;
+            List<object>? result = null;
             if (_values.ContainsKey(property))
             {
                 result = _values[property] as List<object>;
@@ -202,8 +211,7 @@ namespace DatenMeister.Provider.InMemory
         public bool HasContainer() =>
             _container != null;
 
-        public IProviderObject GetContainer() =>
-            _container;
+        public IProviderObject? GetContainer() => _container;
 
         public void SetContainer(IProviderObject value)
         {

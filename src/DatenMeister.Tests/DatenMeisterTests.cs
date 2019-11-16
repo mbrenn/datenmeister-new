@@ -71,11 +71,9 @@ namespace DatenMeister.Tests
         [Test]
         public void CheckFailureFreeLoadingOfDatenMeister()
         {
-            using (var datenMeister = GetDatenMeisterScope())
-            {
-                var pluginManager = datenMeister.Resolve<PluginManager>();
-                Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
-            }
+            using var datenMeister = GetDatenMeisterScope();
+            var pluginManager = datenMeister.Resolve<PluginManager>();
+            Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }
 
         [Test]
@@ -84,11 +82,9 @@ namespace DatenMeister.Tests
             var integrationSettings = GetIntegrationSettings();
             integrationSettings.PerformSlimIntegration = true;
 
-            using (var datenMeister = GetDatenMeisterScope(integrationSettings: integrationSettings))
-            {
-                var pluginManager = datenMeister.Resolve<PluginManager>();
-                Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
-            }
+            using var datenMeister = GetDatenMeisterScope(integrationSettings: integrationSettings);
+            var pluginManager = datenMeister.Resolve<PluginManager>();
+            Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }
     }
 }

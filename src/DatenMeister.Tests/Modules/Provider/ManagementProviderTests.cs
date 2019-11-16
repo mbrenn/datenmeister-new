@@ -15,33 +15,31 @@ namespace DatenMeister.Tests.Modules.Provider
         [Test]
         public void TestContainering()
         {
-            using (var scope = DatenMeisterTests.GetDatenMeisterScope())
-            {
-                var workspace = scope.WorkspaceLogic.GetManagementWorkspace();
-                Assert.That(workspace, Is.Not.Null);
+            using var scope = DatenMeisterTests.GetDatenMeisterScope();
+            var workspace = scope.WorkspaceLogic.GetManagementWorkspace();
+            Assert.That(workspace, Is.Not.Null);
 
-                var extent = workspace.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
-                Assert.That(extent, Is.Not.Null);
+            var extent = workspace.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
+            Assert.That(extent, Is.Not.Null);
 
-                var workspaceValue = extent.elements().WhenPropertyHasValue(
-                    _ManagementProvider._Workspace.id,
-                    WorkspaceNames.NameManagement).FirstOrDefault() as IElement;
-                Assert.That(workspaceValue, Is.Not.Null);
-                Assert.That(workspaceValue.get(_ManagementProvider._Workspace.id), Is.EqualTo(WorkspaceNames.NameManagement));
+            var workspaceValue = extent.elements().WhenPropertyHasValue(
+                _ManagementProvider._Workspace.id,
+                WorkspaceNames.NameManagement).FirstOrDefault() as IElement;
+            Assert.That(workspaceValue, Is.Not.Null);
+            Assert.That(workspaceValue.get(_ManagementProvider._Workspace.id), Is.EqualTo(WorkspaceNames.NameManagement));
 
-                var extents =
-                    workspaceValue.getOrDefault<IReflectiveCollection>(_ManagementProvider._Workspace.extents);
-                Assert.That(extents, Is.Not.Null);
-                var extentAsList = extents.ToList();
-                Assert.That(extentAsList.Count, Is.GreaterThan(0));
+            var extents =
+                workspaceValue.getOrDefault<IReflectiveCollection>(_ManagementProvider._Workspace.extents);
+            Assert.That(extents, Is.Not.Null);
+            var extentAsList = extents.ToList();
+            Assert.That(extentAsList.Count, Is.GreaterThan(0));
 
-                var firstExtent = extentAsList.First() as IElement;
-                Assert.That(firstExtent, Is.Not.Null);
-                var containeredElement = firstExtent.container();
-                Assert.That(containeredElement, Is.Not.Null);
+            var firstExtent = extentAsList.First() as IElement;
+            Assert.That(firstExtent, Is.Not.Null);
+            var containeredElement = firstExtent.container();
+            Assert.That(containeredElement, Is.Not.Null);
 
-                Assert.That(containeredElement, Is.EqualTo(workspaceValue));
-            }
+            Assert.That(containeredElement, Is.EqualTo(workspaceValue));
         }
     }
 }

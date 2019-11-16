@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using Autofac;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
@@ -108,6 +110,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 _extentStorageData.LoadedExtents.Add(info);
             }
+            
+            VerifyDatabaseContent();
 
             return uriExtent;
         }
@@ -166,6 +170,9 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             var extent = new MofUriExtent(loadedProvider, configuration.extentUri);
             extent.SignalUpdateOfContent(false);
+            
+            VerifyDatabaseContent();
+            
             return (extent, false);
         }
 
@@ -190,6 +197,8 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 workspace.AddExtentNoDuplicate(WorkspaceLogic, loadedExtent);
             }
+            
+            VerifyDatabaseContent();
         }
 
         /// <summary>
@@ -203,7 +212,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             ExtentStorageData.LoadedExtentInformation information;
             lock (_extentStorageData.LoadedExtents)
             {
-                information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+                information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent.@equals(extent));
             }
 
             return information?.Configuration;
@@ -244,6 +253,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="extent">Extent to be stored</param>
         public void StoreExtent(IExtent extent)
         {
+            VerifyDatabaseContent();
+            
             ExtentStorageData.LoadedExtentInformation information;
             lock (_extentStorageData.LoadedExtents)
             {
@@ -261,6 +272,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             extentStorage.StoreProvider(((MofUriExtent) information.Extent).Provider, information.Configuration);
             
             (extent as MofExtent)?.SignalUpdateOfContent(false);
+            
+            VerifyDatabaseContent();
         }
 
         /// <summary>
@@ -271,13 +284,15 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             lock (_extentStorageData.LoadedExtents)
             {
-                var information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent == extent);
+                var information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent.@equals(extent));
                 if (information != null)
                 {
                     _extentStorageData.LoadedExtents.Remove(information);
                     Logger.Info($"Detaching extent: {information.Configuration}");
                 }
             }
+
+            VerifyDatabaseContent();
         }
 
         /// <summary>
@@ -298,6 +313,8 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 WorkspaceLogic.SendEventForWorkspaceChange(workspace);
             }
+            
+            VerifyDatabaseContent();
         }
 
         /// <summary>
@@ -379,6 +396,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                     throw new LoadingExtentsFailedException(failedExtents);
                 }
             }
+            
+            VerifyDatabaseContent();
         }
 
         /// <summary>
@@ -445,6 +464,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void StoreAllExtents()
         {
+            VerifyDatabaseContent();
+                
             List<ExtentStorageData.LoadedExtentInformation> copy;
 
             lock (_extentStorageData.LoadedExtents)
@@ -470,6 +491,41 @@ namespace DatenMeister.Runtime.ExtentStorage
                     Logger.Error($"Error during storing of extent: {info.Configuration.extentUri}: {exc.Message}");
                 }
             }
+        }
+
+        /// <summary>
+        /// Verifies the content of the database
+        /// </summary>
+        private void VerifyDatabaseContent()
+        {
+            lock (_extentStorageData)
+            {
+                var list = new List<VerifyDatabaseEntry>();
+                foreach (var entry in _extentStorageData.LoadedExtents)
+                {
+                    var found = list.FirstOrDefault(
+                        x => x.Workspace == entry.Configuration.workspaceId
+                             && x.ExtentUri == entry.Configuration.extentUri);
+
+                    if (found != null)
+                    {
+                        throw new InvalidOperationException("Database integrity is not given anymore");
+                    }
+                    
+                    list.Add(new VerifyDatabaseEntry
+                    {
+                        Workspace = entry.Configuration.workspaceId,
+                        ExtentUri = entry.Configuration.extentUri
+                    });
+                }
+            }
+        }
+
+        private class VerifyDatabaseEntry
+        {
+            public string Workspace { get; set; }
+            
+            public string ExtentUri { get; set; }
         }
     }
 }

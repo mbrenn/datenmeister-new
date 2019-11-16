@@ -1,10 +1,16 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     public interface IExtentManager
     {
+        /// <summary>
+        /// Defines the workspace logic
+        /// </summary>
+        IWorkspaceLogic WorkspaceLogic { get; }
+        
         /// <summary>
         /// Loads the extent by using the extent storage
         /// </summary>

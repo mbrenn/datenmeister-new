@@ -82,7 +82,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IElement package => throw new NotImplementedException();
 
         /// <inheritdoc />
-        public IElement create(IElement metaClass)
+        public IElement create(IElement? metaClass)
         {
             string uriMetaClass;
             if (metaClass is MofObjectShadow shadow)
@@ -104,7 +104,15 @@ namespace DatenMeister.Core.EMOF.Implementation
                     Extent?.AddMetaExtent(extentAsMofUriExtent);
                 }
 
-                uriMetaClass = (elementAsMetaClass?.Extent as MofUriExtent)?.uri(metaClass) ?? string.Empty;
+                // Sets the uri of the metaclas
+                if (metaClass == null)
+                {
+                    uriMetaClass = string.Empty;
+                }
+                else
+                {
+                    uriMetaClass = (elementAsMetaClass?.Extent as MofUriExtent)?.uri(metaClass) ?? string.Empty;     
+                }
             }
 
             if (Extent == null)

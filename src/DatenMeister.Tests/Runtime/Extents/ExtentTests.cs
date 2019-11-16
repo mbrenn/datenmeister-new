@@ -25,28 +25,26 @@ namespace DatenMeister.Tests.Runtime.Extents
         {
             var kernel = new ContainerBuilder();
             var builder = kernel.UseDatenMeister(new IntegrationSettings());
-            using (var scope = builder.BeginLifetimeScope())
-            {
-                var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-                var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
-                Assert.That(workspaceExtent, Is.Not.Null);
-                var asData = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameData);
-                var asManagement = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);
-                var asTypes = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameTypes);
-                var asMof = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameMof);
+            using var scope = builder.BeginLifetimeScope();
+            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
+            var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
+            Assert.That(workspaceExtent, Is.Not.Null);
+            var asData = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameData);
+            var asManagement = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);
+            var asTypes = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameTypes);
+            var asMof = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameMof);
 
-                Assert.That(asData, Is.Not.Null);
-                Assert.That(asManagement, Is.Not.Null);
-                Assert.That(asTypes, Is.Not.Null);
-                Assert.That(asMof, Is.Not.Null);
+            Assert.That(asData, Is.Not.Null);
+            Assert.That(asManagement, Is.Not.Null);
+            Assert.That(asTypes, Is.Not.Null);
+            Assert.That(asMof, Is.Not.Null);
 
-                // Get the extents
-                var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
-                Assert.That(extents, Is.Not.Null);
+            // Get the extents
+            var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
+            Assert.That(extents, Is.Not.Null);
 
-                var mofExtent = extents.Cast<IElement>().First( x=> x.get("uri").ToString() == WorkspaceNames.UriMofExtent);
-                Assert.That(mofExtent, Is.Not.Null);
-            }
+            var mofExtent = extents.Cast<IElement>().First( x=> x.get("uri").ToString() == WorkspaceNames.UriMofExtent);
+            Assert.That(mofExtent, Is.Not.Null);
         }
 
         [Test]
@@ -92,70 +90,66 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public void TestDefaultExtentType()
         {
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
-            {
-                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-                var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
-                var typesWorkspace = workspaceLogic.GetTypesWorkspace();
-                var zipCodeModel =
-                    typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
-                                                    ZipCodeModel.PackagePath);
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+            var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
+            var typesWorkspace = workspaceLogic.GetTypesWorkspace();
+            var zipCodeModel =
+                typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
+                                                ZipCodeModel.PackagePath);
 
-                var dataWorkspace = workspaceLogic.GetDataWorkspace();
+            var dataWorkspace = workspaceLogic.GetDataWorkspace();
 
-                var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
-                var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
+            var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
 
-                Assert.That(setDefaultTypePackage, Is.Not.Null);
-                Assert.That(zipCodeModel, Is.Not.Null);
+            Assert.That(setDefaultTypePackage, Is.Not.Null);
+            Assert.That(zipCodeModel, Is.Not.Null);
 
-                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
-            }
+            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
         }
 
         [Test]
         public void TestAddDefaultExtentType()
         {
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
-            {
-                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-                var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
-                var typesWorkspace = workspaceLogic.GetTypesWorkspace();
-                var zipCodeModel =
-                    typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
-                                                    ZipCodeModel.PackagePath) as IElement;
-                Assert.That(zipCodeModel, Is.Not.Null);
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+            var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
+            var typesWorkspace = workspaceLogic.GetTypesWorkspace();
+            var zipCodeModel =
+                typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
+                                                ZipCodeModel.PackagePath) as IElement;
+            Assert.That(zipCodeModel, Is.Not.Null);
 
-                var dataWorkspace = workspaceLogic.GetDataWorkspace();
+            var dataWorkspace = workspaceLogic.GetDataWorkspace();
                 
-                var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
+            var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
                 
-                // Per Default, one is included
-                var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
-                Assert.That(setDefaultTypePackage, Is.Not.Null);
-                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
-                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            // Per Default, one is included
+            var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            Assert.That(setDefaultTypePackage, Is.Not.Null);
+            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
-                // Checks, if adding another one does not work
-                zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
-                setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
-                Assert.That(setDefaultTypePackage, Is.Not.Null);
-                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
-                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+            // Checks, if adding another one does not work
+            zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
+            setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            Assert.That(setDefaultTypePackage, Is.Not.Null);
+            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
-                // Checks, if removing works
-                zipExample.SetDefaultTypePackages(new IElement[] { });
-                setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
-                Assert.That(setDefaultTypePackage, Is.Not.Null);
-                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(0));
+            // Checks, if removing works
+            zipExample.SetDefaultTypePackages(new IElement[] { });
+            setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            Assert.That(setDefaultTypePackage, Is.Not.Null);
+            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(0));
                 
-                // Checks, if adding works now correctly
-                zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
-                setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
-                Assert.That(setDefaultTypePackage, Is.Not.Null);
-                Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
-                Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
-            }
+            // Checks, if adding works now correctly
+            zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
+            setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            Assert.That(setDefaultTypePackage, Is.Not.Null);
+            Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
+            Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
         }
 
         [Test]

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+
+using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 
@@ -22,7 +24,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets or sets the path in which the extent loading info is stored
         /// </summary>
-        public string FilePath { get; set; }
+        public string? FilePath { get; set; }
 
         /// <summary>
         /// Defines the class which stores the mapping between the extent and the configuration
@@ -32,6 +34,27 @@ namespace DatenMeister.Runtime.ExtentStorage
             public IUriExtent Extent { get; set; }
 
             public ExtentLoaderConfig Configuration { get; set; }
+
+            /// <summary>
+            /// Initializes a new instance of the  LoadedExtentInformation class
+            /// </summary>
+            /// <param name="extent">Extent to be connected to</param>
+            /// <param name="configuration">Configuration of the loading extent</param>
+            public LoadedExtentInformation(IUriExtent extent, ExtentLoaderConfig configuration)
+            {
+                Extent = extent;
+                Configuration = configuration;
+            }
+
+            public override string ToString()
+            {
+                if (Extent == null)
+                {
+                    return "(no extent): " + Configuration;
+                }
+
+                return $"({Extent}): " + Configuration;
+            }
         }
     }
 }

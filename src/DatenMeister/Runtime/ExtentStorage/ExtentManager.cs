@@ -100,11 +100,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             AddToWorkspaceIfPossible(configuration, uriExtent);
 
             // Stores the information into the data container
-            var info = new ExtentStorageData.LoadedExtentInformation
-            {
-                Configuration = configuration,
-                Extent = uriExtent
-            };
+            var info = new ExtentStorageData.LoadedExtentInformation(uriExtent, configuration);
 
             lock (_extentStorageData.LoadedExtents)
             {

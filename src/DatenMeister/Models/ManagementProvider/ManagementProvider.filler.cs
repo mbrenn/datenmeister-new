@@ -59,6 +59,10 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 {
                                     tree.Extent._extentType = value;
                                 }
+                                if(name == "isModified") // Looking for property
+                                {
+                                    tree.Extent._isModified = value;
+                                }
                                 if(name == "alternativeUris") // Looking for property
                                 {
                                     tree.Extent._alternativeUris = value;

@@ -21,6 +21,9 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             public static string @extentType = "extentType";
             public IElement _extentType = null;
 
+            public static string @isModified = "isModified";
+            public IElement _isModified = null;
+
             public static string @alternativeUris = "alternativeUris";
             public IElement _alternativeUris = null;
 

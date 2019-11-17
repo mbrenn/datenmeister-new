@@ -53,5 +53,24 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             return foundExtent ?? extentManager.LoadExtent(loaderConfiguration, flags);
         }
+
+        /// <summary>
+        /// Deletes the extent from the workspace and the extent manager
+        /// </summary>
+        /// <param name="manager">Manager to be used</param>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUri">Uri of the extent</param>
+        /// <returns>true, if successfully deleted</returns>
+        public static bool DeleteExtent(this IExtentManager manager, string workspaceId, string extentUri)
+        {
+            var found = manager.WorkspaceLogic.FindExtent(workspaceId, extentUri);
+            if (found != null)
+            {
+                manager.DeleteExtent(found);
+                return true;
+            }
+
+            return false;
+        }
     }
 }

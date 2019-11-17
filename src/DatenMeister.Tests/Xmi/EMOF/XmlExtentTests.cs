@@ -244,46 +244,44 @@ namespace DatenMeister.Tests.Xmi.EMOF
             var kernel = new ContainerBuilder();
 
             var builder = kernel.UseDatenMeister(new IntegrationSettings());
-            using (var scope = builder.BeginLifetimeScope())
+            using var scope = builder.BeginLifetimeScope();
+            var path = PathForTemporaryDataFile;
+            if (File.Exists(path))
             {
-                var path = PathForTemporaryDataFile;
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-
-                var storageConfiguration = new XmiStorageConfiguration
-                {
-                    extentUri = "datenmeister:///test",
-                    filePath = path,
-                    workspaceId = "Data"
-                };
-
-                // Creates the extent
-                var loader = scope.Resolve<IExtentManager>();
-                var loadedExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
-
-                // Includes some data
-                var factory = MofFactory.CreateByExtent(loadedExtent);
-                var createdElement = factory.create(null);
-                loadedExtent.elements().add(createdElement);
-
-                createdElement.set("test", "Test");
-                Assert.That(createdElement.get("test"), Is.EqualTo("Test"));
-
-                // Stores the extent
-                loader.StoreExtent(loadedExtent);
-
-                // Detaches it
-                loader.DetachExtent(loadedExtent);
-
-                // Reloads it
-                storageConfiguration.extentUri = "datenmeister:///test_new";
-
-                var newExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOnly);
-                Assert.That(newExtent.elements().size(), Is.EqualTo(1));
-                Assert.That((newExtent.elements().ElementAt(0) as IElement).get("test"), Is.EqualTo("Test"));
+                File.Delete(path);
             }
+
+            var storageConfiguration = new XmiStorageConfiguration
+            {
+                extentUri = "datenmeister:///test",
+                filePath = path,
+                workspaceId = "Data"
+            };
+
+            // Creates the extent
+            var loader = scope.Resolve<IExtentManager>();
+            var loadedExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
+
+            // Includes some data
+            var factory = MofFactory.CreateByExtent(loadedExtent);
+            var createdElement = factory.create(null);
+            loadedExtent.elements().add(createdElement);
+
+            createdElement.set("test", "Test");
+            Assert.That(createdElement.get("test"), Is.EqualTo("Test"));
+
+            // Stores the extent
+            loader.StoreExtent(loadedExtent);
+
+            // Detaches it
+            loader.DetachExtent(loadedExtent);
+
+            // Reloads it
+            storageConfiguration.extentUri = "datenmeister:///test_new";
+
+            var newExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOnly);
+            Assert.That(newExtent.elements().size(), Is.EqualTo(1));
+            Assert.That((newExtent.elements().ElementAt(0) as IElement).get("test"), Is.EqualTo("Test"));
         }
 
         [Test]
@@ -291,58 +289,54 @@ namespace DatenMeister.Tests.Xmi.EMOF
         {
             var kernel = new ContainerBuilder();
             var builder = kernel.UseDatenMeister(new IntegrationSettings());
-            using (var scope = builder.BeginLifetimeScope())
-            {
-                var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
-                var umlDataLayer = dataLayerLogic.GetUmlWorkspace();
-                var uml = umlDataLayer.Get<_UML>();
-                Assert.That(uml, Is.Not.Null);
+            using var scope = builder.BeginLifetimeScope();
+            var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
+            var umlDataLayer = dataLayerLogic.GetUmlWorkspace();
+            var uml = umlDataLayer.Get<_UML>();
+            Assert.That(uml, Is.Not.Null);
 
-                var xmlProvider = new XmiProvider();
-                var extent = new MofUriExtent(xmlProvider, "datenmeister:///test/");
-                dataLayerLogic.AddExtent(dataLayerLogic.GetTypesWorkspace(), extent);
+            var xmlProvider = new XmiProvider();
+            var extent = new MofUriExtent(xmlProvider, "datenmeister:///test/");
+            dataLayerLogic.AddExtent(dataLayerLogic.GetTypesWorkspace(), extent);
 
-                var factory = new MofFactory(extent);
-                var interfaceClass = uml.SimpleClassifiers.__Interface;
-                var element = factory.create(interfaceClass);
-                Assert.That(element, Is.Not.Null);
+            var factory = new MofFactory(extent);
+            var interfaceClass = uml.SimpleClassifiers.__Interface;
+            var element = factory.create(interfaceClass);
+            Assert.That(element, Is.Not.Null);
 
-                extent.elements().add(element);
-                Assert.That(extent.elements().size(), Is.EqualTo(1));
+            extent.elements().add(element);
+            Assert.That(extent.elements().size(), Is.EqualTo(1));
 
-                var retrievedElement = extent.elements().ElementAt(0) as IElement;
-                Assert.That(retrievedElement, Is.Not.Null);
-                Assert.That(retrievedElement.getMetaClass(), Is.Not.Null);
-                Assert.That(retrievedElement.metaclass, Is.Not.Null);
-                var foundMetaClass = retrievedElement.metaclass;
-                Assert.That(foundMetaClass.Equals(interfaceClass), Is.True);
-            }
+            var retrievedElement = extent.elements().ElementAt(0) as IElement;
+            Assert.That(retrievedElement, Is.Not.Null);
+            Assert.That(retrievedElement.getMetaClass(), Is.Not.Null);
+            Assert.That(retrievedElement.metaclass, Is.Not.Null);
+            var foundMetaClass = retrievedElement.metaclass;
+            Assert.That(foundMetaClass.Equals(interfaceClass), Is.True);
         }
 
         [Test]
         public void TestRemoveAllElements()
         {
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
-            {
-                var creator = dm.Resolve<ExtentCreator>();
-                var xmi = creator.GetOrCreateXmiExtentInInternalDatabase(
-                    null, "dm:///test", "Name");
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var creator = dm.Resolve<ExtentCreator>();
+            var xmi = creator.GetOrCreateXmiExtentInInternalDatabase(
+                null, "dm:///test", "Name");
 
-                var factory = new MofFactory(xmi);
-                var first = factory.create(null);
-                var second = factory.create(null);
+            var factory = new MofFactory(xmi);
+            var first = factory.create(null);
+            var second = factory.create(null);
 
-                xmi.elements().add(first);
-                xmi.elements().add(second);
-                xmi.SetExtentType("Test");
-                Assert.That(xmi.elements().Count(), Is.EqualTo(2));
-                Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
+            xmi.elements().add(first);
+            xmi.elements().add(second);
+            xmi.SetExtentType("Test");
+            Assert.That(xmi.elements().Count(), Is.EqualTo(2));
+            Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
 
-                xmi.elements().clear();
+            xmi.elements().clear();
 
-                Assert.That(xmi.elements().Count(), Is.EqualTo(0));
-                Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
-            }
+            Assert.That(xmi.elements().Count(), Is.EqualTo(0));
+            Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
         }
     }
 }

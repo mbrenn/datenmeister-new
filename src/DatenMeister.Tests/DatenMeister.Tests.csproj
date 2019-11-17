@@ -15,6 +15,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -76,6 +77,7 @@
     <Compile Include="Runtime\CopierTests.cs" />
     <Compile Include="Runtime\ExtentStorageTests.cs" />
     <Compile Include="Runtime\Extents\ExtentExportTests.cs" />
+    <Compile Include="Runtime\Extents\ExtentManagerTests.cs" />
     <Compile Include="Runtime\Extents\ExtentTests.cs" />
     <Compile Include="Runtime\Functions\AggregationTests.cs" />
     <Compile Include="Runtime\ReadOnlyProxyTests.cs" />

@@ -1,7 +1,9 @@
+#nullable enable
+
 using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
 {
     /// <summary>
     /// This definition is allocated to the current extent to which the item belongs to.

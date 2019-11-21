@@ -1,15 +1,12 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
 {
     public class ItemButtonDefinition : ViewExtension
     {
-        public ItemButtonDefinition()
-        {
-            
-        }
-
         public ItemButtonDefinition(string name, Action<IObject> onPressed)
         {
             Name = name;

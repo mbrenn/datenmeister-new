@@ -20,6 +20,9 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
 
@@ -304,6 +307,9 @@ namespace DatenMeister.WPF.Forms.Base
                 if (viewDefinition.ViewExtensions != null)
                     foreach (var viewExtension in viewDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
+                
+                tabViewExtensions.AddRange(GetViewExtensions());
+                            
 
                 AddTab(value, tab, tabViewExtensions, container);
             }
@@ -352,58 +358,67 @@ namespace DatenMeister.WPF.Forms.Base
                     NavigationHost = NavigationHost
                 };
 
-                var defaultTypesForNewItems =
-                    tabForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+                usedViewExtensions.AddRange(control.GetViewExtensions());
 
+                // Gets the default types by the form definition
+                var defaultTypesForNewItems =
+                    tabForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements)
+                        ?.ToList()
+                    ?? new List<object>();
+
+                // Gets the default types by the View Extensions
+                foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
+                {
+                    defaultTypesForNewItems.Add(extension.MetaClass);
+                }
+                
                 // Stores the menu items for the context menu
                 var menuItems = new List<MenuItem>();
                 var menuItem = new MenuItem
                 {
                     Header = "New Item"
                 };
+                
                 menuItem.Click += (x, y) => CreateNewElementByUser(null, null);
                 menuItems.Add(menuItem);
 
                 // Sets the generic buttons to create the new types
-                if (defaultTypesForNewItems != null)
+                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
-                    foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                    // Check if type is a directly type or the DefaultTypeForNewElement
+                    if (type.metaclass.@equals(
+                        GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
+                            x => x.__DefaultTypeForNewElement)))
                     {
-                        // Check if type is a directly type or the DefaultTypeForNewElement
-                        if (type.metaclass.@equals(
-                            GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
-                                x => x.__DefaultTypeForNewElement)))
+                        var newType =
+                            type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                        var parentProperty =
+                            type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
+
+                        Create(newType, parentProperty);
+                    }
+                    else
+                    {
+                        Create(type, null);
+                    }
+
+                    void Create(IElement newType, string parentProperty)
+                    {
+                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
+
+                        usedViewExtensions.Add(new GenericButtonDefinition(
+                            $"New {typeName}", () => CreateNewElementByUser(newType, parentProperty)));
+
+                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
                         {
-                            var newType =
-                                type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
-                            var parentProperty =
-                                type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
-
-                            Create(newType, parentProperty);
-                        }
-                        else
-                        {
-                            Create(type, null);
-                        }
-
-                        void Create(IElement newType, string parentProperty)
-                        {
-                            var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
-
-                            usedViewExtensions.Add(new GenericButtonDefinition(
-                                $"New {typeName}", () => CreateNewElementByUser(newType, parentProperty)));
-
-                            foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
+                            // Stores the menu items for the context menu
+                            menuItem = new MenuItem
                             {
-                                // Stores the menu items for the context menu
-                                menuItem = new MenuItem
-                                {
-                                    Header = $"New {newSpecializationType}"
-                                };
+                                Header = $"New {newSpecializationType}"
+                            };
 
-                                menuItem.Click += (x, y) => CreateNewElementByUser(newSpecializationType, null);
-                                menuItems.Add(menuItem);
-                            }
+                            menuItem.Click += (x, y) => CreateNewElementByUser(newSpecializationType, null);
+                            menuItems.Add(menuItem);
                         }
                     }
                 }
@@ -430,8 +445,6 @@ namespace DatenMeister.WPF.Forms.Base
                                 }
                             }));
                 }
-
-                usedViewExtensions.AddRange(control.GetViewExtensions());
 
                 void CreateNewElementByUser(IElement type, string parentProperty)
                 {

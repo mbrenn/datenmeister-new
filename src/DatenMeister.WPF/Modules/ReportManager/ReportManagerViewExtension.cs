@@ -10,6 +10,7 @@ using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ReportManager

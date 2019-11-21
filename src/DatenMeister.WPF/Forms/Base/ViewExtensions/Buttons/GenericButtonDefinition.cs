@@ -1,6 +1,8 @@
-﻿using System;
+﻿#nullable enable
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions
+using System;
+
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
 {
     public class GenericButtonDefinition : ViewExtension
     {

@@ -14,6 +14,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Navigation;
 using Clipboard = System.Windows.Clipboard;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -479,11 +480,10 @@ namespace DatenMeister.WPF.Forms.Base
             if (ViewExtensions.OfType<TreeViewItemCommandDefinition>().All(x => x.Text != "Copy Tree to Clipboard"))
             {
                 // Add default view extension
-                ViewExtensions.Add(new TreeViewItemCommandDefinition
-                {
-                    Text = "Copy Tree to Clipboard",
-                    Action = _ => CopyTreeToClipboard_OnClick()
-                });
+                ViewExtensions.Add(new TreeViewItemCommandDefinition(
+                    "Copy Tree to Clipboard",
+                    _ => CopyTreeToClipboard_OnClick()
+                ));
             }
         }
 
@@ -501,8 +501,13 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     Header = extension.Text
                 };
-                menuItem.Click += (x, y) => extension.Action(SelectedElement);
 
+                if (extension.Action == null)
+                {
+                    continue;
+                }
+                
+                menuItem.Click += (x, y) => extension.Action(SelectedElement);
                 menuItems.Add(menuItem);
             }
 

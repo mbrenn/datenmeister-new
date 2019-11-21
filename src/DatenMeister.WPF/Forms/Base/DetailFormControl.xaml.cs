@@ -21,6 +21,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.UserInteractions;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Detail.Fields;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;

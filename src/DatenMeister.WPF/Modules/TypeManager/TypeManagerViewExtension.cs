@@ -5,6 +5,8 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.TypeManager
@@ -47,18 +49,25 @@ namespace DatenMeister.WPF.Modules.TypeManager
 
                 if (type == SelectionType.Package)
                 {
+                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                    
+                    yield return new NewInstanceViewDefinition(classMetaClass);
+                    
                     yield return new ApplicationMenuButtonDefinition(
                         "Create new Class",
                         () =>
                             NavigatorForItems.NavigateToCreateNewItemInExtent(
                                 viewExtensionTargetInformation.NavigationHost,
                                 extent,
-                                extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)),
+                                classMetaClass),
                         string.Empty,
                         NavigationCategories.Type + "." + "Manager");
                 }
                 else if (type == SelectionType.Class)
                 {
+                    var propertyMetaClass = extent.FindInMeta<_UML>(x => x.Classification.__Property);
+                    
+                    yield return new NewInstanceViewDefinition(propertyMetaClass);
                     yield return
                         new ApplicationMenuButtonDefinition(
                             "Create new Property",
@@ -67,7 +76,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                                     viewExtensionTargetInformation.NavigationHost,
                                     selectedPackage,
                                     _UML._StructuredClassifiers._Class.ownedAttribute,
-                                    extent.FindInMeta<_UML>(x => x.Classification.__Property))
+                                    propertyMetaClass)
                             ,
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");

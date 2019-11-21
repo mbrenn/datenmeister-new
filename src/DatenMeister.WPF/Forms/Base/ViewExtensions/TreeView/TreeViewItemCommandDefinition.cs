@@ -1,7 +1,9 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView
 {
     public class TreeViewItemCommandDefinition : ViewExtension
     {
@@ -13,11 +15,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <summary>
         /// Gets or sets the action that shall be executed upon click
         /// </summary>
-        public Action<IObject> Action { get; set; }
-
-        public TreeViewItemCommandDefinition()
-        {
-        }
+        public Action<IObject?> Action { get; set; }
 
         public TreeViewItemCommandDefinition(string text, Action<IObject> onClick)
         {

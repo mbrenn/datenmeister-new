@@ -1,6 +1,8 @@
+#nullable enable
+
 using System;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
 {
     /// <summary>
     /// This definition is shown generically to the complete application and does not have a reference to

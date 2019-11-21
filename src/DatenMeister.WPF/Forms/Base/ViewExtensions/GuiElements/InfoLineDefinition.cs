@@ -1,7 +1,9 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Windows;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements
 {
     public class InfoLineDefinition : ViewExtension
     {

@@ -422,7 +422,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="property">Name of the property to be enumeration</param>
         /// <param name="viewDefinitionMode">The view definition mode</param>
         /// <returns>The list form for the list</returns>
-        public IElement GetListFormForElementsProperty(
+        public IElement? GetListFormForElementsProperty(
             IObject element,
             string property,
             ViewDefinitionMode viewDefinitionMode = ViewDefinitionMode.Default)
@@ -471,7 +471,6 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="element">Element for which the list view will be created</param>
         /// <param name="viewDefinitionMode">Defines the method how to retrieve the form</param>
-        /// <param name="creationMode">Defines the creation mode</param>
         /// <returns>Found extent form</returns>
         public IElement? GetItemTreeFormForObject(IObject element, ViewDefinitionMode viewDefinitionMode)
         {

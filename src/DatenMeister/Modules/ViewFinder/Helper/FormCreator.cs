@@ -251,7 +251,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     form = _viewLogic.GetListFormForExtent(
                         extent,
                         groupedMetaclass,
-                        ViewDefinitionMode.Default);
+                        ViewDefinitionMode.Default) ?? throw new InvalidOperationException("No form was found");
 
                     if (creationMode.HasFlag(CreationMode.ByProperties))
                     {
@@ -731,28 +731,57 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var tabs = new List<IElement>();
 
             // Get all properties of the elements
-            var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet().ToList();
-            properties ??= new List<string>();
+            
             var flagAddByMetaClass = creationMode.HasFlag(CreationMode.ByMetaClass) ||
                                      creationMode.HasFlag(CreationMode.AddMetaClass);
-
-            if (flagAddByMetaClass && objectMetaClass != null)
+            var propertyNamesWithCollection = new List<string>();
+            var propertyNamesWithoutCollection = new List<string>();
+            
+            // Adds the properties by the stored properties of the element
+            if (creationMode.HasFlag(CreationMode.ByProperties))
             {
-                properties.AddRange(ClassifierMethods.GetPropertyNamesOfClassifier(objectMetaClass));
-            }
+                var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet().ToList();
+                properties ??= new List<string>();
 
-            var propertiesWithCollection =
-                from p in properties
-                where element.IsPropertyOfType<IReflectiveCollection>(p)
-                let propertyContent = element.get<IReflectiveCollection>(p)
-                where propertyContent != null
-                select new {propertyName = p, propertyContent};
+                propertyNamesWithCollection = (from p in properties
+                    where element.IsPropertyOfType<IReflectiveCollection>(p)
+                    let propertyContent = element.get<IReflectiveCollection>(p)
+                    where propertyContent != null
+                    select p).ToList();
 
-            var propertiesWithoutCollection =
-                (from p in properties
+
+                propertyNamesWithoutCollection = (from p in properties
                     where !element.IsPropertyOfType<IReflectiveCollection>(p)
                     let propertyContent = element.get(p)
                     where propertyContent != null
+                    select p).ToList();
+            }
+
+            // Adds the properties by the metaclasses
+            if (flagAddByMetaClass && objectMetaClass != null)
+            {
+                var metaClassProperties = ClassifierMethods.GetPropertiesOfClassifier(objectMetaClass);
+                foreach (var property in metaClassProperties)
+                {
+                    if (PropertyMethods.IsCollection(property))
+                    {
+                        propertyNamesWithCollection.Add(NamedElementMethods.GetName(property));
+                    }
+                    else
+                    {
+                        propertyNamesWithoutCollection.Add(NamedElementMethods.GetName(property));
+                    }
+                }
+            }
+
+            var propertiesWithCollection =
+                from p in propertyNamesWithCollection.Distinct()
+                let propertyContent = element.get<IReflectiveCollection>(p)
+                select new {propertyName = p, propertyContent};
+
+            var propertiesWithoutCollection =
+                (from p in propertyNamesWithoutCollection.Distinct()
+                    let propertyContent = element.get(p)
                     select new {propertyName = p, propertyContent}).ToList();
 
             if (propertiesWithoutCollection.Any())
@@ -796,10 +825,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     .OfType<IElement>()
                     .GroupBy(x => x.getMetaClass());
 
-                if (elementsWithoutMetaClass.Any())
+                if (elementsWithoutMetaClass.Any() || !elementsAsObjects.Any())
                 {
+                    // If there are elements included and they are filled
+                    // OR, if there is no element included at all, create the corresponding list form
                     var form = _factory.create(_formAndFields.__ListForm);
-                    form.set(_FormAndFields._ListForm.name, "Unclassified");
+                    form.set(_FormAndFields._ListForm.name, pair.propertyName);
                     form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
 
                     foreach (var item in elementsWithoutMetaClass)

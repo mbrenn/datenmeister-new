@@ -111,7 +111,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void ForceAutoGenerationOfForm()
         {
-            OverridingViewDefinition = new ViewDefinition(ViewDefinitionMode.AllProperties);
+            OverridingViewDefinition = new ViewDefinition(ViewDefinitionMode.ViaFormCreator);
             RecreateViews();
         }
         
@@ -308,8 +308,7 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var viewExtension in viewDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
                 
-                tabViewExtensions.AddRange(GetViewExtensions());
-                            
+                tabViewExtensions.AddRange(GetViewExtensions());            
 
                 AddTab(value, tab, tabViewExtensions, container);
             }

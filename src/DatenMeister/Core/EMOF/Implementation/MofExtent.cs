@@ -117,7 +117,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object other)
+        public bool @equals(object? other)
         {
             if (other is MofExtent otherAsExtent)
             {

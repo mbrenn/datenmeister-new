@@ -13,7 +13,7 @@
         /// <summary>
         /// Returns all properties by form creator
         /// </summary>
-        AllProperties = 0x01,
+        ViaFormCreator = 0x01,
 
         /// <summary>
         /// Allows the finding of a form via the view finder

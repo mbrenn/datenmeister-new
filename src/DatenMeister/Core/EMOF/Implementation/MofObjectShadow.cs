@@ -22,7 +22,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             Uri = uri;
         }
 
-        public bool equals(object other)
+        public bool equals(object? other)
             => MofObject.AreEqual(this, other as IObject);
 
         public object? get(string property) => null;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
@@ -28,7 +29,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <summary>
         /// Stores the associated workspace logic
         /// </summary>
-        private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IWorkspaceLogic? _workspaceLogic;
 
         /// <summary>
         /// Stores the factory to create the fields and forms
@@ -40,11 +41,11 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// </summary>
         private readonly _FormAndFields _formAndFields;
 
-        private IElement _stringType;
-        private IElement _integerType;
-        private IElement _booleanType;
-        private IElement _realType;
-        private IElement _dateTimeType;
+        private IElement? _stringType;
+        private IElement? _integerType;
+        private IElement? _booleanType;
+        private IElement? _realType;
+        private IElement? _dateTimeType;
 
         /// <summary>
         /// Stores the creation mode
@@ -238,11 +239,17 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 IElement form;
                 if (_viewLogic != null)
                 {
+                    var extent = (elements as IHasExtent)?.Extent;
+                    if (extent == null)
+                    {
+                        throw new InvalidOperationException("elements does not have an extent");
+                    }
+                    
                     // Asks the view logic whether it has a list form for the specific metaclass
                     // It will ask the form creator, if there is no view association directly referencing
                     // to the element
                     form = _viewLogic.GetListFormForExtent(
-                        (elements as IHasExtent)?.Extent,
+                        extent,
                         groupedMetaclass,
                         ViewDefinitionMode.Default);
 
@@ -506,7 +513,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             foreach (var property in classifierMethods)
             {
                 wasInMetaClass = true;
-                var propertyName = property.get("name").ToString();
+                var propertyName = property.get("name")!.ToString();
 
                 var isAlreadyIn = form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
@@ -725,9 +732,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             // Get all properties of the elements
             var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet().ToList();
-            if (properties == null)
+            properties ??= new List<string>();
+            var flagAddByMetaClass = creationMode.HasFlag(CreationMode.ByMetaClass) ||
+                                     creationMode.HasFlag(CreationMode.AddMetaClass);
+
+            if (flagAddByMetaClass && objectMetaClass != null)
             {
-                throw new InvalidOperationException("ExtentForm cannot be created because given element is not of Type IObjectAllProperties");
+                properties.AddRange(ClassifierMethods.GetPropertyNamesOfClassifier(objectMetaClass));
             }
 
             var propertiesWithCollection =

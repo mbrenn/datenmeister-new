@@ -15,7 +15,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView
         /// <summary>
         /// Gets or sets the action that shall be executed upon click
         /// </summary>
-        public Action<IObject?> Action { get; set; }
+        public Action<IObject> Action { get; set; }
 
         public TreeViewItemCommandDefinition(string text, Action<IObject> onClick)
         {

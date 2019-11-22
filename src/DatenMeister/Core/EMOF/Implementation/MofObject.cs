@@ -76,7 +76,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
             => @equals(obj);
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object other)
+        public bool @equals(object? other)
             => AreEqual(this, other as IObject);
 
         /// <inheritdoc />

@@ -7,7 +7,7 @@ namespace DatenMeister.Core.EMOF.Interface.Reflection
     /// </summary>
     public interface IObject
     {
-        bool equals(object other);
+        bool equals(object? other);
 
         object? get(string property);
 

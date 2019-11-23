@@ -435,7 +435,7 @@ namespace DatenMeister.Modules.ViewFinder
                 var foundForm = viewFinder.FindFormsFor(
                     new FindViewQuery
                     {
-                        extentType = (element as IHasExtent)?.Extent?.GetExtentType(),
+                        extentType = (element as IHasExtent)?.Extent?.GetExtentType() ?? string.Empty,
                         viewType = ViewType.ObjectList
                     }).FirstOrDefault();
 

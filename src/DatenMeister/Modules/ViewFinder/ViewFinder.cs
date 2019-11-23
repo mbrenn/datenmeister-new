@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -95,6 +97,7 @@ namespace DatenMeister.Modules.ViewFinder
                 if (associationForm == null)
                 {
                     Logger.Warn("Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
+                    continue;
                 }
 
                 var isMatching = true;

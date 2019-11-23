@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Modules.ViewFinder
+﻿#nullable enable 
+
+namespace DatenMeister.Modules.ViewFinder
 {
     /// <summary>
     /// Defines an enumeration of possible location types

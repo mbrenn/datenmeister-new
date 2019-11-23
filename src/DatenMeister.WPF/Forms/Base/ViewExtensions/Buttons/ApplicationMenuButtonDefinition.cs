@@ -18,7 +18,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
         public ApplicationMenuButtonDefinition(
             string name,
             Action onPressed,
-            string imageName,
+            string? imageName,
             string categoryName,
             int priority = 0) : base(name, NavigationScope.Application, imageName, categoryName, priority)
         {

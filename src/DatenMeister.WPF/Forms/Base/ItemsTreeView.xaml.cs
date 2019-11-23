@@ -517,8 +517,8 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         System.Windows.MessageBox.Show("No item selected");
                     }
-                    
-                    extension.Action(selectedItem);
+
+                    extension.Action?.Invoke(selectedItem);
                 };
                 
                 menuItems.Add(menuItem);

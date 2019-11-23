@@ -341,7 +341,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="viewExtensions">Stores the view extensions</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
-        public ItemExplorerTab? AddTab(
+        public ItemExplorerTab? AddTab( 
             IObject value,
             IElement tabForm,
             IEnumerable<ViewExtension> viewExtensions,
@@ -595,7 +595,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         private IReflectiveCollection GetPropertiesAsReflection(IObject value, string propertyName)
         {
-            if (propertyName == null)
+            if (string.IsNullOrEmpty(propertyName))
             {
                 return new PropertiesAsReflectiveCollection(value);
             }

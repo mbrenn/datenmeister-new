@@ -308,8 +308,10 @@ namespace DatenMeister.Modules.ViewFinder
             return _cachedFormAndField;
         }
 
-        public IElement GetDetailForm(IObject element, IExtent extent, ViewDefinitionMode viewDefinitionMode)
+        public IElement GetDetailForm(IObject? element, IExtent extent, ViewDefinitionMode viewDefinitionMode)
         {
+            if (element == null) throw new ArgumentNullException(nameof(element));
+            
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
             {
                 // Tries to find the form

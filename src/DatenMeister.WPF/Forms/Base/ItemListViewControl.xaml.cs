@@ -133,7 +133,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        ///     GEts the currently selected item
+        ///     Gets the currently selected item
         /// </summary>
         /// <returns>Item being selected</returns>
         public IObject GetSelectedItem() 

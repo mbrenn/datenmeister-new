@@ -374,16 +374,6 @@ namespace DatenMeister.WPF.Forms.Base
                         ?.ToList()
                     ?? new List<object>();
 
-                // Gets the default types by the View Extensions
-                foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
-                {
-                    defaultTypesForNewItems.Add(extension.MetaClass);
-                }
-                
-                // 
-                // Creates the menu and buttons for the default types. 
-                CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions);
-
                 // Allows the deletion of an item
                 if (tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) != true)
                 {
@@ -412,9 +402,21 @@ namespace DatenMeister.WPF.Forms.Base
                             }));
                 }
 
+                createdUserControl = control;
+
                 // Sets the content for the tabs
                 if (value is IExtent extent)
                 {
+                    // Gets the default types by the View Extensions
+                    foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
+                    {
+                        defaultTypesForNewItems.Add(extension.MetaClass);
+                    }
+                    
+                    // 
+                    // Creates the menu and buttons for the default types. 
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions);
+                    
                     // Extent shall be shown
                     IReflectiveCollection elements = extent.elements();
                     elements = FilterByMetaClass(elements, tabForm);
@@ -430,7 +432,7 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         var extentData = new ViewExtensionForItemPropertiesInformation(ViewExtensionContext.View)
                         {
-                            NavigationGuest = this,
+                            NavigationGuest = control,
                             NavigationHost = NavigationHost,
                             Value = value,
                             Property = propertyName
@@ -442,14 +444,22 @@ namespace DatenMeister.WPF.Forms.Base
                             usedViewExtensions.AddRange(plugin.GetViewExtensions(extentData));
                         }
                     }
+
+                    // Gets the default types by the View Extensions
+                    foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
+                    {
+                        defaultTypesForNewItems.Add(extension.MetaClass);
+                    }
+                    
+                    // 
+                    // Creates the menu and buttons for the default types. 
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions);
                     
                     // The properties of a specific item shall be shown
                     var elements = GetPropertiesAsReflection(value, propertyName);
                     elements = FilterByMetaClass(elements, tabForm);
                     control.SetContent(elements, tabForm, usedViewExtensions);
                 }
-
-                createdUserControl = control;
             }
 
             if (createdUserControl == null)

@@ -832,6 +832,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     // OR, if there is no element included at all, create the corresponding list form
                     var form = _factory.create(_formAndFields.__ListForm);
                     form.set(_FormAndFields._ListForm.name, pair.propertyName);
+                    form.set(_FormAndFields._ListForm.property, pair.propertyName);
                     form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
 
                     foreach (var item in elementsWithoutMetaClass)

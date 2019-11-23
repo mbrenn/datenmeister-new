@@ -197,7 +197,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="specializedClassifer">Special class which is checked</param>
         /// <param name="generalizedClassifier">The class against the specialized will be checked against. </param>
         /// <returns>true, if</returns>
-        public static bool IsSpecializedClassifierOf(IElement specializedClassifer, IElement generalizedClassifier)
+        public static bool IsSpecializedClassifierOf(IElement? specializedClassifer, IElement? generalizedClassifier)
         {
             if (specializedClassifer == null || generalizedClassifier == null)
             {

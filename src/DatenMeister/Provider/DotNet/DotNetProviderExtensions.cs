@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
@@ -19,7 +21,7 @@ namespace DatenMeister.Provider.DotNet
         public static IElement CreateDotNetMofElement(
             this MofUriExtent extent,
             object value,
-            string id = null)
+            string? id = null)
         {
             if (!(extent.Provider is DotNetProvider providerAsDotNet))
             {
@@ -41,7 +43,7 @@ namespace DatenMeister.Provider.DotNet
         private static DotNetProviderObject CreateDotNetProviderObject(
             this DotNetProvider provider,
             object value,
-            string id = null)
+            string? id = null)
         {
             if (value == null)
             {
@@ -58,7 +60,7 @@ namespace DatenMeister.Provider.DotNet
             var result = new DotNetProviderObject(provider, value, metaclass);
             if (!string.IsNullOrEmpty(id))
             {
-                result.Id = id;
+                result.Id = id!;
             }
 
             return result;
@@ -70,7 +72,7 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="element">Element to be converted</param>
         /// <returns>The converted object</returns>
-        public static object ConvertToNative(object element)
+        public static object? ConvertToNative(object? element)
         {
             if (!DotNetHelper.IsOfProviderObject(element))
             {
@@ -92,9 +94,9 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="result">Value to be converted</param>
         /// <param name="provider">The provider being used to convert the .Net Value as MofElement</param>
         /// <returns>The converted or non-converted type</returns>
-        public static object CreateDotNetElementIfNecessary(
+        public static object? CreateDotNetElementIfNecessary(
             this DotNetProvider provider,
-            object result)
+            object? result)
         {
             if (result == null)
             {

@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using BurnSystems.Logging;
 using DatenMeister.Runtime.ExtentStorage;

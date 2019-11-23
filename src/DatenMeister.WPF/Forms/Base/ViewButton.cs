@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable 
+
+using System;
 using System.Windows.Controls;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -10,7 +12,7 @@ namespace DatenMeister.WPF.Forms.Base
             Click += (x, y) => { OnPressed(); };
         }
 
-        public event EventHandler Pressed;
+        public event EventHandler? Pressed;
 
         protected virtual void OnPressed()
         {

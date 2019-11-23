@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -34,9 +36,9 @@ namespace DatenMeister.Provider.DotNet
 
         private readonly _UML _umlHost;
 
-        private readonly IExtent _targetExtent;
+        private readonly IExtent? _targetExtent;
 
-        public IUriResolver UriResolver => _targetExtent as IUriResolver;
+        public IUriResolver? UriResolver => _targetExtent as IUriResolver;
 
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
@@ -45,7 +47,7 @@ namespace DatenMeister.Provider.DotNet
         /// class, properties and other MOF elements</param>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
-        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IExtent targetExtent = null)
+        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IExtent? targetExtent = null)
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
@@ -81,10 +83,15 @@ namespace DatenMeister.Provider.DotNet
         /// Creates a meta class for the given .Net Type
         /// </summary>
         /// <param name="type">Type to be converted</param>
+        /// <param name="options">Options being used to generate the type</param>
         /// <returns>The created meta class</returns>
-        public IElement CreateTypeFor(Type type, DotNetTypeGeneratorOptions options = null)
+        public IElement CreateTypeFor(Type type, DotNetTypeGeneratorOptions? options = null)
         {
             options ??= new DotNetTypeGeneratorOptions();
+            if (!(_targetExtent is MofExtent extent))
+            {
+                throw new InvalidOperationException("_targetExtent is not of MofExtent");
+            }
 
             if (type.IsClass)
             {
@@ -102,7 +109,7 @@ namespace DatenMeister.Provider.DotNet
                     var generalization = type.BaseType;
                     if (generalization != null && generalization != typeof(object))
                     {
-                        var generalizedClass = ((MofExtent) _targetExtent).ToResolvedElement(generalization);
+                        var generalizedClass = extent.ToResolvedElement(generalization);
 
                         if (generalizedClass == null)
                         {
@@ -173,7 +180,7 @@ namespace DatenMeister.Provider.DotNet
                 return enumClass;
             }
 
-            return null;
+            throw new InvalidOperationException("Unknown type to be converted");
         }
 
         /// <summary>
@@ -183,6 +190,11 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="umlProperty">Property which will have the property type stored according UML</param>
         private void SetProperty(Type property, IObject umlProperty)
         {
+            if (UriResolver == null)
+            {
+                throw new InvalidOperationException("UriResolver is null");
+            }
+            
             if (property == typeof(string))
             {
                 var stringType = UriResolver.Resolve(CoreTypeNames.StringType,
@@ -244,7 +256,12 @@ namespace DatenMeister.Provider.DotNet
                 }
                 else
                 {
-                    var propertyMofType = ((MofExtent) _targetExtent).TypeLookup.ToElement(propertyType);
+                    if (!(_targetExtent is MofExtent mofExtent))
+                    {
+                        throw new InvalidOperationException("_targetExtent is not of MofExtent");
+                    }
+                    
+                    var propertyMofType = mofExtent.TypeLookup.ToElement(propertyType);
 
                     if (propertyMofType != null)
                     {

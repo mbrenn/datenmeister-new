@@ -11,7 +11,7 @@ namespace DatenMeister.Core.EMOF.Interface.Reflection
 
         object? get(string property);
 
-        void set(string property, object value);
+        void set(string property, object? value);
 
         bool isSet(string property);
 

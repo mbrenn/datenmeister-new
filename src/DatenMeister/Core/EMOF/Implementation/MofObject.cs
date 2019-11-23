@@ -209,7 +209,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
 
         /// <inheritdoc />
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             // Checks if the value is a default value. If yes, it can be removed...
             if (MofHelper.IsDefaultValue(this, property, value))
@@ -221,6 +221,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             // Value is not a default value, so it needs to be stored into the database
             if (DotNetHelper.IsOfEnumeration(value))
             {
+                if (value == null) throw new ArgumentNullException(nameof(value));
+                
                 var valueAsEnumeration = (IEnumerable<object>) value;
                 ProviderObject.EmptyListForProperty(property);
                 foreach (var child in valueAsEnumeration)
@@ -260,7 +262,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="parentProviderObject">The parent object containing the child after the allocation</param>
         /// <param name="child">Child as potential IElement object</param>
         /// <param name="childForProviders">Child as potential provider object</param>
-        internal static void SetContainer(IProviderObject parentProviderObject, object child, object childForProviders)
+        internal static void SetContainer(IProviderObject parentProviderObject, object? child, object childForProviders)
         {
             if (child is IElement childAsElement && childForProviders is IProviderObject childProviderObject)
             {

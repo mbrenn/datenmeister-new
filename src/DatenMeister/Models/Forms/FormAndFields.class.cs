@@ -338,6 +338,9 @@ namespace DatenMeister.Models.Forms
             public static string @isSaving = "isSaving";
             public IElement _isSaving = null;
 
+            public static string @initialPathToDirectory = "initialPathToDirectory";
+            public IElement _initialPathToDirectory = null;
+
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 

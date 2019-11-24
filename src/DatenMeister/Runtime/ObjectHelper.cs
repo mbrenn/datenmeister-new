@@ -104,12 +104,18 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(DateTime))
             {
-                if (DateTime.TryParse(value.GetAsSingle(property).ToString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                if (DateTime.TryParse(value.GetAsSingle(property).ToString(), CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out var result))
                 {
                     return (T) (object) result;
                 }
 
                 return (T) (object) DateTime.MinValue;
+            }
+
+            if (typeof(T) == typeof(object))
+            {
+                return (T) value.GetAsSingle(property);
             }
 
             if (typeof(T).IsEnum)

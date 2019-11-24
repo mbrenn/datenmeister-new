@@ -98,7 +98,7 @@
     <Compile Include="Forms\Detail\Fields\DateTimeField.cs" />
     <Compile Include="Forms\Detail\Fields\DropdownField.cs" />
     <Compile Include="Forms\Detail\Fields\FieldFactory.cs" />
-    <Compile Include="Forms\Detail\Fields\FileReferenceField.cs" />
+    <Compile Include="Forms\Detail\Fields\FileSelectionField.cs" />
     <Compile Include="Forms\Detail\Fields\IDetailField.cs" />
     <Compile Include="Forms\Detail\Fields\MetaClassElementField.cs" />
     <Compile Include="Forms\Detail\Fields\ReadOnlyListField.cs" />

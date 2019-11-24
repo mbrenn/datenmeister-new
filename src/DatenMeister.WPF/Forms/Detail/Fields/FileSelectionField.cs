@@ -8,7 +8,7 @@ using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Detail.Fields
 {
-    public class FileReferenceField : IDetailField
+    public class FileSelectionField : IDetailField
     {
         private string _name;
         private TextBox _textField;
@@ -70,13 +70,15 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 var isSaving = fieldData.getOrDefault<bool>(_FormAndFields._FileSelectionFieldData.isSaving);
                 var defaultExtension =
                     fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.defaultExtension);
+                var initialDirectory =
+                    fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.initialPathToDirectory);
 
                 if (isSaving)
                 {
                     var dlg = new Microsoft.Win32.SaveFileDialog
                     {
                         DefaultExt = defaultExtension,
-                        InitialDirectory = _valueText ?? string.Empty,
+                        InitialDirectory = _valueText ?? initialDirectory ?? string.Empty,
                         OverwritePrompt = true,
                         RestoreDirectory = true
                     };

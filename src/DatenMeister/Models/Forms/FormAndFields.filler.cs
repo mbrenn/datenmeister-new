@@ -500,6 +500,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.FileSelectionFieldData._isSaving = value;
                                 }
+                                if(name == "initialPathToDirectory") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._initialPathToDirectory = value;
+                                }
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.FileSelectionFieldData._isAttached = value;

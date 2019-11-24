@@ -31,5 +31,10 @@
         /// using a save dialog or an open dialog
         /// </summary>
         public bool isSaving { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the path to the directory
+        /// </summary>
+        public string initialPathToDirectory { get; set; }
     }
 }

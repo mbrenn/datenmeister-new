@@ -782,7 +782,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             var propertiesWithoutCollection =
                 (from p in propertyNamesWithoutCollection.Distinct()
-                    let propertyContent = element.get(p)
+                    let propertyContent = element.getOrDefault<object>(p)
                     select new {propertyName = p, propertyContent}).ToList();
 
             if (propertiesWithoutCollection.Any())

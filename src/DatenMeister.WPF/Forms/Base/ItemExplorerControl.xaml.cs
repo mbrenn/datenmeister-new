@@ -449,7 +449,22 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         defaultTypesForNewItems.Add(extension.MetaClass);
                     }
-                    
+
+                    // Adds the default type for the extension, if appropriate
+                    var metaClass = (value as IElement)?.getMetaClass();
+                    if (metaClass != null)
+                    {
+                        var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, propertyName);
+                        if (property != null)
+                        {
+                            var elementProperty = PropertyMethods.GetPropertyType(property);
+                            if (elementProperty != null)
+                            {
+                                defaultTypesForNewItems.Add(elementProperty);
+                            }
+                        }
+                    }
+
                     // 
                     // Creates the menu and buttons for the default types. 
                     CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, propertyName);

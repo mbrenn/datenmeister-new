@@ -654,7 +654,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
-        /// Gets the extent form for the given metaclass
+        /// Gets the extent form for the given metaclass.
+        /// This method is used when the user selects a metaclass to which a form shall be created
         /// </summary>
         /// <param name="metaClass">The meta class for which the extent form shall be created</param>
         /// <returns>The created extent form</returns>
@@ -750,7 +751,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     where propertyContent != null
                     select p).ToList();
 
-
                 propertyNamesWithoutCollection = (from p in properties
                     where !element.IsPropertyOfType<IReflectiveCollection>(p)
                     let propertyContent = element.get(p)
@@ -791,7 +791,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 detailForm.set(_FormAndFields._DetailForm.name, "Detail");
 
                 var fields = new List<IElement>();
-
                 foreach (var pair in propertiesWithoutCollection)
                 {
                     if (objectMetaClass != null)

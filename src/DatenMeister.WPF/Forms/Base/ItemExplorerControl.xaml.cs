@@ -415,7 +415,7 @@ namespace DatenMeister.WPF.Forms.Base
                     
                     // 
                     // Creates the menu and buttons for the default types. 
-                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions);
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, null);
                     
                     // Extent shall be shown
                     IReflectiveCollection elements = extent.elements();
@@ -436,7 +436,6 @@ namespace DatenMeister.WPF.Forms.Base
                             NavigationHost = NavigationHost,
                             Value = value,
                             Property = propertyName
-
                         };
 
                         foreach (var plugin in viewExtensionPlugins)
@@ -453,7 +452,7 @@ namespace DatenMeister.WPF.Forms.Base
                     
                     // 
                     // Creates the menu and buttons for the default types. 
-                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions);
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, propertyName);
                     
                     // The properties of a specific item shall be shown
                     var elements = GetPropertiesAsReflection(value, propertyName);
@@ -498,10 +497,13 @@ namespace DatenMeister.WPF.Forms.Base
         ///     the user</param>
         /// <param name="usedViewExtensions">List of view extension which are applicable for
         ///     the regarded item</param>
+        /// <param name="parentProperty">Defines the name of the parent property to which
+        /// the item will be added. Null if item will be added to the given extent</param>
         /// <returns>List of menu items being used as context menu</returns>
         private void CreateMenuAndButtonsForDefaultTypes(
             IEnumerable<object> defaultTypesForNewItems,
-            List<ViewExtension> usedViewExtensions)
+            List<ViewExtension> usedViewExtensions,
+            string? parentProperty)
         {
             if (usedViewExtensions == null) throw new ArgumentNullException(nameof(usedViewExtensions));
             // Stores the menu items for the context menu
@@ -524,22 +526,24 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     var newType =
                         type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
-                    var parentProperty =
-                        type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
+                    var tempParentProperty =
+                        type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty)
+                        ?? parentProperty;
 
-                    Create(newType, parentProperty);
+                    Create(newType, tempParentProperty);
                 }
                 else
                 {
-                    Create(type, null);
+                    Create(type, parentProperty);
                 }
 
-                void Create(IElement newType, string? parentProperty)
+                void Create(IElement newType, string? innerParentProperty)
                 {
                     var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
 
                     usedViewExtensions.Add(new GenericButtonDefinition(
-                        $"New {typeName}", () => CreateNewElementByUser(newType, parentProperty)));
+                        $"New {typeName}", 
+                        () => CreateNewElementByUser(newType, innerParentProperty)));
 
                     foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
                     {
@@ -555,7 +559,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            void CreateNewElementByUser(IElement? type, string? parentProperty)
+            void CreateNewElementByUser(IElement? type, string? innerParentProperty)
             {
                 if (IsExtentSelectedInTreeview)
                     NavigatorForItems.NavigateToNewItemForExtent(
@@ -564,7 +568,7 @@ namespace DatenMeister.WPF.Forms.Base
                         type);
                 else
                 {
-                    if (parentProperty == null)
+                    if (innerParentProperty == null)
                     {
                         throw new InvalidOperationException("parentProperty == null");
                     }
@@ -573,7 +577,7 @@ namespace DatenMeister.WPF.Forms.Base
                         NavigationHost,
                         SelectedPackage,
                         type,
-                        parentProperty);
+                        innerParentProperty);
                 }
             }
 

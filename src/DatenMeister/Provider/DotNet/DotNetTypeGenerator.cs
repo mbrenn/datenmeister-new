@@ -51,7 +51,7 @@ namespace DatenMeister.Provider.DotNet
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
-            _targetExtent = targetExtent;
+            _targetExtent = targetExtent ?? (factoryForTypes as MofFactory)?.Extent;
         }
 
         /// <summary>

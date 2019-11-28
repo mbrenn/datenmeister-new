@@ -42,14 +42,14 @@ namespace RazorPagesMovie
         {
             app.UseDeveloperExceptionPage();
             
-            if (env.IsDevelopment())
+           /* if (env.IsDevelopment())
             {
             }
             else
             {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
-            }
+            }*/
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

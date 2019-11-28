@@ -52,6 +52,7 @@
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ModelHelper" />
     <Folder Include="Models\DataViews\" />
     <Folder Include="Models\ManagementProvider\" />
   </ItemGroup>

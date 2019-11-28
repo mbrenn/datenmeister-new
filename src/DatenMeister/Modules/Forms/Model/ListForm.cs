@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Models.Forms
+namespace DatenMeister.Modules.Forms.Model
 {
     public class ListForm : Form
     {

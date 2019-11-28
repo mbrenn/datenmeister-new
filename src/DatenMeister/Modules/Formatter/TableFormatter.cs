@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
-namespace DatenMeister.Provider
+namespace DatenMeister.Modules.Formatter
 {
     public class TableFormatter
     {

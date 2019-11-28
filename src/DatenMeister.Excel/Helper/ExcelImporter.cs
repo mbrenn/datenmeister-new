@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Excel.Annotations;
+using DatenMeister.Excel.Properties;
 using DatenMeister.Excel.Spreadsheet;
 
 namespace DatenMeister.Excel.Helper

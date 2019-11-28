@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DatenMeister.Models.Forms
+namespace DatenMeister.Modules.Forms.Model
 {
     public class ExtentForm
     {

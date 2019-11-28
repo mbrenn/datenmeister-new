@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Filler;
 using DatenMeister.Provider.InMemory;
@@ -7,7 +6,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Core
+namespace DatenMeister.Tests.Xmi.EMOF
 {
     [TestFixture]
     public class DataLayerTests

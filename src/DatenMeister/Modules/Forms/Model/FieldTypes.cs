@@ -1,8 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace DatenMeister.Models.Forms
+namespace DatenMeister.Modules.Forms.Model
 {
     public static class FieldTypes
     {

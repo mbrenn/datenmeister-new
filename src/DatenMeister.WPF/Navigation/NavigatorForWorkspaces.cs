@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.ManagementProviders;

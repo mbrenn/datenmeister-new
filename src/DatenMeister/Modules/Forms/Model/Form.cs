@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DatenMeister.Models.Forms
+namespace DatenMeister.Modules.Forms.Model
 {
     /// <summary>
     /// Defines the view of

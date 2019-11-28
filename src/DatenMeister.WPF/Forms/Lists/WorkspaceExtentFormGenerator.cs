@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;

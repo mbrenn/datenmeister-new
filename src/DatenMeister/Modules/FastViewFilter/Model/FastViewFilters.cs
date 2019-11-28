@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DatenMeister.Models.FastViewFilter
+namespace DatenMeister.Modules.FastViewFilter.Model
 {
     public partial class FastViewFilters
     {

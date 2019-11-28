@@ -19,6 +19,8 @@ using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
+using DatenMeister.Modules.FastViewFilter.Model;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;

@@ -1,4 +1,4 @@
-﻿using DatenMeister.Excel.Annotations;
+﻿using DatenMeister.Excel.Properties;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;

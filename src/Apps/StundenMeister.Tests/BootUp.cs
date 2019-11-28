@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Autofac;
 using DatenMeister.Core;
+using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Runtime;
 using NUnit.Framework;

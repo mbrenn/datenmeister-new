@@ -21,7 +21,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // ***********************************************************************
 
-namespace NUnitLite.Tests
+using NUnitLite;
+
+namespace DatenMeister.Tests
 {
     public class Program
     {

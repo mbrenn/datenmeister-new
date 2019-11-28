@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Models.Forms
+﻿namespace DatenMeister.Modules.Forms.Model
 {
     public class SeparatorLineFieldData
     {

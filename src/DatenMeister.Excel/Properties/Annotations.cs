@@ -30,7 +30,7 @@ using System;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Excel.Annotations
+namespace DatenMeister.Excel.Properties
 {
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,

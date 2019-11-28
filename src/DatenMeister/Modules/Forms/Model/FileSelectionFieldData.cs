@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Models.Forms
+﻿namespace DatenMeister.Modules.Forms.Model
 {
     /// <summary>
     /// This field data allows the selection of

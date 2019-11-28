@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Models.Forms
+namespace DatenMeister.Modules.Forms.Model
 {
     /// <summary>
     /// Performs an allocation between the view and a specific metaclass which supports the retrieval of default views.

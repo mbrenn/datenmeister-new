@@ -1,6 +1,6 @@
 using System;
 
-namespace DatenMeister.Core.Plugins
+namespace DatenMeister.Runtime.Plugins
 {
     /// <summary>
     /// Defines the loadingPosition point of the plugin. It may be at start after having defined all objects and resolvement or it may be at the end of DatenMeisterPreparation

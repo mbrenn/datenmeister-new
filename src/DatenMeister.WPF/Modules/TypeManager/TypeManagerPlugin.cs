@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.Plugins;
-using DatenMeister.Excel.Annotations;
+﻿using DatenMeister.Excel.Annotations;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.WPF.Modules.TypeManager
 {

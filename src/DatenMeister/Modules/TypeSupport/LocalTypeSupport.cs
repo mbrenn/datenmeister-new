@@ -7,13 +7,13 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 

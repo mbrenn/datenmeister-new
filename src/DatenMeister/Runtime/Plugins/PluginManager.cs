@@ -8,7 +8,7 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Integration;
 
-namespace DatenMeister.Core.Plugins
+namespace DatenMeister.Runtime.Plugins
 {
     public class PluginManager
     {

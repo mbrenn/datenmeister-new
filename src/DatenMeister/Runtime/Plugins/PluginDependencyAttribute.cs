@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Core.Plugins
+namespace DatenMeister.Runtime.Plugins
 {
     /// <summary>
     /// Defines a dependency between two plugins. The plugin being dependent that the other plugin has been loaded

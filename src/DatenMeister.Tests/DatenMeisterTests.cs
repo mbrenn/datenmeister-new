@@ -3,8 +3,8 @@ using System.Reflection;
 using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.Plugins;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests

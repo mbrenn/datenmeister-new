@@ -1,6 +1,6 @@
-﻿using DatenMeister.Core.Plugins;
-using DatenMeister.Models.FastViewFilter;
+﻿using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.FastViewFilter
 {

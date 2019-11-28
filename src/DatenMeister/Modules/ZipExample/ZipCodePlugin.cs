@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Autofac;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample

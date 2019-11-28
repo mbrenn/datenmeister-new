@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Core.Plugins
+﻿namespace DatenMeister.Runtime.Plugins
 {
     /// <summary>
     /// Defines the interface for the plugins.

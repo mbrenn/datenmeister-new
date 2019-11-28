@@ -5,7 +5,7 @@ using System.Text;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
-namespace DatenMeister.Json
+namespace DatenMeister.Modules.Json
 {
     /// <summary>
     /// Converts an object or an element directly to a JSON element

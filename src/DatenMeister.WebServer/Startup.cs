@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using RazorPagesMovie.Data;
 
 namespace RazorPagesMovie
 {
@@ -32,8 +29,8 @@ namespace RazorPagesMovie
         {
             services.AddRazorPages();
 
-            services.AddDbContext<RazorPagesMovieContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("MovieContext")));
+           /* services.AddDbContext<RazorPagesMovieContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("MovieContext")));*/
         }
         #endregion
     

@@ -3,8 +3,6 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
-using DatenMeister.Modules.FastViewFilter.Model;
 using DatenMeister.Provider.DotNet;
 // Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator
 
@@ -26,21 +24,21 @@ namespace DatenMeister.Models.FastViewFilter
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
-                var type = typeof(ComparisonType);
+                var type = typeof(DatenMeister.Modules.FastViewFilter.Model.ComparisonType);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ComparisonType = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(PropertyComparisonFilter);
+                var type = typeof(DatenMeister.Modules.FastViewFilter.Model.PropertyComparisonFilter);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__PropertyComparisonFilter = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(PropertyContainsFilter);
+                var type = typeof(DatenMeister.Modules.FastViewFilter.Model.PropertyContainsFilter);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__PropertyContainsFilter = typeAsElement;

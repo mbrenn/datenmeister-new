@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Models.ManagementProvider
+namespace DatenMeister.Provider.ManagementProviders.Model
 {
     public class FillTheManagementProvider : DatenMeister.Core.Filler.IFiller<_ManagementProvider>
     {

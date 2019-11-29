@@ -307,8 +307,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             foreach (var element in elements.OfType<IObject>())
             {
                 var metaClass = (element as IElement)?.getMetaClass();
-                if (firstElementMetaClass == null || creationMode.HasFlag(CreationMode.AddMetaClass))
+                if (firstElementMetaClass == null || !creationMode.HasFlag(CreationMode.AddMetaClass))
                 {
+                    // If this is the first element or when the creator does not allow the addition
+                    // of a metaclass
                     firstElementMetaClass = metaClass;
                 }
                 else if (firstElementMetaClass != metaClass && !metaClassAdded)
@@ -359,6 +361,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
             defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
+            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
             result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
 
             return result;

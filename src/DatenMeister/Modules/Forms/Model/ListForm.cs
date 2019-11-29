@@ -43,15 +43,4 @@ namespace DatenMeister.Modules.Forms.Model
         /// </summary>
         public IList<IElement> fastViewFilters { get; set; }
     }
-
-    /// <summary>
-    /// Gets or sets a structure defining the type of the new element
-    /// but also the property to which the new element is associated
-    /// </summary>
-    public class DefaultTypeForNewElement
-    {
-        public IElement metaClass { get; set; }
-
-        public string parentProperty { get; set; }
-    }
 }

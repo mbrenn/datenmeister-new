@@ -65,6 +65,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     return new SubElementsField();
                 if (id == typeof(DropDownFieldData).FullName)
                     return new DropdownField();
+                if (id == typeof(CheckboxFieldData).FullName)
+                    return new CheckboxField();
                 if (id == typeof(DateTimeFieldData).FullName)
                     return new DateTimeField();
                 if (id == typeof(ReferenceFieldData).FullName)

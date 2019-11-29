@@ -369,6 +369,9 @@ namespace DatenMeister.Models.Forms
 
         public class _DefaultTypeForNewElement
         {
+            public static string @name = "name";
+            public IElement _name = null;
+
             public static string @metaClass = "metaClass";
             public IElement _metaClass = null;
 

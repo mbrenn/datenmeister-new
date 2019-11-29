@@ -84,7 +84,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             /// <summary>
             /// Creates all properties that are possible
             /// </summary>
-            All = ByMetaClass | ByProperties | AddMetaClass
+            All = ByMetaClass | ByProperties | AddMetaClass,
         }
 
         public FormCreator(ViewLogic viewLogic)
@@ -298,14 +298,26 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public IElement CreateListForm(IReflectiveCollection elements, CreationMode creationMode)
         {
             var cache = new FormCreatorCache();
-
             var alreadyVisitedMetaClasses = new HashSet<IElement>();
 
+            IObject? firstElementMetaClass = null;
+            var metaClassAdded = false;
             var result = _factory.create(_formAndFields.__ListForm);
 
             foreach (var element in elements.OfType<IObject>())
             {
                 var metaClass = (element as IElement)?.getMetaClass();
+                if (firstElementMetaClass == null || creationMode.HasFlag(CreationMode.AddMetaClass))
+                {
+                    firstElementMetaClass = metaClass;
+                }
+                else if (firstElementMetaClass != metaClass && !metaClassAdded)
+                {
+                    metaClassAdded = true;
+                    // Create the metaclass as a field
+                    var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                    result.get<IReflectiveSequence>(_FormAndFields._Form.field).add(0, metaClassField);
+                }
 
                 if (creationMode.HasFlag(CreationMode.ByMetaClass) && metaClass != null)
                 {
@@ -340,7 +352,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             var result = _factory.create(_formAndFields.__ListForm);
 
-            result.set(_FormAndFields._ListForm.title, $"{NamedElementMethods.GetName(metaClass)}");
+            var nameOfListForm = NamedElementMethods.GetName(metaClass);
+            result.set(_FormAndFields._ListForm.title, nameOfListForm);
+            result.set(_FormAndFields._ListForm.name, nameOfListForm);
             AddToFormByMetaclass(result, metaClass, creationMode);
 
             var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);

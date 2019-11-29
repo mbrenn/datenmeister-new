@@ -134,6 +134,12 @@ namespace DatenMeister.Uml.Helper
             visitedElements ??= new HashSet<IElement>();
             var extent = (element as IHasExtent)?.Extent;
             var workspace = extent?.GetWorkspace();
+            if (extent == null)
+            {
+                // The element is not connected to an extent, so metaclasses cannot be found
+                yield break;
+            }
+            
             var classInstance = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
             if (classInstance == null)
             {

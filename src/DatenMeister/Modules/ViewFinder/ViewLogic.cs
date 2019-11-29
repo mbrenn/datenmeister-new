@@ -450,7 +450,8 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
                 var formCreator = new FormCreator(this);
-                var createdForm = formCreator.CreateListForm(element.get<IReflectiveCollection>(property),
+                var createdForm = formCreator.CreateListForm(
+                    element.get<IReflectiveCollection>(property),
                     FormCreator.CreationMode.All);
 
                 return createdForm;

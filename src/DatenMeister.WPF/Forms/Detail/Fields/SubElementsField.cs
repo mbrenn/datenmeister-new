@@ -73,7 +73,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             _panel.Children.Clear();
 
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
-            IObject form = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.form);
+            var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
 
             valueOfElement ??= _element.GetAsReflectiveCollection(_propertyName);
             var valueCount = valueOfElement.Count();

@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -414,6 +415,9 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         defaultTypesForNewItems.Add(extension.MetaClass);
                     }
+
+                    // Filter MofObject Shadows out, they are not useable anyway.
+                    defaultTypesForNewItems = defaultTypesForNewItems.Where(x => !(x is MofObjectShadow)).ToList();
                     
                     // 
                     // Creates the menu and buttons for the default types. 

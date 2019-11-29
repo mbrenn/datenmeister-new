@@ -7,11 +7,11 @@ namespace DatenMeister.Core.EMOF.Interface.Reflection
     /// </summary>
     public interface IObject
     {
-        bool equals(object other);
+        bool equals(object? other);
 
         object? get(string property);
 
-        void set(string property, object value);
+        void set(string property, object? value);
 
         bool isSet(string property);
 

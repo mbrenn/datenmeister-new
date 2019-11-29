@@ -4,6 +4,8 @@ using DatenMeister.Excel.Models;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DataViews;
+using DatenMeister.Modules.FastViewFilter.Model;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI;

@@ -117,7 +117,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object other)
+        public bool @equals(object? other)
         {
             if (other is MofExtent otherAsExtent)
             {
@@ -146,7 +146,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
                 ProviderCapability.StoreMetaDataInExtent)
@@ -154,8 +154,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
+                
                 if (DotNetHelper.IsOfEnumeration(value))
                 {
+                    if (value == null) throw new InvalidOperationException("value == null");
+                    
                     nullObject.EmptyListForProperty(property);
                     foreach (var child in (IEnumerable<object>) value)
                     {
@@ -390,7 +393,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">Extent being used to create the factory or being used for .Net TypeLookup</param>
         /// <param name="container">Container which will host the newly created object</param>
         /// <returns>The converted object being ready for Provider</returns>
-        public static object? ConvertForSetting(object value, MofExtent? extent, MofObject? container)
+        public static object? ConvertForSetting(object? value, MofExtent? extent, MofObject? container)
         {
             if (value == null)
             {
@@ -477,7 +480,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">The Mofobject for which the element will be created</param>
         /// <param name="childValue">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public static object? ConvertForSetting(IObject value, object childValue)
+        public static object? ConvertForSetting(IObject value, object? childValue)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 

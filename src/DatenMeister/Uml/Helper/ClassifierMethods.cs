@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -21,7 +23,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
         /// <param name="alreadyIn">Returns the properties that are already in. </param>
-        public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier, HashSet<string> alreadyIn = null)
+        public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier, HashSet<string>? alreadyIn = null)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
             alreadyIn ??= new HashSet<string>();
@@ -30,7 +32,10 @@ namespace DatenMeister.Uml.Helper
 
             if (classifier.isSet(propertyOwnedAttribute))
             {
-                var result = (IEnumerable) classifier.get(propertyOwnedAttribute);
+                var result = (IEnumerable) (classifier.get(propertyOwnedAttribute) ??
+                                            throw new NotImplementedException(
+                                                "classifier.get did not include 'ownedAttribute'"));
+                
                 foreach (var item in result.OfType<IElement>())
                 {
                     // Checks, if a property with the same name was already selected
@@ -77,7 +82,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="alreadyVisited">Contains the elements that have been visited already
         /// The already visited elements will not be returned again</param>
         /// <returns>Enumeration of elements</returns>
-        public static IEnumerable<IElement> GetGeneralizations(IElement classifier, HashSet<IElement> alreadyVisited = null)
+        public static IEnumerable<IElement> GetGeneralizations(IElement classifier, HashSet<IElement>? alreadyVisited = null)
         {
             alreadyVisited ??= new HashSet<IElement>();
             var propertyGeneralization = _UML._Classification._Classifier.generalization;
@@ -123,12 +128,18 @@ namespace DatenMeister.Uml.Helper
         /// <returns></returns>
         public static IEnumerable<IElement> GetSpecializations(
             IElement element,
-            HashSet<IElement> visitedElements = null,
+            HashSet<IElement>? visitedElements = null,
             bool withoutItself = false)
         {
             visitedElements ??= new HashSet<IElement>();
             var extent = (element as IHasExtent)?.Extent;
             var workspace = extent?.GetWorkspace();
+            if (extent == null)
+            {
+                // The element is not connected to an extent, so metaclasses cannot be found
+                yield break;
+            }
+            
             var classInstance = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
             if (classInstance == null)
             {
@@ -165,7 +176,10 @@ namespace DatenMeister.Uml.Helper
         /// <returns>Enumeration of properties</returns>
         public static IEnumerable<string> GetPropertyNamesOfClassifier(IElement classifier)
         {
-            return GetPropertiesOfClassifier(classifier).Select(x => x.get("name").ToString());
+            return GetPropertiesOfClassifier(classifier)
+                .Select(x => x.get("name"))
+                .Where(x => x != null)
+                .Select(x => x!.ToString());
         }
 
         /// <summary>
@@ -190,7 +204,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="specializedClassifer">Special class which is checked</param>
         /// <param name="generalizedClassifier">The class against the specialized will be checked against. </param>
         /// <returns>true, if</returns>
-        public static bool IsSpecializedClassifierOf(IElement specializedClassifer, IElement generalizedClassifier)
+        public static bool IsSpecializedClassifierOf(IElement? specializedClassifer, IElement? generalizedClassifier)
         {
             if (specializedClassifer == null || generalizedClassifier == null)
             {
@@ -213,7 +227,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="specializedClassifier">The classifier which will have a new generalization
         /// and consequently will get the properties of the generalization attached</param>
         /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
-        public static IElement AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
+        public static IElement? AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
         {
             var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
             return AddGeneralization(uml, specializedClassifier, generalizedClassifier);
@@ -227,7 +241,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="specializedClassifier">The classifier which will have a new generalization
         /// and consequently will get the properties of the generalization attached</param>
         /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
-        public static IElement AddGeneralization(_UML uml, IElement specializedClassifier, IElement generalizedClassifier)
+        public static IElement? AddGeneralization(_UML uml, IElement specializedClassifier, IElement generalizedClassifier)
         {
             if (specializedClassifier == null) throw new ArgumentNullException(nameof(specializedClassifier));
             if (generalizedClassifier == null) throw new ArgumentNullException(nameof(generalizedClassifier));

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,13 +62,13 @@ namespace DatenMeister.Provider.DotNet
             _type.GetProperty(property) != null;
 
         /// <inheritdoc />
-        public object GetProperty(string property)
+        public object? GetProperty(string property)
         {
             var result = GetValueOfProperty(property);
             return Provider.CreateDotNetElementIfNecessary(result);
         }
 
-        private object GetValueOfProperty(string property)
+        private object? GetValueOfProperty(string property)
         {
             var member = _type.GetProperty(property,
                 BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
@@ -94,7 +96,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             var member = _type.GetProperty(property);
             if (member == null)
@@ -105,12 +107,14 @@ namespace DatenMeister.Provider.DotNet
             member.SetValue(_value, DotNetProviderExtensions.ConvertToNative(value));
         }
 
-        public IList GetPropertyAsList(string property) =>
+        public IList? GetPropertyAsList(string property) =>
             GetValueOfProperty(property) as IList;
 
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
         {
+            if (value == null) return false;
+            
             var list = GetPropertyAsList(property);
             if (list == null)
             {
@@ -118,12 +122,14 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            return list.Add(DotNetProviderExtensions.ConvertToNative(value)) != -1;
+            return list!.Add(DotNetProviderExtensions.ConvertToNative(value)) != -1;
         }
 
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
+            if (value == null) return false;
+            
             var list = GetPropertyAsList(property);
             if (list == null)
             {
@@ -131,17 +137,18 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            value = DotNetProviderExtensions.ConvertToNative(value);
+            var newValue = DotNetProviderExtensions.ConvertToNative(value);
+            if (newValue == null) return false;
 
-            var result = list.Contains(value);
-            list.Remove(value);
+            var result = list!.Contains(newValue);
+            list.Remove(newValue);
             return result;
         }
 
         public bool HasContainer() =>
             false;
 
-        public IProviderObject GetContainer() =>
+        public IProviderObject? GetContainer() =>
             null;
 
         public void SetContainer(IProviderObject value)

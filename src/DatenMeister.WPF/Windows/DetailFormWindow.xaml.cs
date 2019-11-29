@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,14 +11,12 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Annotations;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -39,13 +39,13 @@ namespace DatenMeister.WPF.Windows
         /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
         /// This event has to be invoked by the child elements.
         /// </summary>
-        public event EventHandler<ItemEventArgs> Saved;
+        public event EventHandler<ItemEventArgs>? Saved;
 
         /// <summary>
         /// Defines the event that will be thrown, when the user has clicked upon 'save' in the inner form.
         /// This event has to be invoked by the child elements.
         /// </summary>
-        public event EventHandler<ItemEventArgs> Cancelled;
+        public event EventHandler<ItemEventArgs>? Cancelled;
 
         /// <summary>
         /// Stores the value whether the saved or cancelled event is already thrown.
@@ -57,24 +57,24 @@ namespace DatenMeister.WPF.Windows
         /// Stores the view definition as requested by the creator of the window.
         /// This view definition may be overridden by the OverridingViewDefinition
         /// </summary>
-        private ViewDefinition _requestedViewDefinition;
+        private ViewDefinition? _requestedViewDefinition;
 
         /// <summary>
         /// Gets a helper for menu
         /// </summary>
         private MenuHelper MenuHelper { get; }
         
-        public IObject DetailElement { get; set; }
+        public IObject? DetailElement { get; set; }
         
         /// <summary>
         /// Stores the collection being used as a container
         /// </summary>
-        public IReflectiveCollection ContainerCollection { get; set; }
+        public IReflectiveCollection? ContainerCollection { get; set; }
 
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public ViewDefinition OverridingViewDefinition { get; private set; }
+        public ViewDefinition? OverridingViewDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -97,7 +97,14 @@ namespace DatenMeister.WPF.Windows
 
         public IEnumerable<IObject> GetSelectedItems()
         {
-            yield return DetailElement;
+            var detailElement = DetailElement;
+
+            if (detailElement == null)
+            {
+                yield break;
+            }
+            
+            yield return detailElement;
         }
 
         /// <summary>
@@ -115,9 +122,11 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Gets the ui element of the main control
         /// </summary>
-        public UIElement MainControl => MainContent.Content as UIElement;
+        public UIElement? MainControl => MainContent.Content as UIElement;
 
-        public Task<NavigateToElementDetailResult> NavigateTo(Func<UserControl> factoryMethod, NavigationMode navigationMode)
+        public Task<NavigateToElementDetailResult> NavigateTo(
+            Func<UserControl> factoryMethod,
+            NavigationMode navigationMode)
             => Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
 
         /// <summary>
@@ -275,7 +284,7 @@ namespace DatenMeister.WPF.Windows
                     attachedElement));
         }
 
-        public void OnCancelled(IObject detailElement, IObject attachedElement)
+        public void OnCancelled(IObject? detailElement, IObject? attachedElement)
         {
             if (_finalEventsThrown)
             {
@@ -303,7 +312,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element"></param>
         /// <param name="viewDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject element, ViewDefinition viewDefinition, IReflectiveCollection container = null)
+        public void SetContent(IObject? element, ViewDefinition viewDefinition, IReflectiveCollection? container = null)
         {
             element ??= InMemoryObject.CreateEmpty();
             CreateDetailForm(element, viewDefinition, container);
@@ -323,7 +332,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(IObject detailElement, ViewDefinition viewDefinition, IReflectiveCollection container = null)
+        private void CreateDetailForm(IObject detailElement, ViewDefinition viewDefinition, IReflectiveCollection? container = null)
         {
             DetailElement = detailElement;
             ContainerCollection = container;
@@ -334,7 +343,7 @@ namespace DatenMeister.WPF.Windows
 
         private void RecreateView()
         {
-            IObject effectiveForm = null;
+            IObject? effectiveForm = null;
             var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
 
             // Checks, if there is an overriding form 
@@ -353,6 +362,8 @@ namespace DatenMeister.WPF.Windows
             // If not, take the standard procedure
             if (effectiveForm == null)
             {
+                _requestedViewDefinition ??= new ViewDefinition(ViewDefinitionMode.Default);
+                
                 if (_requestedViewDefinition.Mode == ViewDefinitionMode.Specific)
                 {
                     effectiveForm = _requestedViewDefinition.Element;
@@ -360,7 +371,9 @@ namespace DatenMeister.WPF.Windows
                 else
                 {
                     effectiveForm =
-                        viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(),
+                        viewLogic.GetDetailForm(
+                            DetailElement,
+                            DetailElement.GetUriExtentOf(),
                             _requestedViewDefinition.Mode);
                 }
             }

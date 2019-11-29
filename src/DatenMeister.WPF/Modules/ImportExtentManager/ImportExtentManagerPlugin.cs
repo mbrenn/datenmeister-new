@@ -1,9 +1,9 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
 

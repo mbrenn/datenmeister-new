@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -73,8 +74,6 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
             }
 
-            PrepareNavigation(view);
-
             // Sets the workspaces
             EvaluateForm(SelectedItem, view);
         }
@@ -83,16 +82,18 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Prepares the navigation
         /// </summary>
         /// <param name="viewDefinition">Definition of the view</param>
-        private void PrepareNavigation(ViewDefinition viewDefinition)
+        public override IEnumerable<ViewExtension> GetViewExtensions()
         {
-            viewDefinition.ViewExtensions.Add(
-                new InfoLineDefinition(() => new TextBlock
+            yield return new InfoLineDefinition(() => new TextBlock
+            {
+                Inlines =
                 {
-                    Inlines =
-                    {
-                        new Bold {Inlines = {new Run("All Workspaces")}}
-                    }
-                }));
+                    new Bold {Inlines = {new Run("All Workspaces")}}
+                }
+            });
+            
+            foreach (var extension in base.GetViewExtensions()) yield return extension;
+
         }
 
         public override void OnMouseDoubleClick(IObject element)

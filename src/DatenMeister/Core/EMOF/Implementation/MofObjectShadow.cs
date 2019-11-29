@@ -22,12 +22,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             Uri = uri;
         }
 
-        public bool equals(object other)
+        public bool equals(object? other)
             => MofObject.AreEqual(this, other as IObject);
 
         public object? get(string property) => null;
 
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             throw new NotImplementedException("This is just a shadow object which cannot store data");
         }

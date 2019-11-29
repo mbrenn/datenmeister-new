@@ -1,3 +1,4 @@
+#nullable enable 
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Provider.InMemory

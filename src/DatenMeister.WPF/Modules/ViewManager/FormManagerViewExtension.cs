@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Runtime;
@@ -248,7 +249,9 @@ namespace DatenMeister.WPF.Modules.ViewManager
         /// </summary>
         /// <param name="itemExplorerControl">Navigational element to create the windows</param>
         /// <param name="type">Type of the form to be created</param>
-        private static void AskUserAndCreateFormInstance(ItemExplorerControl itemExplorerControl, CreateFormByClassifierType type)
+        private static void AskUserAndCreateFormInstance(
+            ItemExplorerControl itemExplorerControl, 
+            CreateFormByClassifierType type)
         {
             if (NavigatorForDialogs.Locate(
                 itemExplorerControl.NavigationHost,

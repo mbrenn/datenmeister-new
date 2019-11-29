@@ -17,7 +17,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView
         /// </summary>
         public Action<IObject?> Action { get; set; }
 
-        public TreeViewItemCommandDefinition(string text, Action<IObject> onClick)
+        public TreeViewItemCommandDefinition(string text, Action<IObject?> onClick)
         {
             Text = text;
             Action = onClick;

@@ -62,19 +62,19 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            if (metaClass.@equals(dataview.__SourceExtentNode))
+            if (metaClass.equals(dataview.__SourceExtentNode))
                 return GetElementsForSourceExtent(viewNode);
 
-            if (metaClass.@equals(dataview.__SelectPathNode))
+            if (metaClass.equals(dataview.__SelectPathNode))
                 return GetElementsForPathNode(viewNode);
 
-            if (metaClass.@equals(dataview.__FlattenNode))
+            if (metaClass.equals(dataview.__FlattenNode))
                 return GetElementsForFlattenNode(viewNode);
 
-            if (metaClass.@equals(dataview.__FilterTypeNode))
+            if (metaClass.equals(dataview.__FilterTypeNode))
                 return GetElementsForFilterTypeNode(viewNode);
 
-            if (metaClass.@equals(dataview.__FilterPropertyNode))
+            if (metaClass.equals(dataview.__FilterPropertyNode))
                 return GetElementsForFilterPropertyNode(viewNode);
 
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");

@@ -1,0 +1,21 @@
+﻿namespace DatenMeister.Modules.Forms.Model
+{
+    /// <summary>
+    /// Defines the field data for the meta class
+    /// </summary>
+    public class MetaClassElementFieldData : FieldData
+    {
+        /// <summary>
+        /// Defines the field type for the metaclass
+        /// </summary>
+        public const string FieldType = "metaclass";
+
+        public MetaClassElementFieldData() : base(FieldType)
+        {
+        }
+
+        public MetaClassElementFieldData(string title) : base(FieldType, string.Empty, title)
+        {
+        }
+    }
+}

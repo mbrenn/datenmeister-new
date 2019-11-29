@@ -3,13 +3,13 @@ using System.IO;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Plugins;
 using StundenMeister.Model;
 
 namespace StundenMeister.Logic

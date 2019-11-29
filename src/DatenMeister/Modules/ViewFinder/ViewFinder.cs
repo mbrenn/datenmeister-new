@@ -1,9 +1,12 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
@@ -95,6 +98,7 @@ namespace DatenMeister.Modules.ViewFinder
                 if (associationForm == null)
                 {
                     Logger.Warn("Given form has null value. This is not recommended and will lead of unintended behavior of default views.");
+                    continue;
                 }
 
                 var isMatching = true;

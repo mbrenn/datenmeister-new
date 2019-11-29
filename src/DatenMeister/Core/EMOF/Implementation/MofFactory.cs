@@ -135,7 +135,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be converted</param>
         /// <param name="id">Id of the element that shall be set</param>
         /// <returns>The created .Net object</returns>
-        public IObject createFrom(object value, string id = "")
+        public IObject createFrom(object value, string? id = "")
         {
             if (Extent == null)
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -8,12 +10,14 @@ using System.Windows.Controls;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -25,6 +29,11 @@ using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Navigation;
+using Button = System.Windows.Controls.Button;
+using ContextMenu = System.Windows.Controls.ContextMenu;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -44,7 +53,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
 
-        private EventHandle _eventHandle;
+        private EventHandle? _eventHandle;
 
         public ItemExplorerControl()
         {
@@ -52,23 +61,34 @@ namespace DatenMeister.WPF.Forms.Base
             ItemTabControl.ItemsSource = Tabs;
         }
 
+        public INavigationHost? NavigationHost { get; set; }
+
+        /// <summary>
+        /// Gets the extent being connected
+        /// </summary>
+        public IExtent? Extent { get; protected set; }
+
+        public IReflectiveCollection? Collection => (RootItem as IExtent)?.elements();
+
+        public IObject? Item => SelectedPackage ?? Extent;
+
         /// <summary>
         ///     Gets the definition of the current form
         /// </summary>
-        public IObject EffectiveForm { get; private set; }
+        public IObject? EffectiveForm { get; private set; }
 
         /// <summary>
         /// Gets or sets the root item for the explorer view. The properties of the root item are
         /// walked through to get the child items
         /// </summary>
-        public IObject RootItem { get; protected set; }
+        public IObject? RootItem { get; protected set; }
 
-        public IObject SelectedItem { get; protected set; }
+        public IObject? SelectedItem { get; protected set; }
 
         /// <summary>
         ///     Defines the item that the user currently has selected on the object tree
         /// </summary>
-        public IObject SelectedPackage { get; protected set; }
+        public IObject? SelectedPackage { get; protected set; }
 
         /// <summary>
         ///     Gets a value indicating whether the user has selected an extent within the
@@ -79,13 +99,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets or sets the view extensions of the form currently being set
         /// </summary>
-        protected ICollection<ViewExtension> ViewExtensions { get; set; }
+        protected ICollection<ViewExtension>? ViewExtensions { get; set; }
 
 
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public ViewDefinition OverridingViewDefinition { get; private set; }
+        public ViewDefinition? OverridingViewDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -111,14 +131,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void ForceAutoGenerationOfForm()
         {
-            OverridingViewDefinition = new ViewDefinition(ViewDefinitionMode.AllProperties);
+            OverridingViewDefinition = new ViewDefinition(ViewDefinitionMode.ViaFormCreator);
             RecreateViews();
         }
         
         /// <summary>
         ///     Gets or sets the eventhandle for the content of the control
         /// </summary>
-        public EventHandle EventHandle
+        public EventHandle? EventHandle
         {
             get => _eventHandle;
             set
@@ -137,8 +157,6 @@ namespace DatenMeister.WPF.Forms.Base
                 _eventHandle = null;
             }
         }
-
-        public INavigationHost NavigationHost { get; set; }
 
         /// <summary>
         ///     Gets the view extensions
@@ -189,7 +207,7 @@ namespace DatenMeister.WPF.Forms.Base
 
 
             // 5) Gets the context menu for the treeview
-            if (NavigationTreeView.ShowAllChildren)
+            if (NavigationTreeView?.ShowAllChildren == true)
             {
                 yield return new
                     TreeViewItemCommandDefinition(
@@ -197,7 +215,7 @@ namespace DatenMeister.WPF.Forms.Base
                         _ =>
                         {
                             NavigationTreeView.ShowAllChildren = false;
-                            NavigationHost.RebuildNavigation();
+                            NavigationHost?.RebuildNavigation();
                         });
             }
             else
@@ -207,8 +225,8 @@ namespace DatenMeister.WPF.Forms.Base
                         "Show all children",
                         _ =>
                         {
-                            NavigationTreeView.ShowAllChildren = true;
-                            NavigationHost.RebuildNavigation();
+                            NavigationTreeView!.ShowAllChildren = true;
+                            NavigationHost?.RebuildNavigation();
                         });
             }
         }
@@ -246,7 +264,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             Tabs.Clear();
             OnRecreateViews();
-            NavigationHost.RebuildNavigation();
+            NavigationHost?.RebuildNavigation();
 
             RebuildNavigationForTreeView();
         }
@@ -288,7 +306,7 @@ namespace DatenMeister.WPF.Forms.Base
         protected void EvaluateForm(
             IObject value,
             ViewDefinition viewDefinition,
-            IReflectiveCollection container = null)
+            IReflectiveCollection? container = null)
         {
             EffectiveForm = viewDefinition.Element;
             var tabs = viewDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
@@ -308,14 +326,12 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var viewExtension in viewDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
                 
-                tabViewExtensions.AddRange(GetViewExtensions());
-                            
-
                 AddTab(value, tab, tabViewExtensions, container);
             }
 
             ViewExtensions = viewDefinition.ViewExtensions;
-            NavigationHost.RebuildNavigation();
+            
+            NavigationHost?.RebuildNavigation();
         }
 
         /// <summary>
@@ -326,11 +342,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="viewExtensions">Stores the view extensions</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
-        public ItemExplorerTab AddTab(
+        public ItemExplorerTab? AddTab( 
             IObject value,
             IElement tabForm,
             IEnumerable<ViewExtension> viewExtensions,
-            IReflectiveCollection container = null)
+            IReflectiveCollection? container = null)
         {
             // Gets the default view for the given tab
             var name = tabForm.getOrDefault<string>(_FormAndFields._Form.title) ??
@@ -338,19 +354,12 @@ namespace DatenMeister.WPF.Forms.Base
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
             var usedViewExtensions = viewExtensions.ToList();
 
-            UserControl createdUserControl = null;
-            if (tabForm.getMetaClass().@equals(formAndFields.__DetailForm))
+            UserControl? createdUserControl = null;
+            if (tabForm.getMetaClass()?.@equals(formAndFields.__DetailForm) == true)
             {
-                var control = new DetailFormControl
-                {
-                    NavigationHost = NavigationHost
-                };
-
-                control.SetContent(value, tabForm, container);
-                control.ElementSaved += (x, y) => MessageBox.Show("Element saved.");
-                createdUserControl = control;
+                createdUserControl = CreateDetailForm(value, tabForm, container);
             }
-            else if (tabForm.getMetaClass().@equals(formAndFields.__ListForm))
+            else if (tabForm.getMetaClass()?.@equals(formAndFields.__ListForm) == true)
             {
                 // Creates the layoutcontrol for the given view
                 var control = new ItemListViewControl
@@ -366,69 +375,6 @@ namespace DatenMeister.WPF.Forms.Base
                         ?.ToList()
                     ?? new List<object>();
 
-                // Gets the default types by the View Extensions
-                foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
-                {
-                    defaultTypesForNewItems.Add(extension.MetaClass);
-                }
-                
-                // Stores the menu items for the context menu
-                var menuItems = new List<MenuItem>();
-                var menuItem = new MenuItem
-                {
-                    Header = "New Item"
-                };
-                
-                menuItem.Click += (x, y) => CreateNewElementByUser(null, null);
-                menuItems.Add(menuItem);
-
-                // Sets the generic buttons to create the new types
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-                {
-                    // Check if type is a directly type or the DefaultTypeForNewElement
-                    if (type.metaclass.@equals(
-                        GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
-                            x => x.__DefaultTypeForNewElement)))
-                    {
-                        var newType =
-                            type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
-                        var parentProperty =
-                            type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
-
-                        Create(newType, parentProperty);
-                    }
-                    else
-                    {
-                        Create(type, null);
-                    }
-
-                    void Create(IElement newType, string parentProperty)
-                    {
-                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
-
-                        usedViewExtensions.Add(new GenericButtonDefinition(
-                            $"New {typeName}", () => CreateNewElementByUser(newType, parentProperty)));
-
-                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
-                        {
-                            // Stores the menu items for the context menu
-                            menuItem = new MenuItem
-                            {
-                                Header = $"New {newSpecializationType}"
-                            };
-
-                            menuItem.Click += (x, y) => CreateNewElementByUser(newSpecializationType, null);
-                            menuItems.Add(menuItem);
-                        }
-                    }
-                }
-
-                // Sets the button for the new item
-                usedViewExtensions.Add(
-                    new GenericButtonDefinition(
-                        "New Item",
-                        () => _ = new ContextMenu {ItemsSource = menuItems, IsOpen = true}));
-
                 // Allows the deletion of an item
                 if (tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) != true)
                 {
@@ -437,45 +383,101 @@ namespace DatenMeister.WPF.Forms.Base
                             "Delete",
                             (guest, item) =>
                             {
-                                if (MessageBox.Show(
-                                        "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                                    MessageBoxResult.Yes)
+                                if (Extent != null)
                                 {
-                                    Extent.elements().remove(item);
+                                    if (MessageBox.Show(
+                                            "Are you sure to delete the item?", "Confirmation",
+                                            MessageBoxButton.YesNo) ==
+                                        MessageBoxResult.Yes)
+                                    {
+                                        // TODO: Will not work with selected item and its properties
+                                        // Only with the the items of the extent
+                                        Extent.elements().remove(item);
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("For whatever reason, deletion is not possible" +
+                                                    "because the Extent is not given.");
                                 }
                             }));
                 }
 
-                void CreateNewElementByUser(IElement type, string parentProperty)
-                {
-                    if (IsExtentSelectedInTreeview)
-                        NavigatorForItems.NavigateToNewItemForExtent(
-                            NavigationHost,
-                            Extent,
-                            type);
-                    else
-                        NavigatorForItems.NavigateToNewItemForItem(
-                            NavigationHost,
-                            SelectedPackage,
-                            type,
-                            parentProperty);
-                }
+                createdUserControl = control;
 
                 // Sets the content for the tabs
                 if (value is IExtent extent)
                 {
+                    // Gets the default types by the View Extensions
+                    foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
+                    {
+                        defaultTypesForNewItems.Add(extension.MetaClass);
+                    }
+
+                    // Filter MofObject Shadows out, they are not useable anyway.
+                    defaultTypesForNewItems = defaultTypesForNewItems.Where(x => !(x is MofObjectShadow)).ToList();
+                    
+                    // 
+                    // Creates the menu and buttons for the default types. 
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, null);
+                    
+                    // Extent shall be shown
                     IReflectiveCollection elements = extent.elements();
                     elements = FilterByMetaClass(elements, tabForm);
                     control.SetContent(elements, tabForm, usedViewExtensions);
                 }
                 else
                 {
-                    IReflectiveCollection elements = GetPropertiesAsReflection(value, tabForm);
+                    // Query all the plugins whether a filter is available
+                    var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+                    var propertyName = tabForm.getOrDefault<string>(nameof(ListForm.property));
+
+                    if (!string.IsNullOrEmpty(propertyName))
+                    {
+                        var extentData = new ViewExtensionForItemPropertiesInformation(ViewExtensionContext.View)
+                        {
+                            NavigationGuest = control,
+                            NavigationHost = NavigationHost,
+                            Value = value,
+                            Property = propertyName
+                        };
+
+                        foreach (var plugin in viewExtensionPlugins)
+                        {
+                            usedViewExtensions.AddRange(plugin.GetViewExtensions(extentData));
+                        }
+                    }
+
+                    // Gets the default types by the View Extensions
+                    foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
+                    {
+                        defaultTypesForNewItems.Add(extension.MetaClass);
+                    }
+
+                    // Adds the default type for the extension, if appropriate
+                    var metaClass = (value as IElement)?.getMetaClass();
+                    if (metaClass != null)
+                    {
+                        var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, propertyName);
+                        if (property != null)
+                        {
+                            var elementProperty = PropertyMethods.GetPropertyType(property);
+                            if (elementProperty != null)
+                            {
+                                defaultTypesForNewItems.Add(elementProperty);
+                            }
+                        }
+                    }
+
+                    // 
+                    // Creates the menu and buttons for the default types. 
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, propertyName);
+                    
+                    // The properties of a specific item shall be shown
+                    var elements = GetPropertiesAsReflection(value, propertyName);
                     elements = FilterByMetaClass(elements, tabForm);
                     control.SetContent(elements, tabForm, usedViewExtensions);
                 }
-
-                createdUserControl = control;
             }
 
             if (createdUserControl == null)
@@ -507,10 +509,126 @@ namespace DatenMeister.WPF.Forms.Base
             return tabControl;
         }
 
-        private IReflectiveCollection GetPropertiesAsReflection(IObject value, IObject listFormDefinition)
+        /// <summary>
+        /// Creates the menu and the buttons for the default types
+        /// </summary>
+        /// <param name="defaultTypesForNewItems">List of types which shall be directly createable for
+        ///     the user</param>
+        /// <param name="usedViewExtensions">List of view extension which are applicable for
+        ///     the regarded item</param>
+        /// <param name="parentProperty">Defines the name of the parent property to which
+        /// the item will be added. Null if item will be added to the given extent</param>
+        /// <returns>List of menu items being used as context menu</returns>
+        private void CreateMenuAndButtonsForDefaultTypes(
+            IEnumerable<object> defaultTypesForNewItems,
+            List<ViewExtension> usedViewExtensions,
+            string? parentProperty)
         {
-            var propertyName = listFormDefinition.getOrDefault<string>(nameof(ListForm.property));
-            if (propertyName == null)
+            if (usedViewExtensions == null) throw new ArgumentNullException(nameof(usedViewExtensions));
+            // Stores the menu items for the context menu
+            var menuItems = new List<MenuItem>();
+            var menuItem = new MenuItem
+            {
+                Header = "New Item"
+            };
+
+            menuItem.Click += (x, y) => CreateNewElementByUser(null, null);
+            menuItems.Add(menuItem);
+
+            // Sets the generic buttons to create the new types
+            foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+            {
+                // Check if type is a directly type or the DefaultTypeForNewElement
+                if (type.metaclass?.@equals(
+                    GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
+                        x => x.__DefaultTypeForNewElement)) == true)
+                {
+                    var newType =
+                        type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                    var tempParentProperty =
+                        type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty)
+                        ?? parentProperty;
+
+                    Create(newType, tempParentProperty);
+                }
+                else
+                {
+                    Create(type, parentProperty);
+                }
+
+                void Create(IElement newType, string? innerParentProperty)
+                {
+                    var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
+
+                    usedViewExtensions.Add(new GenericButtonDefinition(
+                        $"New {typeName}", 
+                        () => CreateNewElementByUser(newType, innerParentProperty)));
+
+                    foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
+                    {
+                        // Stores the menu items for the context menu
+                        menuItem = new MenuItem
+                        {
+                            Header = $"New {newSpecializationType}"
+                        };
+
+                        menuItem.Click += (x, y) => CreateNewElementByUser(newSpecializationType, null);
+                        menuItems.Add(menuItem);
+                    }
+                }
+            }
+
+            void CreateNewElementByUser(IElement? type, string? innerParentProperty)
+            {
+                if (IsExtentSelectedInTreeview)
+                    NavigatorForItems.NavigateToNewItemForExtent(
+                        NavigationHost,
+                        Extent,
+                        type);
+                else
+                {
+                    if (innerParentProperty == null)
+                    {
+                        throw new InvalidOperationException("parentProperty == null");
+                    }
+                    
+                    NavigatorForItems.NavigateToNewItemForItem(
+                        NavigationHost,
+                        SelectedPackage,
+                        type,
+                        innerParentProperty);
+                }
+            }
+
+            // Sets the button for the new item
+            usedViewExtensions.Add(
+                new GenericButtonDefinition(
+                    "New Item",
+                    () => _ = new ContextMenu {ItemsSource = menuItems, IsOpen = true}));
+        }
+
+        /// <summary>
+        /// Creates the detail form for the given value.
+        /// </summary>
+        /// <param name="value">Value which is shown in the detail form</param>
+        /// <param name="tabForm">The form definition for </param>
+        /// <param name="container"></param>
+        /// <returns></returns>
+        private UserControl CreateDetailForm(IObject value, IElement tabForm, IReflectiveCollection? container)
+        {
+            var control = new DetailFormControl
+            {
+                NavigationHost = NavigationHost
+            };
+
+            control.SetContent(value, tabForm, container);
+            control.ElementSaved += (x, y) => MessageBox.Show("Element saved.");
+            return control;
+        }
+
+        private IReflectiveCollection GetPropertiesAsReflection(IObject value, string propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName))
             {
                 return new PropertiesAsReflectiveCollection(value);
             }
@@ -582,7 +700,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            NavigationHost.RebuildNavigation();
+            NavigationHost?.RebuildNavigation();
         }
 
         /// <summary>
@@ -601,12 +719,6 @@ namespace DatenMeister.WPF.Forms.Base
         {
             Unregister();
         }
-
-        public IExtent Extent { get; protected set; }
-
-        public IReflectiveCollection Collection => (RootItem as IExtent)?.elements();
-
-        public IObject Item => SelectedPackage ?? Extent;
         
         
         /// <summary>
@@ -625,7 +737,7 @@ namespace DatenMeister.WPF.Forms.Base
             
             // Creates the buttons for the treeview
             ClearTreeViewUiElement();
-            
+
             foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
                 .OfType<ItemButtonDefinition>())
             {
@@ -633,8 +745,19 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     Content = buttonView.Name
                 };
-                
-                button.Click += (x, y) => buttonView.OnPressed(NavigationTreeView.SelectedElement);
+
+                button.Click += (x, y) =>
+                {
+                    var selectedElement = NavigationTreeView.SelectedElement;
+                    if (selectedElement == null)
+                    {
+                        MessageBox.Show("No item is selected");
+                        return;
+                    }
+
+                    buttonView.OnPressed(selectedElement);
+                };
+
                 AddTreeViewUiElement(button);
             }
         }

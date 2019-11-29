@@ -11,6 +11,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -264,7 +265,9 @@ namespace DatenMeister.WPF.Forms.Base
                     var found = false;
                     foreach (var metaClass in list)
                     {
-                        if (ClassifierMethods.IsSpecializedClassifierOf(itemAsElement.metaclass, metaClass))
+                        if (ClassifierMethods.IsSpecializedClassifierOf(
+                            itemAsElement.metaclass
+                            , metaClass))
                         {
                             found = true;
                         }
@@ -507,7 +510,18 @@ namespace DatenMeister.WPF.Forms.Base
                     continue;
                 }
                 
-                menuItem.Click += (x, y) => extension.Action(SelectedElement);
+                
+                menuItem.Click += (x, y) =>
+                {
+                    var selectedItem = SelectedElement;
+                    if (selectedItem == null)
+                    {
+                        System.Windows.MessageBox.Show("No item selected");
+                    }
+
+                    extension.Action?.Invoke(selectedItem);
+                };
+                
                 menuItems.Add(menuItem);
             }
 

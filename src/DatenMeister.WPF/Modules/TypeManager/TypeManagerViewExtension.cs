@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Filler;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
+using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.TypeManager
@@ -16,7 +19,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
-            if (viewExtensionTargetInformation.NavigationHost != null)
+            if (viewExtensionTargetInformation.NavigationHost is IApplicationWindow)
             {
                 yield return new ApplicationMenuButtonDefinition(
                     "Goto User Types",
@@ -33,41 +36,42 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
                 var extent = itemInExtentList.RootItem.GetExtentOf();
                 var extentType = extent?.GetExtentType();
-                if (extentType != "Uml.Classes")
+                if (extentType == "Uml.Classes")
                 {
-                    // The extent type is not of "Uml.Classes", so we don't inject the buttons
-                    yield break;
-                }
+                    if (itemInExtentList.IsExtentSelectedInTreeview)
+                    {
+                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
 
-                var selectedPackage = itemInExtentList.SelectedPackage;
-                var type = SelectionType.Package;
-                if ((selectedPackage as IElement)?.metaclass?.@equals(
-                        extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)) == true)
-                {
-                    type = SelectionType.Class;
-                }
+                        yield return new NewInstanceViewDefinition(classMetaClass);
 
-                if (type == SelectionType.Package)
-                {
-                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                    
-                    yield return new NewInstanceViewDefinition(classMetaClass);
-                    
-                    yield return new ApplicationMenuButtonDefinition(
-                        "Create new Class",
-                        () =>
-                            NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                viewExtensionTargetInformation.NavigationHost,
-                                extent,
-                                classMetaClass),
-                        string.Empty,
-                        NavigationCategories.Type + "." + "Manager");
+                        yield return new ApplicationMenuButtonDefinition(
+                            "Create new Class",
+                            () =>
+                                NavigatorForItems.NavigateToCreateNewItemInExtent(
+                                    viewExtensionTargetInformation.NavigationHost,
+                                    extent,
+                                    classMetaClass),
+                            string.Empty,
+                            NavigationCategories.Type + "." + "Manager");
+                    }
                 }
-                else if (type == SelectionType.Class)
+            }
+
+            if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl extentList
+                && viewExtensionTargetInformation is ViewExtensionForItemPropertiesInformation propertiesInformation)
+            {
+                var selectedPackage = propertiesInformation.Value as IElement;
+                var extent = selectedPackage.GetExtentOf();
+
+                var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                var propertyName = propertiesInformation.Property;
+                if (selectedPackage?.metaclass?.@equals(classMetaClass) == true
+                    && propertyName == _UML._StructuredClassifiers._Class.ownedAttribute)
                 {
                     var propertyMetaClass = extent.FindInMeta<_UML>(x => x.Classification.__Property);
-                    
+
                     yield return new NewInstanceViewDefinition(propertyMetaClass);
+
                     yield return
                         new ApplicationMenuButtonDefinition(
                             "Create new Property",
@@ -76,30 +80,10 @@ namespace DatenMeister.WPF.Modules.TypeManager
                                     viewExtensionTargetInformation.NavigationHost,
                                     selectedPackage,
                                     _UML._StructuredClassifiers._Class.ownedAttribute,
-                                    propertyMetaClass)
-                            ,
+                                    propertyMetaClass),
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");
                 }
-
-                yield return new ApplicationMenuButtonDefinition(
-                    "Create new Package",
-                    () =>
-                    {
-                        if (selectedPackage == null)
-                            NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                viewExtensionTargetInformation.NavigationHost,
-                                extent,
-                                extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                        else
-                            NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                                viewExtensionTargetInformation.NavigationHost,
-                                itemInExtentList.SelectedPackage,
-                                _UML._StructuredClassifiers._Class.ownedAttribute,
-                                extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                    },
-                    string.Empty,
-                    NavigationCategories.Type + "." + "Manager");
             }
         }
     }

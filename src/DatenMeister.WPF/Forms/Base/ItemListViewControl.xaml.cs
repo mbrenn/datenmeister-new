@@ -19,6 +19,8 @@ using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
+using DatenMeister.Modules.FastViewFilter.Model;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
@@ -133,7 +135,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        ///     GEts the currently selected item
+        ///     Gets the currently selected item
         /// </summary>
         /// <returns>Item being selected</returns>
         public IObject GetSelectedItem() 

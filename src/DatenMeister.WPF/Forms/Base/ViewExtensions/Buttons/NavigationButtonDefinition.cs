@@ -22,7 +22,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
         public NavigationButtonDefinition(
             string name,
             NavigationScope navigationScope,
-            string imageName,
+            string? imageName,
             string categoryName,
             int priority = 0)
         {
@@ -54,7 +54,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
         /// <summary>
         /// Gets the name of the image
         /// </summary>
-        public string ImageName { get; }
+        public string? ImageName { get; }
 
         /// <summary>
         /// Gets or sets a flag indicating whether the navigation button is enabled 

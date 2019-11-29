@@ -168,8 +168,6 @@ namespace DatenMeister.WPF.Forms.Lists
             const string className = "Items";
             var viewDefinition = new ViewDefinition(className, form);
 
-            PrepareNavigation(viewDefinition);
-
             EvaluateForm(
                 SelectedItem,
                 new ViewDefinition(form)
@@ -178,73 +176,61 @@ namespace DatenMeister.WPF.Forms.Lists
                 });
         }
 
-        /// <summary>
-        ///     Prepares the navigation of the host. The function is called by the navigation
-        ///     host.
-        /// </summary>
-        public void PrepareNavigation(ViewDefinition viewDefinition)
+        public override IEnumerable<ViewExtension> GetViewExtensions()
         {
-            viewDefinition.ViewExtensions.Add(
-                new ApplicationMenuButtonDefinition(
-                    "To Extents",
-                    () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
-                    Icons.ExtentsShow,
-                    NavigationCategories.DatenMeister + ".Navigation"));
+            yield return    new ApplicationMenuButtonDefinition(
+                "To Extents",
+                () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
+                Icons.ExtentsShow,
+                NavigationCategories.DatenMeister + ".Navigation");
 
-            viewDefinition.ViewExtensions.Add(
-                new ExtentMenuButtonDefinition(
-                    "Extent Info",
-                    (x) => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
-                    null,
-                    NavigationCategories.Extents + ".Info"));
+            yield return new ExtentMenuButtonDefinition(
+                "Extent Info",
+                (x) => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
+                null,
+                NavigationCategories.Extents + ".Info");
 
-            viewDefinition.ViewExtensions.Add(
-                new ExtentMenuButtonDefinition(
-                    "Extent Properties",
-                    (x) => NavigatorForExtents.OpenPropertiesOfExtent(NavigationHost, x),
-                    null,
-                    NavigationCategories.Extents + ".Info"));
+            yield return new ExtentMenuButtonDefinition(
+                "Extent Properties",
+                (x) => NavigatorForExtents.OpenPropertiesOfExtent(NavigationHost, x),
+                null,
+                NavigationCategories.Extents + ".Info");
 
-            viewDefinition.ViewExtensions.Add(
-                new ExtentMenuButtonDefinition(
-                    "Show as tree",
-                    x => ShowAsTree(),
-                    null,
-                    NavigationCategories.Extents + ".Info"));
+            yield return new ExtentMenuButtonDefinition(
+                "Show as tree",
+                x => ShowAsTree(),
+                null,
+                NavigationCategories.Extents + ".Info");
 
-            viewDefinition.ViewExtensions.Add(
-                new ExtentMenuButtonDefinition(
-                    "Save Extent",
-                    SaveExtent,
-                    null,
-                    NavigationCategories.Extents + ".Info"));
+            yield return new ExtentMenuButtonDefinition(
+                "Save Extent",
+                SaveExtent,
+                null,
+                NavigationCategories.Extents + ".Info");
 
-            viewDefinition.ViewExtensions.Add(
-                new ExtentMenuButtonDefinition(
-                    "Export as Xmi",
-                    x => ExportAsXmi(),
-                    null,
-                    NavigationCategories.Extents + ".Export"));
+            yield return new ExtentMenuButtonDefinition(
+                "Export as Xmi",
+                x => ExportAsXmi(),
+                null,
+                NavigationCategories.Extents + ".Export");
 
-            viewDefinition.ViewExtensions.Add(
-                new ExtentMenuButtonDefinition(
-                    "Open Extent-Folder",
-                    x => OpenExtentFolder(),
-                    null,
-                    NavigationCategories.Extents + ".Info"));
+            yield return new ExtentMenuButtonDefinition(
+                "Open Extent-Folder",
+                x => OpenExtentFolder(),
+                null,
+                NavigationCategories.Extents + ".Info");
 
             // Adds the infoline
-            viewDefinition.ViewExtensions.Add(
-                new InfoLineDefinition(() =>
-                    new TextBlock
+            yield return new InfoLineDefinition(() =>
+                new TextBlock
+                {
+                    Inlines =
                     {
-                        Inlines =
-                        {
-                            new Bold {Inlines = {new Run("Extent: ")}},
-                            new Run(ExtentUrl)
-                                {ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(ExtentUrl)}
-                        }
-                    }));
+                        new Bold {Inlines = {new Run("Extent: ")}},
+                        new Run(ExtentUrl)
+                            {ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(ExtentUrl)}
+                    }
+                });
 
             void ExportAsXmi()
             {
@@ -305,6 +291,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 extentManager.StoreExtent(extent);
                 MessageBox.Show("Extent saved");                
             }
+
+            foreach (var extension in base.GetViewExtensions()) yield return extension;
         }
     }
 }

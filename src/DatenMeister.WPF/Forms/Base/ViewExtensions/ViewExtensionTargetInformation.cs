@@ -1,4 +1,5 @@
-﻿using DatenMeister.WPF.Navigation;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base.ViewExtensions
 {
@@ -57,5 +58,26 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Defines the context for the view
         /// </summary>
         public ViewExtensionContext Context { get; set; }
+    }
+
+    /// <summary>
+    /// This class is used when an item list is required to show all properties of the given item.
+    /// Here, the plugins are asked whether a view extension shall be shown for these items.
+    /// </summary>
+    public class ViewExtensionForItemPropertiesInformation : ViewExtensionTargetInformation
+    {
+        public ViewExtensionForItemPropertiesInformation(ViewExtensionContext context) : base(context)
+        {
+        }
+
+        /// <summary>
+        /// Gets or sets the value which is intended to be shown
+        /// </summary>
+        public IObject Value { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the property which is queried to be shown
+        /// </summary>
+        public string Property { get; set; }
     }
 }

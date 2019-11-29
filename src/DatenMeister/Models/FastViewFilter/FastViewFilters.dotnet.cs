@@ -24,21 +24,21 @@ namespace DatenMeister.Models.FastViewFilter
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
-                var type = typeof(DatenMeister.Models.FastViewFilter.ComparisonType);
+                var type = typeof(DatenMeister.Modules.FastViewFilter.Model.ComparisonType);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ComparisonType = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.FastViewFilter.PropertyComparisonFilter);
+                var type = typeof(DatenMeister.Modules.FastViewFilter.Model.PropertyComparisonFilter);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__PropertyComparisonFilter = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.FastViewFilter.PropertyContainsFilter);
+                var type = typeof(DatenMeister.Modules.FastViewFilter.Model.PropertyContainsFilter);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__PropertyContainsFilter = typeAsElement;

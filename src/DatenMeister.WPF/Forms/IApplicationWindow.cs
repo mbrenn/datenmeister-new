@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.WPF.Forms
+﻿#nullable enable
+
+namespace DatenMeister.WPF.Forms
 {
     /// <summary>
     /// This interface can be used by the main application window
@@ -7,5 +9,5 @@
     /// </summary>
     public interface IApplicationWindow
     {
-    }
+    } 
 }

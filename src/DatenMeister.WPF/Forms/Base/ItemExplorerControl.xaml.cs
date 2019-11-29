@@ -14,7 +14,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
@@ -327,12 +326,11 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var viewExtension in viewDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
                 
-                tabViewExtensions.AddRange(GetViewExtensions());            
-
                 AddTab(value, tab, tabViewExtensions, container);
             }
 
             ViewExtensions = viewDefinition.ViewExtensions;
+            
             NavigationHost?.RebuildNavigation();
         }
 

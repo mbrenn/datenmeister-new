@@ -110,43 +110,6 @@ namespace DatenMeister.WPF.Navigation
             =>
                 Navigator.CreateDetailWindow(window, navigateToItemConfig);
 
-        /// <summary>
-        /// Opens the dialog in which the user can create a new xmi extent
-        /// </summary>
-        /// <param name="window">Window being used as an owner</param>
-        /// <param name="workspaceId">Id of the workspace</param>
-        /// <returns></returns>
-        public static async Task<NavigateToElementDetailResult> NavigateToNewXmiExtentDetailView(
-            INavigationHost window,
-            string workspaceId)
-        {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var navigateToItemConfig = new NavigateToItemConfig
-            {
-                FormDefinition =
-                    viewLogic.GetInternalViewExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
-            };
-
-            var result = await NavigateToElementDetailViewAsync(window, navigateToItemConfig);
-            if (result.Result == NavigationResult.Saved)
-            {
-                var configuration = new XmiStorageConfiguration
-                {
-                    extentUri = result.DetailElement.isSet("uri")
-                        ? result.DetailElement.get("uri").ToString()
-                        : string.Empty,
-                    filePath = result.DetailElement.isSet("filepath")
-                        ? result.DetailElement.get("filepath").ToString()
-                        : string.Empty,
-                    workspaceId = workspaceId
-                };
-
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// Navigates to show the items in an extent

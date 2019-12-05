@@ -80,6 +80,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             /// So most of the time only 'TextFields'.
             /// </summary>
             ForListForms = 0x10,
+            
+            /// <summary>
+            /// This flag is evaluated by the list form creator.
+            /// Only properties which are common in all child classes will be included
+            /// into the view
+            /// </summary>
+            OnlyCommonProperties = 0x20,
 
             /// <summary>
             /// Creates all properties that are possible

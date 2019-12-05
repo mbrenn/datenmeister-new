@@ -329,6 +329,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             _fieldCount = 0;
 
+            // Here, create the rows themselves
             CreateRows(fields);
 
             // Adds metadata

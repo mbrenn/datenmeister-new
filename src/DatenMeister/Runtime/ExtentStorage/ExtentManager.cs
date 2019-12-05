@@ -123,12 +123,6 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         private (IUriExtent, bool) LoadExtentWithoutAddingInternal(ref ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            // Check, if the extent url is a real uri
-            if (!Uri.IsWellFormedUriString(configuration.extentUri, UriKind.Absolute))
-            {
-                throw new InvalidOperationException($"Uri of Extent is not well-formed: {configuration.extentUri}");
-            }
-
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
             if (configuration is ExtentFileLoaderConfig fileConfiguration)
             {
@@ -136,6 +130,17 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     fileConfiguration.filePath = Path.Combine(_integrationSettings.DatabasePath, fileConfiguration.filePath);
                 }
+
+                if (Directory.Exists((fileConfiguration.filePath)))
+                {
+                    throw new InvalidOperationException("Given file is a directory name. ");
+                }
+            }
+            
+            // Check, if the extent url is a real uri
+            if (!Uri.IsWellFormedUriString(configuration.extentUri, UriKind.Absolute))
+            {
+                throw new InvalidOperationException($"Uri of Extent is not well-formed: {configuration.extentUri}");
             }
 
             // Creates the extent loader, being capable to load or store an extent

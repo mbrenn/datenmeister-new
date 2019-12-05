@@ -36,10 +36,10 @@ namespace DatenMeister.WPF.Navigation
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
 
-            var defaultTypePackage = extent.GetDefaultTypePackages();
+            var defaultTypePackage = extent.GetDefaultTypePackages()?.ToList();
             IWorkspace metaWorkspace = null;
             IExtent metaExtent = null;
-            if (defaultTypePackage == null)
+            if (defaultTypePackage == null || !defaultTypePackage.Any())
             {
                 // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
                 // Otherwise, select the first meta workspace and extent

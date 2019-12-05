@@ -1,18 +1,32 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Automation;
+using System.Windows.Forms;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
+using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Lists;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Navigation
 {
     public static class NavigatorForExtents
     {
+        /// <summary>
+        /// Stores the logger being used in navigator for extents
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(NavigatorForExtents));
+        
         /// <summary>
         /// Navigates to an extent list
         /// </summary>
@@ -59,6 +73,62 @@ namespace DatenMeister.WPF.Navigation
             return NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
                 new ExtentPropertyObject(extent));
+        }
+        
+        /// <summary>
+        /// Opens the dialog in which the user can create a new xmi extent
+        /// </summary>
+        /// <param name="window">Window being used as an owner</param>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <returns></returns>
+        public static async Task<NavigateToElementDetailResult> NavigateToNewXmiExtentDetailView(
+            INavigationHost window,
+            string workspaceId)
+        {
+            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var navigateToItemConfig = new NavigateToItemConfig
+            {
+                FormDefinition =
+                    viewLogic.GetInternalViewExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
+            };
+
+            if (navigateToItemConfig.FormDefinition == null)
+            {
+                var text = $"The Form Definition in " +
+                           $"{ManagementViewDefinitions.IdNewXmiDetailForm} " +
+                           $"was not found";
+                Logger.Error(text);
+                
+                MessageBox.Show(text);
+            }
+
+            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(window, navigateToItemConfig);
+            if (result.Result == NavigationResult.Saved)
+            {
+                var configuration = new XmiStorageConfiguration
+                {
+                    extentUri = result.DetailElement.isSet("uri")
+                        ? result.DetailElement.get("uri").ToString()
+                        : string.Empty,
+                    filePath = result.DetailElement.isSet("filepath")
+                        ? result.DetailElement.get("filepath").ToString()
+                        : string.Empty,
+                    workspaceId = workspaceId
+                };
+
+                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                try
+                {
+                    extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                    Logger.Error($"Error during creation of XMI extent: {exc}");
+                }
+            }
+
+            return result;
         }
     }
 }

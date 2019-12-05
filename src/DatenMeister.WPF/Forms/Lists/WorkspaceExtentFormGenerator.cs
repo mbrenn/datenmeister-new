@@ -249,7 +249,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void NewXmiExtent(IObject item)
             {
-                _ = NavigatorForItems.NavigateToNewXmiExtentDetailView(navigationHost, workspaceId);
+                _ = NavigatorForExtents.NavigateToNewXmiExtentDetailView(navigationHost, workspaceId);
             }
 
             void AddZipCodeExample(IObject item)

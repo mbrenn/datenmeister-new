@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -80,7 +82,7 @@ namespace DatenMeister.Runtime
             return collection.OfType<IElement>();
         }
 
-        public static IElement Resolve(this IExtent extent, IElement element)
+        public static IElement? Resolve(this IExtent extent, IElement element)
         {
             if (!(extent is MofUriExtent mofUriExtent))
             {
@@ -113,7 +115,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="extent">Extent to be queried</param>
         /// <returns>The workspace correlated to the extent</returns>
-        public static IWorkspace GetWorkspace(this IExtent extent) => (extent as IHasWorkspace)?.Workspace;
+        public static IWorkspace? GetWorkspace(this IExtent extent) => (extent as IHasWorkspace)?.Workspace;
 
         /// <summary>
         ///     Returns an enumeration of all columns that are within the given extent
@@ -151,9 +153,8 @@ namespace DatenMeister.Runtime
             var result = new List<object>();
             foreach (var item in elements)
             {
-                if (item is IObjectAllProperties)
+                if (item is IObjectAllProperties itemAsObjectExt)
                 {
-                    var itemAsObjectExt = item as IObjectAllProperties;
                     var properties = itemAsObjectExt.getPropertiesBeingSet();
 
                     foreach (var property in properties
@@ -172,7 +173,7 @@ namespace DatenMeister.Runtime
         /// <param name="extents">Extents to be parsed</param>
         /// <param name="value">Element to be found</param>
         /// <returns>the extent with the element or none</returns>
-        public static IUriExtent WithElement(this IEnumerable<IUriExtent> extents, IObject value)
+        public static IUriExtent? WithElement(this IEnumerable<IUriExtent> extents, IObject value)
         {
             // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
@@ -225,10 +226,10 @@ namespace DatenMeister.Runtime
         /// <param name="extent">Extent to be evaluated</param>
         /// <param name="type">Type converter finding the requested type</param>
         /// <returns>The found element</returns>
-        public static IElement FindInMeta<TFilledType>(this IExtent extent, Func<TFilledType, IElement> type)
+        public static IElement? FindInMeta<TFilledType>(this IExtent extent, Func<TFilledType, IElement> type)
             where TFilledType : class, new()
         {
-            var filledType = ((MofExtent) extent).Workspace.GetFromMetaWorkspace<TFilledType>();
+            var filledType = ((MofExtent) extent).Workspace?.GetFromMetaWorkspace<TFilledType>();
             return filledType == null ? null : type(filledType);
         }
     }

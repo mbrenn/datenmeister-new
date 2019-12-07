@@ -103,7 +103,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
-            _formAndFields = userExtent?.GetWorkspace().GetFromMetaWorkspace<_FormAndFields>()
+            _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>()
                              ?? _FormAndFields.TheOne;
         }
 

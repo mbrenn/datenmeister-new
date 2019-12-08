@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
@@ -49,51 +50,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         private IElement? _dateTimeType;
 
         /// <summary>
-        /// Stores the creation mode
+        /// Initializes a new instance of the FormCreator class
         /// </summary>
-        [Flags]
-        public enum CreationMode
-        {
-            /// <summary>
-            /// Allows the creation of forms by the metaclass of the given extent
-            /// </summary>
-            ByMetaClass = 0x01,
-
-            /// <summary>
-            /// Allows the creation of forms by going through the properties
-            /// </summary>
-            ByProperties = 0x02,
-
-            /// <summary>
-            /// Allowes the creation of forms by going through the propeerties only if
-            /// the element does not have a metaclass
-            /// </summary>
-            OnlyPropertiesIfNoMetaClass = 0x04,
-
-            /// <summary>
-            /// Adds the metaclass itself to the form
-            /// </summary>
-            AddMetaClass = 0x08,
-
-            /// <summary>
-            /// Creates only fields that are usable in a list form.
-            /// So most of the time only 'TextFields'.
-            /// </summary>
-            ForListForms = 0x10,
-            
-            /// <summary>
-            /// This flag is evaluated by the list form creator.
-            /// Only properties which are common in all child classes will be included
-            /// into the view
-            /// </summary>
-            OnlyCommonProperties = 0x20,
-
-            /// <summary>
-            /// Creates all properties that are possible
-            /// </summary>
-            All = ByMetaClass | ByProperties | AddMetaClass,
-        }
-
+        /// <param name="viewLogic">View logic being used</param>
         public FormCreator(ViewLogic viewLogic)
         {
             _viewLogic = viewLogic;
@@ -106,7 +65,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>()
                              ?? _FormAndFields.TheOne;
         }
-
 
         /// <summary>
         /// Creates a detail form by considering the the information that is stored within
@@ -340,7 +298,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
                 else if (creationMode.HasFlag(CreationMode.ByProperties))
                 {
-                    AddToForm(result, element, CreationMode.ByProperties, cache);
+                    AddToForm(result, element,
+                        creationMode & ~CreationMode.ByMetaClass, cache);
                 }
             }
 
@@ -462,6 +421,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 // non MOF Objects
                 return;
             }
+            
+            var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
 
             // Creates the form out of the properties of the item
             var properties = itemAsAllProperties.getPropertiesBeingSet();
@@ -506,8 +467,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         }
                     }
 
-                    column.set(_FormAndFields._TextFieldData.name, property);
-                    column.set(_FormAndFields._TextFieldData.title, property);
+                    column.set(_FormAndFields._FieldData.name, property);
+                    column.set(_FormAndFields._FieldData.title, property);
+                    column.set(_FormAndFields._FieldData.isReadOnly, isReadOnly);
 
                     form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
                 }
@@ -569,6 +531,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var isForListForm = creationMode.HasFlag(CreationMode.ForListForms);
             var propertyName = property.get<string>("name");
             var propertyIsEnumeration = PropertyMethods.IsCollection(property);
+            var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
 
             // Check, if field property is an enumeration
             var uml = _workspaceLogic.GetUmlData();
@@ -591,6 +554,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
                     comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
                     comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
+                    comboBox.set(_FormAndFields._DropDownFieldData.isReadOnly, isReadOnly);
 
                     var values = EnumerationMethods.GetEnumValues(propertyType);
                     comboBox.set(
@@ -611,6 +575,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     var checkbox = _factory.create(_formAndFields.__CheckboxFieldData);
                     checkbox.set(_FormAndFields._CheckboxFieldData.name, propertyName);
                     checkbox.set(_FormAndFields._CheckboxFieldData.title, propertyName);
+                    checkbox.set(_FormAndFields._CheckboxFieldData.isReadOnly, isReadOnly);
                     return checkbox;
                 }
 
@@ -630,6 +595,8 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
                             ClassifierMethods.GetSpecializations(propertyType).ToList());
+                        elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
+                        
 
                         return elements;
                     }
@@ -638,6 +605,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     var reference = _factory.create(_formAndFields.__ReferenceFieldData);
                     reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
                     reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
+                    reference.set(_FormAndFields._ReferenceFieldData.isReadOnly, isReadOnly);
 
                     return reference;
                 }
@@ -653,6 +621,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 // It can just contain one element
                 element.set(_FormAndFields._SubElementFieldData.name, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.title, propertyName);
+                element.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                 return element;
 
                 /*// Unknown property type, so just create something
@@ -667,6 +636,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var column = _factory.create(_formAndFields.__TextFieldData);
             column.set(_FormAndFields._TextFieldData.name, propertyName);
             column.set(_FormAndFields._TextFieldData.title, propertyName);
+            column.set(_FormAndFields._TextFieldData.isReadOnly, isReadOnly);
 
             // If propertyType is an integer, the field can be smaller
             if (propertyType.@equals(_integerType))
@@ -716,7 +686,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 foreach (var property in propertiesWithoutCollection)
                 {
-                    var field = GetFieldForProperty(property.property, CreationMode.All);
+                    var field = GetFieldForProperty(property.property, CreationMode.All | CreationMode.ReadOnly);
                     fields.Add(field);
                 }
 

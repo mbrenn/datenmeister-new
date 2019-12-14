@@ -686,7 +686,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 foreach (var property in propertiesWithoutCollection)
                 {
-                    var field = GetFieldForProperty(property.property, CreationMode.All | CreationMode.ReadOnly);
+                    var field = GetFieldForProperty(
+                        property.property, 
+                        CreationMode.All | CreationMode.ReadOnly);
                     fields.Add(field);
                 }
 
@@ -792,7 +794,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         var property = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
                         if (property != null)
                         {
-                            var field = GetFieldForProperty(property, CreationMode.All);
+                            var field = GetFieldForProperty(
+                                property, 
+                                CreationMode.All | CreationMode.ReadOnly);
                             fields.Add(field);
                         }
                     }

@@ -48,7 +48,6 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             {
                 Content = "Select...",
                 IsEnabled = !isReadOnly
-
             };
 
             DockPanel.SetDock(button, Dock.Right);

@@ -3,15 +3,15 @@
           p1:id="WorkspacesAndExtents"
           name="WorkspacesAndExtents">
         
-        <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" 
+        <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Modules.Forms.Model.DetailForm" 
                          name="Detail - New Xmi Extent" allowNewProperties="False" hideMetaInformation="True" 
                          defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi"
                          title="Create Xmi Extent" p1:id="WorkspacesAndExtents.Xmi.New">
-            <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+            <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Modules.Forms.Model.TextFieldData"
                    lineHeight="0"   
                    width="0" isAttached="False" fieldType="text" name="uri" title="URI" isEnumeration="False"
                    defaultValue="datenmeister:///" isReadOnly="False"/>
-            <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+            <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Modules.Forms.Model.TextFieldData"
                    lineHeight="0"
                    width="0" isAttached="False" fieldType="text" name="filepath" title="Path to Xmi File"
                    isEnumeration="False" defaultValue="C:/Users/brenn/Documents/" isReadOnly="False"/>

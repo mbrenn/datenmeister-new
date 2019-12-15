@@ -50,6 +50,35 @@ namespace DatenMeister.WPF.Controls
             get => items.SelectedElement;
         }
 
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+            "IsReadOnly", typeof(bool), typeof(LocateElementControl),
+            new PropertyMetadata(default(bool),
+                OnIsReadOnlyChanged));
+
+        private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is LocateElementControl locateElementControl))
+            {
+                throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
+            }
+
+            var isReadOnly = (bool) e.NewValue;
+
+            locateElementControl.cboExtent.IsEnabled = !isReadOnly;
+            locateElementControl.cboWorkspace.IsEnabled = !isReadOnly;
+            locateElementControl.items.IsEnabled = !isReadOnly;
+        }
+
+        /// <summary>
+        /// Gets or sets a flag indicating whether the control shall be read only ==> the user cannot
+        /// modify the selected item
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get => (bool) GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
+
         public static readonly DependencyProperty ShowWorkspaceSelectionProperty =
             DependencyProperty.Register(
                 "ShowWorkspaceSelection",
@@ -66,7 +95,8 @@ namespace DatenMeister.WPF.Controls
         }
 
         public static readonly DependencyProperty ShowMetaClassesProperty = DependencyProperty.Register(
-            "ShowMetaClasses", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool), OnShowMetaClassesChange));
+            "ShowMetaClasses", typeof(bool), typeof(LocateElementControl),
+            new PropertyMetadata(default(bool), OnShowMetaClassesChange));
 
         private static void OnShowMetaClassesChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -115,7 +145,8 @@ namespace DatenMeister.WPF.Controls
         }
 
         public static readonly DependencyProperty ShowAllChildrenProperty = DependencyProperty.Register(
-            "ShowAllChildren", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+            "ShowAllChildren", typeof(bool), typeof(LocateElementControl),
+            new PropertyMetadata(default(bool)));
 
         public bool ShowAllChildren
         {

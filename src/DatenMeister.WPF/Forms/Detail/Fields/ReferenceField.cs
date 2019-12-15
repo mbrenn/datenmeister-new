@@ -55,6 +55,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
             
             var isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isReadOnly);
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
             _detailFormControl = detailForm;
             _value = value;
@@ -146,12 +147,13 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             };
 
             UpdateTextOfTextBlock(foundItem, itemText);
-
+            
             var selectButton = new Button
             {
                 Content = "Select",
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
+            
             selectButton.Click += (sender, args) =>
             {
                 // TODO: Select the one, of the currently referenced field
@@ -159,6 +161,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     detailForm.NavigationHost,
                     null /* workspace */,
                     (value as IHasExtent)?.Extent);
+                
                 if (selectedItem != null)
                 {
                     value.set(_name, selectedItem);
@@ -178,8 +181,12 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             Grid.SetColumn(selectButton, 1);
             Grid.SetColumn(removeButton, 2);
             panel.Children.Add(itemText);
-            panel.Children.Add(selectButton);
-            panel.Children.Add(removeButton);
+
+            if (!isReadOnly)
+            {
+                panel.Children.Add(selectButton);
+                panel.Children.Add(removeButton);
+            }
 
             fieldFlags.CanBeFocused = true;
             return panel;

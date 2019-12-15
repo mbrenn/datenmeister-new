@@ -30,6 +30,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DropDownFieldData.isReadOnly);
+            
             _propertyValue = null;
             if (value.isSet(_name))
             {
@@ -80,6 +82,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
             _comboBox.ItemsSource = items;
             _comboBox.SelectedValue = selectedBoxItem;
+            _comboBox.IsEnabled = !isReadOnly;
 
             fieldFlags.CanBeFocused = true;
             return _comboBox;

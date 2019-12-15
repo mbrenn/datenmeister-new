@@ -10,9 +10,11 @@
                       MouseDoubleClick="treeView_MouseDoubleClicked" KeyDown="treeView_KeyDown" 
                       SelectedItemChanged="treeView_SelectedItemChanged"
                       MouseRightButtonDown="TreeView_MouseRightButtonDown"
-                      ContextMenuOpening="TreeView_ContextMenuOpening">
+                      ContextMenuOpening="TreeView_ContextMenuOpening" 
+                      HorizontalContentAlignment="Left"
+                      VerticalContentAlignment="Center">
                 <TreeView.ContextMenu>
-                <ContextMenu x:Name="ItemContextMenu"></ContextMenu>
+                    <ContextMenu x:Name="ItemContextMenu"></ContextMenu>
                 </TreeView.ContextMenu>
             </TreeView>
     </Grid>

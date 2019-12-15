@@ -652,8 +652,9 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// This method is used when the user selects a metaclass to which a form shall be created
         /// </summary>
         /// <param name="metaClass">The meta class for which the extent form shall be created</param>
+        /// <param name="creationMode">Defines the creation mode</param>
         /// <returns>The created extent form</returns>
-        public IElement CreateExtentFormByMetaClass(IElement metaClass)
+        public IElement CreateExtentFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
         {
             var extentForm = _factory.create(_formAndFields.__ExtentForm);
             extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(metaClass));
@@ -677,19 +678,24 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     where !PropertyMethods.IsCollection(p)
                     select new {propertyName = NamedElementMethods.GetName(p), property = p}).ToList();
 
-            if (propertiesWithoutCollection.Any())
+            if (propertiesWithoutCollection.Any() || creationMode.HasFlag(CreationMode.AddMetaClass))
             {
                 var detailForm = _factory.create(_formAndFields.__DetailForm);
                 detailForm.set(_FormAndFields._DetailForm.name, "Detail");
 
                 var fields = new List<IElement>();
-
                 foreach (var property in propertiesWithoutCollection)
                 {
                     var field = GetFieldForProperty(
                         property.property, 
                         CreationMode.All | CreationMode.ReadOnly);
                     fields.Add(field);
+                }
+
+                if (creationMode.HasFlag(CreationMode.AddMetaClass))
+                {
+                    // Add the element itself
+                    fields.Add(_factory.create(_formAndFields.__MetaClassElementFieldData));
                 }
 
                 detailForm.set(_FormAndFields._DetailForm.field, fields);
@@ -729,7 +735,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             var tabs = new List<IElement>();
 
             // Get all properties of the elements
-            
             var flagAddByMetaClass = creationMode.HasFlag(CreationMode.ByMetaClass) ||
                                      creationMode.HasFlag(CreationMode.AddMetaClass);
             var propertyNamesWithCollection = new List<string>();
@@ -781,7 +786,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     let propertyContent = element.getOrDefault<object>(p)
                     select new {propertyName = p, propertyContent}).ToList();
 
-            if (propertiesWithoutCollection.Any())
+            if (propertiesWithoutCollection.Any() || creationMode.HasFlag(CreationMode.AddMetaClass))
             {
                 var detailForm = _factory.create(_formAndFields.__DetailForm);
                 detailForm.set(_FormAndFields._DetailForm.name, "Detail");
@@ -800,6 +805,13 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                             fields.Add(field);
                         }
                     }
+                }
+
+                if (!cache.MetaClassAlreadyAdded && creationMode.HasFlag(CreationMode.AddMetaClass))
+                {
+                    // Add the element itself
+                    fields.Add(_factory.create(_formAndFields.__MetaClassElementFieldData));
+                    cache.MetaClassAlreadyAdded = true;
                 }
 
                 detailForm.set(_FormAndFields._DetailForm.field, fields);

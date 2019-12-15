@@ -331,33 +331,6 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Here, create the rows themselves
             CreateRows(fields);
-
-            // Adds metadata
-            if (DetailElement != null)
-            {
-                var mofElement = DetailElement as MofElement; // Used to get the uri including id
-                var uriExtent = DetailElement.GetUriExtentOf();
-
-                var hideMetaClass = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.hideMetaInformation);
-
-                if (!hideMetaClass)
-                {
-                    CreateSeparator();
-
-                    var uriExtentText = uriExtent?.contextURI() ?? string.Empty;
-                    var fullName = NamedElementMethods.GetFullName(DetailElement);
-                    CreateRowForField("Extent:", uriExtentText, true);
-                    CreateRowForField("Full Name:", fullName, true);
-                    CreateRowForField("Url w/ ID:", mofElement?.GetUri() ?? "Not known", true);
-                    CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
-
-                    var metaClass = (DetailElement as IElement)?.getMetaClass();
-                    CreateRowForField(
-                        "Meta Class:",
-                        metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
-                        true);
-                }
-            }
         }
 
         /// <summary>

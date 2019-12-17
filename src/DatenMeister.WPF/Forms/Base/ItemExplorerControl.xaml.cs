@@ -10,12 +10,14 @@ using System.Windows.Controls;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -324,12 +326,11 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var viewExtension in viewDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
                 
-                tabViewExtensions.AddRange(GetViewExtensions());            
-
                 AddTab(value, tab, tabViewExtensions, container);
             }
 
             ViewExtensions = viewDefinition.ViewExtensions;
+            
             NavigationHost?.RebuildNavigation();
         }
 
@@ -412,6 +413,9 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         defaultTypesForNewItems.Add(extension.MetaClass);
                     }
+
+                    // Filter MofObject Shadows out, they are not useable anyway.
+                    defaultTypesForNewItems = defaultTypesForNewItems.Where(x => !(x is MofObjectShadow)).ToList();
                     
                     // 
                     // Creates the menu and buttons for the default types. 

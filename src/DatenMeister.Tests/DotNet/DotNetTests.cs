@@ -2,9 +2,11 @@
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Filler;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Models.FastViewFilter;
+using DatenMeister.Modules.FastViewFilter.Model;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;

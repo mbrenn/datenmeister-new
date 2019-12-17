@@ -7,14 +7,16 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Plugins;
+using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.ViewFinder
@@ -448,7 +450,8 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
                 var formCreator = new FormCreator(this);
-                var createdForm = formCreator.CreateListForm(element.get<IReflectiveCollection>(property),
+                var createdForm = formCreator.CreateListForm(
+                    element.get<IReflectiveCollection>(property),
                     FormCreator.CreationMode.All);
 
                 return createdForm;

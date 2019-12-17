@@ -1,4 +1,4 @@
-using DatenMeister.Core.Plugins;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.WPF.Modules.ReportManager
 {

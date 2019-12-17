@@ -12,12 +12,12 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
-using DatenMeister.UserInteractions;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
@@ -329,6 +329,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             _fieldCount = 0;
 
+            // Here, create the rows themselves
             CreateRows(fields);
 
             // Adds metadata

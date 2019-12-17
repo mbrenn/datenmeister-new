@@ -1,7 +1,7 @@
 ﻿using System;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Modules.DataViews.Model;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews

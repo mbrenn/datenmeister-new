@@ -1,5 +1,5 @@
-﻿using DatenMeister.Core.Plugins;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
+﻿using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Excel.Integration
 {

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
-using DatenMeister.Core.Plugins;
 
 namespace DatenMeister.Integration
 {

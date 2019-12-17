@@ -10,7 +10,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Uses the viewfinder to retrieve the view
         /// </summary>
-        Default = 0x03,
+        Default = ViaFormCreator | ViaViewFinder,
 
         /// <summary>
         /// Returns all properties by form creator

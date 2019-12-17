@@ -35,6 +35,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     _propertyValue = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.defaultValue);
                 }
             }
+            
+            _propertyValue ??= false;
 
             _checkbox = new CheckBox
             {

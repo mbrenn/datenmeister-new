@@ -2,6 +2,7 @@
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms.Model;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 
@@ -19,7 +20,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         {
             var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
-            if (fieldType != null)
+            if (!string.IsNullOrEmpty(fieldType))
             {
                 switch (fieldType)
                 {
@@ -58,36 +59,32 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 }
 
                 var id = (metaClass as IHasId)?.Id;
-                switch (id)
+                if (id == typeof(SeparatorLineFieldData).FullName)
+                    return new SeparatorLineField();
+                if (id == typeof(SubElementFieldData).FullName)
+                    return new SubElementsField();
+                if (id == typeof(DropDownFieldData).FullName)
+                    return new DropdownField();
+                if (id == typeof(CheckboxFieldData).FullName)
+                    return new CheckboxField();
+                if (id == typeof(DateTimeFieldData).FullName)
+                    return new DateTimeField();
+                if (id == typeof(ReferenceFieldData).FullName)
+                    return new ReferenceField();
+                if (id == typeof(TextFieldData).FullName)
+                    return new TextboxField();
+                if (id == typeof(MetaClassElementFieldData).FullName)
+                    return new MetaClassElementField();
+                
+                if (isEnumeration)
                 {
-                    case "DatenMeister.Models.Forms.SeparatorLineFieldData":
-                        return new SeparatorLineField();
-                    case "DatenMeister.Models.Forms.SubElementFieldData":
-                        return new SubElementsField();
-                    case "DatenMeister.Models.Forms.DropDownFieldData":
-                        return  new DropdownField();
-                    case "DatenMeister.Models.Forms.DateTimeFieldData":
-                        return new DateTimeField();
-                    case "DatenMeister.Models.Forms.ReferenceFieldData":
-                        return new ReferenceField();
-                    case "DatenMeister.Models.Forms.CheckboxFieldData":
-                        return new CheckboxField();
-                    case "DatenMeister.Models.Forms.TextFieldData":
-                        return new TextboxField();
-                    case "DatenMeister.Models.Forms.MetaClassElementFieldData":
-                        return new MetaClassElementField();
-                    default:
-                        if (isEnumeration)
-                        {
-                            return new ReadOnlyListField();
-                        }
-                        else
-                        {
-                            return new TextboxField();
-                        }
+                    return new ReadOnlyListField();
                 }
+
+                return new TextboxField();
             }
         }
+
 
         /// <summary>
         /// Gets the UI Element for the given field and value

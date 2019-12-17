@@ -3,8 +3,8 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using BurnSystems.Logging;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {

@@ -80,11 +80,18 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             /// So most of the time only 'TextFields'.
             /// </summary>
             ForListForms = 0x10,
+            
+            /// <summary>
+            /// This flag is evaluated by the list form creator.
+            /// Only properties which are common in all child classes will be included
+            /// into the view
+            /// </summary>
+            OnlyCommonProperties = 0x20,
 
             /// <summary>
             /// Creates all properties that are possible
             /// </summary>
-            All = ByMetaClass | ByProperties | AddMetaClass
+            All = ByMetaClass | ByProperties | AddMetaClass,
         }
 
         public FormCreator(ViewLogic viewLogic)
@@ -96,7 +103,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
-            _formAndFields = userExtent?.GetWorkspace().GetFromMetaWorkspace<_FormAndFields>()
+            _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>()
                              ?? _FormAndFields.TheOne;
         }
 
@@ -298,14 +305,28 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public IElement CreateListForm(IReflectiveCollection elements, CreationMode creationMode)
         {
             var cache = new FormCreatorCache();
-
             var alreadyVisitedMetaClasses = new HashSet<IElement>();
 
+            IObject? firstElementMetaClass = null;
+            var metaClassAdded = false;
             var result = _factory.create(_formAndFields.__ListForm);
 
             foreach (var element in elements.OfType<IObject>())
             {
                 var metaClass = (element as IElement)?.getMetaClass();
+                if (firstElementMetaClass == null || !creationMode.HasFlag(CreationMode.AddMetaClass))
+                {
+                    // If this is the first element or when the creator does not allow the addition
+                    // of a metaclass
+                    firstElementMetaClass = metaClass;
+                }
+                else if (firstElementMetaClass != metaClass && !metaClassAdded)
+                {
+                    metaClassAdded = true;
+                    // Create the metaclass as a field
+                    var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                    result.get<IReflectiveSequence>(_FormAndFields._Form.field).add(0, metaClassField);
+                }
 
                 if (creationMode.HasFlag(CreationMode.ByMetaClass) && metaClass != null)
                 {
@@ -340,11 +361,14 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
             var result = _factory.create(_formAndFields.__ListForm);
 
-            result.set(_FormAndFields._ListForm.title, $"{NamedElementMethods.GetName(metaClass)}");
+            var nameOfListForm = NamedElementMethods.GetName(metaClass);
+            result.set(_FormAndFields._ListForm.title, nameOfListForm);
+            result.set(_FormAndFields._ListForm.name, nameOfListForm);
             AddToFormByMetaclass(result, metaClass, creationMode);
 
             var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
             defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
+            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
             result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
 
             return result;

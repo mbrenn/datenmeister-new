@@ -1,6 +1,9 @@
 ﻿using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules
@@ -33,14 +36,32 @@ namespace DatenMeister.Tests.Modules
         {
             var datenMeister = GiveMe.DatenMeister();
             var viewLogic = datenMeister.Resolve<ViewLogic>();
+            var viewExtent = viewLogic.GetUserViewExtent();
+            var factory = new MofFactory(viewExtent);
+            
+            var listForm = viewExtent.FindInMeta<_FormAndFields>(x => x.__ListForm);
+            
+            
             var n = 0;
-
             foreach (var _ in viewLogic.GetAllForms())
             {
                 n++;
             }
 
-            Assert.That(n, Is.GreaterThan(0));
+            var oldAmount = n;
+
+            // Adds a new element and checks, if the new element is found via GetAllForms
+            var createdElement = factory.create(listForm);
+            viewExtent.elements().add(createdElement);
+            
+            n = 0;
+            foreach (var _ in viewLogic.GetAllForms())
+            {
+                n++;
+            }
+            var newAmount = n;
+
+            Assert.That(newAmount - oldAmount, Is.EqualTo(1));
         }
 
         /*

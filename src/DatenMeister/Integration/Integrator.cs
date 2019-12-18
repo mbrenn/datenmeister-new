@@ -8,7 +8,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;

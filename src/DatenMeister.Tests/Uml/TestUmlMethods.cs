@@ -2,7 +2,6 @@
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;

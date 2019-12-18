@@ -1,5 +1,3 @@
-using System;
-
 namespace StundenMeister.Model
 {
     public class CostCenter

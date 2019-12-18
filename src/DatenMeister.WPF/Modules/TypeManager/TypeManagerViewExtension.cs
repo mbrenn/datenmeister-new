@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms;
@@ -9,7 +8,6 @@ using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
-using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.TypeManager

@@ -11,6 +11,7 @@ using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ViewFinder.Helper;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;

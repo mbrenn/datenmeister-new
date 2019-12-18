@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Autofac;
-using DatenMeister.Models.ZipCode;
+using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Runtime.Plugins;

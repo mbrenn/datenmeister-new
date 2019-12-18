@@ -15,6 +15,7 @@ using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;

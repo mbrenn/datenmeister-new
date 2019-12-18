@@ -1,13 +1,12 @@
+using DatenMeister;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.ManagementProvider.FormViewModels;
 using DatenMeister.Provider.DotNet;
-
 // Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator
 
-namespace DatenMeister.Models.ManagementProvider
+namespace DatenMeister.Provider.ManagementProviders.Model
 {
     public static class IntegrateManagementProvider
     {
@@ -25,21 +24,21 @@ namespace DatenMeister.Models.ManagementProvider
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
-                var type = typeof(Extent);
+                var type = typeof(DatenMeister.Models.ManagementProvider.Extent);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Extent = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(Workspace);
+                var type = typeof(DatenMeister.Models.ManagementProvider.Workspace);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Workspace = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(CreateNewWorkspaceModel);
+                var type = typeof(DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__CreateNewWorkspaceModel = typeAsElement;

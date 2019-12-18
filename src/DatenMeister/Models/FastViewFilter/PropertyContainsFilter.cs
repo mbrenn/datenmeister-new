@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Modules.FastViewFilter.Model
+﻿namespace DatenMeister.Models.FastViewFilter
 {
     /// <summary>
     /// Defines the filter which verifies that the property contains a certain value

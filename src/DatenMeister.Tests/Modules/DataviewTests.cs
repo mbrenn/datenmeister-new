@@ -8,7 +8,6 @@ using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Modules.DataViews;
-using DatenMeister.Modules.DataViews.Model;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;

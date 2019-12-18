@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.Forms.Model
+namespace DatenMeister.Models.Forms
 {
     /// <summary>
     /// Allows the selection of a certain field by navigating through the extent

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.Forms.Model
+namespace DatenMeister.Models.Forms
 {
     /// <summary>
     /// Defines a field to which subelements are allowed and to which new elements can be added

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DatenMeister.Modules.Forms.Model
+namespace DatenMeister.Models.Forms
 {
     public static class FieldTypes
     {

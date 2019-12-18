@@ -1,4 +1,4 @@
-namespace DatenMeister.Modules.Forms.Model
+namespace DatenMeister.Models.Forms
 {
     public enum ViewType
     {

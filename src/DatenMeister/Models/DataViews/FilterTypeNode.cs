@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.DataViews.Model
+namespace DatenMeister.Models.DataViews
 {
     public class FilterTypeNode : ViewNode
     {

@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Provider.ManagementProviders.Model.FormViewModels
+﻿namespace DatenMeister.Models.ManagementProvider.FormViewModels
 {
     /// <summary>
     /// Defines the model which creates a new workspace

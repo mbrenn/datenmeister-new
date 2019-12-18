@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Modules.Forms.Model
+﻿namespace DatenMeister.Models.Forms
 {
     /// <summary>
     /// Defines the field data for the meta class

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.DefaultTypes.Model
+namespace DatenMeister.Models.DefaultTypes
 {
     public class Package
     {

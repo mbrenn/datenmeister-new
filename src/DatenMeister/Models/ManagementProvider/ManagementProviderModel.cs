@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Provider.ManagementProviders.Model.FormViewModels;
+using DatenMeister.Models.ManagementProvider.FormViewModels;
 
-namespace DatenMeister.Provider.ManagementProviders.Model
+namespace DatenMeister.Models.ManagementProvider
 {
     /// <summary>
     /// Class referring to all management provider models

@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Modules.FastViewFilter.Model
+﻿namespace DatenMeister.Models.FastViewFilter
 {
     public enum ComparisonType
     {

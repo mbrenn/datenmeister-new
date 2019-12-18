@@ -1,6 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.Forms.Model
+namespace DatenMeister.Models.Forms
 {
     /// <summary>
     /// Gets or sets a structure defining the type of the new element

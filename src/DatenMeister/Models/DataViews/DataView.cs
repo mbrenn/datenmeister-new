@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Modules.DataViews.Model
+﻿namespace DatenMeister.Models.DataViews
 {
     public class DataView
     {

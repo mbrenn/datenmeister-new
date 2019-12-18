@@ -66,7 +66,7 @@ namespace DatenMeister.Modules.UserManagement
                 // Create new settings
                 var factory = new MofFactory(extent);
                 var element = factory.create(types[1]);
-                element.set(nameof(UserManagementSettings.Salt), RandomFunctions.GetRandomAlphanumericString(16));
+                element.set(nameof(UserManagementSettings.salt), RandomFunctions.GetRandomAlphanumericString(16));
                 extent.elements().add(element);
                 Logger.Info("UserLogic - Created Salt...");
             }
@@ -92,7 +92,7 @@ namespace DatenMeister.Modules.UserManagement
             var settings = userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
 
             Debug.Assert(settings != null, "settings != null");
-            var globalSalt = settings.get(nameof(UserManagementSettings.Salt)).ToString();
+            var globalSalt = settings.get(nameof(UserManagementSettings.salt)).ToString();
 
             var totalPassword = salt + password + globalSalt;
 

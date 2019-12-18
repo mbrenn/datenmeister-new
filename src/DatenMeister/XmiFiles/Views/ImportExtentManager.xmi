@@ -2,9 +2,9 @@
 
 <item>
   <item p1:id="_package_ImportManager" name="ImportExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.Form"
+    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Modules.Forms.Model.Form"
                      p1:id="ImportManagerFindExtent" name="Find Extent">
-      <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData"
+      <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Modules.Forms.Model.ReferenceFieldData"
               name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True"
               defaultExtentUri="datenmeister:///_internal/workspaces/" showAllChildren="True"/>
     </packagedElement>

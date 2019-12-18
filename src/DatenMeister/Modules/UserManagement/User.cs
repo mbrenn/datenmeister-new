@@ -8,7 +8,7 @@
         /// <summary>
         /// Defines the name of the user
         /// </summary>
-        public string Name
+        public string name
         {
             get;
             set;
@@ -17,7 +17,7 @@
         /// <summary>
         /// Defines the encrypted password of the user
         /// </summary>
-        public string Password
+        public string password
         {
             get;
             set;

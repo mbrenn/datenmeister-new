@@ -167,7 +167,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
             set
             {
-                if ( value != null && _mappingItems.TryGetValue(value, out var treeviewItem))
+                if (value != null && _mappingItems.TryGetValue(value, out var treeviewItem))
                 {
                     treeviewItem.IsSelected = true;
                 }

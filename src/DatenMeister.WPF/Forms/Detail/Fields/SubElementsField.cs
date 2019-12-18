@@ -74,6 +74,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
             var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
+            var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly);
 
             valueOfElement ??= _element.GetAsReflectiveCollection(_propertyName);
             var valueCount = valueOfElement.Count();
@@ -94,7 +95,10 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 form = viewLogic.GetListFormForElementsProperty(_element, _propertyName);
             }
 
-            var viewExtensions = new List<ViewExtension>
+            var viewExtensions = 
+                isReadOnly ? 
+                new List<ViewExtension>() :  
+                new List<ViewExtension>
             {
                 new RowItemButtonDefinition(
                     "Edit",
@@ -118,72 +122,75 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
 
             _panel.Children.Add(listViewControl);
 
-            var listItems = new List<Tuple<string, Action>>
+            if (!isReadOnly)
             {
-                new Tuple<string, Action>(
-                    "Select Type",
-                    () =>
-                    {
-                        var result = NavigatorForItems.NavigateToCreateNewItem(
-                            _navigationHost,
-                            (_element as MofObject)?.ReferencedExtent,
-                            null);
-
-                        result.NewItemCreated += (a, b) =>
-                        {
-                            if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
-                            {
-                                propertyCollection.add(b.NewItem);
-                            }
-                            else
-                            {
-                                _element.set(_propertyName, new List<object> {b.NewItem});
-                            }
-
-                            _panel.Children.Clear();
-                            CreatePanelElement();
-                        };
-                    })
-            };
-
-            // Gets the buttons for specific types
-            if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
-                .defaultTypesForNewElements) is { } defaultTypesForNewItems)
-            {
-                var specializedTypes =
-                    (from type in defaultTypesForNewItems.OfType<IElement>()
-                        from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                        select newSpecializationType).Distinct();
-
-                listItems.AddRange(
-                    from x in specializedTypes
-                    select CreateButtonForType(x));
-            }
-
-            // If user clicks on the button, an empty reflective collection is created
-            var createItemButton = new Button
-                {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
-            createItemButton.Click += (x, y) =>
-            {
-                var menu = new ContextMenu();
-                var menuItems = new List<MenuItem>();
-
-                foreach (var item in listItems)
+                var listItems = new List<Tuple<string, Action>>
                 {
-                    var menuItem = new MenuItem
-                    {
-                        Header = item.Item1
-                    };
-                    menuItem.Click += (a, b) => item.Item2();
-                    menuItems.Add(menuItem);
+                    new Tuple<string, Action>(
+                        "Select Type",
+                        () =>
+                        {
+                            var result = NavigatorForItems.NavigateToCreateNewItem(
+                                _navigationHost,
+                                (_element as MofObject)?.ReferencedExtent,
+                                null);
+
+                            result.NewItemCreated += (a, b) =>
+                            {
+                                if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                                {
+                                    propertyCollection.add(b.NewItem);
+                                }
+                                else
+                                {
+                                    _element.set(_propertyName, new List<object> {b.NewItem});
+                                }
+
+                                _panel.Children.Clear();
+                                CreatePanelElement();
+                            };
+                        })
+                };
+
+                // Gets the buttons for specific types
+                if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
+                    .defaultTypesForNewElements) is { } defaultTypesForNewItems)
+                {
+                    var specializedTypes =
+                        (from type in defaultTypesForNewItems.OfType<IElement>()
+                            from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                            select newSpecializationType).Distinct();
+
+                    listItems.AddRange(
+                        from x in specializedTypes
+                        select CreateButtonForType(x));
                 }
 
-                menu.ItemsSource = menuItems;
-                menu.PlacementTarget = createItemButton;
-                menu.IsOpen = true;
-            };
+                // If user clicks on the button, an empty reflective collection is created
+                var createItemButton = new Button
+                    {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
+                createItemButton.Click += (x, y) =>
+                {
+                    var menu = new ContextMenu();
+                    var menuItems = new List<MenuItem>();
 
-            _panel.Children.Add(createItemButton);
+                    foreach (var item in listItems)
+                    {
+                        var menuItem = new MenuItem
+                        {
+                            Header = item.Item1
+                        };
+                        menuItem.Click += (a, b) => item.Item2();
+                        menuItems.Add(menuItem);
+                    }
+
+                    menu.ItemsSource = menuItems;
+                    menu.PlacementTarget = createItemButton;
+                    menu.IsOpen = true;
+                };
+
+                _panel.Children.Add(createItemButton);
+            }
         }
 
         /// <summary>

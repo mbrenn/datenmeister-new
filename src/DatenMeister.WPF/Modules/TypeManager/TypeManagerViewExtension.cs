@@ -73,16 +73,16 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     yield return new NewInstanceViewDefinition(propertyMetaClass);
 
                     yield return
-                        new ApplicationMenuButtonDefinition(
+                        new CollectionMenuButtonDefinition(
                             "Create new Property",
-                            () =>
+                            (x) =>
                                 NavigatorForItems.NavigateToNewItemForPropertyCollection(
                                     viewExtensionTargetInformation.NavigationHost,
                                     selectedPackage,
                                     _UML._StructuredClassifiers._Class.ownedAttribute,
                                     propertyMetaClass),
                             string.Empty,
-                            NavigationCategories.Type + "." + "Manager");
+                            NavigationCategories.Type);
                 }
             }
         }

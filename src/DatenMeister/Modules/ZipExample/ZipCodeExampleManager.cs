@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.ZipCode;
+using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;

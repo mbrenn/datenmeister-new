@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace DatenMeister.Models.ZipCode
+namespace DatenMeister.Models.Example.ZipCode
 {
     public class ZipCode
     {

@@ -10,7 +10,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 

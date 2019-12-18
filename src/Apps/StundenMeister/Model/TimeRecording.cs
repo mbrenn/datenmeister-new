@@ -1,6 +1,4 @@
 using System;
-using System.Security.RightsManagement;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace StundenMeister.Model
 {

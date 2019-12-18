@@ -414,7 +414,7 @@ namespace DatenMeister.WPF.Modules.ViewManager
         private static ViewExtension GetForApplicationWindow(ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
             var result = new ApplicationMenuButtonDefinition(
-                "Goto User Views",
+                "Goto User Forms",
                 () => NavigatorForItems.NavigateToItemsInExtent(
                     viewExtensionTargetInformation.NavigationHost,
                     WorkspaceNames.NameManagement,

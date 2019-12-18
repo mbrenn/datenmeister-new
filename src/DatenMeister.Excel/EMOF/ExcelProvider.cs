@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using DatenMeister.Excel.Helper;
-using DatenMeister.Excel.Models;
 using DatenMeister.Provider;
 using NPOI.XSSF.UserModel;
 

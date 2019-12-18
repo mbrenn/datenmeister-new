@@ -1,4 +1,3 @@
-using System.Security.Permissions;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime.Plugins;
 

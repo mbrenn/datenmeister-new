@@ -1,8 +1,8 @@
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Implementation;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
-namespace DatenMeister.Models.ManagementProvider
+namespace DatenMeister.Provider.ManagementProviders.Model
 {
     public class _ManagementProvider
     {
@@ -29,7 +29,7 @@ namespace DatenMeister.Models.ManagementProvider
         }
 
         public _Extent @Extent = new _Extent();
-        public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Extent");
+        public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent");
 
         public class _Workspace
         {
@@ -45,7 +45,7 @@ namespace DatenMeister.Models.ManagementProvider
         }
 
         public _Workspace @Workspace = new _Workspace();
-        public IElement @__Workspace = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace");
+        public IElement @__Workspace = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace");
 
         public class _CreateNewWorkspaceModel
         {
@@ -58,7 +58,7 @@ namespace DatenMeister.Models.ManagementProvider
         }
 
         public _CreateNewWorkspaceModel @CreateNewWorkspaceModel = new _CreateNewWorkspaceModel();
-        public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.FormViewModels.CreateNewWorkspaceModel");
+        public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
 
         public static _ManagementProvider TheOne = new _ManagementProvider();
 

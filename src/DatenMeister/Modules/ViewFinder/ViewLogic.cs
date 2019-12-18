@@ -360,7 +360,7 @@ namespace DatenMeister.Modules.ViewFinder
                 var formCreator = new FormCreator(this);
                 return formCreator.CreateExtentForm(
                     extent,
-                    FormCreator.CreationMode.All | FormCreator.CreationMode.ForListForms);
+                    CreationMode.All | CreationMode.ForListForms);
             }
 
             return null;
@@ -412,7 +412,7 @@ namespace DatenMeister.Modules.ViewFinder
             {
                 // Ok, now perform the creation...
                 var formCreator = new FormCreator(this);
-                return formCreator.CreateListForm(metaClass, FormCreator.CreationMode.All);
+                return formCreator.CreateListForm(metaClass, CreationMode.All);
             }
 
             return null;
@@ -451,7 +451,7 @@ namespace DatenMeister.Modules.ViewFinder
                 var formCreator = new FormCreator(this);
                 var createdForm = formCreator.CreateListForm(
                     element.get<IReflectiveCollection>(property),
-                    FormCreator.CreationMode.All);
+                    CreationMode.All | CreationMode.OnlyCommonProperties);
 
                 return createdForm;
             }
@@ -467,7 +467,7 @@ namespace DatenMeister.Modules.ViewFinder
             }
 
             var formCreator = new FormCreator(this);
-            return formCreator.CreateExtentForm(collection, FormCreator.CreationMode.All);
+            return formCreator.CreateExtentForm(collection, CreationMode.All);
         }
 
         /// <summary>
@@ -503,7 +503,7 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
                 var formCreator = new FormCreator(this);
-                var createdForm = formCreator.CreateExtentFormForObject(element, extent, FormCreator.CreationMode.All);
+                var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All);
 
                 return createdForm;
             }
@@ -546,7 +546,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             var formCreator = new FormCreator(this);
             var createdForm =
-                formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, FormCreator.CreationMode.All);
+                formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, CreationMode.All);
 
             return createdForm;
         }

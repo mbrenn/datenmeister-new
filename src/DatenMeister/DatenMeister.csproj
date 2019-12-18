@@ -42,7 +42,7 @@
     <EmbeddedResource Include="XmiFiles\Views\UML.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\ImportExtentManager.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\Viewmanager.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\WorkspacesAndExtents.xml" />
+    <EmbeddedResource Include="XmiFiles\Views\WorkspacesAndExtents.xmi" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.1" />

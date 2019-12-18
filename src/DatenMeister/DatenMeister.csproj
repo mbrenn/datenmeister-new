@@ -23,24 +23,14 @@
     <None Remove="Integration\Modules\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Modules\ZipExample\zip_type_definition.xmi" />
-    <None Remove="XmiFiles\MOF.xmi" />
-    <None Remove="XmiFiles\PrimitiveTypes.xmi" />
-    <None Remove="XmiFiles\UML.xmi" />
-    <None Remove="XmiFiles\Views\ImportExtentManager.xmi" />
-    <None Remove="XmiFiles\Views\UML - Kopieren.xmi" />
-    <None Remove="XmiFiles\Views\UML.xmi" />
-    <None Remove="XmiFiles\Views\Viewmanager.xmi" />
-    <None Remove="XmiFiles\Views\WorkspacesAndExtents.xmi" />
-    <None Remove="XmiFiles\Views\WorkspacesAndExtents.xml" />
+    <None Remove="XmiFiles\Views\UML.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\UML - Kopieren.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\UML.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\ImportExtentManager.xmi" />
+    <EmbeddedResource Include="XmiFiles\Views\UML.xml" />
     <EmbeddedResource Include="XmiFiles\Views\Viewmanager.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\WorkspacesAndExtents.xmi" />
   </ItemGroup>
@@ -55,7 +45,6 @@
     <Folder Include="Models\DataViews\" />
     <Folder Include="Models\Example" />
     <Folder Include="Models\ManagementProvider\" />
-    <Folder Include="Provider\ManagementProviders\Model" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />

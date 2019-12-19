@@ -4,9 +4,9 @@ Here is the DatenMeister. The new, best and improved version of datahandling acc
 
 This document gives you an overview how to use DatenMeister, how it is implemented and how you can extend it. 
 
-include::development/index.adoc[]
+include::development_index.adoc[]
 
-include::user/index.adoc[]
+include::user_index.adoc[]
 
-include::concepts/index.adoc[]
+include::concepts_index.adoc[]
 

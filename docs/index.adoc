@@ -1,0 +1,11 @@
+= DatenMeister = 
+
+Here is the DatenMeister. The new, best and improved version of datahandling according MOF, XMI and UML specifications.
+
+This document gives you an overview how to use DatenMeister, how it is implemented and how you can extend it. 
+
+include::development/index.adoc[]
+
+include::user/index.adoc[]
+
+include::concepts/index.adoc[]

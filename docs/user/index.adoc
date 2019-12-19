@@ -2,7 +2,7 @@
 
 Execute DatenMeister.exe... It will load. 
 
-image::images/mainwindow.png[]
+image::../images/user/mainwindow.png[]
 
 ===	Tree view ===
 

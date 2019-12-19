@@ -1,0 +1,3 @@
+== How to use DatenMeister ==
+
+Execute DatenMeister.exe... It will load. 

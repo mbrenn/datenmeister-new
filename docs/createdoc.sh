@@ -1,2 +1,4 @@
 #!/bin/bash
-asciidoctor -o ../index.html index.adoc
+rmdir -r .compile
+mkdir .compile
+asciidoctor -o .compile/index.html index.adoc

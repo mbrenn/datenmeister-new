@@ -2,6 +2,8 @@
 
 Execute DatenMeister.exe... It will load. 
 
+image::images/mainwindow.png[]
+
 ===	Tree view ===
 
 The tree view gives a hierarchical overview of the elements within an extent. 

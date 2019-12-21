@@ -10,15 +10,15 @@ namespace DatenMeister.WPF.Modules.FormManager
     /// Defines the plugin for the view manager
     /// </summary>
     [UsedImplicitly]
-    public class ViewManagerPlugin : IDatenMeisterPlugin
+    public class FormManagerPlugin : IDatenMeisterPlugin
     {
         private readonly PackageMethods _packageMethods;
 
         private readonly ViewLogic _viewLogic;
 
-        public const string PackageName = "ViewManager";
+        public const string PackageName = "FormManager";
 
-        public ViewManagerPlugin(PackageMethods packageMethods, ViewLogic viewLogic)
+        public FormManagerPlugin(PackageMethods packageMethods, ViewLogic viewLogic)
         {
             _packageMethods = packageMethods;
             _viewLogic = viewLogic;
@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Views.Viewmanager.xmi",
+                "DatenMeister.XmiFiles.Views.Formmanager.xmi",
                 PackageName,
                 _viewLogic.GetInternalViewExtent(),
                 PackageName);

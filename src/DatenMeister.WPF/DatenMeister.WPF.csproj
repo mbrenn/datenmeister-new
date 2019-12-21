@@ -132,8 +132,8 @@
     <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerPlugin.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerViewExtension.cs" />
-    <Compile Include="Modules\ViewManager\NavigatorForViews.cs" />
-    <Compile Include="Modules\ViewManager\ViewManagerPlugin.cs" />
+    <Compile Include="Modules\ViewManager\NavigatorForForms.cs" />
+    <Compile Include="Modules\ViewManager\FormManagerPlugin.cs" />
     <Compile Include="Modules\ViewManager\FormManagerViewExtension.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\CreatableTypeNavigator.cs" />

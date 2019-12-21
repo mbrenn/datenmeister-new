@@ -265,8 +265,8 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var metaClass in list)
                     {
                         if (ClassifierMethods.IsSpecializedClassifierOf(
-                            itemAsElement.metaclass
-                            , metaClass))
+                            itemAsElement.metaclass,
+                            metaClass))
                         {
                             found = true;
                         }

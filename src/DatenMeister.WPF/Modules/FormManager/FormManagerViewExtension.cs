@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -304,6 +305,8 @@ namespace DatenMeister.WPF.Modules.FormManager
             ViewExtensionTargetInformation viewExtensionTargetInformation,
             DetailFormWindow detailWindow)
         {
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            
             yield return new ApplicationMenuButtonDefinition(
                 "Change Form Definition",
                 ChangeFormDefinition,
@@ -330,8 +333,8 @@ namespace DatenMeister.WPF.Modules.FormManager
                 NavigationCategories.Form);
 
             var metaClassOfDetailElement = (detailWindow.DetailElement as IElement)?.getMetaClass();
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
-            if ( formAndFields == null ) throw new InvalidOperationException("No _FormAndFields in Type Workspace");
+
+            if (formAndFields == null) throw new InvalidOperationException("No _FormAndFields in Type Workspace");
             
             if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, formAndFields.__Form))
             {
@@ -395,7 +398,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                     return;
                 }
 
-
                 var detailElement = detailWindow.DetailElement as IElement;
                 var metaClass = detailElement?.metaclass;
 
@@ -417,7 +419,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
                 var userViewExtent = viewLogic.GetUserViewExtent();
                 var factory = new MofFactory(userViewExtent);
-                var formAndFields = viewLogic.GetFormAndFieldInstance();
 
                 viewLogic.RemoveViewAssociationForDetailMetaClass(metaClass);
 
@@ -432,7 +433,26 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void CreateFieldByProperty()
             {
-                throw new NotImplementedException();
+                if (NavigatorForDialogs.Locate(
+                    viewExtensionTargetInformation.NavigationHost,
+                    WorkspaceNames.NameTypes,
+                    WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
+                {
+                    var uml = GiveMe.Scope.WorkspaceLogic.GetUmlWorkspace().Get<_UML>();
+                    var selectedMetaClass = locatedItem.getMetaClass();
+                    if (ClassifierMethods.IsSpecializedClassifierOf(selectedMetaClass, uml.Classification.__Property))
+                    {
+                        MessageBox.Show("PROPERTY");
+                    }
+                    else if (ClassifierMethods.IsSpecializedClassifierOf(selectedMetaClass, uml.StructuredClassifiers.__Class))
+                    {
+                        MessageBox.Show("CLASS");
+                    }
+                    else if (ClassifierMethods.IsSpecializedClassifierOf(selectedMetaClass, uml.SimpleClassifiers.__Enumeration))
+                    {
+                        MessageBox.Show("ENUMERATION");
+                    }
+                }
             }
         }
 

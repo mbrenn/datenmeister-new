@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable  enable
+
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using Autofac;
@@ -76,7 +78,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     var dlg = new ItemXmlViewWindow
                     {
                         /*SupportWriting = true,*/
-                        Owner = Window.GetWindow(itemExplorerControl.NavigationHost.GetWindow()),
+                        Owner = Window.GetWindow(itemExplorerControl.NavigationHost?.GetWindow()),
                         SupportWriting = false
                     };
 
@@ -237,9 +239,19 @@ namespace DatenMeister.WPF.Modules.FormManager
             }
         }
 
+        /// <summary>
+        /// Defines whether the form shall be created for an extent form or for the detail form
+        /// </summary>
         enum CreateFormByClassifierType
         {
+            /// <summary>
+            /// To be chosen, when the form shall be created for a detail form
+            /// </summary>
             DetailForm,
+            
+            /// <summary>
+            /// To be chosen, when the form shall be created for an extent form
+            /// </summary>
             ExtentForm
         }
 
@@ -316,6 +328,19 @@ namespace DatenMeister.WPF.Modules.FormManager
                 ClearAssociation,
                 null,
                 NavigationCategories.Form);
+
+            var metaClassOfDetailElement = (detailWindow.DetailElement as IElement)?.getMetaClass();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            if ( formAndFields == null ) throw new InvalidOperationException("No _FormAndFields in Type Workspace");
+            
+            if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, formAndFields.__Form))
+            {
+                yield return new ApplicationMenuButtonDefinition(
+                    "Create Field by Property...",
+                    CreateFieldByProperty,
+                    null, 
+                    NavigationCategories.Form);
+            }
             
             void ChangeFormDefinition()
             {
@@ -403,6 +428,11 @@ namespace DatenMeister.WPF.Modules.FormManager
                 userViewExtent.elements().add(viewAssociation);
 
                 MessageBox.Show("View Association created");
+            }
+
+            void CreateFieldByProperty()
+            {
+                throw new NotImplementedException();
             }
         }
 

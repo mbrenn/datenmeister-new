@@ -18,7 +18,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
         public ItemMenuButtonDefinition(
             string name,
             Action<IObject> onPressed,
-            string imageName,
+            string? imageName,
             string categoryName,
             int priority = 0) : base(name, NavigationScope.Item, imageName, categoryName, priority)
         {

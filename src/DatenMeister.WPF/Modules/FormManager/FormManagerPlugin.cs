@@ -4,7 +4,7 @@ using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
 
-namespace DatenMeister.WPF.Modules.ViewManager
+namespace DatenMeister.WPF.Modules.FormManager
 {
     /// <summary>
     /// Defines the plugin for the view manager

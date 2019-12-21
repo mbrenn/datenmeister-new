@@ -21,7 +21,7 @@ using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using MessageBox = System.Windows.MessageBox;
 
-namespace DatenMeister.WPF.Modules.ViewManager
+namespace DatenMeister.WPF.Modules.FormManager
 {
     /// <summary>
     /// Contains the factory for the view extensions

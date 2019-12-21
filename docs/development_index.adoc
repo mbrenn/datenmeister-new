@@ -6,3 +6,6 @@ Get the GitHub Repository:
 - http://datenmeister.net
 
 Get the GitHub-Repositories including submodules. Open the .sln with Microsoft Visual Studio or Jet Brains Rider. Let it go, let it snow. 
+
+
+include::development_packages.adoc[]

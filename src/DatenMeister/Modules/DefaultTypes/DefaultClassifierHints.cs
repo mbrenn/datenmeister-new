@@ -1,5 +1,6 @@
 #nullable enable
 
+using System.Collections.Generic;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -22,10 +23,12 @@ namespace DatenMeister.Modules.DefaultTypes
         private static readonly ILogger Logger = new ClassLogger(typeof(DefaultClassifierHints));
         
         private IWorkspaceLogic _workspaceLogic;
+        private _UML _uml;
 
         public DefaultClassifierHints(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
+            _uml = workspaceLogic.GetUmlWorkspace().Get<_UML>();
         }
 
         /// <summary>
@@ -98,5 +101,23 @@ namespace DatenMeister.Modules.DefaultTypes
             // At the moment, every element is a package
             return true;
         }
+
+        public IEnumerable<string> GetPackagingPropertyNames(IObject item)
+        {
+            var metaClass = (item as IElement)?.getMetaClass();
+            
+            // Hard coded at the moment, will be replaced by composite property identification
+            if (metaClass?.Equals(_uml.StructuredClassifiers.__Class) == true)
+            {
+                yield return _UML._StructuredClassifiers._Class.ownedAttribute;
+                yield return _UML._StructuredClassifiers._Class.ownedOperation;
+                yield return _UML._StructuredClassifiers._Class.ownedReception;
+            }
+            else
+            {
+                yield return _UML._Packages._Package.packagedElement;
+            }
+        }
+
     }
 }

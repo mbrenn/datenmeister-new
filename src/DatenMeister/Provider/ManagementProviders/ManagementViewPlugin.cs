@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.ManagementProviders
                 typeof(ManagementViewPlugin),
                 "DatenMeister.XmiFiles.Views.WorkspacesAndExtents.xmi",
                 ManagementViewDefinitions.PackageName,
-                _formLogic.GetInternalViewExtent(),
+                _formLogic.GetInternalFormExtent(),
                 ManagementViewDefinitions.PackageName);
         }
     }

@@ -50,7 +50,7 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             // Finds the view
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-            var formElement = viewLogic.GetInternalViewExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
+            var formElement = viewLogic.GetInternalFormExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
 
             if (formElement == null)
             {
@@ -144,7 +144,7 @@ namespace DatenMeister.WPF.Forms.Lists
         internal static ViewDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-            var viewExtent = viewLogic.GetInternalViewExtent();
+            var viewExtent = viewLogic.GetInternalFormExtent();
             var result =
                 NamedElementMethods.GetByFullName(
                     viewExtent,

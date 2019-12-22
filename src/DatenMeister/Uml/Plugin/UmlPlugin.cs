@@ -36,7 +36,7 @@ namespace DatenMeister.Uml.Plugin
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.UML.xml",
                 PackageName,
-                _formLogic.GetInternalViewExtent(),
+                _formLogic.GetInternalFormExtent(),
                 PackageName);
         }
     }

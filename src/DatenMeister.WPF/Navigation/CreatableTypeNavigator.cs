@@ -57,7 +57,7 @@ namespace DatenMeister.WPF.Navigation
                 }
             }
 
-            var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalViewExtent());
+            var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalFormExtent());
             //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
             var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage?.FirstOrDefault(), metaWorkspace, metaExtent);
 

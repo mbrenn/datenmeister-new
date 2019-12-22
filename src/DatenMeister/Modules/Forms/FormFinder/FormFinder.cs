@@ -14,7 +14,7 @@ using DatenMeister.Uml.Helper;
 namespace DatenMeister.Modules.Forms.FormFinder
 {
     /// <summary>
-    /// Includes the implementation of the IViewFinder
+    /// Searches a form by looking through the form extents
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FormFinder
@@ -72,7 +72,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns>The found view or null, if not found</returns>
         public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
-            var viewAssociations = _formLogic.GetAllViewAssociations().Select(x => x as IElement).ToList();
+            var viewAssociations = _formLogic.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
             InternalDebug("# of ViewAssociations: " + viewAssociations.Count);
 
@@ -86,8 +86,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 var associationExtentType = element.getOrDefault<string>(_FormAndFields._ViewAssociation.extentType);
                 var associationMetaClass = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.metaClass);
-                var associationViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ??
-                                    ViewType.Detail;
+                var associationViewType = element.getOrNull<FormType>(_FormAndFields._ViewAssociation.viewType) ??
+                                    FormType.Detail;
                 var associationParentMetaclass =
                     element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.parentMetaClass);
                 var associationParentProperty =
@@ -143,15 +143,15 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 }
 
                 // ViewType
-                if (!query.viewType.Equals(associationViewType))
+                if (!query.FormType.Equals(associationViewType))
                 {
-                    InternalDebug("-- NO MATCH: viewType: " + query.viewType + ", ViewAssociation viewType: " +
+                    InternalDebug("-- NO MATCH: viewType: " + query.FormType + ", ViewAssociation viewType: " +
                                   associationViewType);
                     isMatching = false;
                 }
                 else
                 {
-                    InternalDebug("-- MATCH: viewType: " + query.viewType + ", ViewAssociation viewType: " + associationViewType);
+                    InternalDebug("-- MATCH: viewType: " + query.FormType + ", ViewAssociation viewType: " + associationViewType);
                 }
 
                 // ´ParentMetaClass

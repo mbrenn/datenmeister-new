@@ -95,7 +95,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 x =>
                 {
                     var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                    var target = viewLogic.GetUserViewExtent();
+                    var target = viewLogic.GetUserFormExtent();
                     var copier = new ObjectCopier(new MofFactory(target));
 
                     var copiedForm = copier.Copy(itemExplorerControl.EffectiveForm);
@@ -114,7 +114,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     var form = NavigatorForDialogs.Locate(
                         itemExplorerControl.NavigationHost,
                         WorkspaceNames.NameManagement,
-                        WorkspaceNames.UriUserViewExtent) as IElement;
+                        WorkspaceNames.UriUserFormExtent) as IElement;
 
                     if (form == null)
                     {
@@ -163,7 +163,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         }
 
                         var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                        var userViewExtent = viewLogic.GetUserViewExtent();
+                        var userViewExtent = viewLogic.GetUserFormExtent();
                         var factory = new MofFactory(userViewExtent);
                         var formAndFields = viewLogic.GetFormAndFieldInstance();
 
@@ -172,7 +172,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         var viewAssociation = factory.create(formAndFields.__ViewAssociation);
                         viewAssociation.set(_FormAndFields._ViewAssociation.extentType, selectedExtentType);
                         viewAssociation.set(_FormAndFields._ViewAssociation.form, itemExplorerControl.EffectiveForm);
-                        viewAssociation.set(_FormAndFields._ViewAssociation.viewType, ViewType.TreeItemExtent);
+                        viewAssociation.set(_FormAndFields._ViewAssociation.viewType, FormType.TreeItemExtent);
                         userViewExtent.elements().add(viewAssociation);
 
                         MessageBox.Show("View Association created");
@@ -273,7 +273,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             {
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                var userViewExtent = viewLogic.GetUserViewExtent();
+                var userViewExtent = viewLogic.GetUserFormExtent();
 
                 IElement createdForm;
                 switch (type)
@@ -353,7 +353,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var form = NavigatorForDialogs.Locate(
                     detailWindow,
                     WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserViewExtent) as IElement;
+                    WorkspaceNames.UriUserFormExtent) as IElement;
 
                 if (form == null)
                 {
@@ -382,7 +382,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 }
 
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                if (viewLogic.RemoveViewAssociationForDetailMetaClass(metaClass))
+                if (viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass))
                 {
                     MessageBox.Show("View Association deleted");
                 }
@@ -420,15 +420,15 @@ namespace DatenMeister.WPF.Modules.FormManager
                 }
 
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                var userViewExtent = viewLogic.GetUserViewExtent();
+                var userViewExtent = viewLogic.GetUserFormExtent();
                 var factory = new MofFactory(userViewExtent);
 
-                viewLogic.RemoveViewAssociationForDetailMetaClass(metaClass);
+                viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass);
 
                 var viewAssociation = factory.create(formAndFields.__ViewAssociation);
                 viewAssociation.set(_FormAndFields._ViewAssociation.metaClass, metaClass);
                 viewAssociation.set(_FormAndFields._ViewAssociation.form, detailWindow.OverridingViewDefinition.Element);
-                viewAssociation.set(_FormAndFields._ViewAssociation.viewType, ViewType.Detail);
+                viewAssociation.set(_FormAndFields._ViewAssociation.viewType, FormType.Detail);
                 userViewExtent.elements().add(viewAssociation);
 
                 MessageBox.Show("View Association created");
@@ -462,7 +462,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 () => NavigatorForItems.NavigateToItemsInExtent(
                     viewExtensionTargetInformation.NavigationHost,
                     WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserViewExtent),
+                    WorkspaceNames.UriUserFormExtent),
                 string.Empty,
                 NavigationCategories.DatenMeisterNavigation);
 

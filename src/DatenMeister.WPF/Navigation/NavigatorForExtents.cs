@@ -87,7 +87,7 @@ namespace DatenMeister.WPF.Navigation
             var navigateToItemConfig = new NavigateToItemConfig
             {
                 FormDefinition =
-                    viewLogic.GetInternalViewExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
+                    viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
             };
 
             if (navigateToItemConfig.FormDefinition == null)

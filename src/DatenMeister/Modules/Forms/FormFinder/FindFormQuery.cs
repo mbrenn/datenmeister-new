@@ -9,7 +9,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 {
     public class FindFormQuery
     {
-        public ViewType viewType { get; set; }
+        public FormType FormType { get; set; }
 
         public IElement? metaClass { get; set; }
 

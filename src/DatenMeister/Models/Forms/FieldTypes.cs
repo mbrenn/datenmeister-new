@@ -12,7 +12,7 @@ namespace DatenMeister.Models.Forms
                 typeof(FieldData),
                 typeof(CheckboxFieldData),
                 typeof(DateTimeFieldData),
-                typeof(ViewAssociation),
+                typeof(FormAssociation),
                 typeof(DropDownFieldData),
                 typeof(DropDownFieldData.ValuePair),
                 typeof(MetaClassElementFieldData),
@@ -24,7 +24,7 @@ namespace DatenMeister.Models.Forms
                 typeof(DefaultTypeForNewElement),
 
                 // Now the forms
-                typeof(ViewType),
+                typeof(FormType),
                 typeof(Form),
                 typeof(DetailForm),
                 typeof(ListForm),

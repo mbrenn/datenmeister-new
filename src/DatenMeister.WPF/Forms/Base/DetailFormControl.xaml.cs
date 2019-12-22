@@ -250,7 +250,7 @@ namespace DatenMeister.WPF.Forms.Base
             void CopyForm()
             {
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                var target = viewLogic.GetUserViewExtent();
+                var target = viewLogic.GetUserFormExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 
                 var copiedForm = copier.Copy(EffectiveForm);

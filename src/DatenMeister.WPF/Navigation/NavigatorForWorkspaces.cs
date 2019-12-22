@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Navigation
         public static async Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-            var viewExtent = viewLogic.GetInternalViewExtent();
+            var viewExtent = viewLogic.GetInternalFormExtent();
 
             var formElement = NamedElementMethods.GetByFullName(
                 viewExtent,

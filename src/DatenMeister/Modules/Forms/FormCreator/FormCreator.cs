@@ -61,7 +61,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _formLogic = formLogic;
 
             _workspaceLogic = _formLogic?.WorkspaceLogic;
-            var userExtent = _formLogic?.GetUserViewExtent();
+            var userExtent = _formLogic?.GetUserFormExtent();
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;

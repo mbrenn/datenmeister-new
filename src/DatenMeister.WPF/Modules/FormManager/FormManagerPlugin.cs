@@ -33,7 +33,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.Formmanager.xmi",
                 PackageName,
-                _formLogic.GetInternalViewExtent(),
+                _formLogic.GetInternalFormExtent(),
                 PackageName);
         }
     }

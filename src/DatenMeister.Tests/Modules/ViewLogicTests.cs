@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Modules
         {
             var datenMeister = GiveMe.DatenMeister();
             var viewLogic = datenMeister.Resolve<FormLogic>();
-            var internalViewExtent = viewLogic.GetInternalViewExtent();
+            var internalViewExtent = viewLogic.GetInternalFormExtent();
 
             Assert.That(internalViewExtent, Is.Not.Null);
         }
@@ -26,7 +26,7 @@ namespace DatenMeister.Tests.Modules
         {
             var datenMeister = GiveMe.DatenMeister();
             var viewLogic = datenMeister.Resolve<FormLogic>();
-            var userViewExtent = viewLogic.GetUserViewExtent();
+            var userViewExtent = viewLogic.GetUserFormExtent();
 
             Assert.That(userViewExtent, Is.Not.Null);
         }
@@ -36,7 +36,7 @@ namespace DatenMeister.Tests.Modules
         {
             var datenMeister = GiveMe.DatenMeister();
             var viewLogic = datenMeister.Resolve<FormLogic>();
-            var viewExtent = viewLogic.GetUserViewExtent();
+            var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             
             var listForm = viewExtent.FindInMeta<_FormAndFields>(x => x.__ListForm);

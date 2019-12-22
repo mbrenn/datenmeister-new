@@ -43,7 +43,7 @@ namespace DatenMeister.Models.Forms
         public List<Form> tab { get; set; }
 
         /// <summary>
-        /// Stores the fields which shall be shown in the form
+        /// Stores the fields which shall be shown in the as the first field
         /// </summary>
         public IList<FieldData> field { get; set; } = new List<FieldData>();
         

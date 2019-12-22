@@ -9,7 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder.Helper;
+using DatenMeister.Modules.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -331,7 +331,7 @@ namespace DatenMeister.Modules.ViewFinder
             }
 
             // Ok, we have not found the form. So create one
-            var formCreator = new FormCreator(this);
+            var formCreator = new FormCreator.FormCreator(this);
             return formCreator.CreateDetailForm(element);
         }
 
@@ -356,7 +356,7 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
-                var formCreator = new FormCreator(this);
+                var formCreator = new FormCreator.FormCreator(this);
                 return formCreator.CreateExtentForm(
                     extent,
                     CreationMode.All | CreationMode.ForListForms);
@@ -372,7 +372,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>The created extent</returns>
         public IElement GetExtentFormForSubforms(params IElement[] subForms)
         {
-            var formCreator = new FormCreator(this);
+            var formCreator = new FormCreator.FormCreator(this);
             return formCreator.CreateExtentForm(subForms);
         }
 
@@ -410,7 +410,7 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
-                var formCreator = new FormCreator(this);
+                var formCreator = new FormCreator.FormCreator(this);
                 return formCreator.CreateListFormForMetaClass(metaClass, CreationMode.All);
             }
 
@@ -447,7 +447,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
-                var formCreator = new FormCreator(this);
+                var formCreator = new FormCreator.FormCreator(this);
                 var createdForm = formCreator.CreateListFormForElements(
                     element.get<IReflectiveCollection>(property),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
@@ -465,7 +465,7 @@ namespace DatenMeister.Modules.ViewFinder
                 // Try to find the view, but very improbable
             }
 
-            var formCreator = new FormCreator(this);
+            var formCreator = new FormCreator.FormCreator(this);
             return formCreator.CreateExtentForm(collection, CreationMode.All);
         }
 
@@ -501,7 +501,7 @@ namespace DatenMeister.Modules.ViewFinder
 
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
-                var formCreator = new FormCreator(this);
+                var formCreator = new FormCreator.FormCreator(this);
                 var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All);
 
                 return createdForm;
@@ -543,7 +543,7 @@ namespace DatenMeister.Modules.ViewFinder
                     return foundForm;
             }
 
-            var formCreator = new FormCreator(this);
+            var formCreator = new FormCreator.FormCreator(this);
             var createdForm =
                 formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, CreationMode.All);
 

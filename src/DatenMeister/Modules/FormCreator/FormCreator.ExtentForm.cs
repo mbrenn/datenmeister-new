@@ -8,10 +8,11 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.ViewFinder.Helper
+namespace DatenMeister.Modules.FormCreator
 {
     public partial class FormCreator
     {

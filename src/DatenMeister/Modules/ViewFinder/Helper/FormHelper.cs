@@ -21,7 +21,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>The found element or null, if not found</returns>
         public static IElement GetField(IElement form, string fieldName)
         {
-            var fields = form.get<IReflectiveCollection>(_FormAndFields._Form.field);
+            if (_FormAndFields._DetailForm.field != _FormAndFields._ListForm.field)
+                throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
+            
+            var fields = form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field);
             return fields
                 .WhenPropertyHasValue(_FormAndFields._FieldData.name, fieldName)
                 .OfType<IElement>()
@@ -37,9 +40,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         public static IElement GetListTabForPropertyName(IElement form, string propertyName)
         {
             if (_FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab)
-            {
                 throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
-            }
 
             var tabs = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();

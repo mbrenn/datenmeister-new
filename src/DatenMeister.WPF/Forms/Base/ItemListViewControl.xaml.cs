@@ -448,7 +448,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
         {
-            if (!(EffectiveForm?.get(_FormAndFields._Form.field) is IReflectiveCollection fields))
+            if (!(EffectiveForm?.get(_FormAndFields._ListForm.field) is IReflectiveCollection fields))
                 return (null, null);
 
             ClearInfoLines();
@@ -715,7 +715,7 @@ namespace DatenMeister.WPF.Forms.Base
                             d.ViewDefined += (a, b) =>
                             {
                                 // Remove the field with property
-                                var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.field);
+                                var fields = b.View.get<IReflectiveSequence>(_FormAndFields._ListForm.field);
                                 var propertyField = QueryHelper.GetChildWithProperty(fields,
                                     _FormAndFields._FieldData.name,
                                     nameof(PropertyComparisonFilter.Property));

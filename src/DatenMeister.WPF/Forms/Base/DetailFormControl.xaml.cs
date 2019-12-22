@@ -321,7 +321,7 @@ namespace DatenMeister.WPF.Forms.Base
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
             if (fields == null)
             {
                 return;

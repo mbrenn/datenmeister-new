@@ -145,7 +145,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             if (!cache.MetaClassAlreadyAdded &&
                 isMetaClass &&
                 !form
-                    .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
                     .OfType<IElement>()
                     .Any(x => x.getMetaClass()?.@equals(_formAndFields.__MetaClassElementFieldData) ?? false))
             {
@@ -154,7 +154,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 // Add the element itself
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
-                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(metaClassField);
+                form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(metaClassField);
             }
         }
 
@@ -194,7 +194,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
 
                 // Checks, whether the field is already existing
                 var column = form
-                    .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
                     .OfType<IObject>()
                     .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == property);
 
@@ -231,7 +231,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     column.set(_FormAndFields._FieldData.title, property);
                     column.set(_FormAndFields._FieldData.isReadOnly, isReadOnly);
 
-                    form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+                    form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
                 }
 
                 // Makes the field to an enumeration, if explicitly requested or the type behind is an enumeration
@@ -267,7 +267,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 var propertyName = property.get("name")!.ToString();
 
                 var isAlreadyIn = form
-                    .get<IReflectiveCollection>(_FormAndFields._Form.field)
+                    .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
                     .OfType<IObject>()
                     .Any(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == propertyName);
 
@@ -277,7 +277,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
 
                 var column = GetFieldForProperty(property, creationMode);
-                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+                form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
             }
 
             return wasInMetaClass;
@@ -345,7 +345,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 }
 
                 var column = GetFieldForProperty(umlElement, creationMode);
-                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+                form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
                 return true;
             }
 
@@ -384,7 +384,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             {
                 var propertyName = NamedElementMethods.GetName(umlElement).ToLower(CultureInfo.InvariantCulture);
                 var column = CreateFieldForEnumeration(propertyName, umlElement, creationMode);
-                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+                form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
                 return true;
             }
 

@@ -71,7 +71,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                     metaClassAdded = true;
                     // Create the metaclass as a field
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
-                    result.get<IReflectiveSequence>(_FormAndFields._Form.field).add(0, metaClassField);
+                    result.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
                 }
 
                 if (creationMode.HasFlag(CreationMode.ByMetaClass) && metaClass != null)

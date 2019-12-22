@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Provider.InMemory;
 
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
 namespace DatenMeister.Models.Forms
@@ -408,9 +409,6 @@ namespace DatenMeister.Models.Forms
             public static string @title = "title";
             public IElement _title = null;
 
-            public static string @field = "field";
-            public IElement _field = null;
-
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement _hideMetaInformation = null;
 
@@ -436,14 +434,14 @@ namespace DatenMeister.Models.Forms
             public static string @tab = "tab";
             public IElement _tab = null;
 
+            public static string @field = "field";
+            public IElement _field = null;
+
             public static string @name = "name";
             public IElement _name = null;
 
             public static string @title = "title";
             public IElement _title = null;
-
-            public static string @field = "field";
-            public IElement _field = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement _hideMetaInformation = null;
@@ -476,14 +474,14 @@ namespace DatenMeister.Models.Forms
             public static string @fastViewFilters = "fastViewFilters";
             public IElement _fastViewFilters = null;
 
+            public static string @field = "field";
+            public IElement _field = null;
+
             public static string @name = "name";
             public IElement _name = null;
 
             public static string @title = "title";
             public IElement _title = null;
-
-            public static string @field = "field";
-            public IElement _field = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement _hideMetaInformation = null;
@@ -495,17 +493,20 @@ namespace DatenMeister.Models.Forms
 
         public class _ExtentForm
         {
+            public static string @tab = "tab";
+            public IElement _tab = null;
+
+            public static string @autoTabs = "autoTabs";
+            public IElement _autoTabs = null;
+
             public static string @name = "name";
             public IElement _name = null;
 
             public static string @title = "title";
             public IElement _title = null;
 
-            public static string @tab = "tab";
-            public IElement _tab = null;
-
-            public static string @autoTabs = "autoTabs";
-            public IElement _autoTabs = null;
+            public static string @hideMetaInformation = "hideMetaInformation";
+            public IElement _hideMetaInformation = null;
 
         }
 

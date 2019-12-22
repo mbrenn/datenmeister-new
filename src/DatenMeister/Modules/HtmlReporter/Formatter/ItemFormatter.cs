@@ -52,7 +52,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         private void FormatCollectionByTab(IEnumerable<object> collection, IObject tab)
         {
             var table = new HtmlTable();
-            var fields = tab.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+            var fields = tab.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
 
             if (fields == null)
             {
@@ -136,7 +136,7 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// <param name="table">The Html Table in which the fields will be include</param>
         private static void CreateRowForFields(IObject item, IObject form, HtmlTable table)
         {
-            var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+            var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
             if (fields == null)
             {
                 throw new InvalidOperationException("Fields are null...");

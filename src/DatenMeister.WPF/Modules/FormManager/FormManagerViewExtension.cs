@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -320,31 +321,33 @@ namespace DatenMeister.WPF.Modules.FormManager
                 NavigationCategories.Form);
 
             yield return new ApplicationMenuButtonDefinition(
-                "Set as default for metaclass",
+                "Set as default for Metaclass",
                 SetAsDefaultForMetaclass,
                 string.Empty,
                 NavigationCategories.Form
             );
 
             yield return new ApplicationMenuButtonDefinition(
-                "Clear default association",
+                "Clear default Association",
                 ClearAssociation,
                 null,
                 NavigationCategories.Form);
 
-            var metaClassOfDetailElement = (detailWindow.DetailElement as IElement)?.getMetaClass();
-
+            // Checks for specific elements
+            var detailAsElement = detailWindow.DetailElement as IElement;
+            var metaClassOfDetailElement = detailAsElement?.getMetaClass();
             if (formAndFields == null) throw new InvalidOperationException("No _FormAndFields in Type Workspace");
-            
-            if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, formAndFields.__Form))
+
+            if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, formAndFields.__Form)
+                && detailAsElement != null)
             {
                 yield return new ApplicationMenuButtonDefinition(
                     "Create Field by Property...",
                     CreateFieldByProperty,
-                    null, 
+                    null,
                     NavigationCategories.Form);
             }
-            
+
             void ChangeFormDefinition()
             {
                 var form = NavigatorForDialogs.Locate(
@@ -438,20 +441,11 @@ namespace DatenMeister.WPF.Modules.FormManager
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
                 {
-                    var uml = GiveMe.Scope.WorkspaceLogic.GetUmlWorkspace().Get<_UML>();
-                    var selectedMetaClass = locatedItem.getMetaClass();
-                    if (ClassifierMethods.IsSpecializedClassifierOf(selectedMetaClass, uml.Classification.__Property))
-                    {
-                        MessageBox.Show("PROPERTY");
-                    }
-                    else if (ClassifierMethods.IsSpecializedClassifierOf(selectedMetaClass, uml.StructuredClassifiers.__Class))
-                    {
-                        MessageBox.Show("CLASS");
-                    }
-                    else if (ClassifierMethods.IsSpecializedClassifierOf(selectedMetaClass, uml.SimpleClassifiers.__Enumeration))
-                    {
-                        MessageBox.Show("ENUMERATION");
-                    }
+                    var formCreator = GiveMe.Scope.Resolve<FormCreator>();
+                    formCreator.AddToFormByUmlElement(
+                        detailAsElement!, // !Ok, since this method will only be called when detailAsElement is set 
+                        locatedItem,
+                        CreationMode.All);
                 }
             }
         }

@@ -411,7 +411,7 @@ namespace DatenMeister.Modules.ViewFinder
             {
                 // Ok, now perform the creation...
                 var formCreator = new FormCreator(this);
-                return formCreator.CreateListForm(metaClass, CreationMode.All);
+                return formCreator.CreateListFormForMetaClass(metaClass, CreationMode.All);
             }
 
             return null;
@@ -448,7 +448,7 @@ namespace DatenMeister.Modules.ViewFinder
             if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
             {
                 var formCreator = new FormCreator(this);
-                var createdForm = formCreator.CreateListForm(
+                var createdForm = formCreator.CreateListFormForElements(
                     element.get<IReflectiveCollection>(property),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
 

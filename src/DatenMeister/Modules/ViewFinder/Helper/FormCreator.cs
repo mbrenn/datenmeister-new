@@ -2,11 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -19,7 +22,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
     /// Creates a view out of the given extent, elements (collection) or element).
     /// 
     /// </summary>
-    public class FormCreator
+    public partial class FormCreator
     {
         /// <summary>
         /// Stores the reference to the view logic which is required to get the views
@@ -66,54 +69,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
-        /// Creates a detail form by considering the the information that is stored within
-        /// the given element. Dependent upon the creation mode, the form will be created
-        /// by using the metaclass or the set properties
-        /// </summary>
-        /// <param name="element"></param>
-        /// <param name="creationMode"></param>
-        /// <returns></returns>
-        public IElement CreateDetailForm(IObject element, CreationMode creationMode = CreationMode.All)
-        {
-            var cache = new FormCreatorCache();
-            var createdForm = _factory.create(_formAndFields.__DetailForm);
-            createdForm.set(_FormAndFields._DetailForm.name, "Item");
-
-            if (creationMode.HasFlag(CreationMode.AddMetaClass))
-            {
-                createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
-            }
-
-            AddToForm(createdForm, element, creationMode, cache);
-
-            return createdForm;
-        }
-
-        /// <summary>
-        /// Creates a detail form by using the metaclass of the given element
-        /// </summary>
-        /// <param name="metaClass">Metaclass to which the form will be created</param>
-        /// <param name="creationMode">The creation mode being used</param>
-        /// <returns>The created form for the metaclass</returns>
-        public IElement CreateDetailFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
-        {
-            var createdForm = _factory.create(_formAndFields.__DetailForm);
-            createdForm.set(_FormAndFields._DetailForm.name, "Item");
-
-            if (creationMode.HasFlag(CreationMode.AddMetaClass))
-            {
-                createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
-            }
-
-            if (!AddToFormByMetaclass(createdForm, metaClass, creationMode))
-            {
-                createdForm.set(_FormAndFields._DetailForm.allowNewProperties, true);
-            }
-
-            return createdForm;
-        }
-
-        /// <summary>
         /// Creates an extent form containing the subforms
         /// </summary>    
         /// <returns>The created extent</returns>
@@ -133,213 +88,19 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <returns>The created element</returns>
         public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
             => CreateExtentForm(extent.elements(), creationMode);
-
-        private class FormCreatorCache
-        {
-            public bool MetaClassAlreadyAdded { get; set; }
-
-            public HashSet<IElement> CoveredMetaClasses { get; } = new HashSet<IElement>();
-
-            public HashSet<string> CoveredPropertyNames { get; } = new HashSet<string>();
-        }
-
+        
         /// <summary>
-        /// Creates the extent by parsing through all the elements and creation of fields
-        /// </summary>
-        /// <param name="elements">Elements which are parsed to create the form</param>
-        /// <param name="creationMode">The creation mode defining whether metaclass are used or not</param>
-        /// <returns></returns>
-        public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
-        {
-            var cache = new FormCreatorCache();
-
-            if (elements == null)
-                throw new ArgumentNullException(nameof(elements));
-
-            var tabs = new List<IElement>();
-
-            var result = _factory.create(_formAndFields.__ExtentForm);
-            result.set(_FormAndFields._ExtentForm.name, "Items");
-
-            var elementsAsObjects = elements.OfType<IObject>().ToList();
-            var elementsWithoutMetaClass = elementsAsObjects
-                .Where(x =>
-                {
-                    var element = x as IElement;
-                    var metaClass = element?.getMetaClass();
-                    return metaClass == null;
-                })
-                .ToList();
-
-            var elementsWithMetaClass = elementsAsObjects
-                .OfType<IElement>()
-                .GroupBy(x =>
-                {
-                    var metaClass = x.getMetaClass();
-                    return metaClass;
-                })
-                .Where(x => x.Key != null)
-                .ToList();
-
-            if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
-            {
-                // If there are elements without a metaclass or if there are no elements in the extent
-                // then provide an empty list form
-                var form = _factory.create(_formAndFields.__ListForm);
-                form.set(_FormAndFields._ListForm.name, "Unclassified");
-                form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
-
-                foreach (var item in elementsWithoutMetaClass)
-                    AddToForm(form, item, creationMode, cache);
-
-                SetDefaultTypes(form);
-
-                tabs.Add(form);
-            }
-
-            foreach (var group in elementsWithMetaClass)
-            {
-                // Now try to figure out the metaclass
-                var groupedMetaclass = group.Key;
-                IElement form;
-                if (_viewLogic != null)
-                {
-                    var extent = (elements as IHasExtent)?.Extent;
-                    if (extent == null)
-                    {
-                        throw new InvalidOperationException("elements does not have an extent");
-                    }
-                    
-                    // Asks the view logic whether it has a list form for the specific metaclass
-                    // It will ask the form creator, if there is no view association directly referencing
-                    // to the element
-                    form = _viewLogic.GetListFormForExtent(
-                        extent,
-                        groupedMetaclass,
-                        ViewDefinitionMode.Default) ?? throw new InvalidOperationException("No form was found");
-
-                    if (creationMode.HasFlag(CreationMode.ByProperties))
-                    {
-                        foreach (var element in group)
-                        {
-                            AddToFormByProperties(form, element, creationMode, cache);
-                        }
-                    }
-                }
-                else
-                {
-                    // If no view logic is given, then ask directly the form creator.
-                    form = CreateListForm(groupedMetaclass, creationMode);
-                }
-
-                form.set(_FormAndFields._ListForm.metaClass, group.Key);
-
-                SetDefaultTypes(form);
-
-                tabs.Add(form);
-            }
-
-            result.set(_FormAndFields._ExtentForm.tab, tabs);
-
-            return result;
-
-            void SetDefaultTypes(IElement form)
-            {
-                var extent = elements.GetAssociatedExtent();
-                var defaultTypePackages = extent?.GetDefaultTypePackages();
-                if (defaultTypePackages != null)
-                    form.set(_FormAndFields._ListForm.defaultTypesForNewElements, defaultTypePackages);
-            }
-        }
-
-        /// <summary>
-        /// Creates the list form out of the elements in the reflective collection.
-        /// Supports the creation by the metaclass and by the object's properties
-        /// </summary>
-        /// <param name="elements">Elements to be queried</param>
-        /// <param name="creationMode">The used creation mode</param>
-        /// <returns>The created list form </returns>
-        public IElement CreateListForm(IReflectiveCollection elements, CreationMode creationMode)
-        {
-            var cache = new FormCreatorCache();
-            var alreadyVisitedMetaClasses = new HashSet<IElement>();
-
-            IObject? firstElementMetaClass = null;
-            var metaClassAdded = false;
-            var result = _factory.create(_formAndFields.__ListForm);
-
-            foreach (var element in elements.OfType<IObject>())
-            {
-                var metaClass = (element as IElement)?.getMetaClass();
-                if (firstElementMetaClass == null || !creationMode.HasFlag(CreationMode.AddMetaClass))
-                {
-                    // If this is the first element or when the creator does not allow the addition
-                    // of a metaclass
-                    firstElementMetaClass = metaClass;
-                }
-                else if (firstElementMetaClass != metaClass && !metaClassAdded)
-                {
-                    metaClassAdded = true;
-                    // Create the metaclass as a field
-                    var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
-                    result.get<IReflectiveSequence>(_FormAndFields._Form.field).add(0, metaClassField);
-                }
-
-                if (creationMode.HasFlag(CreationMode.ByMetaClass) && metaClass != null)
-                {
-                    if (alreadyVisitedMetaClasses.Contains(metaClass))
-                    {
-                        continue;
-                    }
-
-                    alreadyVisitedMetaClasses.Add(metaClass);
-                    AddToFormByMetaclass(result, metaClass, creationMode);
-                }
-                else if (creationMode.HasFlag(CreationMode.ByProperties))
-                {
-                    AddToForm(result, element,
-                        creationMode & ~CreationMode.ByMetaClass, cache);
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Creates a list form for a certain metaclass
-        /// </summary>
-        /// <param name="metaClass"></param>
-        /// <param name="creationMode"></param>
-        public IElement CreateListForm(IElement metaClass, CreationMode creationMode)
-        {
-            if (!creationMode.HasFlag(CreationMode.ByMetaClass))
-            {
-                throw new InvalidOperationException("The list form will only be created for the metaclass");
-            }
-
-            var result = _factory.create(_formAndFields.__ListForm);
-
-            var nameOfListForm = NamedElementMethods.GetName(metaClass);
-            result.set(_FormAndFields._ListForm.title, nameOfListForm);
-            result.set(_FormAndFields._ListForm.name, nameOfListForm);
-            AddToFormByMetaclass(result, metaClass, creationMode);
-
-            var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
-            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
-
-            return result;
-        }
-
-        /// <summary>
-        /// Creates the form out of the given element.
+        /// Creates the fields of the form by evaluation of the given object.
+        /// Depending on the creation mode, the evaluation will be done by metaclass
+        /// or by evaluation of the properties.
+        ///
+        /// This method is independent whether it is used in an list or extent form. 
         /// </summary>
         /// <param name="form">Form which will be extended by the given object</param>
         /// <param name="item">Item being used</param>
         /// <param name="creationMode">Creation mode for the form. Whether by metaclass or ByProperties</param>
         /// <param name="cache">Cache being used to store intermediate items</param>
-        private void AddToForm(IElement form, object item, CreationMode creationMode, FormCreatorCache cache)
+        private void AddToForm(IObject form, object item, CreationMode creationMode, FormCreatorCache cache)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
@@ -375,7 +136,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                  || (isOnlyPropertiesIfNoMetaClass && !wasInMetaClass))
                 && itemAsAllProperties != null)
             {
-                AddToFormByProperties(form, item, creationMode, cache);
+                AddToFormByPropertyValues(form, item, creationMode, cache);
                 form.set(_FormAndFields._DetailForm.allowNewProperties, true);
             }
 
@@ -406,7 +167,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <param name="item">Item to be evaluated</param>
         /// <param name="creationMode">The creation mode that is used</param>
         /// <param name="cache">Cache being used to store intermediate items</param>
-        private void AddToFormByProperties(IElement form, object item, CreationMode creationMode, FormCreatorCache cache)
+        private void AddToFormByPropertyValues(IObject form, object item, CreationMode creationMode, FormCreatorCache cache)
         {
             if (!(item is IObjectAllProperties itemAsAllProperties))
             {
@@ -431,7 +192,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             {
                 cache.CoveredPropertyNames.Add(property);
 
-                // Checks, whether a form is already existing
+                // Checks, whether the field is already existing
                 var column = form
                     .get<IReflectiveCollection>(_FormAndFields._Form.field)
                     .OfType<IObject>()
@@ -481,13 +242,14 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
-        /// Adds the fields for the form by going through the properties of the metaclass
+        /// Adds the fields for the form by going through the properties of the metaclass.
+        /// It only adds fields, when they are not already added to the given list or detail form
         /// </summary>
-        /// <param name="form">Form that will be extended</param>
+        /// <param name="form">Form that will be extended. Must be list or detail form.</param>
         /// <param name="metaClass">Metaclass to be used</param>
         /// <param name="creationMode">Creation Mode to be used</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddToFormByMetaclass(IElement form, IElement metaClass, CreationMode creationMode)
+        private bool AddToFormByMetaclass(IObject form, IElement metaClass, CreationMode creationMode)
         {
             var wasInMetaClass = false;
             if (metaClass == null)
@@ -495,7 +257,10 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 return false;
             }
 
-            var classifierMethods = ClassifierMethods.GetPropertiesOfClassifier(metaClass).Where(x => x.isSet("name")).ToList();
+            var classifierMethods =
+                ClassifierMethods.GetPropertiesOfClassifier(metaClass)
+                    .Where(x => x.isSet("name")).ToList();
+            
             foreach (var property in classifierMethods)
             {
                 wasInMetaClass = true;
@@ -519,12 +284,139 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
+        /// Takes the given uml item and includes it into the form.
+        /// The element can be of type enumeration, class or property.
+        ///
+        /// For the creation rules, see user_formmanager.adoc
+        /// </summary>
+        /// <param name="form">Form that will be enriched</param>
+        /// <param name="umlElement">The uml element, property, class or type that will be added</param>
+        /// <param name="creationMode">The creation mode</param>
+        /// <returns>true, if an alement was created</returns>
+        public bool AddToFormByUmlElement(IElement form, IElement umlElement, CreationMode creationMode)
+        {
+            if (form == null) throw new ArgumentNullException(nameof(form));
+            if (umlElement == null) throw new ArgumentNullException(nameof(umlElement));
+
+            var noDuplicate = creationMode.HasFlagFast(CreationMode.NoDuplicate);
+            
+            // First, select the type of the form
+            var isDetailForm = 
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _formAndFields.__DetailForm);
+            var isListForm = 
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _formAndFields.__ListForm);
+            var isExtentForm = 
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _formAndFields.__ExtentForm);
+            var isNoneOfTheForms = !(isDetailForm || isListForm || isExtentForm);
+            if (isNoneOfTheForms)
+            {
+                throw new InvalidOperationException("Given element is not a detail, a list or an extent form");
+            }
+
+            // Second, select the type of the umlElement
+            var uml = GiveMe.Scope.GetUmlData();
+            var isPropertyUml =
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), uml.Classification.__Property);
+            var isClassUml =
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), uml.StructuredClassifiers.__Class);
+            var isEnumerationUml =
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), uml.SimpleClassifiers.__Enumeration);
+            var isNoneOfTheUml = !(isPropertyUml || isClassUml || isEnumerationUml);
+            if (isNoneOfTheUml)
+            {
+                throw new InvalidOperationException(
+                    "Given element is not a property, not a class, not an enumeration.");
+            }
+
+            // Now create the element depending on the form type
+            if (isListForm)
+            {
+                // Adds the flag for list forms
+                creationMode |= CreationMode.ForListForms;
+            }
+            
+            // First, let's parse the properties
+            if (isDetailForm && isPropertyUml || isListForm && isPropertyUml)
+            {
+                if (noDuplicate && FormHelper.GetField(form, NamedElementMethods.GetName(umlElement)) != null)
+                {
+                    // Field is already existing
+                    return false;
+                }
+
+                var column = GetFieldForProperty(umlElement, creationMode);
+                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+                return true;
+            }
+
+            if (isExtentForm && isPropertyUml)
+            {
+                var isPropertyACollection = PropertyMethods.IsCollection(umlElement);
+
+                if (!isPropertyACollection)
+                {
+                    // Property is a single element, so a field is added to the detail form, if not already
+                    // existing
+                    var detailForm = GetOrCreateDetailFormIntoExtentForm(form);
+                    return AddToFormByUmlElement(detailForm, umlElement, creationMode);
+                }
+                else
+                {
+                    var propertyName = umlElement.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                    if (noDuplicate && FormHelper.GetListTabForPropertyName(form, propertyName) != null )
+                    {
+                        // List form is already existing
+                        return false;
+                    }
+                    
+                    // Property is a collection, so a list form is created for the property
+                    var tabs = form.get<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+                    
+                    // Now try to figure out the metaclass
+                    var listForm = CreateListFormForProperty(umlElement, CreationMode.ByMetaClass);
+                    tabs.add(listForm);
+                    return true;
+                }
+            }
+            
+            // Now, let's parse the enumerations
+            if (isDetailForm && isEnumerationUml || isListForm && isEnumerationUml)
+            {
+                var propertyName = NamedElementMethods.GetName(umlElement).ToLower(CultureInfo.InvariantCulture);
+                var column = CreateFieldForEnumeration(propertyName, umlElement, creationMode);
+                form.get<IReflectiveCollection>(_FormAndFields._Form.field).add(column);
+                return true;
+            }
+
+            if (isExtentForm && isEnumerationUml)
+            {
+                var detailForm = GetOrCreateDetailFormIntoExtentForm(form);
+                return AddToFormByUmlElement(detailForm, umlElement, creationMode);
+            }
+            
+            // Now the classes... All properties are created into this. 
+            if (isClassUml)
+            {
+                var properties = ClassifierMethods.GetPropertiesOfClassifier(umlElement);
+                var added = true;
+                foreach (var property in properties)
+                {
+                    added &= AddToFormByUmlElement(form, property, creationMode);
+                }
+
+                return added;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets the field data, depending upon the given property
         /// </summary>
-        /// <param name="property">Property which is requesting a field</param>
+        /// <param name="property">Uml-Property which is requesting a field</param>
         /// <param name="creationMode">Defines the mode how to create the fields</param>
         /// <returns>The field data</returns>
-        public IElement GetFieldForProperty(IElement property, CreationMode creationMode)
+        private IElement GetFieldForProperty(IObject property, CreationMode creationMode)
         {
             var propertyType = PropertyMethods.GetPropertyType(property);
             var isForListForm = creationMode.HasFlag(CreationMode.ForListForms);
@@ -549,23 +441,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
             {
                 if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration) && !isForListForm)
                 {
-                    // If we have an enumeration (C#: Enum) and the field is not for a list form
-                    var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
-                    comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
-                    comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
-                    comboBox.set(_FormAndFields._DropDownFieldData.isReadOnly, isReadOnly);
-
-                    var values = EnumerationMethods.GetEnumValues(propertyType);
-                    comboBox.set(
-                        _FormAndFields._DropDownFieldData.values,
-                        values.Select(x =>
-                        {
-                            var data = _factory.create(_formAndFields.__ValuePair);
-                            data.set(_FormAndFields._ValuePair.name, x);
-                            data.set(_FormAndFields._ValuePair.value, x);
-                            return data;
-                        }).ToList());
-                    return comboBox;
+                    return CreateFieldForEnumeration(propertyName, propertyType, creationMode);
                 }
 
                 if (propertyType.@equals(_booleanType) && !isForListForm)
@@ -595,7 +471,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
                             ClassifierMethods.GetSpecializations(propertyType).ToList());
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
-                        
 
                         return elements;
                     }
@@ -622,13 +497,6 @@ namespace DatenMeister.Modules.ViewFinder.Helper
                 element.set(_FormAndFields._SubElementFieldData.title, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                 return element;
-
-                /*// Unknown property type, so just create something
-                var columnNoPropertyType = _factory.create(_formAndFields.__TextFieldData);
-                columnNoPropertyType.set(_FormAndFields._TextFieldData.name, propertyName);
-                columnNoPropertyType.set(_FormAndFields._TextFieldData.title, propertyName);
-
-                return columnNoPropertyType;*/
             }
 
             // Per default, assume some kind of text
@@ -647,248 +515,55 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         }
 
         /// <summary>
-        /// Gets the extent form for the given metaclass.
-        /// This method is used when the user selects a metaclass to which a form shall be created
+        /// Creates a field for the given enumeration
         /// </summary>
-        /// <param name="metaClass">The meta class for which the extent form shall be created</param>
-        /// <param name="creationMode">Defines the creation mode</param>
-        /// <returns>The created extent form</returns>
-        public IElement CreateExtentFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
+        /// <param name="propertyName">Name of the property being used to add title and name</param>
+        /// <param name="propertyType">Type of the enumeration</param>
+        /// <param name="creationMode">The used creation mode</param>
+        /// <returns>The created element of the enumeration</returns>
+        private IElement CreateFieldForEnumeration(string propertyName, IElement propertyType, CreationMode creationMode)
         {
-            var extentForm = _factory.create(_formAndFields.__ExtentForm);
-            extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(metaClass));
+            var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
+            // If we have an enumeration (C#: Enum) and the field is not for a list form
+            var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
+            comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
+            comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
+            comboBox.set(_FormAndFields._DropDownFieldData.isReadOnly, isReadOnly);
 
-            var tabs = new List<IElement>();
-
-            // Get all properties of the elements
-            var properties = ClassifierMethods.GetPropertiesOfClassifier(metaClass).ToList();
-            if (properties == null)
-            {
-                throw new InvalidOperationException("ExtentForm cannot be created because given element does not have properties");
-            }
-
-            var propertiesWithCollection =
-                (from p in properties
-                    where PropertyMethods.IsCollection(p)
-                    select new {propertyName = NamedElementMethods.GetName(p), property = p}).ToList();
-
-            var propertiesWithoutCollection =
-                (from p in properties
-                    where !PropertyMethods.IsCollection(p)
-                    select new {propertyName = NamedElementMethods.GetName(p), property = p}).ToList();
-
-            if (propertiesWithoutCollection.Any() || creationMode.HasFlag(CreationMode.AddMetaClass))
-            {
-                var detailForm = _factory.create(_formAndFields.__DetailForm);
-                detailForm.set(_FormAndFields._DetailForm.name, "Detail");
-
-                var fields = new List<IElement>();
-                foreach (var property in propertiesWithoutCollection)
+            var values = EnumerationMethods.GetEnumValues(propertyType);
+            comboBox.set(
+                _FormAndFields._DropDownFieldData.values,
+                values.Select(x =>
                 {
-                    var field = GetFieldForProperty(
-                        property.property, 
-                        CreationMode.All | CreationMode.ReadOnly);
-                    fields.Add(field);
-                }
-
-                if (creationMode.HasFlag(CreationMode.AddMetaClass))
-                {
-                    // Add the element itself
-                    fields.Add(_factory.create(_formAndFields.__MetaClassElementFieldData));
-                }
-
-                detailForm.set(_FormAndFields._DetailForm.field, fields);
-                tabs.Add(detailForm);
-            }
-
-            foreach (var pair in propertiesWithCollection)
-            {
-                // Now try to figure out the metaclass
-                var form = CreateListForm(
-                    pair.property,
-                    CreationMode.ByMetaClass);
-
-                tabs.Add(form);
-            }
-
-            extentForm.set(_FormAndFields._ExtentForm.tab, tabs);
-
-            return extentForm;
+                    var data = _factory.create(_formAndFields.__ValuePair);
+                    data.set(_FormAndFields._ValuePair.name, x);
+                    data.set(_FormAndFields._ValuePair.value, x);
+                    return data;
+                }).ToList());
+            return comboBox;
         }
 
         /// <summary>
-        /// Creates the extent form for a specific object which is selected in the item explorer view.
+        /// Defines a class being used as an internal cache for the form creation.
+        /// This improves the speed of form creation since some state are explicitly stored in the
+        /// cache instead of being required to be evaluated out of the field structure. 
         /// </summary>
-        /// <param name="element">Element which shall be shown</param>
-        /// <param name="extent">Extent containing the element</param>
-        /// <param name="creationMode">The creation mode for autogeneration of the fields</param>
-        /// <returns>Created Extent form as MofObject</returns>
-        public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
+        private class FormCreatorCache
         {
-            var cache = new FormCreatorCache();
+            /// <summary>
+            /// True, if the metaclass has been already covered
+            /// </summary>
+            public bool MetaClassAlreadyAdded { get; set; }
 
-            var extentForm = _factory.create(_formAndFields.__ExtentForm);
-            extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(element));
-            var objectMetaClass = (element as IElement)?.getMetaClass();
+            /// <summary>
+            /// The meta classes that have been covered
+            /// </summary>
+            public HashSet<IElement> CoveredMetaClasses { get; } = new HashSet<IElement>();
 
-            var tabs = new List<IElement>();
-
-            // Get all properties of the elements
-            var flagAddByMetaClass = creationMode.HasFlag(CreationMode.ByMetaClass) ||
-                                     creationMode.HasFlag(CreationMode.AddMetaClass);
-            var propertyNamesWithCollection = new List<string>();
-            var propertyNamesWithoutCollection = new List<string>();
-            
-            // Adds the properties by the stored properties of the element
-            if (creationMode.HasFlag(CreationMode.ByProperties))
-            {
-                var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet().ToList();
-                properties ??= new List<string>();
-
-                propertyNamesWithCollection = (from p in properties
-                    where element.IsPropertyOfType<IReflectiveCollection>(p)
-                    let propertyContent = element.get<IReflectiveCollection>(p)
-                    where propertyContent != null
-                    select p).ToList();
-
-                propertyNamesWithoutCollection = (from p in properties
-                    where !element.IsPropertyOfType<IReflectiveCollection>(p)
-                    let propertyContent = element.get(p)
-                    where propertyContent != null
-                    select p).ToList();
-            }
-
-            // Adds the properties by the metaclasses
-            if (flagAddByMetaClass && objectMetaClass != null)
-            {
-                var metaClassProperties = ClassifierMethods.GetPropertiesOfClassifier(objectMetaClass);
-                foreach (var property in metaClassProperties)
-                {
-                    if (PropertyMethods.IsCollection(property))
-                    {
-                        propertyNamesWithCollection.Add(NamedElementMethods.GetName(property));
-                    }
-                    else
-                    {
-                        propertyNamesWithoutCollection.Add(NamedElementMethods.GetName(property));
-                    }
-                }
-            }
-
-            var propertiesWithCollection =
-                from p in propertyNamesWithCollection.Distinct()
-                let propertyContent = element.get<IReflectiveCollection>(p)
-                select new {propertyName = p, propertyContent};
-
-            var propertiesWithoutCollection =
-                (from p in propertyNamesWithoutCollection.Distinct()
-                    let propertyContent = element.getOrDefault<object>(p)
-                    select new {propertyName = p, propertyContent}).ToList();
-
-            if (propertiesWithoutCollection.Any() || creationMode.HasFlag(CreationMode.AddMetaClass))
-            {
-                var detailForm = _factory.create(_formAndFields.__DetailForm);
-                detailForm.set(_FormAndFields._DetailForm.name, "Detail");
-
-                var fields = new List<IElement>();
-                foreach (var pair in propertiesWithoutCollection)
-                {
-                    if (objectMetaClass != null)
-                    {
-                        var property = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
-                        if (property != null)
-                        {
-                            var field = GetFieldForProperty(
-                                property, 
-                                CreationMode.All | CreationMode.ReadOnly);
-                            fields.Add(field);
-                        }
-                    }
-                }
-
-                if (!cache.MetaClassAlreadyAdded && creationMode.HasFlag(CreationMode.AddMetaClass))
-                {
-                    // Add the element itself
-                    fields.Add(_factory.create(_formAndFields.__MetaClassElementFieldData));
-                    cache.MetaClassAlreadyAdded = true;
-                }
-
-                detailForm.set(_FormAndFields._DetailForm.field, fields);
-                tabs.Add(detailForm);
-            }
-
-            foreach (var pair in propertiesWithCollection)
-            {
-                var elementsAsObjects = pair.propertyContent.OfType<IObject>().ToList();
-                var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
-                {
-                    if (x is IElement innerElement)
-                    {
-                        return innerElement.getMetaClass() == null;
-                    }
-
-                    return true;
-                }).ToList();
-
-                var elementsWithMetaClass = elementsAsObjects
-                    .OfType<IElement>()
-                    .GroupBy(x => x.getMetaClass());
-
-                if (elementsWithoutMetaClass.Any() || !elementsAsObjects.Any())
-                {
-                    // If there are elements included and they are filled
-                    // OR, if there is no element included at all, create the corresponding list form
-                    var form = _factory.create(_formAndFields.__ListForm);
-                    form.set(_FormAndFields._ListForm.name, pair.propertyName);
-                    form.set(_FormAndFields._ListForm.property, pair.propertyName);
-                    form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
-
-                    foreach (var item in elementsWithoutMetaClass)
-                    {
-                        AddToForm(form, item, creationMode, cache);
-                    }
-
-                    tabs.Add(form);
-                }
-
-                foreach (var group in elementsWithMetaClass)
-                {
-                    // Now try to figure out the metaclass
-                    var groupedMetaclass = group.Key;
-                    var form = _viewLogic.GetListFormForExtentForPropertyInObject(
-                        element,
-                        extent,
-                        pair.propertyName,
-                        groupedMetaclass,
-                        ViewDefinitionMode.Default);
-
-                    tabs.Add(form);
-                }
-            }
-
-            extentForm.set(_FormAndFields._ExtentForm.tab, tabs);
-
-            return extentForm;
-        }
-
-        /// <summary>
-        /// Creates a list form for a certain metaclass being used inside an extent form
-        /// </summary>
-        /// <param name="metaClass"></param>
-        /// <param name="propertyName">Name of the property</param>
-        /// <param name="creationMode"></param>
-        public IElement CreateListFormForPropertyInObject(IElement metaClass, string propertyName, CreationMode creationMode)
-        {
-            if (!creationMode.HasFlag(CreationMode.ByMetaClass))
-            {
-                throw new InvalidOperationException("The list form will only be created for the metaclass");
-            }
-
-            var result = _factory.create(_formAndFields.__ListForm);
-            AddToFormByMetaclass(result, metaClass, creationMode);
-            result.set(_FormAndFields._ListForm.property, propertyName);
-            result.set(_FormAndFields._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
-            return result;
+            /// <summary>
+            /// The property names that already have been covered and are within the 
+            /// </summary>
+            public HashSet<string> CoveredPropertyNames { get; } = new HashSet<string>();
         }
     }
 }

@@ -34,3 +34,5 @@ The content of the property definition defines the type of each row item:
 - Booleans will be shown as checkmarks
 - Integer are shown as small textboxes
 - Other types are shown as large textboxes
+
+include::user_formmanager.adoc[leveloffset=+1]

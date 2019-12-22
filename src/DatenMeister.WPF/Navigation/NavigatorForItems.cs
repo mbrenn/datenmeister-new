@@ -140,7 +140,7 @@ namespace DatenMeister.WPF.Navigation
             return window.NavigateTo(() =>
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    var usedForm = formCreator.CreateListForm(metaClassForForm, CreationMode.ByMetaClass);
+                    var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, CreationMode.ByMetaClass);
 
                     var viewExtensions = new List<ViewExtension>();
                     viewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(

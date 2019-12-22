@@ -1,4 +1,5 @@
 #nullable enable
+
 using System;
 
 namespace DatenMeister.Modules.ViewFinder.Helper
@@ -47,6 +48,12 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// Defines a flag whether all the fields shall be included as read only fields
         /// </summary>
         ReadOnly = 0x40,
+        
+        /// <summary>
+        /// Used by the FormCreator in the method AddToFormByUmlElement.
+        /// If there is already a field included containing the given property, then the new field is not added
+        /// </summary>
+        NoDuplicate = 0x80,
 
         /// <summary>
         /// Creates all properties that are possible

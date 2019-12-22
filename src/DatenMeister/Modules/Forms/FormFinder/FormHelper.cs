@@ -9,7 +9,7 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.FormCreator
+namespace DatenMeister.Modules.Forms.FormFinder
 {
     public class FormHelper
     {

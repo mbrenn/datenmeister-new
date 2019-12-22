@@ -8,11 +8,11 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.FormCreator
+namespace DatenMeister.Modules.Forms.FormCreator
 {
     public partial class FormCreator
     {
@@ -101,7 +101,7 @@ namespace DatenMeister.Modules.FormCreator
                 // Now try to figure out the metaclass
                 var groupedMetaclass = group.Key;
                 IElement form;
-                if (_viewLogic != null) // View logic is used to ask for a default list view. 
+                if (_formLogic != null) // View logic is used to ask for a default list view. 
                 {
                     var extent = (elements as IHasExtent)?.Extent;
                     if (extent == null)
@@ -112,10 +112,10 @@ namespace DatenMeister.Modules.FormCreator
                     // Asks the view logic whether it has a list form for the specific metaclass
                     // It will ask the form creator, if there is no view association directly referencing
                     // to the element
-                    form = _viewLogic.GetListFormForExtent(
+                    form = _formLogic.GetListFormForExtent(
                         extent,
                         groupedMetaclass,
-                        ViewDefinitionMode.Default) ?? throw new InvalidOperationException("No form was found");
+                        FormDefinitionMode.Default) ?? throw new InvalidOperationException("No form was found");
 
                     if (creationMode.HasFlag(CreationMode.ByProperties))
                     {
@@ -360,12 +360,12 @@ namespace DatenMeister.Modules.FormCreator
                 {
                     // Now try to figure out the metaclass
                     var groupedMetaclass = group.Key;
-                    var form = _viewLogic.GetListFormForExtentForPropertyInObject(
+                    var form = _formLogic.GetListFormForExtentForPropertyInObject(
                         element,
                         extent,
                         pair.propertyName,
                         groupedMetaclass,
-                        ViewDefinitionMode.Default);
+                        FormDefinitionMode.Default);
 
                     tabs.Add(form);
                 }

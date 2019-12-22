@@ -12,8 +12,8 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.UserInteractions;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -249,7 +249,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             void CopyForm()
             {
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var target = viewLogic.GetUserViewExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 

@@ -5,9 +5,9 @@ using DatenMeister.Models.Forms;
 
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Modules.ViewFinder
+namespace DatenMeister.Modules.Forms.FormFinder
 {
-    public class FindViewQuery
+    public class FindFormQuery
     {
         public ViewType viewType { get; set; }
 

@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.FormCreator;
+using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using NUnit.Framework;

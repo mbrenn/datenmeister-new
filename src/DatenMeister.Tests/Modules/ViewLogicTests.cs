@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using NUnit.Framework;
 
@@ -15,7 +15,7 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabiltyOfInternalViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
+            var viewLogic = datenMeister.Resolve<FormLogic>();
             var internalViewExtent = viewLogic.GetInternalViewExtent();
 
             Assert.That(internalViewExtent, Is.Not.Null);
@@ -25,7 +25,7 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabiltyOfUserViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
+            var viewLogic = datenMeister.Resolve<FormLogic>();
             var userViewExtent = viewLogic.GetUserViewExtent();
 
             Assert.That(userViewExtent, Is.Not.Null);
@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Modules
         public void TestGetAllViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
+            var viewLogic = datenMeister.Resolve<FormLogic>();
             var viewExtent = viewLogic.GetUserViewExtent();
             var factory = new MofFactory(viewExtent);
             

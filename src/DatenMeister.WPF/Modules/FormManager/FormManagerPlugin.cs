@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Excel.Properties;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
@@ -14,14 +14,14 @@ namespace DatenMeister.WPF.Modules.FormManager
     {
         private readonly PackageMethods _packageMethods;
 
-        private readonly ViewLogic _viewLogic;
+        private readonly FormLogic _formLogic;
 
         public const string PackageName = "FormManager";
 
-        public FormManagerPlugin(PackageMethods packageMethods, ViewLogic viewLogic)
+        public FormManagerPlugin(PackageMethods packageMethods, FormLogic formLogic)
         {
             _packageMethods = packageMethods;
-            _viewLogic = viewLogic;
+            _formLogic = formLogic;
         }
 
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.Formmanager.xmi",
                 PackageName,
-                _viewLogic.GetInternalViewExtent(),
+                _formLogic.GetInternalViewExtent(),
                 PackageName);
         }
     }

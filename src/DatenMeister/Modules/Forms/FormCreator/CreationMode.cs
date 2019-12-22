@@ -2,7 +2,7 @@
 
 using System;
 
-namespace DatenMeister.Modules.FormCreator
+namespace DatenMeister.Modules.Forms.FormCreator
 {
     /// <summary>
     /// Stores the creation mode

@@ -3,7 +3,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 
-namespace DatenMeister.Modules.FormCreator
+namespace DatenMeister.Modules.Forms.FormCreator
 {
     public partial class FormCreator
     {

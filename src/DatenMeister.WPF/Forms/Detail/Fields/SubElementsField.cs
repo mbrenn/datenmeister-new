@@ -10,7 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
@@ -90,7 +90,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             if (form == null)
             {
                 // otherwise, we have to automatically create a form
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 form = viewLogic.GetListFormForElementsProperty(_element, _propertyName);
             }
 

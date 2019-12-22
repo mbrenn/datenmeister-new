@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
-using DatenMeister.Modules.FormCreator;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -47,7 +47,7 @@ namespace DatenMeister.WPF.Navigation
         /// <returns></returns>
         public static async Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewExtent = viewLogic.GetInternalViewExtent();
 
             var formElement = NamedElementMethods.GetByFullName(

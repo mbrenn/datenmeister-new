@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -45,7 +45,7 @@ namespace DatenMeister.WPF.Forms.Lists
             ViewDefinition view = null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
 
-            if (OverridingViewDefinition?.Mode == ViewDefinitionMode.Specific)
+            if (OverridingViewDefinition?.Mode == FormDefinitionMode.Specific)
             {
                 view = OverridingViewDefinition;
                 

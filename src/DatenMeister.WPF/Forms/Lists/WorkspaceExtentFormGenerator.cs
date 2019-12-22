@@ -12,7 +12,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Forms.Lists
         internal static ViewDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var formElement = viewLogic.GetInternalViewExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
 
             if (formElement == null)
@@ -59,7 +59,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
                 formElement = viewLogic.GetExtentFormForSubforms(
                     viewLogic.GetListFormForExtent(extent, formAndFields.__Workspace,
-                        ViewDefinitionMode.Default));
+                        FormDefinitionMode.Default));
             }
 
             var viewDefinition = new ViewDefinition("Workspaces", formElement)
@@ -143,7 +143,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <returns>The created form</returns>
         internal static ViewDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewExtent = viewLogic.GetInternalViewExtent();
             var result =
                 NamedElementMethods.GetByFullName(
@@ -157,7 +157,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var listForm = viewLogic.GetListFormForExtent(
                     extent, 
                     formAndFields.__Extent,
-                    ViewDefinitionMode.Default);
+                    FormDefinitionMode.Default);
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
 
                 result = viewLogic.GetExtentFormForSubforms(listForm);

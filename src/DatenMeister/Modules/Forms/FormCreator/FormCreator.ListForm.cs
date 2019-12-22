@@ -10,7 +10,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.FormCreator
+namespace DatenMeister.Modules.Forms.FormCreator
 {
     public partial class FormCreator
     {

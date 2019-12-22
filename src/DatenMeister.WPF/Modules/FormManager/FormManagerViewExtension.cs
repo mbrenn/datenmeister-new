@@ -11,8 +11,8 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.FormCreator;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -94,7 +94,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 "Save Form Definition",
                 x =>
                 {
-                    var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                    var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                     var target = viewLogic.GetUserViewExtent();
                     var copier = new ObjectCopier(new MofFactory(target));
 
@@ -162,7 +162,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                             return;
                         }
 
-                        var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                        var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                         var userViewExtent = viewLogic.GetUserViewExtent();
                         var factory = new MofFactory(userViewExtent);
                         var formAndFields = viewLogic.GetFormAndFieldInstance();
@@ -198,7 +198,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                             return;
                         }
 
-                        var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                        var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
 
                         if (viewLogic.RemoveViewAssociationForExtentType(selectedExtentType))
                         {
@@ -225,7 +225,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
             var extent = itemExplorerControl.RootItem.GetExtentOf();
             var extentType = extent?.GetExtentType();
-            if (extentType == ViewLogic.ViewExtentType)
+            if (extentType == FormLogic.ViewExtentType)
             {
                 yield return new ItemMenuButtonDefinition(
                     "Create Extent Form by Classifier",
@@ -272,7 +272,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
             {
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var userViewExtent = viewLogic.GetUserViewExtent();
 
                 IElement createdForm;
@@ -381,7 +381,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     return;
                 }
 
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 if (viewLogic.RemoveViewAssociationForDetailMetaClass(metaClass))
                 {
                     MessageBox.Show("View Association deleted");
@@ -419,7 +419,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     return;
                 }
 
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var userViewExtent = viewLogic.GetUserViewExtent();
                 var factory = new MofFactory(userViewExtent);
 

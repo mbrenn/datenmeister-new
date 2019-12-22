@@ -19,7 +19,7 @@ using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -80,7 +80,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private ViewLogic _viewLogic;
+        private FormLogic _formLogic;
 
         public ItemListViewControl()
         {
@@ -268,7 +268,7 @@ namespace DatenMeister.WPF.Forms.Base
             IObject formDefinition,
             IEnumerable<ViewExtension> viewExtensions)
         {
-            _viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            _formLogic = GiveMe.Scope.Resolve<FormLogic>();
             UnregisterCurrentChangeEventHandle();
 
             if (items is IHasExtent asExtent)
@@ -307,7 +307,7 @@ namespace DatenMeister.WPF.Forms.Base
             var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             var fieldMetaClass = field.getMetaClass();
             if (fieldType == MetaClassElementFieldData.FieldType ||
-                fieldMetaClass?.equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -469,7 +469,7 @@ namespace DatenMeister.WPF.Forms.Base
                 bool isReadOnly;
 
                 if (fieldType == MetaClassElementFieldData.FieldType
-                    || fieldMetaClass?.equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                    || fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";

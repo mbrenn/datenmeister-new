@@ -1,11 +1,11 @@
 ﻿#nullable enable 
 
-namespace DatenMeister.Modules.ViewFinder
+namespace DatenMeister.Modules.Forms.FormFinder
 {
     /// <summary>
     /// Defines an enumeration of possible location types
     /// </summary>
-    public enum ViewLocationType
+    public enum FormLocationType
     {
         /// <summary>
         /// Defines that the element shall be included in the internal extent.

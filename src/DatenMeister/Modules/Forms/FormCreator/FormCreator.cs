@@ -11,13 +11,13 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.FormCreator
+namespace DatenMeister.Modules.Forms.FormCreator
 {
     /// <summary>
     /// Creates a view out of the given extent, elements (collection) or element).
@@ -29,7 +29,7 @@ namespace DatenMeister.Modules.FormCreator
         /// Stores the reference to the view logic which is required to get the views
         /// for the tabs of the extent form
         /// </summary>
-        private readonly ViewLogic _viewLogic;
+        private readonly FormLogic _formLogic;
 
         /// <summary>
         /// Stores the associated workspace logic
@@ -55,13 +55,13 @@ namespace DatenMeister.Modules.FormCreator
         /// <summary>
         /// Initializes a new instance of the FormCreator class
         /// </summary>
-        /// <param name="viewLogic">View logic being used</param>
-        public FormCreator(ViewLogic viewLogic)
+        /// <param name="formLogic">View logic being used</param>
+        public FormCreator(FormLogic formLogic)
         {
-            _viewLogic = viewLogic;
+            _formLogic = formLogic;
 
-            _workspaceLogic = _viewLogic?.WorkspaceLogic;
-            var userExtent = _viewLogic?.GetUserViewExtent();
+            _workspaceLogic = _formLogic?.WorkspaceLogic;
+            var userExtent = _formLogic?.GetUserViewExtent();
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;

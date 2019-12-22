@@ -12,7 +12,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -115,14 +115,14 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         private void CreateFormForItems()
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
             IElement form = null;
 
-            var overridingMode = OverridingViewDefinition?.Mode ?? ViewDefinitionMode.Default;
+            var overridingMode = OverridingViewDefinition?.Mode ?? FormDefinitionMode.Default;
             // Check if the used form shall be overridden
-            if (OverridingViewDefinition != null && overridingMode == ViewDefinitionMode.Specific)
+            if (OverridingViewDefinition != null && overridingMode == FormDefinitionMode.Specific)
             {
                 // Check the type
                 form = OverridingViewDefinition.Element as IElement;

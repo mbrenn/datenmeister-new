@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
@@ -16,7 +16,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets or sets the type
         /// </summary>
-        public ViewDefinitionMode Mode { get; set; }
+        public FormDefinitionMode Mode { get; set; }
 
         /// <summary>
         /// Gets the name
@@ -34,11 +34,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="name"></param>
         /// <param name="element"></param>
         /// <param name="mode">Stores the type as given</param>
-        public ViewDefinition(string name, IObject element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
+        public ViewDefinition(string name, IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
-            if (element == null && mode == ViewDefinitionMode.Specific)
+            if (element == null && mode == FormDefinitionMode.Specific)
             {
-                Mode = ViewDefinitionMode.Default;
+                Mode = FormDefinitionMode.Default;
                 Name = name;
             }
             else
@@ -49,11 +49,11 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public ViewDefinition(IObject element, ViewDefinitionMode mode = ViewDefinitionMode.Specific)
+        public ViewDefinition(IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
-            if (element == null && mode == ViewDefinitionMode.Specific)
+            if (element == null && mode == FormDefinitionMode.Specific)
             {
-                Mode = ViewDefinitionMode.Default;
+                Mode = FormDefinitionMode.Default;
             }
             else
             {
@@ -74,7 +74,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensionsFunction { get; set; }
 
-        public ViewDefinition(ViewDefinitionMode mode) : this (null, null, mode)
+        public ViewDefinition(FormDefinitionMode mode) : this (null, null, mode)
         {   
         }
 

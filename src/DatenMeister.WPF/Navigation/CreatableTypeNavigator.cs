@@ -4,7 +4,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
@@ -32,7 +32,7 @@ namespace DatenMeister.WPF.Navigation
             string buttonName = "Create")
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
 

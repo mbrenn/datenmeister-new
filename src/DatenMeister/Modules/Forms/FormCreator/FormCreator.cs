@@ -472,6 +472,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
                             ClassifierMethods.GetSpecializations(propertyType).ToList());
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
+                        
+                        // TODO: Create here the internal information
 
                         return elements;
                     }

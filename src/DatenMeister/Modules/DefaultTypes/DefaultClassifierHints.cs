@@ -1,5 +1,7 @@
 #nullable enable
 
+using System.Collections.Generic;
+using System.Globalization;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -20,12 +22,14 @@ namespace DatenMeister.Modules.DefaultTypes
         /// Stores the logger
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(DefaultClassifierHints));
-        
+
         private IWorkspaceLogic _workspaceLogic;
+        private _UML _uml;
 
         public DefaultClassifierHints(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
+            _uml = workspaceLogic.GetUmlWorkspace().Get<_UML>();
         }
 
         /// <summary>
@@ -36,14 +40,15 @@ namespace DatenMeister.Modules.DefaultTypes
         public IElement? GetDefaultPackageClassifier(IHasExtent uriExtent)
         {
             var extent = uriExtent.Extent;
-            
+
             // First look into the standard uml meta classes
             var findByUrl = extent.FindInMeta<_UML>(x => x.Packages.__Package);
             if (findByUrl == null)
             {
                 // If not found, check for the default package model in the types workspace
                 findByUrl = extent.GetUriResolver()
-                    .Resolve("datenmeister:///_internal/types/internal#DatenMeister.Modules.DefaultTypes.Model.Package", ResolveType.OnlyMetaClasses);
+                    .Resolve("datenmeister:///_internal/types/internal#DatenMeister.Modules.DefaultTypes.Model.Package",
+                        ResolveType.OnlyMetaClasses);
             }
 
             if (findByUrl == null)
@@ -85,7 +90,7 @@ namespace DatenMeister.Modules.DefaultTypes
                 container.AddCollectionItem(propertyName, child);
             }
         }
-        
+
         /// <summary>
         /// Gets the information whether the given element is a package to which
         /// an additional object can be added as an enumeration. If this method returns true,
@@ -98,5 +103,38 @@ namespace DatenMeister.Modules.DefaultTypes
             // At the moment, every element is a package
             return true;
         }
+
+        public IEnumerable<string> GetPackagingPropertyNames(IObject item)
+        {
+            var metaClass = (item as IElement)?.getMetaClass();
+
+            // Hard coded at the moment, will be replaced by composite property identification
+            if (metaClass?.Equals(_uml.StructuredClassifiers.__Class) == true)
+            {
+                yield return _UML._StructuredClassifiers._Class.ownedAttribute;
+                yield return _UML._StructuredClassifiers._Class.ownedOperation;
+                yield return _UML._StructuredClassifiers._Class.ownedReception;
+            }
+            else
+            {
+                yield return _UML._Packages._Package.packagedElement;
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the property is so generic, that it shall be kept in the lists.
+        /// This method is especially used in the FormCreator.ListForm which tries to minimize
+        /// the number of columns within the subelementsfield.
+        ///
+        /// All properties which return 'true' here, are kept even though they sould have
+        /// been removed since the property is not available in other fields
+        /// </summary>
+        /// <param name="element">Element containing the property</param>
+        /// <param name="propertyName">Name of the property</param>
+        /// <returns>true, if the field shall be kept</returns>
+        public bool IsGenericProperty(IObject element, string propertyName)
+            =>
+                propertyName == _UML._CommonStructure._NamedElement.name
+                || propertyName.ToLower(CultureInfo.InvariantCulture) == "id";
     }
 }

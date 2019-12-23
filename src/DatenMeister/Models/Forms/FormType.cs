@@ -1,6 +1,6 @@
 namespace DatenMeister.Models.Forms
 {
-    public enum ViewType
+    public enum FormType
     {
         /// <summary>
         /// Set, when the form is requested for a detail form in which one object is shown

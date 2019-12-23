@@ -12,8 +12,8 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.UserInteractions;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -249,8 +249,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             void CopyForm()
             {
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-                var target = viewLogic.GetUserViewExtent();
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var target = viewLogic.GetUserFormExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 
                 var copiedForm = copier.Copy(EffectiveForm);
@@ -321,7 +321,7 @@ namespace DatenMeister.WPF.Forms.Base
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
             if (fields == null)
             {
                 return;

@@ -11,6 +11,8 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -138,9 +140,15 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IObject? RootElement => _itemsSource;
 
+        /// <summary>
+        /// Stores the list of hints for the default classifier
+        /// </summary>
+        private DefaultClassifierHints _defaultClassifierHints; 
+
         public ItemsTreeView()
         {
             InitializeComponent();
+            _defaultClassifierHints = new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic);
         }
 
         public IObject? ItemsSource
@@ -265,8 +273,8 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var metaClass in list)
                     {
                         if (ClassifierMethods.IsSpecializedClassifierOf(
-                            itemAsElement.metaclass
-                            , metaClass))
+                            itemAsElement.metaclass,
+                            metaClass))
                         {
                             found = true;
                         }
@@ -327,9 +335,9 @@ namespace DatenMeister.WPF.Forms.Base
                 // Gets the properties
                 var childModels = new List<TreeViewItem>();
                 var propertiesForChildren =
-                    ShowAllChildren
+                    ShowAllChildren // Defines whether all children shall be shown
                         ? (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>()
-                        : _propertiesForChildren.ToList();
+                        : _defaultClassifierHints.GetPackagingPropertyNames(itemAsObject);
 
                 foreach (var property in propertiesForChildren)
                 {

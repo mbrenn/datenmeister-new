@@ -12,8 +12,9 @@ namespace DatenMeister.Models.Forms
         {
         }
 
-        public DetailForm(string name, params FieldData[] fieldsToBeAdded) : base(name, fieldsToBeAdded)
+        public DetailForm(string name, params FieldData[] fieldsToBeAdded) : this(name)
         {
+            AddFields(fieldsToBeAdded);
         }
 
         /// <summary>
@@ -40,5 +41,22 @@ namespace DatenMeister.Models.Forms
         /// Gets or sets the tabs
         /// </summary>
         public List<Form> tab { get; set; }
+
+        /// <summary>
+        /// Stores the fields which shall be shown in the as the first field
+        /// </summary>
+        public IList<FieldData> field { get; set; } = new List<FieldData>();
+        
+        /// <summary>
+        /// Adds the fields to the form
+        /// </summary>
+        /// <param name="fieldsToBeAdded">Fields to be added</param>
+        public void AddFields(params FieldData[] fieldsToBeAdded)
+        {
+            foreach (var fieldToBeAdded in fieldsToBeAdded)
+            {
+                field.Add(fieldToBeAdded);
+            }
+        }
     }
 }

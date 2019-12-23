@@ -122,6 +122,9 @@
     <Compile Include="Helper\DelayedRefreshDispatcher.cs" />
     <Compile Include="Modules\DefaultTypes\DefaultTypesExtension.cs" />
     <Compile Include="Modules\DefaultTypes\DefaultTypesPlugin.cs" />
+    <Compile Include="Modules\FormManager\FormManagerPlugin.cs" />
+    <Compile Include="Modules\FormManager\FormManagerViewExtension.cs" />
+    <Compile Include="Modules\FormManager\NavigatorForForms.cs" />
     <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />
     <Compile Include="Modules\ImportExtentManager\ImportExtentManagerPlugin.cs" />
@@ -132,9 +135,6 @@
     <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerPlugin.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerViewExtension.cs" />
-    <Compile Include="Modules\ViewManager\NavigatorForViews.cs" />
-    <Compile Include="Modules\ViewManager\ViewManagerPlugin.cs" />
-    <Compile Include="Modules\ViewManager\FormManagerViewExtension.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
     <Compile Include="Navigation\CreatableTypeNavigator.cs" />
     <Compile Include="Navigation\IControlNavigation.cs" />

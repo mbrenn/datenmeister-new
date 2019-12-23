@@ -7,9 +7,9 @@ namespace DatenMeister.Models.Forms
     /// <summary>
     /// Performs an allocation between the view and a specific metaclass which supports the retrieval of default views.
     /// </summary>
-    public class ViewAssociation
+    public class FormAssociation
     {
-        public ViewType viewType { get; set; }
+        public FormType formType { get; set; }
 
         public IObject metaClass { get; set; }
 
@@ -25,16 +25,16 @@ namespace DatenMeister.Models.Forms
 
         public Form form { get; set; }
 
-        public ViewAssociation()
+        public FormAssociation()
         {
         }
 
-        public ViewAssociation(ViewType viewType)
+        public FormAssociation(FormType formType)
         {
-            this.viewType = viewType;
+            this.formType = formType;
         }
 
-        public ViewAssociation(ViewType viewType, Form form) : this(viewType)
+        public FormAssociation(FormType formType, Form form) : this(formType)
         {
             this.form = form;
         }
@@ -42,8 +42,8 @@ namespace DatenMeister.Models.Forms
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.Append("View for: ");
-            builder.Append(viewType.ToString());
+            builder.Append("Form for: ");
+            builder.Append(formType.ToString());
 
             if (extentType != null)
             {

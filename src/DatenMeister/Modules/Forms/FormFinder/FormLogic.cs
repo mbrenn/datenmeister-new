@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -9,7 +10,8 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder.Helper;
+using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -17,14 +19,14 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.ViewFinder
+namespace DatenMeister.Modules.Forms.FormFinder
 {
     /// <summary>
     /// Defines the access to the view logic and abstracts the access to the view extent
     /// </summary>
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ViewLogic : IDatenMeisterPlugin
+    public class FormLogic : IDatenMeisterPlugin
     {
         /// <summary>
         /// Stores the type of the extent containing the views
@@ -45,7 +47,13 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
 
-        public ViewLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, IntegrationSettings integrationSettings)
+        /// <summary>
+        /// Initializes a new instance of the FormLogic class
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace being used</param>
+        /// <param name="extentCreator">The support class to create extents</param>
+        /// <param name="integrationSettings">The settings that had been used for integration</param>
+        public FormLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, IntegrationSettings integrationSettings)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
@@ -64,7 +72,7 @@ namespace DatenMeister.Modules.ViewFinder
                 case PluginLoadingPosition.AfterBootstrapping:
                     // Creates the internal views for the DatenMeister
                     var dotNetUriExtent =
-                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalViewExtent);
+                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalFormExtent);
                     dotNetUriExtent.SetExtentType(ViewExtentType);
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     break;
@@ -72,7 +80,7 @@ namespace DatenMeister.Modules.ViewFinder
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                         WorkspaceNames.NameManagement,
-                        WorkspaceNames.UriUserViewExtent,
+                        WorkspaceNames.UriUserFormExtent,
                         "DatenMeister.Views_User",
                         ViewExtentType,
                         _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
@@ -90,9 +98,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="view">View to be added</param>
-        public void Add(ViewLocationType type, IObject view)
+        public void Add(FormLocationType type, IObject view)
         {
-            GetViewExtent(type).elements().add(view);
+            GetFormExtent(type).elements().add(view);
         }
 
         /// <summary>
@@ -101,33 +109,33 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="type">Location Type to which the element shall be added</param>
         /// <param name="form">Default view to be used</param>
         /// <param name="id">Id of the element that shall be created</param>
-        public void Add(ViewLocationType type, Form form, string? id = null)
+        public void Add(FormLocationType type, Form form, string? id = null)
         {
-            var viewExtent = GetInternalViewExtent();
+            var viewExtent = GetInternalFormExtent();
             var factory = new MofFactory(viewExtent);
-            GetViewExtent(type).elements().add(factory.createFrom(form, id));
+            GetFormExtent(type).elements().add(factory.createFrom(form, id));
         }
 
         /// <summary>
         /// Adds a default view for a certain meta class
         /// </summary>
         /// <param name="type">Location Type to which the element shall be added</param>
-        /// <param name="defaultView">Default view to be used</param>
+        /// <param name="defaultForm">Default view to be used</param>
         /// <param name="id">Id of the element that shall be created</param>
-        public void Add(ViewLocationType type, ViewAssociation defaultView, string? id = null)
+        public void Add(FormLocationType type, FormAssociation defaultForm, string? id = null)
         {
-            var viewExtent = GetInternalViewExtent();
+            var viewExtent = GetInternalFormExtent();
             var factory = new MofFactory(viewExtent);
-            GetViewExtent(type).elements().add(factory.createFrom(defaultView, id));
+            GetFormExtent(type).elements().add(factory.createFrom(defaultForm, id));
         }
 
         /// <summary>
         /// Gets the internal view extent being empty at each start-up
         /// </summary>
         /// <returns></returns>
-        public IUriExtent GetInternalViewExtent()
+        public IUriExtent GetInternalFormExtent()
         {
-            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriInternalViewExtent) is IUriExtent foundExtent))
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriInternalFormExtent) is IUriExtent foundExtent))
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
             }
@@ -139,9 +147,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// Gets the extent of the user being stored on permanent storage
         /// </summary>
         /// <returns></returns>
-        public IUriExtent GetUserViewExtent()
+        public IUriExtent GetUserFormExtent()
         {
-            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriUserViewExtent) is IUriExtent foundExtent))
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriUserFormExtent) is IUriExtent foundExtent))
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
             }
@@ -154,14 +162,14 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="locationType">Type of the location to be used</param>
         /// <returns>The found extent of the given location</returns>
-        public IUriExtent GetViewExtent(ViewLocationType locationType)
+        public IUriExtent GetFormExtent(FormLocationType locationType)
         {
             switch (locationType)
             {
-                case ViewLocationType.Internal:
-                    return GetInternalViewExtent();
-                case ViewLocationType.User:
-                    return GetUserViewExtent();
+                case FormLocationType.Internal:
+                    return GetInternalFormExtent();
+                case FormLocationType.User:
+                    return GetUserFormExtent();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(locationType), locationType, null);
             }
@@ -172,15 +180,15 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="url">The Url to be queried</param>
         /// <returns>The found view or null if not found</returns>
-        public IObject GetViewByUrl(string url)
+        public IObject GetFormByUrl(string url)
         {
-            if (url.StartsWith(WorkspaceNames.UriInternalViewExtent))
+            if (url.StartsWith(WorkspaceNames.UriInternalFormExtent))
             {
-                return GetUserViewExtent().element(url);
+                return GetUserFormExtent().element(url);
             }
             else
             {
-                return GetInternalViewExtent().element(url);
+                return GetInternalFormExtent().element(url);
             }
         }
 
@@ -190,8 +198,8 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>Enumeration of forms</returns>
         public IReflectiveCollection GetAllForms()
         {
-            var internalViewExtent = GetInternalViewExtent();
-            var userViewExtent = GetUserViewExtent();
+            var internalViewExtent = GetInternalFormExtent();
+            var userViewExtent = GetUserFormExtent();
             var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
             return internalViewExtent.elements()
@@ -203,11 +211,11 @@ namespace DatenMeister.Modules.ViewFinder
         /// <summary>
         /// Gets all view associations and returns them as an enumeration
         /// </summary>
-        /// <returns>Enumeration of assocations</returns>
-        public IReflectiveCollection GetAllViewAssociations()
+        /// <returns>Enumeration of associations</returns>
+        public IReflectiveCollection GetAllFormAssociations()
         {
-            var internalViewExtent = GetInternalViewExtent();
-            var userViewExtent = GetUserViewExtent();
+            var internalViewExtent = GetInternalFormExtent();
+            var userViewExtent = GetUserFormExtent();
             var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
             return internalViewExtent.elements()
@@ -224,7 +232,7 @@ namespace DatenMeister.Modules.ViewFinder
         public bool RemoveViewAssociationForExtentType(string selectedExtentType, IExtent? viewExtent = null)
         {
             var result = false;
-            viewExtent ??= GetUserViewExtent();
+            viewExtent ??= GetUserFormExtent();
             
             var formAndFields = GetFormAndFieldInstance(viewExtent);
             foreach (var foundElement in viewExtent
@@ -247,10 +255,10 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="metaClass">The metaclass which shall be used for the detailled form</param>
         /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
-        public bool RemoveViewAssociationForDetailMetaClass(IElement metaClass, IExtent? viewExtent = null)
+        public bool RemoveFormAssociationForDetailMetaClass(IElement metaClass, IExtent? viewExtent = null)
         {
             var result = false;
-            viewExtent ??= GetUserViewExtent();
+            viewExtent ??= GetUserFormExtent();
             
             var formAndFields = GetFormAndFieldInstance(viewExtent);
             foreach (var foundElement in viewExtent
@@ -258,7 +266,7 @@ namespace DatenMeister.Modules.ViewFinder
                 .GetAllDescendantsIncludingThemselves()
                 .WhenMetaClassIs(formAndFields.__ViewAssociation)
                 .WhenPropertyHasValue(_FormAndFields._ViewAssociation.metaClass, metaClass)
-                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.viewType, ViewType.Detail)
+                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.viewType, FormType.Detail)
                 .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
@@ -302,25 +310,25 @@ namespace DatenMeister.Modules.ViewFinder
                 return _cachedFormAndField;
             }
 
-            viewExtent ??= GetUserViewExtent();
+            viewExtent ??= GetUserFormExtent();
             _cachedFormAndField =
                 _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
             return _cachedFormAndField;
         }
 
-        public IElement GetDetailForm(IObject? element, IExtent extent, ViewDefinitionMode viewDefinitionMode)
+        public IElement GetDetailForm(IObject? element, IExtent extent, FormDefinitionMode formDefinitionMode)
         {
             if (element == null) throw new ArgumentNullException(nameof(element));
             
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 // Tries to find the form
-                var viewFinder = new ViewFinder(this);
+                var viewFinder = new FormFinder(this);
                 var foundForm = viewFinder.FindFormsFor(
-                    new FindViewQuery
+                    new FindFormQuery
                     {
                         metaClass = (element as IElement)?.getMetaClass(),
-                        viewType = ViewType.Detail,
+                        FormType = FormType.Detail,
                         extentType = extent == null ? string.Empty : extent.GetExtentType()
                     }).FirstOrDefault();
 
@@ -331,20 +339,20 @@ namespace DatenMeister.Modules.ViewFinder
             }
 
             // Ok, we have not found the form. So create one
-            var formCreator = new FormCreator(this);
+            var formCreator = CreateFormCreator();
             return formCreator.CreateDetailForm(element);
         }
 
-        public IElement? GetExtentForm(IUriExtent extent, ViewDefinitionMode viewDefinitionMode)
+        public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode)
         {
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new ViewFinder(this);
+                var viewFinder = new FormFinder(this);
                 var foundForm = viewFinder.FindFormsFor(
-                    new FindViewQuery
+                    new FindFormQuery
                     {
                         extentType = extent.GetExtentType(),
-                        viewType = ViewType.TreeItemExtent
+                        FormType = FormType.TreeItemExtent
                     }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -353,10 +361,10 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
-                var formCreator = new FormCreator(this);
+                var formCreator = CreateFormCreator();
                 return formCreator.CreateExtentForm(
                     extent,
                     CreationMode.All | CreationMode.ForListForms);
@@ -372,7 +380,7 @@ namespace DatenMeister.Modules.ViewFinder
         /// <returns>The created extent</returns>
         public IElement GetExtentFormForSubforms(params IElement[] subForms)
         {
-            var formCreator = new FormCreator(this);
+            var formCreator = CreateFormCreator();
             return formCreator.CreateExtentForm(subForms);
         }
 
@@ -383,21 +391,21 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="extent">Extent for which the list is created</param>
         /// <param name="metaClass">Metaclass of the items that are listed now</param>
-        /// <param name="viewDefinitionMode">The view definition mode</param>
+        /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns>The found or created list form</returns>
         public IElement? GetListFormForExtent(
             IExtent extent,
             IElement metaClass,
-            ViewDefinitionMode viewDefinitionMode)
+            FormDefinitionMode formDefinitionMode)
         {
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new ViewFinder(this);
+                var viewFinder = new FormFinder(this);
                 var foundForm = viewFinder.FindFormsFor(
-                    new FindViewQuery
+                    new FindFormQuery
                     {
                         extentType = extent.GetExtentType(),
-                        viewType = ViewType.TreeItemExtent,
+                        FormType = FormType.TreeItemExtent,
                         metaClass = metaClass
                     }).FirstOrDefault();
 
@@ -407,11 +415,11 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
-                var formCreator = new FormCreator(this);
-                return formCreator.CreateListForm(metaClass, CreationMode.All);
+                var formCreator = CreateFormCreator();
+                return formCreator.CreateListFormForMetaClass(metaClass, CreationMode.All);
             }
 
             return null;
@@ -422,21 +430,21 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="element">Element whose property is enumerated</param>
         /// <param name="property">Name of the property to be enumeration</param>
-        /// <param name="viewDefinitionMode">The view definition mode</param>
+        /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns>The list form for the list</returns>
         public IElement? GetListFormForElementsProperty(
             IObject element,
             string property,
-            ViewDefinitionMode viewDefinitionMode = ViewDefinitionMode.Default)
+            FormDefinitionMode formDefinitionMode = FormDefinitionMode.Default)
         {
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new ViewFinder(this);
+                var viewFinder = new FormFinder(this);
                 var foundForm = viewFinder.FindFormsFor(
-                    new FindViewQuery
+                    new FindFormQuery
                     {
                         extentType = (element as IHasExtent)?.Extent?.GetExtentType() ?? string.Empty,
-                        viewType = ViewType.ObjectList
+                        FormType = FormType.ObjectList
                     }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -445,10 +453,10 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
-                var formCreator = new FormCreator(this);
-                var createdForm = formCreator.CreateListForm(
+                var formCreator = CreateFormCreator();
+                var createdForm = formCreator.CreateListFormForElements(
                     element.get<IReflectiveCollection>(property),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
 
@@ -458,14 +466,14 @@ namespace DatenMeister.Modules.ViewFinder
             return null;
         }
 
-        public IElement? GetExtentForm(IReflectiveCollection collection, ViewDefinitionMode viewDefinitionMode)
+        public IElement? GetExtentForm(IReflectiveCollection collection, FormDefinitionMode formDefinitionMode)
         {
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 // Try to find the view, but very improbable
             }
 
-            var formCreator = new FormCreator(this);
+            var formCreator = CreateFormCreator();
             return formCreator.CreateExtentForm(collection, CreationMode.All);
         }
 
@@ -473,9 +481,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// Gets the list view next to the item explorer control
         /// </summary>
         /// <param name="element">Element for which the list view will be created</param>
-        /// <param name="viewDefinitionMode">Defines the method how to retrieve the form</param>
+        /// <param name="formDefinitionMode">Defines the method how to retrieve the form</param>
         /// <returns>Found extent form</returns>
-        public IElement? GetItemTreeFormForObject(IObject element, ViewDefinitionMode viewDefinitionMode)
+        public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode)
         {
             var extent = (element as IHasExtent)?.Extent;
             if (extent == null)
@@ -483,14 +491,14 @@ namespace DatenMeister.Modules.ViewFinder
                 throw new InvalidOperationException("Item Tree for extent-less object can't be created");
             }
             
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new ViewFinder(this);
-                var foundForm = viewFinder.FindFormsFor(new FindViewQuery
+                var viewFinder = new FormFinder(this);
+                var foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
                     extentType = extent.GetExtentType(),
                     metaClass = (element as IElement)?.getMetaClass(),
-                    viewType = ViewType.TreeItemDetail
+                    FormType = FormType.TreeItemDetail
                 }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -499,9 +507,9 @@ namespace DatenMeister.Modules.ViewFinder
                 }
             }
 
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaFormCreator))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
-                var formCreator = new FormCreator(this);
+                var formCreator = CreateFormCreator();
                 var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All);
 
                 return createdForm;
@@ -518,23 +526,23 @@ namespace DatenMeister.Modules.ViewFinder
         /// <param name="extent">Extent in which the element is located</param>
         /// <param name="propertyName">Name of the property</param>
         /// <param name="metaClass">The metaclass for which the form is created</param>
-        /// <param name="viewDefinitionMode">The view definition mode</param>
+        /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns></returns>
         public IElement GetListFormForExtentForPropertyInObject(
             IObject element,
             IExtent extent,
             string propertyName,
             IElement metaClass, 
-            ViewDefinitionMode viewDefinitionMode)
+            FormDefinitionMode formDefinitionMode)
         {
-            if (viewDefinitionMode.HasFlag(ViewDefinitionMode.ViaViewFinder))
+            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new ViewFinder(this);
-                var foundForm = viewFinder.FindFormsFor(new FindViewQuery
+                var viewFinder = new FormFinder(this);
+                var foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
                     extentType = extent.GetExtentType(),
                     metaClass = metaClass,
-                    viewType = ViewType.TreeItemDetail,
+                    FormType = FormType.TreeItemDetail,
                     parentProperty = propertyName,
                     parentMetaClass = (element as IElement)?.getMetaClass()
                 }).FirstOrDefault();
@@ -543,11 +551,18 @@ namespace DatenMeister.Modules.ViewFinder
                     return foundForm;
             }
 
-            var formCreator = new FormCreator(this);
+            var formCreator = CreateFormCreator();
             var createdForm =
                 formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, CreationMode.All);
 
             return createdForm;
         }
+        
+        /// <summary>
+        /// Creates a new instance of the form creator
+        /// </summary>
+        /// <returns>The created instance of the form creator</returns>
+        public FormCreator.FormCreator CreateFormCreator()
+            => new FormCreator.FormCreator(this, new DefaultClassifierHints(_workspaceLogic));
     }
 }

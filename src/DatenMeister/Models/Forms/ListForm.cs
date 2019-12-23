@@ -13,8 +13,9 @@ namespace DatenMeister.Models.Forms
         {
         }
 
-        public ListForm(string name, params FieldData[] fieldsToBeAdded) : base(name, fieldsToBeAdded)
+        public ListForm(string name, params FieldData[] fieldsToBeAdded) : this(name)
         {
+            AddFields(fieldsToBeAdded);
         }
 
         public string property { get; set; }
@@ -42,5 +43,22 @@ namespace DatenMeister.Models.Forms
         /// Gets an enumeration of fast view filters
         /// </summary>
         public IList<IElement> fastViewFilters { get; set; }
+
+        /// <summary>
+        /// Stores the fields which shall be shown in the form
+        /// </summary>
+        public IList<FieldData> field { get; set; } = new List<FieldData>();
+
+        /// <summary>
+        /// Adds the fields to the form
+        /// </summary>
+        /// <param name="fieldsToBeAdded">Fields to be added</param>
+        public void AddFields(params FieldData[] fieldsToBeAdded)
+        {
+            foreach (var fieldToBeAdded in fieldsToBeAdded)
+            {
+                field.Add(fieldToBeAdded);
+            }
+        }
     }
 }

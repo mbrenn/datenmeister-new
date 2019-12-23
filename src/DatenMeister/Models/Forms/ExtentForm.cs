@@ -2,18 +2,8 @@
 
 namespace DatenMeister.Models.Forms
 {
-    public class ExtentForm
+    public class ExtentForm : Form
     {
-        /// <summary>
-        /// Gets or sets the name of the form
-        /// </summary>
-        public string name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the title as shown in window header
-        /// </summary>
-        public string title { get; set; }
-
         /// <summary>
         /// Stores a list of tabs forms that will be added
         /// </summary>

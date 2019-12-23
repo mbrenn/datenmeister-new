@@ -9,9 +9,9 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.ExtentStorage;
@@ -122,7 +122,7 @@ namespace DatenMeister.Integration
             kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
 
             // Adds the view finder
-            kernel.RegisterType<ViewFinder>().As<ViewFinder>();
+            kernel.RegisterType<FormFinder>().As<FormFinder>();
 
             var pluginManager = new PluginManager();
             kernel.RegisterInstance(pluginManager).As<PluginManager>();

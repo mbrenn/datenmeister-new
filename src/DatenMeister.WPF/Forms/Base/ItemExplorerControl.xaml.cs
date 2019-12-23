@@ -17,7 +17,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -130,7 +130,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void ForceAutoGenerationOfForm()
         {
-            OverridingViewDefinition = new ViewDefinition(ViewDefinitionMode.ViaFormCreator);
+            OverridingViewDefinition = new ViewDefinition(FormDefinitionMode.ViaFormCreator);
             RecreateViews();
         }
         

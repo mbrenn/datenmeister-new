@@ -1,4 +1,4 @@
-﻿using DatenMeister.Modules.ViewFinder;
+﻿using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 
@@ -10,15 +10,15 @@ namespace DatenMeister.Uml.Plugin
         /// <summary>
         /// Defines the view logic
         /// </summary>
-        private readonly ViewLogic _viewLogic;
+        private readonly FormLogic _formLogic;
 
         private readonly PackageMethods _packageMethods;
 
         public const string PackageName = "Uml";
 
-        public UmlPlugin(ViewLogic viewLogic, PackageMethods packageMethods)
+        public UmlPlugin(FormLogic formLogic, PackageMethods packageMethods)
         {
-            _viewLogic = viewLogic;
+            _formLogic = formLogic;
             _packageMethods = packageMethods;
         }
 
@@ -36,7 +36,7 @@ namespace DatenMeister.Uml.Plugin
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.UML.xml",
                 PackageName,
-                _viewLogic.GetInternalViewExtent(),
+                _formLogic.GetInternalFormExtent(),
                 PackageName);
         }
     }

@@ -3,7 +3,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base;
@@ -70,8 +70,8 @@ namespace DatenMeister.WPF.Forms.Lists
             }
             else
             {
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, ViewDefinitionMode.Default);
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default);
                 var viewDefinition = overridingDefinition ?? 
                                      new ViewDefinition(form);
 

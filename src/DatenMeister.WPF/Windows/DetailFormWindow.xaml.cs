@@ -13,7 +13,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -344,12 +344,12 @@ namespace DatenMeister.WPF.Windows
         private void RecreateView()
         {
             IObject? effectiveForm = null;
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
 
             // Checks, if there is an overriding form 
             if (OverridingViewDefinition != null)
             {
-                if (OverridingViewDefinition.Mode == ViewDefinitionMode.Specific)
+                if (OverridingViewDefinition.Mode == FormDefinitionMode.Specific)
                 {
                     effectiveForm = OverridingViewDefinition.Element;
                 }
@@ -362,9 +362,9 @@ namespace DatenMeister.WPF.Windows
             // If not, take the standard procedure
             if (effectiveForm == null)
             {
-                _requestedViewDefinition ??= new ViewDefinition(ViewDefinitionMode.Default);
+                _requestedViewDefinition ??= new ViewDefinition(FormDefinitionMode.Default);
                 
-                if (_requestedViewDefinition.Mode == ViewDefinitionMode.Specific)
+                if (_requestedViewDefinition.Mode == FormDefinitionMode.Specific)
                 {
                     effectiveForm = _requestedViewDefinition.Element;
                 }

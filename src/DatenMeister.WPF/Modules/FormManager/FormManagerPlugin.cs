@@ -1,27 +1,27 @@
 ﻿using DatenMeister.Excel.Properties;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
 
-namespace DatenMeister.WPF.Modules.ViewManager
+namespace DatenMeister.WPF.Modules.FormManager
 {
     /// <summary>
     /// Defines the plugin for the view manager
     /// </summary>
     [UsedImplicitly]
-    public class ViewManagerPlugin : IDatenMeisterPlugin
+    public class FormManagerPlugin : IDatenMeisterPlugin
     {
         private readonly PackageMethods _packageMethods;
 
-        private readonly ViewLogic _viewLogic;
+        private readonly FormLogic _formLogic;
 
-        public const string PackageName = "ViewManager";
+        public const string PackageName = "FormManager";
 
-        public ViewManagerPlugin(PackageMethods packageMethods, ViewLogic viewLogic)
+        public FormManagerPlugin(PackageMethods packageMethods, FormLogic formLogic)
         {
             _packageMethods = packageMethods;
-            _viewLogic = viewLogic;
+            _formLogic = formLogic;
         }
 
         /// <inheritdoc />
@@ -31,9 +31,9 @@ namespace DatenMeister.WPF.Modules.ViewManager
 
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Views.Viewmanager.xmi",
+                "DatenMeister.XmiFiles.Views.Formmanager.xmi",
                 PackageName,
-                _viewLogic.GetInternalViewExtent(),
+                _formLogic.GetInternalFormExtent(),
                 PackageName);
         }
     }

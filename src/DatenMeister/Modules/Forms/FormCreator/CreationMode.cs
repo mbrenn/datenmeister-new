@@ -1,7 +1,8 @@
 #nullable enable
+
 using System;
 
-namespace DatenMeister.Modules.ViewFinder.Helper
+namespace DatenMeister.Modules.Forms.FormCreator
 {
     /// <summary>
     /// Stores the creation mode
@@ -17,7 +18,7 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// <summary>
         /// Allows the creation of forms by going through the properties
         /// </summary>
-        ByProperties = 0x02,
+        ByPropertyValues = 0x02,
 
         /// <summary>
         /// Allowes the creation of forms by going through the propeerties only if
@@ -47,11 +48,17 @@ namespace DatenMeister.Modules.ViewFinder.Helper
         /// Defines a flag whether all the fields shall be included as read only fields
         /// </summary>
         ReadOnly = 0x40,
+        
+        /// <summary>
+        /// Used by the FormCreator in the method AddToFormByUmlElement.
+        /// If there is already a field included containing the given property, then the new field is not added
+        /// </summary>
+        NoDuplicate = 0x80,
 
         /// <summary>
         /// Creates all properties that are possible
         /// </summary>
-        All = ByMetaClass | ByProperties | AddMetaClass,
+        All = ByMetaClass | ByPropertyValues | AddMetaClass,
     }
 
     public static class CreationModeExtensions

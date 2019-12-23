@@ -1,3 +1,4 @@
+using DatenMeister;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -44,7 +45,7 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.ViewAssociation);
+                var type = typeof(DatenMeister.Models.Forms.FormAssociation);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ViewAssociation = typeAsElement;
@@ -114,7 +115,7 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.ViewType);
+                var type = typeof(DatenMeister.Models.Forms.FormType);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ViewType = typeAsElement;

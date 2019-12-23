@@ -11,13 +11,13 @@ using DatenMeister.Uml.Helper;
 
 // ReSharper disable HeuristicUnreachableCode
 
-namespace DatenMeister.Modules.ViewFinder
+namespace DatenMeister.Modules.Forms.FormFinder
 {
     /// <summary>
-    /// Includes the implementation of the IViewFinder
+    /// Searches a form by looking through the form extents
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ViewFinder
+    public class FormFinder
     {
         /// <summary>
         /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
@@ -29,16 +29,16 @@ namespace DatenMeister.Modules.ViewFinder
         private const bool ActivateDebuggingForViewRetrieval = false;
 #endif
 
-        private readonly ViewLogic _viewLogic;
+        private readonly FormLogic _formLogic;
 
         /// <summary>
         /// Initializes a new instance of the ViewFinder class
         /// </summary>
-        /// <param name="viewLogic">View logic</param>
-        public ViewFinder(
-            ViewLogic viewLogic)
+        /// <param name="formLogic">View logic</param>
+        public FormFinder(
+            FormLogic formLogic)
         {
-            _viewLogic = viewLogic;
+            _formLogic = formLogic;
         }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace DatenMeister.Modules.ViewFinder
         /// </summary>
         /// <param name="query">Query being used to find the correct form</param>
         /// <returns>The found view or null, if not found</returns>
-        public IEnumerable<IElement> FindFormsFor(FindViewQuery query)
+        public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
-            var viewAssociations = _viewLogic.GetAllViewAssociations().Select(x => x as IElement).ToList();
+            var viewAssociations = _formLogic.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
             InternalDebug("# of ViewAssociations: " + viewAssociations.Count);
 
@@ -86,8 +86,8 @@ namespace DatenMeister.Modules.ViewFinder
 
                 var associationExtentType = element.getOrDefault<string>(_FormAndFields._ViewAssociation.extentType);
                 var associationMetaClass = element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.metaClass);
-                var associationViewType = element.getOrNull<ViewType>(_FormAndFields._ViewAssociation.viewType) ??
-                                    ViewType.Detail;
+                var associationViewType = element.getOrNull<FormType>(_FormAndFields._ViewAssociation.viewType) ??
+                                    FormType.Detail;
                 var associationParentMetaclass =
                     element.getOrDefault<IElement>(_FormAndFields._ViewAssociation.parentMetaClass);
                 var associationParentProperty =
@@ -143,15 +143,15 @@ namespace DatenMeister.Modules.ViewFinder
                 }
 
                 // ViewType
-                if (!query.viewType.Equals(associationViewType))
+                if (!query.FormType.Equals(associationViewType))
                 {
-                    InternalDebug("-- NO MATCH: viewType: " + query.viewType + ", ViewAssociation viewType: " +
+                    InternalDebug("-- NO MATCH: viewType: " + query.FormType + ", ViewAssociation viewType: " +
                                   associationViewType);
                     isMatching = false;
                 }
                 else
                 {
-                    InternalDebug("-- MATCH: viewType: " + query.viewType + ", ViewAssociation viewType: " + associationViewType);
+                    InternalDebug("-- MATCH: viewType: " + query.FormType + ", ViewAssociation viewType: " + associationViewType);
                 }
 
                 // ´ParentMetaClass
@@ -220,6 +220,6 @@ namespace DatenMeister.Modules.ViewFinder
 #pragma warning restore 162
         }
 
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ViewFinder));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(FormFinder));
     }
 }

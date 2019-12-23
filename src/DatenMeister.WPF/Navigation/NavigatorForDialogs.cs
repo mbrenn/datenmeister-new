@@ -94,7 +94,6 @@ namespace DatenMeister.WPF.Navigation
                 SelectButtonText = "Select"
             };
 
-
             if (workspace != null && defaultExtent != null)
             {
                 dlg.Select(defaultExtent);

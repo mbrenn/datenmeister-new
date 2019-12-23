@@ -574,10 +574,6 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.Form._title = value;
                                 }
-                                if(name == "field") // Looking for property
-                                {
-                                    tree.Form._field = value;
-                                }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.Form._hideMetaInformation = value;
@@ -613,6 +609,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.DetailForm._tab = value;
                                 }
+                                if(name == "field") // Looking for property
+                                {
+                                    tree.DetailForm._field = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.DetailForm._name = value;
@@ -620,10 +620,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "title") // Looking for property
                                 {
                                     tree.DetailForm._title = value;
-                                }
-                                if(name == "field") // Looking for property
-                                {
-                                    tree.DetailForm._field = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -668,6 +664,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._fastViewFilters = value;
                                 }
+                                if(name == "field") // Looking for property
+                                {
+                                    tree.ListForm._field = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ListForm._name = value;
@@ -675,10 +675,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "title") // Looking for property
                                 {
                                     tree.ListForm._title = value;
-                                }
-                                if(name == "field") // Looking for property
-                                {
-                                    tree.ListForm._field = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -695,6 +691,14 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "tab") // Looking for property
+                                {
+                                    tree.ExtentForm._tab = value;
+                                }
+                                if(name == "autoTabs") // Looking for property
+                                {
+                                    tree.ExtentForm._autoTabs = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ExtentForm._name = value;
@@ -703,13 +707,9 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ExtentForm._title = value;
                                 }
-                                if(name == "tab") // Looking for property
+                                if(name == "hideMetaInformation") // Looking for property
                                 {
-                                    tree.ExtentForm._tab = value;
-                                }
-                                if(name == "autoTabs") // Looking for property
-                                {
-                                    tree.ExtentForm._autoTabs = value;
+                                    tree.ExtentForm._hideMetaInformation = value;
                                 }
                             }
                         }

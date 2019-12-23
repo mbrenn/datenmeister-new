@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -9,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -337,7 +339,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             }
 
             // Ok, we have not found the form. So create one
-            var formCreator = new FormCreator.FormCreator(this);
+            var formCreator = CreateFormCreator();
             return formCreator.CreateDetailForm(element);
         }
 
@@ -362,7 +364,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
-                var formCreator = new FormCreator.FormCreator(this);
+                var formCreator = CreateFormCreator();
                 return formCreator.CreateExtentForm(
                     extent,
                     CreationMode.All | CreationMode.ForListForms);
@@ -378,7 +380,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns>The created extent</returns>
         public IElement GetExtentFormForSubforms(params IElement[] subForms)
         {
-            var formCreator = new FormCreator.FormCreator(this);
+            var formCreator = CreateFormCreator();
             return formCreator.CreateExtentForm(subForms);
         }
 
@@ -416,7 +418,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
-                var formCreator = new FormCreator.FormCreator(this);
+                var formCreator = CreateFormCreator();
                 return formCreator.CreateListFormForMetaClass(metaClass, CreationMode.All);
             }
 
@@ -453,7 +455,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
-                var formCreator = new FormCreator.FormCreator(this);
+                var formCreator = CreateFormCreator();
                 var createdForm = formCreator.CreateListFormForElements(
                     element.get<IReflectiveCollection>(property),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
@@ -471,7 +473,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 // Try to find the view, but very improbable
             }
 
-            var formCreator = new FormCreator.FormCreator(this);
+            var formCreator = CreateFormCreator();
             return formCreator.CreateExtentForm(collection, CreationMode.All);
         }
 
@@ -507,7 +509,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
-                var formCreator = new FormCreator.FormCreator(this);
+                var formCreator = CreateFormCreator();
                 var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All);
 
                 return createdForm;
@@ -549,11 +551,18 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     return foundForm;
             }
 
-            var formCreator = new FormCreator.FormCreator(this);
+            var formCreator = CreateFormCreator();
             var createdForm =
                 formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, CreationMode.All);
 
             return createdForm;
         }
+        
+        /// <summary>
+        /// Creates a new instance of the form creator
+        /// </summary>
+        /// <returns>The created instance of the form creator</returns>
+        public FormCreator.FormCreator CreateFormCreator()
+            => new FormCreator.FormCreator(this, new DefaultClassifierHints(_workspaceLogic));
     }
 }

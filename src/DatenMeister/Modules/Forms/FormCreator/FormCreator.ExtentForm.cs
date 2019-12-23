@@ -117,7 +117,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         groupedMetaclass,
                         FormDefinitionMode.Default) ?? throw new InvalidOperationException("No form was found");
 
-                    if (creationMode.HasFlag(CreationMode.ByProperties))
+                    if (creationMode.HasFlag(CreationMode.ByPropertyValues))
                     {
                         foreach (var element in group)
                         {
@@ -244,7 +244,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var propertyNamesWithoutCollection = new List<string>();
             
             // Adds the properties by the stored properties of the element
-            if (creationMode.HasFlag(CreationMode.ByProperties))
+            if (creationMode.HasFlag(CreationMode.ByPropertyValues))
             {
                 var properties = (element as IObjectAllProperties)?.getPropertiesBeingSet().ToList();
                 properties ??= new List<string>();

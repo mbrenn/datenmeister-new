@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -30,6 +31,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// for the tabs of the extent form
         /// </summary>
         private readonly FormLogic _formLogic;
+
+        private readonly DefaultClassifierHints _defaultClassifierHints;
 
         /// <summary>
         /// Stores the associated workspace logic
@@ -51,14 +54,19 @@ namespace DatenMeister.Modules.Forms.FormCreator
         private IElement? _booleanType;
         private IElement? _realType;
         private IElement? _dateTimeType;
+        private _UML? _uml;
+        private _PrimitiveTypes? _primitiveTypes;
+        private Workspace? _uriResolver;
 
         /// <summary>
         /// Initializes a new instance of the FormCreator class
         /// </summary>
         /// <param name="formLogic">View logic being used</param>
-        public FormCreator(FormLogic formLogic)
+        /// <param name="defaultClassifierHints">The classifier hints</param>
+        public FormCreator(FormLogic formLogic, DefaultClassifierHints defaultClassifierHints)
         {
             _formLogic = formLogic;
+            _defaultClassifierHints = defaultClassifierHints;
 
             _workspaceLogic = _formLogic?.WorkspaceLogic;
             var userExtent = _formLogic?.GetUserFormExtent();
@@ -129,7 +137,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var itemAsAllProperties = item as IObjectAllProperties;
 
             var isByProperties =
-                creationMode.HasFlag(CreationMode.ByProperties);
+                creationMode.HasFlag(CreationMode.ByPropertyValues);
             var isOnlyPropertiesIfNoMetaClass =
                 creationMode.HasFlag(CreationMode.OnlyPropertiesIfNoMetaClass);
 
@@ -187,19 +195,26 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             // Creates the form out of the properties of the item
             var properties = itemAsAllProperties.getPropertiesBeingSet();
+            
+            var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
 
-            foreach (var property in properties
+            foreach (var propertyName in properties
                 .Where(property => !cache.CoveredPropertyNames.Contains(property)))
             {
-                cache.CoveredPropertyNames.Add(property);
+                cache.CoveredPropertyNames.Add(propertyName);
+                if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
+                {
+                    // Skip the property name, when we would like to have focus on certain property names
+                    continue;
+                }
 
                 // Checks, whether the field is already existing
                 var column = form
                     .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
                     .OfType<IObject>()
-                    .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == property);
+                    .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == propertyName);
 
-                var propertyValue = itemAsObject.GetOrDefault(property);
+                var propertyValue = itemAsObject.GetOrDefault(propertyName);
 
                 if (column == null)
                 {
@@ -228,8 +243,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         }
                     }
 
-                    column.set(_FormAndFields._FieldData.name, property);
-                    column.set(_FormAndFields._FieldData.title, property);
+                    column.set(_FormAndFields._FieldData.name, propertyName);
+                    column.set(_FormAndFields._FieldData.title, propertyName);
                     column.set(_FormAndFields._FieldData.isReadOnly, isReadOnly);
 
                     form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
@@ -250,8 +265,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="metaClass">Metaclass to be used</param>
         /// <param name="creationMode">Creation Mode to be used</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddToFormByMetaclass(IObject form, IElement metaClass, CreationMode creationMode)
+        private bool AddToFormByMetaclass(IObject form, IElement metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
         {
+            cache ??= new FormCreatorCache();
+            
             var wasInMetaClass = false;
             if (metaClass == null)
             {
@@ -261,11 +278,18 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var classifierMethods =
                 ClassifierMethods.GetPropertiesOfClassifier(metaClass)
                     .Where(x => x.isSet("name")).ToList();
+            var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
             
             foreach (var property in classifierMethods)
             {
                 wasInMetaClass = true;
                 var propertyName = property.get("name")!.ToString();
+
+                if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
+                {
+                    // Skip the property name, when we would like to have focus on certain property names
+                    continue;
+                }
 
                 var isAlreadyIn = form
                     .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
@@ -426,21 +450,21 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
 
             // Check, if field property is an enumeration
-            var uml = _workspaceLogic.GetUmlData();
-            var primitiveTypes = _workspaceLogic.GetPrimitiveData();
-            var uriResolver = _workspaceLogic.GetTypesWorkspace();
+            _uml ??= _workspaceLogic.GetUmlData();
+            _primitiveTypes ??= _workspaceLogic.GetPrimitiveData();
+            _uriResolver ??= _workspaceLogic.GetTypesWorkspace();
 
             //var uriResolver = propertyType.GetUriResolver();
-            _stringType ??= primitiveTypes.__String;
-            _integerType ??= primitiveTypes.__Integer;
-            _booleanType ??= primitiveTypes.__Boolean;
-            _realType ??= primitiveTypes.__Real;
-            _dateTimeType ??= uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+            _stringType ??= _primitiveTypes.__String;
+            _integerType ??= _primitiveTypes.__Integer;
+            _booleanType ??= _primitiveTypes.__Boolean;
+            _realType ??= _primitiveTypes.__Real;
+            _dateTimeType ??= _uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
             if (propertyType?.metaclass != null)
             {
-                if (propertyType.metaclass.@equals(uml.SimpleClassifiers.__Enumeration) && !isForListForm)
+                if (propertyType.metaclass.@equals(_uml.SimpleClassifiers.__Enumeration) && !isForListForm)
                 {
                     return CreateFieldForEnumeration(propertyName, propertyType, creationMode);
                 }
@@ -567,6 +591,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
             /// The property names that already have been covered and are within the 
             /// </summary>
             public HashSet<string> CoveredPropertyNames { get; } = new HashSet<string>();
+            
+            /// <summary>
+            /// Skips the given property names
+            /// </summary>
+            public HashSet<string> FocusOnPropertyNames { get; } = new HashSet<string>();
         }
     }
 }

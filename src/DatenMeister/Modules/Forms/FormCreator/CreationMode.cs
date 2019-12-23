@@ -18,7 +18,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Allows the creation of forms by going through the properties
         /// </summary>
-        ByProperties = 0x02,
+        ByPropertyValues = 0x02,
 
         /// <summary>
         /// Allowes the creation of forms by going through the propeerties only if
@@ -58,7 +58,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Creates all properties that are possible
         /// </summary>
-        All = ByMetaClass | ByProperties | AddMetaClass,
+        All = ByMetaClass | ByPropertyValues | AddMetaClass,
     }
 
     public static class CreationModeExtensions

@@ -161,11 +161,11 @@ namespace DatenMeister.WPF.Forms.Lists
             }
 
             const string className = "Items";
-            var viewDefinition = new ViewDefinition(className, form);
+            var viewDefinition = new FormDefinition(className, form);
 
             EvaluateForm(
                 SelectedItem,
-                new ViewDefinition(form)
+                new FormDefinition(form)
                 {
                     ViewExtensions = viewDefinition.ViewExtensions
                 });

@@ -11,7 +11,7 @@ namespace DatenMeister.WPF.Forms.Base
     /// <summary>
     /// Defines the class for a view in list
     /// </summary>
-    public class ViewDefinition
+    public class FormDefinition
     {
         /// <summary>
         /// Gets or sets the type
@@ -34,7 +34,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="name"></param>
         /// <param name="element"></param>
         /// <param name="mode">Stores the type as given</param>
-        public ViewDefinition(string name, IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
+        public FormDefinition(string name, IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
             if (element == null && mode == FormDefinitionMode.Specific)
             {
@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public ViewDefinition(IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
+        public FormDefinition(IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
             if (element == null && mode == FormDefinitionMode.Specific)
             {
@@ -74,7 +74,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensionsFunction { get; set; }
 
-        public ViewDefinition(FormDefinitionMode mode) : this (null, null, mode)
+        public FormDefinition(FormDefinitionMode mode) : this (null, null, mode)
         {   
         }
 

@@ -42,12 +42,12 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            ViewDefinition view = null;
+            FormDefinition form = null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
 
             if (OverridingViewDefinition?.Mode == FormDefinitionMode.Specific)
             {
-                view = OverridingViewDefinition;
+                form = OverridingViewDefinition;
                 
                 // Checks, if the given form is correct
                 if (!ClassifierMethods.IsSpecializedClassifierOf(
@@ -55,27 +55,27 @@ namespace DatenMeister.WPF.Forms.Lists
                     formAndFields.__ExtentForm))
                 {
                     MessageBox.Show("Overriding form is not of type ExtentForm.");
-                    view = null;
+                    form = null;
                 }
             }
 
-            if (view == null)
+            if (form == null)
             {
                 var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
                 if (selectedItemMetaClass != null
                     && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
                 {
                     var workspaceId = SelectedPackage.get("id")?.ToString();
-                    view = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, workspaceId, NavigationHost);
+                    form = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, workspaceId, NavigationHost);
                 }
                 else
                 {
-                    view = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(Extent, NavigationHost);
+                    form = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(Extent, NavigationHost);
                 }
             }
 
             // Sets the workspaces
-            EvaluateForm(SelectedItem, view);
+            EvaluateForm(SelectedItem, form);
         }
 
         /// <summary>

@@ -104,7 +104,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public ViewDefinition? OverridingViewDefinition { get; private set; }
+        public FormDefinition? OverridingViewDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -112,7 +112,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="form"></param>
         public void SetOverridingForm(IElement form)
         {
-            OverridingViewDefinition = new ViewDefinition(form);
+            OverridingViewDefinition = new FormDefinition(form);
             RecreateViews();
         }
 
@@ -130,7 +130,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void ForceAutoGenerationOfForm()
         {
-            OverridingViewDefinition = new ViewDefinition(FormDefinitionMode.ViaFormCreator);
+            OverridingViewDefinition = new FormDefinition(FormDefinitionMode.ViaFormCreator);
             RecreateViews();
         }
         
@@ -299,16 +299,16 @@ namespace DatenMeister.WPF.Forms.Base
         ///     this call
         /// </summary>
         /// <param name="value">Value which shall be shown</param>
-        /// <param name="viewDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
+        /// <param name="formDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
         protected void EvaluateForm(
             IObject value,
-            ViewDefinition viewDefinition,
+            FormDefinition formDefinition,
             IReflectiveCollection? container = null)
         {
-            EffectiveForm = viewDefinition.Element;
-            var tabs = viewDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            EffectiveForm = formDefinition.Element;
+            var tabs = formDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -318,17 +318,17 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var tab in tabs.OfType<IElement>())
             {
                 var tabViewExtensions = new List<ViewExtension>();
-                if (viewDefinition.TabViewExtensionsFunction != null)
-                    tabViewExtensions = viewDefinition.TabViewExtensionsFunction(tab).ToList();
+                if (formDefinition.TabViewExtensionsFunction != null)
+                    tabViewExtensions = formDefinition.TabViewExtensionsFunction(tab).ToList();
 
-                if (viewDefinition.ViewExtensions != null)
-                    foreach (var viewExtension in viewDefinition.ViewExtensions)
+                if (formDefinition.ViewExtensions != null)
+                    foreach (var viewExtension in formDefinition.ViewExtensions)
                         tabViewExtensions.Add(viewExtension);
                 
                 AddTab(value, tab, tabViewExtensions, container);
             }
 
-            ViewExtensions = viewDefinition.ViewExtensions;
+            ViewExtensions = formDefinition.ViewExtensions;
             
             NavigationHost?.RebuildNavigation();
         }

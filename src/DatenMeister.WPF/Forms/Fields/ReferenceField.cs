@@ -16,7 +16,7 @@ using DatenMeister.WPF.Controls;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     /// <summary>
     /// Implements a reference field which is shown the currently selected instance and allows the user to select

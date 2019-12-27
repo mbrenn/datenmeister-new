@@ -6,7 +6,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     public class CheckboxField : IDetailField
     {

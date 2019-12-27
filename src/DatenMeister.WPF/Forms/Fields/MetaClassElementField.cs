@@ -6,10 +6,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Modules.FormManager;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     public class MetaClassElementField : IDetailField
     {

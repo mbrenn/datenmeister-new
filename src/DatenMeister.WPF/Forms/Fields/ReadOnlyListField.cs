@@ -10,7 +10,7 @@ using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     public class ReadOnlyListField : IDetailField
     {

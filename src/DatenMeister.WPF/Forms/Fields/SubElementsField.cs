@@ -18,7 +18,7 @@ using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     public class SubElementsField : IDetailField
     {

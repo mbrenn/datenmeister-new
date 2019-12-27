@@ -75,7 +75,7 @@ namespace DatenMeister.WPF.Forms.Base
         public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensionsFunction { get; set; }
 
         public FormDefinition(FormDefinitionMode mode) : this (null, null, mode)
-        {   
+        {
         }
 
         /// <summary>

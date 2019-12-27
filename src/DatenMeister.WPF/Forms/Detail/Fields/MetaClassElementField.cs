@@ -1,9 +1,13 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Modules.FormManager;
+using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Detail.Fields
 {
@@ -21,10 +25,33 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             detailForm.CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
 
             var metaClass = (value as IElement)?.getMetaClass();
+
+            var textField = new TextBlock
+            {
+                Text = metaClass == null ? "None" : NamedElementMethods.GetFullName(metaClass)
+            };
+
+            if (metaClass != null)
+            {
+                textField.TextDecorations = TextDecorations.Underline;
+                textField.MouseDown += (sender, args) =>
+                {
+                    NavigatorForItems.NavigateToElementDetailView(
+                        detailForm.NavigationHost,
+                        metaClass);
+                };
+                
+                textField.Foreground = SystemColors.HotTrackBrush;
+                textField.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                textField.FontStyle = FontStyles.Italic;
+            }
+            
             detailForm.CreateRowForField(
-                "Meta Class:",
-                metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
-                true);
+                new TextBlock { Text = "Meta Class:"},
+                textField);
 
             return null;
         }

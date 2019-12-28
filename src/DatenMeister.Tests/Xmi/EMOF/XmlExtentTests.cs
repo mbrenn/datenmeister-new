@@ -321,7 +321,10 @@ namespace DatenMeister.Tests.Xmi.EMOF
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var creator = dm.Resolve<ExtentCreator>();
             var xmi = creator.GetOrCreateXmiExtentInInternalDatabase(
-                null, "dm:///test", "Name");
+                null, 
+                "dm:///test",
+                "Name",
+                extentCreationFlags: ExtentCreationFlags.CreateOnly);
 
             var factory = new MofFactory(xmi);
             var first = factory.create(null);

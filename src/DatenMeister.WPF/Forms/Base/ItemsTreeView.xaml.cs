@@ -342,12 +342,13 @@ namespace DatenMeister.WPF.Forms.Base
                 foreach (var property in propertiesForChildren)
                 {
                     // Goes through the properties
-                    var propertyValue = itemAsObject.GetOrDefault(property);
+                    var propertyValue = itemAsObject.getOrDefault<object>(property, true);
                     if (propertyValue is IReflectiveCollection childItems)
                     {
                         // If, we have a collection of properties, add the enumeration of the properties
                         // to the treeview (as long as we don't have too many items)
-                        foreach (var childItem in childItems)
+                        // Do not perform a resolving of the items
+                        foreach (var childItem in CollectionHelper.EnumerateWithNoResolving(childItems, true))
                         {
                             var childTreeViewItem = CreateTreeViewItem(childItem);
                             if (childTreeViewItem != null)
@@ -474,7 +475,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                 foreach (var property in _propertiesForChildren)
                 {
-                    if (itemAsObject.GetOrDefault(property) is IReflectiveCollection childItems)
+                    var childItems = itemAsObject.getOrDefault<IReflectiveCollection>(property);
+                    if (childItems != null)
                     {
                         VisitCopyTreeToClipboard(
                             childItems,

@@ -84,17 +84,21 @@ namespace DatenMeister.Tests.Web
             var result = creator.CreateExtentForm(extent, CreationMode.All);
             Assert.That(result, Is.Not.Null);
 
-            var tab = result.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab).Select(x => x as IElement).FirstOrDefault();
+            var tab = result
+                .getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab)
+                .Select(x => x as IElement).FirstOrDefault();
 
             Assert.That(tab
-                .getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field)
-                .OfType<IElement>()
-                .Count(x => x.getMetaClass().ToString().Contains("TextFieldData")), Is.EqualTo(2));
+                    .getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field)
+                    .OfType<IElement>()
+                    .Count(x => x.getMetaClass().ToString().Contains("TextFieldData")),
+                Is.EqualTo(2));
 
             Assert.That(tab
-                .getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field)
-                .OfType<IElement>()
-                .Count(x => x.getMetaClass().ToString().Contains("SubElementFieldData")), Is.EqualTo(1));
+                    .getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field)
+                    .OfType<IElement>()
+                    .Count(x => x.getMetaClass().ToString().Contains("SubElementFieldData")),
+                Is.EqualTo(1));
 
 
             var firstColumn = tab

@@ -195,7 +195,7 @@ namespace DatenMeister.Provider.XMI
                 else
                 {
                     resultingElement.set(name, new List<object>());
-                    currentList = resultingElement.GetAsReflectiveCollection(name);
+                    currentList = resultingElement.get<IReflectiveCollection>(name);
                     dict[name] = currentList;
                 }
 

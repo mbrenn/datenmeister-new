@@ -12,7 +12,7 @@ namespace DatenMeister.Modules.UserInteractions
         /// <summary>
         /// Gets or sets the class name of the elements that are in scópe of the BaseElementInteractionHandler
         /// </summary>
-        protected string OnlyElementsOfType { get; set; }
+        private string OnlyElementsOfType { get; set; }
 
         /// <inheritdoc />
         public abstract IEnumerable<IElementInteraction> GetInteractions(IObject element);

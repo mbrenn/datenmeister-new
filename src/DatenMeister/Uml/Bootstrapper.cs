@@ -367,7 +367,7 @@ namespace DatenMeister.Uml
             {
                 if (elementInstance.isSet("general"))
                 {
-                    var general = elementInstance.GetFirstOrDefault("general");
+                    var general = elementInstance.getFirstOrDefault("general");
                     if (general == null)
                     {
                         throw new InvalidOperationException(elementInstance.ToString());

@@ -61,7 +61,7 @@ namespace DatenMeister.WPF.Forms.Fields
             foreach (var itemPair in dropDownValues.Select(x=> x as IElement))
             {
                 var nameOfItem = itemPair.getOrDefault<string>(_FormAndFields._ValuePair.name);
-                var valueOfItem = itemPair.GetOrDefault(_FormAndFields._ValuePair.value);
+                var valueOfItem = itemPair.getOrDefault<object>(_FormAndFields._ValuePair.value);
 
                 if (nameOfItem != null && valueOfItem != null)
                 {

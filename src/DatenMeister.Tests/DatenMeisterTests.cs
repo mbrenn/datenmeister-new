@@ -36,7 +36,7 @@ namespace DatenMeister.Tests
             TheLog.AddProvider(new ConsoleProvider());
             TheLog.AddProvider(new DebugProvider());
 
-            integrationSettings = integrationSettings ?? GetIntegrationSettings(dropDatabase);
+            integrationSettings ??= GetIntegrationSettings(dropDatabase);
 
             if (dropDatabase)
             {

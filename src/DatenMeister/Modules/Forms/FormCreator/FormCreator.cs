@@ -214,7 +214,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     .OfType<IObject>()
                     .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == propertyName);
 
-                var propertyValue = itemAsObject.GetOrDefault(propertyName);
+                var propertyValue = itemAsObject.getOrDefault<object>(propertyName);
 
                 if (column == null)
                 {

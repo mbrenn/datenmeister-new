@@ -19,7 +19,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the mof object being assigned to the
         /// </summary>
-        public MofObject MofObject { get; }
+        private MofObject MofObject { get; }
+        
+        /// <summary>
+        /// Gets or sets a flag indicating whether references shall be followed or not
+        /// </summary>
+        public bool NoReferences { get; set; }
 
         public MofReflectiveSequence(MofObject mofObject, string property)
         {
@@ -45,7 +50,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = GetPropertyAsEnumerable();
             foreach (var item in result)
             {
-                yield return MofObject.ConvertToMofObject(MofObject, _property, item, noReferences);
+                yield return MofObject.ConvertToMofObject(MofObject, _property, item, noReferences || NoReferences);
             }
         }
 
@@ -57,10 +62,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (MofObject.ProviderObject.IsPropertySet(_property))
             {
-                var value = (IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property);
-                if (value != null)
+                var value = MofObject.ProviderObject.GetProperty(_property);
+                
+                if (value is IEnumerable<object> asEnumerable)
                 {
-                    return value;
+                    return asEnumerable;
+                }
+                else
+                {
+                    return new[] {value};
                 }
             }
 
@@ -103,8 +113,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void clear()
         {
+            // Performs now the final deletion
             MofObject.ProviderObject.EmptyListForProperty(_property);
-
             UpdateContent();
         }
 
@@ -149,11 +159,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void remove(int index)
         {
-            MofObject.ProviderObject.RemoveFromProperty(
-                _property,
-                ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property)).ElementAt(index));
+            var foundvalue = ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property)).ElementAt(index);
+            if (foundvalue != null)
+            {
+                MofObject.ProviderObject.RemoveFromProperty(
+                    _property,
+                    foundvalue);
 
-            UpdateContent();
+                UpdateContent();
+            }
         }
 
         /// <inheritdoc />

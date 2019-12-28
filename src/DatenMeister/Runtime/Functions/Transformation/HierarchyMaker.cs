@@ -26,10 +26,10 @@ namespace DatenMeister.Runtime.Functions.Transformation
 
             var values = CopyElements(settings);
 
-            // Now: Do the adding of the childrena into a temporary lists and copy
+            // Now: Do the adding of the children into a temporary lists and copy
             foreach (var element in settings.Sequence.Select(x => x as IObject).Where(x => x != null))
             {
-                var id = element.GetOrDefault(settings.IdColumn);
+                var id = element.getOrDefault<object>(settings.IdColumn);
 
                 if (id != null && element.isSet(settings.OldParentColumn))
                 {
@@ -56,7 +56,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Copies all the elements which do not have parent into the generic one
             foreach (var element in settings.Sequence.Select(x => x as IElement).Where(x => x != null))
             {
-                var id = element.GetOrDefault(settings.IdColumn);
+                var id = element.getOrDefault<object>(settings.IdColumn);
                 if (id != null && element.isSet(settings.OldParentColumn))
                 {
                     var parentId = element.get(settings.OldParentColumn);
@@ -97,9 +97,8 @@ namespace DatenMeister.Runtime.Functions.Transformation
             foreach (var pair in copiedElements)
             {
                 var element = pair.Value;
-                var childrenId = element.GetOrDefault(settings.OldChildrenColumn)
-                    ?.ToString()
-                    .Split(new[] {settings.ChildIdSeparator}, StringSplitOptions.RemoveEmptyEntries)
+                var childrenId = element.getOrDefault<string>(settings.OldChildrenColumn)
+                    ?.Split(new[] {settings.ChildIdSeparator}, StringSplitOptions.RemoveEmptyEntries)
                     .Select(x => x.Trim());
 
                 if (childrenId == null)

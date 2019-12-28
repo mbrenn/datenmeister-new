@@ -131,8 +131,8 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <summary>
         /// Removes the item from the reflective collection and asks the user beforehand
         /// </summary>
-        /// <param name="reflectiveCollection"></param>
-        /// <param name="item"></param>
+        /// <param name="reflectiveCollection">Defines the reflective collection from which the item will be removed</param>
+        /// <param name="item">The item to be removed</param>
         private static void RemoveItem(IReflectiveCollection reflectiveCollection, IObject item)
         {
             if (MessageBox.Show(
@@ -149,14 +149,44 @@ namespace DatenMeister.WPF.Forms.Fields
         private void CreateManipulationButtons(IReflectiveCollection collection)
         {
             var stackPanel = new StackPanel {Orientation = Orientation.Vertical};
-            var buttonUp = new Button {Content = "⭡"};
-            SetStyle(buttonUp);
-            
-            var buttonDown = new Button {Content = "⭣"};
-            SetStyle(buttonDown);
-            
+
+            if (collection is IReflectiveSequence reflectiveSequence)
+            {
+                var buttonUp = new Button {Content = "⭡"};
+                buttonUp.Click += (x, y) =>
+                {
+                    var selectedItem = _listViewControl.GetSelectedItem();
+                    if (selectedItem == null)
+                    {
+                        MessageBox.Show("No item is currently selected");
+                        return;
+                    }
+
+                    reflectiveSequence.MoveElementUp(selectedItem);
+                };
+
+                SetStyle(buttonUp);
+
+                var buttonDown = new Button {Content = "⭣"};
+                buttonDown.Click += (x, y) =>
+                {
+                    var selectedItem = _listViewControl.GetSelectedItem();
+                    if (selectedItem == null)
+                    {
+                        MessageBox.Show("No item is currently selected");
+                        return;
+                    }
+
+                    reflectiveSequence.MoveElementDown(selectedItem);
+                };
+                SetStyle(buttonDown);
+                
+                stackPanel.Children.Add(buttonUp);
+                stackPanel.Children.Add(buttonDown);
+            }
+
             var buttonNew = new Button {Content = "N"};
-            SetStyle(buttonDown);
+            SetStyle(buttonNew);
             SetNewButton(buttonNew);
             
             var buttonDelete = new Button {Content = "✗"};
@@ -174,8 +204,6 @@ namespace DatenMeister.WPF.Forms.Fields
             
             SetStyle(buttonDelete);
 
-            stackPanel.Children.Add(buttonUp);
-            stackPanel.Children.Add(buttonDown);
             stackPanel.Children.Add(buttonDelete);
             stackPanel.Children.Add(buttonNew);
             
@@ -224,7 +252,8 @@ namespace DatenMeister.WPF.Forms.Fields
 
                         result.NewItemCreated += (a, b) =>
                         {
-                            if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                            var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 
+                            if (propertyCollection != null)
                             {
                                 propertyCollection.add(b.NewItem);
                             }
@@ -294,7 +323,8 @@ namespace DatenMeister.WPF.Forms.Fields
                             (_element as MofObject)?.ReferencedExtent, type);
                     elements.NewItemCreated += (x, y) =>
                     {
-                        if (_element.GetOrDefault(_propertyName) is IReflectiveCollection propertyCollection)
+                        var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 
+                        if (propertyCollection != null)
                         {
                             propertyCollection.add(y.NewItem);
                         }

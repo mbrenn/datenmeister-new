@@ -115,7 +115,7 @@ namespace DatenMeister.Uml.Helper
                 }
 
                 // Ok, get all list properties as one big enumeration
-                current = GetAllPropertyValues(found);
+                current = GetAllPropertyValues(found, true);
             }
 
             return found;
@@ -125,8 +125,9 @@ namespace DatenMeister.Uml.Helper
         /// Creates one huge enumeration containing all the property values
         /// </summary>
         /// <param name="value">The value being queried</param>
+        /// <param name="noReferences">true, if the method call shall not resolve the references</param>
         /// <returns>An enumeration</returns>
-        public static IEnumerable<IElement> GetAllPropertyValues(IElement value)
+        public static IEnumerable<IElement> GetAllPropertyValues(IElement value, bool noReferences = false)
         {
             if (!(value is IObjectAllProperties asProperties))
             {
@@ -141,21 +142,30 @@ namespace DatenMeister.Uml.Helper
                 }
 
                 // Property exists
-                var propertyValue = value.get(property);
+                object propertyValue;
+                if (value is MofObject valueConverted && noReferences)
+                {
+                    // If no references is set and the given object supports the query via 'noReferences' 
+                    propertyValue = valueConverted.get(property, true);
+                }
+                else
+                {
+                    propertyValue = value.get(property);
+                }
+
                 if (!DotNetHelper.IsOfEnumeration(propertyValue))
                 {
                     continue;
                 }
 
+
+
                 // and is an enumeration
                 var asEnumeration = (IEnumerable) propertyValue;
-                foreach (var innerValue in asEnumeration)
+                foreach (var enumerationElement in CollectionHelper.EnumerateWithNoResolving(asEnumeration, true)
+                    .OfType<IElement>())
                 {
-                    if (innerValue is IElement asElement)
-                    {
-                        // and inner value is an IElement
-                        yield return asElement;
-                    }
+                    yield return enumerationElement;
                 }
             }
         }

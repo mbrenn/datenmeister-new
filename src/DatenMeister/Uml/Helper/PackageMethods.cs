@@ -183,7 +183,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="element">Element to be added</param>
         public static void AddObjectToPackage(IElement package, object element)
         {
-            var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+            var packagedElements = package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
             packagedElements.add(element);
         }
 
@@ -194,7 +194,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="elements">Elements to be added</param>
         public static void AddObjectsToPackage(IElement package, IEnumerable<object> elements)
         {
-            var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+            var packagedElements = package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
             foreach (var item in elements)
             {
                 packagedElements.add(item);
@@ -207,7 +207,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="package">Package to be evaluated</param>
         /// <returns>ReflectiveCollection containing the packaged elements</returns>
         public static IReflectiveCollection GetPackagedObjects(IObject package) =>
-            package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+            package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
 
         /// <summary>
         /// Imports a set of element into the the target package by creating the additional

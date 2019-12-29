@@ -234,7 +234,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var found = CreateTreeViewItem(ItemsSource, true);
                 if (found != null)
                     model.Add(found);
-
+                
                 container.ItemsSource = model;
             }
 

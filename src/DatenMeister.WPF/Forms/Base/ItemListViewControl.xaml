@@ -38,7 +38,8 @@
         </StackPanel>
         <Grid x:Name="MainGrid">
             <DataGrid Grid.Row="0" IsReadOnly="True"
-                x:Name="DataGrid" Margin="10,0,10,0" MouseDoubleClick="DataGrid_MouseDoubleClick">
+                x:Name="DataGrid" Margin="10,0,10,0" MouseDoubleClick="DataGrid_MouseDoubleClick"
+                EnableRowVirtualization="True">
                 <DataGrid.CommandBindings>
                     <CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted" />
                 </DataGrid.CommandBindings>

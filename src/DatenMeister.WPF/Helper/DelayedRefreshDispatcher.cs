@@ -90,10 +90,10 @@ namespace DatenMeister.WPF.Helper
                     _lastRefreshTime = DateTime.Now;
                 }
 
-                ClassLogger.Trace($"{_instance}: Dispatch in {MinDispatchTime.TotalMilliseconds} ms");
+                ClassLogger.Trace($"#{_instance}: Dispatch in {MinDispatchTime.TotalMilliseconds} ms");
                 Task.Delay(MinDispatchTime).ContinueWith(t =>
                 {
-                    ClassLogger.Trace("{_instance}: Got Called");
+                    ClassLogger.Trace($"#{_instance}: Got Called");
                     CheckForRefresh();
                 });
             }
@@ -116,14 +116,14 @@ namespace DatenMeister.WPF.Helper
                     {
                         var dispatchTime = MinDispatchTime - delta;
                         // But maximum delay has not occured
-                        ClassLogger.Trace($"{_instance}: Retry Dispatch in {dispatchTime.TotalMilliseconds} ms");
+                        ClassLogger.Trace($"#{_instance}: Retry Dispatch in {dispatchTime.TotalMilliseconds} ms");
 
                         Task.Delay(dispatchTime).ContinueWith(t => CheckForRefresh());
                         return;
                     }
                 }
 
-                ClassLogger.Trace($"{_instance}: Dispatched after {delta.TotalMilliseconds} ms");
+                ClassLogger.Trace($"#{_instance}: Dispatched after {delta.TotalMilliseconds} ms");
 
                 _lastRefreshTime = DateTime.MinValue;
                 _refreshTimeStamp = DateTime.MinValue;

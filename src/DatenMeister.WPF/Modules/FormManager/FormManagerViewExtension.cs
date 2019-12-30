@@ -167,13 +167,13 @@ namespace DatenMeister.WPF.Modules.FormManager
                         var factory = new MofFactory(userViewExtent);
                         var formAndFields = viewLogic.GetFormAndFieldInstance();
 
-                        viewLogic.RemoveViewAssociationForExtentType(selectedExtentType);
+                        viewLogic.RemoveFormAssociationForExtentType(selectedExtentType);
 
-                        var viewAssociation = factory.create(formAndFields.__ViewAssociation);
-                        viewAssociation.set(_FormAndFields._ViewAssociation.extentType, selectedExtentType);
-                        viewAssociation.set(_FormAndFields._ViewAssociation.form, itemExplorerControl.EffectiveForm);
-                        viewAssociation.set(_FormAndFields._ViewAssociation.viewType, FormType.TreeItemExtent);
-                        userViewExtent.elements().add(viewAssociation);
+                        var formAssociation = factory.create(formAndFields.__FormAssociation);
+                        formAssociation.set(_FormAndFields._FormAssociation.extentType, selectedExtentType);
+                        formAssociation.set(_FormAndFields._FormAssociation.form, itemExplorerControl.EffectiveForm);
+                        formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.TreeItemExtent);
+                        userViewExtent.elements().add(formAssociation);
 
                         MessageBox.Show("View Association created");
                     }
@@ -200,7 +200,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                         var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
 
-                        if (viewLogic.RemoveViewAssociationForExtentType(selectedExtentType))
+                        if (viewLogic.RemoveFormAssociationForExtentType(selectedExtentType))
                         {
                             MessageBox.Show("View Association deleted");
                         }
@@ -425,11 +425,11 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass);
 
-                var viewAssociation = factory.create(formAndFields.__ViewAssociation);
-                viewAssociation.set(_FormAndFields._ViewAssociation.metaClass, metaClass);
-                viewAssociation.set(_FormAndFields._ViewAssociation.form, detailWindow.OverridingViewDefinition.Element);
-                viewAssociation.set(_FormAndFields._ViewAssociation.viewType, FormType.Detail);
-                userViewExtent.elements().add(viewAssociation);
+                var formAssociation = factory.create(formAndFields.__FormAssociation);
+                formAssociation.set(_FormAndFields._FormAssociation.metaClass, metaClass);
+                formAssociation.set(_FormAndFields._FormAssociation.form, detailWindow.OverridingViewDefinition.Element);
+                formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
+                userViewExtent.elements().add(formAssociation);
 
                 MessageBox.Show("View Association created");
             }

@@ -167,38 +167,38 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
-                        if(name == "ViewAssociation") // Looking for class
+                        if(name == "FormAssociation") // Looking for class
                         {
-                            tree.__ViewAssociation = value;
+                            tree.__FormAssociation = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "viewType") // Looking for property
+                                if(name == "formType") // Looking for property
                                 {
-                                    tree.ViewAssociation._viewType = value;
+                                    tree.FormAssociation._formType = value;
                                 }
                                 if(name == "metaClass") // Looking for property
                                 {
-                                    tree.ViewAssociation._metaClass = value;
+                                    tree.FormAssociation._metaClass = value;
                                 }
                                 if(name == "extentType") // Looking for property
                                 {
-                                    tree.ViewAssociation._extentType = value;
+                                    tree.FormAssociation._extentType = value;
                                 }
                                 if(name == "parentMetaClass") // Looking for property
                                 {
-                                    tree.ViewAssociation._parentMetaClass = value;
+                                    tree.FormAssociation._parentMetaClass = value;
                                 }
                                 if(name == "parentProperty") // Looking for property
                                 {
-                                    tree.ViewAssociation._parentProperty = value;
+                                    tree.FormAssociation._parentProperty = value;
                                 }
                                 if(name == "form") // Looking for property
                                 {
-                                    tree.ViewAssociation._form = value;
+                                    tree.FormAssociation._form = value;
                                 }
                             }
                         }

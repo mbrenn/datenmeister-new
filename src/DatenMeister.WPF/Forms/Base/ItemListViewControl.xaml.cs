@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -329,6 +330,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
+            var stopWatch = Stopwatch.StartNew();
+            
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
@@ -435,8 +438,14 @@ namespace DatenMeister.WPF.Forms.Base
                     };
                 }
             }
-
+            
+            
+            stopWatch.Stop();
+            Logger.Info("UpdateView Duration", stopWatch.ElapsedMilliseconds, "ms");
+            
+            stopWatch.Restart();
             DataGrid.ItemsSource = listItems;
+            Logger.Info("UpdateView SetItemsSource", stopWatch.ElapsedMilliseconds, "ms");
         }
 
         /// <summary>

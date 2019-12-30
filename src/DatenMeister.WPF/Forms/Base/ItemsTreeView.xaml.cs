@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -31,8 +33,19 @@ namespace DatenMeister.WPF.Forms.Base
     /// </summary>
     public partial class ItemsTreeView : UserControl, INavigationGuest
     {
+        /// <summary>
+        /// Defines the logger being used
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(ItemsTreeView));
+        
+        /// <summary>
+        /// Defines the element which is the source for the definition of the treeview
+        /// </summary>
         private IObject? _itemsSource;
 
+        /// <summary>
+        /// Defines the set of already visited items to prevent that one item is 'visited' multiple times
+        /// </summary>
         private readonly HashSet<object> _alreadyVisited = new HashSet<object>();
 
         public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
@@ -215,6 +228,8 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
+            var stopWatch = Stopwatch.StartNew();
+
             if (ItemsSource == null)
             {
                 TreeView.ItemsSource = null;
@@ -244,6 +259,9 @@ namespace DatenMeister.WPF.Forms.Base
                 _newSelectedItem.IsExpanded = true;
                 _newSelectedItem.BringIntoView();
             }
+            
+            stopWatch.Stop();
+            Logger.Info("UpdateView Duration", stopWatch.ElapsedMilliseconds, "ms");
         }
 
         /// <summary>

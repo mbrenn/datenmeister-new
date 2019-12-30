@@ -103,10 +103,10 @@ namespace DatenMeister.Models.Forms
         public _DateTimeFieldData @DateTimeFieldData = new _DateTimeFieldData();
         public IElement @__DateTimeFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DateTimeFieldData");
 
-        public class _ViewAssociation
+        public class _FormAssociation
         {
-            public static string @viewType = "viewType";
-            public IElement _viewType = null;
+            public static string @formType = "formType";
+            public IElement _formType = null;
 
             public static string @metaClass = "metaClass";
             public IElement _metaClass = null;
@@ -125,8 +125,8 @@ namespace DatenMeister.Models.Forms
 
         }
 
-        public _ViewAssociation @ViewAssociation = new _ViewAssociation();
-        public IElement @__ViewAssociation = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewAssociation");
+        public _FormAssociation @FormAssociation = new _FormAssociation();
+        public IElement @__FormAssociation = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormAssociation");
 
         public class _DropDownFieldData
         {
@@ -383,23 +383,23 @@ namespace DatenMeister.Models.Forms
         public _DefaultTypeForNewElement @DefaultTypeForNewElement = new _DefaultTypeForNewElement();
         public IElement @__DefaultTypeForNewElement = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultTypeForNewElement");
 
-        public class _ViewType
+        public class _FormType
         {
             public static string @Detail = "Detail";
-            public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-Detail");
+            public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-Detail");
             public static string @TreeItemExtent = "TreeItemExtent";
-            public IElement @__TreeItemExtent = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-TreeItemExtent");
+            public IElement @__TreeItemExtent = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemExtent");
             public static string @TreeItemList = "TreeItemList";
-            public IElement @__TreeItemList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-TreeItemList");
+            public IElement @__TreeItemList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemList");
             public static string @TreeItemDetail = "TreeItemDetail";
-            public IElement @__TreeItemDetail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-TreeItemDetail");
+            public IElement @__TreeItemDetail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemDetail");
             public static string @ObjectList = "ObjectList";
-            public IElement @__ObjectList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType-ObjectList");
+            public IElement @__ObjectList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-ObjectList");
 
         }
 
-        public _ViewType @ViewType = new _ViewType();
-        public IElement @__ViewType = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewType");
+        public _FormType @FormType = new _FormType();
+        public IElement @__FormType = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType");
 
         public class _Form
         {

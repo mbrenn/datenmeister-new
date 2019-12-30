@@ -48,7 +48,7 @@ namespace DatenMeister.Models.Forms
                 var type = typeof(DatenMeister.Models.Forms.FormAssociation);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ViewAssociation = typeAsElement;
+                filledStructure.__FormAssociation = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -118,7 +118,7 @@ namespace DatenMeister.Models.Forms
                 var type = typeof(DatenMeister.Models.Forms.FormType);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ViewType = typeAsElement;
+                filledStructure.__FormType = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {

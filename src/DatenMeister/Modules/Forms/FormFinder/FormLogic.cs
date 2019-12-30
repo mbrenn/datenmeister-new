@@ -221,7 +221,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             return internalViewExtent.elements()
                 .Union(userViewExtent.elements())
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(formAndFields.__ViewAssociation);
+                .WhenMetaClassIsOneOf(formAndFields.__FormAssociation);
         }
         
         /// <summary>
@@ -229,7 +229,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <param name="selectedExtentType">Extent type which is currently selected</param>
         /// <param name="viewExtent">The view extent which shall be looked through to remove the view association</param>
-        public bool RemoveViewAssociationForExtentType(string selectedExtentType, IExtent? viewExtent = null)
+        public bool RemoveFormAssociationForExtentType(string selectedExtentType, IExtent? viewExtent = null)
         {
             var result = false;
             viewExtent ??= GetUserFormExtent();
@@ -238,8 +238,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
             foreach (var foundElement in viewExtent
                 .elements()
                 .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(formAndFields.__ViewAssociation)
-                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.extentType, selectedExtentType)
+                .WhenMetaClassIs(formAndFields.__FormAssociation)
+                .WhenPropertyHasValue(_FormAndFields._FormAssociation.extentType, selectedExtentType)
                 .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
@@ -264,9 +264,9 @@ namespace DatenMeister.Modules.Forms.FormFinder
             foreach (var foundElement in viewExtent
                 .elements()
                 .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(formAndFields.__ViewAssociation)
-                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.metaClass, metaClass)
-                .WhenPropertyHasValue(_FormAndFields._ViewAssociation.viewType, FormType.Detail)
+                .WhenMetaClassIs(formAndFields.__FormAssociation)
+                .WhenPropertyHasValue(_FormAndFields._FormAssociation.metaClass, metaClass)
+                .WhenPropertyHasValue(_FormAndFields._FormAssociation.formType, FormType.Detail)
                 .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);

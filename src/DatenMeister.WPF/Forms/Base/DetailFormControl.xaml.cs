@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -311,6 +312,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
+            var stopWatch = Stopwatch.StartNew();
+            
             RefreshViewDefinition();
 
             // Checks, if the form overwrites the allow new properties information. If yes, store it
@@ -331,6 +334,9 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Here, create the rows themselves
             CreateRows(fields);
+            
+            stopWatch.Stop();
+            Logger.Info("UpdateView Duration", stopWatch.ElapsedMilliseconds, "ms");
         }
 
         /// <summary>

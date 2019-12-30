@@ -317,7 +317,9 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 Header = itemHeader,
                 Tag = item,
-                IsExpanded = isRoot
+                IsExpanded = isRoot,
+                HorizontalContentAlignment = HorizontalAlignment.Left,
+                VerticalContentAlignment = VerticalAlignment.Top
             };
 
             if (_previouslySelectedItem?.Equals(item) == true)

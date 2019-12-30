@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -328,122 +329,126 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
-            using var watch = new StopWatchLogger(Logger, "UpdateView");
+            var watch = new StopWatchLogger(Logger, "UpdateView");
+            var listItems = new ObservableCollection<ExpandoObject>();
             
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
-
-            var listItems = new ObservableCollection<ExpandoObject>();
+            
             _itemMapping.Clear();
 
             // Updates all columns and returns the fieldnames and fields
             var (fieldDataNames, fields) = UpdateColumnDefinitions();
-            
             watch.IntermediateLog("UpdateColumnDefinitions done");
-            
-            if (fieldDataNames == null) return;
 
-            // Creates the rows
-            if (Items != null)
+            Task.Run(() =>
             {
-                // Get the items and honor searching
-                var items = Items.OfType<IObject>();
-                if (!string.IsNullOrEmpty(_searchText))
-                {
-                    var columnNames = fields.OfType<IElement>()
-                        .Select(x => x.get("name")?.ToString())
-                        .Where(x => x != null);
-                    items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
-                }
+                if (fieldDataNames == null) return;
 
-                // Goes through the fast filters and filters the items
-                foreach (var fastFilter in GetFastFilters())
+                // Creates the rows
+                if (Items != null)
                 {
-                    var converter = FastViewFilterConverter.Convert(fastFilter);
-                    if (converter == null)
+                    // Get the items and honor searching
+                    var items = Items.OfType<IObject>();
+                    if (!string.IsNullOrEmpty(_searchText))
                     {
-                        Logger.Warn("FastViewFilter is not known: " + fastFilter);
-                        continue;
+                        var columnNames = fields.OfType<IElement>()
+                            .Select(x => x.get("name")?.ToString())
+                            .Where(x => x != null);
+                        items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                     }
 
-                    items = items.Where(x => converter.IsFiltered(x));
-                }
-
-                // Go through the items and build up the list of elements
-                foreach (var item in items)
-                {
-                    var itemObject = new ExpandoObject();
-                    var asDictionary = (IDictionary<string, object>) itemObject;
-
-                    var n = 0;
-                    foreach (var field in fields.Cast<IElement>())
+                    // Goes through the fast filters and filters the items
+                    foreach (var fastFilter in GetFastFilters())
                     {
-                        var columnName = fieldDataNames[n];
-                        var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
-                        var value = GetValueOfElement(item, field);
-
-                        if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                        var converter = FastViewFilterConverter.Convert(fastFilter);
+                        if (converter == null)
                         {
-                            var result = new StringBuilder();
-                            var valueAsList = DotNetHelper.AsEnumeration(value);
-                            if (valueAsList != null)
-                            {
-                                var elementCount = 0;
-                                var nr = string.Empty;
-                                foreach (var valueElement in valueAsList)
-                                {
-                                    result.Append(nr + NamedElementMethods.GetName(valueElement));
-                                    nr = "\r\n";
+                            Logger.Warn("FastViewFilter is not known: " + fastFilter);
+                            continue;
+                        }
 
-                                    elementCount++;
-                                    if (elementCount > 10)
+                        items = items.Where(x => converter.IsFiltered(x));
+                    }
+
+                    // Go through the items and build up the list of elements
+                    foreach (var item in items)
+                    {
+                        var itemObject = new ExpandoObject();
+                        var asDictionary = (IDictionary<string, object>) itemObject;
+
+                        var n = 0;
+                        foreach (var field in fields.Cast<IElement>())
+                        {
+                            var columnName = fieldDataNames[n];
+                            var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
+                            var value = GetValueOfElement(item, field);
+
+                            if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                            {
+                                var result = new StringBuilder();
+                                var valueAsList = DotNetHelper.AsEnumeration(value);
+                                if (valueAsList != null)
+                                {
+                                    var elementCount = 0;
+                                    var nr = string.Empty;
+                                    foreach (var valueElement in valueAsList)
                                     {
-                                        result.Append("\r\n... (more)");
-                                        break;
+                                        result.Append(nr + NamedElementMethods.GetName(valueElement));
+                                        nr = "\r\n";
+
+                                        elementCount++;
+                                        if (elementCount > 10)
+                                        {
+                                            result.Append("\r\n... (more)");
+                                            break;
+                                        }
                                     }
                                 }
+
+                                asDictionary.Add(columnName, result.ToString());
+                            }
+                            else
+                            {
+                                asDictionary.Add(columnName, value);
                             }
 
-                            asDictionary.Add(columnName, result.ToString());
-                        }
-                        else
-                        {
-                            asDictionary.Add(columnName, value);
+                            n++;
                         }
 
-                        n++;
+                        _itemMapping[itemObject] = item;
+                        listItems.Add(itemObject);
+
+                        // Adds the notification for the property
+                        var noMessageBox = false;
+                        (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
+                        {
+                            try
+                            {
+                                var newPropertyValue = (itemObject as IDictionary<string, object>)[y.PropertyName];
+                                item.set(y.PropertyName, newPropertyValue);
+                            }
+                            catch (Exception exc)
+                            {
+                                if (!noMessageBox) MessageBox.Show(exc.Message);
+
+                                // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
+                                noMessageBox = true;
+                                (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
+                                noMessageBox = false;
+                            }
+                        };
                     }
-
-                    _itemMapping[itemObject] = item;
-                    listItems.Add(itemObject);
-
-                    // Adds the notification for the property
-                    var noMessageBox = false;
-                    (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
-                    {
-                        try
-                        {
-                            var newPropertyValue = (itemObject as IDictionary<string, object>)[y.PropertyName];
-                            item.set(y.PropertyName, newPropertyValue);
-                        }
-                        catch (Exception exc)
-                        {
-                            if (!noMessageBox) MessageBox.Show(exc.Message);
-
-                            // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
-                            noMessageBox = true;
-                            (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
-                            noMessageBox = false;
-                        }
-                    };
                 }
-            }
-            
-            
-            watch.IntermediateLog("Before setting");
-           
-            DataGrid.ItemsSource = listItems;
+            }).ContinueWith((x) =>
+            {
+                watch.IntermediateLog("Before setting");
+
+                Dispatcher?.Invoke(() => { DataGrid.ItemsSource = listItems; });
+
+                watch.Stop();
+            });
         }
 
         /// <summary>

@@ -330,7 +330,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
-            var stopWatch = Stopwatch.StartNew();
+            using var watch = new StopWatchLogger(Logger, "UpdateView");
             
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
@@ -341,6 +341,9 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Updates all columns and returns the fieldnames and fields
             var (fieldDataNames, fields) = UpdateColumnDefinitions();
+            
+            watch.IntermediateLog("UpdateColumnDefinitions done");
+            
             if (fieldDataNames == null) return;
 
             // Creates the rows
@@ -440,12 +443,9 @@ namespace DatenMeister.WPF.Forms.Base
             }
             
             
-            stopWatch.Stop();
-            Logger.Info("UpdateView Duration", stopWatch.ElapsedMilliseconds, "ms");
-            
-            stopWatch.Restart();
+            watch.IntermediateLog("Before setting");
+           
             DataGrid.ItemsSource = listItems;
-            Logger.Info("UpdateView SetItemsSource", stopWatch.ElapsedMilliseconds, "ms");
         }
 
         /// <summary>

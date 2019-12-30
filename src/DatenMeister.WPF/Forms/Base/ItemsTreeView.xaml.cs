@@ -228,7 +228,7 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
-            var stopWatch = Stopwatch.StartNew();
+            using var watch = new StopWatchLogger(Logger, "UpdateView");
 
             if (ItemsSource == null)
             {
@@ -259,9 +259,6 @@ namespace DatenMeister.WPF.Forms.Base
                 _newSelectedItem.IsExpanded = true;
                 _newSelectedItem.BringIntoView();
             }
-            
-            stopWatch.Stop();
-            Logger.Info("UpdateView Duration", stopWatch.ElapsedMilliseconds, "ms");
         }
 
         /// <summary>

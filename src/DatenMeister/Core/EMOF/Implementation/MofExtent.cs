@@ -545,8 +545,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
         
         public IExtent Extent => this;
-        
-        
+
         /// <summary>
         /// Indicates that the content of the extent is updated 
         /// </summary>

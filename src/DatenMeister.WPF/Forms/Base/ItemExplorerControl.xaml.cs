@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -236,15 +235,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="value"></param>
         public void SetRootItem(IObject value)
         {
-            var watch = new Stopwatch();
-            watch.Start();
+            using var watch = new StopWatchLogger(_logger, "SetRootItem");
 
             RootItem = value;
             UpdateTreeContent();
             RecreateViews();
 
             watch.Stop();
-            _logger.Info(watch.ElapsedMilliseconds.ToString("n0") + "ms required for form creation");
         }
 
         /// <summary>
@@ -261,6 +258,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         protected void RecreateViews()
         {
+            using var watch = new StopWatchLogger(_logger, "RecreateViews");
+            
             Tabs.Clear();
             OnRecreateViews();
             NavigationHost?.RebuildNavigation();
@@ -524,6 +523,7 @@ namespace DatenMeister.WPF.Forms.Base
             string? parentProperty)
         {
             if (usedViewExtensions == null) throw new ArgumentNullException(nameof(usedViewExtensions));
+            
             // Stores the menu items for the context menu
             var menuItems = new List<MenuItem>();
             var menuItem = new MenuItem

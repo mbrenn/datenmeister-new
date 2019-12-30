@@ -1,5 +1,6 @@
-﻿#nullable enable 
+﻿#nullable enable
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -18,6 +19,75 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
+        private class ResolverCache
+        {
+            private readonly Dictionary<ResolverKey, IElement> _cache
+             = new Dictionary<ResolverKey, IElement>();
+
+            public void Clear()
+            {
+                lock (_cache)
+                {
+                    _cache.Clear();
+                }
+            }
+
+            public IElement? GetElementFor(string uri, ResolveType resolveType)
+            {
+                lock (_cache)
+                {
+                    return _cache.TryGetValue(new ResolverKey(uri, resolveType), out var result) ? result : null;
+                }
+            }
+
+            public void AddElementFor(string uri, ResolveType resolveType, IElement foundElement)
+            {
+                lock (_cache)
+                {
+                    _cache[new ResolverKey(uri, resolveType)] = foundElement;
+                }
+            }
+
+            private class ResolverKey
+            {
+                private readonly string _uri;
+
+                private readonly ResolveType _resolveType;
+
+                public ResolverKey(string uri, ResolveType resolveType)
+                {
+                    _uri = uri;
+                    _resolveType = resolveType;
+                }
+
+                protected bool Equals(ResolverKey other)
+                {
+                    return string.Equals(_uri, other._uri, StringComparison.InvariantCulture) && _resolveType == other._resolveType;
+                }
+
+                public override bool Equals(object obj)
+                {
+                    if (ReferenceEquals(null, obj)) return false;
+                    if (ReferenceEquals(this, obj)) return true;
+                    if (obj.GetType() != GetType()) return false;
+                    return Equals((ResolverKey) obj);
+                }
+
+                public override int GetHashCode()
+                {
+                    unchecked
+                    {
+                        return (_uri.GetHashCode() * 397) ^ (int) _resolveType;
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Stores the resolver cache
+        /// </summary>
+        private ResolverCache _resolverCache = new ResolverCache();
+        
         /// <summary>
         /// Defines a possible logger
         /// </summary>
@@ -127,10 +197,24 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
+            // Check, if we have a cache...
+            var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
+            if (cachedResult != null)
+            {
+                return cachedResult;
+            }
+            
+            
+            // We have to find it
             var result = ResolveInternal(uri, resolveType);
             if (result == null && traceFailing)
             {
                 Logger.Trace($"URI not resolved: {uri}");
+            }
+
+            if (result != null)
+            {
+                _resolverCache.AddElementFor(uri, resolveType, result);
             }
 
             return result;

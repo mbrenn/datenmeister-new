@@ -305,10 +305,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Returned element for the </returns>
         private object GetValueOfElement(IObject element, IElement field)
         {
-            var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             var fieldMetaClass = field.getMetaClass();
-            if (fieldType == MetaClassElementFieldData.FieldType ||
-                fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+            if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -472,13 +470,11 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var name = "_" + (field.getOrDefault<string>(_FormAndFields._FieldData.name) ?? string.Empty);
                 var title = field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? string.Empty;
-                var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
                 var fieldMetaClass = field.getMetaClass();
 
                 bool isReadOnly;
 
-                if (fieldType == MetaClassElementFieldData.FieldType
-                    || fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";
@@ -739,7 +735,6 @@ namespace DatenMeister.WPF.Forms.Base
                                     nameof(PropertyComparisonFilter.Property));
                                 element.set(_FormAndFields._DropDownFieldData.title,
                                     nameof(PropertyComparisonFilter.Property));
-                                element.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
 
                                 var pairs = new List<IObject>();
                                 foreach (var field in

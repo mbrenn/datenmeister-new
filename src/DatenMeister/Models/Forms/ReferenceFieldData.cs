@@ -8,14 +8,12 @@ namespace DatenMeister.Models.Forms
     /// </summary>
     public class ReferenceFieldData : FieldData
     {
-        public const string FieldType = "reference";
-
-        public ReferenceFieldData() : base(FieldType)
+        public ReferenceFieldData() : base()
         {
 
         }
 
-        public ReferenceFieldData(string name, string title) : base(FieldType, name, title)
+        public ReferenceFieldData(string name, string title) : base(name, title)
         {
 
         }

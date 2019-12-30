@@ -6,20 +6,15 @@
     /// </summary>
     public class FileSelectionFieldData: FieldData
     {
-        public FileSelectionFieldData(): base(FieldType)
+        public FileSelectionFieldData(): base()
         {
         }
 
         public FileSelectionFieldData(string name, string title)
-            : base (FieldType, name, title)
+            : base (name, title)
         {
             
         }
-
-        /// <summary>
-        /// Defines the field type
-        /// </summary>
-        public const string FieldType = "FileSelection";
 
         /// <summary>
         /// Gets or sets the default extension

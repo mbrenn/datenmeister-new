@@ -17,71 +17,38 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <returns>Found field or exception if not found</returns>
         public static IDetailField CreateField(IObject value, IElement field)
         {
-            var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
-            if (!string.IsNullOrEmpty(fieldType))
+            // Get by field type
+            var metaClass = field?.getMetaClass();
+            if (metaClass == null)
             {
-                switch (fieldType)
-                {
-                    case SubElementFieldData.FieldType:
-                        return new SubElementsField();
-                    case DropDownFieldData.FieldType:
-                        return new DropdownField();
-                    case DateTimeFieldData.FieldType:
-                        return new DateTimeField();
-                    case ReferenceFieldData.FieldType:
-                        return new ReferenceField();
-                    case CheckboxFieldData.FieldType:
-                        return new CheckboxField();
-                    case MetaClassElementFieldData.FieldType:
-                        return new MetaClassElementField();
-                    case TextFieldData.FieldType:
-                        return new TextboxField();
-                    default:
-                        if (isEnumeration)
-                        {
-                            return new ReadOnlyListField();
-                        }
-                        else
-                        {
-                            return new TextboxField();
-                        }
-                }
+                throw new ArgumentException("value does not have metaclass and no field type", nameof(value));
             }
-            else
-            {
-                // Get by field type
-                var metaClass = field?.getMetaClass();
-                if (metaClass == null)
-                {
-                    throw new ArgumentException("value does not have metaclass and no field type", nameof(value));
-                }
 
-                var id = (metaClass as IHasId)?.Id;
-                if (id == typeof(SeparatorLineFieldData).FullName)
-                    return new SeparatorLineField();
-                if (id == typeof(SubElementFieldData).FullName)
-                    return new SubElementsField();
-                if (id == typeof(DropDownFieldData).FullName)
-                    return new DropdownField();
-                if (id == typeof(CheckboxFieldData).FullName)
-                    return new CheckboxField();
-                if (id == typeof(DateTimeFieldData).FullName)
-                    return new DateTimeField();
-                if (id == typeof(ReferenceFieldData).FullName)
-                    return new ReferenceField();
-                if (id == typeof(TextFieldData).FullName)
-                    return new TextboxField();
-                if (id == typeof(MetaClassElementFieldData).FullName)
-                    return new MetaClassElementField();
-                
-                if (isEnumeration)
-                {
-                    return new ReadOnlyListField();
-                }
-
+            var id = (metaClass as IHasId)?.Id;
+            if (id == typeof(SeparatorLineFieldData).FullName)
+                return new SeparatorLineField();
+            if (id == typeof(SubElementFieldData).FullName)
+                return new SubElementsField();
+            if (id == typeof(DropDownFieldData).FullName)
+                return new DropdownField();
+            if (id == typeof(CheckboxFieldData).FullName)
+                return new CheckboxField();
+            if (id == typeof(DateTimeFieldData).FullName)
+                return new DateTimeField();
+            if (id == typeof(ReferenceFieldData).FullName)
+                return new ReferenceField();
+            if (id == typeof(TextFieldData).FullName)
                 return new TextboxField();
+            if (id == typeof(MetaClassElementFieldData).FullName)
+                return new MetaClassElementField();
+
+            if (isEnumeration)
+            {
+                return new ReadOnlyListField();
             }
+
+            return new TextboxField();
         }
 
 

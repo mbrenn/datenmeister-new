@@ -2,14 +2,12 @@
 {
     public class CheckboxFieldData : FieldData
     {
-        public const string FieldType = "checkbox";
-
-        public CheckboxFieldData() : base(FieldType)
+        public CheckboxFieldData() : base()
         {
 
         }
 
-        public CheckboxFieldData(string name, string title) : base(FieldType, name, title)
+        public CheckboxFieldData(string name, string title) : base(name, title)
         {
             
         }

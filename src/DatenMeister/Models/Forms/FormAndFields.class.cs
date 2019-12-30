@@ -12,9 +12,6 @@ namespace DatenMeister.Models.Forms
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
-
             public static string @name = "name";
             public IElement _name = null;
 
@@ -42,9 +39,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -79,9 +73,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -136,9 +127,6 @@ namespace DatenMeister.Models.Forms
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
-
             public static string @name = "name";
             public IElement _name = null;
 
@@ -176,9 +164,6 @@ namespace DatenMeister.Models.Forms
         {
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -226,9 +211,6 @@ namespace DatenMeister.Models.Forms
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
-
             public static string @name = "name";
             public IElement _name = null;
 
@@ -263,9 +245,6 @@ namespace DatenMeister.Models.Forms
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
-
             public static string @name = "name";
             public IElement _name = null;
 
@@ -296,9 +275,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -343,9 +319,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;

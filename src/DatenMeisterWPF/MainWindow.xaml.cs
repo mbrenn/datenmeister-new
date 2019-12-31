@@ -222,8 +222,9 @@ namespace DatenMeisterWPF
             {
                 canUnregister.Unregister();
             }
-
-            if (MessageBox.Show(
+            
+            // Asks the user, if he was not already asked before
+            if (!DoCloseWithoutAcknowledgement && MessageBox.Show(
                     "Are you sure, that you would like to close Der DatenMeister",
                     "Close DatenMeister?",
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes)
@@ -234,5 +235,10 @@ namespace DatenMeisterWPF
 
         /// <inheritdoc />
         public Window GetWindow() => this;
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public bool DoCloseWithoutAcknowledgement { get; set; }
     }
 }

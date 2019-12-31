@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
@@ -15,6 +16,7 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Lists;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
@@ -122,6 +124,12 @@ namespace DatenMeister.WPF.Navigation
             }
 
             // Unload DatenMeister
+            if (navigationHost.GetWindow() is IApplicationWindow mainWindow)
+            {
+                mainWindow.DoCloseWithoutAcknowledgement = true;
+            }
+            
+            
             navigationHost.GetWindow().Close();
             if (navigationHost.GetWindow().IsActive)
             {

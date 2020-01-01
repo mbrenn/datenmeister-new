@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿#nullable enable
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Lists;
@@ -50,17 +51,17 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <summary>
         /// Gets or sets the navigation host querying the view extensions
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost? NavigationHost { get; set; }
 
         /// <summary>
         /// Gets or sets the navigation guest which is currently
         /// </summary>
-        public INavigationGuest NavigationGuest { get; set; }
+        public INavigationGuest? NavigationGuest { get; set; }
 
         /// <summary>
         /// Defines the context for the view
         /// </summary>
-        public ViewExtensionContext Context { get; set; }
+        public ViewExtensionContext? Context { get; set; }
     }
 
     public class ViewExtensionTargetInformationForTab : ViewExtensionTargetInformation
@@ -126,12 +127,18 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <param name="targetInformation"></param>
         /// <param name="extentType"></param>
         /// <returns></returns>
-        public static bool IsListViewForItemsTabForExtentType(
+        public static ItemsInExtentList? GetListViewForItemsTabForExtentType(
             this ViewExtensionTargetInformation targetInformation,
-            string extentType) =>
-            targetInformation.NavigationGuest is ItemsInExtentList extentList &&
-            targetInformation is ViewExtensionTargetInformationForTab &&
-            extentList.Extent.GetExtentType() == extentType;
+            string extentType)
+
+        {
+            var extentList = targetInformation.NavigationGuest as ItemsInExtentList;
+            var isCorrect =  extentList != null && 
+                targetInformation is ViewExtensionTargetInformationForTab &&
+                extentList.Extent?.GetExtentType() == extentType;
+
+            return isCorrect ? extentList : null;
+        }
     }
 
     /// <summary>
@@ -147,11 +154,11 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <summary>
         /// Gets or sets the value which is intended to be shown
         /// </summary>
-        public IObject Value { get; set; }
+        public IObject? Value { get; set; }
         
         /// <summary>
         /// Gets or sets the property which is queried to be shown
         /// </summary>
-        public string Property { get; set; }
+        public string? Property { get; set; }
     }
 }

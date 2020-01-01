@@ -51,10 +51,22 @@ namespace DatenMeister.WPF.Modules.TypeManager
                                     classMetaClass),
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");
+                        
+                        yield return
+                            new CollectionMenuButtonDefinition(
+                                "Create new Class",
+                                (x) =>
+                                    NavigatorForItems.NavigateToNewItemForExtent(
+                                        viewExtensionTargetInformation.NavigationHost,
+                                        extent,
+                                        classMetaClass),
+                                string.Empty,
+                                NavigationCategories.Type);
                     }
                 }
             }
 
+            
             if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl extentList
                 && viewExtensionTargetInformation is ViewExtensionForItemPropertiesInformation propertiesInformation)
             {

@@ -317,13 +317,29 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var tab in tabs.OfType<IElement>())
             {
                 var tabViewExtensions = new List<ViewExtension>();
+                
+                // 1) Gets the form extensions as defined by the creator of the form definition
                 if (formDefinition.TabViewExtensionsFunction != null)
                     tabViewExtensions = formDefinition.TabViewExtensionsFunction(tab).ToList();
 
-                if (formDefinition.ViewExtensions != null)
-                    foreach (var viewExtension in formDefinition.ViewExtensions)
-                        tabViewExtensions.Add(viewExtension);
+                // 2) Forwards the form definitions
+                if (formDefinition.ViewExtensions != null) 
+                    tabViewExtensions.AddRange(formDefinition.ViewExtensions);
                 
+                // 3) Queries the plugins
+                var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+                var extentData = new ViewExtensionTargetInformationForTab(ViewExtensionContext.Extent)
+                {
+                    NavigationGuest = this,
+                    NavigationHost = NavigationHost,
+                    TabFormDefinition = tab
+                };
+
+                foreach (var plugin in viewExtensionPlugins)
+                {
+                    tabViewExtensions.AddRange(plugin.GetViewExtensions(extentData));
+                }
+
                 AddTab(value, tab, tabViewExtensions, container);
             }
 

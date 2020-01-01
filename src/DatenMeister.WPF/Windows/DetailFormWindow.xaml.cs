@@ -148,7 +148,7 @@ namespace DatenMeister.WPF.Windows
 
             // 3) Ask the plugin
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Detail)
+            var data = new ViewExtensionTargetInformation()
             {
                 NavigationGuest = navigationGuest,
                 NavigationHost = this

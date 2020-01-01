@@ -181,7 +181,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.Extent)
+            var extentData = new ViewExtensionTargetInformation()
             {
                 NavigationGuest = this,
                 NavigationHost = NavigationHost
@@ -328,7 +328,7 @@ namespace DatenMeister.WPF.Forms.Base
                 
                 // 3) Queries the plugins
                 var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-                var extentData = new ViewExtensionTargetInformationForTab(ViewExtensionContext.Extent)
+                var extentData = new ViewExtensionTargetInformationForTab()
                 {
                     NavigationGuest = this,
                     NavigationHost = NavigationHost,
@@ -448,7 +448,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                     if (!string.IsNullOrEmpty(propertyName))
                     {
-                        var extentData = new ViewExtensionForItemPropertiesInformation(ViewExtensionContext.View)
+                        var extentData = new ViewExtensionForItemPropertiesInformation()
                         {
                             NavigationGuest = control,
                             NavigationHost = NavigationHost,
@@ -744,7 +744,7 @@ namespace DatenMeister.WPF.Forms.Base
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             
             // Gets the elements of the plugin
-            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Application)
+            var data = new ViewExtensionTargetInformation()
             {
                 NavigationHost = NavigationHost,
                 NavigationGuest = NavigationTreeView

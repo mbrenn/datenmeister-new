@@ -243,7 +243,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.View)
+            var extentData = new ViewExtensionTargetInformation()
             {
                 NavigationGuest = this,
                 NavigationHost = NavigationHost

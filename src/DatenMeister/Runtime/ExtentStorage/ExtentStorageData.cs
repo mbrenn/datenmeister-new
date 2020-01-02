@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -15,7 +16,17 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Gets or sets the information whether the loading has failed
         /// </summary>
         public bool FailedLoading { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the exception that has occured during the loading
+        /// </summary>
+        public Exception? FailedLoadingException { get; set; }
 
+        /// <summary>
+        /// Gets the enumeration of extents which failed to load
+        /// </summary>
+        public IEnumerable<string> FailedLoadingExtents { get; set; }
+        
         /// <summary>
         /// Stores the loaded extents including the configuration of the storage for the extent
         /// </summary>

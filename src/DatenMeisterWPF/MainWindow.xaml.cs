@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using Autofac;
+using BurnSystems;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -60,14 +61,24 @@ namespace DatenMeisterWPF
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
             _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
 
+            var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
             if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
             {
                 Title += " (READ-ONLY)";
+                var message = extentStorageData.FailedLoadingException == null
+                    ? "No message"
+                    : extentStorageData.FailedLoadingException.ToString();
+
+                var failedExtents = extentStorageData.FailedLoadingExtents
+                    .Select(x=>$"- {x}")
+                    .Join("\r\n");
 
                 if (MessageBox.Show("An exception occured during the loading of the events. \r\n" +
                                     "This will lead to a read-only instance of DatenMeister. All changes will be lost. \r\n" +
                                     "To resolve the issue, verify the log and fix the 'DatenMeister.Extents.xml'.\n\n" +
-                                    "Would you like to open the corresponding folder?",
+                                    "Would you like to open the corresponding folder?\r\n\r\nThe affected extents are:\r\n" +
+                                    failedExtents + "\r\n\r\nThe message that occured lastly:\r\n" +
+                                    message,
                         "Error during start-up of DatenMeister",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning) == MessageBoxResult.Yes)

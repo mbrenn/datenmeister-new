@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -7,8 +8,15 @@ using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
+    /// <summary>
+    /// The field factory creates the corresponding fields out of the associated field data
+    /// </summary>
     public static class FieldFactory
     {
+        /// <summary>
+        /// Stores the logger for the field factory
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(FieldFactory));
         /// <summary>
         /// Creates a specific field by the reading out the field type
         /// </summary>
@@ -22,7 +30,7 @@ namespace DatenMeister.WPF.Forms.Fields
             var metaClass = field?.getMetaClass();
             if (metaClass == null)
             {
-                throw new ArgumentException("value does not have metaclass and no field type", nameof(value));
+                throw new ArgumentException("value does not have metaclass", nameof(value));
             }
 
             var id = (metaClass as IHasId)?.Id;
@@ -42,12 +50,16 @@ namespace DatenMeister.WPF.Forms.Fields
                 return new TextboxField();
             if (id == typeof(MetaClassElementFieldData).FullName)
                 return new MetaClassElementField();
+            if (id == typeof(FileSelectionFieldData).FullName)
+                return new FileSelectionField();
 
+            Logger.Warn("Unknown FieldData type for field creation: " + metaClass);
+            
             if (isEnumeration)
             {
                 return new ReadOnlyListField();
             }
-
+            
             return new TextboxField();
         }
 

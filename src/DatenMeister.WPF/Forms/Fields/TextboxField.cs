@@ -72,6 +72,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 else
                 {
                     _contentBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    _contentBlock.MinWidth = 200;
                 }
 
                 if (height > 0)

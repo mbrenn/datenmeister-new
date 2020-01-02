@@ -57,7 +57,8 @@ namespace DatenMeister.WPF.Forms.Fields
             var textField = new TextBox
             {
                 Text = _valueText,
-                IsReadOnly = isReadOnly
+                IsReadOnly = isReadOnly,
+                MinWidth = 200
             };
             dockPanel.Children.Add(textField);
 

@@ -39,13 +39,13 @@ namespace DatenMeister.Modules.Formatter
 
                 foreach (var property in properties)
                 {
-                    var value = asObject.GetOrDefault(property);
+                    var value = asObject.getOrDefault<string>(property);
                     if (value == null)
                     {
                         continue;
                     }
 
-                    columnWidth[property] = Math.Max(columnWidth[property], value.ToString().Length + 1);
+                    columnWidth[property] = Math.Max(columnWidth[property], value.Length + 1);
                 }
             }
 
@@ -69,8 +69,8 @@ namespace DatenMeister.Modules.Formatter
             {
                 foreach (var property in properties)
                 {
-                    var value = asObject.GetOrDefault(property);
-                    Output(value?.ToString() ?? string.Empty, columnWidth[property]);
+                    var value = asObject.getOrDefault<string>(property);
+                    Output(value ?? string.Empty, columnWidth[property]);
                 }
 
                 _result.AppendLine();

@@ -2,11 +2,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -31,8 +33,19 @@ namespace DatenMeister.WPF.Forms.Base
     /// </summary>
     public partial class ItemsTreeView : UserControl, INavigationGuest
     {
+        /// <summary>
+        /// Defines the logger being used
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(ItemsTreeView));
+        
+        /// <summary>
+        /// Defines the element which is the source for the definition of the treeview
+        /// </summary>
         private IObject? _itemsSource;
 
+        /// <summary>
+        /// Defines the set of already visited items to prevent that one item is 'visited' multiple times
+        /// </summary>
         private readonly HashSet<object> _alreadyVisited = new HashSet<object>();
 
         public static readonly DependencyProperty ShowRootProperty = DependencyProperty.Register(
@@ -215,6 +228,8 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
+            using var watch = new StopWatchLogger(Logger, "UpdateView");
+
             if (ItemsSource == null)
             {
                 TreeView.ItemsSource = null;
@@ -234,7 +249,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var found = CreateTreeViewItem(ItemsSource, true);
                 if (found != null)
                     model.Add(found);
-
+                
                 container.ItemsSource = model;
             }
 
@@ -302,7 +317,9 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 Header = itemHeader,
                 Tag = item,
-                IsExpanded = isRoot
+                IsExpanded = isRoot,
+                HorizontalContentAlignment = HorizontalAlignment.Left,
+                VerticalContentAlignment = VerticalAlignment.Top
             };
 
             if (_previouslySelectedItem?.Equals(item) == true)
@@ -342,12 +359,13 @@ namespace DatenMeister.WPF.Forms.Base
                 foreach (var property in propertiesForChildren)
                 {
                     // Goes through the properties
-                    var propertyValue = itemAsObject.GetOrDefault(property);
+                    var propertyValue = itemAsObject.getOrDefault<object>(property, true);
                     if (propertyValue is IReflectiveCollection childItems)
                     {
                         // If, we have a collection of properties, add the enumeration of the properties
                         // to the treeview (as long as we don't have too many items)
-                        foreach (var childItem in childItems)
+                        // Do not perform a resolving of the items
+                        foreach (var childItem in CollectionHelper.EnumerateWithNoResolving(childItems, true))
                         {
                             var childTreeViewItem = CreateTreeViewItem(childItem);
                             if (childTreeViewItem != null)
@@ -474,7 +492,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                 foreach (var property in _propertiesForChildren)
                 {
-                    if (itemAsObject.GetOrDefault(property) is IReflectiveCollection childItems)
+                    var childItems = itemAsObject.getOrDefault<IReflectiveCollection>(property);
+                    if (childItems != null)
                     {
                         VisitCopyTreeToClipboard(
                             childItems,

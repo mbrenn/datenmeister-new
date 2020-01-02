@@ -209,7 +209,7 @@ namespace DatenMeister.Modules.ChangeEvents
                 _lock.EnterWriteLock();
                 _handles.Remove((RegisteredEventHandle) eventHandle);
 
-                ClassLogger.Trace($"Unregistered event");
+                ClassLogger.Trace($"Unregistered event ({_handles.Count})");
             }
             finally
             {

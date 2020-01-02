@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -104,7 +103,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public ViewDefinition? OverridingViewDefinition { get; private set; }
+        public FormDefinition? OverridingViewDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -112,7 +111,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="form"></param>
         public void SetOverridingForm(IElement form)
         {
-            OverridingViewDefinition = new ViewDefinition(form);
+            OverridingViewDefinition = new FormDefinition(form);
             RecreateViews();
         }
 
@@ -130,7 +129,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void ForceAutoGenerationOfForm()
         {
-            OverridingViewDefinition = new ViewDefinition(FormDefinitionMode.ViaFormCreator);
+            OverridingViewDefinition = new FormDefinition(FormDefinitionMode.ViaFormCreator);
             RecreateViews();
         }
         
@@ -182,7 +181,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.Extent)
+            var extentData = new ViewExtensionTargetInformation()
             {
                 NavigationGuest = this,
                 NavigationHost = NavigationHost
@@ -236,15 +235,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="value"></param>
         public void SetRootItem(IObject value)
         {
-            var watch = new Stopwatch();
-            watch.Start();
+            using var watch = new StopWatchLogger(_logger, "SetRootItem");
 
             RootItem = value;
             UpdateTreeContent();
             RecreateViews();
 
             watch.Stop();
-            _logger.Info(watch.ElapsedMilliseconds.ToString("n0") + "ms required for form creation");
         }
 
         /// <summary>
@@ -261,6 +258,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         protected void RecreateViews()
         {
+            using var watch = new StopWatchLogger(_logger, "RecreateViews");
+            
             Tabs.Clear();
             OnRecreateViews();
             NavigationHost?.RebuildNavigation();
@@ -299,16 +298,16 @@ namespace DatenMeister.WPF.Forms.Base
         ///     this call
         /// </summary>
         /// <param name="value">Value which shall be shown</param>
-        /// <param name="viewDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
+        /// <param name="formDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
         protected void EvaluateForm(
             IObject value,
-            ViewDefinition viewDefinition,
+            FormDefinition formDefinition,
             IReflectiveCollection? container = null)
         {
-            EffectiveForm = viewDefinition.Element;
-            var tabs = viewDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            EffectiveForm = formDefinition.Element;
+            var tabs = formDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -318,17 +317,33 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var tab in tabs.OfType<IElement>())
             {
                 var tabViewExtensions = new List<ViewExtension>();
-                if (viewDefinition.TabViewExtensionsFunction != null)
-                    tabViewExtensions = viewDefinition.TabViewExtensionsFunction(tab).ToList();
-
-                if (viewDefinition.ViewExtensions != null)
-                    foreach (var viewExtension in viewDefinition.ViewExtensions)
-                        tabViewExtensions.Add(viewExtension);
                 
+                // 1) Gets the form extensions as defined by the creator of the form definition
+                if (formDefinition.TabViewExtensionsFunction != null)
+                    tabViewExtensions = formDefinition.TabViewExtensionsFunction(tab).ToList();
+
+                // 2) Forwards the form definitions
+                if (formDefinition.ViewExtensions != null) 
+                    tabViewExtensions.AddRange(formDefinition.ViewExtensions);
+                
+                // 3) Queries the plugins
+                var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+                var extentData = new ViewExtensionTargetInformationForTab()
+                {
+                    NavigationGuest = this,
+                    NavigationHost = NavigationHost,
+                    TabFormDefinition = tab
+                };
+
+                foreach (var plugin in viewExtensionPlugins)
+                {
+                    tabViewExtensions.AddRange(plugin.GetViewExtensions(extentData));
+                }
+
                 AddTab(value, tab, tabViewExtensions, container);
             }
 
-            ViewExtensions = viewDefinition.ViewExtensions;
+            ViewExtensions = formDefinition.ViewExtensions;
             
             NavigationHost?.RebuildNavigation();
         }
@@ -433,7 +448,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                     if (!string.IsNullOrEmpty(propertyName))
                     {
-                        var extentData = new ViewExtensionForItemPropertiesInformation(ViewExtensionContext.View)
+                        var extentData = new ViewExtensionForItemPropertiesInformation()
                         {
                             NavigationGuest = control,
                             NavigationHost = NavigationHost,
@@ -524,6 +539,7 @@ namespace DatenMeister.WPF.Forms.Base
             string? parentProperty)
         {
             if (usedViewExtensions == null) throw new ArgumentNullException(nameof(usedViewExtensions));
+            
             // Stores the menu items for the context menu
             var menuItems = new List<MenuItem>();
             var menuItem = new MenuItem
@@ -728,7 +744,7 @@ namespace DatenMeister.WPF.Forms.Base
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             
             // Gets the elements of the plugin
-            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Application)
+            var data = new ViewExtensionTargetInformation()
             {
                 NavigationHost = NavigationHost,
                 NavigationGuest = NavigationTreeView

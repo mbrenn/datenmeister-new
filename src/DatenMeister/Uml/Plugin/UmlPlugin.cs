@@ -34,7 +34,7 @@ namespace DatenMeister.Uml.Plugin
         {
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Views.UML.xml",
+                "DatenMeister.XmiFiles.Views.UML.xmi",
                 PackageName,
                 _formLogic.GetInternalFormExtent(),
                 PackageName);

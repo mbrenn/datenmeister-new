@@ -16,7 +16,7 @@ using DatenMeister.WPF.Controls;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     /// <summary>
     /// Implements a reference field which is shown the currently selected instance and allows the user to select
@@ -90,16 +90,15 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 var showAllChildren = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.showAllChildren);
                 if (showAllChildren) _control.ShowAllChildren = true;
 
-                if (fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultValue) is IElement element)
+                var element = fieldData.getOrDefault<IElement>(_FormAndFields._ReferenceFieldData.defaultValue);
+                if (element != null)
                 {
                     _control.Select(element);
                 }
                 else
                 {
-                    var workspace = fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultWorkspace)
-                        ?.ToString();
-                    var extent = fieldData.GetOrDefault(_FormAndFields._ReferenceFieldData.defaultExtentUri)
-                        ?.ToString();
+                    var workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
+                    var extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
 
                     if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
                     {
@@ -138,8 +137,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                     new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Remove button
                 }
             };
-            
-            var foundItem = value.GetOrDefault(_name) as IElement;
+
+            var foundItem = value.getOrDefault<IElement>(_name);
 
             var itemText = new TextBlock
             {
@@ -229,7 +228,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
         {
             if (_detailFormControl == null) throw new InvalidOperationException("_detailFormControl == null");
 
-            if (!(_value.GetOrDefault(_name) is IElement itemToOpen))
+            var itemToOpen = _value.getOrDefault<IElement>(_name);
+            if (itemToOpen == null)
             {
                 MessageBox.Show("No item selected");
             }

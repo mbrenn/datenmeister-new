@@ -23,16 +23,13 @@
     <None Remove="Integration\Modules\**" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="XmiFiles\Views\UML.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\ImportExtentManager.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\UML.xml" />
     <EmbeddedResource Include="XmiFiles\Views\Formmanager.xmi" />
     <EmbeddedResource Include="XmiFiles\Views\WorkspacesAndExtents.xmi" />
+    <EmbeddedResource Include="XmiFiles\Views\UML.xmi" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.6.1" />

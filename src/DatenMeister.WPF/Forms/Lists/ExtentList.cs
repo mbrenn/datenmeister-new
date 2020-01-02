@@ -73,7 +73,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default);
                 var viewDefinition = overridingDefinition ?? 
-                                     new ViewDefinition(form);
+                                     new FormDefinition(form);
 
                 EvaluateForm(
                     SelectedItem,

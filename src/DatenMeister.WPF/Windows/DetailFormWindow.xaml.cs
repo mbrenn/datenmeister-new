@@ -57,7 +57,7 @@ namespace DatenMeister.WPF.Windows
         /// Stores the view definition as requested by the creator of the window.
         /// This view definition may be overridden by the OverridingViewDefinition
         /// </summary>
-        private ViewDefinition? _requestedViewDefinition;
+        private FormDefinition? _requestedViewDefinition;
 
         /// <summary>
         /// Gets a helper for menu
@@ -74,7 +74,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public ViewDefinition? OverridingViewDefinition { get; private set; }
+        public FormDefinition? OverridingViewDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -82,7 +82,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="form"></param>
         public void SetOverridingForm(IElement form)
         {
-            OverridingViewDefinition = new ViewDefinition(form);
+            OverridingViewDefinition = new FormDefinition(form);
             RecreateView();
         }
 
@@ -148,7 +148,7 @@ namespace DatenMeister.WPF.Windows
 
             // 3) Ask the plugin
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Detail)
+            var data = new ViewExtensionTargetInformation()
             {
                 NavigationGuest = navigationGuest,
                 NavigationHost = this
@@ -310,12 +310,12 @@ namespace DatenMeister.WPF.Windows
         /// Opens the form by creating the inner dialog
         /// </summary>
         /// <param name="element"></param>
-        /// <param name="viewDefinition"></param>
+        /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject? element, ViewDefinition viewDefinition, IReflectiveCollection? container = null)
+        public void SetContent(IObject? element, FormDefinition formDefinition, IReflectiveCollection? container = null)
         {
             element ??= InMemoryObject.CreateEmpty();
-            CreateDetailForm(element, viewDefinition, container);
+            CreateDetailForm(element, formDefinition, container);
         }
 
         /// <summary>
@@ -326,17 +326,17 @@ namespace DatenMeister.WPF.Windows
         {
             SetContent(
                 InMemoryObject.CreateEmpty(),
-                new ViewDefinition(formDefinition));
+                new FormDefinition(formDefinition));
         }
 
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(IObject detailElement, ViewDefinition viewDefinition, IReflectiveCollection? container = null)
+        private void CreateDetailForm(IObject detailElement, FormDefinition formDefinition, IReflectiveCollection? container = null)
         {
             DetailElement = detailElement;
             ContainerCollection = container;
-            _requestedViewDefinition = viewDefinition;
+            _requestedViewDefinition = formDefinition;
             
             RecreateView();
         }
@@ -362,7 +362,7 @@ namespace DatenMeister.WPF.Windows
             // If not, take the standard procedure
             if (effectiveForm == null)
             {
-                _requestedViewDefinition ??= new ViewDefinition(FormDefinitionMode.Default);
+                _requestedViewDefinition ??= new FormDefinition(FormDefinitionMode.Default);
                 
                 if (_requestedViewDefinition.Mode == FormDefinitionMode.Specific)
                 {

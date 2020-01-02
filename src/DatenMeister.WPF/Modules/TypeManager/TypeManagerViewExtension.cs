@@ -38,8 +38,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 {
                     if (itemInExtentList.IsExtentSelectedInTreeview)
                     {
-                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
 
+                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
                         yield return new NewInstanceViewDefinition(classMetaClass);
 
                         yield return new ApplicationMenuButtonDefinition(
@@ -53,6 +53,22 @@ namespace DatenMeister.WPF.Modules.TypeManager
                             NavigationCategories.Type + "." + "Manager");
                     }
                 }
+            }
+
+            var listControl = viewExtensionTargetInformation.GetListViewForItemsTabForExtentType("Uml.Classes");
+            if (listControl != null)
+            {
+                var classMetaClass = listControl.Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                yield return
+                    new CollectionMenuButtonDefinition(
+                        "Create new Class",
+                        (x) =>
+                            NavigatorForItems.NavigateToNewItemForExtent(
+                                viewExtensionTargetInformation.NavigationHost,
+                                listControl.Extent,
+                                classMetaClass),
+                        string.Empty,
+                        NavigationCategories.Type);
             }
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl extentList

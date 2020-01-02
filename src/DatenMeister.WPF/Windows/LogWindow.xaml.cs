@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable  enable
+
+using System;
 using System.Text;
 using System.Windows;
 using BurnSystems.Logging;
@@ -32,14 +34,23 @@ namespace DatenMeister.WPF.Windows
 
         private void UpdateMessageContent()
         {
-            var builder = new StringBuilder();
-            foreach (var message in InMemoryDatabaseProvider.TheOne.Messages)
+            if (Dispatcher?.CheckAccess() == false)
             {
-                builder.AppendLine(message.ToString());
+                // The method is called by the senders of the events. These may be within the 
+                // thread context of the application or not. 
+                Dispatcher.Invoke(UpdateMessageContent);
             }
+            else
+            {
+                var builder = new StringBuilder();
+                foreach (var message in InMemoryDatabaseProvider.TheOne.Messages)
+                {
+                    builder.AppendLine(message.ToString());
+                }
 
-            LogText.Text = builder.ToString();
-            LogText.ScrollToEnd();
+                LogText.Text = builder.ToString();
+                LogText.ScrollToEnd();
+            }
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

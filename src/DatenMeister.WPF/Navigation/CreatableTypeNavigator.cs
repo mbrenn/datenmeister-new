@@ -70,7 +70,8 @@ namespace DatenMeister.WPF.Navigation
             var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);
             if (result.Result == NavigationResult.Saved)
             {
-                if (result.DetailElement.GetOrDefault("selectedType") is IElement metaClass)
+                var metaClass = result.DetailElement.getOrDefault<IElement>("selectedType");
+                if (metaClass != null)
                 {
                     SelectedType = metaClass;
                 }

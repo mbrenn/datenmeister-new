@@ -6,7 +6,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     public class FileSelectionField : IDetailField
     {
@@ -57,7 +57,8 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             var textField = new TextBox
             {
                 Text = _valueText,
-                IsReadOnly = isReadOnly
+                IsReadOnly = isReadOnly,
+                MinWidth = 200
             };
             dockPanel.Children.Add(textField);
 

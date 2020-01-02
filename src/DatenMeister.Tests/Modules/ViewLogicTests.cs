@@ -63,22 +63,5 @@ namespace DatenMeister.Tests.Modules
 
             Assert.That(newAmount - oldAmount, Is.EqualTo(1));
         }
-
-        /*
-         * Test is obsolete since the view associations are currently not stored in the xmi
-        [Test]
-        public void TestGetAllViewAssociations()
-        {
-            var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
-            var n = 0;
-
-            foreach (var _ in viewLogic.GetAllViewAssociations())
-            {
-                n++;
-            }
-
-            Assert.That(n, Is.GreaterThan(0));
-        }*/
     }
 }

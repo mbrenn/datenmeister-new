@@ -2,14 +2,12 @@
 {
     public class TextFieldData : FieldData
     {
-        public const string FieldType = "text";
-
-        public TextFieldData() : base(FieldType)
+        public TextFieldData() : base()
         {
 
         }
 
-        public TextFieldData(string name, string title) : base(FieldType, name, title)
+        public TextFieldData(string name, string title) : base(name, title)
         {
             
         }

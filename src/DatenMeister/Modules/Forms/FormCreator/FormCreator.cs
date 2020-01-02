@@ -214,7 +214,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     .OfType<IObject>()
                     .FirstOrDefault(x => x.getOrDefault<string>(_FormAndFields._FieldData.name) == propertyName);
 
-                var propertyValue = itemAsObject.GetOrDefault(propertyName);
+                var propertyValue = itemAsObject.getOrDefault<object>(propertyName);
 
                 if (column == null)
                 {
@@ -444,7 +444,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         private IElement GetFieldForProperty(IObject property, CreationMode creationMode)
         {
             var propertyType = PropertyMethods.GetPropertyType(property);
-            var isForListForm = creationMode.HasFlag(CreationMode.ForListForms);
+            var isForListForm = creationMode.HasFlagFast(CreationMode.ForListForms);
             var propertyName = property.get<string>("name");
             var propertyIsEnumeration = PropertyMethods.IsCollection(property);
             var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
@@ -454,7 +454,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _primitiveTypes ??= _workspaceLogic.GetPrimitiveData();
             _uriResolver ??= _workspaceLogic.GetTypesWorkspace();
 
-            //var uriResolver = propertyType.GetUriResolver();
             _stringType ??= _primitiveTypes.__String;
             _integerType ??= _primitiveTypes.__Integer;
             _booleanType ??= _primitiveTypes.__Boolean;
@@ -483,7 +482,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     !propertyType.@equals(_stringType) &&
                     !propertyType.@equals(_integerType) &&
                     !propertyType.@equals(_realType) &&
-                    !propertyType.@equals(_dateTimeType) && // TODO: Needs to be changed to DateTime Type
+                    !propertyType.@equals(_dateTimeType) &&
                     !isForListForm)
                 {
                     // If we have something else than a primitive type and it is not for a list form
@@ -497,7 +496,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
                             ClassifierMethods.GetSpecializations(propertyType).ToList());
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                         
-                        // TODO: Create here the internal information
+                        // Create the internal form out of the metaclass
+                        var enumerationListForm = CreateListFormForMetaClass(propertyType, CreationMode.All);
+                        elements.set(_FormAndFields._SubElementFieldData.form, enumerationListForm);
 
                         return elements;
                     }

@@ -9,7 +9,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     /// <summary>
     /// Method being used for a dropdown field
@@ -61,7 +61,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
             foreach (var itemPair in dropDownValues.Select(x=> x as IElement))
             {
                 var nameOfItem = itemPair.getOrDefault<string>(_FormAndFields._ValuePair.name);
-                var valueOfItem = itemPair.GetOrDefault(_FormAndFields._ValuePair.value);
+                var valueOfItem = itemPair.getOrDefault<object>(_FormAndFields._ValuePair.value);
 
                 if (nameOfItem != null && valueOfItem != null)
                 {

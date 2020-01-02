@@ -14,8 +14,8 @@ namespace DatenMeister.Modules.ZipExample
         {
             if (IsRelevant(element))
             {
-                var zipCode = element.GetOrDefault(nameof(ZipCode.zip))?.ToString();
-                var name = element.GetOrDefault(nameof(ZipCode.name))?.ToString();
+                var zipCode = element.getOrDefault<string>(nameof(ZipCode.zip));
+                var name = element.getOrDefault<string>(nameof(ZipCode.name));
 
                 if (string.IsNullOrEmpty(zipCode) || string.IsNullOrEmpty(name))
                     yield break;

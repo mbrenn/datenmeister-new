@@ -124,7 +124,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 {
                     // Add the value to the result
                     aggregators[n].Add(
-                        element.GetOrDefault(aggregateColumn));
+                        element.getOrDefault<object>(aggregateColumn));
 
                     n++;
                 }

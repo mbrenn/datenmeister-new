@@ -9,13 +9,11 @@ namespace DatenMeister.Models.Forms
         /// </summary>
         public IList<ValuePair> values { get; set; } = new List<ValuePair>();
 
-        public const string FieldType = "dropdown";
-
-        public DropDownFieldData() : base(FieldType)
+        public DropDownFieldData() : base()
         {
         }
 
-        public DropDownFieldData(string name, string title) : base(FieldType, name, title)
+        public DropDownFieldData(string name, string title) : base(name, title)
         {
             
         }

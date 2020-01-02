@@ -23,7 +23,7 @@ namespace DatenMeister.Modules.FastViewFilter
                 return true;
             }
 
-            var propertyValue = DotNetHelper.AsString(value.GetOrDefault(filterObject.Property));
+            var propertyValue = value.getOrDefault<string>(filterObject.Property);
 
             switch (filterObject.ComparisonType)
             {

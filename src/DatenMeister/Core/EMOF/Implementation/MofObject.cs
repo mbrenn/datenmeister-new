@@ -15,7 +15,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the abstraction of the Mof Object.
     /// </summary>
-    public class MofObject : IObject, IHasExtent, IObjectAllProperties
+    public class MofObject : IObject, IHasExtent, IObjectAllProperties, IHasMofExtentMetaObject
     {
         /// <summary>
         /// Stores the extent
@@ -332,6 +332,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public override string ToString()
             => NamedElementMethods.GetName(this);
+
+        /// <summary>
+        /// Gets the given object as a meta object
+        /// </summary>
+        /// <returns>This element itself</returns>
+        public MofObject GetMetaObject() => this;
 
         public IObject CreatedBy(MofExtent extent)
         {

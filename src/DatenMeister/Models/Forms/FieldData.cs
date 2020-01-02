@@ -2,12 +2,11 @@
 {
     public class FieldData
     {
-        public FieldData(string fieldType)
+        public FieldData()
         {
-            this.fieldType = fieldType;
         }
 
-        public FieldData(string fieldType, string name, string title) : this(fieldType)
+        public FieldData(string name, string title) : this()
         {
             this.name = name;
             this.title = title;
@@ -18,8 +17,6 @@
         /// whether the field will be attached to the detail element
         /// </summary>
         public bool isAttached { get; set; }
-
-        public string fieldType { get; set; }
 
         public string name { get; set; }
 

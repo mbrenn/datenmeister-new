@@ -26,7 +26,10 @@ namespace DatenMeister.Runtime.Workspaces
     {
         public static IObject FindElementByUri(this Workspace workspace, string uri)
         {
-            return FindElementByUri(workspace.extent.Select(x => x as IUriExtent).Where(x => x != null), uri);
+            return FindElementByUri(
+                workspace.extent.Select(x => x as IUriExtent)
+                .Where(x => x != null),
+                uri);
         }
 
         public static IObject FindElementByUri(this IEnumerable<IUriExtent> extents, string uri)

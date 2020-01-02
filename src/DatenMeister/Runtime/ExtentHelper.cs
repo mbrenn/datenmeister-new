@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -39,7 +40,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="extent">Type of the extent to be set</param>
         public static string GetExtentType(this IExtent extent)
-            => extent?.GetOrDefault(ExtentType)?.ToString() ?? string.Empty;
+            => extent?.getOrDefault<string>(ExtentType) ?? string.Empty;
 
         /// <summary>
         /// Sets the default type package which is shown, when the user wants
@@ -71,16 +72,8 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="extent">Extent to be used</param>
         /// <returns>The found element</returns>
-        public static IEnumerable<IElement> GetDefaultTypePackages(this IExtent extent)
-        {
-            var result = extent.GetOrDefault(DatenmeisterDefaultTypePackage);
-            if (!(result is IReflectiveCollection collection))
-            {
-                return Array.Empty<IElement>();
-            }
-
-            return collection.OfType<IElement>();
-        }
+        public static IEnumerable<IElement> GetDefaultTypePackages(this IExtent extent) => 
+            extent.get<IReflectiveCollection>(DatenmeisterDefaultTypePackage).OfType<IElement>();
 
         public static IElement? Resolve(this IExtent extent, IElement element)
         {

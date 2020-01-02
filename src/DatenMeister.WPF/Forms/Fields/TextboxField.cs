@@ -6,7 +6,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 
-namespace DatenMeister.WPF.Forms.Detail.Fields
+namespace DatenMeister.WPF.Forms.Fields
 {
     public class TextboxField : IDetailField
     {
@@ -72,6 +72,7 @@ namespace DatenMeister.WPF.Forms.Detail.Fields
                 else
                 {
                     _contentBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    _contentBlock.MinWidth = 200;
                 }
 
                 if (height > 0)

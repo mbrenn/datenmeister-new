@@ -6,7 +6,8 @@
         xmlns:dmforms="clr-namespace:DatenMeister.WPF.Forms.Base"
         mc:Ignorable="d"
         Title="Der Datenmeister" Height="600" Width="1000" Closed="DetailFormWindow_OnClosed"
-        WindowStartupLocation="CenterOwner" Loaded="DetailFormWindow_OnLoaded">
+        WindowStartupLocation="CenterOwner" Loaded="DetailFormWindow_OnLoaded"
+        PreviewKeyDown="DetailFormWindow_OnPreviewKeyDown">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="5,2,5,2"></Setter>

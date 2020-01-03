@@ -1,4 +1,5 @@
-﻿using DatenMeister.WPF.Forms.Base.ViewExtensions;
+﻿#nullable enable
+using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using System.Collections.Generic;
 
 namespace DatenMeister.WPF
@@ -17,7 +18,7 @@ namespace DatenMeister.WPF
         /// <summary>
         /// Stores the singleton
         /// </summary>
-        private static GuiObjectCollection _theOne;
+        private static GuiObjectCollection? _theOne;
 
         /// <summary>
         /// Gets the one and only Gui Object Collection instance

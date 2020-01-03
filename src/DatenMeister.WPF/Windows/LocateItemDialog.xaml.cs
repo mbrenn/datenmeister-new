@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -33,9 +35,9 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
-        public IWorkspaceLogic WorkspaceLogic { get; set; }
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
 
-        public IObject SelectedElement { get; set; }
+        public IObject? SelectedElement { get; set; }
 
 
         public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
@@ -136,7 +138,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Defines the event that is called when the user has chosen an item
         /// </summary>
-        public event EventHandler<ItemEventArgs> ItemChosen;
+        public event EventHandler<ItemEventArgs>? ItemChosen;
 
         public void SelectWorkspace(string workspaceId)
         {

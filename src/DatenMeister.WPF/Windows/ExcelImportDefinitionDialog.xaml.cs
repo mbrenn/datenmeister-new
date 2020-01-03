@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -24,11 +25,11 @@ namespace DatenMeister.WPF.Windows
     /// </summary>
     public partial class ExcelImportDefinitionDialog : Window
     {
-        private ExcelImporter _importer;
+        private ExcelImporter? _importer;
 
         public ExcelImportType ImportType { get; set; } = ExcelImportType.AsCopy;
 
-        public ExcelImportSettings ExcelSettings => _importer.Settings as ExcelImportSettings;
+        public ExcelImportSettings? ExcelSettings => _importer?.Settings as ExcelImportSettings;
 
         public ExcelImportDefinitionDialog()
         {
@@ -39,7 +40,6 @@ namespace DatenMeister.WPF.Windows
         /// Prepares the excel file by reading it in and updating all the necessary views
         /// </summary>
         /// <param name="filePath">Excel file to be loaded</param>
-        /// <param name="extentFactory">Extent factory being used to create/find the extent, when user clicks on 'import'</param>
         public async Task<ExcelImporter> LoadFile(string filePath)
         {
             txtFileName.Text = Path.GetFileName(filePath);
@@ -67,6 +67,9 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         private void UpdateDataPreview()
         {
+            if (_importer == null)
+                throw new InvalidOperationException("_importer == null");
+
             if (IsExcelNotLoaded()) return;
 
             // Gets the columns names
@@ -122,6 +125,9 @@ namespace DatenMeister.WPF.Windows
 
         private void GuessContentRange(ContentRange rangeTypes)
         {
+            if (_importer == null)
+                throw new InvalidOperationException("_importer == null");
+            
             if (rangeTypes.HasFlag(ContentRange.Rows))
             {
                 txtCountRow.Text = _importer.GuessRowCount().ToString();
@@ -145,6 +151,9 @@ namespace DatenMeister.WPF.Windows
 
         private void TxtOffsetRow_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_importer == null)
+                throw new InvalidOperationException("_importer == null");
+
             if (IsExcelNotLoaded()) return;
 
             _importer.Settings.offsetRow = DotNetHelper.AsInteger(txtOffsetRow.Text);
@@ -154,6 +163,9 @@ namespace DatenMeister.WPF.Windows
 
         private void TxtOffsetColumn_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (_importer == null)
+                throw new InvalidOperationException("_importer == null");
+
             if (IsExcelNotLoaded()) return;
 
             _importer.Settings.offsetColumn = DotNetHelper.AsInteger(txtOffsetColumn.Text);
@@ -173,6 +185,9 @@ namespace DatenMeister.WPF.Windows
 
         private void ChkHeaderRow_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_importer == null)
+                throw new InvalidOperationException("_importer == null");
+
             if (IsExcelNotLoaded()) return;
 
             _importer.Settings.hasHeader = chkHeaderRow.IsChecked == true;
@@ -182,6 +197,9 @@ namespace DatenMeister.WPF.Windows
 
         private void chkAutoCount_OnClick(object sender, RoutedEventArgs e)
         {
+            if (_importer == null)
+                throw new InvalidOperationException("_importer == null");
+
             if (IsExcelNotLoaded()) return;
 
             _importer.Settings.fixRowCount = chkAutoCount.IsChecked == false;
@@ -193,6 +211,9 @@ namespace DatenMeister.WPF.Windows
 
         private void Window_Initialized(object sender, EventArgs e)
         {
+            if (_importer == null)
+                throw new InvalidOperationException("_importer == null");
+
             if (IsExcelNotLoaded()) return;
 
             _importer.GuessColumnCount();
@@ -224,7 +245,7 @@ namespace DatenMeister.WPF.Windows
         /// Gets the configuration as an item
         /// </summary>
         /// <returns>The configuration object describing the elements</returns>
-        public IObject GetConfigurationObject()
-            => _importer.Settings.GetSettingsAsMofObject();
+        public IObject? GetConfigurationObject()
+            => _importer?.Settings?.GetSettingsAsMofObject();
     }
 }

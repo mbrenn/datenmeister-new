@@ -77,14 +77,22 @@ namespace DatenMeister.WPF.Modules.FormManager
                 "Show Form Definition",
                 x =>
                 {
+                    var effectiveForm = itemExplorerControl.EffectiveForm;
+                    if (effectiveForm == null)
+                    {
+                        MessageBox.Show("No effective form is set");
+                        return;
+                    }
+                    
+                    var window = itemExplorerControl.NavigationHost?.GetWindow();
                     var dlg = new ItemXmlViewWindow
                     {
                         /*SupportWriting = true,*/
-                        Owner = Window.GetWindow(itemExplorerControl.NavigationHost?.GetWindow()),
+                        Owner = window == null ? null : Window.GetWindow(window),
                         SupportWriting = false
                     };
 
-                    dlg.UpdateContent(itemExplorerControl.EffectiveForm);
+                    dlg.UpdateContent(effectiveForm);
                     dlg.ShowDialog();
                 },
                 "",

@@ -205,6 +205,12 @@ namespace DatenMeister.WPF.Forms.Base
             // Local methods for the buttons
             void ViewConfig()
             {
+                if (EffectiveForm == null)
+                {
+                    MessageBox.Show("EffectiveForm is not set");
+                    return;
+                }
+                
                 var dlg = new ItemXmlViewWindow
                 {
                     SupportWriting = true,

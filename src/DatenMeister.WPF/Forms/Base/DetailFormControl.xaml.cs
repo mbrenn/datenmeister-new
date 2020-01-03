@@ -18,6 +18,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.UserInteractions;
+using DatenMeister.Modules.Validators;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -103,6 +104,11 @@ namespace DatenMeister.WPF.Forms.Base
         public List<IDetailField> AttachedItemFields { get; } = new List<IDetailField>();
 
         public IObject? GetSelectedItem() => DetailElement;
+        
+        /// <summary>
+        /// Stores the list of validators
+        /// </summary>
+        public IEnumerable<IElementValidator> ElementValidators = new List<IElementValidator>();
 
         public IEnumerable<IObject> GetSelectedItems()
         {
@@ -577,15 +583,57 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 try
                 {
-                    StoreDialogContentIntoElement(DetailElement);
+                    var validityOfContent = CheckValidityOfContent(DetailElement);
 
-                    OnElementSaved();
+                    if (validityOfContent)
+                    {
+                        StoreDialogContentIntoElement(DetailElement);
+                        OnElementSaved();
+                    }
                 }
+                
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.ToString());
                 }
             }).IsDefault = true;
+        }
+
+        /// <summary>
+        /// Checks, if the current content of the detail form is valid.
+        /// If the content is not valid, then a message can be returned to the user and the closing of the window
+        /// will not be performed
+        /// </summary>
+        /// <param name="detailElement">Element to be set</param>
+        /// <returns>true, if the validation was successful</returns>
+        private bool CheckValidityOfContent(IObject? detailElement)
+        {
+            var inMemory = InMemoryObject.CreateEmpty(detailElement.GetExtentOf());
+            StoreDialogContentIntoElement(inMemory);
+            var success = true;
+
+            foreach (var validator in ElementValidators)
+            {
+                ValidatorResult? result = validator.ValidateElement(inMemory);
+
+                while (result != null)
+                {
+                    if (result.State == ValidatorState.Failed)
+                    {
+                        success = false;
+                    }
+
+                    if (result.State != ValidatorState.Ok)
+                    {
+                        MessageBox.Show(result.Message);
+                    }
+
+                    result = result.Next;
+                }
+            }
+            
+            // Default: Everything is valid
+            return success;
         }
 
         /// <summary>

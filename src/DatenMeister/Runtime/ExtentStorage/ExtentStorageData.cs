@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets the enumeration of extents which failed to load
         /// </summary>
-        public IEnumerable<string> FailedLoadingExtents { get; set; }
+        public IEnumerable<string>? FailedLoadingExtents { get; set; }
         
         /// <summary>
         /// Stores the loaded extents including the configuration of the storage for the extent

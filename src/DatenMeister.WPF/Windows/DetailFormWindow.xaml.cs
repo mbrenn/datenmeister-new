@@ -273,12 +273,15 @@ namespace DatenMeister.WPF.Windows
             Height = Math.Ceiling(control.DesiredSize.Height) + 50 + heightOffset;
         }
 
-        public void OnSaved(IObject detailElement, IObject attachedElement)
+        public void OnSaved(IObject? detailElement, IObject? attachedElement)
         {
             if (_finalEventsThrown)
             {
                 throw new InvalidOperationException("Final event was already thrown");
             }
+
+            if (detailElement == null)
+                throw new InvalidOperationException("detailElement == null");
 
             _finalEventsThrown = true;
             Saved?.Invoke(this,
@@ -293,6 +296,9 @@ namespace DatenMeister.WPF.Windows
             {
                 throw new InvalidOperationException("Final event was already thrown");
             }
+            
+            if (detailElement == null)
+                throw new InvalidOperationException("detailElement == null");
 
             _finalEventsThrown = true;
             Cancelled?.Invoke(this,
@@ -346,6 +352,9 @@ namespace DatenMeister.WPF.Windows
 
         private void RecreateView()
         {
+            if (DetailElement == null)
+                throw new InvalidOperationException("DetailElement == null");
+            
             IObject? effectiveForm = null;
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
 

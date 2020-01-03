@@ -404,12 +404,12 @@ namespace DatenMeister.WPF.Forms.Base
             UpdateView();
         }
 
-        private void OnItemChosen(object item)
+        private void OnItemChosen(object? item)
         {
             ItemChosen?.Invoke(this, new ItemEventArgs(item as IObject));
         }
 
-        private void OnItemSelected(object item)
+        private void OnItemSelected(object? item)
         {
             ItemSelected?.Invoke(this, new ItemEventArgs(item as IObject));
         }

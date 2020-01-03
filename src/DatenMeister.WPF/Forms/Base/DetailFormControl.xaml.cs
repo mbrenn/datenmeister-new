@@ -1,9 +1,12 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using Autofac;
@@ -47,7 +50,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Stores the title of the form control. If not overridden, a default
         /// title will be created
         /// </summary>
-        private string _internalTitle;
+        private string? _internalTitle;
 
         public DetailFormControl()
         {
@@ -58,18 +61,18 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject? DetailElement { get; set; }
 
         /// <summary>
         /// Gets or sets the container for the Detail Element. It will be used to
         /// delete the item, if required.
         /// </summary>
-        public IReflectiveCollection DetailElementContainer { get; set; }
+        public IReflectiveCollection? DetailElementContainer { get; set; }
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        public IObject EffectiveForm { get; set; }
+        public IObject? EffectiveForm { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
@@ -79,7 +82,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the attached element which is allocated in the navigation host
         /// </summary>
-        public IElement AttachedElement {get; set; }
+        public IElement? AttachedElement {get; set; }
 
         /// <summary>
         ///     Gets the default size
@@ -99,17 +102,20 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public List<IDetailField> AttachedItemFields { get; } = new List<IDetailField>();
 
-        public IObject GetSelectedItem() => DetailElement;
+        public IObject? GetSelectedItem() => DetailElement;
 
         public IEnumerable<IObject> GetSelectedItems()
         {
-            yield return DetailElement;
+            if (DetailElement != null)
+            {
+                yield return DetailElement;
+            }
         }
 
         /// <summary>
         ///     Gets or sets the navigation host
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost? NavigationHost { get; set; }
 
         /// <summary>
         /// Gets the title for the control
@@ -120,7 +126,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 if (!string.IsNullOrEmpty(_internalTitle))
                 {
-                    return _internalTitle;
+                    return _internalTitle ?? string.Empty;
                 }
 
                 return DetailElement == null
@@ -265,24 +271,17 @@ namespace DatenMeister.WPF.Forms.Base
         ///     This event handler is thrown, when the user clicks on 'Save' and after the properties are
         ///     transferred from form display to element
         /// </summary>
-        public event EventHandler ElementSaved;
+        public event EventHandler? ElementSaved;
 
         /// <summary>
         ///     This event is called, when the view for the detail view is defined
         ///     While handling the event, the view itself may be changed
         /// </summary>
-        public event EventHandler<ViewEventArgs> ViewDefined;
+        public event EventHandler<ViewEventArgs>? ViewDefined;
 
         private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
-
-        /// <summary>
-        /// This event is called, after the Loaded event has been executed.
-        /// This includes the creation and evaluation of forms and the filling out of content
-        /// </summary>
-        public event EventHandler LoadingCompleted;
 
         /// <summary>
         ///     This method gets called, when a new item is added or an existing item was modified.
@@ -293,7 +292,7 @@ namespace DatenMeister.WPF.Forms.Base
             OnViewDefined();
         }
 
-        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection collection = null)
+        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection? collection = null)
         {
             DetailElement = value;
             EffectiveForm = detailForm;
@@ -530,8 +529,11 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Adds the default cancel and save buttons
         /// </summary>
         /// <param name="saveText">Text which is shown on the save button. Default value is "Save"</param>
-        public void AddDefaultButtons(string saveText = null)
+        public void AddDefaultButtons(string? saveText = null)
         {
+            if (DetailElement == null)
+                throw new NotImplementedException("DetailElement == null");
+            
             saveText ??= EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
             saveText ??= "Save";
 
@@ -539,6 +541,9 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 AddGenericButton("New Property", () =>
                 {
+                    if (EffectiveForm == null)
+                        throw new NotImplementedException("EffectiveForm == null");
+                    
                     var fieldKey = new TextBox();
                     var fieldValue = new TextboxField();
                     var flags = new FieldParameter();
@@ -659,6 +664,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         public void OnViewDefined()
         {
+            if (EffectiveForm == null)
+                throw new InvalidOperationException("EffectiveForm == null");
+            
             OnViewDefined(new ViewEventArgs(EffectiveForm));
         }
 
@@ -691,11 +699,17 @@ namespace DatenMeister.WPF.Forms.Base
                 if (extension is ItemButtonDefinition itemButtonDefinition)
                 {
                     AddGenericButton(itemButtonDefinition.Name,
-                        () => itemButtonDefinition.OnPressed(DetailElement));
+                        () =>
+                        {
+                            if (DetailElement != null)
+                            {
+                                itemButtonDefinition.OnPressed(DetailElement);
+                            }
+                        });
                 }
             }
         }
 
-        public IObject Item => DetailElement;
+        public IObject? Item => DetailElement;
     }
 }

@@ -1,3 +1,5 @@
+#nullable enable
+
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Modules.Validators
@@ -13,6 +15,6 @@ namespace DatenMeister.Modules.Validators
         /// </summary>
         /// <param name="element">Element to be verified</param>
         /// <returns>The result of the validation</returns>
-        ValidatorResult ValidateElement(IObject element);
+        ValidatorResult? ValidateElement(IObject element);
     }
 }

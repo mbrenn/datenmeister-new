@@ -51,7 +51,7 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public bool ShowApplicationItems { get; set; } = true;
 
-        protected Action CreateClickMethod(NavigationButtonDefinition definition)
+        protected Action? CreateClickMethod(NavigationButtonDefinition definition)
         {
             // Defines the clickmethod by the definition
             if (ShowApplicationItems
@@ -82,7 +82,9 @@ namespace DatenMeister.WPF.Windows
                 return () => itemMenuButtonDefinition.OnPressed(Item);
             }
 
-            throw new InvalidOperationException("No click method could be generated");
+            //throw new InvalidOperationException("No click method could be generated");
+
+            return null;
         }
     }
 }

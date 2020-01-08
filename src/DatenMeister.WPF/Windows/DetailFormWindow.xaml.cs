@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Autofac;
 using BurnSystems.Logging;
@@ -60,7 +59,7 @@ namespace DatenMeister.WPF.Windows
         /// Stores the view definition as requested by the creator of the window.
         /// This view definition may be overridden by the OverridingViewDefinition
         /// </summary>
-        private FormDefinition? _requestedViewDefinition;
+        private FormDefinition? _requestedFormDefinition;
 
         /// <summary>
         /// Gets a helper for menu
@@ -77,7 +76,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public FormDefinition? OverridingViewDefinition { get; private set; }
+        public FormDefinition? OverridingFormDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -85,7 +84,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="form"></param>
         public void SetOverridingForm(IElement form)
         {
-            OverridingViewDefinition = new FormDefinition(form);
+            OverridingFormDefinition = new FormDefinition(form);
             RecreateView();
         }
 
@@ -94,7 +93,7 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public void ClearOverridingForm()
         {
-            OverridingViewDefinition = null;
+            OverridingFormDefinition = null;
             RecreateView();
         }
 
@@ -345,7 +344,7 @@ namespace DatenMeister.WPF.Windows
         {
             DetailElement = detailElement;
             ContainerCollection = container;
-            _requestedViewDefinition = formDefinition;
+            _requestedFormDefinition = formDefinition;
             
             RecreateView();
         }
@@ -354,31 +353,36 @@ namespace DatenMeister.WPF.Windows
         {
             if (DetailElement == null)
                 throw new InvalidOperationException("DetailElement == null");
+
+            var formDefinition = _requestedFormDefinition;
             
             IObject? effectiveForm = null;
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
 
             // Checks, if there is an overriding form 
-            if (OverridingViewDefinition != null)
+            if (OverridingFormDefinition != null)
             {
-                if (OverridingViewDefinition.Mode == FormDefinitionMode.Specific)
+                if (OverridingFormDefinition.Mode == FormDefinitionMode.Specific)
                 {
-                    effectiveForm = OverridingViewDefinition.Element;
+                    effectiveForm = OverridingFormDefinition.Element;
                 }
                 else
                 {
-                    effectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), OverridingViewDefinition.Mode);
+                    effectiveForm = viewLogic.GetDetailForm(DetailElement, DetailElement.GetUriExtentOf(), OverridingFormDefinition.Mode);
                 }
+
+                formDefinition = OverridingFormDefinition;
             }
 
             // If not, take the standard procedure
             if (effectiveForm == null)
             {
-                _requestedViewDefinition ??= new FormDefinition(FormDefinitionMode.Default);
+                formDefinition = 
+                    _requestedFormDefinition ??= new FormDefinition(FormDefinitionMode.Default);
                 
-                if (_requestedViewDefinition.Mode == FormDefinitionMode.Specific)
+                if (_requestedFormDefinition.Mode == FormDefinitionMode.Specific)
                 {
-                    effectiveForm = _requestedViewDefinition.Element;
+                    effectiveForm = _requestedFormDefinition.Element;
                 }
                 else
                 {
@@ -386,7 +390,7 @@ namespace DatenMeister.WPF.Windows
                         viewLogic.GetDetailForm(
                             DetailElement,
                             DetailElement.GetUriExtentOf(),
-                            _requestedViewDefinition.Mode);
+                            _requestedFormDefinition.Mode);
                 }
             }
 
@@ -397,6 +401,10 @@ namespace DatenMeister.WPF.Windows
             if (effectiveForm != null)
             {
                 var control = new DetailFormControl {NavigationHost = this};
+                if (formDefinition != null && _requestedFormDefinition != null)
+                {
+                    formDefinition.Validators.AddRange(_requestedFormDefinition.Validators);
+                }
 
                 control.SetContent(DetailElement, effectiveForm, ContainerCollection);
                 control.UpdateView();

@@ -402,7 +402,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void SetAsDefaultForMetaclass()
             {
-                if (detailWindow.OverridingViewDefinition?.Element == null)
+                if (detailWindow.OverridingFormDefinition?.Element == null)
                 {
                     MessageBox.Show(
                         "The used form is automatically selected. This automatic selection cannot be put as a standard");
@@ -435,7 +435,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 var formAssociation = factory.create(formAndFields.__FormAssociation);
                 formAssociation.set(_FormAndFields._FormAssociation.metaClass, metaClass);
-                formAssociation.set(_FormAndFields._FormAssociation.form, detailWindow.OverridingViewDefinition.Element);
+                formAssociation.set(_FormAndFields._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
                 formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
                 userViewExtent.elements().add(formAssociation);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.Validators;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 
@@ -27,6 +28,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets the corresponding element
         /// </summary>
         public IObject Element { get; }
+        
+        /// <summary>
+        /// Stores the list of validators
+        /// </summary>
+        public List<IElementValidator> Validators = new List<IElementValidator>();
 
         /// <summary>
         /// Initializes a new instance of the new ViewDefinition class

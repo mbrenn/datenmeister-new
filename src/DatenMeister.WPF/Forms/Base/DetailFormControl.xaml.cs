@@ -108,7 +108,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the list of validators
         /// </summary>
-        public IEnumerable<IElementValidator> ElementValidators = new List<IElementValidator>();
+        public readonly IEnumerable<IElementValidator> ElementValidators = new List<IElementValidator>();
 
         public IEnumerable<IObject> GetSelectedItems()
         {

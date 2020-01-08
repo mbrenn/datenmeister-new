@@ -13,7 +13,9 @@ using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Navigation.Validators;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Navigation
@@ -84,13 +86,17 @@ namespace DatenMeister.WPF.Navigation
             string workspaceId)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var form =
+                viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm);
+            var formDefinition = new FormDefinition(form);
+            formDefinition.Validators.Add( new NewXmiExtentValidator());
+            
             var navigateToItemConfig = new NavigateToItemConfig
             {
-                FormDefinition =
-                    viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
+                Form = formDefinition
             };
 
-            if (navigateToItemConfig.FormDefinition == null)
+            if (navigateToItemConfig.Form == null)
             {
                 var text = $"The Form Definition in " +
                            $"{ManagementViewDefinitions.IdNewXmiDetailForm} " +

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,9 +21,7 @@ using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
-using DatenMeister.Modules.FastViewFilter.Model;
-using DatenMeister.Modules.Forms.Model;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -82,7 +82,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private ViewLogic _viewLogic;
+        private FormLogic _formLogic;
 
         public ItemListViewControl()
         {
@@ -243,7 +243,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation(ViewExtensionContext.View)
+            var extentData = new ViewExtensionTargetInformation()
             {
                 NavigationGuest = this,
                 NavigationHost = NavigationHost
@@ -270,7 +270,7 @@ namespace DatenMeister.WPF.Forms.Base
             IObject formDefinition,
             IEnumerable<ViewExtension> viewExtensions)
         {
-            _viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            _formLogic = GiveMe.Scope.Resolve<FormLogic>();
             UnregisterCurrentChangeEventHandle();
 
             if (items is IHasExtent asExtent)
@@ -306,10 +306,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Returned element for the </returns>
         private object GetValueOfElement(IObject element, IElement field)
         {
-            var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
             var fieldMetaClass = field.getMetaClass();
-            if (fieldType == MetaClassElementFieldData.FieldType ||
-                fieldMetaClass?.equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+            if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -331,114 +329,126 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
+            var watch = new StopWatchLogger(Logger, "UpdateView");
+            var listItems = new ObservableCollection<ExpandoObject>();
+            
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
-
-            var listItems = new ObservableCollection<ExpandoObject>();
+            
             _itemMapping.Clear();
 
             // Updates all columns and returns the fieldnames and fields
             var (fieldDataNames, fields) = UpdateColumnDefinitions();
-            if (fieldDataNames == null) return;
+            watch.IntermediateLog("UpdateColumnDefinitions done");
 
-            // Creates the rows
-            if (Items != null)
+            Task.Run(() =>
             {
-                // Get the items and honor searching
-                var items = Items.OfType<IObject>();
-                if (!string.IsNullOrEmpty(_searchText))
-                {
-                    var columnNames = fields.OfType<IElement>()
-                        .Select(x => x.get("name")?.ToString())
-                        .Where(x => x != null);
-                    items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
-                }
+                if (fieldDataNames == null) return;
 
-                // Goes through the fast filters and filters the items
-                foreach (var fastFilter in GetFastFilters())
+                // Creates the rows
+                if (Items != null)
                 {
-                    var converter = FastViewFilterConverter.Convert(fastFilter);
-                    if (converter == null)
+                    // Get the items and honor searching
+                    var items = Items.OfType<IObject>();
+                    if (!string.IsNullOrEmpty(_searchText))
                     {
-                        Logger.Warn("FastViewFilter is not known: " + fastFilter);
-                        continue;
+                        var columnNames = fields.OfType<IElement>()
+                            .Select(x => x.get("name")?.ToString())
+                            .Where(x => x != null);
+                        items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                     }
 
-                    items = items.Where(x => converter.IsFiltered(x));
-                }
-
-                // Go through the items and build up the list of elements
-                foreach (var item in items)
-                {
-                    var itemObject = new ExpandoObject();
-                    var asDictionary = (IDictionary<string, object>) itemObject;
-
-                    var n = 0;
-                    foreach (var field in fields.Cast<IElement>())
+                    // Goes through the fast filters and filters the items
+                    foreach (var fastFilter in GetFastFilters())
                     {
-                        var columnName = fieldDataNames[n];
-                        var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
-                        var value = GetValueOfElement(item, field);
-
-                        if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                        var converter = FastViewFilterConverter.Convert(fastFilter);
+                        if (converter == null)
                         {
-                            var result = new StringBuilder();
-                            var valueAsList = DotNetHelper.AsEnumeration(value);
-                            if (valueAsList != null)
-                            {
-                                var elementCount = 0;
-                                var nr = string.Empty;
-                                foreach (var valueElement in valueAsList)
-                                {
-                                    result.Append(nr + NamedElementMethods.GetName(valueElement));
-                                    nr = "\r\n";
+                            Logger.Warn("FastViewFilter is not known: " + fastFilter);
+                            continue;
+                        }
 
-                                    elementCount++;
-                                    if (elementCount > 10)
+                        items = items.Where(x => converter.IsFiltered(x));
+                    }
+
+                    // Go through the items and build up the list of elements
+                    foreach (var item in items)
+                    {
+                        var itemObject = new ExpandoObject();
+                        var asDictionary = (IDictionary<string, object>) itemObject;
+
+                        var n = 0;
+                        foreach (var field in fields.Cast<IElement>())
+                        {
+                            var columnName = fieldDataNames[n];
+                            var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
+                            var value = GetValueOfElement(item, field);
+
+                            if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                            {
+                                var result = new StringBuilder();
+                                var valueAsList = DotNetHelper.AsEnumeration(value);
+                                if (valueAsList != null)
+                                {
+                                    var elementCount = 0;
+                                    var nr = string.Empty;
+                                    foreach (var valueElement in valueAsList)
                                     {
-                                        result.Append("\r\n... (more)");
-                                        break;
+                                        result.Append(nr + NamedElementMethods.GetName(valueElement));
+                                        nr = "\r\n";
+
+                                        elementCount++;
+                                        if (elementCount > 10)
+                                        {
+                                            result.Append("\r\n... (more)");
+                                            break;
+                                        }
                                     }
                                 }
+
+                                asDictionary.Add(columnName, result.ToString());
+                            }
+                            else
+                            {
+                                asDictionary.Add(columnName, value);
                             }
 
-                            asDictionary.Add(columnName, result.ToString());
-                        }
-                        else
-                        {
-                            asDictionary.Add(columnName, value);
+                            n++;
                         }
 
-                        n++;
+                        _itemMapping[itemObject] = item;
+                        listItems.Add(itemObject);
+
+                        // Adds the notification for the property
+                        var noMessageBox = false;
+                        (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
+                        {
+                            try
+                            {
+                                var newPropertyValue = (itemObject as IDictionary<string, object>)[y.PropertyName];
+                                item.set(y.PropertyName, newPropertyValue);
+                            }
+                            catch (Exception exc)
+                            {
+                                if (!noMessageBox) MessageBox.Show(exc.Message);
+
+                                // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
+                                noMessageBox = true;
+                                (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
+                                noMessageBox = false;
+                            }
+                        };
                     }
-
-                    _itemMapping[itemObject] = item;
-                    listItems.Add(itemObject);
-
-                    // Adds the notification for the property
-                    var noMessageBox = false;
-                    (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
-                    {
-                        try
-                        {
-                            var newPropertyValue = (itemObject as IDictionary<string, object>)[y.PropertyName];
-                            item.set(y.PropertyName, newPropertyValue);
-                        }
-                        catch (Exception exc)
-                        {
-                            if (!noMessageBox) MessageBox.Show(exc.Message);
-
-                            // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
-                            noMessageBox = true;
-                            (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
-                            noMessageBox = false;
-                        }
-                    };
                 }
-            }
+            }).ContinueWith((x) =>
+            {
+                watch.IntermediateLog("Before setting");
 
-            DataGrid.ItemsSource = listItems;
+                Dispatcher?.Invoke(() => { DataGrid.ItemsSource = listItems; });
+
+                watch.Stop();
+            });
         }
 
         /// <summary>
@@ -450,7 +460,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </returns>
         private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
         {
-            if (!(EffectiveForm?.get(_FormAndFields._Form.field) is IReflectiveCollection fields))
+            if (!(EffectiveForm?.get(_FormAndFields._ListForm.field) is IReflectiveCollection fields))
                 return (null, null);
 
             ClearInfoLines();
@@ -465,13 +475,11 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var name = "_" + (field.getOrDefault<string>(_FormAndFields._FieldData.name) ?? string.Empty);
                 var title = field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? string.Empty;
-                var fieldType = field.getOrDefault<string>(_FormAndFields._FieldData.fieldType);
                 var fieldMetaClass = field.getMetaClass();
 
                 bool isReadOnly;
 
-                if (fieldType == MetaClassElementFieldData.FieldType
-                    || fieldMetaClass?.equals(_viewLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";
@@ -717,7 +725,7 @@ namespace DatenMeister.WPF.Forms.Base
                             d.ViewDefined += (a, b) =>
                             {
                                 // Remove the field with property
-                                var fields = b.View.get<IReflectiveSequence>(_FormAndFields._Form.field);
+                                var fields = b.View.get<IReflectiveSequence>(_FormAndFields._ListForm.field);
                                 var propertyField = QueryHelper.GetChildWithProperty(fields,
                                     _FormAndFields._FieldData.name,
                                     nameof(PropertyComparisonFilter.Property));
@@ -732,7 +740,6 @@ namespace DatenMeister.WPF.Forms.Base
                                     nameof(PropertyComparisonFilter.Property));
                                 element.set(_FormAndFields._DropDownFieldData.title,
                                     nameof(PropertyComparisonFilter.Property));
-                                element.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
 
                                 var pairs = new List<IObject>();
                                 foreach (var field in

@@ -4,7 +4,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
@@ -32,7 +32,7 @@ namespace DatenMeister.WPF.Navigation
             string buttonName = "Create")
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
 
@@ -57,7 +57,7 @@ namespace DatenMeister.WPF.Navigation
                 }
             }
 
-            var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalViewExtent());
+            var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalFormExtent());
             //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
             var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage?.FirstOrDefault(), metaWorkspace, metaExtent);
 
@@ -70,7 +70,8 @@ namespace DatenMeister.WPF.Navigation
             var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);
             if (result.Result == NavigationResult.Saved)
             {
-                if (result.DetailElement.GetOrDefault("selectedType") is IElement metaClass)
+                var metaClass = result.DetailElement.getOrDefault<IElement>("selectedType");
+                if (metaClass != null)
                 {
                     SelectedType = metaClass;
                 }

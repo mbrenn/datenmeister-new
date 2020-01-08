@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,8 +13,8 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.UserInteractions;
-using DatenMeister.Modules.ViewFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -21,7 +22,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Detail.Fields;
+using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -249,8 +250,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             void CopyForm()
             {
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-                var target = viewLogic.GetUserViewExtent();
+                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var target = viewLogic.GetUserFormExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 
                 var copiedForm = copier.Copy(EffectiveForm);
@@ -311,6 +312,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
+            var stopWatch = Stopwatch.StartNew();
+            
             RefreshViewDefinition();
 
             // Checks, if the form overwrites the allow new properties information. If yes, store it
@@ -321,7 +324,7 @@ namespace DatenMeister.WPF.Forms.Base
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._Form.field);
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
             if (fields == null)
             {
                 return;
@@ -331,33 +334,9 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Here, create the rows themselves
             CreateRows(fields);
-
-            // Adds metadata
-            if (DetailElement != null)
-            {
-                var mofElement = DetailElement as MofElement; // Used to get the uri including id
-                var uriExtent = DetailElement.GetUriExtentOf();
-
-                var hideMetaClass = EffectiveForm.getOrDefault<bool>(_FormAndFields._Form.hideMetaInformation);
-
-                if (!hideMetaClass)
-                {
-                    CreateSeparator();
-
-                    var uriExtentText = uriExtent?.contextURI() ?? string.Empty;
-                    var fullName = NamedElementMethods.GetFullName(DetailElement);
-                    CreateRowForField("Extent:", uriExtentText, true);
-                    CreateRowForField("Full Name:", fullName, true);
-                    CreateRowForField("Url w/ ID:", mofElement?.GetUri() ?? "Not known", true);
-                    CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
-
-                    var metaClass = (DetailElement as IElement)?.getMetaClass();
-                    CreateRowForField(
-                        "Meta Class:",
-                        metaClass == null ? string.Empty : NamedElementMethods.GetFullName(metaClass),
-                        true);
-                }
-            }
+            
+            stopWatch.Stop();
+            Logger.Info("UpdateView Duration", stopWatch.ElapsedMilliseconds, "ms");
         }
 
         /// <summary>

@@ -12,9 +12,6 @@ namespace DatenMeister.Models.Forms
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
-
             public static string @name = "name";
             public IElement _name = null;
 
@@ -33,7 +30,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _FieldData @FieldData = new _FieldData();
-        public IElement @__FieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.FieldData");
+        public IElement @__FieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FieldData");
 
         public class _CheckboxFieldData
         {
@@ -42,9 +39,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -64,7 +58,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _CheckboxFieldData @CheckboxFieldData = new _CheckboxFieldData();
-        public IElement @__CheckboxFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.CheckboxFieldData");
+        public IElement @__CheckboxFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.CheckboxFieldData");
 
         public class _DateTimeFieldData
         {
@@ -79,9 +73,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -101,12 +92,12 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DateTimeFieldData @DateTimeFieldData = new _DateTimeFieldData();
-        public IElement @__DateTimeFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.DateTimeFieldData");
+        public IElement @__DateTimeFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DateTimeFieldData");
 
-        public class _ViewAssociation
+        public class _FormAssociation
         {
-            public static string @viewType = "viewType";
-            public IElement _viewType = null;
+            public static string @formType = "formType";
+            public IElement _formType = null;
 
             public static string @metaClass = "metaClass";
             public IElement _metaClass = null;
@@ -125,8 +116,8 @@ namespace DatenMeister.Models.Forms
 
         }
 
-        public _ViewAssociation @ViewAssociation = new _ViewAssociation();
-        public IElement @__ViewAssociation = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ViewAssociation");
+        public _FormAssociation @FormAssociation = new _FormAssociation();
+        public IElement @__FormAssociation = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormAssociation");
 
         public class _DropDownFieldData
         {
@@ -135,9 +126,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -157,7 +145,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DropDownFieldData @DropDownFieldData = new _DropDownFieldData();
-        public IElement @__DropDownFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.DropDownFieldData");
+        public IElement @__DropDownFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DropDownFieldData");
 
         public class _ValuePair
         {
@@ -170,15 +158,12 @@ namespace DatenMeister.Models.Forms
         }
 
         public _ValuePair @ValuePair = new _ValuePair();
-        public IElement @__ValuePair = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.DropDownFieldData%2BValuePair");
+        public IElement @__ValuePair = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DropDownFieldData%2BValuePair");
 
         public class _MetaClassElementFieldData
         {
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -198,7 +183,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _MetaClassElementFieldData @MetaClassElementFieldData = new _MetaClassElementFieldData();
-        public IElement @__MetaClassElementFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.MetaClassElementFieldData");
+        public IElement @__MetaClassElementFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.MetaClassElementFieldData");
 
         public class _ReferenceFieldData
         {
@@ -226,9 +211,6 @@ namespace DatenMeister.Models.Forms
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
 
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
-
             public static string @name = "name";
             public IElement _name = null;
 
@@ -247,7 +229,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _ReferenceFieldData @ReferenceFieldData = new _ReferenceFieldData();
-        public IElement @__ReferenceFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ReferenceFieldData");
+        public IElement @__ReferenceFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ReferenceFieldData");
 
         public class _SubElementFieldData
         {
@@ -262,9 +244,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -284,7 +263,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _SubElementFieldData @SubElementFieldData = new _SubElementFieldData();
-        public IElement @__SubElementFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.SubElementFieldData");
+        public IElement @__SubElementFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.SubElementFieldData");
 
         public class _TextFieldData
         {
@@ -296,9 +275,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -318,7 +294,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _TextFieldData @TextFieldData = new _TextFieldData();
-        public IElement @__TextFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.TextFieldData");
+        public IElement @__TextFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.TextFieldData");
 
         public class _SeparatorLineFieldData
         {
@@ -328,7 +304,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _SeparatorLineFieldData @SeparatorLineFieldData = new _SeparatorLineFieldData();
-        public IElement @__SeparatorLineFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.SeparatorLineFieldData");
+        public IElement @__SeparatorLineFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.SeparatorLineFieldData");
 
         public class _FileSelectionFieldData
         {
@@ -343,9 +319,6 @@ namespace DatenMeister.Models.Forms
 
             public static string @isAttached = "isAttached";
             public IElement _isAttached = null;
-
-            public static string @fieldType = "fieldType";
-            public IElement _fieldType = null;
 
             public static string @name = "name";
             public IElement _name = null;
@@ -365,7 +338,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _FileSelectionFieldData @FileSelectionFieldData = new _FileSelectionFieldData();
-        public IElement @__FileSelectionFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.FileSelectionFieldData");
+        public IElement @__FileSelectionFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FileSelectionFieldData");
 
         public class _DefaultTypeForNewElement
         {
@@ -381,25 +354,25 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DefaultTypeForNewElement @DefaultTypeForNewElement = new _DefaultTypeForNewElement();
-        public IElement @__DefaultTypeForNewElement = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.DefaultTypeForNewElement");
+        public IElement @__DefaultTypeForNewElement = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultTypeForNewElement");
 
-        public class _ViewType
+        public class _FormType
         {
             public static string @Detail = "Detail";
-            public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ViewType-Detail");
+            public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-Detail");
             public static string @TreeItemExtent = "TreeItemExtent";
-            public IElement @__TreeItemExtent = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ViewType-TreeItemExtent");
+            public IElement @__TreeItemExtent = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemExtent");
             public static string @TreeItemList = "TreeItemList";
-            public IElement @__TreeItemList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ViewType-TreeItemList");
+            public IElement @__TreeItemList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemList");
             public static string @TreeItemDetail = "TreeItemDetail";
-            public IElement @__TreeItemDetail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ViewType-TreeItemDetail");
+            public IElement @__TreeItemDetail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemDetail");
             public static string @ObjectList = "ObjectList";
-            public IElement @__ObjectList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ViewType-ObjectList");
+            public IElement @__ObjectList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-ObjectList");
 
         }
 
-        public _ViewType @ViewType = new _ViewType();
-        public IElement @__ViewType = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ViewType");
+        public _FormType @FormType = new _FormType();
+        public IElement @__FormType = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType");
 
         public class _Form
         {
@@ -409,16 +382,13 @@ namespace DatenMeister.Models.Forms
             public static string @title = "title";
             public IElement _title = null;
 
-            public static string @field = "field";
-            public IElement _field = null;
-
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement _hideMetaInformation = null;
 
         }
 
         public _Form @Form = new _Form();
-        public IElement @__Form = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.Form");
+        public IElement @__Form = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.Form");
 
         public class _DetailForm
         {
@@ -437,14 +407,14 @@ namespace DatenMeister.Models.Forms
             public static string @tab = "tab";
             public IElement _tab = null;
 
+            public static string @field = "field";
+            public IElement _field = null;
+
             public static string @name = "name";
             public IElement _name = null;
 
             public static string @title = "title";
             public IElement _title = null;
-
-            public static string @field = "field";
-            public IElement _field = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement _hideMetaInformation = null;
@@ -452,7 +422,7 @@ namespace DatenMeister.Models.Forms
         }
 
         public _DetailForm @DetailForm = new _DetailForm();
-        public IElement @__DetailForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.DetailForm");
+        public IElement @__DetailForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DetailForm");
 
         public class _ListForm
         {
@@ -477,14 +447,14 @@ namespace DatenMeister.Models.Forms
             public static string @fastViewFilters = "fastViewFilters";
             public IElement _fastViewFilters = null;
 
+            public static string @field = "field";
+            public IElement _field = null;
+
             public static string @name = "name";
             public IElement _name = null;
 
             public static string @title = "title";
             public IElement _title = null;
-
-            public static string @field = "field";
-            public IElement _field = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement _hideMetaInformation = null;
@@ -492,26 +462,29 @@ namespace DatenMeister.Models.Forms
         }
 
         public _ListForm @ListForm = new _ListForm();
-        public IElement @__ListForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ListForm");
+        public IElement @__ListForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ListForm");
 
         public class _ExtentForm
         {
-            public static string @name = "name";
-            public IElement _name = null;
-
-            public static string @title = "title";
-            public IElement _title = null;
-
             public static string @tab = "tab";
             public IElement _tab = null;
 
             public static string @autoTabs = "autoTabs";
             public IElement _autoTabs = null;
 
+            public static string @name = "name";
+            public IElement _name = null;
+
+            public static string @title = "title";
+            public IElement _title = null;
+
+            public static string @hideMetaInformation = "hideMetaInformation";
+            public IElement _hideMetaInformation = null;
+
         }
 
         public _ExtentForm @ExtentForm = new _ExtentForm();
-        public IElement @__ExtentForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Modules.Forms.Model.ExtentForm");
+        public IElement @__ExtentForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ExtentForm");
 
         public static _FormAndFields TheOne = new _FormAndFields();
 

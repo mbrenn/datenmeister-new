@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
-using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Modules.ViewFinder.Helper;
+using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Lists;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
@@ -47,8 +49,8 @@ namespace DatenMeister.WPF.Navigation
         /// <returns></returns>
         public static async Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var viewExtent = viewLogic.GetInternalViewExtent();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewExtent = viewLogic.GetInternalFormExtent();
 
             var formElement = NamedElementMethods.GetByFullName(
                 viewExtent,
@@ -122,6 +124,12 @@ namespace DatenMeister.WPF.Navigation
             }
 
             // Unload DatenMeister
+            if (navigationHost.GetWindow() is IApplicationWindow mainWindow)
+            {
+                mainWindow.DoCloseWithoutAcknowledgement = true;
+            }
+            
+            
             navigationHost.GetWindow().Close();
             if (navigationHost.GetWindow().IsActive)
             {

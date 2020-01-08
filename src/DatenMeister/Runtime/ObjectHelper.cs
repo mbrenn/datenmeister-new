@@ -20,10 +20,20 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Object to be queried</param>
         /// <param name="property">Property to be queried</param>
+        /// <param name="noReferences">Flag, if no recursion shall occur</param>
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
-        private static object GetAsSingle(this IObject value, string property)
+        private static object GetAsSingle(this IObject value, string property, bool noReferences = false)
         {
-            var propertyValue = value.get(property);
+            object propertyValue;
+            if (noReferences && value is MofObject valueAsMofObject)
+            {
+                propertyValue = valueAsMofObject.get(property, true);
+            }
+            else
+            {
+                propertyValue = value.get(property);
+            }
+            
             if (propertyValue is IEnumerable<object> asObjectList)
             {
                 var list = asObjectList.ToList();
@@ -57,54 +67,77 @@ namespace DatenMeister.Runtime
         /// <typeparam name="T">Type of the property</typeparam>
         /// <param name="value">MOF Object being queried</param>
         /// <param name="property">Property being queried in the <c>value</c></param>
-        /// <returns>The content of the element or default(T) if not nknown</returns>
-        public static T get<T>(this IObject value, string property)
+        /// <param name="noReferences">true, if references shall not be </param>
+        /// <returns>The content of the element or default(T) if not known</returns>
+        public static T get<T>(this IObject value, string property, bool noReferences = false)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
+            if (typeof(T) == typeof(object))
+            {
+                if (!(value is IHasMofExtentMetaObject metaObject))
+                    throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
+
+                return (T) metaObject.GetMetaObject().get(property, noReferences);
+            }
+
             if (typeof(T) == typeof(string))
             {
-                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences));
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences));
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences));
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return (T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences));
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                return (T) (value.GetAsSingle(property) as IObject);
+                return (T) (value.GetAsSingle(property, noReferences) as IObject);
             }
 
             if (typeof(T) == typeof(IElement))
             {
-                return (T) (value.GetAsSingle(property) as IElement);
+                return (T) (value.GetAsSingle(property, noReferences) as IElement);
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))
             {
-                return (T) (object) new MofReflectiveSequence((MofObject) value, property);
+                if (!(value is IHasMofExtentMetaObject metaObject))
+                    throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
+                
+                return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+                {
+                    NoReferences = noReferences
+                };
+
             }
 
             if (typeof(T) == typeof(IReflectiveSequence))
             {
-                return (T) (object) new MofReflectiveSequence((MofObject) value, property);
+                if (!(value is IHasMofExtentMetaObject metaObject))
+                    throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
+                
+                return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+                {
+                    NoReferences = noReferences
+                };
+
             }
 
             if (typeof(T) == typeof(DateTime))
             {
-                if (DateTime.TryParse(value.GetAsSingle(property).ToString(), CultureInfo.InvariantCulture,
+                if (DateTime.TryParse(value.GetAsSingle(property, noReferences).ToString(), CultureInfo.InvariantCulture,
                     DateTimeStyles.None, out var result))
                 {
                     return (T) (object) result;
@@ -115,12 +148,12 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(object))
             {
-                return (T) value.GetAsSingle(property);
+                return (T) value.GetAsSingle(property, noReferences);
             }
 
             if (typeof(T).IsEnum)
             {
-                var valueAsElement = value.GetAsSingle(property);
+                var valueAsElement = value.GetAsSingle(property, noReferences);
                 if (valueAsElement == null)
                 {
                     return default(T);
@@ -153,24 +186,24 @@ namespace DatenMeister.Runtime
             throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
         }
 
-        public static T? getOrNull<T>(this IObject value, string property) where T : struct
+        public static T? getOrNull<T>(this IObject value, string property, bool noReferences = false) where T : struct
         {
             if (!value.isSet(property))
             {
                 return null;
             }
 
-            return get<T>(value, property);
+            return get<T>(value, property, noReferences);
         }
 
-        public static T getOrDefault<T>(this IObject value, string property)
+        public static T getOrDefault<T>(this IObject value, string property, bool noReferences = false)
         {
             if (!value.isSet(property))
             {
                 return default(T);
             }
 
-            return get<T>(value, property);
+            return get<T>(value, property, noReferences);
         }
 
         /// <summary>
@@ -179,12 +212,14 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
+        /// <param name="noReferences">true, if the references shall not resolved</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object GetOrDefault(this IObject value, string property)
+        [Obsolete]
+        public static object getOrDefault(this IObject value, string property, bool noReferences = false)
         {
             if (value.isSet(property))
             {
-                return value.get(property);
+                return value.get<object>(property, noReferences);
             }
 
             return null;
@@ -198,7 +233,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object GetFirstOrDefault(this IObject value, string property)
+        public static object getFirstOrDefault(this IObject value, string property)
         {
             if (value.isSet(property))
             {
@@ -273,51 +308,6 @@ namespace DatenMeister.Runtime
 
             return value;
         }
-
-        /// <summary>
-        /// Gets a certain property value as a reflective collection.
-        /// If the value is not a reflective collection, an exception is thrown
-        /// </summary>
-        /// <param name="value">Value to be queried</param>
-        /// <param name="property">Property that is access</param>
-        /// <returns>The reflective collection or an exception if the property is not
-        /// a reflective collection</returns>
-        public static IReflectiveCollection GetAsReflectiveCollection(
-            this IObject value,
-            string property)
-        {
-            var result = value.getOrDefault<IReflectiveCollection>(property);
-            result ??= CreateReflectiveCollectionObject(value, property);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets a certain property value as a reflective sequence.
-        /// If the value is not a reflective sequence, an exception is thrown
-        /// </summary>
-        /// <param name="value">Value to be queried</param>
-        /// <param name="property">Property that is access</param>
-        /// <returns>The reflective sequence or an exception if the property is not
-        /// a reflective collection</returns>
-        public static IReflectiveSequence GetAsReflectiveSequence(
-            this IObject value,
-            string property)
-        {
-            var result = value.getOrDefault<IReflectiveSequence>(property);
-            result ??= (IReflectiveSequence) CreateReflectiveCollectionObject(value, property);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the reflective collection of a property of the mof object
-        /// </summary>
-        /// <param name="mofObject">Mof Object whose property shall be considered as a reflective collection</param>
-        /// <param name="property">Name of the property</param>
-        /// <returns>The reflective collection containing the property</returns>
-        private static IReflectiveCollection CreateReflectiveCollectionObject(this IObject mofObject, string property)
-            => new MofReflectiveSequence((MofObject) mofObject, property);
 
         /// <summary>
         /// Gets a certain property value as a reflective sequence.

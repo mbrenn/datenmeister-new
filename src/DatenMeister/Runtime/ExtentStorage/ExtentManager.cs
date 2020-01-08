@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml.Linq;
 using Autofac;
 using BurnSystems.Logging;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -325,6 +322,10 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             lock (_extentStorageData.LoadedExtents)
             {
+
+                // Stores the last the exception
+                Exception lastException = null;
+                
                 var configurationLoader = new ExtentConfigurationLoader(_extentStorageData, this, _map);
                 List<Tuple<ExtentLoaderConfig, XElement>> loaded = null;
                 try
@@ -334,6 +335,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 catch (Exception exc)
                 {
                     Logger.Warn("Exception during loading of Extents: " + exc.Message);
+                    lastException = exc;
                 }
 
                 if (loaded == null)
@@ -368,6 +370,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                         {
                             Logger.Warn($"Loading extent of {extentLoaderConfig.extentUri} failed: {exc.Message}");
                             failedExtents.Add(extentLoaderConfig.extentUri);
+                            lastException = exc;
                         }
                     }
                 }
@@ -386,6 +389,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     {
                         Logger.Warn($"Loading extent of {extentLoaderConfig.extentUri} failed: {exc.Message}");
                         failedExtents.Add(extentLoaderConfig.extentUri);
+                        lastException = exc;
                     }
                 }
 
@@ -394,6 +398,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     Logger.Warn("Storing of extents is disabled due to failed loading");
                     _extentStorageData.FailedLoading = true;
+                    _extentStorageData.FailedLoadingException = lastException;
+                    _extentStorageData.FailedLoadingExtents = failedExtents;
                     throw new LoadingExtentsFailedException(failedExtents);
                 }
             }

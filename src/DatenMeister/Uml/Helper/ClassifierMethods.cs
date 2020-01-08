@@ -7,7 +7,6 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Integration;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -201,22 +200,22 @@ namespace DatenMeister.Uml.Helper
         /// <summary>
         /// Gets the information whether the specialized classifier can be generalized to the generalizedClassifier
         /// </summary>
-        /// <param name="specializedClassifer">Special class which is checked</param>
+        /// <param name="specializedClassifier">Special class which is checked</param>
         /// <param name="generalizedClassifier">The class against the specialized will be checked against. </param>
         /// <returns>true, if</returns>
-        public static bool IsSpecializedClassifierOf(IElement? specializedClassifer, IElement? generalizedClassifier)
+        public static bool IsSpecializedClassifierOf(IElement? specializedClassifier, IElement? generalizedClassifier)
         {
-            if (specializedClassifer == null || generalizedClassifier == null)
+            if (specializedClassifier == null || generalizedClassifier == null)
             {
                 return false;
             }
 
-            if (specializedClassifer.@equals(generalizedClassifier))
+            if (specializedClassifier.@equals(generalizedClassifier))
             {
                 return true;
             }
 
-            return GetGeneralizations(specializedClassifer)
+            return GetGeneralizations(specializedClassifier)
                 .Any(generalization => IsSpecializedClassifierOf(generalization, generalizedClassifier));
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms;
@@ -9,7 +8,6 @@ using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
-using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.TypeManager
@@ -40,8 +38,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 {
                     if (itemInExtentList.IsExtentSelectedInTreeview)
                     {
-                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
 
+                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
                         yield return new NewInstanceViewDefinition(classMetaClass);
 
                         yield return new ApplicationMenuButtonDefinition(
@@ -55,6 +53,22 @@ namespace DatenMeister.WPF.Modules.TypeManager
                             NavigationCategories.Type + "." + "Manager");
                     }
                 }
+            }
+
+            var listControl = viewExtensionTargetInformation.GetListViewForItemsTabForExtentType("Uml.Classes");
+            if (listControl != null)
+            {
+                var classMetaClass = listControl.Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                yield return
+                    new CollectionMenuButtonDefinition(
+                        "Create new Class",
+                        (x) =>
+                            NavigatorForItems.NavigateToNewItemForExtent(
+                                viewExtensionTargetInformation.NavigationHost,
+                                listControl.Extent,
+                                classMetaClass),
+                        string.Empty,
+                        NavigationCategories.Type);
             }
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl extentList
@@ -73,16 +87,16 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     yield return new NewInstanceViewDefinition(propertyMetaClass);
 
                     yield return
-                        new ApplicationMenuButtonDefinition(
+                        new CollectionMenuButtonDefinition(
                             "Create new Property",
-                            () =>
+                            (x) =>
                                 NavigatorForItems.NavigateToNewItemForPropertyCollection(
                                     viewExtensionTargetInformation.NavigationHost,
                                     selectedPackage,
                                     _UML._StructuredClassifiers._Class.ownedAttribute,
                                     propertyMetaClass),
                             string.Empty,
-                            NavigationCategories.Type + "." + "Manager");
+                            NavigationCategories.Type);
                 }
             }
         }

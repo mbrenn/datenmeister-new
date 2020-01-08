@@ -6,7 +6,6 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -27,7 +26,10 @@ namespace DatenMeister.Runtime.Workspaces
     {
         public static IObject FindElementByUri(this Workspace workspace, string uri)
         {
-            return FindElementByUri(workspace.extent.Select(x => x as IUriExtent).Where(x => x != null), uri);
+            return FindElementByUri(
+                workspace.extent.Select(x => x as IUriExtent)
+                .Where(x => x != null),
+                uri);
         }
 
         public static IObject FindElementByUri(this IEnumerable<IUriExtent> extents, string uri)
@@ -316,13 +318,13 @@ namespace DatenMeister.Runtime.Workspaces
         public static IUriExtent GetUserViewsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriUserViewExtent);
+            return mgmt.FindExtent(WorkspaceNames.UriUserFormExtent);
         }
 
         public static IUriExtent GetInternalViewsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriInternalViewExtent);
+            return mgmt.FindExtent(WorkspaceNames.UriInternalFormExtent);
         }
 
         /// <summary>

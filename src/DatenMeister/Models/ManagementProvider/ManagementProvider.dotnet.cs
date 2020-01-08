@@ -24,21 +24,21 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
-                var type = typeof(DatenMeister.Provider.ManagementProviders.Model.Extent);
+                var type = typeof(DatenMeister.Models.ManagementProvider.Extent);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Extent = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Provider.ManagementProviders.Model.Workspace);
+                var type = typeof(DatenMeister.Models.ManagementProvider.Workspace);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__Workspace = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Provider.ManagementProviders.Model.FormViewModels.CreateNewWorkspaceModel);
+                var type = typeof(DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__CreateNewWorkspaceModel = typeAsElement;

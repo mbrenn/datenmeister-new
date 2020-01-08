@@ -10,13 +10,8 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Modules.ViewFinder.Helper;
-using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -145,7 +140,7 @@ namespace DatenMeister.WPF.Navigation
             return window.NavigateTo(() =>
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    var usedForm = formCreator.CreateListForm(metaClassForForm, FormCreator.CreationMode.ByMetaClass);
+                    var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, CreationMode.ByMetaClass);
 
                     var viewExtensions = new List<ViewExtension>();
                     viewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
@@ -268,7 +263,7 @@ namespace DatenMeister.WPF.Navigation
                         {
                             // Gets the view definition
                             var fields = y.View
-                                .get<IReflectiveSequence>(_FormAndFields._Form.field);
+                                .get<IReflectiveSequence>(_FormAndFields._DetailForm.field);
                             var formFactory = new MofFactory(fields);
 
                             if (config.ContainerProperty == null) // ParentProperty is not given, so user gives property

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using BurnSystems.Logging;
@@ -24,6 +25,10 @@ namespace DatenMeister.WPF.Helper
         /// </summary>
         private readonly Action _action;
 
+        private static int _instanceCount;
+
+        private int _instance;
+
         /// <summary>
         /// Initializes a new instance of the DelayedRefreshDispatcher
         /// </summary>
@@ -33,6 +38,7 @@ namespace DatenMeister.WPF.Helper
         {
             _dispatcher = dispatcher;
             _action = action;
+            _instance = Interlocked.Add(ref _instanceCount, 1);
         }
 
         /// <summary>
@@ -84,10 +90,10 @@ namespace DatenMeister.WPF.Helper
                     _lastRefreshTime = DateTime.Now;
                 }
 
-                ClassLogger.Trace($"Dispatch in {MinDispatchTime.TotalMilliseconds} ms");
+                ClassLogger.Trace($"#{_instance}: Dispatch in {MinDispatchTime.TotalMilliseconds} ms");
                 Task.Delay(MinDispatchTime).ContinueWith(t =>
                 {
-                    ClassLogger.Trace("Got Called");
+                    ClassLogger.Trace($"#{_instance}: Got Called");
                     CheckForRefresh();
                 });
             }
@@ -110,14 +116,14 @@ namespace DatenMeister.WPF.Helper
                     {
                         var dispatchTime = MinDispatchTime - delta;
                         // But maximum delay has not occured
-                        ClassLogger.Trace($"Retry Dispatch in {dispatchTime.TotalMilliseconds} ms");
+                        ClassLogger.Trace($"#{_instance}: Retry Dispatch in {dispatchTime.TotalMilliseconds} ms");
 
                         Task.Delay(dispatchTime).ContinueWith(t => CheckForRefresh());
                         return;
                     }
                 }
 
-                ClassLogger.Trace($"Dispatched after {delta.TotalMilliseconds} ms");
+                ClassLogger.Trace($"#{_instance}: Dispatched after {delta.TotalMilliseconds} ms");
 
                 _lastRefreshTime = DateTime.MinValue;
                 _refreshTimeStamp = DateTime.MinValue;

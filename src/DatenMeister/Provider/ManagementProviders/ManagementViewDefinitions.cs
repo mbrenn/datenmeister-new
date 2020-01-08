@@ -2,19 +2,18 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.Forms.Model;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders
 {
     public class ManagementViewDefinitions
     {
-        private ViewLogic _viewLogic;
+        private FormLogic _formLogic;
 
-        public ManagementViewDefinitions(ViewLogic viewLogic)
+        public ManagementViewDefinitions(FormLogic formLogic)
         {
-            _viewLogic = viewLogic;
+            _formLogic = formLogic;
         }
 
         /// <summary>
@@ -73,7 +72,7 @@ namespace DatenMeister.Provider.ManagementProviders
 
             form.AddFields(type2Field);
 
-            var createdForm = DotNetConverter.ConvertToMofObject(_viewLogic.GetInternalViewExtent(), form) as IElement;
+            var createdForm = DotNetConverter.ConvertToMofObject(_formLogic.GetInternalFormExtent(), form) as IElement;
             return createdForm;
         }
     }

@@ -1,5 +1,5 @@
 ﻿using System;
-using DatenMeister.Modules.DataViews.Model;
+using DatenMeister.Models.DataViews;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;

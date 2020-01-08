@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using NUnit.Framework;
 
@@ -15,8 +15,8 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabiltyOfInternalViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
-            var internalViewExtent = viewLogic.GetInternalViewExtent();
+            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var internalViewExtent = viewLogic.GetInternalFormExtent();
 
             Assert.That(internalViewExtent, Is.Not.Null);
         }
@@ -25,8 +25,8 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabiltyOfUserViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
-            var userViewExtent = viewLogic.GetUserViewExtent();
+            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var userViewExtent = viewLogic.GetUserFormExtent();
 
             Assert.That(userViewExtent, Is.Not.Null);
         }
@@ -35,8 +35,8 @@ namespace DatenMeister.Tests.Modules
         public void TestGetAllViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
-            var viewExtent = viewLogic.GetUserViewExtent();
+            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             
             var listForm = viewExtent.FindInMeta<_FormAndFields>(x => x.__ListForm);
@@ -63,22 +63,5 @@ namespace DatenMeister.Tests.Modules
 
             Assert.That(newAmount - oldAmount, Is.EqualTo(1));
         }
-
-        /*
-         * Test is obsolete since the view associations are currently not stored in the xmi
-        [Test]
-        public void TestGetAllViewAssociations()
-        {
-            var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<ViewLogic>();
-            var n = 0;
-
-            foreach (var _ in viewLogic.GetAllViewAssociations())
-            {
-                n++;
-            }
-
-            Assert.That(n, Is.GreaterThan(0));
-        }*/
     }
 }

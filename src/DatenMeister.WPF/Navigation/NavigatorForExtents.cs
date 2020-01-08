@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using System.Windows.Automation;
-using System.Windows.Forms;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Extents;
@@ -85,11 +83,11 @@ namespace DatenMeister.WPF.Navigation
             INavigationHost window,
             string workspaceId)
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var navigateToItemConfig = new NavigateToItemConfig
             {
                 FormDefinition =
-                    viewLogic.GetInternalViewExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
+                    viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
             };
 
             if (navigateToItemConfig.FormDefinition == null)

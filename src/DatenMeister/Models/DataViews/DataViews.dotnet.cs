@@ -24,56 +24,56 @@ namespace DatenMeister.Models.DataViews
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.DataView);
+                var type = typeof(DatenMeister.Models.DataViews.DataView);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__DataView = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.ViewNode);
+                var type = typeof(DatenMeister.Models.DataViews.ViewNode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ViewNode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.SourceExtentNode);
+                var type = typeof(DatenMeister.Models.DataViews.SourceExtentNode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__SourceExtentNode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.FlattenNode);
+                var type = typeof(DatenMeister.Models.DataViews.FlattenNode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FlattenNode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.FilterPropertyNode);
+                var type = typeof(DatenMeister.Models.DataViews.FilterPropertyNode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FilterPropertyNode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.FilterTypeNode);
+                var type = typeof(DatenMeister.Models.DataViews.FilterTypeNode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FilterTypeNode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.ComparisonMode);
+                var type = typeof(DatenMeister.Models.DataViews.ComparisonMode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ComparisonMode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Modules.DataViews.Model.SelectPathNode);
+                var type = typeof(DatenMeister.Models.DataViews.SelectPathNode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__SelectPathNode = typeAsElement;

@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Input;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -13,7 +14,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -22,6 +23,8 @@ using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Navigation;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -57,7 +60,7 @@ namespace DatenMeister.WPF.Windows
         /// Stores the view definition as requested by the creator of the window.
         /// This view definition may be overridden by the OverridingViewDefinition
         /// </summary>
-        private ViewDefinition? _requestedViewDefinition;
+        private FormDefinition? _requestedViewDefinition;
 
         /// <summary>
         /// Gets a helper for menu
@@ -74,7 +77,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Gets or sets the form that is overriding the default form
         /// </summary>
-        public ViewDefinition? OverridingViewDefinition { get; private set; }
+        public FormDefinition? OverridingViewDefinition { get; private set; }
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -82,7 +85,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="form"></param>
         public void SetOverridingForm(IElement form)
         {
-            OverridingViewDefinition = new ViewDefinition(form);
+            OverridingViewDefinition = new FormDefinition(form);
             RecreateView();
         }
 
@@ -148,7 +151,7 @@ namespace DatenMeister.WPF.Windows
 
             // 3) Ask the plugin
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Detail)
+            var data = new ViewExtensionTargetInformation()
             {
                 NavigationGuest = navigationGuest,
                 NavigationHost = this
@@ -310,12 +313,12 @@ namespace DatenMeister.WPF.Windows
         /// Opens the form by creating the inner dialog
         /// </summary>
         /// <param name="element"></param>
-        /// <param name="viewDefinition"></param>
+        /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject? element, ViewDefinition viewDefinition, IReflectiveCollection? container = null)
+        public void SetContent(IObject? element, FormDefinition formDefinition, IReflectiveCollection? container = null)
         {
             element ??= InMemoryObject.CreateEmpty();
-            CreateDetailForm(element, viewDefinition, container);
+            CreateDetailForm(element, formDefinition, container);
         }
 
         /// <summary>
@@ -326,17 +329,17 @@ namespace DatenMeister.WPF.Windows
         {
             SetContent(
                 InMemoryObject.CreateEmpty(),
-                new ViewDefinition(formDefinition));
+                new FormDefinition(formDefinition));
         }
 
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(IObject detailElement, ViewDefinition viewDefinition, IReflectiveCollection? container = null)
+        private void CreateDetailForm(IObject detailElement, FormDefinition formDefinition, IReflectiveCollection? container = null)
         {
             DetailElement = detailElement;
             ContainerCollection = container;
-            _requestedViewDefinition = viewDefinition;
+            _requestedViewDefinition = formDefinition;
             
             RecreateView();
         }
@@ -344,12 +347,12 @@ namespace DatenMeister.WPF.Windows
         private void RecreateView()
         {
             IObject? effectiveForm = null;
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
 
             // Checks, if there is an overriding form 
             if (OverridingViewDefinition != null)
             {
-                if (OverridingViewDefinition.Mode == ViewDefinitionMode.Specific)
+                if (OverridingViewDefinition.Mode == FormDefinitionMode.Specific)
                 {
                     effectiveForm = OverridingViewDefinition.Element;
                 }
@@ -362,9 +365,9 @@ namespace DatenMeister.WPF.Windows
             // If not, take the standard procedure
             if (effectiveForm == null)
             {
-                _requestedViewDefinition ??= new ViewDefinition(ViewDefinitionMode.Default);
+                _requestedViewDefinition ??= new FormDefinition(FormDefinitionMode.Default);
                 
-                if (_requestedViewDefinition.Mode == ViewDefinitionMode.Specific)
+                if (_requestedViewDefinition.Mode == FormDefinitionMode.Specific)
                 {
                     effectiveForm = _requestedViewDefinition.Element;
                 }
@@ -409,6 +412,14 @@ namespace DatenMeister.WPF.Windows
                 }
 
                 RebuildNavigation();
+            }
+        }
+
+        private void DetailFormWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
             }
         }
     }

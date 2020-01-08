@@ -11,7 +11,8 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
@@ -45,11 +46,11 @@ namespace DatenMeister.WPF.Forms.Lists
         /// Requests the form for the workspace
         /// </summary>
         /// <returns>Requested form</returns>
-        internal static ViewDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
+        internal static FormDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var formElement = viewLogic.GetInternalViewExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var formElement = viewLogic.GetInternalFormExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
 
             if (formElement == null)
             {
@@ -58,10 +59,10 @@ namespace DatenMeister.WPF.Forms.Lists
                 var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
                 formElement = viewLogic.GetExtentFormForSubforms(
                     viewLogic.GetListFormForExtent(extent, formAndFields.__Workspace,
-                        ViewDefinitionMode.Default));
+                        FormDefinitionMode.Default));
             }
 
-            var viewDefinition = new ViewDefinition("Workspaces", formElement)
+            var viewDefinition = new FormDefinition("Workspaces", formElement)
             {
                 TabViewExtensionsFunction = form =>
                 {
@@ -140,10 +141,10 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <param name="navigationHost">Defines the navigation host being used for the window</param>
         /// <returns>The created form</returns>
-        internal static ViewDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
+        internal static FormDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var viewExtent = viewLogic.GetInternalViewExtent();
+            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewExtent = viewLogic.GetInternalFormExtent();
             var result =
                 NamedElementMethods.GetByFullName(
                     viewExtent,
@@ -156,13 +157,13 @@ namespace DatenMeister.WPF.Forms.Lists
                 var listForm = viewLogic.GetListFormForExtent(
                     extent, 
                     formAndFields.__Extent,
-                    ViewDefinitionMode.Default);
+                    FormDefinitionMode.Default);
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
 
                 result = viewLogic.GetExtentFormForSubforms(listForm);
             }
 
-            var viewDefinition = new ViewDefinition("Extents", result)
+            var viewDefinition = new FormDefinition("Extents", result)
             {
                 TabViewExtensionsFunction = (form) => new List<ViewExtension>
                 {

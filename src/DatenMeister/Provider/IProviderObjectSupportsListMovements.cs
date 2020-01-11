@@ -1,5 +1,12 @@
+#nullable enable
+
 namespace DatenMeister.Provider
 {
+    /// <summary>
+    /// This interface shall be implemented by all provider objects which directly support the movement
+    /// of objects within the lists. It speeds up the movement and avoids the complete removing and inserting
+    /// of elements when user or an application requires the movement
+    /// </summary>
     public interface IProviderObjectSupportsListMovements
     {
         /// <summary>

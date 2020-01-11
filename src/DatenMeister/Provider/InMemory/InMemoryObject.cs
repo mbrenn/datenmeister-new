@@ -75,7 +75,7 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
-        private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
+        private readonly Dictionary<string, object?> _values = new Dictionary<string, object?>();
 
         /// <inheritdoc />
         public string MetaclassUri { get; set; }
@@ -92,7 +92,7 @@ namespace DatenMeister.Provider.InMemory
             MetaclassUri = metaclassUri ?? string.Empty;
         }
 
-        private static void CheckValue(object value)
+        private static void CheckValue(object? value)
         {
             if (value is MofReflectiveSequence || value is MofObject)
             {
@@ -107,7 +107,7 @@ namespace DatenMeister.Provider.InMemory
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
-        public object GetProperty(string property)
+        public object? GetProperty(string property)
         {
             if (_values.TryGetValue(property, out var result))
             {
@@ -120,7 +120,7 @@ namespace DatenMeister.Provider.InMemory
         public bool IsPropertySet(string property) =>
             _values.ContainsKey(property);
 
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             CheckValue(value);
             _values[property] = value;
@@ -140,7 +140,7 @@ namespace DatenMeister.Provider.InMemory
         {
             if (IsPropertySet("name"))
             {
-                return GetProperty("name").ToString();
+                return GetProperty("name")?.ToString() ?? string.Empty;
             }
 
             var builder = new StringBuilder();

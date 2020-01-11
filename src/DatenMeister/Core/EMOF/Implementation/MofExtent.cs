@@ -163,7 +163,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                     foreach (var child in (IEnumerable<object>) value)
                     {
                         var valueForSetting = ConvertForSetting(this, child);
-                        nullObject.AddToProperty(property, valueForSetting);
+                        if (valueForSetting != null)
+                        {
+                            nullObject.AddToProperty(property, valueForSetting);
+                        }
                     }
                 }
                 else

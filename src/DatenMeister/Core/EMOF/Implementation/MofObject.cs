@@ -168,7 +168,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         internal static object? ConvertToMofObject(
             MofObject container,
             string property,
-            object value,
+            object? value,
             bool noReferences = false)
         {
             if (value == null)
@@ -228,6 +228,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                 foreach (var child in valueAsEnumeration)
                 {
                     var valueForSetting = MofExtent.ConvertForSetting(this, child);
+                    if (valueForSetting == null)
+                    {
+                        //Null elements will not be set
+                        continue;
+                    }
+                    
                     ProviderObject.AddToProperty(property, valueForSetting);
 
                     // Checks, if the element that has been set is not associated to a container.
@@ -288,7 +294,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // Check by recursion
-            IProviderObject parentContainer = parentObject;
+            IProviderObject? parentContainer = parentObject;
             for (var n = 0; n < 1000; n++)
             {
                 parentContainer = parentContainer.GetContainer();

@@ -150,7 +150,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             if (!string.IsNullOrEmpty(id))
             {
-                result.Id = id;
+                result.Id = id ?? string.Empty;
             }
 
             return new MofElement(result, Extent);

@@ -15,14 +15,10 @@ namespace DatenMeister.WPF.Navigation.Validators
             
             if (!Uri.TryCreate(element.getOrDefault<string>("uri"), UriKind.Absolute, out uri))
             {
-                first = new ValidatorResult(ValidatorState.Failed, "Uri is not a uri")
-                {
-                    PropertyName = "uri"
-                };
+                first = new ValidatorResult(ValidatorState.Failed, "Uri is not a uri", "uri");
             }
 
-            var result =
-                new ValidatorResult(ValidatorState.Failed, "Not ok");
+            var result = new ValidatorResult(ValidatorState.Failed, "Not ok");
             if (first == null)
             {
                 first = result;

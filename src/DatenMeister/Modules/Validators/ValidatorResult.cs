@@ -12,10 +12,11 @@ namespace DatenMeister.Modules.Validators
     
     public class ValidatorResult
     {
-        public ValidatorResult(ValidatorState state, string message)
+        public ValidatorResult(ValidatorState state, string message, string propertyName = "")
         {
             State = state;
             Message = message;
+            PropertyName = propertyName;
         }
 
         /// <summary>
@@ -26,17 +27,16 @@ namespace DatenMeister.Modules.Validators
         /// <summary>
         /// Defines the message for the user
         /// </summary>
-        public string Message { get; set; }
-        
+        public string Message { get; }
+
         /// <summary>
         /// If there is one specific property associated to the validation, take this
         /// </summary>
-        public string? PropertyName { get; set; }
-        
+        public string? PropertyName { get; }
+
         /// <summary>
         /// Gets the next validator result as a chained list
         /// </summary>
         public ValidatorResult? Next { get; set; }
-
     }
 }

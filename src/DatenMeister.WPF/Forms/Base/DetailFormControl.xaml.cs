@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -29,6 +31,14 @@ using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
+using Button = System.Windows.Controls.Button;
+using Clipboard = System.Windows.Clipboard;
+using ContextMenu = System.Windows.Controls.ContextMenu;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
+using TextBox = System.Windows.Controls.TextBox;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -108,7 +118,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the list of validators
         /// </summary>
-        public readonly IEnumerable<IElementValidator> ElementValidators = new List<IElementValidator>();
+        public readonly IList<IElementValidator> ElementValidators = new List<IElementValidator>();
 
         public IEnumerable<IObject> GetSelectedItems()
         {
@@ -591,7 +601,6 @@ namespace DatenMeister.WPF.Forms.Base
                         OnElementSaved();
                     }
                 }
-                
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.ToString());
@@ -611,6 +620,7 @@ namespace DatenMeister.WPF.Forms.Base
             var inMemory = InMemoryObject.CreateEmpty(detailElement.GetExtentOf());
             StoreDialogContentIntoElement(inMemory);
             var success = true;
+            var messages = new StringBuilder();
 
             foreach (var validator in ElementValidators)
             {
@@ -625,10 +635,37 @@ namespace DatenMeister.WPF.Forms.Base
 
                     if (result.State != ValidatorState.Ok)
                     {
-                        MessageBox.Show(result.Message);
+                        if (!string.IsNullOrEmpty(result.PropertyName))
+                        {
+                            messages.Append($"- {result.PropertyName}: {result.Message}\r\n");
+                        }
+                        else
+                        {
+                            messages.Append($"- {result.Message}\r\n");
+                        }
                     }
 
                     result = result.Next;
+                }
+            }
+
+            if (messages.Length > 0)
+            {
+                if (success)
+                {
+                    if (MessageBox.Show(
+                            $"The following recommendations were given:\r\n\r\n{messages}\r\nContinue saving and closing?",
+                            "Field validation with recommendation", MessageBoxButton.YesNo, MessageBoxImage.Information)
+                        == MessageBoxResult.No)
+                    {
+                        success = false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"The following errors were given:\r\n\r\n{messages}",
+                        "Field validation failed", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             

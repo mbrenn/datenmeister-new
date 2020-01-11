@@ -14,6 +14,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.Validators;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -401,12 +402,12 @@ namespace DatenMeister.WPF.Windows
             if (effectiveForm != null)
             {
                 var control = new DetailFormControl {NavigationHost = this};
-                if (formDefinition != null && _requestedFormDefinition != null)
+                control.SetContent(DetailElement, effectiveForm, ContainerCollection);
+                foreach (var validator in formDefinition.Validators)
                 {
-                    formDefinition.Validators.AddRange(_requestedFormDefinition.Validators);
+                    control.ElementValidators.Add(validator);
                 }
 
-                control.SetContent(DetailElement, effectiveForm, ContainerCollection);
                 control.UpdateView();
                 control.ElementSaved += (x, y) =>
                 {

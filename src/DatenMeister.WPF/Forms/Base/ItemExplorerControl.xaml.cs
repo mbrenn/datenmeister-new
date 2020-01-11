@@ -681,7 +681,11 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void NavigationTreeView_OnItemChosen(object sender, ItemEventArgs e)
         {
-            NavigateToElement(e.Item);
+            var item = e.Item;
+            if (item != null)
+            {
+                NavigateToElement(item);
+            }
         }
 
         private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
@@ -708,8 +712,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="selectedElement">Selected element</param>
         private void NavigateToElement(IObject selectedElement)
         {
-            if (selectedElement == null) return;
-
             NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
         }
 

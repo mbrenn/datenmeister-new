@@ -1,9 +1,14 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using Autofac;
@@ -15,6 +20,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.UserInteractions;
+using DatenMeister.Modules.Validators;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -25,6 +31,14 @@ using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
+using Button = System.Windows.Controls.Button;
+using Clipboard = System.Windows.Clipboard;
+using ContextMenu = System.Windows.Controls.ContextMenu;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
+using TextBox = System.Windows.Controls.TextBox;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -47,7 +61,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Stores the title of the form control. If not overridden, a default
         /// title will be created
         /// </summary>
-        private string _internalTitle;
+        private string? _internalTitle;
 
         public DetailFormControl()
         {
@@ -58,18 +72,18 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject? DetailElement { get; set; }
 
         /// <summary>
         /// Gets or sets the container for the Detail Element. It will be used to
         /// delete the item, if required.
         /// </summary>
-        public IReflectiveCollection DetailElementContainer { get; set; }
+        public IReflectiveCollection? DetailElementContainer { get; set; }
 
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        public IObject EffectiveForm { get; set; }
+        public IObject? EffectiveForm { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
@@ -79,7 +93,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the attached element which is allocated in the navigation host
         /// </summary>
-        public IElement AttachedElement {get; set; }
+        public IElement? AttachedElement {get; set; }
 
         /// <summary>
         ///     Gets the default size
@@ -99,17 +113,25 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public List<IDetailField> AttachedItemFields { get; } = new List<IDetailField>();
 
-        public IObject GetSelectedItem() => DetailElement;
+        public IObject? GetSelectedItem() => DetailElement;
+        
+        /// <summary>
+        /// Stores the list of validators
+        /// </summary>
+        public readonly IList<IElementValidator> ElementValidators = new List<IElementValidator>();
 
         public IEnumerable<IObject> GetSelectedItems()
         {
-            yield return DetailElement;
+            if (DetailElement != null)
+            {
+                yield return DetailElement;
+            }
         }
 
         /// <summary>
         ///     Gets or sets the navigation host
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost? NavigationHost { get; set; }
 
         /// <summary>
         /// Gets the title for the control
@@ -120,7 +142,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 if (!string.IsNullOrEmpty(_internalTitle))
                 {
-                    return _internalTitle;
+                    return _internalTitle ?? string.Empty;
                 }
 
                 return DetailElement == null
@@ -199,6 +221,12 @@ namespace DatenMeister.WPF.Forms.Base
             // Local methods for the buttons
             void ViewConfig()
             {
+                if (EffectiveForm == null)
+                {
+                    MessageBox.Show("EffectiveForm is not set");
+                    return;
+                }
+                
                 var dlg = new ItemXmlViewWindow
                 {
                     SupportWriting = true,
@@ -265,24 +293,17 @@ namespace DatenMeister.WPF.Forms.Base
         ///     This event handler is thrown, when the user clicks on 'Save' and after the properties are
         ///     transferred from form display to element
         /// </summary>
-        public event EventHandler ElementSaved;
+        public event EventHandler? ElementSaved;
 
         /// <summary>
         ///     This event is called, when the view for the detail view is defined
         ///     While handling the event, the view itself may be changed
         /// </summary>
-        public event EventHandler<ViewEventArgs> ViewDefined;
+        public event EventHandler<ViewEventArgs>? ViewDefined;
 
         private void DetailFormControl_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadingCompleted?.Invoke(this, EventArgs.Empty);
         }
-
-        /// <summary>
-        /// This event is called, after the Loaded event has been executed.
-        /// This includes the creation and evaluation of forms and the filling out of content
-        /// </summary>
-        public event EventHandler LoadingCompleted;
 
         /// <summary>
         ///     This method gets called, when a new item is added or an existing item was modified.
@@ -293,7 +314,7 @@ namespace DatenMeister.WPF.Forms.Base
             OnViewDefined();
         }
 
-        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection collection = null)
+        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection? collection = null)
         {
             DetailElement = value;
             EffectiveForm = detailForm;
@@ -530,8 +551,11 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Adds the default cancel and save buttons
         /// </summary>
         /// <param name="saveText">Text which is shown on the save button. Default value is "Save"</param>
-        public void AddDefaultButtons(string saveText = null)
+        public void AddDefaultButtons(string? saveText = null)
         {
+            if (DetailElement == null)
+                throw new NotImplementedException("DetailElement == null");
+            
             saveText ??= EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
             saveText ??= "Save";
 
@@ -539,6 +563,9 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 AddGenericButton("New Property", () =>
                 {
+                    if (EffectiveForm == null)
+                        throw new NotImplementedException("EffectiveForm == null");
+                    
                     var fieldKey = new TextBox();
                     var fieldValue = new TextboxField();
                     var flags = new FieldParameter();
@@ -566,15 +593,95 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 try
                 {
-                    StoreDialogContentIntoElement(DetailElement);
+                    var validityOfContent = CheckValidityOfContent(DetailElement);
 
-                    OnElementSaved();
+                    if (validityOfContent)
+                    {
+                        StoreDialogContentIntoElement(DetailElement);
+                        OnElementSaved();
+                    }
                 }
                 catch (Exception exc)
                 {
                     MessageBox.Show(exc.ToString());
                 }
             }).IsDefault = true;
+        }
+
+        /// <summary>
+        /// Checks, if the current content of the detail form is valid.
+        /// If the content is not valid, then a message can be returned to the user and the closing of the window
+        /// will not be performed
+        /// </summary>
+        /// <param name="detailElement">Element to be set</param>
+        /// <returns>true, if the validation was successful</returns>
+        private bool CheckValidityOfContent(IObject? detailElement)
+        {
+            var inMemory = InMemoryObject.CreateEmpty(detailElement.GetExtentOf());
+            StoreDialogContentIntoElement(inMemory);
+            var success = true;
+            var messages = new StringBuilder();
+            var nrRecommendations = 0;
+            var nrErrors = 0;
+            var recommendations = new StringBuilder();
+            var errors = new StringBuilder();
+
+            foreach (var validator in ElementValidators)
+            {
+                ValidatorResult? result = validator.ValidateElement(inMemory);
+
+
+                while (result != null)
+                {
+                    switch (result.State)
+                    {
+                        case ValidatorState.Recommendation:
+                            recommendations.Append($"- {result.PropertyName}: {result.Message}\r\n");
+                            nrRecommendations++;
+                            break;
+                        case ValidatorState.Error:
+                            errors.Append($"- {result.PropertyName}: {result.Message}\r\n");
+                            nrErrors++;
+                            success = false;
+                            break;
+                    }
+
+                    result = result.Next;
+                }
+            }
+
+            if (nrErrors > 0)
+            {
+                messages.Append($"The following errors were given:\r\n{errors}\r\n");
+            }
+            
+            if (nrRecommendations > 0)
+            {
+                messages.Append($"The following recommendations were given:\r\n{recommendations}\r\n");
+            }
+            
+            if (messages.Length > 0)
+            {
+                if (nrErrors == 0)
+                {
+                    if (MessageBox.Show(
+                            $"{messages}\r\nContinue saving and closing?",
+                            "Field validation with recommendation", MessageBoxButton.YesNo, MessageBoxImage.Information)
+                        == MessageBoxResult.No)
+                    {
+                        success = false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"{messages}\r\nPlease fix the given errors before submitting the form",
+                        "Field validation failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            
+            // Default: Everything is valid
+            return success;
         }
 
         /// <summary>
@@ -659,6 +766,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         public void OnViewDefined()
         {
+            if (EffectiveForm == null)
+                throw new InvalidOperationException("EffectiveForm == null");
+            
             OnViewDefined(new ViewEventArgs(EffectiveForm));
         }
 
@@ -691,11 +801,17 @@ namespace DatenMeister.WPF.Forms.Base
                 if (extension is ItemButtonDefinition itemButtonDefinition)
                 {
                     AddGenericButton(itemButtonDefinition.Name,
-                        () => itemButtonDefinition.OnPressed(DetailElement));
+                        () =>
+                        {
+                            if (DetailElement != null)
+                            {
+                                itemButtonDefinition.OnPressed(DetailElement);
+                            }
+                        });
                 }
             }
         }
 
-        public IObject Item => DetailElement;
+        public IObject? Item => DetailElement;
     }
 }

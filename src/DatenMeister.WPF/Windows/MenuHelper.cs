@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,8 +19,7 @@ namespace DatenMeister.WPF.Windows
 
         private readonly Menu _menu;
 
-        private readonly List<MenuHelperItem> _buttons =
-            new List<MenuHelperItem>();
+        private readonly List<MenuHelperItem> _buttons = new List<MenuHelperItem>();
 
         private class MenuHelperItem
         {
@@ -33,8 +33,14 @@ namespace DatenMeister.WPF.Windows
             /// Converts the item to a string
             /// </summary>
             /// <returns></returns>
-            public override string ToString()
-                => $"HelperItem: {Definition}";
+            public override string ToString() => $"HelperItem: {Definition}";
+
+            public MenuHelperItem(NavigationButtonDefinition definition, MenuItem button, RoutedEventHandler clickEvent)
+            {
+                Definition = definition;
+                Button = button;
+                ClickEvent = clickEvent;
+            }
         }
 
         public MenuHelper(Menu menu, NavigationScope navigationScope) : base(navigationScope)
@@ -60,7 +66,8 @@ namespace DatenMeister.WPF.Windows
                 return;
             }
 
-            string tabName, groupName;
+            string tabName;
+            string? groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');
             if (indexOfSemicolon == -1)
             {
@@ -117,15 +124,10 @@ namespace DatenMeister.WPF.Windows
                 IsEnabled = definition.IsEnabled
             };
 
-            var item = new MenuHelperItem
-            {
-                Definition = definition,
-                Button = button,
-                ClickEvent = (x, y) =>
-                {
-                    clickMethod();
-                }
-            };
+            var item = new MenuHelperItem(
+                definition,
+                button, 
+                (x, y) => { clickMethod(); });
             _buttons.Add(item);
             button.Click += item.ClickEvent;
 

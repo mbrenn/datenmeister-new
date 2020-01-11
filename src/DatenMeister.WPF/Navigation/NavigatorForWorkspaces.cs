@@ -17,6 +17,7 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
+using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
@@ -66,7 +67,7 @@ namespace DatenMeister.WPF.Navigation
                 navigationHost,
                 new NavigateToItemConfig
                 {
-                    FormDefinition = formElement
+                    Form = new FormDefinition(formElement)
                 });
 
             if (result.Result == NavigationResult.Saved)

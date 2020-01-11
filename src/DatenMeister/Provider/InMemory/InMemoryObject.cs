@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
@@ -12,7 +13,7 @@ namespace DatenMeister.Provider.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class InMemoryObject : IProviderObject
+    public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMovements
     {
         public IProvider Provider { get; }
 
@@ -222,6 +223,50 @@ namespace DatenMeister.Provider.InMemory
         public void EmptyListForProperty(string property)
         {
             _values[property] = new List<object>();
+        }
+
+        public bool MoveElementUp(string property, object value)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            
+            CheckValue(value);
+            var result = GetListOfProperty(property);
+            for (var n = 1; n < result.Count; n++)
+            {
+                if (result[n]?.Equals(value) == true)
+                {
+                    var temp = result[n - 1];
+                    result[n - 1] = value;
+                    result[n] = temp;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool MoveElementDown(string property, object value)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            CheckValue(value);
+            var result = GetListOfProperty(property);
+            for (var n = 0; n < result.Count - 1; n++)
+            {
+                if (result[n]?.Equals(value) == true)
+                {
+                    var temp = result[n + 1];
+                    result[n + 1] = value;
+                    result[n] = temp;
+
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

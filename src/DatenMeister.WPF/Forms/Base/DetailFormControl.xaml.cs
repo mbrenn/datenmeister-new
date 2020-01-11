@@ -621,40 +621,51 @@ namespace DatenMeister.WPF.Forms.Base
             StoreDialogContentIntoElement(inMemory);
             var success = true;
             var messages = new StringBuilder();
+            var nrRecommendations = 0;
+            var nrErrors = 0;
+            var recommendations = new StringBuilder();
+            var errors = new StringBuilder();
 
             foreach (var validator in ElementValidators)
             {
                 ValidatorResult? result = validator.ValidateElement(inMemory);
 
+
                 while (result != null)
                 {
-                    if (result.State == ValidatorState.Failed)
+                    switch (result.State)
                     {
-                        success = false;
-                    }
-
-                    if (result.State != ValidatorState.Ok)
-                    {
-                        if (!string.IsNullOrEmpty(result.PropertyName))
-                        {
-                            messages.Append($"- {result.PropertyName}: {result.Message}\r\n");
-                        }
-                        else
-                        {
-                            messages.Append($"- {result.Message}\r\n");
-                        }
+                        case ValidatorState.Recommendation:
+                            recommendations.Append($"- {result.PropertyName}: {result.Message}\r\n");
+                            nrRecommendations++;
+                            break;
+                        case ValidatorState.Error:
+                            errors.Append($"- {result.PropertyName}: {result.Message}\r\n");
+                            nrErrors++;
+                            success = false;
+                            break;
                     }
 
                     result = result.Next;
                 }
             }
 
+            if (nrErrors > 0)
+            {
+                messages.Append($"The following errors were given:\r\n{errors}\r\n");
+            }
+            
+            if (nrRecommendations > 0)
+            {
+                messages.Append($"The following recommendations were given:\r\n{recommendations}\r\n");
+            }
+            
             if (messages.Length > 0)
             {
-                if (success)
+                if (nrErrors == 0)
                 {
                     if (MessageBox.Show(
-                            $"The following recommendations were given:\r\n\r\n{messages}\r\nContinue saving and closing?",
+                            $"{messages}\r\nContinue saving and closing?",
                             "Field validation with recommendation", MessageBoxButton.YesNo, MessageBoxImage.Information)
                         == MessageBoxResult.No)
                     {
@@ -664,7 +675,7 @@ namespace DatenMeister.WPF.Forms.Base
                 else
                 {
                     MessageBox.Show(
-                        $"The following errors were given:\r\n\r\n{messages}",
+                        $"{messages}\r\nPlease fix the given errors before submitting the form",
                         "Field validation failed", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }

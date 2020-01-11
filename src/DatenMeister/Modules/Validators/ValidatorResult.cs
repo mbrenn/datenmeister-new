@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+using BurnSystems.Collections;
+
 #nullable enable
 
 namespace DatenMeister.Modules.Validators
@@ -5,12 +8,12 @@ namespace DatenMeister.Modules.Validators
     public enum ValidatorState
     {
         NotValidated,
-        Ok, 
-        Recommendation, 
-        Failed
+        Ok,
+        Recommendation,
+        Error
     }
-    
-    public class ValidatorResult
+
+    public class ValidatorResult : IChainNode<ValidatorResult>
     {
         public ValidatorResult(ValidatorState state, string message, string propertyName = "")
         {
@@ -23,7 +26,7 @@ namespace DatenMeister.Modules.Validators
         /// Gets or sets the state of the validation
         /// </summary>
         public ValidatorState State { get; }
-        
+
         /// <summary>
         /// Defines the message for the user
         /// </summary>

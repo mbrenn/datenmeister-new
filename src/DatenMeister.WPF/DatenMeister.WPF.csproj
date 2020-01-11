@@ -152,7 +152,6 @@
     <Compile Include="Navigation\ProgressBox\WpfProgressBox.xaml.cs">
       <DependentUpon>WpfProgressBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Navigation\Validators\NewXmiExtentValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Windows\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
@@ -284,6 +283,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Navigation\Validators" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

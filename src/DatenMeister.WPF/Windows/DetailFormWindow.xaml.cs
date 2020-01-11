@@ -296,9 +296,6 @@ namespace DatenMeister.WPF.Windows
             {
                 throw new InvalidOperationException("Final event was already thrown");
             }
-            
-            if (detailElement == null)
-                throw new InvalidOperationException("detailElement == null");
 
             _finalEventsThrown = true;
             Cancelled?.Invoke(this,
@@ -403,9 +400,12 @@ namespace DatenMeister.WPF.Windows
             {
                 var control = new DetailFormControl {NavigationHost = this};
                 control.SetContent(DetailElement, effectiveForm, ContainerCollection);
-                foreach (var validator in formDefinition.Validators)
+                if (formDefinition != null)
                 {
-                    control.ElementValidators.Add(validator);
+                    foreach (var validator in formDefinition.Validators)
+                    {
+                        control.ElementValidators.Add(validator);
+                    }
                 }
 
                 control.UpdateView();

@@ -18,7 +18,13 @@ namespace DatenMeister.Tests.Provider
         {
             var provider = new InMemoryProvider();
             ProviderTestHelper.TestListsWithObjects(provider);
-            
+        }
+
+        [Test]
+        public void TestMovements()
+        {
+            var provider = new InMemoryProvider();
+            ProviderTestHelper.TestListMovement(provider);
         }
     }
 }

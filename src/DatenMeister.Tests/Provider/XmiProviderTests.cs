@@ -20,6 +20,12 @@ namespace DatenMeister.Tests.Provider
             var provider = new XmiProvider();
             ProviderTestHelper.TestListsWithObjects(provider);
         }
-        
+
+        [Test]
+        public void TestMovements()
+        {
+            var provider = new XmiProvider();
+            ProviderTestHelper.TestListMovement(provider);
+        }
     }
 }

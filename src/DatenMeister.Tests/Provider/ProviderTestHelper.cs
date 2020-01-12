@@ -34,7 +34,6 @@ namespace DatenMeister.Tests.Provider
 
         }
 
-
         public static void TestListsWithObjects(IProvider provider)
         {
             var element = provider.CreateElement(null);
@@ -66,6 +65,74 @@ namespace DatenMeister.Tests.Provider
             element.EmptyListForProperty("list");
             asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
             Assert.That(asEnumerable.Count, Is.EqualTo(0));
+        }
+        
+
+        public static void TestListMovement(IProvider provider)
+        {
+            var element = provider.CreateElement(null);
+            var child1 = provider.CreateElement(null);
+            child1.SetProperty("name", "a");
+            var child2 = provider.CreateElement(null);
+            child2.SetProperty("name", "b");
+            var child3 = provider.CreateElement(null);
+            child3.SetProperty("name", "c");
+
+            element.AddToProperty("list", child1);
+            element.AddToProperty("list", child2);
+            element.AddToProperty("list", child3);
+            
+            var elementMovements = element as IProviderObjectSupportsListMovements;
+            Assert.That(elementMovements, Is.Not.Null);
+
+            var asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
+            Assert.That(asEnumerable.Count, Is.EqualTo(3));
+
+            Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("a"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("b"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("c"));
+
+            elementMovements.MoveElementUp("list", child2);
+            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
+            Assert.That(asEnumerable.Count, Is.EqualTo(3));
+
+            Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("b"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("a"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("c"));
+            
+            elementMovements.MoveElementUp("list", child2);
+            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
+            Assert.That(asEnumerable.Count, Is.EqualTo(3));
+
+            Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("b"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("a"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("c"));
+
+
+            elementMovements.MoveElementUp("list", child3);
+            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
+            Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("b"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("c"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("a"));
+            
+            elementMovements.MoveElementDown("list", child3);
+            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
+            Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("b"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("a"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("c"));
+            
+            elementMovements.MoveElementDown("list", child3);
+            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
+            Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("b"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("a"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("c"));
+            
+            elementMovements.MoveElementDown("list", child2);
+            asEnumerable = DotNetHelper.AsEnumeration(element.GetProperty("list")).OfType<IProviderObject>().ToList();
+            Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("a"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("b"));
+            Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("c"));
+
         }
     }
 }

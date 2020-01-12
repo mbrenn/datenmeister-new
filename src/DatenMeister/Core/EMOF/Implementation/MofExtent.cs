@@ -381,6 +381,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <summary>
+        /// Converts the given value to a value which can be used for the provoder
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>Converted value</returns>
+        public static object ConvertForProviderUsage(object value)
+        {
+            if (value is MofObject asMofObject)
+            {
+                return asMofObject.ProviderObject;
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject.
         /// An arbitrary object shall be stored into the database
         /// </summary>

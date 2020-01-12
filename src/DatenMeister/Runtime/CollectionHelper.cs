@@ -113,7 +113,7 @@ namespace DatenMeister.Runtime
             {
                 if (reflectiveSequence.MofObject.ProviderObject is IProviderObjectSupportsListMovements supportsListMovements)
                 {
-                    var element = MofExtent.ConvertForSetting(reflectiveSequence.MofObject, elementToBeMovedUp);
+                    var element = MofExtent.ConvertForProviderUsage(elementToBeMovedUp);
                     return supportsListMovements.MoveElementUp(reflectiveSequence.PropertyName, element);
                 }
             }
@@ -164,7 +164,7 @@ namespace DatenMeister.Runtime
             {
                 if (reflectiveSequence.MofObject.ProviderObject is IProviderObjectSupportsListMovements supportsListMovements)
                 {
-                    var element = MofExtent.ConvertForSetting(reflectiveSequence.MofObject, elementToBeMovedDown);
+                    var element = MofExtent.ConvertForProviderUsage(elementToBeMovedDown);
                     return supportsListMovements.MoveElementDown(reflectiveSequence.PropertyName, element);
                 }
             }

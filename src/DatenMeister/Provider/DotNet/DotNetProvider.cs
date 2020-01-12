@@ -31,11 +31,11 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public IProviderObject CreateElement(string metaClassUri)
+        public IProviderObject CreateElement(string? metaClassUri)
         {
             lock (_syncObject)
             {
-                if (string.IsNullOrEmpty(metaClassUri))
+                if (metaClassUri == null || string.IsNullOrEmpty(metaClassUri))
                 {
                     throw new InvalidOperationException(".Net-Provider requires a meta class");
                 }
@@ -91,7 +91,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public IProviderObject Get(string id)
+        public IProviderObject? Get(string? id)
         {
             lock (_syncObject)
             {

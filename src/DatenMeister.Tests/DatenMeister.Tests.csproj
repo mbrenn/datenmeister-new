@@ -74,6 +74,9 @@
     <Compile Include="Mof\Queries\TestFilters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\InMemoryProviderTests.cs" />
+    <Compile Include="Provider\ProviderTestHelper.cs" />
+    <Compile Include="Provider\XmiProviderTests.cs" />
     <Compile Include="Runtime\CopierTests.cs" />
     <Compile Include="Runtime\ExtentStorageTests.cs" />
     <Compile Include="Runtime\Extents\ExtentExportTests.cs" />
@@ -126,7 +129,6 @@
       <Name>DatenMeister</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>

@@ -160,7 +160,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         public IElement CreateExtentFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
         {
             var extentForm = _factory.create(_formAndFields.__ExtentForm);
-            extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(metaClass));
+            extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(metaClass) + " - List");
 
             var tabs = new List<IElement>();
 
@@ -198,7 +198,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (creationMode.HasFlag(CreationMode.AddMetaClass))
                 {
                     // Add the element itself
-                    fields.Add(_factory.create(_formAndFields.__MetaClassElementFieldData));
+                    var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                    metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                    fields.Add(metaClassField);
                 }
 
                 detailForm.set(_FormAndFields._DetailForm.field, fields);
@@ -314,7 +316,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (!cache.MetaClassAlreadyAdded && creationMode.HasFlag(CreationMode.AddMetaClass))
                 {
                     // Add the element itself
-                    fields.Add(_factory.create(_formAndFields.__MetaClassElementFieldData));
+                    var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                    metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                    fields.Add(metaClassField);
+                    
                     cache.MetaClassAlreadyAdded = true;
                 }
 

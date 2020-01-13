@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -369,6 +371,11 @@ namespace DatenMeister.WPF.Controls
                         items.TreeView.IsEnabled = false;
                         break;
                 }
+            }
+            else
+            {
+                items.ItemsSource = null;
+                items.TreeView.IsEnabled = false;
             }
         }
 

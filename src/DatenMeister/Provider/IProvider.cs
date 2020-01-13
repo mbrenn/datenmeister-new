@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 
 namespace DatenMeister.Provider
@@ -33,7 +35,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="metaClassUri">Gets the metaclass uri of the element</param>
         /// <returns>The created object</returns>
-        IProviderObject CreateElement(string metaClassUri);
+        IProviderObject CreateElement(string? metaClassUri);
 
         /// <summary>
         /// Adds an element to the provider
@@ -59,7 +61,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="id">Id of the object being queried</param>
         /// <returns>The found object or null, if not found</returns>
-        IProviderObject Get(string id);
+        IProviderObject? Get(string? id);
 
         /// <summary>
         /// Gets all objects that are at root at the element

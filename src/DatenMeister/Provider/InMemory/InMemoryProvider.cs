@@ -36,7 +36,7 @@ namespace DatenMeister.Provider.InMemory
         }
 
         /// <inheritdoc />
-        public IProviderObject CreateElement(string metaClassUri) =>
+        public IProviderObject CreateElement(string? metaClassUri) =>
             new InMemoryObject(this, metaClassUri);
 
         /// <inheritdoc />
@@ -75,7 +75,7 @@ namespace DatenMeister.Provider.InMemory
         }
 
         /// <inheritdoc />
-        public IProviderObject Get(string id)
+        public IProviderObject? Get(string? id)
         {
             lock (_elements)
             {
@@ -84,7 +84,7 @@ namespace DatenMeister.Provider.InMemory
                     return _extentElement;
                 }
 
-                return _elements.First(x => x.Id == id);
+                return _elements.FirstOrDefault(x => x.Id == id);
             }
         }
 

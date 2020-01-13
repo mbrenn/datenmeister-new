@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
@@ -12,7 +13,7 @@ namespace DatenMeister.Provider.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class InMemoryObject : IProviderObject
+    public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMovements
     {
         public IProvider Provider { get; }
 
@@ -75,7 +76,7 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
-        private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
+        private readonly Dictionary<string, object?> _values = new Dictionary<string, object?>();
 
         /// <inheritdoc />
         public string MetaclassUri { get; set; }
@@ -92,7 +93,7 @@ namespace DatenMeister.Provider.InMemory
             MetaclassUri = metaclassUri ?? string.Empty;
         }
 
-        private static void CheckValue(object value)
+        private static void CheckValue(object? value)
         {
             if (value is MofReflectiveSequence || value is MofObject)
             {
@@ -107,7 +108,7 @@ namespace DatenMeister.Provider.InMemory
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
-        public object GetProperty(string property)
+        public object? GetProperty(string property)
         {
             if (_values.TryGetValue(property, out var result))
             {
@@ -120,7 +121,7 @@ namespace DatenMeister.Provider.InMemory
         public bool IsPropertySet(string property) =>
             _values.ContainsKey(property);
 
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             CheckValue(value);
             _values[property] = value;
@@ -140,7 +141,7 @@ namespace DatenMeister.Provider.InMemory
         {
             if (IsPropertySet("name"))
             {
-                return GetProperty("name").ToString();
+                return GetProperty("name")?.ToString() ?? string.Empty;
             }
 
             var builder = new StringBuilder();
@@ -222,6 +223,50 @@ namespace DatenMeister.Provider.InMemory
         public void EmptyListForProperty(string property)
         {
             _values[property] = new List<object>();
+        }
+
+        public bool MoveElementUp(string property, object value)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            
+            CheckValue(value);
+            var result = GetListOfProperty(property);
+            for (var n = 1; n < result.Count; n++)
+            {
+                if (result[n]?.Equals(value) == true)
+                {
+                    var temp = result[n - 1];
+                    result[n - 1] = value;
+                    result[n] = temp;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool MoveElementDown(string property, object value)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            CheckValue(value);
+            var result = GetListOfProperty(property);
+            for (var n = 0; n < result.Count - 1; n++)
+            {
+                if (result[n]?.Equals(value) == true)
+                {
+                    var temp = result[n + 1];
+                    result[n + 1] = value;
+                    result[n] = temp;
+
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

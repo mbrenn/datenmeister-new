@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Runtime.Proxies;
 
 namespace DatenMeister.Runtime
@@ -107,16 +108,28 @@ namespace DatenMeister.Runtime
         /// <returns>True, if the item is in the collection (even though it had not been moved)</returns>
         public static bool MoveElementUp(this IReflectiveSequence collection, IObject elementToBeMovedUp)
         {
+            // Check, if we can directly use the function of the provider
+            if (collection is MofReflectiveSequence reflectiveSequence)
+            {
+                if (reflectiveSequence.MofObject.ProviderObject is IProviderObjectSupportsListMovements supportsListMovements)
+                {
+                    var element = MofExtent.ConvertForProviderUsage(elementToBeMovedUp);
+                    var result = supportsListMovements.MoveElementUp(reflectiveSequence.PropertyName, element);
+                    reflectiveSequence.UpdateContent();
+                    return result;
+                }
+            }
+            
             var n = 0;
             var position = -1;
-            foreach ( var element in collection)
+            foreach (var element in collection)
             {
                 if (element != null && element.Equals(elementToBeMovedUp))
                 {
                     position = n;
                     break;
                 }
-                
+
                 n++;
             }
 
@@ -148,6 +161,18 @@ namespace DatenMeister.Runtime
         /// <returns>True, if the item is in the collection (even though it had not been moved)</returns>
         public static bool MoveElementDown(this IReflectiveSequence collection, IObject elementToBeMovedDown)
         {
+            // Check, if we can directly use the function of the provider
+            if (collection is MofReflectiveSequence reflectiveSequence)
+            {
+                if (reflectiveSequence.MofObject.ProviderObject is IProviderObjectSupportsListMovements supportsListMovements)
+                {
+                    var element = MofExtent.ConvertForProviderUsage(elementToBeMovedDown);
+                    var result = supportsListMovements.MoveElementDown(reflectiveSequence.PropertyName, element);
+                    reflectiveSequence.UpdateContent();
+                    return result;
+                }
+            }
+            
             var n = 0;
             var count = collection.size();
             var position = -1;

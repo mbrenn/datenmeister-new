@@ -13,7 +13,7 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
-    public class XmiProviderObject : IProviderObject
+    public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMovements
     {
         /// <summary>
         /// Checks whether the given property name is valid. This conversion is used to store the data into the xml
@@ -156,6 +156,14 @@ namespace DatenMeister.Provider.XMI.EMOF
                 }
 
                 valueAsXmlObject.XmlNode.Name = property;
+                
+                // Creates an id, of the node does not have currently an ID
+                if (XmiId.Get(valueAsXmlObject.XmlNode) == null)
+                {
+                    XmiId.Set(valueAsXmlObject.XmlNode, XmiId.CreateNew());
+                }
+                
+
                 return valueAsXmlObject.XmlNode;
             }
 
@@ -399,6 +407,40 @@ namespace DatenMeister.Provider.XMI.EMOF
             return false;
         }
 
+        /// <summary>
+        /// Finds a certain list into the property list
+        /// </summary>
+        /// <param name="property">Property, which is selected</param>
+        /// <param name="value">Value, which is required</param>
+        /// <returns>The found element</returns>
+        private XElement FindInPropertyList(string property, object value)
+        {
+            var normalizePropertyName = NormalizePropertyName(property);
+
+            if (value is XmiProviderObject valueAsXmlElement)
+            {
+                foreach (var subElement in
+                    XmlNode.Elements(normalizePropertyName)
+                        .Where(subElement => XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode)))
+                {
+                    return subElement;
+                }
+            }
+            else
+            {
+                var valueAsString = ReturnObjectAsString(value);
+                foreach (var subElement in
+                    XmlNode.Elements(normalizePropertyName)
+                        .Where(subElement => subElement.Value.Equals(valueAsString)))
+                {
+                    subElement.Remove();
+                    return subElement;
+                }
+            }
+
+            return null;
+        }
+
         public bool HasContainer() =>
             XmlNode.Parent != null && XmlNode.Parent != XmlNode.Document?.Root;
 
@@ -429,6 +471,56 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
 
             providerObject.XmlNode.Add(XmlNode);
+        }
+
+        public bool MoveElementUp(string property, object value)
+        {
+            var found = FindInPropertyList(property, value);
+            if (found == null)
+            {
+                return false;
+            }
+            
+            // Walk backwards until we find an element - ignore text nodes
+            var previousNode = found.PreviousNode;
+            while (previousNode != null && !(previousNode is XElement))
+            {
+                previousNode = previousNode.PreviousNode;
+            }
+            if (previousNode == null)
+            {
+                return true;
+            }
+            
+            found.Remove();
+            previousNode.AddBeforeSelf(found);
+
+            return true;
+        }
+
+        public bool MoveElementDown(string property, object value)
+        {
+            var found = FindInPropertyList(property, value);
+            if (found == null)
+            {
+                return false;
+            }
+            
+            // Walk backwards until we find an element - ignore text nodes
+            var nextNode = found.NextNode;
+            while (nextNode != null && !(nextNode is XElement))
+            {
+                nextNode = nextNode.NextNode;
+            }
+            if (nextNode == null)
+            {
+                return true;
+            }
+            
+            found.Remove();
+            nextNode.AddAfterSelf(found);
+
+            return true;
         }
     }
 }

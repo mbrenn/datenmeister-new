@@ -163,7 +163,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                     foreach (var child in (IEnumerable<object>) value)
                     {
                         var valueForSetting = ConvertForSetting(this, child);
-                        nullObject.AddToProperty(property, valueForSetting);
+                        if (valueForSetting != null)
+                        {
+                            nullObject.AddToProperty(property, valueForSetting);
+                        }
                     }
                 }
                 else
@@ -375,6 +378,21 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Converts the given value to a value which can be used for the provoder
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>Converted value</returns>
+        public static object ConvertForProviderUsage(object value)
+        {
+            if (value is MofObject asMofObject)
+            {
+                return asMofObject.ProviderObject;
+            }
+
+            return value;
         }
 
         /// <summary>

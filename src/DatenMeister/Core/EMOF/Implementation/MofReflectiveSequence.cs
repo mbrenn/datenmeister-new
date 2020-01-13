@@ -14,12 +14,15 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofReflectiveSequence : IReflectiveSequence, IHasExtent
     {
-        private readonly string _property;
+        /// <summary>
+        /// Gets the name of the property
+        /// </summary>
+        internal string PropertyName { get; }
 
         /// <summary>
         /// Gets the mof object being assigned to the
         /// </summary>
-        private MofObject MofObject { get; }
+        internal MofObject MofObject { get; }
         
         /// <summary>
         /// Gets or sets a flag indicating whether references shall be followed or not
@@ -29,7 +32,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public MofReflectiveSequence(MofObject mofObject, string property)
         {
             MofObject = mofObject;
-            _property = property;
+            PropertyName = property;
         }
 
         /// <inheritdoc />
@@ -50,7 +53,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = GetPropertyAsEnumerable();
             foreach (var item in result)
             {
-                yield return MofObject.ConvertToMofObject(MofObject, _property, item, noReferences || NoReferences);
+                yield return MofObject.ConvertToMofObject(MofObject, PropertyName, item, noReferences || NoReferences);
             }
         }
 
@@ -60,9 +63,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>Enumerable which was retrieved</returns>
         private IEnumerable<object> GetPropertyAsEnumerable()
         {
-            if (MofObject.ProviderObject.IsPropertySet(_property))
+            if (MofObject.ProviderObject.IsPropertySet(PropertyName))
             {
-                var value = MofObject.ProviderObject.GetProperty(_property);
+                var value = MofObject.ProviderObject.GetProperty(PropertyName);
                 
                 if (value is IEnumerable<object> asEnumerable)
                 {
@@ -81,7 +84,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool add(object value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            var result = MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+            var result = MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded);
 
             MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
 
@@ -114,7 +117,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void clear()
         {
             // Performs now the final deletion
-            MofObject.ProviderObject.EmptyListForProperty(_property);
+            MofObject.ProviderObject.EmptyListForProperty(PropertyName);
             UpdateContent();
         }
 
@@ -125,11 +128,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (value is MofObject valueAsMofObject)
             {
                 var asProviderObject = valueAsMofObject.ProviderObject;
-                result = MofObject.ProviderObject.RemoveFromProperty(_property, asProviderObject);
+                result = MofObject.ProviderObject.RemoveFromProperty(PropertyName, asProviderObject);
             }
             else
             {
-                result = MofObject.ProviderObject.RemoveFromProperty(_property, value);
+                result = MofObject.ProviderObject.RemoveFromProperty(PropertyName, value);
             }
 
             UpdateContent();
@@ -144,7 +147,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void add(int index, object value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded, index);
+            MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded, index);
 
             UpdateContent();
         }
@@ -153,17 +156,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         public object get(int index)
         {
             var providerObject = GetPropertyAsEnumerable().ElementAt(index);
-            return MofObject.ConvertToMofObject(MofObject, _property, providerObject);
+            return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject);
         }
 
         /// <inheritdoc />
         public void remove(int index)
         {
-            var foundvalue = ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property)).ElementAt(index);
+            var foundvalue = ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(PropertyName)).ElementAt(index);
             if (foundvalue != null)
             {
                 MofObject.ProviderObject.RemoveFromProperty(
-                    _property,
+                    PropertyName,
                     foundvalue);
 
                 UpdateContent();
@@ -174,10 +177,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         public object set(int index, object value)
         {
             var valueToBeRemoved = GetPropertyAsEnumerable().ElementAt(index);
-            MofObject.ProviderObject.RemoveFromProperty(_property, valueToBeRemoved);
+            MofObject.ProviderObject.RemoveFromProperty(PropertyName, valueToBeRemoved);
             add(index, value);
 
-            var result = MofObject.ConvertToMofObject(MofObject, _property, valueToBeRemoved);
+            var result = MofObject.ConvertToMofObject(MofObject, PropertyName, valueToBeRemoved);
 
             MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
             return result;

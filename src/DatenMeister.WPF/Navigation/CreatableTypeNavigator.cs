@@ -9,6 +9,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -64,7 +65,7 @@ namespace DatenMeister.WPF.Navigation
             var navigateToItemConfig = new NavigateToItemConfig()
             {
                 DetailElement = element,
-                FormDefinition = formPathToType
+                Form = new FormDefinition(formPathToType)
             };
 
             var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 
 namespace DatenMeister.Provider
 {
@@ -24,13 +25,13 @@ namespace DatenMeister.Provider
 
         bool IsPropertySet(string property);
 
-        object GetProperty(string property);
+        object? GetProperty(string property);
 
         IEnumerable<string> GetProperties();
 
         bool DeleteProperty(string property);
 
-        void SetProperty(string property, object value);
+        void SetProperty(string property, object? value);
 
         /// <summary>
         /// Empties a list of a property and prepares the property that there is a call for <c>AddProperty</c>.
@@ -52,7 +53,7 @@ namespace DatenMeister.Provider
         /// Gets the container of the element, if supported by the provider
         /// </summary>
         /// <returns>null, if no container object available, otherwise an IProviderObject instance</returns>
-        IProviderObject GetContainer();
+        IProviderObject? GetContainer();
 
         /// <summary>
         /// Sets the container element for the given object

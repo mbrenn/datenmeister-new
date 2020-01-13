@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Windows;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -12,9 +14,9 @@ namespace DatenMeister.WPF.Windows
     /// </summary>
     public partial class ItemXmlViewWindow : Window
     {
-        private IReflectiveCollection _usedReflectiveCollection;
+        private IReflectiveCollection? _usedReflectiveCollection;
 
-        private IObject _usedObject;
+        private IObject? _usedObject;
 
         public bool SupportWriting
         {
@@ -29,7 +31,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Called, if the user clicks the update button
         /// </summary>
-        public event EventHandler<EventArgs> UpdateButtonPressed;
+        public event EventHandler<EventArgs>? UpdateButtonPressed;
 
         public ItemXmlViewWindow()
         {

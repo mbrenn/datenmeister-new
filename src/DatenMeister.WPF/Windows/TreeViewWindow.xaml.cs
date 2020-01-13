@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -15,12 +17,12 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Called, if the user selected and double clicked an item
         /// </summary>
-        public event EventHandler<ItemEventArgs> ItemSelected;
+        public event EventHandler<ItemEventArgs>? ItemSelected;
 
         /// <summary>
         /// Gets or sets the navigation host
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost? NavigationHost { get; set; }
 
         public TreeViewWindow()
         {
@@ -47,7 +49,7 @@ namespace DatenMeister.WPF.Windows
         }
 
 
-        private void OnItemSelected(object item)
+        private void OnItemSelected(object? item)
         {
             if (item is IObject element)
             {

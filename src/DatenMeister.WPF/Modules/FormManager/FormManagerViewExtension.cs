@@ -77,14 +77,22 @@ namespace DatenMeister.WPF.Modules.FormManager
                 "Show Form Definition",
                 x =>
                 {
+                    var effectiveForm = itemExplorerControl.EffectiveForm;
+                    if (effectiveForm == null)
+                    {
+                        MessageBox.Show("No effective form is set");
+                        return;
+                    }
+                    
+                    var window = itemExplorerControl.NavigationHost?.GetWindow();
                     var dlg = new ItemXmlViewWindow
                     {
                         /*SupportWriting = true,*/
-                        Owner = Window.GetWindow(itemExplorerControl.NavigationHost?.GetWindow()),
+                        Owner = window == null ? null : Window.GetWindow(window),
                         SupportWriting = false
                     };
 
-                    dlg.UpdateContent(itemExplorerControl.EffectiveForm);
+                    dlg.UpdateContent(effectiveForm);
                     dlg.ShowDialog();
                 },
                 "",
@@ -394,7 +402,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void SetAsDefaultForMetaclass()
             {
-                if (detailWindow.OverridingViewDefinition?.Element == null)
+                if (detailWindow.OverridingFormDefinition?.Element == null)
                 {
                     MessageBox.Show(
                         "The used form is automatically selected. This automatic selection cannot be put as a standard");
@@ -427,7 +435,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 var formAssociation = factory.create(formAndFields.__FormAssociation);
                 formAssociation.set(_FormAndFields._FormAssociation.metaClass, metaClass);
-                formAssociation.set(_FormAndFields._FormAssociation.form, detailWindow.OverridingViewDefinition.Element);
+                formAssociation.set(_FormAndFields._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
                 formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
                 userViewExtent.elements().add(formAssociation);
 

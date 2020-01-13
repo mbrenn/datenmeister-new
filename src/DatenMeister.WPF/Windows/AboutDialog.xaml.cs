@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿#nullable enable
+
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -14,12 +16,17 @@ namespace DatenMeister.WPF.Windows
         public AboutDialog()
         {
             InitializeComponent();
-            TxtVersionNumber.Text = "v" +
-                Assembly.GetEntryAssembly()
-                    .GetCustomAttributes(typeof(AssemblyFileVersionAttribute))
-                    .Cast<AssemblyFileVersionAttribute>()
-                    .Select(x => x.Version)
-                    .FirstOrDefault() ?? "[Unknown version]";
+            
+            var entryAssembly = Assembly.GetEntryAssembly();
+            TxtVersionNumber.Text = 
+                entryAssembly != null
+                ? "v" +
+                  entryAssembly
+                      .GetCustomAttributes(typeof(AssemblyFileVersionAttribute))
+                      .Cast<AssemblyFileVersionAttribute>()
+                      .Select(x => x.Version)
+                      .FirstOrDefault()
+                : "[Unknown Version]";
         }
 
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)

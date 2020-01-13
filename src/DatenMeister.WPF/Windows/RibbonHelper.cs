@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,10 +26,9 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Stores the icon repository
         /// </summary>
-        private static IIconRepository IconRepository { get; set; }
+        private static IIconRepository? IconRepository { get; set; }
 
-        private readonly List<RibbonHelperItem> _buttons =
-            new List<RibbonHelperItem>();
+        private readonly List<RibbonHelperItem> _buttons = new List<RibbonHelperItem>();
 
         private class RibbonHelperItem
         {
@@ -36,8 +36,15 @@ namespace DatenMeister.WPF.Windows
 
             public RibbonButton Button { get; set; }
 
-            public RoutedEventHandler ClickEvent { get; set; }
+            public RoutedEventHandler? ClickEvent { get; set; }
 
+
+            public RibbonHelperItem(NavigationButtonDefinition definition, RibbonButton button, RoutedEventHandler clickEvent)
+            {
+                Definition = definition;
+                Button = button;
+                ClickEvent = clickEvent;
+            }
             /// <summary>
             /// Converts the item to a string
             /// </summary>
@@ -81,6 +88,9 @@ namespace DatenMeister.WPF.Windows
         /// <param name="definition">The definition to be used</param>
         private void AddNavigationButton(NavigationButtonDefinition definition)
         {
+            if ( IconRepository == null )
+                throw new InvalidOperationException("IconRepository not loaded");
+            
             // Ok, we have not found it, so create the button
             var name = definition.Name;
             var categoryName = definition.CategoryName;
@@ -167,15 +177,10 @@ namespace DatenMeister.WPF.Windows
                 IsEnabled = definition.IsEnabled
             };
 
-            var item = new RibbonHelperItem
-            {
-                Definition = definition,
-                Button = button,
-                ClickEvent = (x, y) =>
-                {
-                    clickMethod();
-                }
-            };
+            var item = new RibbonHelperItem(
+                definition,
+                button,
+                (x, y) => { clickMethod(); });
 
             _buttons.Add(item);
             button.Click += item.ClickEvent;

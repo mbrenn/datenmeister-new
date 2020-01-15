@@ -23,7 +23,7 @@ namespace DatenMeister.WPF.Controls
         {
             InitializeComponent();
 
-            _workspaceLogic = GiveMe.Scope?.Resolve<IWorkspaceLogic>();
+            _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
@@ -40,17 +40,17 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Stores the selected workspace used by the user
         /// </summary>
-        private IWorkspace _selectedWorkspace;
+        private IWorkspace? _selectedWorkspace;
 
         /// <summary>
         /// Stores the default extent being used by the user
         /// </summary>
-        private IExtent _selectedExtent;
+        private IExtent? _selectedExtent;
 
-        public IObject SelectedElement
-        {
-            get => items.SelectedElement;
-        }
+        /// <summary>
+        /// Gets the selected element
+        /// </summary>
+        public IObject? SelectedElement => items.SelectedElement;
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
             "IsReadOnly", typeof(bool), typeof(LocateElementControl),
@@ -163,7 +163,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the metaclasses that will be filtered
         /// </summary>
-        public IEnumerable<IElement> FilterMetaClasses
+        public IEnumerable<IElement>? FilterMetaClasses
         {
             get => items.FilterMetaClasses;
             set => items.FilterMetaClasses = value;
@@ -172,7 +172,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        private IWorkspace SelectedWorkspace
+        private IWorkspace? SelectedWorkspace
         {
             get => _selectedWorkspace;
             set
@@ -196,7 +196,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        private IExtent SelectedExtent
+        private IExtent? SelectedExtent
         {
             get => _selectedExtent;
             set

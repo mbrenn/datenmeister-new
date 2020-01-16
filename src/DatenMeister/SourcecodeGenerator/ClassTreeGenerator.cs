@@ -21,7 +21,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         ///     Initializes a new instance of the ClassTreeGenerator
         /// </summary>
-        public ClassTreeGenerator(ISourceParser parser = null) : base(parser)
+        public ClassTreeGenerator(ISourceParser? parser = null) : base(parser)
         {
             FactoryVersion = new Version(1, 2, 0, 0);
         }
@@ -36,6 +36,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// </param>
         public override void Walk(IUriExtent extent)
         {
+            Result.AppendLine("#nullable enable");
             WriteUsages(new[]
             {
                 "DatenMeister.Core.EMOF.Interface.Reflection",
@@ -113,7 +114,7 @@ namespace DatenMeister.SourcecodeGenerator
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject?.ToString() ?? string.Empty;
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
-            Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
+            Result.AppendLine($"{stack.Indentation}public IElement? _{name} = null;");
             Result.AppendLine();
         }
 

@@ -5,6 +5,6 @@
     /// </summary>
     public interface IHasWorkspace
     {
-        IWorkspace Workspace { get; }
+        IWorkspace? Workspace { get; }
     }
 }

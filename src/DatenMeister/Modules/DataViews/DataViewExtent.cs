@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.DataViews
         public object get(string property) =>
             _dataViewElement.get(property);
 
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             _dataViewElement.set(property, value);
         }

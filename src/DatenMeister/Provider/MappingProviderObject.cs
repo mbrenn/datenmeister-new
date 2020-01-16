@@ -8,7 +8,7 @@ namespace DatenMeister.Provider
 {
     public class MappingProviderObject<T> : IProviderObject
     {
-        public MappingProviderObject(T value, IProvider provider, string id, string metaclassUri = null)
+        public MappingProviderObject(T value, IProvider provider, string id, string? metaclassUri = null)
         {
             Value = value;
             Provider = provider;
@@ -20,7 +20,7 @@ namespace DatenMeister.Provider
 
         public string Id { get; set; }
 
-        public string MetaclassUri { get; set; }
+        public string? MetaclassUri { get; set; }
 
         private T Value { get; }
 
@@ -52,7 +52,7 @@ namespace DatenMeister.Provider
         /// <param name="propertyName">Name of the property to be set</param>
         /// <param name="getFunction">Get function to be used</param>
         /// <param name="setFunction">Set function to be used</param>
-        public void AddMapping(string propertyName, Func<T, object> getFunction, Action<T, object> setFunction)
+        public void AddMapping(string propertyName, Func<T, object?> getFunction, Action<T, object> setFunction)
         {
             _mappings[propertyName] =
                 new MappingProperty(

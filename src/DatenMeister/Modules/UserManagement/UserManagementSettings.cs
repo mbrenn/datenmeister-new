@@ -8,6 +8,6 @@
         /// <summary>
         /// Gets or sets the salt to store the hashes for the password of the user
         /// </summary>
-        public string salt { get; set; }
+        public string? salt { get; set; }
     }
 }

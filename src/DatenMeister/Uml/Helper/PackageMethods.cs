@@ -157,7 +157,7 @@ namespace DatenMeister.Uml.Helper
                 }
 
                 // Sets and finds the child property by the given name
-                IReflectiveSequence children = null;
+                IReflectiveSequence? children = null;
                 if (childElement.isSet(childProperty))
                 {
                     children = childElement.get(childProperty) as IReflectiveSequence;
@@ -253,7 +253,8 @@ namespace DatenMeister.Uml.Helper
         /// <param name="targetExtent">Extent to which the extent shall be imported</param>
         /// <param name="targetPackageName">Path within the extent that shall receive
         /// the package</param>
-        public void ImportByManifest(Type manifestType, string manifestName,
+        public void ImportByManifest(Type manifestType, 
+            string manifestName,
             string sourcePackageName,
             IExtent targetExtent, string targetPackageName)
         {
@@ -273,7 +274,7 @@ namespace DatenMeister.Uml.Helper
                 var pseudoProvider = new XmiProvider(document);
                 var pseudoExtent = new MofUriExtent(pseudoProvider)
                 {
-                    Workspace = (Workspace) targetExtent.GetWorkspace()
+                    Workspace = (Workspace?) targetExtent.GetWorkspace()
                 };
 
                 var sourcePackage = GetOrCreatePackageStructure(

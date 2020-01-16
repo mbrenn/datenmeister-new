@@ -1,3 +1,4 @@
+#nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
@@ -10,16 +11,16 @@ namespace DatenMeister.Models.DataViews
         public class _DataView
         {
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
             public static string @workspace = "workspace";
-            public IElement _workspace = null;
+            public IElement? _workspace = null;
 
             public static string @uri = "uri";
-            public IElement _uri = null;
+            public IElement? _uri = null;
 
             public static string @viewNode = "viewNode";
-            public IElement _viewNode = null;
+            public IElement? _viewNode = null;
 
         }
 
@@ -29,7 +30,7 @@ namespace DatenMeister.Models.DataViews
         public class _ViewNode
         {
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
         }
 
@@ -39,13 +40,13 @@ namespace DatenMeister.Models.DataViews
         public class _SourceExtentNode
         {
             public static string @extentUri = "extentUri";
-            public IElement _extentUri = null;
+            public IElement? _extentUri = null;
 
             public static string @workspace = "workspace";
-            public IElement _workspace = null;
+            public IElement? _workspace = null;
 
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
         }
 
@@ -55,10 +56,10 @@ namespace DatenMeister.Models.DataViews
         public class _FlattenNode
         {
             public static string @input = "input";
-            public IElement _input = null;
+            public IElement? _input = null;
 
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
         }
 
@@ -68,19 +69,19 @@ namespace DatenMeister.Models.DataViews
         public class _FilterPropertyNode
         {
             public static string @input = "input";
-            public IElement _input = null;
+            public IElement? _input = null;
 
             public static string @property = "property";
-            public IElement _property = null;
+            public IElement? _property = null;
 
             public static string @value = "value";
-            public IElement _value = null;
+            public IElement? _value = null;
 
             public static string @comparisonMode = "comparisonMode";
-            public IElement _comparisonMode = null;
+            public IElement? _comparisonMode = null;
 
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
         }
 
@@ -90,16 +91,16 @@ namespace DatenMeister.Models.DataViews
         public class _FilterTypeNode
         {
             public static string @input = "input";
-            public IElement _input = null;
+            public IElement? _input = null;
 
             public static string @type = "type";
-            public IElement _type = null;
+            public IElement? _type = null;
 
             public static string @includeInherits = "includeInherits";
-            public IElement _includeInherits = null;
+            public IElement? _includeInherits = null;
 
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
         }
 
@@ -133,13 +134,13 @@ namespace DatenMeister.Models.DataViews
         public class _SelectPathNode
         {
             public static string @input = "input";
-            public IElement _input = null;
+            public IElement? _input = null;
 
             public static string @path = "path";
-            public IElement _path = null;
+            public IElement? _path = null;
 
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
         }
 

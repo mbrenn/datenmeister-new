@@ -16,7 +16,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="value">Property being queried</param>
         /// <returns>Type of the property</returns>
-        public static IElement GetPropertyType(IObject value) =>
+        public static IElement? GetPropertyType(IObject value) =>
             value?.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
 
         /// <summary>

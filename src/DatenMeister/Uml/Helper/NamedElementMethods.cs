@@ -91,7 +91,7 @@ namespace DatenMeister.Uml.Helper
                 .Select(x => x.Trim()).ToList();
 
             var current = (IEnumerable<object>) collection;
-            IElement found = null;
+            IElement? found = null;
 
             foreach (var elementName in elementNames)
             {
@@ -157,8 +157,6 @@ namespace DatenMeister.Uml.Helper
                 {
                     continue;
                 }
-
-
 
                 // and is an enumeration
                 var asEnumeration = (IEnumerable) propertyValue;

@@ -20,7 +20,7 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Stores the default button text being by the user to acknowledge the action behind the form
         /// </summary>
-        public string buttonApplyText { get; set; }
+        public string? buttonApplyText { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the detailform allows new properties
@@ -40,7 +40,7 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the tabs
         /// </summary>
-        public List<Form> tab { get; set; }
+        public List<Form>? tab { get; set; }
 
         /// <summary>
         /// Stores the fields which shall be shown in the as the first field

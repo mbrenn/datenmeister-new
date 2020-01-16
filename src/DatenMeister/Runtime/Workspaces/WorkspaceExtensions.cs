@@ -248,8 +248,8 @@ namespace DatenMeister.Runtime.Workspaces
             this IWorkspaceLogic collection,
             string workspaceId,
             string extentUri,
-            out IWorkspace workspace,
-            out IExtent extent)
+            out IWorkspace? workspace,
+            out IExtent? extent)
         {
             workspace = collection.Workspaces
                 .FirstOrDefault(x => x.id == workspaceId);

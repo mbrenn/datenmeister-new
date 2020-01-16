@@ -19,27 +19,16 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
         /// <returns>true, if the value is a dafault value</returns>
         public static bool IsDefaultValue(IObject element, string property, object value)
         {
-            if (value == null)
+            switch (value)
             {
-                return true;
+                case null:
+                case int intValue when intValue == 0:
+                case bool boolValue when boolValue == false:
+                case string stringValue when string.IsNullOrEmpty(stringValue):
+                    return true;
+                default:
+                    return false;
             }
-
-            if (value is int intValue && intValue == 0)
-            {
-                return true;
-            }
-
-            if (value is bool boolValue && boolValue == false)
-            {
-                return true;
-            }
-
-            if (value is string stringValue && string.IsNullOrEmpty(stringValue))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -47,7 +36,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
         /// </summary>
         /// <param name="type">Type, whose default value is queried</param>
         /// <returns>The default value</returns>
-        public static object GetDefaultValue(Type type)
+        public static object? GetDefaultValue(Type type)
         {
             if (type == null)
             {

@@ -17,7 +17,7 @@ namespace DatenMeister.Runtime.Workspaces
         private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLogic));
 
         private readonly WorkspaceData _fileData;
-        private readonly ChangeEventManager _changeEventManager;
+        private readonly ChangeEventManager? _changeEventManager;
 
         /// <summary>
         /// Initializes a new instance of the WorkspaceLogic
@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="fileData"></param>
         /// <param name="changeEventManager">Change Event Manager being used to propagate changes of extents
         /// and workspaces</param>
-        public WorkspaceLogic(WorkspaceData fileData, ChangeEventManager changeEventManager = null)
+        public WorkspaceLogic(WorkspaceData fileData, ChangeEventManager? changeEventManager = null)
         {
             _fileData = fileData;
             _changeEventManager = changeEventManager;

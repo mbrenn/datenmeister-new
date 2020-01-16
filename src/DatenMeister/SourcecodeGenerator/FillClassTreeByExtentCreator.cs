@@ -7,7 +7,7 @@ namespace DatenMeister.SourcecodeGenerator
 {
     public class FillClassTreeByExtentCreator : WalkPackageClass
     {
-        public FillClassTreeByExtentCreator(string classNameOfTree, ISourceParser parser = null) : base(parser)
+        public FillClassTreeByExtentCreator(string classNameOfTree, ISourceParser? parser = null) : base(parser)
         {
             ClassNameOfTree = classNameOfTree;
             FactoryVersion = new Version(1, 1, 0, 0);

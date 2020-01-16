@@ -8,7 +8,7 @@ namespace DatenMeister.Excel.Helper
     /// </summary>
     public class ExcelExtentSettings : ExtentLoaderConfig
     {
-        public string filePath { get; set; }
-        public string idColumnName { get; set; }
+        public string? filePath { get; set; }
+        public string? idColumnName { get; set; }
     }
 }

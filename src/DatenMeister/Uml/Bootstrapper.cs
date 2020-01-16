@@ -473,7 +473,7 @@ namespace DatenMeister.Uml
             IWorkspaceLogic workspaceLogic,
             Workspace dataLayer,
             BootstrapMode mode,
-            FilePaths paths = null)
+            FilePaths? paths = null)
         {
             var isSlim = mode == BootstrapMode.SlimMof || mode == BootstrapMode.SlimUml;
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
@@ -608,9 +608,9 @@ namespace DatenMeister.Uml
             /// </summary>
             public bool LoadFromEmbeddedResources { get; set; }
 
-            public string PathPrimitive { get; set; }
-            public string PathUml { get; set; }
-            public string PathMof { get; set; }
+            public string? PathPrimitive { get; set; }
+            public string? PathUml { get; set; }
+            public string? PathMof { get; set; }
         }
     }
 }

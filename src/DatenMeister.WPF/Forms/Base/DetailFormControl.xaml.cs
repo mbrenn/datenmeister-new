@@ -434,6 +434,11 @@ namespace DatenMeister.WPF.Forms.Base
         private void AddRowsForInteractionHandlers()
         {
             var buttons = new List<Button>();
+            if (DetailElement == null)
+            {
+                // No element, no interaction
+                return;
+            }
 
             // Creates additional rows for buttons with additional actions
             var interactionHandlers = GiveMe.Scope.Resolve<IEnumerable<IElementInteractionsHandler>>();
@@ -723,7 +728,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="element">Element in which the content of the element shall be stored</param>
         private void StoreDialogContentIntoElement(IObject element)
         {
-            if (!Equals(element, DetailElement))
+            if (DetailElement != null && !Equals(element, DetailElement))
             {
                 // Copy all data from DetailElement to element to also have the non-shown properties in the mirror object
                 ObjectCopier.CopyPropertiesStatic(DetailElement, element);

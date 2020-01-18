@@ -36,7 +36,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         public static IReflectiveCollection WhenMetaClassIs(
             this IReflectiveCollection collection,
-            IElement metaClass)
+            IElement? metaClass)
             =>
                 new FilterOnMetaClass(collection, metaClass);
 

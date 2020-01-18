@@ -1,5 +1,6 @@
 #nullable enable
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using BurnSystems.Logging;
@@ -39,7 +40,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <returns>The found extent</returns>
         public IElement? GetDefaultPackageClassifier(IHasExtent uriExtent)
         {
-            var extent = uriExtent.Extent;
+            var extent = uriExtent.Extent ?? throw new InvalidOperationException("UriExtent does not have an extent");
 
             // First look into the standard uml meta classes
             var findByUrl = extent.FindInMeta<_UML>(x => x.Packages.__Package);

@@ -528,8 +528,8 @@ namespace DatenMeister.Runtime
         public static IUriResolver? GetUriResolver(this IObject element) =>
             (element as MofObject)?.Extent as IUriResolver;
 
-        public static IUriResolver? GetUriResolver(this IExtent element) =>
-            element as IUriResolver;
+        public static IUriResolver GetUriResolver(this IExtent element) =>
+            (element as IUriResolver) ?? throw new InvalidOperationException("element is not of type IUriResolver");
 
         /// <summary>
         /// Gets all possible properties of the given element.

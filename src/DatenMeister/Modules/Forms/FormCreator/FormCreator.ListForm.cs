@@ -244,7 +244,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var propertyType = PropertyMethods.GetPropertyType(property);
 
             var result = _factory.create(_formAndFields.__ListForm);
-            AddToFormByMetaclass(result, propertyType, creationMode);
+            if (propertyType != null)
+            {
+                AddToFormByMetaclass(result, propertyType, creationMode);
+            }
+
             result.set(_FormAndFields._ListForm.property, propertyName);
             result.set(_FormAndFields._ListForm.title, $"{propertyName}");
             return result;

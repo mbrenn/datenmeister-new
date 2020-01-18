@@ -173,7 +173,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="element">Element whose name is requested</param>
         /// <returns>The found name or null, if not found</returns>
-        public static string GetName(IObject element)
+        public static string GetName(IObject? element)
         {
             if (element == null)
             {

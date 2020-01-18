@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be evaluated</param>
         /// <returns>true, if the given type is a primitive type</returns>
-        public static bool IsOfPrimitiveType(object value) =>
+        public static bool IsOfPrimitiveType(object? value) =>
             value != null && IsPrimitiveType(value.GetType());
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="type">Type to be evaluated</param>
         /// <returns>true, if an enumeration and not a string</returns>
-        public static bool IsEnumeration(Type type) =>
+        public static bool IsEnumeration(Type? type) =>
             type != null && type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
 
         /// <summary>

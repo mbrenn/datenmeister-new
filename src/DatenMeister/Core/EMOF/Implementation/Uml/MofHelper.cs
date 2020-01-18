@@ -17,7 +17,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
         /// <param name="property">Property to which the element would be set</param>
         /// <param name="value">Value to be checked</param>
         /// <returns>true, if the value is a dafault value</returns>
-        public static bool IsDefaultValue(IObject element, string property, object value)
+        public static bool IsDefaultValue(IObject element, string property, object? value)
         {
             switch (value)
             {

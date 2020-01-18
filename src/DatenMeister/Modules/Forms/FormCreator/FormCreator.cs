@@ -37,7 +37,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Stores the associated workspace logic
         /// </summary>
-        private readonly IWorkspaceLogic? _workspaceLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Stores the factory to create the fields and forms
@@ -68,7 +68,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _formLogic = formLogic;
             _defaultClassifierHints = defaultClassifierHints;
 
-            _workspaceLogic = _formLogic?.WorkspaceLogic;
+            _workspaceLogic = _formLogic?.WorkspaceLogic ?? GiveMe.Scope.WorkspaceLogic;
+            
             var userExtent = _formLogic?.GetUserFormExtent();
             _factory = userExtent != null
                 ? new MofFactory(userExtent)

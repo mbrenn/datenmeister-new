@@ -221,9 +221,10 @@ namespace DatenMeister.WPF.Controls
         /// Navigates to a specific workspace
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
-        public void Select(IWorkspace workspace)
+        public void Select(IWorkspace? workspace)
         {
             SelectedWorkspace = workspace;
+            SelectedExtent = null;
         }
 
         /// <summary>
@@ -231,7 +232,7 @@ namespace DatenMeister.WPF.Controls
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
         /// <param name="extent">Extent to be selected</param>
-        public void Select(IWorkspace workspace, IExtent extent)
+        public void Select(IWorkspace? workspace, IExtent? extent)
         {
             SelectedWorkspace = workspace;
             SelectedExtent = extent;
@@ -241,17 +242,26 @@ namespace DatenMeister.WPF.Controls
         /// Selects a specific extent as a predefined one
         /// </summary>
         /// <param name="extent">Extent to be selected</param>
-        public void Select(IExtent extent)
+        public void Select(IExtent? extent)
         {
-            var workspace = _workspaceLogic.FindWorkspace(extent);
-            SelectedWorkspace = workspace;
-            SelectedExtent = extent;
+            if (extent == null)
+            {
+                SelectedWorkspace = null;
+                SelectedExtent = null;
+            }
+            else
+            {
+                var workspace = _workspaceLogic.FindWorkspace(extent);
+                SelectedWorkspace = workspace;
+                SelectedExtent = extent;
+            }
         }
 
         public void Select(IObject value)
         {
             var extent = value.GetExtentOf();
             Select(extent);
+            
             items.SelectedElement = value;
         }
 
@@ -386,7 +396,10 @@ namespace DatenMeister.WPF.Controls
 
         public void SelectExtent(string extentUri)
         {
-            Select(SelectedWorkspace.FindExtent(extentUri));
+            if (SelectedWorkspace != null)
+            {
+                Select(SelectedWorkspace.FindExtent(extentUri));
+            }
         }
 
         /// <summary>

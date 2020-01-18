@@ -196,9 +196,10 @@ namespace DatenMeister.WPF.Forms.Base
                     "Delete",
                     (x) =>
                     {
+                        var name = NamedElementMethods.GetName(x);
                         if (
                             MessageBox.Show(
-                                "Do you want to delete the item?",
+                                $"Do you want to delete the item '{name}'?",
                                 "Delete item",
                                 MessageBoxButton.YesNo) ==
                             MessageBoxResult.Yes)

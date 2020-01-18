@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -136,7 +135,10 @@ namespace DatenMeister.WPF.Forms.Fields
         private static void RemoveItem(IReflectiveCollection reflectiveCollection, IObject item)
         {
             if (MessageBox.Show(
-                    "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                    $"Are you sure to delete the item: " +
+                    $"{NamedElementMethods.GetName(item)}?", 
+                    "Confirmation", 
+                    MessageBoxButton.YesNo) ==
                 MessageBoxResult.Yes)
             {
                 reflectiveCollection.remove(item);
@@ -208,10 +210,10 @@ namespace DatenMeister.WPF.Forms.Fields
             stackPanel.Children.Add(buttonNew);
             
             DockPanel.SetDock(stackPanel, Dock.Right);
-            stackPanel.VerticalAlignment = VerticalAlignment.Bottom;
+            stackPanel.VerticalAlignment = VerticalAlignment.Top;
             _panel.Children.Add(stackPanel);
 
-            static void SetStyle(Button button)
+            static void SetStyle(Control button)
             {
                 button.Padding = new Thickness(10,3, 10, 3);
             }

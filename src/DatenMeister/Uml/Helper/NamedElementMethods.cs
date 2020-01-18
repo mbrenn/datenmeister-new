@@ -187,6 +187,16 @@ namespace DatenMeister.Uml.Helper
                 return element.get(_UML._CommonStructure._NamedElement.name).ToString();
             }
 
+            if (element is IElement asIElement && asIElement.metaclass != null)
+            {
+                var name = GetName(asIElement.metaclass);
+                if (!string.IsNullOrEmpty(name))
+                {
+                    return $"({name})";
+                }
+            }
+            
+            // Now switch to last fallback strategy to have at least one human readable name
             switch (element)
             {
                 case IHasId elementAsHasId:

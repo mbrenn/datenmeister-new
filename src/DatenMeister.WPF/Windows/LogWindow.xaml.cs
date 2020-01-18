@@ -38,7 +38,7 @@ namespace DatenMeister.WPF.Windows
             {
                 // The method is called by the senders of the events. These may be within the 
                 // thread context of the application or not. 
-                Dispatcher.Invoke(UpdateMessageContent);
+                Dispatcher.InvokeAsync(UpdateMessageContent);
             }
             else
             {

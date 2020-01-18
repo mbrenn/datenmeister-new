@@ -122,12 +122,14 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void DeleteWorkspace(INavigationGuest navigationGuest, IObject workspace)
             {
+                var workspaceId = workspace.get("id").ToString();
+                
                 if (MessageBox.Show(
-                        "Are you sure to delete the workspace? All included extents will also be deleted.", "Confirmation",
+                        $"Are you sure to delete the workspace '{workspaceId}'? " +
+                        $"All included extents will also be deleted.", 
+                        "Confirmation",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    var workspaceId = workspace.get("id").ToString();
-
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                     workspaceLogic.RemoveWorkspace(workspaceId);
                 }
@@ -229,8 +231,9 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void DeleteExtent(INavigationGuest guest, IObject element)
             {
+                var uri = element.getOrDefault<string>("uri");
                 if (MessageBox.Show(
-                        "Are you sure, you would like to delete the extent?",
+                        $"Are you sure, you would like to delete the extent '{uri}'?",
                         "Delete Extent",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -238,7 +241,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
 
                     var extentToBeDeleted =
-                        workspaceLogic.FindExtent(workspaceId, DotNetHelper.AsString(element.get("uri")));
+                        workspaceLogic.FindExtent(workspaceId, uri);
                     extentManager.DeleteExtent(extentToBeDeleted);
                 }
             }

@@ -34,12 +34,6 @@ namespace DatenMeister.Modules.ChangeEvents
         /// <param name="value">Object that was changed</param>
         public void SendChangeEvent(IObject value)
         {
-            if (_handles.Count == 0)
-            {
-                // Nothing to do.
-                return;
-            }
-
             var extent = value.GetExtentOf();
             var workspace = extent.GetWorkspace();
 
@@ -47,6 +41,12 @@ namespace DatenMeister.Modules.ChangeEvents
             try
             {
                 _lock.EnterReadLock();
+                if (_handles.Count == 0)
+                {
+                    // Nothing to do.
+                    return;
+                }
+                
                 handles = _handles.Where(
                     x => x.Value?.Equals(value) == true
                          || x.Extent?.Equals(extent) == true
@@ -72,16 +72,17 @@ namespace DatenMeister.Modules.ChangeEvents
         /// <param name="extent">Extent that was changed</param>
         public void SendChangeEvent(IExtent extent)
         {
-            if (_handles.Count == 0)
-                // Nothing to do.
-                return;
-
             var workspace = extent.GetWorkspace();
 
             RegisteredEventHandle[] handles;
             try
             {
                 _lock.EnterReadLock();
+                
+                if (_handles.Count == 0)
+                    // Nothing to do.
+                    return;
+                
                 handles = _handles.Where(
                     x => x.Extent?.Equals(extent) == true ||
                          x.Workspace?.Equals(workspace) == true).ToArray();
@@ -105,15 +106,15 @@ namespace DatenMeister.Modules.ChangeEvents
         /// <param name="workspace">Changed workspace</param>
         public void SendChangeEvent(IWorkspace workspace)
         {
-            RegisteredEventHandle[] handles;
-
-            if (_handles.Count == 0)
-                // Nothing to do.
-                return;
+            RegisteredEventHandle[] handles; 
 
             try
             {
                 _lock.EnterReadLock();
+                
+                if (_handles.Count == 0) // Nothing to do.
+                    return;
+                
                 handles = _handles.Where(
                     x => x.Workspace?.Equals(workspace) == true).ToArray();
             }
@@ -121,7 +122,6 @@ namespace DatenMeister.Modules.ChangeEvents
             {
                 _lock.ExitReadLock();
             }
-
 
             // After having collected the items, call them
             foreach (var handle in handles)
@@ -135,7 +135,6 @@ namespace DatenMeister.Modules.ChangeEvents
             try
             {
                 _lock.EnterWriteLock();
-
 
                 var eventHandle = new RegisteredEventHandle
                 {

@@ -399,8 +399,10 @@ namespace DatenMeister.WPF.Forms.Base
                             {
                                 if (Extent != null)
                                 {
+                                    var name = NamedElementMethods.GetName(item);
                                     if (MessageBox.Show(
-                                            "Are you sure to delete the item?", "Confirmation",
+                                            $"Are you sure to delete the item '{name}'?", 
+                                            "Confirmation",
                                             MessageBoxButton.YesNo) ==
                                         MessageBoxResult.Yes)
                                     {

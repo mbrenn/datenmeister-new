@@ -26,13 +26,13 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the default extent that shall be shown, when the user clicks on the selection field
         /// </summary>
-        public string defaultExtentUri { get; set; }
+        public string? defaultExtentUri { get; set; }
 
         /// <summary>
         /// Gets or sets the default workspace that will be shown, when the user clicks on the selection field. This
         /// property is only evaluated in case of <see cref="defaultExtentUri">defaultExtentUri</see> is null or empty.
         /// </summary>
-        public string defaultWorkspace { get; set; }
+        public string? defaultWorkspace { get; set; }
 
         /// <summary>
         /// Does not only set the default children
@@ -52,6 +52,6 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the metaclasses to which all elements will be filtered.
         /// </summary>
-        public IEnumerable<IElement> metaClassFilter { get; set; }
+        public IEnumerable<IElement>? metaClassFilter { get; set; }
     }
 }

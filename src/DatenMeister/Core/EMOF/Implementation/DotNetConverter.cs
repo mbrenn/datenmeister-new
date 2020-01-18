@@ -52,7 +52,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="value"></param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        private object ConvertToMofIfNotPrimitive(object value, string requestedId = null)
+        private object? ConvertToMofIfNotPrimitive(object value, string? requestedId = null)
         {
             if (DotNetHelper.IsOfPrimitiveType(value) || DotNetHelper.IsOfEnum(value))
             {
@@ -91,7 +91,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="metaClass">Metaclass being used to create the element</param>
         /// <param name="requestedId">Id of the element that shall be put</param>
         /// <returns>The converted element as a MofObject</returns>
-        private IObject ConvertToMofObject(object value, IElement metaClass = null, string requestedId = null)
+        private IObject ConvertToMofObject(object value, IElement? metaClass = null, string? requestedId = null)
         {
             // After having the uri, create the required element
             var createdElement = _factory.create(metaClass);
@@ -131,7 +131,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        public static object ConvertToMofObject(MofUriExtent receiver, object value, string requestedId = null)
+        public static object ConvertToMofObject(MofUriExtent receiver, object value, string? requestedId = null)
             => new DotNetConverter(receiver).ConvertToMofIfNotPrimitive(value, requestedId);
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="receiver">Object which shall receive the dotnet value</param>
         /// <param name="value">Value to be set</param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        public static object ConvertToMofObject(IUriExtent receiver, object value, string requestedId = null)
+        public static object ConvertToMofObject(IUriExtent receiver, object value, string? requestedId = null)
             => ConvertToMofObject((MofUriExtent) receiver, value, requestedId);
 
         /// <summary>
@@ -154,8 +154,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         public static IObject ConvertFromDotNetObject(
             IUriExtent receiver,
             object value,
-            IElement metaclass = null,
-            string requestedId = null)
+            IElement? metaclass = null,
+            string? requestedId = null)
             => new DotNetConverter((MofUriExtent) receiver).ConvertToMofObject(value, metaclass, requestedId);
 
         /// <summary>
@@ -167,8 +167,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The converted element as a MofObject</returns>
         public static IObject ConvertFromDotNetObject(
             object value,
-            IElement metaclass = null,
-            string requestedId = null)
+            IElement? metaclass = null,
+            string? requestedId = null)
             => ConvertFromDotNetObject(InMemoryProvider.TemporaryExtent, value, metaclass, requestedId);
 
         /// <summary>
@@ -179,7 +179,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns></returns>
         public static object ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
         {
-            var type = lookup.ToType(element.metaclass.GetUri());
+            var uri = element.metaclass.GetUri() ?? throw new InvalidOperationException("Uri is not set");
+            var type = lookup.ToType(uri);
             if (type == null)
             {
                 throw new InvalidOperationException(
@@ -234,7 +235,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                 if (value.isSet(reflectedProperty.Name))
                 {
                     var propertyValue = value.get(reflectedProperty.Name);
-                    if (reflectedProperty.PropertyType == typeof(string))
+                    if (propertyValue == null)
+                    {
+                        reflectedProperty.SetValue(result, null);
+                    }
+                    else if (reflectedProperty.PropertyType == typeof(string))
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsString(propertyValue));
                     }

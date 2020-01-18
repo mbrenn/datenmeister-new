@@ -16,7 +16,7 @@ namespace DatenMeister.Provider.Xml
     {
         private readonly XmlReferenceSettings _settings;
 
-        private MofFactory _factory;
+        private MofFactory? _factory;
 
         /// <summary>
         /// Initializes a new instance of the XmlToExtentConverter

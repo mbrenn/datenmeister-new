@@ -4,8 +4,8 @@ namespace DatenMeister.Models.ManagementProvider
 {
     public class Workspace
     {
-        public string id { get; set; }
-        public string annotation { get; set; }
+        public string? id { get; set; }
+        public string? annotation { get; set; }
 
         public IEnumerable<Extent> extents { get; set; }
 

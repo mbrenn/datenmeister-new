@@ -159,7 +159,7 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public static string XmiGetName(this XElement element) =>
+        public static string? XmiGetName(this XElement element) =>
             element.Attribute("name")?.Value;
     }
 }

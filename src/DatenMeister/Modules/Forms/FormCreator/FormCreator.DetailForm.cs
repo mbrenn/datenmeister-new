@@ -2,6 +2,7 @@
 
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {
@@ -39,7 +40,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         public IElement CreateDetailFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
         {
             var createdForm = _factory.create(_formAndFields.__DetailForm);
-            createdForm.set(_FormAndFields._DetailForm.name, "Item");
+            createdForm.set(_FormAndFields._DetailForm.name, $"{NamedElementMethods.GetName(metaClass)} - Detail");
 
             if (creationMode.HasFlag(CreationMode.AddMetaClass))
             {

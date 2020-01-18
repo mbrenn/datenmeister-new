@@ -316,7 +316,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             return _cachedFormAndField;
         }
 
-        public IElement GetDetailForm(IObject? element, IExtent extent, FormDefinitionMode formDefinitionMode)
+        public IElement GetDetailForm(IObject? element, IExtent? extent, FormDefinitionMode formDefinitionMode)
         {
             if (element == null) throw new ArgumentNullException(nameof(element));
             

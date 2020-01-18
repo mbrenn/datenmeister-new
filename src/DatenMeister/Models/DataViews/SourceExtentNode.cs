@@ -2,9 +2,9 @@
 {
     public class SourceExtentNode : ViewNode
     {
-        public string extentUri { get; set; }
+        public string? extentUri { get; set; }
 
-        public string workspace { get; set; }
+        public string? workspace { get; set; }
 
     }
 }

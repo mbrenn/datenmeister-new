@@ -62,7 +62,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             int column;
             if (SheetItem.Columns.TryGetValue(property, out column))

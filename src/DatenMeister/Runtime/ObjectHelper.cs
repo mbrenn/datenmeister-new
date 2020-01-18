@@ -215,7 +215,7 @@ namespace DatenMeister.Runtime
         /// <param name="noReferences">true, if the references shall not resolved</param>
         /// <returns>The value of the object or null, if not existing</returns>
         [Obsolete]
-        public static object getOrDefault(this IObject value, string property, bool noReferences = false)
+        public static object? getOrDefault(this IObject value, string property, bool noReferences = false)
         {
             if (value.isSet(property))
             {
@@ -233,7 +233,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object getFirstOrDefault(this IObject value, string property)
+        public static object? getFirstOrDefault(this IObject value, string property)
         {
             if (value.isSet(property))
             {
@@ -398,7 +398,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value, which is queried</param>
         /// <returns>The found extent</returns>
-        public static IExtent GetExtentOf(this IObject value)
+        public static IExtent? GetExtentOf(this IObject value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
@@ -433,7 +433,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be queried</param>
         /// <returns>null or the given extent</returns>
-        public static IUriExtent GetUriExtentOf(this IObject value)
+        public static IUriExtent? GetUriExtentOf(this IObject value)
         {
             var result = GetExtentOf(value);
             if (result == null)
@@ -525,11 +525,11 @@ namespace DatenMeister.Runtime
             }
         }
 
-        public static IUriResolver GetUriResolver(this IObject element) =>
+        public static IUriResolver? GetUriResolver(this IObject element) =>
             (element as MofObject)?.Extent as IUriResolver;
 
         public static IUriResolver GetUriResolver(this IExtent element) =>
-            element as IUriResolver;
+            (element as IUriResolver) ?? throw new InvalidOperationException("element is not of type IUriResolver");
 
         /// <summary>
         /// Gets all possible properties of the given element.

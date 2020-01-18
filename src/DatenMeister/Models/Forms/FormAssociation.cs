@@ -9,21 +9,21 @@ namespace DatenMeister.Models.Forms
     /// </summary>
     public class FormAssociation
     {
-        public FormType formType { get; set; }
+        public FormType? formType { get; set; }
 
-        public IObject metaClass { get; set; }
+        public IObject? metaClass { get; set; }
 
-        public string extentType { get; set; }
+        public string? extentType { get; set; }
 
         /// <summary>
         /// Gets or sets the metaclass of the parent object containg the list of elements
         /// </summary>
-        public IElement parentMetaClass { get; set; }
+        public IElement? parentMetaClass { get; set; }
 
-        public string parentProperty { get; set; }
+        public string? parentProperty { get; set; }
 
 
-        public Form form { get; set; }
+        public Form? form { get; set; }
 
         public FormAssociation()
         {

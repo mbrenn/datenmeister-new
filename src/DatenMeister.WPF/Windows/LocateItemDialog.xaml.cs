@@ -155,7 +155,7 @@ namespace DatenMeister.WPF.Windows
             LocateElementControl.SetAsRoot(element);
         }
 
-        protected virtual void OnItemChosen(IObject chosenElement)
+        protected virtual void OnItemChosen(IObject? chosenElement)
         {
             ItemChosen?.Invoke(this, new ItemEventArgs(chosenElement));
         }

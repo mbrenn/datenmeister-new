@@ -11,7 +11,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 
         public bool IsHeading { get; set; }
 
-        public HtmlTableCell(HtmlElement content, string cssClass = null)
+        public HtmlTableCell(HtmlElement content, string? cssClass = null)
         {
             _content = content;
             _cssClass = cssClass;

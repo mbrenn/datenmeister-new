@@ -240,7 +240,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="fullName">The full name, describing the parents and children</param>
         /// <returns></returns>
-        public IElement GetMetaClassFor(string fullName)
+        public IElement? GetMetaClassFor(string fullName)
         {
             var internalTypeExtent = GetInternalTypeExtent();
             var found = NamedElementMethods.GetByFullName(internalTypeExtent.elements(), fullName);

@@ -226,6 +226,8 @@ namespace DatenMeister.WPF.Forms.Fields
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)
         {
+            if ( _name == null) throw new InvalidOperationException("_name == null");
+            if (_value == null ) throw new InvalidOperationException("_value == null");
             if (_detailFormControl == null) throw new InvalidOperationException("_detailFormControl == null");
 
             var itemToOpen = _value.getOrDefault<IElement>(_name);

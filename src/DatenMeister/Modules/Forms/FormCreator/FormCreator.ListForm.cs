@@ -81,12 +81,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     // of a metaclass
                     firstElementMetaClass = metaClass;
                 }
-                else if (firstElementMetaClass != metaClass && !metaClassAdded)
+                else if (firstElementMetaClass != metaClass &&
+                         !metaClassAdded &&
+                         creationMode.HasFlagFast(CreationMode.AddMetaClass))
                 {
                     metaClassAdded = true;
                     
                     // Create the metaclass as a field
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                    metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
                     result.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
                 }
 
@@ -241,7 +244,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var propertyType = PropertyMethods.GetPropertyType(property);
 
             var result = _factory.create(_formAndFields.__ListForm);
-            AddToFormByMetaclass(result, propertyType, creationMode);
+            if (propertyType != null)
+            {
+                AddToFormByMetaclass(result, propertyType, creationMode);
+            }
+
             result.set(_FormAndFields._ListForm.property, propertyName);
             result.set(_FormAndFields._ListForm.title, $"{propertyName}");
             return result;

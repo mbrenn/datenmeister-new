@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -21,7 +23,7 @@ namespace DatenMeister.WPF.Controls
         {
             InitializeComponent();
 
-            _workspaceLogic = GiveMe.Scope?.Resolve<IWorkspaceLogic>();
+            _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
@@ -38,17 +40,17 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Stores the selected workspace used by the user
         /// </summary>
-        private IWorkspace _selectedWorkspace;
+        private IWorkspace? _selectedWorkspace;
 
         /// <summary>
         /// Stores the default extent being used by the user
         /// </summary>
-        private IExtent _selectedExtent;
+        private IExtent? _selectedExtent;
 
-        public IObject SelectedElement
-        {
-            get => items.SelectedElement;
-        }
+        /// <summary>
+        /// Gets the selected element
+        /// </summary>
+        public IObject? SelectedElement => items.SelectedElement;
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
             "IsReadOnly", typeof(bool), typeof(LocateElementControl),
@@ -161,7 +163,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the metaclasses that will be filtered
         /// </summary>
-        public IEnumerable<IElement> FilterMetaClasses
+        public IEnumerable<IElement>? FilterMetaClasses
         {
             get => items.FilterMetaClasses;
             set => items.FilterMetaClasses = value;
@@ -170,7 +172,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        private IWorkspace SelectedWorkspace
+        private IWorkspace? SelectedWorkspace
         {
             get => _selectedWorkspace;
             set
@@ -194,7 +196,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        private IExtent SelectedExtent
+        private IExtent? SelectedExtent
         {
             get => _selectedExtent;
             set
@@ -219,9 +221,10 @@ namespace DatenMeister.WPF.Controls
         /// Navigates to a specific workspace
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
-        public void Select(IWorkspace workspace)
+        public void Select(IWorkspace? workspace)
         {
             SelectedWorkspace = workspace;
+            SelectedExtent = null;
         }
 
         /// <summary>
@@ -229,7 +232,7 @@ namespace DatenMeister.WPF.Controls
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
         /// <param name="extent">Extent to be selected</param>
-        public void Select(IWorkspace workspace, IExtent extent)
+        public void Select(IWorkspace? workspace, IExtent? extent)
         {
             SelectedWorkspace = workspace;
             SelectedExtent = extent;
@@ -239,17 +242,26 @@ namespace DatenMeister.WPF.Controls
         /// Selects a specific extent as a predefined one
         /// </summary>
         /// <param name="extent">Extent to be selected</param>
-        public void Select(IExtent extent)
+        public void Select(IExtent? extent)
         {
-            var workspace = _workspaceLogic.FindWorkspace(extent);
-            SelectedWorkspace = workspace;
-            SelectedExtent = extent;
+            if (extent == null)
+            {
+                SelectedWorkspace = null;
+                SelectedExtent = null;
+            }
+            else
+            {
+                var workspace = _workspaceLogic.FindWorkspace(extent);
+                SelectedWorkspace = workspace;
+                SelectedExtent = extent;
+            }
         }
 
         public void Select(IObject value)
         {
             var extent = value.GetExtentOf();
             Select(extent);
+            
             items.SelectedElement = value;
         }
 
@@ -370,6 +382,11 @@ namespace DatenMeister.WPF.Controls
                         break;
                 }
             }
+            else
+            {
+                items.ItemsSource = null;
+                items.TreeView.IsEnabled = false;
+            }
         }
 
         public void SelectWorkspace(string workspaceId)
@@ -379,7 +396,10 @@ namespace DatenMeister.WPF.Controls
 
         public void SelectExtent(string extentUri)
         {
-            Select(SelectedWorkspace.FindExtent(extentUri));
+            if (SelectedWorkspace != null)
+            {
+                Select(SelectedWorkspace.FindExtent(extentUri));
+            }
         }
 
         /// <summary>

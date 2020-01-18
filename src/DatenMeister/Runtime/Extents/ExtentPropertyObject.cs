@@ -30,7 +30,7 @@ namespace DatenMeister.Runtime.Extents
         
         public IEnumerable<string> getPropertiesBeingSet()
         {
-            return (_extent as IObjectAllProperties)?.getPropertiesBeingSet();
+            return (_extent as IObjectAllProperties)?.getPropertiesBeingSet() ?? new string[] { };
         }
     }
 }

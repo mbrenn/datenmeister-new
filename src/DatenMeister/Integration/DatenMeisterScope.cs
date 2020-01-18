@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Core;
@@ -20,7 +22,7 @@ namespace DatenMeister.Integration
         /// <summary>
         /// This event will be called before the items are actually disposed
         /// </summary>
-        public event EventHandler BeforeDisposing;
+        public event EventHandler? BeforeDisposing;
 
         public DatenMeisterScope(ILifetimeScope lifetimeScopeImplementation)
         {

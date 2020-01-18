@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Dynamic
             }
         }
 
-        public static IObject GetWrappedObject(dynamic value)
+        public static IObject? GetWrappedObject(dynamic value)
         {
             if (value == null)
             {

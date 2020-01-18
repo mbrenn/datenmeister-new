@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Integration
+﻿#nullable enable
+
+namespace DatenMeister.Integration
 {
     public class IntegrationSettings
     {
@@ -9,8 +11,13 @@
         /// </summary>
         public bool PerformSlimIntegration { get; set; }
 
-        public string PathToXmiFiles { get; set; } // = "App_Data";
-
+        
+        /// <summary>
+        /// Gets or sets the path to the xml files. It may be null, if the xmis shall be loaded
+        /// from the embedded resources 
+        /// </summary>
+        public string? PathToXmiFiles { get; set; }
+        
         /// <summary>
         /// Gets or sets a value indicating whether the data environment including all the metamodels shall be established
         /// </summary>

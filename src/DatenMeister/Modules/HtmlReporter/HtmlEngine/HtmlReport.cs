@@ -34,7 +34,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// <summary>
         /// Gets or sets the css style sheet being used for that report
         /// </summary>
-        public string CssStyleSheet { get; set; }
+        public string? CssStyleSheet { get; set; }
 
         /// <summary>
         /// Creates a new HtmlReport and stores the content of the

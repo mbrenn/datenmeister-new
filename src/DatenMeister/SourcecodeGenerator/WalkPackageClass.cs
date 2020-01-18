@@ -27,7 +27,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// Initializates a new instance of the WalkPackageClass instance
         /// </summary>
         /// <param name="parser"></param>
-        public WalkPackageClass(ISourceParser parser)
+        public WalkPackageClass(ISourceParser? parser)
         {
             _parser = parser ?? new XmiSourceParser();
             Result = new StringBuilder();
@@ -36,7 +36,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         ///     Gets or sets the namespace
         /// </summary>
-        public string Namespace { get; set; }
+        public string? Namespace { get; set; }
 
         /// <summary>
         ///     Gets or sets the result being delivered back

@@ -37,7 +37,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Stores the associated workspace logic
         /// </summary>
-        private readonly IWorkspaceLogic? _workspaceLogic;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Stores the factory to create the fields and forms
@@ -68,7 +68,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _formLogic = formLogic;
             _defaultClassifierHints = defaultClassifierHints;
 
-            _workspaceLogic = _formLogic?.WorkspaceLogic;
+            _workspaceLogic = _formLogic?.WorkspaceLogic ?? GiveMe.Scope.WorkspaceLogic;
+            
             var userExtent = _formLogic?.GetUserFormExtent();
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
@@ -163,6 +164,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                 // Add the element itself
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(metaClassField);
             }
         }
@@ -279,6 +282,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 ClassifierMethods.GetPropertiesOfClassifier(metaClass)
                     .Where(x => x.isSet("name")).ToList();
             var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
+
+            if (!cache.MetaClassAlreadyAdded && creationMode.HasFlagFast(CreationMode.AddMetaClass))
+            {
+                var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
+
+                cache.MetaClassAlreadyAdded = true;
+            }
             
             foreach (var property in classifierMethods)
             {

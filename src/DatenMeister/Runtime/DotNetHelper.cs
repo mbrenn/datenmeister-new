@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be evaluated</param>
         /// <returns>true, if the given type is a primitive type</returns>
-        public static bool IsOfPrimitiveType(object value) =>
+        public static bool IsOfPrimitiveType(object? value) =>
             value != null && IsPrimitiveType(value.GetType());
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="type">Type to be evaluated</param>
         /// <returns>true, if an enumeration and not a string</returns>
-        public static bool IsEnumeration(Type type) =>
+        public static bool IsEnumeration(Type? type) =>
             type != null && type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type);
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be evaluated</param>
         /// <returns>true, if an enumeration and not a string</returns>
-        public static bool IsOfEnumeration(object value) =>
+        public static bool IsOfEnumeration(object? value) =>
             value != null && IsEnumeration(value.GetType());
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be evaluated </param>
         /// <returns>true, if null</returns>
-        public static bool IsNull(object value) =>
+        public static bool IsNull(object? value) =>
             value == null;
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be verified</param>
         /// <returns>true, if enum</returns>
-        public static bool IsOfEnum(object value) =>
+        public static bool IsOfEnum(object? value) =>
             value != null && IsEnum(value.GetType());
 
         /// <summary>
@@ -105,14 +105,16 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="propertyValue">Value to be checked</param>
         /// <returns>true, if the given element is of the type</returns>
-        public static bool IsOfMofObject(object propertyValue) =>
+        public static bool IsOfMofObject(object? propertyValue) =>
             propertyValue is IObject;
 
-        public static bool IsOfMofElement(object propertyValue) =>
+        public static bool IsOfMofElement(object? propertyValue) =>
             propertyValue is IElement;
 
-        public static bool IsOfNumber(object property)
+        public static bool IsOfNumber(object? property)
         {
+            if (property == null) return false;
+            
             var type = property.GetType();
             return IsNumber(type);
         }
@@ -130,8 +132,10 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="property">Property to be evaluated</param>
         /// <returns>true, if this is a boolean</returns>
-        public static bool IsOfBoolean(object property)
+        public static bool IsOfBoolean(object? property)
         {
+            if (property == null) return false;
+            
             var type = property.GetType();
             return IsBoolean(type);
         }
@@ -143,9 +147,9 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value"></param>
         /// <returns>true, if the element is a string</returns>
-        public static bool IsOfString(object value) => value is string;
+        public static bool IsOfString(object? value) => value is string;
 
-        public static string AsString(object value)
+        public static string AsString(object? value)
         {
             if (value == null)
             {
@@ -188,7 +192,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be checked</param>
         /// <returns>True, if value indicates a true statement</returns>
-        public static bool AsBoolean(object value) =>
+        public static bool AsBoolean(object? value) =>
             value != null &&
             (
                 value.Equals(true) ||
@@ -203,7 +207,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be parsed</param>
         /// <returns>Converted value</returns>
-        public static double AsDouble(object value)
+        public static double AsDouble(object? value)
         {
             switch (value)
             {
@@ -223,7 +227,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be parsed</param>
         /// <returns>Converted value</returns>
-        public static int AsInteger(object value)
+        public static int AsInteger(object? value)
         {
             switch (value)
             {
@@ -306,7 +310,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="element">Element to be verified</param>
         /// <returns>true, if the given element is of type IProviderObject</returns>
-        public static bool IsOfProviderObject(object element) =>
+        public static bool IsOfProviderObject(object? element) =>
             element is IProviderObject;
 
         /// <summary>

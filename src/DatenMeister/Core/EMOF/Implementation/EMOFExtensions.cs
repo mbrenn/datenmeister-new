@@ -15,7 +15,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">Extent to be used as base</param>
         /// <param name="type">Type to be resolves</param>
         /// <returns>The element being resolved</returns>
-        public static IElement ToResolvedElement(this MofExtent extent, Type type)
+        public static IElement? ToResolvedElement(this MofExtent extent, Type type)
         {
             var element = extent.TypeLookup.ToElement(type);
             if (string.IsNullOrEmpty(element))

@@ -11,12 +11,12 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the metaclass that will be created when the user creates a new instance
         /// </summary>
-        public string metaClassUri { get; set; }
+        public string? metaClassUri { get; set; }
 
         /// <summary>
         /// Gets or sets the fields being shown in the subelements. If null, the fields will be automatically generated.
         /// </summary>
-        public Form form { get; set; }
+        public Form? form { get; set; }
 
         /// <summary>
         /// Initializes a new element of the subelement field data and sets the field as an enumeration

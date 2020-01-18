@@ -27,7 +27,7 @@ namespace DatenMeister.Runtime.Proxies
         public virtual object get(string property) =>
             Object.get(property);
 
-        public virtual void set(string property, object value)
+        public virtual void set(string property, object? value)
         {
             Object.set(property, value);
         }

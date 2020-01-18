@@ -1,3 +1,4 @@
+#nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
@@ -28,13 +29,13 @@ namespace DatenMeister.Models.FastViewFilter
         public class _PropertyComparisonFilter
         {
             public static string @Property = "Property";
-            public IElement _Property = null;
+            public IElement? _Property = null;
 
             public static string @ComparisonType = "ComparisonType";
-            public IElement _ComparisonType = null;
+            public IElement? _ComparisonType = null;
 
             public static string @Value = "Value";
-            public IElement _Value = null;
+            public IElement? _Value = null;
 
         }
 
@@ -44,10 +45,10 @@ namespace DatenMeister.Models.FastViewFilter
         public class _PropertyContainsFilter
         {
             public static string @Property = "Property";
-            public IElement _Property = null;
+            public IElement? _Property = null;
 
             public static string @Value = "Value";
-            public IElement _Value = null;
+            public IElement? _Value = null;
 
         }
 

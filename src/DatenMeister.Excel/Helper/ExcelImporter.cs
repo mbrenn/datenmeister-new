@@ -43,7 +43,7 @@ namespace DatenMeister.Excel.Helper
         /// </summary>
         /// <param name="sheet"></param>
         /// <returns></returns>
-        private SsTable GetSheet(string sheet)
+        private SsTable? GetSheet(string sheet)
         {
             if (sheet == null || !IsExcelLoaded)
             {
@@ -53,7 +53,7 @@ namespace DatenMeister.Excel.Helper
             return _excelDocument.Tables.FirstOrDefault(x => x.Name == sheet);
         }
 
-        private SsTable GetSelectedSheet()
+        private SsTable? GetSelectedSheet()
         {
             if (IsExcelLoaded)
             {

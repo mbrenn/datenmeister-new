@@ -73,7 +73,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="element">Element that shall be copied</param>
         /// <param name="copyOptions">Defines the option being used for copying</param>
         /// <returns>true, if element has been successfully copied</returns>
-        public IElement Copy(IObject element, CopyOption copyOptions = null)
+        public IElement Copy(IObject element, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
 
@@ -92,7 +92,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="sourceElement">Source element which is verified</param>
         /// <param name="targetElement">Target element which is verified</param>
         /// <param name="copyOptions">Options to be copied</param>
-        public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption copyOptions = null)
+        public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
 
@@ -128,7 +128,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="containingElement">Element to which the element will be copied</param>
         /// <param name="copyOptions">Copy options being used</param>
         /// <returns>The object that has been copied</returns>
-        private object CopyValue(object value, IElement containingElement, CopyOption copyOptions = null)
+        private object CopyValue(object value, IElement containingElement, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
             var noRecursion = copyOptions.NoRecursion;
@@ -176,7 +176,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="element">Element to be copied</param>
         /// <param name="copyOptions">Options for copying</param>
         /// <returns>The created element that will be copied</returns>
-        public static IElement Copy(IFactory factory, IObject element, CopyOption copyOptions = null)
+        public static IElement Copy(IFactory factory, IObject element, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
 
@@ -191,7 +191,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="target">Target of the element</param>
         /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>The created element that will be copied</returns>
-        public static void CopyPropertiesStatic(IObject source, IObject target, CopyOption copyOptions = null)
+        public static void CopyPropertiesStatic(IObject source, IObject target, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
 
@@ -215,7 +215,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="value">Value to copied</param>
         /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>Element being copied</returns>
-        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption copyOptions = null)
+        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption? copyOptions = null)
         {
             var temp = new TemporaryReflectiveCollection();
             copyOptions ??= CopyOptions.None;

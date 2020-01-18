@@ -64,7 +64,7 @@ namespace DatenMeister.Provider.CSV
             var columns = settings.Columns;
             var createColumns = false;
 
-            IElement metaClass = null;
+            IElement? metaClass = null;
             if (!string.IsNullOrEmpty(settings.MetaclassUri))
             {
                 metaClass = _workspaceLogic.FindItem(settings.MetaclassUri);

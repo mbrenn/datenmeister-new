@@ -18,9 +18,9 @@ namespace DatenMeister.Models.Forms
             AddFields(fieldsToBeAdded);
         }
 
-        public string property { get; set; }
+        public string? property { get; set; }
 
-        public IElement metaClass { get; set; }
+        public IElement? metaClass { get; set; }
 
         public bool noItemsWithMetaClass { get; set; }
 
@@ -37,12 +37,12 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         ///     Stores an enumeration of default types that can be used for creation
         /// </summary>
-        public IList<DefaultTypeForNewElement> defaultTypesForNewElements { get; set; }
+        public IList<DefaultTypeForNewElement>? defaultTypesForNewElements { get; set; }
 
         /// <summary>
         /// Gets an enumeration of fast view filters
         /// </summary>
-        public IList<IElement> fastViewFilters { get; set; }
+        public IList<IElement>? fastViewFilters { get; set; }
 
         /// <summary>
         /// Stores the fields which shall be shown in the form

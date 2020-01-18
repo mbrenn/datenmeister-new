@@ -1,3 +1,4 @@
+#nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
@@ -10,7 +11,7 @@ namespace DatenMeister.Excel
         public class _Workbook
         {
             public static string @tables = "tables";
-            public IElement _tables = null;
+            public IElement? _tables = null;
 
         }
 
@@ -20,10 +21,10 @@ namespace DatenMeister.Excel
         public class _Table
         {
             public static string @name = "name";
-            public IElement _name = null;
+            public IElement? _name = null;
 
             public static string @items = "items";
-            public IElement _items = null;
+            public IElement? _items = null;
 
         }
 

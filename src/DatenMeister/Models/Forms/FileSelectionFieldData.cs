@@ -19,7 +19,7 @@
         /// <summary>
         /// Gets or sets the default extension
         /// </summary>
-        public string defaultExtension { get; set; }
+        public string? defaultExtension { get; set; }
 
         /// <summary>
         /// Gets or sets the information whether the user will be
@@ -30,6 +30,6 @@
         /// <summary>
         /// Gets or sets the path to the directory
         /// </summary>
-        public string initialPathToDirectory { get; set; }
+        public string? initialPathToDirectory { get; set; }
     }
 }

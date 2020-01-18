@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using System;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
@@ -52,7 +53,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <param name="workspace">The workspace to which the type shall be found</param>
         /// <param name="extent">The extent to which the type shall be found</param>
         /// <returns>The created type</returns>
-        public IElement GetFindTypeForm(IObject preSelectedPackage, IWorkspace workspace = null, IExtent extent = null)
+        public IElement GetFindTypeForm(IObject preSelectedPackage, IWorkspace workspace = null, IExtent? extent = null)
         {
             var form = new DetailForm(FindTypeForm)
             {
@@ -73,7 +74,7 @@ namespace DatenMeister.Provider.ManagementProviders
             form.AddFields(type2Field);
 
             var createdForm = DotNetConverter.ConvertToMofObject(_formLogic.GetInternalFormExtent(), form) as IElement;
-            return createdForm;
+            return createdForm ?? throw new InvalidOperationException("Form could not be created");
         }
     }
 }

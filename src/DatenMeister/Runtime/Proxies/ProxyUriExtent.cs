@@ -74,7 +74,7 @@ namespace DatenMeister.Runtime.Proxies
         public object get(string property) => Extent.get(property);
 
         /// <inheritdoc />
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             Extent.set(property, value);
         }

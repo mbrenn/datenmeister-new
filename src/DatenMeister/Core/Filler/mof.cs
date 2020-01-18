@@ -1,3 +1,4 @@
+#nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
@@ -38,7 +39,7 @@ namespace DatenMeister.Core
             public class _Tag
             {
                 public static string @tagOwner = "tagOwner";
-                public IElement _tagOwner = null;
+                public IElement? _tagOwner = null;
 
             }
 
@@ -54,13 +55,13 @@ namespace DatenMeister.Core
             public class _Tag
             {
                 public static string @name = "name";
-                public IElement _name = null;
+                public IElement? _name = null;
 
                 public static string @value = "value";
-                public IElement _value = null;
+                public IElement? _value = null;
 
                 public static string @element = "element";
-                public IElement _element = null;
+                public IElement? _element = null;
 
             }
 
@@ -116,10 +117,10 @@ namespace DatenMeister.Core
             public class _Argument
             {
                 public static string @name = "name";
-                public IElement _name = null;
+                public IElement? _name = null;
 
                 public static string @value = "value";
-                public IElement _value = null;
+                public IElement? _value = null;
 
             }
 
@@ -136,13 +137,13 @@ namespace DatenMeister.Core
             public class _Link
             {
                 public static string @firstElement = "firstElement";
-                public IElement _firstElement = null;
+                public IElement? _firstElement = null;
 
                 public static string @secondElement = "secondElement";
-                public IElement _secondElement = null;
+                public IElement? _secondElement = null;
 
                 public static string @association = "association";
-                public IElement _association = null;
+                public IElement? _association = null;
 
             }
 
@@ -152,13 +153,13 @@ namespace DatenMeister.Core
             public class _Exception
             {
                 public static string @objectInError = "objectInError";
-                public IElement _objectInError = null;
+                public IElement? _objectInError = null;
 
                 public static string @elementInError = "elementInError";
-                public IElement _elementInError = null;
+                public IElement? _elementInError = null;
 
                 public static string @description = "description";
-                public IElement _description = null;
+                public IElement? _description = null;
 
             }
 
@@ -174,7 +175,7 @@ namespace DatenMeister.Core
             public class _Factory
             {
                 public static string @package = "package";
-                public IElement _package = null;
+                public IElement? _package = null;
 
             }
 
@@ -198,7 +199,7 @@ namespace DatenMeister.Core
             public class _Element
             {
                 public static string @metaclass = "metaclass";
-                public IElement _metaclass = null;
+                public IElement? _metaclass = null;
 
             }
 

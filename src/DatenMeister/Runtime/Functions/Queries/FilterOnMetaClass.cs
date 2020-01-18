@@ -10,7 +10,7 @@ namespace DatenMeister.Runtime.Functions.Queries
     {
         private readonly IElement[] _filteredMetaClass;
 
-        public FilterOnMetaClass(IReflectiveCollection collection, IElement filteredMetaClass)
+        public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
             : base(collection)
         {
             _filteredMetaClass = filteredMetaClass == null ? null : new[] {filteredMetaClass};

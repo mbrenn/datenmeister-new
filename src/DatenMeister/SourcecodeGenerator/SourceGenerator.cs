@@ -11,7 +11,7 @@ namespace DatenMeister.SourcecodeGenerator
 {
     public static class SourceGenerator
     {
-        public static void GenerateSourceFor(SourceGeneratorOptions options, _UML uml = null)
+        public static void GenerateSourceFor(SourceGeneratorOptions options, _UML? uml = null)
         {
             uml ??= new _UML(); // Verifies that a uml is existing
 

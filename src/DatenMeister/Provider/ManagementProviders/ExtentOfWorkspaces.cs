@@ -28,7 +28,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic { get; }
 
-        public IProviderObject CreateElement(string metaClassUri) =>
+        public IProviderObject CreateElement(string? metaClassUri) =>
             throw new System.NotImplementedException();
 
         public void AddElement(IProviderObject valueAsObject, int index = -1)
@@ -44,7 +44,7 @@ namespace DatenMeister.Provider.ManagementProviders
             throw new System.NotImplementedException();
         }
 
-        public IProviderObject Get(string id)
+        public IProviderObject Get(string? id)
         {
             if (string.IsNullOrEmpty(id))
             {

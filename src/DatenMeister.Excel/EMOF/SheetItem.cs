@@ -41,7 +41,7 @@ namespace DatenMeister.Excel.EMOF
         /// </summary>
         /// <param name="provider">Extent to which the item belongs</param>
         /// <param name="sheet">The sheet that is used for access</param>
-        public SheetItem(ExcelProvider provider, ISheet sheet)
+        public SheetItem(IProvider provider, ISheet sheet)
         {
             Provider = provider;
             Sheet = sheet;
@@ -169,10 +169,10 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <inheritdoc />
-        public string MetaclassUri { get; set; }
+        public string? MetaclassUri { get; set; }
 
         /// <inheritdoc />
         public void EmptyListForProperty(string property)

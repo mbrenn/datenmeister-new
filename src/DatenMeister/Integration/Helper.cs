@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿#nullable enable
+
+using Autofac;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces.Data;

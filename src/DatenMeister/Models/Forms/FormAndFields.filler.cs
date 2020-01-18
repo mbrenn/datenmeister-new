@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
@@ -6,8 +7,9 @@ namespace DatenMeister.Models.Forms
     public class FillTheFormAndFields : DatenMeister.Core.Filler.IFiller<_FormAndFields>
     {
         private static readonly object[] EmptyList = new object[] { };
-        private static string GetNameOfElement(IObject element)
+        private static string GetNameOfElement(IObject? element)
         {
+            if (element == null) throw new System.ArgumentNullException(nameof(element));
             var nameAsObject = element.get("name");
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
@@ -19,26 +21,26 @@ namespace DatenMeister.Models.Forms
 
         public static void DoFill(IEnumerable<object> collection, _FormAndFields tree)
         {
-            string name;
-            IElement value;
+            string? name;
+            IElement? value;
             bool isSet;
             foreach (var item in collection)
             {
-                value = item as IElement;
+                value = item as IElement ?? throw new System.InvalidOperationException("value == null");
                 name = GetNameOfElement(value);
                 if (name == "FormAndFields") // Looking for package
                 {
                     isSet = value.isSet("packagedElement");
-                    collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                    collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                     foreach (var item0 in collection)
                     {
-                        value = item0 as IElement;
+                        value = item0 as IElement ?? throw new System.InvalidOperationException("value == null");
                         name = GetNameOfElement(value);
                         if(name == "FieldData") // Looking for class
                         {
                             tree.__FieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -73,7 +75,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__CheckboxFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -112,7 +114,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DateTimeFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -159,7 +161,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__FormAssociation = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -194,7 +196,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DropDownFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -233,7 +235,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ValuePair = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -252,7 +254,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__MetaClassElementFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -287,7 +289,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ReferenceFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -350,7 +352,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__SubElementFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -397,7 +399,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__TextFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -440,7 +442,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__SeparatorLineFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -455,7 +457,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__FileSelectionFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -502,7 +504,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DefaultTypeForNewElement = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -525,7 +527,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__Form = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -548,7 +550,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DetailForm = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -595,7 +597,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ListForm = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -650,7 +652,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ExtentForm = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;

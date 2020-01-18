@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using Autofac;
 using DatenMeister.Runtime.Workspaces;
 

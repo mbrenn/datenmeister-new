@@ -13,6 +13,6 @@ namespace DatenMeister.Core.EMOF.Interface.Reflection
         /// <summary>
         /// Gets the list extent where the object is stored.
         /// </summary>
-        IExtent Extent { get; }
+        IExtent? Extent { get; }
     }
 }

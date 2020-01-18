@@ -19,7 +19,7 @@ namespace DatenMeister.Runtime.Copier
             _factory = factory ?? throw new InvalidOperationException(nameof(factory));
         }
 
-        public void Copy(IExtent source, IExtent target, CopyOption copyOptions = null)
+        public void Copy(IExtent source, IExtent target, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
             var sourceSequence = source.elements();
@@ -28,7 +28,7 @@ namespace DatenMeister.Runtime.Copier
             Copy(sourceSequence, targetSequence, copyOptions);
         }
 
-        public void Copy(IReflectiveCollection sourceSequence, IReflectiveCollection targetSequence, CopyOption copyOptions = null)
+        public void Copy(IReflectiveCollection sourceSequence, IReflectiveCollection targetSequence, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
 
@@ -41,7 +41,7 @@ namespace DatenMeister.Runtime.Copier
             }
         }
 
-        public void Copy(IEnumerable<object> sourceSequence, IReflectiveCollection targetSequence, CopyOption copyOptions = null)
+        public void Copy(IEnumerable<object> sourceSequence, IReflectiveCollection targetSequence, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
 

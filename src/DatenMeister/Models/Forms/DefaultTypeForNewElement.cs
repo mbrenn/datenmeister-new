@@ -8,10 +8,10 @@ namespace DatenMeister.Models.Forms
     /// </summary>
     public class DefaultTypeForNewElement
     {
-        public string name { get; set; }
+        public string? name { get; set; }
         
-        public IElement metaClass { get; set; }
+        public IElement? metaClass { get; set; }
 
-        public string parentProperty { get; set; }
+        public string? parentProperty { get; set; }
     }
 }

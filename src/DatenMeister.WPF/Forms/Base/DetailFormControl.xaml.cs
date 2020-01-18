@@ -190,7 +190,7 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationCategories.Form);
 
 
-            if (DetailElementContainer != null)
+            if (DetailElementContainer != null && DetailElement != null)
             {
                 yield return new ItemButtonDefinition(
                     "Delete",
@@ -278,6 +278,12 @@ namespace DatenMeister.WPF.Forms.Base
 
             void CopyForm()
             {
+                if (EffectiveForm == null)
+                {
+                    MessageBox.Show("EffectiveForm is not set");
+                    return;
+                }
+                
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var target = viewLogic.GetUserFormExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
@@ -560,6 +566,9 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (DetailElement == null)
                 throw new NotImplementedException("DetailElement == null");
+            if (EffectiveForm == null)
+                throw new InvalidOperationException("EffectiveForm == null");
+            
             
             saveText ??= EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
             saveText ??= "Save";
@@ -620,7 +629,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         /// <param name="detailElement">Element to be set</param>
         /// <returns>true, if the validation was successful</returns>
-        private bool CheckValidityOfContent(IObject? detailElement)
+        private bool CheckValidityOfContent(IObject detailElement)
         {
             var inMemory = InMemoryObject.CreateEmpty(detailElement.GetExtentOf());
             StoreDialogContentIntoElement(inMemory);

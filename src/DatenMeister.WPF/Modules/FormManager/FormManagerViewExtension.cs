@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
@@ -102,11 +103,18 @@ namespace DatenMeister.WPF.Modules.FormManager
                 "Save Form Definition",
                 x =>
                 {
+                    var effectiveForm = itemExplorerControl.EffectiveForm;
+                    if (effectiveForm == null)
+                    {
+                        MessageBox.Show("No effective form is set");
+                        return;
+                    }
+                    
                     var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                     var target = viewLogic.GetUserFormExtent();
                     var copier = new ObjectCopier(new MofFactory(target));
 
-                    var copiedForm = copier.Copy(itemExplorerControl.EffectiveForm);
+                    var copiedForm = copier.Copy(effectiveForm);
                     target.elements().add(copiedForm);
 
                     NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
@@ -231,21 +239,26 @@ namespace DatenMeister.WPF.Modules.FormManager
                 NavigationCategories.Form + ".Definition");
 
             // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
-            var extent = itemExplorerControl.RootItem.GetExtentOf();
-            var extentType = extent?.GetExtentType();
-            if (extentType == FormLogic.ViewExtentType)
-            {
-                yield return new ItemMenuButtonDefinition(
-                    "Create Extent Form by Classifier",
-                    (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ExtentForm),
-                    null,
-                    "Form Manager.Create");
+            var rootItem = itemExplorerControl.RootItem;
 
-                yield return new ItemMenuButtonDefinition(
-                    "Create Detail Form by Classifier",
-                    (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.DetailForm),
-                    null,
-                    "Form Manager.Create");
+            if (rootItem != null)
+            {
+                var extent = rootItem.GetExtentOf();
+                var extentType = extent?.GetExtentType();
+                if (extentType == FormLogic.ViewExtentType)
+                {
+                    yield return new ItemMenuButtonDefinition(
+                        "Create Extent Form by Classifier",
+                        (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ExtentForm),
+                        null,
+                        "Form Manager.Create");
+
+                    yield return new ItemMenuButtonDefinition(
+                        "Create Detail Form by Classifier",
+                        (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.DetailForm),
+                        null,
+                        "Form Manager.Create");
+                }
             }
         }
 

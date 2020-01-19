@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -51,10 +52,15 @@ namespace DatenMeister.WPF.Navigation
                 Owner = navigationHost as Window
             };
 
-            dlg.ItemChosen += (x, y)
-                => NavigatorForItems.NavigateToElementDetailView(
+
+            dlg.ItemChosen += (x, y) =>
+            {
+                var item = y.Item;
+                if (item == null) return;
+                NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
-                    y.Item);
+                    item);
+            };
 
             dlg.Show();
         }

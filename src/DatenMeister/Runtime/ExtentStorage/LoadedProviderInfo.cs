@@ -10,7 +10,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public class LoadedProviderInfo
     {
-        public LoadedProviderInfo(IProvider? provider = null, ExtentLoaderConfig? config = null)
+        public LoadedProviderInfo(IProvider provider, ExtentLoaderConfig? config = null)
         {
             Provider = provider;
             UsedConfig = config;
@@ -19,7 +19,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets or sets the provider being loaded by the provider loader
         /// </summary>
-        public IProvider? Provider { get; set; }
+        public IProvider Provider { get; set; }
 
         /// <summary>
         /// Gets or sets the config that shall be used in the future for the provider.

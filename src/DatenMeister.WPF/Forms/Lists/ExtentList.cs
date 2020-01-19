@@ -5,6 +5,7 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
@@ -42,14 +43,16 @@ namespace DatenMeister.WPF.Forms.Lists
             WorkspaceId = workspaceId;
             var workspace =
                 Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
+            if (workspace != null)
+            {
+                SetRootItem(workspace);
 
-            SetRootItem(workspace);
-
-            // Registers upon events
-            var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
-                Dispatcher?.Invoke(() =>
-                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView()));
+                // Registers upon events
+                var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
+                EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
+                    Dispatcher?.Invoke(() =>
+                        Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView()));
+            }
         }
 
         protected override void OnRecreateViews()
@@ -83,7 +86,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
         public override void OnMouseDoubleClick(IObject element)
         {
-            var uri = element.get("uri").ToString();
+            var uri = element.getOrDefault<string>("uri") ?? string.Empty;
 
             NavigatorForItems.NavigateToItemsInExtent(
                 NavigationHost,

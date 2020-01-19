@@ -117,8 +117,10 @@ namespace DatenMeister.WPF.Navigation
         /// <returns></returns>
         public static Task<NavigateToElementDetailResult> CreateDetailWindow(
             INavigationHost navigationHost,
-            NavigateToItemConfig? navigateToItemConfig)
+            NavigateToItemConfig navigateToItemConfig)
         {
+            if (navigateToItemConfig == null) throw new ArgumentNullException(nameof(navigateToItemConfig));
+            
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
 
@@ -170,7 +172,7 @@ namespace DatenMeister.WPF.Navigation
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
-            var task = new TaskCompletionSource<NavigateToElementDetailResult>();
+            var task = new TaskCompletionSource<NavigateToElementDetailResult?>();
             var result = new NavigateToElementDetailResult();
 
             if (parentWindow == null)

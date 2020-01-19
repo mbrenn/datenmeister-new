@@ -73,6 +73,13 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         private void CreatePanelElement()
         {
+            if (_panel == null)
+                throw new InvalidOperationException("_panel == null");
+            if (_element == null)
+            {
+                throw new InvalidOperationException("_element == null");
+            }
+            
             _panel.Children.Clear();
 
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);

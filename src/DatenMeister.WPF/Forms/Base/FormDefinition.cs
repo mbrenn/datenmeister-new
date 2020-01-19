@@ -22,7 +22,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the name
         /// </summary>
-        public string Name { get; }
+        public string Name { get; } = string.Empty;
 
         /// <summary>
         /// Gets the corresponding element
@@ -55,7 +55,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public FormDefinition(FormDefinitionMode mode) : this (null, null, mode)
+        public FormDefinition(FormDefinitionMode mode) : this (string.Empty, null, mode)
         {
         }
 
@@ -83,7 +83,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the function that will receive a list of view extensions dependent on the form for the tab being used
         /// This function is called by the ItemExplorerControl to figure the valid extensions
         /// </summary>
-        public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensionsFunction { get; set; }
+        public Func<IElement, IEnumerable<ViewExtension>>? TabViewExtensionsFunction { get; set; }
+        
         /// <summary>
         /// Converts the view definition to a string
         /// </summary>

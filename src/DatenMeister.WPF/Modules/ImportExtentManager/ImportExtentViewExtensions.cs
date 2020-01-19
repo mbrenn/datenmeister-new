@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
                 yield return new ExtentMenuButtonDefinition(
                     "Import from Clipboard",
-                    null,
+                    null!,
                     null,
                     NavigationCategories.Extents + ".Import");
             }

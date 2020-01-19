@@ -44,6 +44,9 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     if (itemInExtentList.IsExtentSelectedInTreeview)
                     {
                         var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                        if (classMetaClass == null)
+                            throw new InvalidOperationException("Class could not be found");
+                        
                         yield return new NewInstanceViewDefinition(classMetaClass);
 
                         yield return new ApplicationMenuButtonDefinition(
@@ -66,6 +69,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 if (extent != null)
                 {
                     var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                    if (classMetaClass == null) throw new InvalidOperationException("Class not found");
+                    
                     yield return
                         new CollectionMenuButtonDefinition(
                             "Create new Class",
@@ -86,6 +91,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 var extent = selectedPackage.GetExtentOf();
 
                 var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                if (classMetaClass == null) throw new InvalidOperationException("Class not found");
+                
                 var propertyName = propertiesInformation.Property;
                 if (selectedPackage?.metaclass?.@equals(classMetaClass) == true
                     && propertyName == _UML._StructuredClassifiers._Class.ownedAttribute)

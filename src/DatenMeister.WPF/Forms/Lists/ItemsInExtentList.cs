@@ -64,13 +64,14 @@ namespace DatenMeister.WPF.Forms.Lists
             NavigationTreeView.ShowAllChildren = false;
 
             _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out var extent);
-            Extent = extent;
-            if (Extent == null)
+            if (extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
                 return;
             }
 
+            Extent = extent;
+            
             EventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
                 Extent,
                 (x, y) => _delayedDispatcher.RequestRefresh());
@@ -149,7 +150,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Extent is currently selected
                     // Finds the view by the extent type
-                    form = viewLogic.GetExtentForm(RootItem as IUriExtent, overridingMode);
+                    form = viewLogic.GetExtentForm((IUriExtent) RootItem, overridingMode);
                 }
                 else
                 {
@@ -168,7 +169,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             EvaluateForm(
                 SelectedItem,
-                new FormDefinition(form)
+                new FormDefinition(form ?? throw new InvalidOperationException("form == null"))
                 {
                     ViewExtensions = viewDefinition.ViewExtensions
                 });

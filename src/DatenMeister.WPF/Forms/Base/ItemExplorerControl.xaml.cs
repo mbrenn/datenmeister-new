@@ -52,7 +52,7 @@ namespace DatenMeister.WPF.Forms.Base
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
 
         private EventHandle? _eventHandle;
-        private IExtent _extent;
+        private IExtent? _extent;
         private INavigationHost? _navigationHost;
         private IObject? _rootItem;
 
@@ -393,7 +393,8 @@ namespace DatenMeister.WPF.Forms.Base
                 // Creates the layoutcontrol for the given view
                 var control = new ItemListViewControl
                 {
-                    NavigationHost = NavigationHost
+                    NavigationHost = NavigationHost,
+                    EffectiveForm = tabForm
                 };
 
                 usedViewExtensions.AddRange(control.GetViewExtensions());

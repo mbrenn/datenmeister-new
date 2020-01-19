@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Windows to be used</param>
         /// <returns>The navigation to control the view</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToWorkspaces(INavigationHost window)
+        public static Task<NavigateToElementDetailResult?> NavigateToWorkspaces(INavigationHost window)
         {
             return window.NavigateTo(
                 () => new WorkspaceList(),
@@ -72,8 +72,11 @@ namespace DatenMeister.WPF.Navigation
 
             if (result.Result == NavigationResult.Saved)
             {
-                var workspaceId = result.DetailElement.get("id").ToString();
-                var annotation = result.DetailElement.get("annotation").ToString();
+                var detailElement =
+                    result.DetailElement ?? throw new InvalidOperationException("DetailElement == null");
+                
+                var workspaceId = detailElement.get("id").ToString();
+                var annotation = detailElement.get("annotation").ToString();
 
                 var workspace = new Workspace(workspaceId, annotation);
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();

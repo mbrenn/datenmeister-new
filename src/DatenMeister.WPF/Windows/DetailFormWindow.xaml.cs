@@ -318,7 +318,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element"></param>
         /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject? element, FormDefinition formDefinition, IReflectiveCollection? container = null)
+        public void SetContent(IObject? element, FormDefinition? formDefinition, IReflectiveCollection? container = null)
         {
             element ??= InMemoryObject.CreateEmpty();
             CreateDetailForm(element, formDefinition, container);
@@ -338,7 +338,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(IObject detailElement, FormDefinition formDefinition, IReflectiveCollection? container = null)
+        private void CreateDetailForm(IObject detailElement, FormDefinition? formDefinition, IReflectiveCollection? container = null)
         {
             DetailElement = detailElement;
             ContainerCollection = container;

@@ -26,14 +26,16 @@ namespace DatenMeister.WPF.Navigation
         /// Stores the logger being used in navigator for extents
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(NavigatorForExtents));
-        
+
         /// <summary>
         /// Navigates to an extent list
         /// </summary>
         /// <param name="window">Root window being used</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns>The navigation being used to control the view</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToExtentList(INavigationHost window, string workspaceId)
+        public static Task<NavigateToElementDetailResult?> NavigateToExtentList(
+            INavigationHost window,
+            string workspaceId)
         {
             return window.NavigateTo(
                 () => new ExtentList {WorkspaceId = workspaceId},

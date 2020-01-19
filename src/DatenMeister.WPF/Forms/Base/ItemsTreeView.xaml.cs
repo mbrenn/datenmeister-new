@@ -158,7 +158,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private DefaultClassifierHints _defaultClassifierHints;
 
-        private INavigationHost _navigationHost;
+        private INavigationHost? _navigationHost;
 
         public ItemsTreeView()
         {

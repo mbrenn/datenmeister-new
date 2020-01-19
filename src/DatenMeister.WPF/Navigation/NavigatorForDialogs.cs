@@ -16,7 +16,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Navigation host being used to open up the new dialog</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static Task<NavigateToElementDetailResult> SearchByUrl(INavigationHost window)
+        public static Task<NavigateToElementDetailResult>? SearchByUrl(INavigationHost window)
         {
             var dlg = new QueryElementDialog {Owner = window as Window};
             if (dlg.ShowDialog() == true)
@@ -85,7 +85,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspace">Defines the workspace to which shall be navigated</param>
         /// <param name="defaultExtent">Extent that shall be opened per default</param>
         /// <returns></returns>
-        public static IObject Locate(INavigationHost navigationHost, IWorkspace workspace = null, IExtent defaultExtent = null)
+        public static IObject? Locate(INavigationHost navigationHost, IWorkspace? workspace = null, IExtent? defaultExtent = null)
         {
             var dlg = new LocateItemDialog
             {

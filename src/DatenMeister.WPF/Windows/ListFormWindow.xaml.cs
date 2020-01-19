@@ -27,7 +27,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="factoryMethod">Factory method being used</param>
         /// <param name="navigationMode">Navigation mode</param>
         /// <returns></returns>
-        public Task<NavigateToElementDetailResult> NavigateTo(
+        public Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {

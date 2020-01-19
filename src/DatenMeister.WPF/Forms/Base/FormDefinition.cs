@@ -27,7 +27,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the corresponding element
         /// </summary>
-        public IObject Element { get; }
+        public IObject? Element { get; }
         
         /// <summary>
         /// Stores the list of validators
@@ -40,7 +40,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="name"></param>
         /// <param name="element"></param>
         /// <param name="mode">Stores the type as given</param>
-        public FormDefinition(string name, IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
+        public FormDefinition(string name, IObject? element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
             if (element == null && mode == FormDefinitionMode.Specific)
             {
@@ -54,6 +54,11 @@ namespace DatenMeister.WPF.Forms.Base
                 Mode = mode;
             }
         }
+
+        public FormDefinition(FormDefinitionMode mode) : this (null, null, mode)
+        {
+        }
+
 
         public FormDefinition(IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
@@ -79,11 +84,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// This function is called by the ItemExplorerControl to figure the valid extensions
         /// </summary>
         public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensionsFunction { get; set; }
-
-        public FormDefinition(FormDefinitionMode mode) : this (null, null, mode)
-        {
-        }
-
         /// <summary>
         /// Converts the view definition to a string
         /// </summary>

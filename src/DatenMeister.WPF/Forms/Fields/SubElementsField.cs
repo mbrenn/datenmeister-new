@@ -28,12 +28,12 @@ namespace DatenMeister.WPF.Forms.Fields
 {
     public class SubElementsField : IDetailField
     {
-        private DockPanel _panel;
-        private INavigationHost _navigationHost;
-        private IObject _element;
-        private IElement _fieldData;
-        private string _propertyName;
-        private ItemListViewControl _listViewControl;
+        private DockPanel? _panel;
+        private INavigationHost? _navigationHost;
+        private IObject? _element;
+        private IElement? _fieldData;
+        private string _propertyName = string.Empty;
+        private ItemListViewControl? _listViewControl;
 
         /// <summary>
         /// Creates the element

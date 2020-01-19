@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
@@ -17,12 +19,15 @@ namespace DatenMeister.WPF.Modules.TypeManager
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
+            var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+                                 throw new InvalidOperationException("NavigationHost == null");
+            
             if (viewExtensionTargetInformation.NavigationHost is IApplicationWindow)
             {
                 yield return new ApplicationMenuButtonDefinition(
                     "Goto User Types",
                     () => NavigatorForItems.NavigateToItemsInExtent(
-                        viewExtensionTargetInformation.NavigationHost,
+                        navigationHost,
                         WorkspaceNames.NameTypes,
                         WorkspaceNames.UriUserTypesExtent),
                     string.Empty,
@@ -38,7 +43,6 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 {
                     if (itemInExtentList.IsExtentSelectedInTreeview)
                     {
-
                         var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
                         yield return new NewInstanceViewDefinition(classMetaClass);
 
@@ -46,8 +50,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                             "Create new Class",
                             () =>
                                 NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                    viewExtensionTargetInformation.NavigationHost,
-                                    extent,
+                                    navigationHost,
+                                    extent!,
                                     classMetaClass),
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");
@@ -58,17 +62,21 @@ namespace DatenMeister.WPF.Modules.TypeManager
             var listControl = viewExtensionTargetInformation.GetListViewForItemsTabForExtentType("Uml.Classes");
             if (listControl != null)
             {
-                var classMetaClass = listControl.Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                yield return
-                    new CollectionMenuButtonDefinition(
-                        "Create new Class",
-                        (x) =>
-                            NavigatorForItems.NavigateToNewItemForExtent(
-                                viewExtensionTargetInformation.NavigationHost,
-                                listControl.Extent,
-                                classMetaClass),
-                        string.Empty,
-                        NavigationCategories.Type);
+                var extent = listControl.Extent;
+                if (extent != null)
+                {
+                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                    yield return
+                        new CollectionMenuButtonDefinition(
+                            "Create new Class",
+                            (x) =>
+                                NavigatorForItems.NavigateToNewItemForExtent(
+                                    navigationHost,
+                                    listControl.Extent,
+                                    classMetaClass),
+                            string.Empty,
+                            NavigationCategories.Type);
+                }
             }
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl extentList
@@ -91,7 +99,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                             "Create new Property",
                             (x) =>
                                 NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                                    viewExtensionTargetInformation.NavigationHost,
+                                    navigationHost,
                                     selectedPackage,
                                     _UML._StructuredClassifiers._Class.ownedAttribute,
                                     propertyMetaClass),

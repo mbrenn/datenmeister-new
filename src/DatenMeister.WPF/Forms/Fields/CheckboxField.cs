@@ -11,8 +11,10 @@ namespace DatenMeister.WPF.Forms.Fields
     public class CheckboxField : IDetailField
     {
         private bool? _propertyValue;
-        private string _name;
-        private CheckBox _checkbox;
+        
+        private string _name = string.Empty;
+        
+        private CheckBox? _checkbox;
 
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
             FieldParameter fieldFlags)

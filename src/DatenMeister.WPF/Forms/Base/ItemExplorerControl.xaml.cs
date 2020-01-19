@@ -52,6 +52,9 @@ namespace DatenMeister.WPF.Forms.Base
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
 
         private EventHandle? _eventHandle;
+        private IExtent _extent;
+        private INavigationHost? _navigationHost;
+        private IObject? _rootItem;
 
         public ItemExplorerControl()
         {
@@ -59,16 +62,24 @@ namespace DatenMeister.WPF.Forms.Base
             ItemTabControl.ItemsSource = Tabs;
         }
 
-        public INavigationHost? NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         /// <summary>
         /// Gets the extent being connected
         /// </summary>
-        public IExtent? Extent { get; protected set; }
+        public IExtent Extent
+        {
+            get => _extent ?? throw new InvalidOperationException("_extent == null");
+            protected set => _extent = value;
+        }
 
-        public IReflectiveCollection? Collection => (RootItem as IExtent)?.elements();
+        public IReflectiveCollection Collection => ((IExtent) RootItem).elements();
 
-        public IObject? Item => SelectedPackage ?? Extent;
+        public IObject Item => SelectedPackage ?? Extent;
 
         /// <summary>
         ///     Gets the definition of the current form
@@ -79,7 +90,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the root item for the explorer view. The properties of the root item are
         /// walked through to get the child items
         /// </summary>
-        public IObject? RootItem { get; protected set; }
+        public IObject RootItem
+        {
+            get => _rootItem ?? throw new InvalidOperationException("RootItem == null");
+            protected set => _rootItem = value;
+        }
 
         public IObject? SelectedItem { get; protected set; }
 

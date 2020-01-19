@@ -72,7 +72,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets the detailed element, whose content is shown in the dialog
         /// </summary>
-        public IObject? DetailElement { get; set; }
+        public IObject DetailElement
+        {
+            get => _detailElement ?? throw new InvalidOperationException("DetailElement");
+            set => _detailElement = value;
+        }
 
         /// <summary>
         /// Gets or sets the container for the Detail Element. It will be used to
@@ -120,6 +124,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public readonly IList<IElementValidator> ElementValidators = new List<IElementValidator>();
 
+        private IObject? _detailElement;
+        
+        private INavigationHost? _navigationHost;
+
         public IEnumerable<IObject> GetSelectedItems()
         {
             if (DetailElement != null)
@@ -131,7 +139,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Gets or sets the navigation host
         /// </summary>
-        public INavigationHost? NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         /// <summary>
         /// Gets the title for the control
@@ -374,6 +386,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void CreateRows(IReflectiveCollection fields)
         {
             if (fields == null) throw new ArgumentNullException(nameof(fields));
+            if (DetailElement == null) throw new InvalidOperationException("DetailElement == null");
 
             var anyFocused = false;
             foreach (var field in fields.Cast<IElement>())
@@ -827,6 +840,6 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public IObject? Item => DetailElement;
+        public IObject Item => DetailElement;
     }
 }

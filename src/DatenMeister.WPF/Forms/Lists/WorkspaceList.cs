@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,7 +43,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            FormDefinition form = null;
+            FormDefinition? form = null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
 
             if (OverridingViewDefinition?.Mode == FormDefinitionMode.Specific)
@@ -62,15 +63,16 @@ namespace DatenMeister.WPF.Forms.Lists
             if (form == null)
             {
                 var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
+                var extent = Extent ?? throw new InvalidOperationException("Extent == null");
                 if (selectedItemMetaClass != null
                     && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
                 {
                     var workspaceId = SelectedPackage.get("id")?.ToString();
-                    form = WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, workspaceId, NavigationHost);
+                    form = WorkspaceExtentFormGenerator.RequestFormForExtents(extent, workspaceId, NavigationHost);
                 }
                 else
                 {
-                    form = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(Extent, NavigationHost);
+                    form = WorkspaceExtentFormGenerator.RequestFormForWorkspaces(extent, NavigationHost);
                 }
             }
 

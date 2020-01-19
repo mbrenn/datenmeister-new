@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Gets or sets the id to be shown in the workspace
         /// </summary>
-        public string WorkspaceId { get; set; }
+        public string WorkspaceId { get; set; } = string.Empty;
 
         /// <summary>
         /// Shows the workspaces of the DatenMeister

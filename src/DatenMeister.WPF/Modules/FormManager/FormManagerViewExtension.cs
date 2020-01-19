@@ -287,6 +287,9 @@ namespace DatenMeister.WPF.Modules.FormManager
             ItemExplorerControl itemExplorerControl, 
             CreateFormByClassifierType type)
         {
+            var navigationHost = itemExplorerControl.NavigationHost ??
+                                 throw new InvalidOperationException("navigationHost == null");
+            
             if (NavigatorForDialogs.Locate(
                 itemExplorerControl.NavigationHost,
                 WorkspaceNames.NameTypes,
@@ -312,7 +315,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 userViewExtent.elements().add(createdForm);
 
                 NavigatorForItems.NavigateToElementDetailView(
-                    itemExplorerControl.NavigationHost,
+                    navigationHost,
                     createdForm);
             }
         }

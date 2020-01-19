@@ -26,45 +26,45 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Gets or sets the detail element that shall be shown
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject? DetailElement { get; set; }
 
         /// <summary>
         /// Gets or sets the container for the detail element which can be used to
         /// delete it
         /// </summary>
-        public IReflectiveCollection DetailElementContainer { get; set; }
+        public IReflectiveCollection? DetailElementContainer { get; set; }
 
         /// <summary>
         /// Gets or sets the title for the dialog or window
         /// </summary>
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the action that shall be performed after the view has been created
         /// </summary>
-        public Action<DetailFormControl> AfterCreatedFunction { get; set; }
+        public Action<DetailFormControl>? AfterCreatedFunction { get; set; }
 
         /// <summary>
         /// If the detail element is empty, then the metaclass can be set, so a new element will be created which is derived
         /// by the metaclass.
         /// </summary>
-        public IElement MetaClass { get; set; }
+        public IElement? MetaClass { get; set; }
 
         /// <summary>
         /// If the detail element is empty, then the element will be added upon the given container element by the <c>ContainerProperty</c>.
         /// If ContainerProperty is empty, then the user will be asked which property of the parent shall be used for adding
         /// </summary>
-        public IObject ContainerElement { get; set; }
+        public IObject? ContainerElement { get; set; }
 
         /// <summary>
         /// Gets or sets the property of the containerelement to which the element will be added
         /// </summary>
-        public string ContainerProperty { get; set; }
+        public string ContainerProperty { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the form definition to be used to create the item
         /// </summary>
-        public FormDefinition Form { get; set; }
+        public FormDefinition? Form { get; set; }
     }
 
     public class NavigatorForItems
@@ -80,8 +80,8 @@ namespace DatenMeister.WPF.Navigation
         public static Task<NavigateToElementDetailResult> NavigateToElementDetailView(
             INavigationHost window,
             IObject element,
-            Action<DetailFormControl> afterCreated = null,
-            string title = null)
+            Action<DetailFormControl>? afterCreated = null,
+            string? title = null)
             =>
                 NavigateToElementDetailViewAsync(
                     window,
@@ -101,7 +101,7 @@ namespace DatenMeister.WPF.Navigation
         /// <returns>The task providing the result</returns>
         public static Task<NavigateToElementDetailResult> NavigateToElementDetailViewAsync(
             INavigationHost window,
-            NavigateToItemConfig navigateToItemConfig)
+            NavigateToItemConfig? navigateToItemConfig)
             =>
                 Navigator.CreateDetailWindow(window, navigateToItemConfig);
 
@@ -209,7 +209,7 @@ namespace DatenMeister.WPF.Navigation
             INavigationHost window,
             IObject element,
             IElement metaclass,
-            string parentProperty = null)
+            string? parentProperty = null)
             =>
                 NavigateToNewItemForItem(
                     window,
@@ -308,7 +308,10 @@ namespace DatenMeister.WPF.Navigation
                         return;
                     }
 
-                    config.ContainerElement.AddCollectionItem(selectedProperty, detailControlView.DetailElement);
+                    var detailElement = detailControlView.DetailElement ??
+                                        throw new InvalidOperationException("DetailElement == null");
+
+                    config.ContainerElement.AddCollectionItem(selectedProperty, detailElement);
 
                     // Adds the element to the dialog
                     // collection.add(newElement);

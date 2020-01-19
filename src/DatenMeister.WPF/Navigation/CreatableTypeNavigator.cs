@@ -18,7 +18,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Sets the selected types
         /// </summary>
-        public IElement SelectedType { get; private set; }
+        public IElement? SelectedType { get; private set; }
 
         /// <summary>
         /// Shows a dialog in which the user can select one type out of the list of createable types
@@ -36,10 +36,9 @@ namespace DatenMeister.WPF.Navigation
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
-
             var defaultTypePackage = extent.GetDefaultTypePackages()?.ToList();
-            IWorkspace metaWorkspace = null;
-            IExtent metaExtent = null;
+            IWorkspace? metaWorkspace = null;
+            IExtent? metaExtent = null;
             if (defaultTypePackage == null || !defaultTypePackage.Any())
             {
                 // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type

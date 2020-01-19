@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,10 +24,12 @@ namespace DatenMeister.WPF.Modules.ReportManager
             if (viewExtensionTargetInformation.NavigationHost is DetailFormWindow
                 && viewExtensionTargetInformation.NavigationGuest is DetailFormControl detailFormControl)
             {
+                var effectiveForm = detailFormControl.EffectiveForm ??
+                                    throw new InvalidOperationException("effectiveForm == null");
                 yield return
                     new ItemMenuButtonDefinition(
                         "As Html",
-                        (x) => CreateReportForDetailElement(detailFormControl.EffectiveForm, x),
+                        (x) => CreateReportForDetailElement(effectiveForm, x),
                         null,
                         "Item"
                     );
@@ -35,9 +38,11 @@ namespace DatenMeister.WPF.Modules.ReportManager
             // Check fi the the query is about the current view
             if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl viewControl)
             {
+                var effectiveForm = viewControl.EffectiveForm ??
+                                    throw new InvalidOperationException("effectiveForm == null");
                 yield return new CollectionMenuButtonDefinition(
                     "As Html",
-                    (x) => CreateReportForExplorerView(viewControl.EffectiveForm, x),
+                    (x) => CreateReportForExplorerView(effectiveForm, x),
                     null,
                     "Collection")
                 {
@@ -47,6 +52,9 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl explorerControl)
             {
+                var effectiveForm = explorerControl.EffectiveForm ??
+                                    throw new InvalidOperationException("EffectiveForm == null");
+                
                 yield return new ItemMenuButtonDefinition(
                     "Report as Html",
                     x =>
@@ -54,13 +62,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         if (x is IExtent asExtent)
                         {
                             CreateReportForExplorerView(
-                                explorerControl.EffectiveForm,
+                                effectiveForm,
                                 asExtent.elements());
                         }
                         else
                         {
                             CreateReportForExplorerView(
-                                explorerControl.EffectiveForm,
+                                effectiveForm,
                                 new PropertiesAsReflectiveCollection(x));
                         }
                     },

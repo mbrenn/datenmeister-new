@@ -127,7 +127,7 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public UIElement? MainControl => MainContent.Content as UIElement;
 
-        public Task<NavigateToElementDetailResult> NavigateTo(
+        public Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
             => Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
@@ -380,7 +380,8 @@ namespace DatenMeister.WPF.Windows
                 
                 if (_requestedFormDefinition.Mode == FormDefinitionMode.Specific)
                 {
-                    effectiveForm = _requestedFormDefinition.Element;
+                    effectiveForm = _requestedFormDefinition.Element ??
+                                    throw new InvalidOperationException("_requestedFormDefinition.Element == null");
                 }
                 else
                 {

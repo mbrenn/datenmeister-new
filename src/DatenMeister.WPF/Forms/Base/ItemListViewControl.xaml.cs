@@ -72,18 +72,19 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Defines the change event handle being used for current view
         /// </summary>
-        private EventHandle _changeEventHandle;
+        private EventHandle? _changeEventHandle;
 
         /// <summary>
         ///     Defines the text being used for search
         /// </summary>
-        private string _searchText;
+        private string _searchText = string.Empty;
 
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private FormLogic _formLogic;
+        private FormLogic? _formLogic;
 
+        private INavigationHost? _navigationHost;
         public ItemListViewControl()
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
@@ -95,18 +96,18 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets or sets the items to be shown. These items are shown also in the navigation view and will
         ///     not be modified, even if the user clicks on the navigation tree.
         /// </summary>
-        public IReflectiveCollection Items { get; set; }
+        public IReflectiveCollection? Items { get; set; }
 
         /// <summary>
         ///     Defines the current form definition of the window as provided by the
         ///     derived method 'RequestForm'.
         /// </summary>
-        public IObject EffectiveForm { get; set; }
+        public IObject? EffectiveForm { get; set; }
 
         /// <summary>
         ///     Gets or sets the view extensions
         /// </summary>
-        public List<ViewExtension> ViewExtensions { get; private set; }
+        public List<ViewExtension> ViewExtensions { get; private set; } = new List<ViewExtension>();
 
         /// <summary>
         ///     Gets or sets the information whether new items can be added via the datagrid
@@ -138,14 +139,18 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets the currently selected item
         /// </summary>
         /// <returns>Item being selected</returns>
-        public IObject GetSelectedItem() 
+        public IObject? GetSelectedItem() 
             => GetSelectedItems().FirstOrDefault();
 
         /// <summary>
         ///     Gets or sets the host for the list view item. The navigation
         ///     host is used to set the ribbons and other navigational things
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         /// <summary>
         ///     Prepares the navigation of the host. The function is called by the navigation
@@ -306,6 +311,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Returned element for the </returns>
         private object GetValueOfElement(IObject element, IElement field)
         {
+            if (_formLogic == null) throw new InvalidOperationException("_formlogic == null");
+            
             var fieldMetaClass = field.getMetaClass();
             if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
@@ -329,8 +336,12 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
+            if ( EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
+            
             var watch = new StopWatchLogger(Logger, "UpdateView");
             var listItems = new ObservableCollection<ExpandoObject>();
+
+            var selectedItem = GetSelectedItem();
             
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);

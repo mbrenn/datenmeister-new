@@ -16,11 +16,11 @@ namespace DatenMeister.WPF.Forms.Fields
     /// </summary>
     public class DropdownField : IDetailField
     {
-        private ComboBox _comboBox;
+        private ComboBox? _comboBox;
 
-        private string _name;
+        private string _name = string.Empty;
 
-        private object _propertyValue;
+        private object? _propertyValue;
 
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
             FieldParameter fieldFlags)

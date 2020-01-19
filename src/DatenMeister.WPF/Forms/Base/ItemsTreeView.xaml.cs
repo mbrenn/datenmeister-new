@@ -156,7 +156,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the list of hints for the default classifier
         /// </summary>
-        private DefaultClassifierHints _defaultClassifierHints; 
+        private DefaultClassifierHints _defaultClassifierHints;
+
+        private INavigationHost _navigationHost;
 
         public ItemsTreeView()
         {
@@ -516,7 +518,11 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public INavigationHost? NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         public IEnumerable<ViewExtension> GetViewExtensions()
             => Array.Empty<ViewExtension>();

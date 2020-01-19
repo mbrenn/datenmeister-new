@@ -19,8 +19,8 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
         public CollectionMenuButtonDefinition(
             string name,
             Action<IReflectiveCollection> onPressed,
-            string imageName,
-            string categoryName,
+            string? imageName,
+            string? categoryName,
             int priority = 0)
             : base(name, NavigationScope.Collection, imageName, categoryName, priority)
         {

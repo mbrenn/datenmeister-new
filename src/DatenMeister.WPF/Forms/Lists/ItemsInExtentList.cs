@@ -42,12 +42,12 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Gets or sets the workspace id
         /// </summary>
-        public string WorkspaceId { get; set; }
+        public string WorkspaceId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets extent Url for the item being shown
         /// </summary>
-        public string ExtentUrl { get; set; }
+        public string ExtentUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Stores the delayed dispatcher
@@ -118,7 +118,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
-            IElement form = null;
+            IElement? form = null;
 
             var overridingMode = OverridingViewDefinition?.Mode ?? FormDefinitionMode.Default;
             // Check if the used form shall be overridden
@@ -153,6 +153,9 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
                 else
                 {
+                    if (SelectedItem == null)
+                        throw new InvalidOperationException("Not a root item, but also no SelectedItem");
+                    
                     // User has selected a sub element and its children shall be shown
                     form = viewLogic.GetItemTreeFormForObject(
                         SelectedItem,
@@ -173,21 +176,24 @@ namespace DatenMeister.WPF.Forms.Lists
 
         public override IEnumerable<ViewExtension> GetViewExtensions()
         {
-            yield return    new ApplicationMenuButtonDefinition(
+            if (NavigationHost == null) throw new InvalidOperationException("NavigationHost == null");
+            var navigationHost = NavigationHost;
+
+            yield return new ApplicationMenuButtonDefinition(
                 "To Extents",
-                () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
+                () => NavigatorForExtents.NavigateToExtentList(navigationHost, WorkspaceId),
                 Icons.ExtentsShow,
                 NavigationCategories.DatenMeister + ".Navigation");
 
             yield return new ExtentMenuButtonDefinition(
                 "Extent Info",
-                (x) => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
+                (x) => NavigatorForExtents.OpenDetailOfExtent(navigationHost, ExtentUrl),
                 null,
                 NavigationCategories.Extents + ".Info");
 
             yield return new ExtentMenuButtonDefinition(
                 "Extent Properties",
-                (x) => NavigatorForExtents.OpenPropertiesOfExtent(NavigationHost, x),
+                (x) => NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
                 null,
                 NavigationCategories.Extents + ".Info");
 
@@ -271,7 +277,7 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 if (Extent != null)
                 {
-                    var window = new TreeViewWindow {Owner = NavigationHost.GetWindow()};
+                    var window = new TreeViewWindow {Owner = navigationHost.GetWindow()};
                     window.SetDefaultProperties();
                     window.SetRootItem(Extent);
                     window.ItemSelected += (x, y) =>

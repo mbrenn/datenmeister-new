@@ -109,15 +109,17 @@ namespace DatenMeister.WPF.Navigation
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailViewAsync(window, navigateToItemConfig);
+            var detailElement = result.DetailElement ?? 
+                                throw new InvalidOperationException("detailElement == null");
             if (result.Result == NavigationResult.Saved)
             {
                 var configuration = new XmiStorageConfiguration
                 {
-                    extentUri = result.DetailElement.isSet("uri")
-                        ? result.DetailElement.get("uri").ToString()
+                    extentUri = detailElement.isSet("uri")
+                        ? detailElement.get("uri").ToString()
                         : string.Empty,
-                    filePath = result.DetailElement.isSet("filepath")
-                        ? result.DetailElement.get("filepath").ToString()
+                    filePath = detailElement.isSet("filepath")
+                        ?detailElement.get("filepath").ToString()
                         : string.Empty,
                     workspaceId = workspaceId
                 };

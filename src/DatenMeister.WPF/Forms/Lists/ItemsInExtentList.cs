@@ -168,7 +168,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var viewDefinition = new FormDefinition(className, form);
 
             EvaluateForm(
-                SelectedItem,
+                SelectedItem ?? throw new InvalidOperationException("No SelectedItem"),
                 new FormDefinition(form ?? throw new InvalidOperationException("form == null"))
                 {
                     ViewExtensions = viewDefinition.ViewExtensions
@@ -187,14 +187,12 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigationCategories.DatenMeister + ".Navigation");
 
             yield return new ExtentMenuButtonDefinition(
-                "Extent Info",
-                (x) => NavigatorForExtents.OpenDetailOfExtent(navigationHost, ExtentUrl),
+                "Extent Info", async (x) => await NavigatorForExtents.OpenDetailOfExtent(navigationHost, ExtentUrl),
                 null,
                 NavigationCategories.Extents + ".Info");
 
             yield return new ExtentMenuButtonDefinition(
-                "Extent Properties",
-                (x) => NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
+                "Extent Properties", async (x) => await NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
                 null,
                 NavigationCategories.Extents + ".Info");
 
@@ -262,7 +260,8 @@ namespace DatenMeister.WPF.Forms.Lists
             void OpenExtentFolder()
             {
                 var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                if (extentManager.GetLoadConfigurationFor(Extent as IUriExtent) is ExtentFileLoaderConfig
+                var uriExtent = Extent as IUriExtent ?? throw new InvalidOperationException("Extent as IUriExtent");
+                if (extentManager.GetLoadConfigurationFor(uriExtent) is ExtentFileLoaderConfig
                         loadConfiguration && loadConfiguration.filePath != null)
                 {
                     // ReSharper disable once AssignNullToNotNullAttribute
@@ -281,8 +280,8 @@ namespace DatenMeister.WPF.Forms.Lists
                     var window = new TreeViewWindow {Owner = navigationHost.GetWindow()};
                     window.SetDefaultProperties();
                     window.SetRootItem(Extent);
-                    window.ItemSelected += (x, y) =>
-                        NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                    window.ItemSelected += async (x, y) =>
+                        await NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
                     window.Show();
                 }
             }
@@ -291,7 +290,7 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
                 extentManager.StoreExtent(extent);
-                MessageBox.Show("Extent saved");                
+                MessageBox.Show("Extent saved");
             }
 
             foreach (var extension in base.GetViewExtensions()) yield return extension;

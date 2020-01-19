@@ -127,10 +127,10 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public UIElement? MainControl => MainContent.Content as UIElement;
 
-        public Task<NavigateToElementDetailResult?> NavigateTo(
+        public async Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
-            => Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+            => await Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
 
         /// <summary>
         /// Rebuilds the navigation by going through all view extensions
@@ -298,10 +298,14 @@ namespace DatenMeister.WPF.Windows
             }
 
             _finalEventsThrown = true;
-            Cancelled?.Invoke(this,
-                new ItemEventArgs(
-                    detailElement,
-                    attachedElement));
+
+            if (detailElement != null)
+            {
+                Cancelled?.Invoke(this,
+                    new ItemEventArgs(
+                        detailElement,
+                        attachedElement));
+            }
         }
 
         private void DetailFormWindow_OnClosed(object sender, EventArgs e)

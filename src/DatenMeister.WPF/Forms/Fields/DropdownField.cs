@@ -59,8 +59,10 @@ namespace DatenMeister.WPF.Forms.Fields
             var items = new List<ComboBoxItem>();
             ComboBoxItem? selectedBoxItem = null;
 
-            foreach (var itemPair in dropDownValues.Select(x => x as IElement).Where(x => x != null))
+            foreach (var itemPair in dropDownValues.Select(x => x as IElement))
             {
+                if (itemPair == null) continue;
+                
                 var nameOfItem = itemPair.getOrDefault<string>(_FormAndFields._ValuePair.name);
                 var valueOfItem = itemPair.getOrDefault<object>(_FormAndFields._ValuePair.value);
 

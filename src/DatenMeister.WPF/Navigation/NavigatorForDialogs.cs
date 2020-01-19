@@ -17,7 +17,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Navigation host being used to open up the new dialog</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static Task<NavigateToElementDetailResult>? SearchByUrl(INavigationHost window)
+        public static async Task<NavigateToElementDetailResult?> SearchByUrl(INavigationHost window)
         {
             var dlg = new QueryElementDialog {Owner = window as Window};
             if (dlg.ShowDialog() == true)
@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Navigation
                     return null;
                 }
 
-                return NavigatorForItems.NavigateToElementDetailView(
+                return await NavigatorForItems.NavigateToElementDetailView(
                     window,
                     element);
             }
@@ -53,11 +53,11 @@ namespace DatenMeister.WPF.Navigation
             };
 
 
-            dlg.ItemChosen += (x, y) =>
+            dlg.ItemChosen += async (x, y) =>
             {
                 var item = y.Item;
                 if (item == null) return;
-                NavigatorForItems.NavigateToElementDetailView(
+                await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
                     item);
             };
@@ -72,10 +72,10 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspaceName">Name of the workspace which shall be pre-selected</param>
         /// <param name="extentUri">Uri of the workspace </param>
         /// <returns>The selected workspace by the user or null, if the user has not selected a workspace</returns>
-        public static IObject Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
+        public static IObject? Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
         {
             var workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspace(workspaceName);
-            IExtent extent = null;
+            IExtent? extent = null;
             if (workspace != null)
             {
                 extent = workspace.FindExtent(extentUri);

@@ -53,7 +53,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// <param name="workspace">The workspace to which the type shall be found</param>
         /// <param name="extent">The extent to which the type shall be found</param>
         /// <returns>The created type</returns>
-        public IElement GetFindTypeForm(IObject preSelectedPackage, IWorkspace workspace = null, IExtent? extent = null)
+        public IElement GetFindTypeForm(IObject? preSelectedPackage, IWorkspace? workspace = null, IExtent? extent = null)
         {
             var form = new DetailForm(FindTypeForm)
             {

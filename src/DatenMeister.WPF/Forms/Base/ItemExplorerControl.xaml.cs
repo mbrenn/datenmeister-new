@@ -77,7 +77,18 @@ namespace DatenMeister.WPF.Forms.Base
             protected set => _extent = value;
         }
 
-        public IReflectiveCollection Collection => ((IExtent) RootItem).elements();
+        public IReflectiveCollection Collection
+        {
+            get
+            {
+                if (RootItem is IExtent extent)
+                {
+                    return extent.elements();
+                }
+
+                return GetPropertiesAsReflection(RootItem, null);
+            }
+        }
 
         public IObject Item => SelectedPackage ?? Extent;
 
@@ -96,6 +107,9 @@ namespace DatenMeister.WPF.Forms.Base
             protected set => _rootItem = value;
         }
 
+        /// <summary>
+        /// Gets the currently selected item in the tree view. May be null, if no item is selected
+        /// </summary>
         public IObject? SelectedItem { get; protected set; }
 
         /// <summary>
@@ -322,7 +336,8 @@ namespace DatenMeister.WPF.Forms.Base
             IReflectiveCollection? container = null)
         {
             EffectiveForm = formDefinition.Element;
-            var tabs = formDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+
+            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -466,7 +481,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                     if (!string.IsNullOrEmpty(propertyName))
                     {
-                        var extentData = new ViewExtensionForItemPropertiesInformation()
+                        var extentData = new ViewExtensionForItemPropertiesInformation
                         {
                             NavigationGuest = control,
                             NavigationHost = NavigationHost,
@@ -540,7 +555,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             return tabControl;
         }
-
+        
         /// <summary>
         /// Creates the menu and the buttons for the default types
         /// </summary>
@@ -659,7 +674,7 @@ namespace DatenMeister.WPF.Forms.Base
             return control;
         }
 
-        private IReflectiveCollection GetPropertiesAsReflection(IObject value, string propertyName)
+        private IReflectiveCollection GetPropertiesAsReflection(IObject value, string? propertyName)
         {
             if (string.IsNullOrEmpty(propertyName))
             {

@@ -115,7 +115,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost"></param>
         /// <param name="navigateToItemConfig"></param>
         /// <returns></returns>
-        public static Task<NavigateToElementDetailResult> CreateDetailWindow(
+        public async static Task<NavigateToElementDetailResult?> CreateDetailWindow(
             INavigationHost navigationHost,
             NavigateToItemConfig navigateToItemConfig)
         {
@@ -157,7 +157,7 @@ namespace DatenMeister.WPF.Navigation
                 detailFormWindow.Show();
             }
 
-            return task.Task;
+            return await task.Task;
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="factoryMethod">Factory method to be used to create the usercontrol</param>
         /// <param name="navigationMode">Mode of the navigation</param>
         /// <returns>Creates a new window which can be used by the user. </returns>
-        public static Task<NavigateToElementDetailResult?> NavigateByCreatingAWindow(
+        public async static Task<NavigateToElementDetailResult?> NavigateByCreatingAWindow(
             Window parentWindow,
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
@@ -236,7 +236,7 @@ namespace DatenMeister.WPF.Navigation
                 }
             }
 
-            return task.Task;
+            return await task.Task;
         }
 
         /// <summary>

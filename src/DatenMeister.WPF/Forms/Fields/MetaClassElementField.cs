@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 textField.TextDecorations = TextDecorations.Underline;
                 textField.MouseDown += (sender, args) =>
                 {
-                    NavigatorForItems.NavigateToElementDetailView(
+                    _ = NavigatorForItems.NavigateToElementDetailView(
                         detailForm.NavigationHost,
                         metaClass);
                 };

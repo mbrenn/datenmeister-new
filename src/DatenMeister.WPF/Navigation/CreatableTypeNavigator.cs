@@ -27,7 +27,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="extent">Extent to whom the type shall be created</param>
         /// <param name="buttonName">Name of the button</param>
         /// <returns>The control navigation</returns>
-        public async Task<NavigateToElementDetailResult> NavigateToSelectCreateableType(
+        public async Task<NavigateToElementDetailResult?> NavigateToSelectCreateableType(
             INavigationHost window,
             IExtent extent,
             string buttonName = "Create")
@@ -68,15 +68,19 @@ namespace DatenMeister.WPF.Navigation
             };
 
             var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);
-            if (result.Result == NavigationResult.Saved)
+            if (result != null)
             {
-                var metaClass = result.DetailElement.getOrDefault<IElement>("selectedType");
-                if (metaClass != null)
+                var detailElement = result.DetailElement;
+                if (result.Result == NavigationResult.Saved && detailElement != null)
                 {
-                    SelectedType = metaClass;
-                }
+                    var metaClass = detailElement.getOrDefault<IElement>("selectedType");
+                    if (metaClass != null)
+                    {
+                        SelectedType = metaClass;
+                    }
 
-                OnClosed();
+                    OnClosed();
+                }
             }
 
             return result;

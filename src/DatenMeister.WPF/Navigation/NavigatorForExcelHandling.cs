@@ -33,10 +33,12 @@ namespace DatenMeister.WPF.Navigation
                 var dlg = new ExcelImportDefinitionDialog();
 
                 await dlg.LoadFile(fileDialog.FileName);
+                var excelSettings =
+                    dlg.ExcelSettings ?? throw new InvalidOperationException("dlg.ExcelSettings == null");
 
-                dlg.ExcelSettings.workspaceId = workspaceId;
-                dlg.ExcelSettings.extentUri = "datenmeister:///excelimport_" + newGuid;
-                dlg.ExcelSettings.extentPath = newGuid + ".xmi";
+                excelSettings.workspaceId = workspaceId;
+                excelSettings.extentUri = "datenmeister:///excelimport_" + newGuid;
+                excelSettings.extentPath = newGuid + ".xmi";
 
                 dlg.Owner = host as Window;
                 if (dlg.ShowDialog() == true)

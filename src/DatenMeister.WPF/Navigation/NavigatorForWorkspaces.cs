@@ -12,6 +12,7 @@ using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -30,7 +31,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Windows to be used</param>
         /// <returns>The navigation to control the view</returns>
-        public static Task<NavigateToElementDetailResult?> NavigateToWorkspaces(INavigationHost window)
+        public static Task<NavigateToElementDetailResult?>? NavigateToWorkspaces(INavigationHost window)
         {
             return window.NavigateTo(
                 () => new WorkspaceList(),
@@ -48,7 +49,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="navigationHost"></param>
         /// <returns></returns>
-        public static async Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
+        public static async Task<NavigateToElementDetailResult?>? CreateNewWorkspace(INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewExtent = viewLogic.GetInternalFormExtent();
@@ -70,13 +71,13 @@ namespace DatenMeister.WPF.Navigation
                     Form = new FormDefinition(formElement)
                 });
 
-            if (result.Result == NavigationResult.Saved)
+            if (result != null && result.Result == NavigationResult.Saved)
             {
                 var detailElement =
                     result.DetailElement ?? throw new InvalidOperationException("DetailElement == null");
                 
-                var workspaceId = detailElement.get("id").ToString();
-                var annotation = detailElement.get("annotation").ToString();
+                var workspaceId = detailElement.getOrDefault<string>("id");
+                var annotation = detailElement.getOrDefault<string>("annotation");
 
                 var workspace = new Workspace(workspaceId, annotation);
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
@@ -142,7 +143,7 @@ namespace DatenMeister.WPF.Navigation
             }
 
             GiveMe.Scope.UnuseDatenMeister();
-            GiveMe.Scope = null;
+            GiveMe.Scope = null!;
 
 
             foreach (var file in files)

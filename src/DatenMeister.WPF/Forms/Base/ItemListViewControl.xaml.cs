@@ -174,6 +174,8 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 try
                 {
+                    if (Items == null) throw new InvalidOperationException("Items == null");
+                    
                     var dlg = new SaveFileDialog
                     {
                         DefaultExt = "csv",
@@ -279,9 +281,15 @@ namespace DatenMeister.WPF.Forms.Base
             UnregisterCurrentChangeEventHandle();
 
             if (items is IHasExtent asExtent)
-                _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
-                    asExtent.Extent,
-                    (extent, element) => _delayedDispatcher.RequestRefresh());
+            {
+                var extent = asExtent.Extent;
+                if (extent != null)
+                {
+                    _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                        extent,
+                        (innerExtent, element) => _delayedDispatcher.RequestRefresh());
+                }
+            }
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
             Items = items;
@@ -309,7 +317,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="element">Element being queried</param>
         /// <param name="field">Field being used for query</param>
         /// <returns>Returned element for the </returns>
-        private object GetValueOfElement(IObject element, IElement field)
+        private object? GetValueOfElement(IObject element, IElement field)
         {
             if (_formLogic == null) throw new InvalidOperationException("_formlogic == null");
             
@@ -321,7 +329,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 return metaClass == null
                     ? string.Empty
-                    : NamedElementMethods.GetFullName(elementAsElement.getMetaClass());
+                    : NamedElementMethods.GetFullName(metaClass);
             }
 
             var name = field.getOrDefault<string>(_FormAndFields._FieldData.name);
@@ -366,7 +374,7 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         var columnNames = fields.OfType<IElement>()
                             .Select(x => x.get("name")?.ToString())
-                            .Where(x => x != null);
+                            .Where(x => x != null)!;
                         items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
                     }
 

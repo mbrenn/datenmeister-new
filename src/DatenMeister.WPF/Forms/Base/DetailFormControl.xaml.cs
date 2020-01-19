@@ -304,7 +304,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var copiedForm = copier.Copy(EffectiveForm);
                 target.elements().add(copiedForm);
 
-                NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
+                _ = NavigatorForItems.NavigateToElementDetailView(NavigationHost, copiedForm);
             }
         }
 
@@ -763,7 +763,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Calls the attached elements, if this method is not invoked 'externally'
-            if (element.@equals(DetailElement))
+            if (element.@equals(DetailElement) && AttachedElement != null)
             {
                 foreach (var field in AttachedItemFields)
                 {

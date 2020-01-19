@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -11,12 +12,14 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements;
 using DatenMeister.WPF.Navigation;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Forms.Lists
 {
@@ -64,10 +67,10 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
                 var extent = Extent ?? throw new InvalidOperationException("Extent == null");
-                if (selectedItemMetaClass != null
+                if (selectedItemMetaClass != null && SelectedPackage != null
                     && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
                 {
-                    var workspaceId = SelectedPackage.get("id")?.ToString();
+                    var workspaceId = SelectedPackage.getOrDefault<string>("id");
                     form = WorkspaceExtentFormGenerator.RequestFormForExtents(extent, workspaceId, NavigationHost);
                 }
                 else
@@ -77,6 +80,12 @@ namespace DatenMeister.WPF.Forms.Lists
             }
 
             // Sets the workspaces
+            if (SelectedItem == null)
+            {
+                MessageBox.Show("None");
+                return;
+            }
+            
             EvaluateForm(SelectedItem, form);
         }
 
@@ -100,7 +109,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
         public override void OnMouseDoubleClick(IObject element)
         {
-            var workspaceId = element.get("id").ToString();
+            var workspaceId = element.getOrDefault<string>("id");
             NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
         }
     }

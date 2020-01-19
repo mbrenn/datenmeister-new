@@ -66,9 +66,9 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 Mode = FormDefinitionMode.Default;
             }
-            else
+            else if (element != null)
             {
-                Name = element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                Name = element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) ?? string.Empty;
                 Element = element;
                 Mode = mode;
             }

@@ -117,7 +117,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     var copiedForm = copier.Copy(effectiveForm);
                     target.elements().add(copiedForm);
 
-                    NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
+                    _ = NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
                         copiedForm);
                 },
                 "",
@@ -314,7 +314,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 userViewExtent.elements().add(createdForm);
 
-                NavigatorForItems.NavigateToElementDetailView(
+                _ = NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
                     createdForm);
             }
@@ -460,8 +460,11 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void CreateFieldByProperty()
             {
+                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                                     ?? throw new InvalidOperationException("navigationHost == null");
+                
                 if (NavigatorForDialogs.Locate(
-                    viewExtensionTargetInformation.NavigationHost,
+                    navigationHost,
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
                 {
@@ -479,12 +482,15 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// </summary>
         /// <param name="viewExtensionTargetInformation"></param>
         /// <returns></returns>
-        private static ViewExtension GetForApplicationWindow(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        private static ViewExtension GetForApplicationWindow(
+            ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
+            var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+                                 throw new InvalidOperationException("navigationHost == null");
+            
             var result = new ApplicationMenuButtonDefinition(
-                "Goto User Forms",
-                () => NavigatorForItems.NavigateToItemsInExtent(
-                    viewExtensionTargetInformation.NavigationHost,
+                "Goto User Forms", async () => await NavigatorForItems.NavigateToItemsInExtent(
+                    navigationHost,
                     WorkspaceNames.NameManagement,
                     WorkspaceNames.UriUserFormExtent),
                 string.Empty,

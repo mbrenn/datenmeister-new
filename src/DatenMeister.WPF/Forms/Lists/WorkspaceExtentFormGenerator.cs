@@ -59,7 +59,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
                 formElement = viewLogic.GetExtentFormForSubforms(
                     viewLogic.GetListFormForExtent(extent, formAndFields.__Workspace,
-                        FormDefinitionMode.Default));
+                        FormDefinitionMode.Default) ??
+                    throw new InvalidOperationException("List form could not be created"));
             }
 
             var viewDefinition = new FormDefinition("Workspaces", formElement)
@@ -111,7 +112,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void ShowExtents(INavigationGuest navigationGuest, IObject workspace)
             {
-                var workspaceId = workspace.get("id")?.ToString();
+                var workspaceId = workspace.getOrDefault<string>("id");
                 if (workspaceId == null)
                 {
                     return;
@@ -122,7 +123,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void DeleteWorkspace(INavigationGuest navigationGuest, IObject workspace)
             {
-                var workspaceId = workspace.get("id").ToString();
+                var workspaceId = workspace.getOrDefault<string>("id");
                 
                 if (MessageBox.Show(
                         $"Are you sure to delete the workspace '{workspaceId}'? " +
@@ -157,9 +158,10 @@ namespace DatenMeister.WPF.Forms.Lists
                 // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
                 var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
                 var listForm = viewLogic.GetListFormForExtent(
-                    extent, 
-                    formAndFields.__Extent,
-                    FormDefinitionMode.Default);
+                                   extent,
+                                   formAndFields.__Extent,
+                                   FormDefinitionMode.Default) ??
+                               throw new InvalidOperationException("listForm == null");
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
 
                 result = viewLogic.GetExtentFormForSubforms(listForm);
@@ -288,9 +290,9 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var listViewControl = (ItemListViewControl) navigationGuest;
 
-                var uri = extentElement.get("uri").ToString();
+                var uri = extentElement.getOrDefault<string>("uri");
 
-                NavigatorForItems.NavigateToItemsInExtent(
+                _ = NavigatorForItems.NavigateToItemsInExtent(
                     listViewControl.NavigationHost,
                     workspaceId,
                     uri);
@@ -329,7 +331,7 @@ namespace DatenMeister.WPF.Forms.Lists
             }
         }
 
-        public static async Task<ExtentLoaderConfig> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
+        public static async Task<ExtentLoaderConfig?> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
         {
             // Let user select the type of the extent
             var dlg = new LocateItemDialog
@@ -359,7 +361,7 @@ namespace DatenMeister.WPF.Forms.Lists
             // Let user fill out the configuration of the extent
             var detailControl = await NavigatorForItems.NavigateToElementDetailView(navigationHost, createdElement);
 
-            if (detailControl.Result == NavigationResult.Saved)
+            if (detailControl != null && detailControl.Result == NavigationResult.Saved)
             {
                 // Convert back to instance
                 var extentLoaderConfig =

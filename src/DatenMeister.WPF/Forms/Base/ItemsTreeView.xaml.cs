@@ -408,12 +408,18 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void OnItemChosen(object? item)
         {
-            ItemChosen?.Invoke(this, new ItemEventArgs(item as IObject));
+            if (item is IObject itemAsObject)
+            {
+                ItemChosen?.Invoke(this, new ItemEventArgs(itemAsObject));
+            }
         }
 
         private void OnItemSelected(object? item)
         {
-            ItemSelected?.Invoke(this, new ItemEventArgs(item as IObject));
+            if (item is IObject itemAsObject)
+            {
+                ItemSelected?.Invoke(this, new ItemEventArgs(itemAsObject));
+            }
         }
 
         /// <summary>
@@ -549,6 +555,7 @@ namespace DatenMeister.WPF.Forms.Base
                     if (selectedItem == null)
                     {
                         System.Windows.MessageBox.Show("No item selected");
+                        return;
                     }
 
                     extension.Action?.Invoke(selectedItem);

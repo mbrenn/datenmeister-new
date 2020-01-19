@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -71,11 +72,12 @@ namespace DatenMeister.WPF.Forms.Lists
                     SelectedItem,
                     viewDefinition);
             }
-            else
+            else if (SelectedPackage != null)
             {
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default);
-                var viewDefinition = overridingDefinition ?? 
+                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default)
+                    ?? throw new InvalidOperationException("form == null") ;
+                var viewDefinition = overridingDefinition ??
                                      new FormDefinition(form);
 
                 EvaluateForm(
@@ -88,7 +90,7 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             var uri = element.getOrDefault<string>("uri") ?? string.Empty;
 
-            NavigatorForItems.NavigateToItemsInExtent(
+            _ = NavigatorForItems.NavigateToItemsInExtent(
                 NavigationHost,
                 WorkspaceId,
                 uri);

@@ -82,13 +82,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private FormLogic? _formLogic;
+        private FormLogic _formLogic;
 
         private INavigationHost? _navigationHost;
         public ItemListViewControl()
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
+            _formLogic = GiveMe.Scope.Resolve<FormLogic>();
             InitializeComponent();
         }
 
@@ -277,7 +278,6 @@ namespace DatenMeister.WPF.Forms.Base
             IObject formDefinition,
             IEnumerable<ViewExtension> viewExtensions)
         {
-            _formLogic = GiveMe.Scope.Resolve<FormLogic>();
             UnregisterCurrentChangeEventHandle();
 
             if (items is IHasExtent asExtent)
@@ -374,8 +374,8 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         var columnNames = fields.OfType<IElement>()
                             .Select(x => x.get("name")?.ToString())
-                            .Where(x => x != null)!;
-                        items = Items.WhenOneOfThePropertyContains(columnNames, _searchText).OfType<IObject>();
+                            .Where(x => x != null);
+                        items = Items.WhenOneOfThePropertyContains(columnNames!, _searchText).OfType<IObject>();
                     }
 
                     // Goes through the fast filters and filters the items
@@ -395,7 +395,7 @@ namespace DatenMeister.WPF.Forms.Base
                     foreach (var item in items)
                     {
                         var itemObject = new ExpandoObject();
-                        var asDictionary = (IDictionary<string, object>) itemObject;
+                        var asDictionary = (IDictionary<string, object?>) itemObject;
 
                         var n = 0;
                         foreach (var field in fields.Cast<IElement>())
@@ -454,7 +454,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                                 // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
                                 noMessageBox = true;
-                                (itemObject as IDictionary<string, object>)[y.PropertyName] = item.get(y.PropertyName);
+                                (itemObject as IDictionary<string, object?>)[y.PropertyName] = item.get(y.PropertyName);
                                 noMessageBox = false;
                             }
                         };
@@ -477,10 +477,10 @@ namespace DatenMeister.WPF.Forms.Base
         ///     The tuple containing the names being used for the column
         ///     and the fields being used.
         /// </returns>
-        private (List<string> names, IReflectiveCollection fields) UpdateColumnDefinitions()
+        private (IList<string> names, IReflectiveCollection? fields) UpdateColumnDefinitions()
         {
             if (!(EffectiveForm?.get(_FormAndFields._ListForm.field) is IReflectiveCollection fields))
-                return (null, null);
+                return (new string[] { }, null);
 
             ClearInfoLines();
             DataGrid.Columns.Clear();
@@ -590,7 +590,10 @@ namespace DatenMeister.WPF.Forms.Base
             button.Pressed += (x, y) =>
             {
                 var selectedItem = GetSelectedItem();
-                onPressed(selectedItem);
+                if (selectedItem != null)
+                {
+                    onPressed(selectedItem);
+                }
             };
 
             ButtonBar.Children.Add(button);
@@ -609,9 +612,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             _ = NavigatorForItems.NavigateToElementDetailViewAsync(
                 NavigationHost,
-                new NavigateToItemConfig
+                new NavigateToItemConfig(selectedElement)
                 {
-                    DetailElement = selectedElement,
                     DetailElementContainer = Items
                 });
         }
@@ -624,7 +626,8 @@ namespace DatenMeister.WPF.Forms.Base
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
-            column?.OnClick(this, selectedItem);
+            if (selectedItem != null)
+                column?.OnClick?.Invoke(this, selectedItem);
         }
 
         /// <summary>
@@ -632,7 +635,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         /// <param name="e">Event being called</param>
         /// <returns>The selected item of the button and the column</returns>
-        private (IObject selectedItem, ClickedTemplateColumn column)
+        private (IObject? selectedItem, ClickedTemplateColumn? column)
             GetObjectsFromEventRouting(RoutedEventArgs e)
         {
             var content = ((ContentPresenter) ((Button) e.Source).TemplatedParent).Content;
@@ -656,6 +659,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
         {
             var (selectedItem, column) = GetObjectsFromEventRouting(e);
+            if (column == null) return;
             var button = (Button) e.Source;
 
             if (selectedItem == null)
@@ -743,6 +747,9 @@ namespace DatenMeister.WPF.Forms.Base
                         {
                             d.ViewDefined += (a, b) =>
                             {
+                                var effectiveForm = EffectiveForm ??
+                                                    throw new InvalidOperationException("EffectiveForm == null");
+
                                 // Remove the field with property
                                 var fields = b.View.get<IReflectiveSequence>(_FormAndFields._ListForm.field);
                                 var propertyField = QueryHelper.GetChildWithProperty(fields,
@@ -762,7 +769,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                                 var pairs = new List<IObject>();
                                 foreach (var field in
-                                    EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
+                                    effectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
                                         .OfType<IObject>())
                                 {
                                     if (!field.isSet(_FormAndFields._FieldData.name)) continue;
@@ -781,8 +788,8 @@ namespace DatenMeister.WPF.Forms.Base
                             };
                         });
 
-                    if (events.Result == NavigationResult.Saved) AddFastFilter(subItem);
-                    ;
+                    if (events != null &&
+                        events.Result == NavigationResult.Saved) AddFastFilter(subItem);
                 };
 
                 list.Add(item);
@@ -800,16 +807,21 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="fastFilter">Fast filter to be stored</param>
         private void AddFastFilter(IObject fastFilter)
         {
-            EffectiveForm.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
+            var effectiveForm = EffectiveForm 
+                                ?? throw new InvalidOperationException("EffectiveForm == null");
+            effectiveForm.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
             UpdateFastFilterTexts();
             UpdateView();
         }
 
         private void UpdateFastFilterTexts()
         {
+            var effectiveForm = EffectiveForm 
+                                ?? throw new InvalidOperationException("EffectiveForm == null");
+            
             FastViewFilterPanel.Children.Clear();
             var fastFilters =
-                EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.fastViewFilters);
+                effectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.fastViewFilters);
 
             foreach (var filter in fastFilters.OfType<IElement>())
             {
@@ -838,7 +850,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Enumeration of the fast filters</returns>
         private IEnumerable<IElement> GetFastFilters()
         {
-            return EffectiveForm.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
+            var effectiveForm = EffectiveForm
+                                ?? throw new InvalidOperationException("EffectiveForm == null"); 
+                                
+            return effectiveForm.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
         }
 
         private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)
@@ -872,9 +887,10 @@ namespace DatenMeister.WPF.Forms.Base
             /// <summary>
             ///     Gets or sets the action being called when the user clicks on the button
             /// </summary>
-            public Action<INavigationGuest, IObject> OnClick { get; set; }
+            public Action<INavigationGuest, IObject>? OnClick { get; set; }
         }
 
-        IReflectiveCollection ICollectionNavigationGuest.Collection => Items;
+        IReflectiveCollection ICollectionNavigationGuest.Collection =>
+            Items ?? throw new InvalidOperationException("Items == null");
     }
 }

@@ -65,7 +65,6 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     navigationHost,
                     new NavigateToItemConfig
                     {
-                        DetailElement = InMemoryObject.CreateEmpty(),
                         Form = new FormDefinition(
                             GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
                                 .element("#ImportManagerFindExtent"))

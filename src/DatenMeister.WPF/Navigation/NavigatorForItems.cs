@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
@@ -24,9 +25,26 @@ namespace DatenMeister.WPF.Navigation
     public class NavigateToItemConfig
     {
         /// <summary>
+        /// Initializes a new instance
+        /// </summary>
+        public NavigateToItemConfig()
+        {
+            DetailElement = InMemoryObject.CreateEmpty();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the NavigateToItemConfig
+        /// </summary>
+        /// <param name="detailElement">The element to which it will be navigated</param>
+        public NavigateToItemConfig(IObject detailElement)
+        {
+            DetailElement = detailElement;
+        }
+        
+        /// <summary>
         /// Gets or sets the detail element that shall be shown
         /// </summary>
-        public IObject? DetailElement { get; set; }
+        public IObject DetailElement { get; set; }
 
         /// <summary>
         /// Gets or sets the container for the detail element which can be used to
@@ -85,10 +103,9 @@ namespace DatenMeister.WPF.Navigation
             =>
                 await NavigateToElementDetailViewAsync(
                     window,
-                    new NavigateToItemConfig
+                    new NavigateToItemConfig(element)
                     {
                         Title = title ?? string.Empty,
-                        DetailElement = element,
                         AfterCreatedFunction = afterCreated
                     });
 
@@ -208,14 +225,13 @@ namespace DatenMeister.WPF.Navigation
         public static IControlNavigationNewItem NavigateToNewItemForItem(
             INavigationHost window,
             IObject element,
-            IElement metaclass,
+            IElement? metaclass,
             string parentProperty = "")
             =>
                 NavigateToNewItemForItem(
                     window,
-                    new NavigateToItemConfig
+                    new NavigateToItemConfig(element)
                     {
-                        ContainerElement = element,
                         MetaClass = metaclass,
                         ContainerProperty = parentProperty
                     });
@@ -347,7 +363,7 @@ namespace DatenMeister.WPF.Navigation
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToCreateNewItem(
             INavigationHost window,
-            IExtent? extent,
+            IExtent extent,
             IElement? metaclass)
         {
             var result = new ControlNavigation();

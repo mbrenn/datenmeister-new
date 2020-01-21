@@ -636,10 +636,10 @@ namespace DatenMeister.WPF.Forms.Base
                 else
                 {
                     if (innerParentProperty == null)
-                    {
                         throw new InvalidOperationException("parentProperty == null");
-                    }
-                    
+                    if (SelectedPackage == null)
+                        throw new InvalidOperationException("SelectedPackage == null");
+
                     NavigatorForItems.NavigateToNewItemForItem(
                         NavigationHost,
                         SelectedPackage,
@@ -742,11 +742,15 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Opens the selected element
         /// </summary>
-        /// <param name="selectedElement">Selected element</param>
-        private void NavigateToElement(IObject selectedElement)
+        /// <param name="selectedObject">Selected element</param>
+        private void NavigateToElement(IObject selectedObject)
         {
-            NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
+            if (selectedObject is IElement selectedElement)
+                _ = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement);
+            else
+                throw new InvalidOperationException("Element is IElement");
         }
+
 
         private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

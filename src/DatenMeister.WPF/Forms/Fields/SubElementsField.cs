@@ -12,6 +12,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Transformation;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -272,9 +273,13 @@ namespace DatenMeister.WPF.Forms.Fields
                     "Select Type",
                     () =>
                     {
+                        var referencedExtent = (element as MofObject)?.ReferencedExtent;
+                        if (referencedExtent == null)
+                            throw new InvalidOperationException("referencedExtent == null");
+
                         var result = NavigatorForItems.NavigateToCreateNewItem(
                             navigationHost,
-                            (element as MofObject)?.ReferencedExtent,
+                            referencedExtent,
                             null);
 
                         result.NewItemCreated += (a, b) =>
@@ -348,10 +353,12 @@ namespace DatenMeister.WPF.Forms.Fields
                 $"New {typeName}",
                 () =>
                 {
+                    var referencedExtent = (_element as MofObject)?.ReferencedExtent
+                                           ?? throw new InvalidOperationException("referencedExtent == null");
+
                     var elements =
                         NavigatorForItems.NavigateToCreateNewItem(
-                            _navigationHost,
-                            (_element as MofObject)?.ReferencedExtent, type);
+                            _navigationHost, referencedExtent, type);
                     elements.NewItemCreated += (x, y) =>
                     {
                         var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 

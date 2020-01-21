@@ -58,7 +58,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be converted to an enumeration</param>
         /// <returns>Enumeration of the value or null, if not an evaluation</returns>
-        public static IEnumerable<object> AsEnumeration(object value)
+        public static IEnumerable<object> AsEnumeration(object? value)
         {
             if (IsOfEnumeration(value))
             {

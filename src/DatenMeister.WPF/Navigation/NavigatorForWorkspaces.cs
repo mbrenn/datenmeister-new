@@ -66,7 +66,7 @@ namespace DatenMeister.WPF.Navigation
 
             var result = await NavigatorForItems.NavigateToElementDetailViewAsync(
                 navigationHost,
-                new NavigateToItemConfig
+                new NavigateToItemConfig()
                 {
                     Form = new FormDefinition(formElement)
                 });

@@ -14,38 +14,46 @@ namespace DatenMeister.Runtime.Functions.Queries
     /// </summary>
     public class PropertiesAsReflectiveCollection : IReflectiveCollection, IHasExtent
     {
-        private readonly IObject _detailElement;
+        private readonly IObject _value;
 
         /// <summary>
         /// Defines the names of the properties to be parsed
         /// </summary>
         private readonly ICollection<string> _propertyNames;
 
-        public PropertiesAsReflectiveCollection(IObject detailElement)
+        public PropertiesAsReflectiveCollection(IObject value)
         {
-            _detailElement = detailElement;
+            _value = value;
         }
 
-        public PropertiesAsReflectiveCollection(IObject detailElement, string propertyName) : this(detailElement)
+        /// <summary>
+        /// Initializes a new instance of the PropertiesAsReflectiveCollection
+        /// </summary>
+        /// <param name="value">The element being reflected</param>
+        /// <param name="propertyName">The property being enumerated</param>
+        public PropertiesAsReflectiveCollection(IObject value, string? propertyName) : this(value)
         {
-            _propertyNames = new[] {propertyName};
+            if (propertyName != null)
+            {
+                _propertyNames = new[] {propertyName};
+            }
         }
 
-        public PropertiesAsReflectiveCollection(IObject detailElement, ICollection<string> propertyNames) : this(detailElement)
+        public PropertiesAsReflectiveCollection(IObject value, ICollection<string> propertyNames) : this(value)
         {
             _propertyNames = propertyNames;
         }
 
         public IEnumerator<object> GetEnumerator()
         {
-            if (_detailElement is IObjectAllProperties objectWithProperties)
+            if (_value is IObjectAllProperties objectWithProperties)
             {
                 var propertyNames = _propertyNames ?? objectWithProperties.getPropertiesBeingSet();
 
                 foreach (var property in propertyNames
-                    .Where(property => _detailElement.isSet(property)))
+                    .Where(property => _value.isSet(property)))
                 {
-                    if (!(_detailElement.get(property)
+                    if (!(_value.get(property)
                         is IReflectiveCollection valueAsCollection))
                     {
                         continue;
@@ -77,6 +85,6 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <summary>
         /// Gets the extent associated to the parent extent
         /// </summary>
-        public IExtent Extent => (_detailElement as IHasExtent)?.Extent;
+        public IExtent Extent => (_value as IHasExtent)?.Extent;
     }
 }

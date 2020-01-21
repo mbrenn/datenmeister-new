@@ -61,9 +61,8 @@ namespace DatenMeister.WPF.Navigation
             //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
             var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage?.FirstOrDefault(), metaWorkspace, metaExtent);
 
-            var navigateToItemConfig = new NavigateToItemConfig()
+            var navigateToItemConfig = new NavigateToItemConfig(element)
             {
-                DetailElement = element,
                 Form = new FormDefinition(formPathToType)
             };
 

@@ -125,7 +125,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="stack">Stack being used</param>
         protected override void WalkEnum(IObject enumInstance, CallStack stack)
         {
-            var asElement = enumInstance as IElement;
+            var asElement = (IElement) enumInstance;
             var name = GetNameOfElement(enumInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");

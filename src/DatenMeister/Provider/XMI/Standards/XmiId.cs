@@ -49,7 +49,7 @@ namespace DatenMeister.Provider.XMI.Standards
         /// </summary>
         /// <param name="element">Element whose id shall be retrieved</param>
         /// <returns>The retrieved element</returns>
-        public static string Get(XElement element)
+        public static string? Get(XElement element)
         {
             var xmlIdAttribute = element.Attribute(Namespaces.Xmi + "id");
             return xmlIdAttribute?.Value;

@@ -11,7 +11,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
         }
 
-        public override IEnumerator<object> GetEnumerator()
+        public override IEnumerator<object?> GetEnumerator()
         {
             foreach (var value in Collection)
             {

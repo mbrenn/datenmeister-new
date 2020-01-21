@@ -6,7 +6,7 @@ namespace DatenMeister.Runtime.Functions.Interfaces
     {
         private T _aggregationResult;
 
-        internal Func<T, TItem, T> Aggregation { get; set; }
+        internal Func<T, TItem, T>? Aggregation { get; set; }
 
         internal T Start { get; set; }
 

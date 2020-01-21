@@ -79,7 +79,7 @@ namespace DatenMeister.Provider.InMemory
         private readonly Dictionary<string, object?> _values = new Dictionary<string, object?>();
 
         /// <inheritdoc />
-        public string MetaclassUri { get; set; }
+        public string MetaclassUri { get; set; };
 
         /// <summary>
         /// Initializes a new instance of the InMemoryObject.

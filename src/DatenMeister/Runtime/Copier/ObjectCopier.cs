@@ -78,7 +78,8 @@ namespace DatenMeister.Runtime.Copier
             copyOptions ??= CopyOptions.None;
 
             // Gets the source extent
-            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent;
+            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent
+                            ?? throw new InvalidOperationException("element is not IHasExtent and not MofElement");
 
             var targetElement = _factory.create((element as IElement)?.getMetaClass());
             CopyProperties(element, targetElement, copyOptions);
@@ -128,7 +129,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="containingElement">Element to which the element will be copied</param>
         /// <param name="copyOptions">Copy options being used</param>
         /// <returns>The object that has been copied</returns>
-        private object CopyValue(object value, IElement containingElement, CopyOption? copyOptions = null)
+        private object? CopyValue(object? value, IElement containingElement, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
             var noRecursion = copyOptions.NoRecursion;

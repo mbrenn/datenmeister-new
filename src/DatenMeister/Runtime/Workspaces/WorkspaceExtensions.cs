@@ -264,7 +264,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="uri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IElement FindItem(
+        public static IElement? FindItem(
             this IWorkspaceLogic collection,
             string uri)
         {
@@ -277,9 +277,9 @@ namespace DatenMeister.Runtime.Workspaces
         public static void FindItem(
             this IWorkspaceLogic collection,
             WorkspaceExtentAndItemReference model,
-            out Workspace foundWorkspace,
-            out IUriExtent foundExtent,
-            out IElement foundItem)
+            out Workspace? foundWorkspace,
+            out IUriExtent? foundExtent,
+            out IElement? foundItem)
         {
             RetrieveWorkspaceAndExtent(collection, model, out foundWorkspace, out foundExtent);
 

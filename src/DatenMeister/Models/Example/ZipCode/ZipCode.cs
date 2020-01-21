@@ -9,6 +9,6 @@ namespace DatenMeister.Models.Example.ZipCode
         public int zip { get; set; }
         public double positionLong { get; set; }
         public double positionLat { get; set; }
-        public string name { get; set; }
+        public string? name { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace DatenMeister.Runtime.Proxies
         }
 
         /// <inheritdoc />
-        public bool @equals(object other) => Extent.@equals(other);
+        public bool @equals(object? other) => Extent.@equals(other);
 
         /// <inheritdoc />
         public object get(string property) => Extent.get(property);

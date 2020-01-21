@@ -21,7 +21,7 @@ namespace DatenMeister.Provider
         /// <summary>
         /// Gets the uri of the metaclass or null, if not defined
         /// </summary>
-        string MetaclassUri { get; set; }
+        string? MetaclassUri { get; set; }
 
         bool IsPropertySet(string property);
 

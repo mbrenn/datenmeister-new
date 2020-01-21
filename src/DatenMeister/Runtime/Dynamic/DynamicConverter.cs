@@ -70,7 +70,7 @@ namespace DatenMeister.Runtime.Dynamic
             foreach (var property in allProperties.getPropertiesBeingSet())
             {
                 var propertyValue = value.get(property);
-                ((IDictionary<string, object>)result)[property] = ConvertValue(propertyValue, wrapInObject);
+                ((IDictionary<string, object>) result)[property] = ConvertValue(propertyValue, wrapInObject);
             }
 
             if (wrapInObject)
@@ -81,9 +81,9 @@ namespace DatenMeister.Runtime.Dynamic
             return result;
         }
 
-        private static object ConvertValue(object propertyValue, bool wrapInObject)
+        private static object? ConvertValue(object? propertyValue, bool wrapInObject)
         {
-            if (DotNetHelper.IsNull(propertyValue)) return null;
+            if (propertyValue == null) return null;
             if (DotNetHelper.IsOfPrimitiveType(propertyValue)) return propertyValue;
             if (DotNetHelper.IsOfMofObject(propertyValue)) return ToDynamic(propertyValue as IObject, wrapInObject);
 

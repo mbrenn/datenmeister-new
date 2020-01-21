@@ -2,7 +2,7 @@
 
 namespace DatenMeister.Core.EMOF.Interface.Common
 {
-    public interface IReflectiveCollection : IEnumerable<object>
+    public interface IReflectiveCollection : IEnumerable<object?>
     {
         bool add(object value);
 

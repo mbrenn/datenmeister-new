@@ -27,7 +27,7 @@ namespace DatenMeister.Provider
         /// <summary>
         /// Gets or sets the mapping for the container property
         /// </summary>
-        private MappingContainerProperty ContainerMapping { get; set; }
+        private MappingContainerProperty? ContainerMapping { get; set; }
 
         /// <summary>
         /// Stores the mappings
@@ -80,7 +80,7 @@ namespace DatenMeister.Provider
             _mappings.TryGetValue(property, out var result);
 
             var itemResult = result?.GetFunction(Value);
-            if (DotNetHelper.IsOfEnumeration(itemResult))
+            if (itemResult != null && DotNetHelper.IsOfEnumeration(itemResult))
             {
                 var itemAsEnumerable = (IEnumerable<object>) itemResult;
                 return new TemporaryReflectiveCollection(itemAsEnumerable);

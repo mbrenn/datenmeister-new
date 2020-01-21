@@ -21,7 +21,7 @@ namespace DatenMeister.Runtime.Proxies
         public IObject GetProxiedElement() =>
             Object;
 
-        public virtual bool equals(object other) =>
+        public virtual bool equals(object? other) =>
             Object.equals(other);
 
         public virtual object get(string property) =>

@@ -61,7 +61,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="id">Id of the object being queried</param>
         /// <returns>The found object or null, if not found</returns>
-        IProviderObject? Get(string? id);
+        IProviderObject? Get(string id);
 
         /// <summary>
         /// Gets all objects that are at root at the element

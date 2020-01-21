@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        public virtual T element(string uri)
+        public virtual T? element(string uri)
         {
             // Check, if the element is in the cache and if yes, return it
             if (_cacheIds.TryGetValue(uri, out var result))

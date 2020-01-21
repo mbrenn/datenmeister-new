@@ -45,7 +45,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             string workspace,
             string uri,
             string name,
-            string extentType = null,
+            string extentType = "",
             ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOrCreate)
         {
             // Creates the user types, if not existing

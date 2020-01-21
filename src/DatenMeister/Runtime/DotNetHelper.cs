@@ -58,7 +58,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be converted to an enumeration</param>
         /// <returns>Enumeration of the value or null, if not an evaluation</returns>
-        public static IEnumerable<object> AsEnumeration(object? value)
+        public static IEnumerable<object>? AsEnumeration(object? value)
         {
             if (IsOfEnumeration(value))
             {
@@ -291,8 +291,10 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Value to be verified</param>
         /// <returns>true, if that is the case</returns>
-        public static bool IsOfReflectiveCollection(object value)
+        public static bool IsOfReflectiveCollection(object? value)
         {
+            if (value == null) return false;
+            
             var type = value.GetType();
             return IsReflectiveCollection(type);
         }
@@ -335,7 +337,7 @@ namespace DatenMeister.Runtime
         /// <param name="extent">The extent being used to figure out the </param>
         /// <param name="factory">Factory being used to create the mof element</param>
         /// <returns>The converted element</returns>
-        public static IObject ConvertToMofElement(
+        public static IObject? ConvertToMofElement(
             object value,
             MofUriExtent extent,
             IFactory factory)
@@ -353,7 +355,7 @@ namespace DatenMeister.Runtime
             }
 
             // Creates the mof element for type
-            IElement valueType = null;
+            IElement? valueType = null;
 
             var typeUri = extent.GetMetaClassUri(value.GetType());
 

@@ -43,10 +43,12 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public Workspace GetWorkspaceOfExtent(IExtent extent)
+        public Workspace GetWorkspaceOfExtent(IExtent? extent)
         {
             lock (_fileData)
             {
+                if (extent == null) return _fileData.Default;
+                
                 var result = _fileData.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
                 return result ?? _fileData.Default;
             }

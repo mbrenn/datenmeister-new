@@ -7,7 +7,7 @@ namespace DatenMeister.Models.ManagementProvider
         public string? id { get; set; }
         public string? annotation { get; set; }
 
-        public IEnumerable<Extent> extents { get; set; }
+        public IEnumerable<Extent>? extents { get; set; }
 
         /// <summary>
         /// Converts the given workspace to a string with id and annotation
@@ -15,7 +15,7 @@ namespace DatenMeister.Models.ManagementProvider
         /// <returns></returns>
         public override string ToString()
         {
-            return $"({id}) {annotation}";
+            return $"({id ?? "no id"}) {annotation ?? ""}";
         }
     }
 }

@@ -84,7 +84,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="collection">Collection to be queried, could also be an extent reflective collection</param>
         /// <param name="fullName">Fullname to be traversed, each element shall be separated by an ':'</param>
         /// <returns>The found element or null, if not found</returns>
-        public static IElement GetByFullName(IReflectiveCollection collection, string fullName)
+        public static IElement? GetByFullName(IReflectiveCollection collection, string fullName)
         {
             var elementNames = fullName
                 .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
@@ -142,7 +142,7 @@ namespace DatenMeister.Uml.Helper
                 }
 
                 // Property exists
-                object propertyValue;
+                object? propertyValue;
                 if (value is MofObject valueConverted && noReferences)
                 {
                     // If no references is set and the given object supports the query via 'noReferences' 
@@ -184,7 +184,7 @@ namespace DatenMeister.Uml.Helper
             // the default "name" property
             if (element.isSet(_UML._CommonStructure._NamedElement.name))
             {
-                return element.get(_UML._CommonStructure._NamedElement.name).ToString();
+                return element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
             }
 
             if (element is IElement asIElement && asIElement.metaclass != null)

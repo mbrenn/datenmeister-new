@@ -8,10 +8,7 @@ namespace DatenMeister.Modules
         public void OnAfterInitialization(ILifetimeScope scope)
         {
             var e = AfterInitialization;
-            if (e != null)
-            {
-                AfterInitialization(this, new LifeTimeScopeEventArgs(scope));
-            }
+            e?.Invoke(this, new LifeTimeScopeEventArgs(scope));
         }
 
         public event EventHandler<LifeTimeScopeEventArgs> AfterInitialization;

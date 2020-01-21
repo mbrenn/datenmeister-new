@@ -28,8 +28,8 @@ namespace DatenMeister.Uml
         /// </summary>
         private bool _wasRun;
 
-        private static readonly string TypeProperty;
-        private static readonly string IdProperty;
+        private static readonly string TypeProperty = (Namespaces.Xmi + "type").ToString();
+        private static readonly string IdProperty = (Namespaces.Xmi + "id").ToString();
 
         private Dictionary<string, IElement> MofClasses { get; } = new Dictionary<string, IElement>();
         private Dictionary<string, IElement> UmlClasses { get; } = new Dictionary<string, IElement>();
@@ -38,25 +38,23 @@ namespace DatenMeister.Uml
         /// <summary>
         ///     Stores the extent for the uml infrastructure
         /// </summary>
-        public IUriExtent MofInfrastructure { get; private set; }
+        public IUriExtent? MofInfrastructure { get; private set; }
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure
         /// </summary>
-        public IUriExtent UmlInfrastructure { get; private set; }
+        public IUriExtent? UmlInfrastructure { get; private set; }
 
         /// <summary>
         ///     Stores the extent for the uml infrastructure
         /// </summary>
-        public IUriExtent PrimitiveTypesInfrastructure { get; private set; }
+        public IUriExtent? PrimitiveTypesInfrastructure { get; private set; }
 
         /// <summary>
         /// The static constructor
         /// </summary>
         static Bootstrapper()
         {
-            TypeProperty = (Namespaces.Xmi + "type").ToString();
-            IdProperty = (Namespaces.Xmi + "id").ToString();
         }
 
         /// <summary>
@@ -127,7 +125,7 @@ namespace DatenMeister.Uml
             foreach (var element in allElements.OfType<IElement>())
             {
                 // Skip the package imports since we are not able to handle these
-                if (element.isSet(TypeProperty) && element.get(TypeProperty).ToString() == "uml:PackageImport")
+                if (element.getOrDefault<string>(TypeProperty) == "uml:PackageImport")
                 {
                     continue;
                 }
@@ -157,7 +155,7 @@ namespace DatenMeister.Uml
             // Go through all found classes and store them into the dictionaries
             foreach (var classInstance in umlDescendents.OfType<IElement>().Where(x => x.isSet("name")))
             {
-                var name = classInstance.get("name").ToString();
+                var name = classInstance.getOrDefault<string>("name");
                 var typeValue = classInstance.isSet(TypeProperty) ? classInstance.get(TypeProperty).ToString() : null;
                 if (typeValue == "uml:Class")
                 {
@@ -291,14 +289,14 @@ namespace DatenMeister.Uml
 
             // Hacky hack to get rid of one of the tags and the duplicate MOF Elements
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(0));
-            while (mofMetaClasses.Count(x => x.get("name").ToString() == "Tag") > 1)
+            while (mofMetaClasses.Count(x => x.getOrDefault<string>("name") == "Tag") > 1)
             {
                 mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(1));
             }
 
-            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Factory").ElementAt(0));
-            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Extent").ElementAt(0));
-            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Element").ElementAt(0));
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Factory").ElementAt(0));
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Extent").ElementAt(0));
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Element").ElementAt(0));
 
             var umlMetaClasses =
                 umlElements
@@ -306,16 +304,16 @@ namespace DatenMeister.Uml
                     .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class");
 
             var umlNameCache = umlMetaClasses
-                .ToDictionary(x => x.get("name").ToString(), x => x);
+                .ToDictionary(x => x.getOrDefault<string>("name"), x => x);
             var mofNameCache = mofMetaClasses
-                .ToDictionary(x => x.get("name").ToString(), x => x);
+                .ToDictionary(x => x.getOrDefault<string>("name"), x => x);
 
             foreach (var elementInstance in allElements.Where(x => x.isSet(TypeProperty)))
             {
-                var name = elementInstance.get(TypeProperty).ToString();
+                var name = elementInstance.getOrDefault<string>(TypeProperty);
 
                 // Find it in the higher instance mof
-                IElement metaClass;
+                IElement? metaClass;
 
                 // Translates the uri to the correct one
                 if (name.StartsWith("uml:"))

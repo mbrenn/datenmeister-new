@@ -24,10 +24,10 @@ namespace DatenMeister.Modules.DataViews
             _dataViewLogic = dataViewLogic ?? throw new ArgumentNullException(nameof(dataViewLogic));
         }
 
-        public bool @equals(object other) =>
+        public bool @equals(object? other) =>
             _dataViewElement.@equals(other);
 
-        public object get(string property) =>
+        public object? get(string property) =>
             _dataViewElement.get(property);
 
         public void set(string property, object? value)
@@ -69,7 +69,7 @@ namespace DatenMeister.Modules.DataViews
 
         public IElement element(string uri)
         {
-            return elements().FirstOrDefault(x => x.AsIElement()?.GetUri() == uri) as IElement;
+            return elements().FirstOrDefault(x => x != null && x.AsIElement()?.GetUri() == uri) as IElement;
         }
     }
 }

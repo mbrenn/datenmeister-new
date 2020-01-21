@@ -64,7 +64,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <summary>
         /// Gets the id of the XmlElement
         /// </summary>
-        public string Id
+        public string? Id
         {
             get => XmiId.Get(XmlNode);
             set => XmiId.Set(XmlNode, value);

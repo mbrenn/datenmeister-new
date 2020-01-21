@@ -9,14 +9,14 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class DotNetIntegrationGenerator
     {
-        public StringBuilder Result { get; private set; }
+        public StringBuilder Result { get; private set; } = new StringBuilder();
 
         public void Create(
             string nameSpace,
             string packageName,
             IEnumerable<Type> types)
         {
-            Result = new StringBuilder();
+            Result.Clear();
 
             WalkPackageClass.CallStack stack = new WalkPackageClass.CallStack(null);
 

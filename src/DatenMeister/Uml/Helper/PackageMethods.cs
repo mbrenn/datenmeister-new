@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using BurnSystems.Synchronisation;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -59,7 +60,9 @@ namespace DatenMeister.Uml.Helper
             IReflectiveCollection rootElements,
             string packagePath)
         {
-            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent) rootElements).Extent, MetaRecursive.Recursively);
+            var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
+            
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
@@ -97,13 +100,13 @@ namespace DatenMeister.Uml.Helper
         /// <param name="metaClass">The Metaclass being used to create the child packages</param>
         /// <param name="flagCreate">true, if the structure shall be really created.
         /// If false, null will be returned if the package is not found</param>
-        public static IElement GetOrCreatePackageStructure(
+        public static IElement? GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             IFactory factory,
             string packagePath,
             string nameProperty,
             string childProperty,
-            IElement metaClass = null,
+            IElement? metaClass = null,
             bool flagCreate = true)
         {
             if (rootElements == null) throw new ArgumentNullException(nameof(rootElements));
@@ -232,7 +235,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="sourcePackage">Source package containing the elements to be imported</param>
         /// <param name="targetPackage">Target package receiving the elements</param>
         /// <param name="copyOptions">Defines the options which shall be used for the importing of the package</param>
-        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption copyOptions = null)
+        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
             var objectCopier = new ObjectCopier(new MofFactory(targetPackage.GetExtentOf()));

@@ -81,7 +81,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public IEnumerable<ITag> properties => _properties;
 
-        public Workspace(string id, string annotation = null)
+        public Workspace(string id, string annotation = "")
         {
             this.id = id ?? throw new ArgumentNullException(nameof(id));
             this.annotation = annotation;
@@ -211,7 +211,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Class to be looked after</typeparam>
         /// <param name="function"></param>
         /// <returns>Found function</returns>
-        public IElement Get<TFilledType>(Func<TFilledType, IElement> function)
+        public IElement? Get<TFilledType>(Func<TFilledType, IElement> function)
             where TFilledType : class, new()
         {
             var result = Get<TFilledType>();
@@ -230,7 +230,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Class to be looked after</typeparam>
         /// <param name="function"></param>
         /// <returns>Found function</returns>
-        public IElement Create<TFilledType>(Func<TFilledType, IElement> function)
+        public IElement? Create<TFilledType>(Func<TFilledType, IElement> function)
             where TFilledType : class, new()
         {
             var result = Get<TFilledType>();
@@ -303,7 +303,7 @@ namespace DatenMeister.Runtime.Workspaces
             yield return "id";
         }
 
-        public bool @equals(object other) => throw new NotImplementedException();
+        public bool @equals(object? other) => throw new NotImplementedException();
 
         public object get(string property)
         {

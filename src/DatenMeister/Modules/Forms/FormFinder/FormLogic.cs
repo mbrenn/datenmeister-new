@@ -65,7 +65,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         public void Start(PluginLoadingPosition position)
         {
-            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement);
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement)
+                                ?? throw new InvalidOperationException("Management Workspace is not found");
 
             switch (position)
             {
@@ -86,7 +87,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                         _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
                     );
 
-                    var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+                    var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ?? throw new InvalidOperationException("FormAndFields not found");
 
                     extent.AddDefaultTypePackages(new[] {formAndFields.__Form});
                     break;
@@ -180,7 +181,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <param name="url">The Url to be queried</param>
         /// <returns>The found view or null if not found</returns>
-        public IObject GetFormByUrl(string url)
+        public IObject? GetFormByUrl(string url)
         {
             if (url.StartsWith(WorkspaceNames.UriInternalFormExtent))
             {
@@ -312,8 +313,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
             viewExtent ??= GetUserFormExtent();
             _cachedFormAndField =
-                _workspaceLogic.GetWorkspaceOfExtent(viewExtent).GetFromMetaWorkspace<_FormAndFields>();
-            return _cachedFormAndField;
+                _workspaceLogic.GetWorkspaceOfExtent(viewExtent)?.GetFromMetaWorkspace<_FormAndFields>();
+            return _cachedFormAndField ?? throw new InvalidOperationException("FormAndFields could not be found");
         }
 
         public IElement GetDetailForm(IObject? element, IExtent? extent, FormDefinitionMode formDefinitionMode)

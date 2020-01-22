@@ -16,7 +16,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         /// Gets or sets the name of the class that is used for the model
         /// </summary>
-        public string UsedClassName { get; set; }
+        public string? UsedClassName { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the ClassTreeGenerator
@@ -92,6 +92,7 @@ namespace DatenMeister.SourcecodeGenerator
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
             var asElement = classInstance as IElement;
+            if (asElement == null) return;
             var name = GetNameOfElement(classInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");

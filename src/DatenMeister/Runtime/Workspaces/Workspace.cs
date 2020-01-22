@@ -187,7 +187,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public TFilledType Get<TFilledType>()
+        public TFilledType? Get<TFilledType>()
             where TFilledType : class, new()
         {
             lock (_syncObject)
@@ -305,7 +305,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public bool @equals(object? other) => throw new NotImplementedException();
 
-        public object get(string property)
+        public object? get(string property)
         {
             if (property == "id")
             {
@@ -315,7 +315,7 @@ namespace DatenMeister.Runtime.Workspaces
             throw new InvalidOperationException($"Given property {id} is not set.");
         }
 
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             throw new NotImplementedException();
         }

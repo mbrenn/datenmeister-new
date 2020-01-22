@@ -10,7 +10,7 @@ namespace DatenMeister.Core.EMOF.Interface.Common
 
         void clear();
 
-        bool remove(object value);
+        bool remove(object? value);
 
         int size();
     }

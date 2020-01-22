@@ -457,7 +457,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="element">Element whose uri is queried</param>
         /// <returns>Uri of the element</returns>
-        public static string GetUri(this IElement element)
+        public static string? GetUri(this IElement element)
         {
             // First, verifies if the element has direct access to the uri of the element
             if (element is IKnowsUri asKnowsUri)

@@ -159,13 +159,13 @@ namespace DatenMeister.Integration
                 Logger.Debug("Bootstrapping MOF and UML...");
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.NameMof),
+                    workspaceLogic.GetWorkspace(WorkspaceNames.NameMof) ?? throw new InvalidOperationException("Workspace for MOF is not found"),
                     workspaceLogic,
                     workspaceData.Mof,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.NameUml),
+                    workspaceLogic.GetWorkspace(WorkspaceNames.NameUml) ?? throw new InvalidOperationException("Workspace for UML is not found"),
                     workspaceLogic,
                     workspaceData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
@@ -186,13 +186,15 @@ namespace DatenMeister.Integration
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
+                var uml = workspaceData.Uml.Get<_UML>() ??
+                          throw new InvalidOperationException("Workspace does not have uml");
                 typeWorkspace.Set(fields);
                 IntegrateFormAndFields.Assign(
-                    workspaceData.Uml.Get<_UML>(),
+                    uml,
                     mofFactory,
                     packageMethods.GetPackagedObjects(
                         localTypeSupport.InternalTypes.elements(),
-                        "DatenMeister::Forms"),
+                        "DatenMeister::Forms") ?? throw new InvalidOperationException("DatenMeister::Forms not found"),
                     fields,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 
@@ -200,11 +202,11 @@ namespace DatenMeister.Integration
                 var managementProvider = new _ManagementProvider();
                 typeWorkspace.Set(managementProvider);
                 IntegrateManagementProvider.Assign(
-                    workspaceData.Uml.Get<_UML>(),
+                    workspaceData.Uml.Get<_UML>() ?? throw new InvalidOperationException("Uml not found"),
                     mofFactory,
                     packageMethods.GetPackagedObjects(
                         localTypeSupport.InternalTypes.elements(),
-                        "DatenMeister::Management"),
+                        "DatenMeister::Management") ?? throw new InvalidOperationException("DatenMeister::Management not found"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
 

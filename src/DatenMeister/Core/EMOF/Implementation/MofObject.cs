@@ -71,7 +71,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
         /// <param name="referencedExtent">The extent being used to access the item</param>
-        public MofObject(IProviderObject providedObject, MofExtent referencedExtent)
+        /// <param name="referenceElement"></param>
+        public MofObject(IProviderObject providedObject, MofExtent? referencedExtent, IElement? referenceElement = null)
         {
             ProviderObject = providedObject ?? throw new ArgumentNullException(nameof(providedObject));
 
@@ -81,7 +82,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                 throw new ArgumentNullException("providedObject.Provider");
             }
 
-            ReferencedExtent = referencedExtent;
+            ReferencedExtent = referencedExtent
+                               ?? ((referenceElement as MofObject)?.ReferencedExtent 
+                                   ?? throw new InvalidOperationException("Referenced extent could not be set"));
         }
 
         /// <inheritdoc />

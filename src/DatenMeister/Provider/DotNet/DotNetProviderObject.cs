@@ -34,12 +34,12 @@ namespace DatenMeister.Provider.DotNet
         private readonly Type _type;
 
         /// <inheritdoc />
-        public string MetaclassUri { get; set; }
+        public string? MetaclassUri { get; set; } 
 
         /// <summary>
         /// Gets or sets the id of the object of the DotNetProviderObject
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the DotNetElement class.

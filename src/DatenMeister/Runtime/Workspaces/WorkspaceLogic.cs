@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public Workspace GetWorkspaceOfExtent(IExtent? extent)
+        public Workspace? GetWorkspaceOfExtent(IExtent? extent)
         {
             lock (_fileData)
             {
@@ -59,7 +59,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <param name="value">Value to be queried</param>
         /// <returns>The found workspace or the default one, if no extent was found</returns>
-        public Workspace GetWorkspaceOfObject(IObject value)
+        public Workspace? GetWorkspaceOfObject(IObject value)
         {
             // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
@@ -70,7 +70,7 @@ namespace DatenMeister.Runtime.Workspaces
                 return GetWorkspaceOfObject(parent);
             }
 
-            Workspace result = null;
+            Workspace? result = null;
             // If the object knows the extent to which it belongs to, it will return it
             if (value is IHasExtent objectKnowsExtent)
             {
@@ -151,9 +151,10 @@ namespace DatenMeister.Runtime.Workspaces
                 _fileData.Workspaces.Add(workspace);
 
                 // If no metaworkspace is given, define the one from the default one
-                if (workspace.MetaWorkspaces.Count == 0 && _fileData.Default?.MetaWorkspaces != null)
+                var metaWorkspaces = _fileData.Default?.MetaWorkspaces;
+                if (workspace.MetaWorkspaces.Count == 0 && metaWorkspaces != null)
                 {
-                    foreach (var innerWorkspace in _fileData.Default?.MetaWorkspaces)
+                    foreach (var innerWorkspace in metaWorkspaces)
                     {
                         workspace.AddMetaWorkspace(innerWorkspace);
                     }

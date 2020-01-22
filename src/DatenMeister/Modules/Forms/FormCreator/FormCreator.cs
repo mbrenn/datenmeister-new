@@ -30,14 +30,14 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// Stores the reference to the view logic which is required to get the views
         /// for the tabs of the extent form
         /// </summary>
-        private readonly FormLogic _formLogic;
+        private readonly FormLogic? _formLogic;
 
         private readonly DefaultClassifierHints _defaultClassifierHints;
 
         /// <summary>
         /// Stores the associated workspace logic
         /// </summary>
-        private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IWorkspaceLogic? _workspaceLogic;
 
         /// <summary>
         /// Stores the factory to create the fields and forms
@@ -63,12 +63,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         /// <param name="formLogic">View logic being used</param>
         /// <param name="defaultClassifierHints">The classifier hints</param>
-        public FormCreator(FormLogic formLogic, DefaultClassifierHints defaultClassifierHints)
+        public FormCreator(FormLogic? formLogic, DefaultClassifierHints defaultClassifierHints)
         {
             _formLogic = formLogic;
             _defaultClassifierHints = defaultClassifierHints;
 
-            _workspaceLogic = _formLogic?.WorkspaceLogic ?? GiveMe.Scope.WorkspaceLogic;
+            _workspaceLogic = _formLogic?.WorkspaceLogic;
             
             var userExtent = _formLogic?.GetUserFormExtent();
             _factory = userExtent != null
@@ -462,20 +462,21 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
 
             // Check, if field property is an enumeration
-            _uml ??= _workspaceLogic.GetUmlData();
-            _primitiveTypes ??= _workspaceLogic.GetPrimitiveData();
-            _uriResolver ??= _workspaceLogic.GetTypesWorkspace();
+            _uml ??= _workspaceLogic?.GetUmlData();
+            _primitiveTypes ??= _workspaceLogic?.GetPrimitiveData();
+            _uriResolver ??= _workspaceLogic?.GetTypesWorkspace();
 
-            _stringType ??= _primitiveTypes.__String;
-            _integerType ??= _primitiveTypes.__Integer;
-            _booleanType ??= _primitiveTypes.__Boolean;
-            _realType ??= _primitiveTypes.__Real;
-            _dateTimeType ??= _uriResolver.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+            _stringType ??= _primitiveTypes?.__String;
+            _integerType ??= _primitiveTypes?.__Integer;
+            _booleanType ??= _primitiveTypes?.__Boolean;
+            _realType ??= _primitiveTypes?.__Real;
+            _dateTimeType ??= _uriResolver?.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
-            if (propertyType?.metaclass != null)
+            var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)
+            if (propertyTypeMetaClass != null && propertyType != null && _uml != null)
             {
-                if (propertyType.metaclass.@equals(_uml.SimpleClassifiers.__Enumeration) && !isForListForm)
+                if (propertyTypeMetaClass.@equals(_uml.SimpleClassifiers.__Enumeration) && !isForListForm)
                 {
                     return CreateFieldForEnumeration(propertyName, propertyType, creationMode);
                 }

@@ -52,7 +52,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
             lock (_syncObject)
             {

@@ -56,7 +56,7 @@ namespace DatenMeister.Runtime.Copier
         /// shall be used. Property values referencing to another extent are not copied... Instead uri
         /// references are copied
         /// </summary>
-        private IExtent _sourceExtent;
+        private IExtent? _sourceExtent;
 
         /// <summary>
         /// Initializes a new instance of the ObjectCopier.

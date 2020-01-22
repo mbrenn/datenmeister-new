@@ -132,7 +132,7 @@ namespace DatenMeister.Uml
 
                 if (element.isSet(IdProperty))
                 {
-                    var id = element.get(IdProperty).ToString();
+                    var id = element.getOrDefault<string>(IdProperty);
                     if (id.StartsWith("_"))
                     {
                         // Due to a problem in the uml.xmi, duplicate IDs might be in the packageImport
@@ -156,7 +156,7 @@ namespace DatenMeister.Uml
             foreach (var classInstance in umlDescendents.OfType<IElement>().Where(x => x.isSet("name")))
             {
                 var name = classInstance.getOrDefault<string>("name");
-                var typeValue = classInstance.isSet(TypeProperty) ? classInstance.get(TypeProperty).ToString() : null;
+                var typeValue = classInstance.isSet(TypeProperty) ? classInstance.getOrDefault<string>(TypeProperty) : null;
                 if (typeValue == "uml:Class")
                 {
                     UmlClasses[name] = classInstance;
@@ -170,10 +170,10 @@ namespace DatenMeister.Uml
 
             // Second step: Find all classes in the Mof namespace
             var allClasses = mofDescendents
-                .Where(x => x.isSet(TypeProperty) && x.get(TypeProperty).ToString() == "uml:Class");
+                .Where(x => x.isSet(TypeProperty) && x.getOrDefault<string>(TypeProperty) == "uml:Class");
             foreach (var classInstance in allClasses.Cast<IElement>())
             {
-                var name = classInstance.get("name").ToString();
+                var name = classInstance.getOrDefault<string>("name");
                 MofClasses[name] = classInstance;
             }
 
@@ -181,7 +181,7 @@ namespace DatenMeister.Uml
             // the metaclass of these element depending on the attribute value of Xmi:Type
             foreach (var elementInstance in allElements.Where(x => x.isSet(TypeProperty)))
             {
-                var name = elementInstance.get(TypeProperty).ToString();
+                var name = elementInstance.getOrDefault<string>(TypeProperty);
                 if (name.StartsWith("uml:"))
                 {
                     name = name.Substring(4);

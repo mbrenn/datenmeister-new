@@ -18,7 +18,7 @@ namespace DatenMeister.SourcecodeGenerator
         {
             Result.Clear();
 
-            WalkPackageClass.CallStack stack = new WalkPackageClass.CallStack(null);
+            var stack = new WalkPackageClass.CallStack(null);
 
             Result.AppendLine($"{stack.Indentation}using DatenMeister;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core;");
@@ -70,17 +70,17 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine($"{stack.Indentation}extent.TypeLookup.Add(typeAsElement, type);");
 
 
-                stack = stack.Owner;
+                stack = stack.Owner!;
                 Result.AppendLine($"{stack.Indentation}}}"); // Inner scope
             }
 
-            stack = stack.Owner;
+            stack = stack.Owner!;
             Result.AppendLine($"{stack.Indentation}}}"); // method
 
-            stack = stack.Owner;
+            stack = stack.Owner!;
             Result.AppendLine($"{stack.Indentation}}}"); // class
 
-            stack = stack.Owner;
+            stack = stack.Owner!;
             Result.AppendLine($"{stack.Indentation}}}"); // namespace
         }
     }

@@ -61,8 +61,15 @@ namespace DatenMeister.Modules.ChangeEvents
             foreach (var handle in handles)
             {
                 handle.ValueAction?.Invoke(value);
-                handle.ExtentAction?.Invoke(extent, value);
-                handle.WorkspaceAction?.Invoke(workspace, extent, value);
+                if (extent != null)
+                {
+                    handle.ExtentAction?.Invoke(extent, value);
+                }
+
+                if (extent != null && workspace != null)
+                {
+                    handle.WorkspaceAction?.Invoke(workspace, extent, value);
+                }
             }
         }
 

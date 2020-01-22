@@ -18,7 +18,7 @@ namespace DatenMeister.Provider
 
         public IProvider Provider { get; }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         public string? MetaclassUri { get; set; }
 
@@ -101,7 +101,7 @@ namespace DatenMeister.Provider
             return exists;
         }
 
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             _mappings.TryGetValue(property, out var result);
             result?.SetFunction(Value, value);

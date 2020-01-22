@@ -14,9 +14,10 @@ namespace DatenMeister.Provider
         IProvider Provider { get; }
 
         /// <summary>
-        /// Gets or sets the id of the provided object
+        /// Gets or sets the id of the provided object.
+        /// Might be null, if the id is not set
         /// </summary>
-        string Id { get; set; }
+        string? Id { get; set; }
 
         /// <summary>
         /// Gets the uri of the metaclass or null, if not defined

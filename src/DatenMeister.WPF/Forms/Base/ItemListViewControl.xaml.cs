@@ -82,9 +82,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private FormLogic _formLogic;
+        private readonly FormLogic _formLogic;
 
         private INavigationHost? _navigationHost;
+        private ChangeEventManager _changeEventManager;
+
         public ItemListViewControl()
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
@@ -285,7 +287,13 @@ namespace DatenMeister.WPF.Forms.Base
                 var extent = asExtent.Extent;
                 if (extent != null)
                 {
-                    _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                    _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
+                    if (_changeEventHandle != null)
+                    {
+                        _changeEventManager.Unregister(_changeEventHandle);
+                    }
+                    
+                    _changeEventHandle = _changeEventManager.RegisterFor(
                         extent,
                         (innerExtent, element) => _delayedDispatcher.RequestRefresh());
                 }
@@ -306,6 +314,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (_changeEventHandle != null)
             {
+                _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
                 GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
                 _changeEventHandle = null;
             }

@@ -44,12 +44,12 @@ namespace DatenMeister.WPF.Helper
         /// <summary>
         /// Defines the minimum dispatch time for which th dispatching will be delayed before the dispatched function will be called
         /// </summary>
-        public TimeSpan MinDispatchTime { get; } = TimeSpan.FromMilliseconds(100);
+        public TimeSpan MinDispatchTime { get; set; } = TimeSpan.FromMilliseconds(100);
 
         /// <summary>
         /// Defines the maximum delayted time for which the dispatching will be delayed if the refresh is requested continuously.
         /// </summary>
-        public TimeSpan MaxDispatchTime { get; } = TimeSpan.FromMilliseconds(1000);
+        public TimeSpan MaxDispatchTime { get; set; } = TimeSpan.FromMilliseconds(1000);
 
         /// <summary>
         /// Defines the timestamp in which the last refresh was asked for
@@ -90,10 +90,10 @@ namespace DatenMeister.WPF.Helper
                     _lastRefreshTime = DateTime.Now;
                 }
 
-                ClassLogger.Trace($"#{_instance}: Dispatch in {MinDispatchTime.TotalMilliseconds} ms");
+                // ClassLogger.Trace($"#{_instance}: Dispatch in {MinDispatchTime.TotalMilliseconds} ms");
                 Task.Delay(MinDispatchTime).ContinueWith(t =>
                 {
-                    ClassLogger.Trace($"#{_instance}: Got Called");
+                    // ClassLogger.Trace($"#{_instance}: Got Called");
                     CheckForRefresh();
                 });
             }
@@ -116,14 +116,14 @@ namespace DatenMeister.WPF.Helper
                     {
                         var dispatchTime = MinDispatchTime - delta;
                         // But maximum delay has not occured
-                        ClassLogger.Trace($"#{_instance}: Retry Dispatch in {dispatchTime.TotalMilliseconds} ms");
+                        // ClassLogger.Trace($"#{_instance}: Retry Dispatch in {dispatchTime.TotalMilliseconds} ms");
 
                         Task.Delay(dispatchTime).ContinueWith(t => CheckForRefresh());
                         return;
                     }
                 }
 
-                ClassLogger.Trace($"#{_instance}: Dispatched after {delta.TotalMilliseconds} ms");
+                // ClassLogger.Trace($"#{_instance}: Dispatched after {delta.TotalMilliseconds} ms");
 
                 _lastRefreshTime = DateTime.MinValue;
                 _refreshTimeStamp = DateTime.MinValue;

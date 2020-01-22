@@ -494,14 +494,9 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                     else if (selectedItemPosition != -1 && listItems.Count > 0)
                     {
-                        if (selectedItemPosition < listItems.Count)
-                        {
-                            DataGrid.SelectedIndex = selectedItemPosition;
-                        }
-                        else
-                        {
-                            DataGrid.SelectedIndex = selectedItemPosition - 1;
-                        }
+                        DataGrid.SelectedIndex = selectedItemPosition < listItems.Count
+                            ? selectedItemPosition
+                            : selectedItemPosition - 1;
                     }
 
                 });

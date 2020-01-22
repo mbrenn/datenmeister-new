@@ -54,7 +54,7 @@ namespace DatenMeister.Provider.XMI
         /// </summary>
         /// <param name="elements">Element to be converted</param>
         /// <returns>Converted element to be shown</returns>
-        public XElement ConvertToXml(IEnumerable<object> elements)
+        public XElement ConvertToXml(IEnumerable<object?> elements)
         {
             var factory = new MofFactory(_extent);
             var copier = new ObjectCopier(factory);

@@ -47,7 +47,7 @@ namespace DatenMeister.WPF.Forms.Lists
         protected override void OnRecreateViews()
         {
             FormDefinition? form = null;
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
 
             if (OverridingViewDefinition?.Mode == FormDefinitionMode.Specific)
             {

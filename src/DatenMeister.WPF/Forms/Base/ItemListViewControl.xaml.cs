@@ -759,7 +759,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                                 // Now, create the replacement
                                 var formAndFields =
-                                    GiveMe.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Get<_FormAndFields>();
+                                    GiveMe.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Require<_FormAndFields>();
                                 var factory = new MofFactory(b.View);
                                 var element = factory.create(formAndFields.__DropDownFieldData);
                                 element.set(_FormAndFields._DropDownFieldData.name,

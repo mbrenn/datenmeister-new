@@ -336,6 +336,8 @@ namespace DatenMeister.WPF.Forms.Base
                 var n = 0;
                 foreach (var element in extent.elements())
                 {
+                    if (element == null) continue; // Skip the empty ones
+                    
                     var created = CreateTreeViewItem(element);
                     if (created != null)
                         childModels.Add(created);
@@ -484,9 +486,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void VisitCopyTreeToClipboard(IReflectiveCollection items, string currentText, StringBuilder result)
         {
-            foreach (var item in
-                items.Where(item => !_alreadyVisited.Contains(item)))
+            foreach (var item in items)
             {
+                if (item == null || !_alreadyVisited.Contains(item)) continue;
                 _alreadyVisited.Add(item);
 
                 var itemAsObject = item as IObject;

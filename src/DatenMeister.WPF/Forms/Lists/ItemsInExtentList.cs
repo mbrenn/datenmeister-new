@@ -118,7 +118,8 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
+                
             IElement? form = null;
 
             var overridingMode = OverridingViewDefinition?.Mode ?? FormDefinitionMode.Default;

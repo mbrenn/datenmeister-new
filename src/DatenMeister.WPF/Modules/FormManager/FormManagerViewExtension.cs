@@ -330,7 +330,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             ViewExtensionTargetInformation viewExtensionTargetInformation,
             DetailFormWindow detailWindow)
         {
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
             
             yield return new ApplicationMenuButtonDefinition(
                 "Change Form Definition",
@@ -374,12 +374,10 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void ChangeFormDefinition()
             {
-                var form = NavigatorForDialogs.Locate(
+                if (!(NavigatorForDialogs.Locate(
                     detailWindow,
                     WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserFormExtent) as IElement;
-
-                if (form == null)
+                    WorkspaceNames.UriUserFormExtent) is IElement form))
                 {
                     detailWindow.ClearOverridingForm();
                 }

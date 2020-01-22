@@ -60,7 +60,7 @@ namespace DatenMeister.WPF.Navigation
             if (formElement == null)
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
-                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_ManagementProvider>();
                 formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
             }
 
@@ -118,13 +118,12 @@ namespace DatenMeister.WPF.Navigation
                 foreach (var extent in workspaceLogic.GetExtentsForWorkspace(workspace))
                 {
                     var loadConfiguration = extentManager.GetLoadConfigurationFor(extent) as ExtentFileLoaderConfig;
-                    if (loadConfiguration == null)
+                    var extentStoragePath = loadConfiguration?.filePath;
+                    
+                    if (extentStoragePath != null)
                     {
-                        continue;
+                        files.Add(extentStoragePath);
                     }
-
-                    var extentStoragePath = loadConfiguration.filePath;
-                    files.Add(extentStoragePath);
                 }
             }
 

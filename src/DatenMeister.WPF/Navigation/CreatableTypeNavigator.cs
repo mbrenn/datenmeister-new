@@ -29,14 +29,14 @@ namespace DatenMeister.WPF.Navigation
         /// <returns>The control navigation</returns>
         public async Task<NavigateToElementDetailResult?> NavigateToSelectCreateableType(
             INavigationHost window,
-            IExtent extent,
+            IExtent? extent,
             string buttonName = "Create")
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
-            var defaultTypePackage = extent.GetDefaultTypePackages()?.ToList();
+            var defaultTypePackage = extent?.GetDefaultTypePackages()?.ToList();
             IWorkspace? metaWorkspace = null;
             IExtent? metaExtent = null;
             if (defaultTypePackage == null || !defaultTypePackage.Any())
@@ -44,7 +44,7 @@ namespace DatenMeister.WPF.Navigation
                 // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
                 // Otherwise, select the first meta workspace and extent
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
-                var workspace = workspaceLogic.GetWorkspaceOfExtent(extent);
+                var workspace = extent == null ? null : workspaceLogic.GetWorkspaceOfExtent(extent);
                 if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
                 {
                     metaWorkspace = workspaceLogic.GetTypesWorkspace();

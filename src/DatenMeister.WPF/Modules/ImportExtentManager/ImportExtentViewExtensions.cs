@@ -67,7 +67,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     {
                         Form = new FormDefinition(
                             GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
-                                .element("#ImportManagerFindExtent"))
+                                .element("#ImportManagerFindExtent")
+                            ?? throw new InvalidOperationException("#ImportManagerFindExtent not found"))
                     });
 
                 if (controlNavigation != null && controlNavigation.Result == NavigationResult.Saved)

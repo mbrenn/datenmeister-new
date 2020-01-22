@@ -53,9 +53,18 @@ namespace DatenMeister.WPF.Navigation
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var uri = WorkspaceNames.ExtentManagementExtentUri + "#" + WebUtility.UrlEncode(extentUrl);
-            return await NavigatorForItems.NavigateToElementDetailView(
-                navigationHost,
-                workspaceLogic.FindItem(uri));
+            var foundItem = workspaceLogic.FindItem(uri);
+            if (foundItem == null)
+            {
+                MessageBox.Show($"No item found at {extentUrl}");
+                return null;
+            }
+            else
+            {
+                return await NavigatorForItems.NavigateToElementDetailView(
+                    navigationHost,
+                    foundItem);
+            }
         }
 
         /// <summary>
@@ -90,7 +99,9 @@ namespace DatenMeister.WPF.Navigation
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var form =
-                viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm);
+                viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
+                ?? throw new InvalidOperationException(ManagementViewDefinitions.IdNewXmiDetailForm + " was not found");
+            
             var formDefinition = new FormDefinition(form);
             formDefinition.Validators.Add( new NewXmiExtentValidator(
                 GiveMe.Scope.WorkspaceLogic,

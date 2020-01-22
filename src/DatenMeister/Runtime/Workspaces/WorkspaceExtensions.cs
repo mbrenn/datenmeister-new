@@ -88,6 +88,20 @@ namespace DatenMeister.Runtime.Workspaces
             return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
         }
 
+        public static TFilledType Require<TFilledType>(
+            this IWorkspace logic)
+        
+            where TFilledType : class, new()
+        {
+            var found = logic.Get<TFilledType>();
+            if (found == null)
+            {
+                throw new InvalidOperationException($"The filled Type {typeof(TFilledType)} was not found");
+            }
+
+            return found;
+        }
+
         /// <summary>
         /// Finds an extent by the given uri
         /// </summary>

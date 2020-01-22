@@ -395,7 +395,7 @@ namespace DatenMeister.WPF.Forms.Base
             // Gets the default view for the given tab
             var name = tabForm.getOrDefault<string>(_FormAndFields._Form.title) ??
                        tabForm.getOrDefault<string>(_FormAndFields._Form.name);
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
             var usedViewExtensions = viewExtensions.ToList();
 
             UserControl? createdUserControl = null;
@@ -418,7 +418,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var defaultTypesForNewItems =
                     tabForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements)
                         ?.ToList()
-                    ?? new List<object>();
+                    ?? new List<object?>();
 
                 // Allows the deletion of an item
                 if (tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) != true)
@@ -567,7 +567,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// the item will be added. Null if item will be added to the given extent</param>
         /// <returns>List of menu items being used as context menu</returns>
         private void CreateMenuAndButtonsForDefaultTypes(
-            IEnumerable<object> defaultTypesForNewItems,
+            IEnumerable<object?> defaultTypesForNewItems,
             List<ViewExtension> usedViewExtensions,
             string? parentProperty)
         {

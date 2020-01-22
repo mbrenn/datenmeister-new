@@ -56,9 +56,9 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 // The form was not found, so the form is created automatically
                 // Creates the form out of the properties of the workspace
-                var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_ManagementProvider>();
                 formElement = viewLogic.GetExtentFormForSubforms(
-                    viewLogic.GetListFormForExtent(extent, formAndFields.__Workspace,
+                    viewLogic.GetListFormForExtent(extent, managementProvider.__Workspace,
                         FormDefinitionMode.Default) ??
                     throw new InvalidOperationException("List form could not be created"));
             }
@@ -156,7 +156,7 @@ namespace DatenMeister.WPF.Forms.Lists
             if (result == null)
             {
                 // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
-                var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_ManagementProvider>();
                 var listForm = viewLogic.GetListFormForExtent(
                                    extent,
                                    formAndFields.__Extent,

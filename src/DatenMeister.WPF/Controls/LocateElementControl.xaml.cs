@@ -391,7 +391,9 @@ namespace DatenMeister.WPF.Controls
 
         public void SelectWorkspace(string workspaceId)
         {
-            Select((IWorkspace) _workspaceLogic.GetWorkspace(workspaceId));
+            var workspace = (IWorkspace?) _workspaceLogic.GetWorkspace(workspaceId);
+            if (workspace != null)
+                Select(workspace);
         }
 
         public void SelectExtent(string extentUri)

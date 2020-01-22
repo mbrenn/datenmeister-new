@@ -27,6 +27,12 @@ namespace DatenMeister.WPF.Helper
 
         private static int _instanceCount;
 
+        /// <summary>
+        /// Stores a flag whether a refresh already has occured.
+        /// If this value is false, then a refresh is outstanding 
+        /// </summary>
+        private bool _isRefreshed = true;
+
         private int _instance;
 
         /// <summary>
@@ -78,6 +84,7 @@ namespace DatenMeister.WPF.Helper
         {
             lock (_syncObject)
             {
+                _isRefreshed = false;
                 if (_timerRunning)
                 {
                     return;
@@ -123,11 +130,31 @@ namespace DatenMeister.WPF.Helper
                     }
                 }
 
+                if (_isRefreshed)
+                {
+                    // We already got a refresh, so everything is fine
+                    return;
+                }
+
                 // ClassLogger.Trace($"#{_instance}: Dispatched after {delta.TotalMilliseconds} ms");
 
                 _lastRefreshTime = DateTime.MinValue;
                 _refreshTimeStamp = DateTime.MinValue;
                 _timerRunning = false;
+                _isRefreshed = true;
+            }
+
+            _dispatcher.Invoke(() => _action());
+        }
+
+        /// <summary>
+        /// Forces a complete refresh
+        /// </summary>
+        public void ForceRefresh()
+        {
+            lock (_syncObject)
+            {
+                _isRefreshed = true;
             }
 
             _dispatcher.Invoke(() => _action());

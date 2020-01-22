@@ -85,7 +85,11 @@ namespace DatenMeister.WPF.Forms.Base
         private readonly FormLogic _formLogic;
 
         private INavigationHost? _navigationHost;
-        private ChangeEventManager _changeEventManager;
+        
+        /// <summary>
+        /// Stores a cached instance of the change event manager
+        /// </summary>
+        private ChangeEventManager? _changeEventManager;
 
         public ItemListViewControl()
         {
@@ -353,7 +357,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
-            if ( EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
+            if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
             
             var watch = new StopWatchLogger(Logger, "UpdateView");
             var listItems = new ObservableCollection<ExpandoObject>();

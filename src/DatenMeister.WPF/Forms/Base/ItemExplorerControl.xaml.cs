@@ -782,22 +782,26 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             
+            // Creates the buttons for the treeview
+            ClearTreeViewUiElement();
+            AddTreeViewUiElement(viewExtensionPlugins);
+        }
+
+        private void AddTreeViewUiElement(List<IViewExtensionFactory> viewExtensionPlugins)
+        {
             // Gets the elements of the plugin
-            var data = new ViewExtensionTargetInformation()
+            var data = new ViewExtensionTargetInformation
             {
                 NavigationHost = NavigationHost,
                 NavigationGuest = NavigationTreeView
             };
-            
-            // Creates the buttons for the treeview
-            ClearTreeViewUiElement();
-
             foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
                 .OfType<ItemButtonDefinition>())
             {
                 var button = new Button
                 {
-                    Content = buttonView.Name
+                    Content = buttonView.Name,
+                    Margin = new Thickness(0,10,10,10)
                 };
 
                 button.Click += (x, y) =>

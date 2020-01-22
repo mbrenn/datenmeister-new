@@ -133,8 +133,8 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var selectedItems = DataGrid.SelectedItems;
             if (selectedItems.Count == 0)
-                // If no item is selected, get all items
-                selectedItems = DataGrid.Items;
+                // If no item is selected, get no item
+                yield break;
 
             foreach (var item in selectedItems)
                 if (item is ExpandoObject selectedItem)
@@ -363,6 +363,8 @@ namespace DatenMeister.WPF.Forms.Base
             var listItems = new ObservableCollection<ExpandoObject>();
 
             var selectedItem = GetSelectedItem();
+            var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
+            ExpandoObject? selectedExpandoObject = null;
             
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
@@ -451,6 +453,12 @@ namespace DatenMeister.WPF.Forms.Base
 
                         _itemMapping[itemObject] = item;
                         listItems.Add(itemObject);
+                        
+                        
+                        if (item.Equals(selectedItem))
+                        {
+                            selectedExpandoObject = itemObject;
+                        }
 
                         // Adds the notification for the property
                         var noMessageBox = false;
@@ -477,10 +485,37 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 watch.IntermediateLog("Before setting");
 
-                Dispatcher?.Invoke(() => { DataGrid.ItemsSource = listItems; });
+                Dispatcher?.Invoke(() =>
+                {
+                    DataGrid.ItemsSource = listItems;
+                    if (selectedExpandoObject != null)
+                    {
+                        DataGrid.SelectedItem = selectedExpandoObject;
+                    }
+                    else if (selectedItemPosition != -1 && listItems.Count > 0)
+                    {
+                        if (selectedItemPosition < listItems.Count)
+                        {
+                            DataGrid.SelectedIndex = selectedItemPosition;
+                        }
+                        else
+                        {
+                            DataGrid.SelectedIndex = selectedItemPosition - 1;
+                        }
+                    }
+
+                });
 
                 watch.Stop();
             });
+        }
+
+        /// <summary>
+        /// Forces a refresh of the view
+        /// </summary>
+        public void ForceRefresh()
+        {
+            _delayedDispatcher.ForceRefresh();
         }
 
         /// <summary>

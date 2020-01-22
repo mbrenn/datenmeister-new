@@ -193,13 +193,13 @@ namespace DatenMeister.WPF.Forms.Base
                 "Show Form Definition",
                 ViewConfig,
                 null,
-                NavigationCategories.Form);
+                NavigationCategories.Form + ".Current");
 
             yield return new ApplicationMenuButtonDefinition(
                 "Save Form Definition",
                 CopyForm,
                 null,
-                NavigationCategories.Form);
+                NavigationCategories.Form + ".Current");
 
 
             if (DetailElementContainer != null && DetailElement != null)

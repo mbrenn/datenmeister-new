@@ -97,6 +97,9 @@ namespace DatenMeister.Models.Forms
 
         public class _FormAssociation
         {
+            public static string @name = "name";
+            public IElement? _name = null;
+
             public static string @formType = "formType";
             public IElement? _formType = null;
 

@@ -166,6 +166,10 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FormAssociation._name = value;
+                                }
                                 if(name == "formType") // Looking for property
                                 {
                                     tree.FormAssociation._formType = value;

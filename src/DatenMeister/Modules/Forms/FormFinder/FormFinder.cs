@@ -93,6 +93,13 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var associationParentProperty =
                     element.getOrDefault<string>(_FormAndFields._FormAssociation.parentProperty);
                 var associationForm = element.getOrDefault<IElement>(_FormAndFields._FormAssociation.form);
+                if (associationExtentType == null && associationMetaClass == null
+                                                  && associationParentMetaclass == null 
+                                                  && associationParentProperty == null)
+                {
+                    // Skip item because it is too unspecific
+                    continue;
+                }
 
                 if (associationForm == null)
                 {

@@ -8,6 +8,8 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Workspaces;
@@ -36,7 +38,12 @@ namespace DatenMeister.WPF.Modules.FormManager
             ViewExtensionTargetInformation viewExtensionTargetInformation,
             DetailFormWindow detailWindow)
         {
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>()
+                                ?? throw new InvalidOperationException("No _FormAndFields in Type Workspace");
+            
+            // Checks for specific elements
+            var detailAsElement = detailWindow.DetailElement as IElement;
+            var metaClassOfDetailElement = detailAsElement?.getMetaClass();
             
             yield return new ApplicationMenuButtonDefinition(
                 "Change Form Definition",
@@ -63,10 +70,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                 null,
                 NavigationCategories.Form+".Current");
 
-            // Checks for specific elements
-            var detailAsElement = detailWindow.DetailElement as IElement;
-            var metaClassOfDetailElement = detailAsElement?.getMetaClass();
-            if (formAndFields == null) throw new InvalidOperationException("No _FormAndFields in Type Workspace");
 
             // The currently selected element is a form
             if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, formAndFields.__Form)
@@ -75,6 +78,12 @@ namespace DatenMeister.WPF.Modules.FormManager
                 yield return new ApplicationMenuButtonDefinition(
                     "Create Field by Property...",
                     CreateFieldByProperty,
+                    null,
+                    NavigationCategories.Form + ".Form Manager");
+
+                yield return new ApplicationMenuButtonDefinition(
+                    "Create as default form for type...",
+                    CreateAsDefaultType,
                     null,
                     NavigationCategories.Form + ".Form Manager");
             }
@@ -179,6 +188,37 @@ namespace DatenMeister.WPF.Modules.FormManager
                         locatedItem,
                         CreationMode.All);
                 }
+            }
+
+            async void CreateAsDefaultType()
+            {
+                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                                     ?? throw new InvalidOperationException("navigationHost == null");
+                var defaultTypeClassifierHints = new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic);
+                var extent = (detailAsElement as IHasExtent)?.Extent;
+                if (extent == null)
+                    throw new InvalidOperationException("extent == null");
+
+                if (detailAsElement == null)
+                    throw new InvalidOperationException("DetailElement not IElement");
+
+                var factory = new MofFactory(extent);
+                var container = detailAsElement.container();
+                var isPackage = container != null && defaultTypeClassifierHints.IsPackageLike(container);
+
+                var formAssociation = factory.create(formAndFields.__FormAssociation);
+
+                defaultTypeClassifierHints.AddToExtentOrElement(
+                    isPackage && container != null ? container : (IObject) extent,
+                    formAssociation);
+                
+                formAssociation.set(
+                    _FormAndFields._FormAssociation.name, 
+                    "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
+                formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
+                formAssociation.set(_FormAndFields._FormAssociation.form, detailAsElement);
+
+                await NavigatorForItems.NavigateToElementDetailView(navigationHost, formAssociation);
             }
         }
     }

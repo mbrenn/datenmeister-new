@@ -127,6 +127,7 @@
     <Compile Include="Modules\FormManager\FormManagerViewExtension.cs" />
     <Compile Include="Modules\FormManager\FormManagerViewExtension.DetailForm.cs" />
     <Compile Include="Modules\FormManager\FormManagerViewExtension.ItemExplorerControl.cs" />
+    <Compile Include="Modules\FormManager\FormManagerViewExtension.ApplicationWindow.cs" />
     <Compile Include="Modules\FormManager\NavigatorForForms.cs" />
     <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />

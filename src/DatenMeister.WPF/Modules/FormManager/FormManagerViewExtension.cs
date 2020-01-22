@@ -11,7 +11,6 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -116,28 +115,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                     navigationHost,
                     createdForm);
             }
-        }
-
-        /// <summary>
-        /// Gets the navigation for the application window
-        /// </summary>
-        /// <param name="viewExtensionTargetInformation"></param>
-        /// <returns></returns>
-        private static ViewExtension GetForApplicationWindow(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
-        {
-            var navigationHost = viewExtensionTargetInformation.NavigationHost ??
-                                 throw new InvalidOperationException("navigationHost == null");
-            
-            var result = new ApplicationMenuButtonDefinition(
-                "Goto User Forms", async () => await NavigatorForItems.NavigateToItemsInExtent(
-                    navigationHost,
-                    WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserFormExtent),
-                string.Empty,
-                NavigationCategories.DatenMeisterNavigation);
-
-            return result;
         }
     }
 }

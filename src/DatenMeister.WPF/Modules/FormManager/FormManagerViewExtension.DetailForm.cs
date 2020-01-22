@@ -68,6 +68,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             var metaClassOfDetailElement = detailAsElement?.getMetaClass();
             if (formAndFields == null) throw new InvalidOperationException("No _FormAndFields in Type Workspace");
 
+            // The currently selected element is a form
             if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, formAndFields.__Form)
                 && detailAsElement != null)
             {
@@ -75,7 +76,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     "Create Field by Property...",
                     CreateFieldByProperty,
                     null,
-                    NavigationCategories.Form + ".Current");
+                    NavigationCategories.Form + ".Form Manager");
             }
 
             void ChangeFormDefinition()

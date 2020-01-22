@@ -151,7 +151,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="types">Type to be added</param>
         /// <param name="packageName">Defines the package name to which the elements shall be created</param>
         /// <returns>List of created elements</returns>
-        public IList<IElement> AddInternalTypes(IEnumerable<Type> types, string packageName = null)
+        public IList<IElement> AddInternalTypes(IEnumerable<Type> types, string? packageName = null)
         {
             var internalTypeExtent = GetInternalTypeExtent();
             IReflectiveCollection rootElements = internalTypeExtent.elements();

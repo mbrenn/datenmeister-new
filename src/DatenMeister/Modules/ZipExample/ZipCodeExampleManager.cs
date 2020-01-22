@@ -95,7 +95,7 @@ namespace DatenMeister.Modules.ZipExample
                         nameof(ZipCode.positionLat),
                         nameof(ZipCode.name)
                     }.ToList(),
-                    MetaclassUri = _zipCodeModel.ZipCodeUri
+                    MetaclassUri = _zipCodeModel.ZipCodeUri ?? string.Empty
                 }
             };
 

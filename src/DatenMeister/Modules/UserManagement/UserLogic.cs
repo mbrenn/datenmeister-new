@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Algorithm;
 using DatenMeister.Runtime.Functions.Queries;
@@ -92,7 +93,7 @@ namespace DatenMeister.Modules.UserManagement
             var settings = userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
 
             Debug.Assert(settings != null, "settings != null");
-            var globalSalt = settings.get(nameof(UserManagementSettings.salt)).ToString();
+            var globalSalt = settings.getOrDefault<string>(nameof(UserManagementSettings.salt));
 
             var totalPassword = salt + password + globalSalt;
 

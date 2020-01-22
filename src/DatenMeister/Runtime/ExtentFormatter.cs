@@ -99,14 +99,14 @@ namespace DatenMeister.Runtime
                 {
                     _builder.AppendLine($"{_currentIndent}{property}:");
                     IncreaseIndentation();
-                    Parse((MofObject) value);
+                    Parse((MofObject) value!);
                     DecreaseIndentation();
                 }
                 else if (DotNetHelper.IsOfReflectiveCollection(value))
                 {
                     _builder.AppendLine($"{_currentIndent}{property}[]:");
                     IncreaseIndentation();
-                    Parse((IReflectiveCollection) value);
+                    Parse((IReflectiveCollection) value!);
                     DecreaseIndentation();
                 }
                 else if (value is UriReference reference)

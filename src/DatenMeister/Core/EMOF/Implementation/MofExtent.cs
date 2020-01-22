@@ -428,10 +428,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 var asMofObjectShadow = (MofObjectShadow) value;
 
                 // It is a reference
-                var reference = new UriReference
-                {
-                    Uri = asMofObjectShadow.Uri
-                };
+                var reference = new UriReference(asMofObjectShadow.Uri);
 
                 return reference;
             }
@@ -466,12 +463,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 
                 // It is a reference
                 var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type MofElement");
-                var reference = new UriReference
-                {
-                    Uri = ((MofUriExtent) asMofObject.Extent).uri(asElement)
-                };
-
-                return reference;
+                return new UriReference(((MofUriExtent) asMofObject.Extent).uri(asElement));
             }
 
             if (DotNetHelper.IsOfEnumeration(value))

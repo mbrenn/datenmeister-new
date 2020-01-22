@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
@@ -17,12 +19,14 @@ namespace DatenMeister.WPF.Modules.TypeManager
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
+            var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+                                 throw new InvalidOperationException("NavigationHost == null");
+
             if (viewExtensionTargetInformation.NavigationHost is IApplicationWindow)
             {
                 yield return new ApplicationMenuButtonDefinition(
-                    "Goto User Types",
-                    () => NavigatorForItems.NavigateToItemsInExtent(
-                        viewExtensionTargetInformation.NavigationHost,
+                    "Goto User Types", async () => await NavigatorForItems.NavigateToItemsInExtent(
+                        navigationHost,
                         WorkspaceNames.NameTypes,
                         WorkspaceNames.UriUserTypesExtent),
                     string.Empty,
@@ -34,20 +38,22 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
                 var extent = itemInExtentList.RootItem.GetExtentOf();
                 var extentType = extent?.GetExtentType();
-                if (extentType == "Uml.Classes")
+                if (extentType == "Uml.Classes" && extent != null)
                 {
                     if (itemInExtentList.IsExtentSelectedInTreeview)
                     {
-
                         var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                        if (classMetaClass == null)
+                            throw new InvalidOperationException("Class could not be found");
+                        
                         yield return new NewInstanceViewDefinition(classMetaClass);
 
                         yield return new ApplicationMenuButtonDefinition(
                             "Create new Class",
                             () =>
                                 NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                    viewExtensionTargetInformation.NavigationHost,
-                                    extent,
+                                    navigationHost,
+                                    extent!,
                                     classMetaClass),
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");
@@ -58,45 +64,59 @@ namespace DatenMeister.WPF.Modules.TypeManager
             var listControl = viewExtensionTargetInformation.GetListViewForItemsTabForExtentType("Uml.Classes");
             if (listControl != null)
             {
-                var classMetaClass = listControl.Extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                yield return
-                    new CollectionMenuButtonDefinition(
-                        "Create new Class",
-                        (x) =>
-                            NavigatorForItems.NavigateToNewItemForExtent(
-                                viewExtensionTargetInformation.NavigationHost,
-                                listControl.Extent,
-                                classMetaClass),
-                        string.Empty,
-                        NavigationCategories.Type);
+                var extent = listControl.Extent;
+                if (extent != null)
+                {
+                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                    if (classMetaClass == null) throw new InvalidOperationException("Class not found");
+                    
+                    yield return
+                        new CollectionMenuButtonDefinition(
+                            "Create new Class",
+                            (x) =>
+                                NavigatorForItems.NavigateToNewItemForExtent(
+                                    navigationHost,
+                                    listControl.Extent,
+                                    classMetaClass),
+                            string.Empty,
+                            NavigationCategories.Type);
+                }
             }
 
             if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl extentList
                 && viewExtensionTargetInformation is ViewExtensionForItemPropertiesInformation propertiesInformation)
             {
-                var selectedPackage = propertiesInformation.Value as IElement;
-                var extent = selectedPackage.GetExtentOf();
-
-                var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                var propertyName = propertiesInformation.Property;
-                if (selectedPackage?.metaclass?.@equals(classMetaClass) == true
-                    && propertyName == _UML._StructuredClassifiers._Class.ownedAttribute)
+                if (propertiesInformation.Value is IElement selectedPackage)
                 {
-                    var propertyMetaClass = extent.FindInMeta<_UML>(x => x.Classification.__Property);
+                    var extent = selectedPackage.GetExtentOf();
+                    if (extent != null)
+                    {
+                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
 
-                    yield return new NewInstanceViewDefinition(propertyMetaClass);
+                        var propertyName = propertiesInformation.Property;
+                        if (selectedPackage.metaclass?.@equals(classMetaClass) == true
+                            && propertyName == _UML._StructuredClassifiers._Class.ownedAttribute)
+                        {
+                            var propertyMetaClass = extent.FindInMeta<_UML>(x => x.Classification.__Property);
+                            if (propertyMetaClass != null)
+                            {
 
-                    yield return
-                        new CollectionMenuButtonDefinition(
-                            "Create new Property",
-                            (x) =>
-                                NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                                    viewExtensionTargetInformation.NavigationHost,
-                                    selectedPackage,
-                                    _UML._StructuredClassifiers._Class.ownedAttribute,
-                                    propertyMetaClass),
-                            string.Empty,
-                            NavigationCategories.Type);
+                                yield return new NewInstanceViewDefinition(propertyMetaClass);
+
+                                yield return
+                                    new CollectionMenuButtonDefinition(
+                                        "Create new Property",
+                                        (x) =>
+                                            NavigatorForItems.NavigateToNewItemForPropertyCollection(
+                                                navigationHost,
+                                                selectedPackage,
+                                                _UML._StructuredClassifiers._Class.ownedAttribute,
+                                                propertyMetaClass),
+                                        string.Empty,
+                                        NavigationCategories.Type);
+                            }
+                        }
+                    }
                 }
             }
         }

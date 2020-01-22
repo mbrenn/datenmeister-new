@@ -40,8 +40,11 @@ namespace DatenMeister.Provider.InMemory
             new InMemoryObject(this, metaClassUri);
 
         /// <inheritdoc />
-        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
+            if (valueAsObject == null)
+                return; // Wo do not add empty elements
+            
             lock (_elements)
             {
                 var toBeAdded = (InMemoryObject) valueAsObject;

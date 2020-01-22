@@ -84,24 +84,24 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Stores the result of the navigation
         /// </summary>
-        public NavigationResult Result { get; set; }
+        public NavigationResult? Result { get; set; }
 
         /// <summary>
         /// Stores the detail element that was shown
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject? DetailElement { get; set; }
 
         /// <summary>
         /// Gets or sets the host for navigation
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost? NavigationHost { get; set; }
 
         /// <summary>
         /// Gets or sets the guest for navigation
         /// </summary>
-        public INavigationGuest NavigationGuest { get; set; }
+        public INavigationGuest? NavigationGuest { get; set; }
 
-        public IObject AttachedElement { get; set; }
+        public IObject? AttachedElement { get; set; }
     }
 
     /// <summary>
@@ -115,10 +115,12 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost"></param>
         /// <param name="navigateToItemConfig"></param>
         /// <returns></returns>
-        public static Task<NavigateToElementDetailResult> CreateDetailWindow(
+        public async static Task<NavigateToElementDetailResult?> CreateDetailWindow(
             INavigationHost navigationHost,
             NavigateToItemConfig navigateToItemConfig)
         {
+            if (navigateToItemConfig == null) throw new ArgumentNullException(nameof(navigateToItemConfig));
+            
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
 
@@ -148,10 +150,14 @@ namespace DatenMeister.WPF.Navigation
 
             detailFormWindow.SwitchToMinimumSize();
 
-            navigateToItemConfig.AfterCreatedFunction?.Invoke(detailFormWindow.MainControl as DetailFormControl);
-            detailFormWindow.Show();
+            var mainControl = detailFormWindow.MainControl as DetailFormControl;
+            if (mainControl != null)
+            {
+                navigateToItemConfig.AfterCreatedFunction?.Invoke(mainControl);
+                detailFormWindow.Show();
+            }
 
-            return task.Task;
+            return await task.Task;
         }
 
         /// <summary>
@@ -161,12 +167,12 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="factoryMethod">Factory method to be used to create the usercontrol</param>
         /// <param name="navigationMode">Mode of the navigation</param>
         /// <returns>Creates a new window which can be used by the user. </returns>
-        public static Task<NavigateToElementDetailResult> NavigateByCreatingAWindow(
+        public async static Task<NavigateToElementDetailResult?> NavigateByCreatingAWindow(
             Window parentWindow,
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
-            var task = new TaskCompletionSource<NavigateToElementDetailResult>();
+            var task = new TaskCompletionSource<NavigateToElementDetailResult?>();
             var result = new NavigateToElementDetailResult();
 
             if (parentWindow == null)
@@ -230,7 +236,7 @@ namespace DatenMeister.WPF.Navigation
                 }
             }
 
-            return task.Task;
+            return await task.Task;
         }
 
         /// <summary>

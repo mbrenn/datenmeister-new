@@ -18,11 +18,11 @@ namespace DatenMeister.Runtime.Extents
             _extent = extent ?? throw new ArgumentNullException(nameof(extent));
         }
 
-        public bool @equals(object other) => other is IExtent extent && _extent.@equals(extent);
+        public bool @equals(object? other) => other is IExtent extent && _extent.@equals(extent);
 
-        public object get(string property) => _extent.get(property);
+        public object? get(string property) => _extent.get(property);
 
-        public void set(string property, object value) => _extent.set(property, value);
+        public void set(string property, object? value) => _extent.set(property, value);
 
         public bool isSet(string property) => _extent.isSet(property);
 

@@ -9,6 +9,7 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -26,14 +27,16 @@ namespace DatenMeister.WPF.Navigation
         /// Stores the logger being used in navigator for extents
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(NavigatorForExtents));
-        
+
         /// <summary>
         /// Navigates to an extent list
         /// </summary>
         /// <param name="window">Root window being used</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns>The navigation being used to control the view</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToExtentList(INavigationHost window, string workspaceId)
+        public static Task<NavigateToElementDetailResult?>? NavigateToExtentList(
+            INavigationHost window,
+            string workspaceId)
         {
             return window.NavigateTo(
                 () => new ExtentList {WorkspaceId = workspaceId},
@@ -46,13 +49,22 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost">Host for navigation being to be used</param>
         /// <param name="extentUrl">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public static Task<NavigateToElementDetailResult> OpenDetailOfExtent(INavigationHost navigationHost, string extentUrl)
+        public static async Task<NavigateToElementDetailResult?> OpenDetailOfExtent(INavigationHost navigationHost, string extentUrl)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var uri = WorkspaceNames.ExtentManagementExtentUri + "#" + WebUtility.UrlEncode(extentUrl);
-            return NavigatorForItems.NavigateToElementDetailView(
-                navigationHost,
-                workspaceLogic.FindItem(uri));
+            var foundItem = workspaceLogic.FindItem(uri);
+            if (foundItem == null)
+            {
+                MessageBox.Show($"No item found at {extentUrl}");
+                return null;
+            }
+            else
+            {
+                return await NavigatorForItems.NavigateToElementDetailView(
+                    navigationHost,
+                    foundItem);
+            }
         }
 
         /// <summary>
@@ -61,16 +73,16 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost">Host for navigation being to be used</param>
         /// <param name="extent">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public static Task<NavigateToElementDetailResult> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
+        public async static Task<NavigateToElementDetailResult?> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
         {
             if (extent is MofExtent mofExtent)
             {
-                return NavigatorForItems.NavigateToElementDetailView(
+                return await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
                     mofExtent.GetMetaObject());
             }
 
-            return NavigatorForItems.NavigateToElementDetailView(
+            return await NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
                 new ExtentPropertyObject(extent));
         }
@@ -87,13 +99,15 @@ namespace DatenMeister.WPF.Navigation
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var form =
-                viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm);
+                viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
+                ?? throw new InvalidOperationException(ManagementViewDefinitions.IdNewXmiDetailForm + " was not found");
+            
             var formDefinition = new FormDefinition(form);
             formDefinition.Validators.Add( new NewXmiExtentValidator(
                 GiveMe.Scope.WorkspaceLogic,
                 workspaceId));
             
-            var navigateToItemConfig = new NavigateToItemConfig
+            var navigateToItemConfig = new NavigateToItemConfig()
             {
                 Form = formDefinition
             };
@@ -109,15 +123,17 @@ namespace DatenMeister.WPF.Navigation
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailViewAsync(window, navigateToItemConfig);
+            var detailElement = result?.DetailElement ?? 
+                                throw new InvalidOperationException("detailElement == null");
             if (result.Result == NavigationResult.Saved)
             {
                 var configuration = new XmiStorageConfiguration
                 {
-                    extentUri = result.DetailElement.isSet("uri")
-                        ? result.DetailElement.get("uri").ToString()
+                    extentUri = detailElement.isSet("uri")
+                        ? detailElement.getOrDefault<string>("uri")
                         : string.Empty,
-                    filePath = result.DetailElement.isSet("filepath")
-                        ? result.DetailElement.get("filepath").ToString()
+                    filePath = detailElement.isSet("filepath")
+                        ? detailElement.getOrDefault<string>("filepath")
                         : string.Empty,
                     workspaceId = workspaceId
                 };

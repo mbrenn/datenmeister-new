@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Autofac;
@@ -49,7 +50,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
                 yield return new ExtentMenuButtonDefinition(
                     "Import from Clipboard",
-                    null,
+                    null!,
                     null,
                     NavigationCategories.Extents + ".Import");
             }
@@ -57,19 +58,27 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             // Imports the existing extent
             async void ImportExistingExtent(IExtent extent)
             {
+                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                    ?? throw new InvalidOperationException("navigationHost == null");
+                
                 var controlNavigation = await NavigatorForItems.NavigateToElementDetailViewAsync(
-                    viewExtensionTargetInformation.NavigationHost,
+                    navigationHost,
                     new NavigateToItemConfig
                     {
-                        DetailElement = InMemoryObject.CreateEmpty(),
                         Form = new FormDefinition(
                             GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
-                                .element("#ImportManagerFindExtent"))
+                                .element("#ImportManagerFindExtent")
+                            ?? throw new InvalidOperationException("#ImportManagerFindExtent not found"))
                     });
 
-                if (controlNavigation.Result == NavigationResult.Saved)
+                if (controlNavigation != null && controlNavigation.Result == NavigationResult.Saved)
                 {
-                    var selectedExtent = controlNavigation.DetailElement.getOrDefault<IElement>("selectedExtent");
+                    var detailElement = controlNavigation.DetailElement;
+
+                    if (detailElement == null)
+                        return;
+                    
+                    var selectedExtent = detailElement.getOrDefault<IElement>("selectedExtent");
                     if (selectedExtent == null)
                     {
                         MessageBox.Show("No extent selected");
@@ -87,6 +96,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     if (workspace == null)
                     {
                         MessageBox.Show("The extent is not connected to the workspace.");
+                        return;
                     }
 
                     var workspaceName = workspace.getOrDefault<string>(_ManagementProvider._Workspace.id);
@@ -96,7 +106,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
                     var itemCountBefore = sourceExtent.elements().Count();
-                    _plugin.PerformImport(sourceExtent, (itemInExtentList.RootItem as IExtent)?.elements());
+                    var elements = (itemInExtentList.RootItem as IExtent)?.elements()
+                                   ?? throw new InvalidOperationException("elements == null");
+                    _plugin.PerformImport(sourceExtent, elements);
                     var itemCountAfter = sourceExtent.elements().Count();
 
                     MessageBox.Show($"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
@@ -105,7 +117,10 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
             async void ImportNewExtent(IExtent extent)
             {
-                var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(viewExtensionTargetInformation.NavigationHost);
+                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                                     ?? throw new InvalidOperationException("navigationHost == null");
+                var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(
+                    navigationHost);
                 if (result != null)
                 {
                     // Now, we got the item extent...
@@ -114,7 +129,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     if (loadedExtent != null)
                     {
                         var itemCountBefore = loadedExtent.elements().Count();
-                        _plugin.PerformImport(loadedExtent, (itemInExtentList.RootItem as IExtent)?.elements());
+                        var elements = (itemInExtentList.RootItem as IExtent)?.elements()
+                                       ?? throw new InvalidOperationException("elements == null");
+                        _plugin.PerformImport(loadedExtent, elements);
                         var itemCountAfter = loadedExtent.elements().Count();
 
                         MessageBox.Show(

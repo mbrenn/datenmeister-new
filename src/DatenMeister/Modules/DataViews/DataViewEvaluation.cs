@@ -216,7 +216,7 @@ namespace DatenMeister.Modules.DataViews
                     continue;
                 }
 
-                var elementValue = element.get(property).ToString();
+                var elementValue = element.getOrDefault<string>(property);
 
                 bool isIn;
                 switch (comparisonMode)

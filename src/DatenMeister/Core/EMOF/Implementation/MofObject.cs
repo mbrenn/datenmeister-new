@@ -23,6 +23,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         private MofExtent? _extent;
 
         /// <summary>
+        /// Stores the referenced extent
+        /// </summary>
+        private MofExtent? _referencedExtent;
+
+        /// <summary>
         /// Gets the extent of the mof object
         /// </summary>
         public MofExtent? Extent
@@ -45,7 +50,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Stores the extent that is used to create the element.
         /// This extent is used for type lookup and other referencing things.
         /// </summary>
-        public MofExtent? ReferencedExtent { get; set; }
+        public MofExtent ReferencedExtent
+        {
+            get => _referencedExtent ?? throw new InvalidOperationException("Referenced Extent is not set");
+            set => _referencedExtent = value;
+        }
 
         /// <summary>
         /// Gets the extent of the mof object
@@ -62,7 +71,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
         /// <param name="referencedExtent">The extent being used to access the item</param>
-        public MofObject(IProviderObject providedObject, MofExtent? referencedExtent)
+        /// <param name="referenceElement"></param>
+        public MofObject(IProviderObject providedObject, MofExtent? referencedExtent, IElement? referenceElement = null)
         {
             ProviderObject = providedObject ?? throw new ArgumentNullException(nameof(providedObject));
 
@@ -72,7 +82,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                 throw new ArgumentNullException("providedObject.Provider");
             }
 
-            ReferencedExtent = referencedExtent;
+            ReferencedExtent = referencedExtent
+                               ?? ((referenceElement as MofObject)?.ReferencedExtent 
+                                   ?? throw new InvalidOperationException("Referenced extent could not be set"));
         }
 
         /// <inheritdoc />

@@ -15,12 +15,12 @@ namespace DatenMeister.WPF.Forms.Specific
     /// </summary>
     public partial class ImportExtentDlg : Window
     {
-        public IObject ImportCommand { get; set; }
+        public IObject? ImportCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the workspace id of the workspace that shall import the new extent
         /// </summary>
-        public string Workspace { get; set; }
+        public string? Workspace { get; set; }
 
         public ImportExtentDlg()
         {

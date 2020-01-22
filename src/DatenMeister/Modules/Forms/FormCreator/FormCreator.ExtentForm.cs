@@ -365,14 +365,21 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 {
                     // Now try to figure out the metaclass
                     var groupedMetaclass = group.Key;
-                    var form = _formLogic.GetListFormForExtentForPropertyInObject(
-                        element,
-                        extent,
-                        pair.propertyName,
-                        groupedMetaclass,
-                        FormDefinitionMode.Default);
-
-                    tabs.Add(form);
+                    if (_formLogic != null)
+                    {
+                        var form = _formLogic.GetListFormForExtentForPropertyInObject(
+                            element,
+                            extent,
+                            pair.propertyName,
+                            groupedMetaclass,
+                            FormDefinitionMode.Default);
+                        tabs.Add(form);
+                    }
+                    else
+                    {
+                        tabs.Add(
+                            CreateListFormForPropertyInObject(groupedMetaclass, pair.propertyName, creationMode));
+                    }
                 }
             }
 

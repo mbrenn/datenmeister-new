@@ -54,8 +54,10 @@ namespace DatenMeister.SourcecodeGenerator
             StartNamespace(ref stack);
             foreach (var element in extent.elements())
             {
-                var elementAsObject = element as IObject;
-                Walk(elementAsObject, stack);
+                if (element is IObject elementAsObject)
+                {
+                    Walk(elementAsObject, stack);
+                }
             }
 
             EndNamespace(ref stack);
@@ -262,12 +264,12 @@ namespace DatenMeister.SourcecodeGenerator
             /// </summary>
             /// <param name="ownerStack">The owning callstack. It may be null, if this is the root
             /// call stack</param>
-            public CallStack(CallStack ownerStack)
+            public CallStack(CallStack? ownerStack)
             {
                 Owner = ownerStack;
                 Indentation = ownerStack == null ? string.Empty : $"{ownerStack.NextIndentation}";
                 Level = ownerStack?.Level + 1 ?? 0;
-                Fullname = ownerStack?.Fullname;
+                Fullname = ownerStack?.Fullname ?? string.Empty;
             }
 
             /// <summary>
@@ -288,7 +290,7 @@ namespace DatenMeister.SourcecodeGenerator
             /// <summary>
             ///     Stores the owner stack
             /// </summary>
-            public CallStack Owner { get; set; }
+            public CallStack? Owner { get; set; }
 
             /// <summary>
             /// Gets the string for the next indentation

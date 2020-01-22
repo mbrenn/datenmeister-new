@@ -169,7 +169,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             => _navigator.uri(element);
 
         /// <inheritdoc />
-        public IElement element(string uri)
+        public IElement? element(string uri)
             => _navigator.element(uri);
 
         /// <inheritdoc />
@@ -338,7 +338,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IElement ResolveById(string id)
+        public IElement? ResolveById(string id)
         {
             var uri = contextURI() + "#" + id;
             return element(uri);

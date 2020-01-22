@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.VisualStyles;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
+using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
     public class TextboxField : IDetailField
     {
-        private string _name;
-        private TextBox _contentBlock;
-        private string _valueText;
+        private string _name = string.Empty;
+        private TextBox? _contentBlock;
+        private string _valueText = string.Empty;
 
         public UIElement CreateElement(IObject value,
             IElement fieldData,

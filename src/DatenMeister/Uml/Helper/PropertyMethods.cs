@@ -26,7 +26,7 @@ namespace DatenMeister.Uml.Helper
         /// <returns>true, if the given property is a collection</returns>
         public static bool IsCollection(IObject value)
         {
-            var multiplicity = value.getOrDefault<string>(_UML._CommonStructure._MultiplicityElement.upper);
+            string? multiplicity = value.getOrDefault<string>(_UML._CommonStructure._MultiplicityElement.upper);
 
             if (multiplicity == null)
             {

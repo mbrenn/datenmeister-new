@@ -8,11 +8,11 @@
         /// <summary>
         /// Gets or sets the id of the workspace
         /// </summary>
-        public string id { get; set; }
+        public string? id { get; set; }
 
         /// <summary>
         /// Gets or sets the annotation of the workspace
         /// </summary>
-        public string annotation { get; set; }
+        public string? annotation { get; set; }
     }
 }

@@ -18,13 +18,13 @@
         /// </summary>
         public bool isAttached { get; set; }
 
-        public string name { get; set; }
+        public string? name { get; set; }
 
-        public string title { get; set; }
+        public string? title { get; set; }
 
         public bool isEnumeration { get; set; }
 
-        public object defaultValue { get; set; }
+        public object? defaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the infgormation whether the regarded field shall be

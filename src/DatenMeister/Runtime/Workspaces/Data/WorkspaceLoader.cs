@@ -20,11 +20,8 @@ namespace DatenMeister.Runtime.Workspaces.Data
 
         public WorkspaceLoader(IWorkspaceLogic workspaceLogic, WorkspaceLoaderConfig config)
         {
-            Debug.Assert(workspaceLogic != null, "workspaceLogic != null");
-            Debug.Assert(config != null, "filepath != null");
-
-            WorkspaceLogic = workspaceLogic;
-            Config = config;
+            WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
+            Config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         /// <summary>

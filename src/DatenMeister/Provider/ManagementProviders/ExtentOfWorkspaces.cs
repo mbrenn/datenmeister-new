@@ -44,7 +44,7 @@ namespace DatenMeister.Provider.ManagementProviders
             throw new System.NotImplementedException();
         }
 
-        public IProviderObject Get(string? id)
+        public IProviderObject? Get(string id)
         {
             if (string.IsNullOrEmpty(id))
             {

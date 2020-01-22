@@ -13,6 +13,6 @@ namespace DatenMeister.WPF.Modules
         /// <param name="name">The name of the icon</param>
         /// <returns>The image behind the filename or null, if the icon is not available
         /// in the repository</returns>
-        ImageSource GetIcon(string name);
+        ImageSource? GetIcon(string name);
     }
 }

@@ -115,7 +115,12 @@ namespace DatenMeister.WPF.Windows
         {
             SelectedElement = LocateElementControl.SelectedElement;
             if (_asToolBox)
-                OnItemChosen(SelectedElement);
+            {
+                if (SelectedElement != null)
+                {
+                    OnItemChosen(SelectedElement);
+                }
+            }
             else
                 DialogResult = true;
 
@@ -155,7 +160,7 @@ namespace DatenMeister.WPF.Windows
             LocateElementControl.SetAsRoot(element);
         }
 
-        protected virtual void OnItemChosen(IObject? chosenElement)
+        protected virtual void OnItemChosen(IObject chosenElement)
         {
             ItemChosen?.Invoke(this, new ItemEventArgs(chosenElement));
         }

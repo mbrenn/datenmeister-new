@@ -10,9 +10,9 @@ namespace DatenMeister.WPF.Forms.Fields
 {
     public class FileSelectionField : IDetailField
     {
-        private string _name;
-        private TextBox _textField;
-        private string _valueText;
+        private string _name = string.Empty;
+        private TextBox? _textField;
+        private string _valueText = string.Empty;
 
         public UIElement CreateElement(
             IObject value,

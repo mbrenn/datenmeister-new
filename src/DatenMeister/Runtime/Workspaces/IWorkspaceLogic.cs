@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <param name="id">Id of the workspace</param>
         /// <returns>Found workspace or null, if not found</returns>
-        Workspace GetWorkspace(string id);
+        Workspace? GetWorkspace(string id);
 
         /// <summary>
         /// Gets the workspaces of the workspace logic
@@ -34,14 +34,14 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <param name="extent"></param>
         /// <returns></returns>
-        Workspace GetWorkspaceOfExtent(IExtent extent);
+        Workspace? GetWorkspaceOfExtent(IExtent extent);
 
         /// <summary>
         /// Gets the meta layer of a certain object
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        Workspace GetWorkspaceOfObject(IObject value);
+        Workspace? GetWorkspaceOfObject(IObject value);
 
         /// <summary>
         /// Gets all extents for a specific datalayer
@@ -50,7 +50,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>enumeration of extents within the datalayer</returns>
         IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer);
 
-        Workspace GetDefaultWorkspace();
+        Workspace? GetDefaultWorkspace();
 
         /// <summary>
         /// Adds an extent to the workspace

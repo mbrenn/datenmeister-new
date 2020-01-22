@@ -7,7 +7,7 @@ namespace DatenMeister.WPF.Modules
 {
     public class StandardRepository : IIconRepository
     {
-        public ImageSource GetIcon(string name)
+        public ImageSource? GetIcon(string name)
         {
             try
             {

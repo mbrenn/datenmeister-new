@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -13,6 +12,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Transformation;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
@@ -29,12 +29,12 @@ namespace DatenMeister.WPF.Forms.Fields
 {
     public class SubElementsField : IDetailField
     {
-        private DockPanel _panel;
-        private INavigationHost _navigationHost;
-        private IObject _element;
-        private IElement _fieldData;
-        private string _propertyName;
-        private ItemListViewControl _listViewControl;
+        private DockPanel? _panel;
+        private INavigationHost? _navigationHost;
+        private IObject? _element;
+        private IElement? _fieldData;
+        private string _propertyName = string.Empty;
+        private ItemListViewControl? _listViewControl;
 
         /// <summary>
         /// Creates the element
@@ -74,6 +74,15 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         private void CreatePanelElement()
         {
+            if (_panel == null)
+                throw new InvalidOperationException("_panel == null");
+            if (_element == null)
+                throw new InvalidOperationException("_element == null");
+            if (_navigationHost == null)
+                throw new InvalidOperationException("_navigationHost == null");
+            if (_fieldData == null)
+                throw new InvalidOperationException("_fieldData == null");
+            
             _panel.Children.Clear();
 
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
@@ -96,25 +105,27 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 // otherwise, we have to automatically create a form
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                form = viewLogic.GetListFormForElementsProperty(_element, _propertyName);
+                form = viewLogic.GetListFormForElementsProperty(_element, _propertyName) ??
+                       throw new InvalidOperationException("Form could not be created");
             }
 
-            var viewExtensions = 
-                isReadOnly ? 
-                new List<ViewExtension>() :  
-                new List<ViewExtension>
-            {
-                new RowItemButtonDefinition(
-                    "Edit",
-                    (guest, item) => NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
-                    ItemListViewControl.ButtonPosition.Before)/*,
+            var viewExtensions =
+                isReadOnly
+                    ? new List<ViewExtension>()
+                    : new List<ViewExtension>
+                    {
+                        new RowItemButtonDefinition(
+                            "Edit",
+                            async (guest, item) =>
+                                await NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
+                            ItemListViewControl.ButtonPosition.Before) /*,
                     
                     The DELETE button is not required anymore. It is in the stack
 
                 new RowItemButtonDefinition(
                     "Delete",
                     (guest, item) => { RemoveItem(valueOfElement, item); })*/
-            };
+                    };
 
             _listViewControl.SetContent(valueOfElement, form, viewExtensions);
 
@@ -136,7 +147,10 @@ namespace DatenMeister.WPF.Forms.Fields
         private static void RemoveItem(IReflectiveCollection reflectiveCollection, IObject item)
         {
             if (MessageBox.Show(
-                    "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
+                    $"Are you sure to delete the item: " +
+                    $"{NamedElementMethods.GetName(item)}?", 
+                    "Confirmation", 
+                    MessageBoxButton.YesNo) ==
                 MessageBoxResult.Yes)
             {
                 reflectiveCollection.remove(item);
@@ -148,6 +162,11 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         private void CreateManipulationButtons(IReflectiveCollection collection)
         {
+            if (_listViewControl == null)
+                throw new InvalidOperationException("_listViewControl == null");
+            if (_panel == null)
+                throw new InvalidOperationException("_panel == null");
+            
             var stackPanel = new StackPanel {Orientation = Orientation.Vertical};
 
             if (collection is IReflectiveSequence reflectiveSequence)
@@ -208,10 +227,10 @@ namespace DatenMeister.WPF.Forms.Fields
             stackPanel.Children.Add(buttonNew);
             
             DockPanel.SetDock(stackPanel, Dock.Right);
-            stackPanel.VerticalAlignment = VerticalAlignment.Bottom;
+            stackPanel.VerticalAlignment = VerticalAlignment.Top;
             _panel.Children.Add(stackPanel);
 
-            static void SetStyle(Button button)
+            static void SetStyle(Control button)
             {
                 button.Padding = new Thickness(10,3, 10, 3);
             }
@@ -222,6 +241,8 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         private void CreateNewItemButton()
         {
+           _ = _panel ?? throw new InvalidOperationException("_panel == null");
+            
             var createItemButton = new Button
                 {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
             
@@ -238,6 +259,13 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <param name="createItemButton"></param>
         private void SetNewButton(Button createItemButton)
         {
+            var navigationHost = _navigationHost ??
+                throw new InvalidOperationException("_navigationHost == null");
+            var panel = _panel ??
+                        throw new InvalidOperationException("_panel == null");
+            var element = _element ??
+                        throw new InvalidOperationException("_element == null");
+            
             // Create the button for the items
             var listItems = new List<Tuple<string, Action>>
             {
@@ -245,24 +273,28 @@ namespace DatenMeister.WPF.Forms.Fields
                     "Select Type",
                     () =>
                     {
+                        var referencedExtent = (element as MofObject)?.ReferencedExtent;
+                        if (referencedExtent == null)
+                            throw new InvalidOperationException("referencedExtent == null");
+
                         var result = NavigatorForItems.NavigateToCreateNewItem(
-                            _navigationHost,
-                            (_element as MofObject)?.ReferencedExtent,
+                            navigationHost,
+                            referencedExtent,
                             null);
 
                         result.NewItemCreated += (a, b) =>
                         {
-                            var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 
+                            var propertyCollection = element.getOrDefault<IReflectiveCollection>(_propertyName); 
                             if (propertyCollection != null)
                             {
                                 propertyCollection.add(b.NewItem);
                             }
                             else
                             {
-                                _element.set(_propertyName, new List<object> {b.NewItem});
+                                element.set(_propertyName, new List<object> {b.NewItem});
                             }
 
-                            _panel.Children.Clear();
+                            panel.Children.Clear();
                             CreatePanelElement();
                         };
                     })
@@ -311,16 +343,22 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <param name="type">Type which shall be added</param>
         private Tuple<string, Action> CreateButtonForType(IElement type)
         {
+            if (_element == null) throw new InvalidOperationException("_element == null");
+            if (_panel == null) throw new InvalidOperationException("_panel == null");
+            if (_navigationHost == null) throw new InvalidOperationException("_navigationHost == null");
+            
             var typeName = type.get(_UML._CommonStructure._NamedElement.name);
 
             var result = new Tuple<string, Action>(
                 $"New {typeName}",
                 () =>
                 {
+                    var referencedExtent = (_element as MofObject)?.ReferencedExtent
+                                           ?? throw new InvalidOperationException("referencedExtent == null");
+
                     var elements =
                         NavigatorForItems.NavigateToCreateNewItem(
-                            _navigationHost,
-                            (_element as MofObject)?.ReferencedExtent, type);
+                            _navigationHost, referencedExtent, type);
                     elements.NewItemCreated += (x, y) =>
                     {
                         var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 

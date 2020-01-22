@@ -52,6 +52,9 @@ namespace DatenMeister.WPF.Forms.Base
         protected readonly ObservableCollection<ItemExplorerTab> Tabs = new ObservableCollection<ItemExplorerTab>();
 
         private EventHandle? _eventHandle;
+        private IExtent? _extent;
+        private INavigationHost? _navigationHost;
+        private IObject? _rootItem;
 
         public ItemExplorerControl()
         {
@@ -59,16 +62,35 @@ namespace DatenMeister.WPF.Forms.Base
             ItemTabControl.ItemsSource = Tabs;
         }
 
-        public INavigationHost? NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         /// <summary>
         /// Gets the extent being connected
         /// </summary>
-        public IExtent? Extent { get; protected set; }
+        public IExtent Extent
+        {
+            get => _extent ?? throw new InvalidOperationException("_extent == null");
+            protected set => _extent = value;
+        }
 
-        public IReflectiveCollection? Collection => (RootItem as IExtent)?.elements();
+        public IReflectiveCollection Collection
+        {
+            get
+            {
+                if (RootItem is IExtent extent)
+                {
+                    return extent.elements();
+                }
 
-        public IObject? Item => SelectedPackage ?? Extent;
+                return GetPropertiesAsReflection(RootItem, null);
+            }
+        }
+
+        public IObject Item => SelectedPackage ?? Extent;
 
         /// <summary>
         ///     Gets the definition of the current form
@@ -79,8 +101,15 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the root item for the explorer view. The properties of the root item are
         /// walked through to get the child items
         /// </summary>
-        public IObject? RootItem { get; protected set; }
+        public IObject RootItem
+        {
+            get => _rootItem ?? throw new InvalidOperationException("RootItem == null");
+            protected set => _rootItem = value;
+        }
 
+        /// <summary>
+        /// Gets the currently selected item in the tree view. May be null, if no item is selected
+        /// </summary>
         public IObject? SelectedItem { get; protected set; }
 
         /// <summary>
@@ -307,7 +336,8 @@ namespace DatenMeister.WPF.Forms.Base
             IReflectiveCollection? container = null)
         {
             EffectiveForm = formDefinition.Element;
-            var tabs = formDefinition.Element.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+
+            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -365,7 +395,7 @@ namespace DatenMeister.WPF.Forms.Base
             // Gets the default view for the given tab
             var name = tabForm.getOrDefault<string>(_FormAndFields._Form.title) ??
                        tabForm.getOrDefault<string>(_FormAndFields._Form.name);
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
             var usedViewExtensions = viewExtensions.ToList();
 
             UserControl? createdUserControl = null;
@@ -378,7 +408,8 @@ namespace DatenMeister.WPF.Forms.Base
                 // Creates the layoutcontrol for the given view
                 var control = new ItemListViewControl
                 {
-                    NavigationHost = NavigationHost
+                    NavigationHost = NavigationHost,
+                    EffectiveForm = tabForm
                 };
 
                 usedViewExtensions.AddRange(control.GetViewExtensions());
@@ -387,7 +418,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var defaultTypesForNewItems =
                     tabForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements)
                         ?.ToList()
-                    ?? new List<object>();
+                    ?? new List<object?>();
 
                 // Allows the deletion of an item
                 if (tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) != true)
@@ -399,8 +430,10 @@ namespace DatenMeister.WPF.Forms.Base
                             {
                                 if (Extent != null)
                                 {
+                                    var name = NamedElementMethods.GetName(item);
                                     if (MessageBox.Show(
-                                            "Are you sure to delete the item?", "Confirmation",
+                                            $"Are you sure to delete the item '{name}'?", 
+                                            "Confirmation",
                                             MessageBoxButton.YesNo) ==
                                         MessageBoxResult.Yes)
                                     {
@@ -448,7 +481,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                     if (!string.IsNullOrEmpty(propertyName))
                     {
-                        var extentData = new ViewExtensionForItemPropertiesInformation()
+                        var extentData = new ViewExtensionForItemPropertiesInformation
                         {
                             NavigationGuest = control,
                             NavigationHost = NavigationHost,
@@ -522,7 +555,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             return tabControl;
         }
-
+        
         /// <summary>
         /// Creates the menu and the buttons for the default types
         /// </summary>
@@ -534,7 +567,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// the item will be added. Null if item will be added to the given extent</param>
         /// <returns>List of menu items being used as context menu</returns>
         private void CreateMenuAndButtonsForDefaultTypes(
-            IEnumerable<object> defaultTypesForNewItems,
+            IEnumerable<object?> defaultTypesForNewItems,
             List<ViewExtension> usedViewExtensions,
             string? parentProperty)
         {
@@ -603,10 +636,10 @@ namespace DatenMeister.WPF.Forms.Base
                 else
                 {
                     if (innerParentProperty == null)
-                    {
                         throw new InvalidOperationException("parentProperty == null");
-                    }
-                    
+                    if (SelectedPackage == null)
+                        throw new InvalidOperationException("SelectedPackage == null");
+
                     NavigatorForItems.NavigateToNewItemForItem(
                         NavigationHost,
                         SelectedPackage,
@@ -641,7 +674,7 @@ namespace DatenMeister.WPF.Forms.Base
             return control;
         }
 
-        private IReflectiveCollection GetPropertiesAsReflection(IObject value, string propertyName)
+        private IReflectiveCollection GetPropertiesAsReflection(IObject value, string? propertyName)
         {
             if (string.IsNullOrEmpty(propertyName))
             {
@@ -709,11 +742,15 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Opens the selected element
         /// </summary>
-        /// <param name="selectedElement">Selected element</param>
-        private void NavigateToElement(IObject selectedElement)
+        /// <param name="selectedObject">Selected element</param>
+        private void NavigateToElement(IObject selectedObject)
         {
-            NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement as IElement);
+            if (selectedObject is IElement selectedElement)
+                _ = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement);
+            else
+                throw new InvalidOperationException("Element is IElement");
         }
+
 
         private void ItemTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

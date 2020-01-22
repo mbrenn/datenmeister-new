@@ -53,7 +53,7 @@ namespace DatenMeister.Runtime.Proxies
             Collection.clear();
         }
 
-        public virtual IEnumerator<object> GetEnumerator()
+        public virtual IEnumerator<object?> GetEnumerator()
         {
             foreach (var obj in Collection)
             {

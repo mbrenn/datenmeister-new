@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -35,7 +36,7 @@ namespace DatenMeister.Runtime.Extents
         /// <param name="collection">The reflectivecollection into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
         public CreateableTypeResult GetCreatableTypes(IReflectiveCollection collection) =>
-            GetCreatableTypes(((IHasExtent) collection).Extent);
+            GetCreatableTypes(((IHasExtent) collection)?.Extent ?? throw new InvalidOperationException("No extent"));
 
         /// <summary>
         /// Gets an enumeration of creatable types for a given extent.
@@ -44,7 +45,7 @@ namespace DatenMeister.Runtime.Extents
         /// <param name="element">The reflectivecollection into which a new instance shall be created</param>
         /// <returns>Enumeration of types</returns>
         public CreateableTypeResult GetCreatableTypes(IElement element) =>
-            GetCreatableTypes(((IHasExtent) element).Extent);
+            GetCreatableTypes(((IHasExtent) element)?.Extent ?? throw new InvalidOperationException("No extent"));
 
         /// <summary>
         /// Gets an enumeration of creatable types for a given extent.
@@ -83,8 +84,8 @@ namespace DatenMeister.Runtime.Extents
 
         public class CreateableTypeResult
         {
-            public Workspace MetaLayer { get; set; }
-            public IList<IElement> CreatableTypes { get; set; }
+            public Workspace? MetaLayer { get; set; }
+            public IList<IElement>? CreatableTypes { get; set; }
         }
     }
 }

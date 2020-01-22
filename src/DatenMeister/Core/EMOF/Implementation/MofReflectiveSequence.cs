@@ -48,7 +48,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="noReferences">true, if UriReferences shall be resolved</param>
         /// <returns>Enumeration of collection</returns>
-        internal IEnumerable<object> Enumerate(bool noReferences = false)
+        internal IEnumerable<object?> Enumerate(bool noReferences = false)
         {
             var result = GetPropertyAsEnumerable();
             foreach (var item in result)
@@ -66,15 +66,15 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (MofObject.ProviderObject.IsPropertySet(PropertyName))
             {
                 var value = MofObject.ProviderObject.GetProperty(PropertyName);
-                
-                if (value is IEnumerable<object> asEnumerable)
+
+                return value switch
                 {
-                    return asEnumerable;
-                }
-                else
-                {
-                    return new[] {value};
-                }
+                    IEnumerable<object> asEnumerable => asEnumerable,
+                    
+                    null => new object[] { },
+                    
+                    _ => new[] {value}
+                };
             }
 
             return Array.Empty<object>();
@@ -84,13 +84,18 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool add(object value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            var result = MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded);
+            if (valueToBeAdded != null)
+            {
+                var result = MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded);
 
-            MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
+                MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
 
-            UpdateContent();
+                UpdateContent();
 
-            return result;
+                return result;
+            }
+
+            return false;
         }
 
         /// <inheritdoc />

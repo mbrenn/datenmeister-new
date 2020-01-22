@@ -35,11 +35,10 @@ namespace DatenMeister.Provider.XMI
         /// Initializes a new instance of the
         /// </summary>
         /// <param name="uriResolver"></param>
-        public SimpleLoader(IUriResolver uriResolver = null)
+        public SimpleLoader(IUriResolver? uriResolver = null)
         {
             _uriResolver = uriResolver;
         }
-
 
         /// <summary>
         /// Loads the xmi from the embedded resources

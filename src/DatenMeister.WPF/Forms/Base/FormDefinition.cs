@@ -22,12 +22,12 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the name
         /// </summary>
-        public string Name { get; }
+        public string Name { get; } = string.Empty;
 
         /// <summary>
         /// Gets the corresponding element
         /// </summary>
-        public IObject Element { get; }
+        public IObject? Element { get; }
         
         /// <summary>
         /// Stores the list of validators
@@ -40,7 +40,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="name"></param>
         /// <param name="element"></param>
         /// <param name="mode">Stores the type as given</param>
-        public FormDefinition(string name, IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
+        public FormDefinition(string name, IObject? element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
             if (element == null && mode == FormDefinitionMode.Specific)
             {
@@ -55,15 +55,20 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
+        public FormDefinition(FormDefinitionMode mode) : this (string.Empty, null, mode)
+        {
+        }
+
+
         public FormDefinition(IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
             if (element == null && mode == FormDefinitionMode.Specific)
             {
                 Mode = FormDefinitionMode.Default;
             }
-            else
+            else if (element != null)
             {
-                Name = element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                Name = element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) ?? string.Empty;
                 Element = element;
                 Mode = mode;
             }
@@ -78,12 +83,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets or sets the function that will receive a list of view extensions dependent on the form for the tab being used
         /// This function is called by the ItemExplorerControl to figure the valid extensions
         /// </summary>
-        public Func<IElement, IEnumerable<ViewExtension>> TabViewExtensionsFunction { get; set; }
-
-        public FormDefinition(FormDefinitionMode mode) : this (null, null, mode)
-        {
-        }
-
+        public Func<IElement, IEnumerable<ViewExtension>>? TabViewExtensionsFunction { get; set; }
+        
         /// <summary>
         /// Converts the view definition to a string
         /// </summary>

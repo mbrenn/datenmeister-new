@@ -7,7 +7,7 @@
     {
         IElement package { get; }
 
-        IElement create(IElement metaClass);
+        IElement create(IElement? metaClass);
 
         IObject createFromString(IElement dataType, string value);
 

@@ -12,6 +12,7 @@ using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -30,7 +31,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Windows to be used</param>
         /// <returns>The navigation to control the view</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToWorkspaces(INavigationHost window)
+        public static Task<NavigateToElementDetailResult?>? NavigateToWorkspaces(INavigationHost window)
         {
             return window.NavigateTo(
                 () => new WorkspaceList(),
@@ -48,7 +49,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="navigationHost"></param>
         /// <returns></returns>
-        public static async Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
+        public static async Task<NavigateToElementDetailResult?>? CreateNewWorkspace(INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewExtent = viewLogic.GetInternalFormExtent();
@@ -59,21 +60,24 @@ namespace DatenMeister.WPF.Navigation
             if (formElement == null)
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
-                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_ManagementProvider>();
                 formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailViewAsync(
                 navigationHost,
-                new NavigateToItemConfig
+                new NavigateToItemConfig()
                 {
                     Form = new FormDefinition(formElement)
                 });
 
-            if (result.Result == NavigationResult.Saved)
+            if (result != null && result.Result == NavigationResult.Saved)
             {
-                var workspaceId = result.DetailElement.get("id").ToString();
-                var annotation = result.DetailElement.get("annotation").ToString();
+                var detailElement =
+                    result.DetailElement ?? throw new InvalidOperationException("DetailElement == null");
+                
+                var workspaceId = detailElement.getOrDefault<string>("id");
+                var annotation = detailElement.getOrDefault<string>("annotation");
 
                 var workspace = new Workspace(workspaceId, annotation);
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
@@ -114,13 +118,12 @@ namespace DatenMeister.WPF.Navigation
                 foreach (var extent in workspaceLogic.GetExtentsForWorkspace(workspace))
                 {
                     var loadConfiguration = extentManager.GetLoadConfigurationFor(extent) as ExtentFileLoaderConfig;
-                    if (loadConfiguration == null)
+                    var extentStoragePath = loadConfiguration?.filePath;
+                    
+                    if (extentStoragePath != null)
                     {
-                        continue;
+                        files.Add(extentStoragePath);
                     }
-
-                    var extentStoragePath = loadConfiguration.filePath;
-                    files.Add(extentStoragePath);
                 }
             }
 
@@ -139,7 +142,7 @@ namespace DatenMeister.WPF.Navigation
             }
 
             GiveMe.Scope.UnuseDatenMeister();
-            GiveMe.Scope = null;
+            GiveMe.Scope = null!;
 
 
             foreach (var file in files)

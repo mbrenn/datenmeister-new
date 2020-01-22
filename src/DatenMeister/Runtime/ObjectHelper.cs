@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime
         /// <param name="property">Property to be queried</param>
         /// <param name="noReferences">Flag, if no recursion shall occur</param>
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
-        private static object GetAsSingle(this IObject value, string property, bool noReferences = false)
+        private static object? GetAsSingle(this IObject value, string property, bool noReferences = false)
         {
             object propertyValue;
             if (noReferences && value is MofObject valueAsMofObject)
@@ -267,7 +267,9 @@ namespace DatenMeister.Runtime
             this IObject value,
             IEnumerable<string> properties)
         {
-            var result = new Dictionary<object, object>();
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            var result = new Dictionary<object, object?>();
 
             foreach (var property in properties
                 .Where(value.isSet))
@@ -455,7 +457,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="element">Element whose uri is queried</param>
         /// <returns>Uri of the element</returns>
-        public static string GetUri(this IElement element)
+        public static string? GetUri(this IElement element)
         {
             // First, verifies if the element has direct access to the uri of the element
             if (element is IKnowsUri asKnowsUri)

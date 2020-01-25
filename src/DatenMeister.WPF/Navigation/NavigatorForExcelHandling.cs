@@ -33,24 +33,28 @@ namespace DatenMeister.WPF.Navigation
                 var dlg = new ExcelImportDefinitionDialog();
 
                 await dlg.LoadFile(fileDialog.FileName);
+                var excelSettings =
+                    dlg.ExcelSettings ?? throw new InvalidOperationException("dlg.ExcelSettings == null");
 
-                dlg.ExcelSettings.workspaceId = workspaceId;
-                dlg.ExcelSettings.extentUri = "datenmeister:///excelimport_" + newGuid;
-                dlg.ExcelSettings.extentPath = newGuid + ".xmi";
+                excelSettings.workspaceId = workspaceId;
+                excelSettings.extentUri = "datenmeister:///excelimport_" + newGuid;
+                excelSettings.extentPath = newGuid + ".xmi";
 
                 dlg.Owner = host as Window;
                 if (dlg.ShowDialog() == true)
                 {
+                    var configurationObject = dlg.GetConfigurationObject();
+                    if (configurationObject == null) throw new InvalidOperationException("No configuration object set");
                     switch (dlg.ImportType)
                     {
                         case ExcelImportType.AsCopy:
                             var importSettings =
-                                DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(dlg.GetConfigurationObject());
+                                DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(configurationObject);
                             GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(importSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                         case ExcelImportType.AsReference:
                             var referenceSettings =
-                                DotNetConverter.ConvertToDotNetObject<ExcelReferenceSettings>(dlg.GetConfigurationObject());
+                                DotNetConverter.ConvertToDotNetObject<ExcelReferenceSettings>(configurationObject);
                             GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(referenceSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                     }

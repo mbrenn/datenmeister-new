@@ -117,7 +117,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     var copiedForm = copier.Copy(effectiveForm);
                     target.elements().add(copiedForm);
 
-                    NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
+                    _ = NavigatorForItems.NavigateToElementDetailView(itemExplorerControl.NavigationHost,
                         copiedForm);
                 },
                 "",
@@ -287,6 +287,9 @@ namespace DatenMeister.WPF.Modules.FormManager
             ItemExplorerControl itemExplorerControl, 
             CreateFormByClassifierType type)
         {
+            var navigationHost = itemExplorerControl.NavigationHost ??
+                                 throw new InvalidOperationException("navigationHost == null");
+            
             if (NavigatorForDialogs.Locate(
                 itemExplorerControl.NavigationHost,
                 WorkspaceNames.NameTypes,
@@ -311,8 +314,8 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 userViewExtent.elements().add(createdForm);
 
-                NavigatorForItems.NavigateToElementDetailView(
-                    itemExplorerControl.NavigationHost,
+                _ = NavigatorForItems.NavigateToElementDetailView(
+                    navigationHost,
                     createdForm);
             }
         }
@@ -327,7 +330,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             ViewExtensionTargetInformation viewExtensionTargetInformation,
             DetailFormWindow detailWindow)
         {
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
             
             yield return new ApplicationMenuButtonDefinition(
                 "Change Form Definition",
@@ -371,12 +374,10 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void ChangeFormDefinition()
             {
-                var form = NavigatorForDialogs.Locate(
+                if (!(NavigatorForDialogs.Locate(
                     detailWindow,
                     WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserFormExtent) as IElement;
-
-                if (form == null)
+                    WorkspaceNames.UriUserFormExtent) is IElement form))
                 {
                     detailWindow.ClearOverridingForm();
                 }
@@ -457,8 +458,11 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void CreateFieldByProperty()
             {
+                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                                     ?? throw new InvalidOperationException("navigationHost == null");
+                
                 if (NavigatorForDialogs.Locate(
-                    viewExtensionTargetInformation.NavigationHost,
+                    navigationHost,
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
                 {
@@ -476,12 +480,15 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// </summary>
         /// <param name="viewExtensionTargetInformation"></param>
         /// <returns></returns>
-        private static ViewExtension GetForApplicationWindow(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        private static ViewExtension GetForApplicationWindow(
+            ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
+            var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+                                 throw new InvalidOperationException("navigationHost == null");
+            
             var result = new ApplicationMenuButtonDefinition(
-                "Goto User Forms",
-                () => NavigatorForItems.NavigateToItemsInExtent(
-                    viewExtensionTargetInformation.NavigationHost,
+                "Goto User Forms", async () => await NavigatorForItems.NavigateToItemsInExtent(
+                    navigationHost,
                     WorkspaceNames.NameManagement,
                     WorkspaceNames.UriUserFormExtent),
                 string.Empty,

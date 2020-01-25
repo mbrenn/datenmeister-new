@@ -30,7 +30,8 @@ namespace DatenMeister.Modules.DefaultTypes
         public DefaultClassifierHints(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
-            _uml = workspaceLogic.GetUmlWorkspace().Get<_UML>();
+            _uml = workspaceLogic.GetUmlWorkspace().Get<_UML>() ??
+                   throw new InvalidOperationException("Uml Workspace does not have uml");
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.XMI.UmlBootstrap
 {
@@ -120,7 +121,7 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
                     var innerValueAsObject = innerValue as IObject;
                     if (innerValueAsObject?.isSet(attributeXmi) == true)
                     {
-                        var type = innerValueAsObject.get(attributeXmi).ToString();
+                        var type = innerValueAsObject.getOrDefault<string>(attributeXmi);
                         if (typeNamesList.Count(x => type == x) > 0)
                         {
                             yield return innerValueAsObject;

@@ -28,25 +28,25 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="element">Element being queried</param>
         /// <param name="byFollowingProperties">The properties that shall be followed</param>
         /// <returns>An enumeration of all object and its descendents</returns>
-        public static IEnumerable<IObject> GetDescendents(IObject element, IEnumerable<string> byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(IObject element, IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
             return inner.GetDescendentsInternal(element, byFollowingProperties?.ToList());
         }
 
-        public static IEnumerable<IObject> GetDescendents(IExtent extent, IEnumerable<string> byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(IExtent extent, IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
             return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties?.ToList());
         }
 
-        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration, IEnumerable<string> byFollowingProperties = null)
+        public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration, IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
             return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList());
         }
 
-        private IEnumerable<IObject> GetDescendentsInternal(IObject element, ICollection<string> byFollowingProperties)
+        private IEnumerable<IObject> GetDescendentsInternal(IObject element, ICollection<string>? byFollowingProperties)
         {
             if (_alreadyVisited.Contains(element))
             {
@@ -89,7 +89,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                     // Value is a real enumeration. Unfortunately strings are also
                     // enumeration, but we would like to skip them. Their content
                     // would be skipped either.
-                    var valueAsEnumerable = value as IEnumerable;
+                    var valueAsEnumerable = (IEnumerable) value;
                     foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties))
                     {
                         yield return innerValue;

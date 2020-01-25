@@ -87,10 +87,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (value is MofObject valueAsObject)
             {
-                var result = _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
-
-                UpdateContent();
-                return result;
+                var id = valueAsObject.ProviderObject.Id;
+                if (id != null)
+                {
+                    var result = _extent.Provider.DeleteElement(id);
+                    UpdateContent();
+                    return result;
+                }
+                
+                return false;
+                
             }
 
             throw new NotImplementedException("Only the deletion of values are supported");

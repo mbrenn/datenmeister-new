@@ -6,9 +6,9 @@ namespace DatenMeister.SourcecodeGenerator
     public class SourceGeneratorOptions
     {
         public string ExtentUrl { get; set; } = "datenmeister:///";
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public string Namespace { get; set; }
-        public IEnumerable<Type> Types { get; set; }
+        public string? Name { get; set; }
+        public string? Path { get; set; }
+        public string? Namespace { get; set; }
+        public IEnumerable<Type>? Types { get; set; }
     }
 }

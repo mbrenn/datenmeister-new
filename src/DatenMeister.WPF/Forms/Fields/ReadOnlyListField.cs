@@ -65,8 +65,8 @@ namespace DatenMeister.WPF.Forms.Fields
                         Grid.SetRow(button, inner);
                         Grid.SetColumn(button, 1);
 
-                        button.Click += (sender, args) =>
-                            NavigatorForItems.NavigateToElementDetailView(
+                        button.Click += async (sender, args) =>
+                            await NavigatorForItems.NavigateToElementDetailView(
                                 detailForm.NavigationHost,
                                 asIElement);
 

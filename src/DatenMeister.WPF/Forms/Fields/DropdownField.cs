@@ -16,11 +16,11 @@ namespace DatenMeister.WPF.Forms.Fields
     /// </summary>
     public class DropdownField : IDetailField
     {
-        private ComboBox _comboBox;
+        private ComboBox? _comboBox;
 
-        private string _name;
+        private string _name = string.Empty;
 
-        private object _propertyValue;
+        private object? _propertyValue;
 
         public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm,
             FieldParameter fieldFlags)
@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Forms.Fields
 
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
             var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DropDownFieldData.isReadOnly);
-            
+
             _propertyValue = null;
             if (value.isSet(_name))
             {
@@ -45,7 +45,8 @@ namespace DatenMeister.WPF.Forms.Fields
                 }
             }
 
-            var dropDownValues = fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._DropDownFieldData.values);
+            var dropDownValues =
+                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._DropDownFieldData.values);
             if (dropDownValues == null)
             {
                 return new TextBlock
@@ -56,10 +57,12 @@ namespace DatenMeister.WPF.Forms.Fields
 
             _comboBox = new ComboBox();
             var items = new List<ComboBoxItem>();
-            ComboBoxItem selectedBoxItem = null;
+            ComboBoxItem? selectedBoxItem = null;
 
-            foreach (var itemPair in dropDownValues.Select(x=> x as IElement))
+            foreach (var itemPair in dropDownValues.Select(x => x as IElement))
             {
+                if (itemPair == null) continue;
+                
                 var nameOfItem = itemPair.getOrDefault<string>(_FormAndFields._ValuePair.name);
                 var valueOfItem = itemPair.getOrDefault<object>(_FormAndFields._ValuePair.value);
 

@@ -42,7 +42,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="valueAsObject">Element to be provided</param>
         /// <param name="index">Index position where the element shall be stored, if -1, the element will be stored at end of the extent</param>
-        void AddElement(IProviderObject valueAsObject, int index = -1);
+        void AddElement(IProviderObject? valueAsObject, int index = -1);
 
         /// <summary>
         /// Deletes a single element with the given id from database
@@ -57,9 +57,9 @@ namespace DatenMeister.Provider
         void DeleteAllElements();
 
         /// <summary>
-        /// Gets the object with the given id
+        /// Gets the object with the given id.
         /// </summary>
-        /// <param name="id">Id of the object being queried</param>
+        /// <param name="id">Id of the object being queried. Null, if the root element is queried</param>
         /// <returns>The found object or null, if not found</returns>
         IProviderObject? Get(string? id);
 

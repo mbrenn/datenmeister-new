@@ -81,7 +81,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public IEnumerable<ITag> properties => _properties;
 
-        public Workspace(string id, string annotation = null)
+        public Workspace(string id, string annotation = "")
         {
             this.id = id ?? throw new ArgumentNullException(nameof(id));
             this.annotation = annotation;
@@ -187,7 +187,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public TFilledType Get<TFilledType>()
+        public TFilledType? Get<TFilledType>()
             where TFilledType : class, new()
         {
             lock (_syncObject)
@@ -211,7 +211,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Class to be looked after</typeparam>
         /// <param name="function"></param>
         /// <returns>Found function</returns>
-        public IElement Get<TFilledType>(Func<TFilledType, IElement> function)
+        public IElement? Get<TFilledType>(Func<TFilledType, IElement> function)
             where TFilledType : class, new()
         {
             var result = Get<TFilledType>();
@@ -230,7 +230,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Class to be looked after</typeparam>
         /// <param name="function"></param>
         /// <returns>Found function</returns>
-        public IElement Create<TFilledType>(Func<TFilledType, IElement> function)
+        public IElement? Create<TFilledType>(Func<TFilledType, IElement> function)
             where TFilledType : class, new()
         {
             var result = Get<TFilledType>();
@@ -303,9 +303,9 @@ namespace DatenMeister.Runtime.Workspaces
             yield return "id";
         }
 
-        public bool @equals(object other) => throw new NotImplementedException();
+        public bool @equals(object? other) => throw new NotImplementedException();
 
-        public object get(string property)
+        public object? get(string property)
         {
             if (property == "id")
             {
@@ -315,7 +315,7 @@ namespace DatenMeister.Runtime.Workspaces
             throw new InvalidOperationException($"Given property {id} is not set.");
         }
 
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             throw new NotImplementedException();
         }
@@ -329,7 +329,10 @@ namespace DatenMeister.Runtime.Workspaces
 
         public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing)
         {
-            var result = _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false)).FirstOrDefault(found => found != null);
+            var result = _extent
+                .Select(theExtent =>
+                    (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
+                .FirstOrDefault(found => found != null);
             if (result == null && traceFailing)
             {
                 Logger.Trace($"URI not resolved: {uri}");

@@ -20,7 +20,7 @@ namespace DatenMeister.Modules.UserInteractions
             Name = name;
         }
 
-        public void Execute(IObject element, IObject parameters)
+        public void Execute(IObject element, IObject? parameters)
         {
             _action();
         }

@@ -64,7 +64,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <summary>
         /// Gets the id of the XmlElement
         /// </summary>
-        public string Id
+        public string? Id
         {
             get => XmiId.Get(XmlNode);
             set => XmiId.Set(XmlNode, value);
@@ -191,7 +191,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public string MetaclassUri
+        public string? MetaclassUri
         {
             get => XmlNode.Attribute(TypeAttribute)?.Value;
             set => XmlNode.SetAttributeValue(TypeAttribute, value);
@@ -306,7 +306,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             var normalizePropertyName = NormalizePropertyName(property);
 

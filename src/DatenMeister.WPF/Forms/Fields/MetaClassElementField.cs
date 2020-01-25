@@ -12,7 +12,7 @@ namespace DatenMeister.WPF.Forms.Fields
 {
     public class MetaClassElementField : IDetailField
     {
-        public UIElement CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
+        public UIElement? CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
         {
             detailForm.CreateSeparator();
 
@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 textField.TextDecorations = TextDecorations.Underline;
                 textField.MouseDown += (sender, args) =>
                 {
-                    NavigatorForItems.NavigateToElementDetailView(
+                    _ = NavigatorForItems.NavigateToElementDetailView(
                         detailForm.NavigationHost,
                         metaClass);
                 };

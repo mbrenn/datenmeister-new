@@ -88,6 +88,20 @@ namespace DatenMeister.Runtime.Workspaces
             return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
         }
 
+        public static TFilledType Require<TFilledType>(
+            this IWorkspace logic)
+        
+            where TFilledType : class, new()
+        {
+            var found = logic.Get<TFilledType>();
+            if (found == null)
+            {
+                throw new InvalidOperationException($"The filled Type {typeof(TFilledType)} was not found");
+            }
+
+            return found;
+        }
+
         /// <summary>
         /// Finds an extent by the given uri
         /// </summary>
@@ -264,7 +278,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="uri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IElement FindItem(
+        public static IElement? FindItem(
             this IWorkspaceLogic collection,
             string uri)
         {
@@ -277,9 +291,9 @@ namespace DatenMeister.Runtime.Workspaces
         public static void FindItem(
             this IWorkspaceLogic collection,
             WorkspaceExtentAndItemReference model,
-            out Workspace foundWorkspace,
-            out IUriExtent foundExtent,
-            out IElement foundItem)
+            out Workspace? foundWorkspace,
+            out IUriExtent? foundExtent,
+            out IElement? foundItem)
         {
             RetrieveWorkspaceAndExtent(collection, model, out foundWorkspace, out foundExtent);
 

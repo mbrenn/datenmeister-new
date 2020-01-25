@@ -52,8 +52,8 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
             return
                 new ItemButtonDefinition(
                     "New Package",
-                    clickedItem =>
-                    {
+                    clickedItem => 
+                     {
                         if (clickedItem == null) throw new InvalidOperationException("ClickedItem == null");
                         if (!(clickedItem is IHasExtent asExtent))
                             throw new InvalidOperationException("Not of type asExtent");
@@ -68,7 +68,9 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                             clickedItem, 
                             package);
 
-                        NavigatorForItems.NavigateToElementDetailView(
+                        var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+                                             throw new InvalidOperationException("NavigationHost == null");
+                        _ = NavigatorForItems.NavigateToElementDetailView(
                             viewExtensionTargetInformation.NavigationHost,
                             package);
                     });

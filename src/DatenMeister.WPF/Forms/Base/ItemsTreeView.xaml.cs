@@ -156,7 +156,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the list of hints for the default classifier
         /// </summary>
-        private DefaultClassifierHints _defaultClassifierHints; 
+        private DefaultClassifierHints _defaultClassifierHints;
+
+        private INavigationHost? _navigationHost;
 
         public ItemsTreeView()
         {
@@ -334,6 +336,8 @@ namespace DatenMeister.WPF.Forms.Base
                 var n = 0;
                 foreach (var element in extent.elements())
                 {
+                    if (element == null) continue; // Skip the empty ones
+                    
                     var created = CreateTreeViewItem(element);
                     if (created != null)
                         childModels.Add(created);
@@ -406,12 +410,18 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void OnItemChosen(object? item)
         {
-            ItemChosen?.Invoke(this, new ItemEventArgs(item as IObject));
+            if (item is IObject itemAsObject)
+            {
+                ItemChosen?.Invoke(this, new ItemEventArgs(itemAsObject));
+            }
         }
 
         private void OnItemSelected(object? item)
         {
-            ItemSelected?.Invoke(this, new ItemEventArgs(item as IObject));
+            if (item is IObject itemAsObject)
+            {
+                ItemSelected?.Invoke(this, new ItemEventArgs(itemAsObject));
+            }
         }
 
         /// <summary>
@@ -476,9 +486,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void VisitCopyTreeToClipboard(IReflectiveCollection items, string currentText, StringBuilder result)
         {
-            foreach (var item in
-                items.Where(item => !_alreadyVisited.Contains(item)))
+            foreach (var item in items)
             {
+                if (item == null || !_alreadyVisited.Contains(item)) continue;
                 _alreadyVisited.Add(item);
 
                 var itemAsObject = item as IObject;
@@ -516,7 +526,11 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public INavigationHost? NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         public IEnumerable<ViewExtension> GetViewExtensions()
             => Array.Empty<ViewExtension>();
@@ -543,6 +557,7 @@ namespace DatenMeister.WPF.Forms.Base
                     if (selectedItem == null)
                     {
                         System.Windows.MessageBox.Show("No item selected");
+                        return;
                     }
 
                     extension.Action?.Invoke(selectedItem);

@@ -14,6 +14,8 @@ namespace DatenMeister.WPF.Windows
     /// </summary>
     public partial class TreeViewWindow : Window, INavigationGuest
     {
+        private INavigationHost? _navigationHost;
+
         /// <summary>
         /// Called, if the user selected and double clicked an item
         /// </summary>
@@ -22,7 +24,11 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Gets or sets the navigation host
         /// </summary>
-        public INavigationHost? NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         public TreeViewWindow()
         {

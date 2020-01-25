@@ -324,10 +324,10 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
 
                 // Stores the last the exception
-                Exception lastException = null;
+                Exception? lastException = null;
                 
                 var configurationLoader = new ExtentConfigurationLoader(_extentStorageData, this, _map);
-                List<Tuple<ExtentLoaderConfig, XElement>> loaded = null;
+                List<Tuple<ExtentLoaderConfig, XElement>>? loaded = null;
                 try
                 {
                     loaded = configurationLoader.GetConfigurationFromFile();

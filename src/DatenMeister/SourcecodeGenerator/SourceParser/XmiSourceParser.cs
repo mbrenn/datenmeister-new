@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.SourcecodeGenerator.SourceParser
 {
@@ -13,7 +14,7 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
-                   element.get(attributeXmi).ToString() == "uml:Package";
+                   element.getOrDefault<string>(attributeXmi) == "uml:Package";
         }
 
         public bool IsClass(IObject element)
@@ -21,7 +22,7 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
-                   element.get(attributeXmi).ToString() == "uml:Class";
+                   element.getOrDefault<string>(attributeXmi) == "uml:Class";
         }
 
         public bool IsEnum(IObject element)
@@ -29,7 +30,7 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
-                   element.get(attributeXmi).ToString() == "uml:Enumeration";
+                   element.getOrDefault<string>(attributeXmi) == "uml:Enumeration";
         }
 
         public bool IsEnumLiteral(IObject element)
@@ -37,7 +38,7 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
-                   element.get(attributeXmi).ToString() == "uml:EnumerationLiteral";
+                   element.getOrDefault<string>(attributeXmi) == "uml:EnumerationLiteral";
         }
 
         public bool IsProperty(IObject element)
@@ -45,7 +46,7 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
-                   element.get(attributeXmi).ToString() == "uml:Property";
+                   element.getOrDefault<string>(attributeXmi) == "uml:Property";
         }
 
         public bool IsPrimitiveType(IObject element)
@@ -53,7 +54,7 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
             var attributeXmi = "{" + Namespaces.Xmi + "}type";
 
             return element.isSet(attributeXmi) &&
-                   element.get(attributeXmi).ToString() == "uml:PrimitiveType";
+                   element.getOrDefault<string>(attributeXmi) == "uml:PrimitiveType";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -18,7 +19,8 @@ namespace DatenMeister.Runtime.Extents
 
         public IUriExtent ImportExtent(IObject mofImportSettings)
         {
-            var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings);
+            var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings)
+                                 ?? throw new InvalidOperationException("mofImportSettings == null");
 
             if (importSettings.fileToBeImported != importSettings.fileToBeExported)
             {

@@ -2,6 +2,6 @@
 {
     public class FlattenNode : ViewNode
     {
-        public ViewNode input { get; set; }
+        public ViewNode? input { get; set; }
     }
 }

@@ -127,10 +127,10 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public UIElement? MainControl => MainContent.Content as UIElement;
 
-        public Task<NavigateToElementDetailResult> NavigateTo(
+        public async Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
-            => Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+            => await Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
 
         /// <summary>
         /// Rebuilds the navigation by going through all view extensions
@@ -298,10 +298,14 @@ namespace DatenMeister.WPF.Windows
             }
 
             _finalEventsThrown = true;
-            Cancelled?.Invoke(this,
-                new ItemEventArgs(
-                    detailElement,
-                    attachedElement));
+
+            if (detailElement != null)
+            {
+                Cancelled?.Invoke(this,
+                    new ItemEventArgs(
+                        detailElement,
+                        attachedElement));
+            }
         }
 
         private void DetailFormWindow_OnClosed(object sender, EventArgs e)
@@ -318,7 +322,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element"></param>
         /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject? element, FormDefinition formDefinition, IReflectiveCollection? container = null)
+        public void SetContent(IObject? element, FormDefinition? formDefinition, IReflectiveCollection? container = null)
         {
             element ??= InMemoryObject.CreateEmpty();
             CreateDetailForm(element, formDefinition, container);
@@ -338,7 +342,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(IObject detailElement, FormDefinition formDefinition, IReflectiveCollection? container = null)
+        private void CreateDetailForm(IObject detailElement, FormDefinition? formDefinition, IReflectiveCollection? container = null)
         {
             DetailElement = detailElement;
             ContainerCollection = container;
@@ -380,7 +384,8 @@ namespace DatenMeister.WPF.Windows
                 
                 if (_requestedFormDefinition.Mode == FormDefinitionMode.Specific)
                 {
-                    effectiveForm = _requestedFormDefinition.Element;
+                    effectiveForm = _requestedFormDefinition.Element ??
+                                    throw new InvalidOperationException("_requestedFormDefinition.Element == null");
                 }
                 else
                 {

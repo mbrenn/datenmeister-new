@@ -173,7 +173,9 @@ namespace DatenMeister.WPF.Windows
             var button = new RibbonButton
             {
                 Label = name,
-                LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName),
+                LargeImageSource = string.IsNullOrEmpty(imageName)
+                    ? null
+                    : IconRepository.GetIcon(imageName!),
                 IsEnabled = definition.IsEnabled
             };
 

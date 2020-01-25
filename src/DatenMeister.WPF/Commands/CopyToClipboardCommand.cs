@@ -46,7 +46,23 @@ namespace DatenMeister.WPF.Commands
         public static void Execute(IHasSelectedItems hasSelectedItems, CopyType copyType)
         {
             // Checks, whether we can retrieve the selected item directly or if we need to use the IHasSelectedItems interface
-            var selectedItems = hasSelectedItems.GetSelectedItems() ?? new[] {hasSelectedItems.GetSelectedItem()};
+            var selectedItems = 
+                hasSelectedItems.GetSelectedItems();
+
+            if (selectedItems == null)
+            {
+                var selectedItem = hasSelectedItems.GetSelectedItem();
+                if (selectedItem != null)
+                {
+                    selectedItems = new[] {selectedItem};
+                }
+                else
+                {
+                    // No selection, nothing to do
+                    return;
+                }
+            }
+            
             Execute(selectedItems, copyType);
         }
 

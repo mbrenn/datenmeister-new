@@ -10,12 +10,12 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the name of the form
         /// </summary>
-        public string name { get; set; }
+        public string? name { get; set; }
 
         /// <summary>
         /// Gets or sets the title as shown in window header
         /// </summary>
-        public string title { get; set; }
+        public string? title { get; set; }
 
         /// <summary>
         /// Indicate whether the meta information shall not be shown in the form.

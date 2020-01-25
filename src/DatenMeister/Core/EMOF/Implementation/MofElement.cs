@@ -13,7 +13,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     public class MofElement : MofObject, IElement, IElementSetMetaClass, IHasId, ICanSetId
     {
         /// <inheritdoc cref="ICanSetId.Id" />
-        public string Id
+        public string? Id
         {
             get => ProviderObject.Id;
             set => ProviderObject.Id = value;
@@ -29,12 +29,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             IProviderObject providedObject,
             MofExtent? extent,
             IElement? referenceElement = null)
-            : base(providedObject, extent)
+            : base(providedObject, extent, referenceElement)
         {
-            if (ReferencedExtent == null)
-            {
-                ReferencedExtent = (referenceElement as MofElement)?.ReferencedExtent;
-            }
         }
 
         /// <summary>
@@ -73,7 +69,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             var uri = ProviderObject.MetaclassUri;
-            if (string.IsNullOrEmpty(uri))
+            if (uri == null || string.IsNullOrEmpty(uri))
             {
                 // No metaclass Uri is given.
                 return null;

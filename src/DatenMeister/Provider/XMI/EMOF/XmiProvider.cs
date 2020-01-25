@@ -77,7 +77,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject CreateElement(string metaClassUri)
+        public IProviderObject CreateElement(string? metaClassUri)
         {
             var node = new XElement(ElementName);
             if (!string.IsNullOrEmpty(metaClassUri))
@@ -129,7 +129,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject Get(string id)
+        public IProviderObject? Get(string id)
         {
             if (id == null)
             {

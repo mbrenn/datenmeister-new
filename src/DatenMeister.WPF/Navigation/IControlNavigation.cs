@@ -62,7 +62,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="item"></param>
         /// <param name="attachedItem">The attached item for additional properties</param>
-        public ItemEventArgs(IObject? item, IObject? attachedItem = null)
+        public ItemEventArgs(IObject item, IObject? attachedItem = null)
         {
             Item = item;
             AttachedItem = attachedItem;
@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Gets or sets the newly created item
         /// </summary>
-        public IObject? Item { get; set; }
+        public IObject Item { get; set; }
 
         /// <summary>
         /// Gets or sets the attached item to the dialog

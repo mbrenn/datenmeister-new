@@ -154,7 +154,11 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="type">Type to be added</param>
         public static void Add(this IDotNetTypeLookup lookup, IElement element, Type type)
         {
-            lookup.Add(element.GetUri(), type);
+            var uri = element.GetUri();
+            if (uri != null)
+            {
+                lookup.Add(uri, type);
+            }
         }
     }
 }

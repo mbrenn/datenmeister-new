@@ -237,7 +237,7 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                NavigatorForItems.NavigateToElementDetailView(
+                _ = NavigatorForItems.NavigateToElementDetailView(
                     _detailFormControl.NavigationHost,
                     itemToOpen);
             }

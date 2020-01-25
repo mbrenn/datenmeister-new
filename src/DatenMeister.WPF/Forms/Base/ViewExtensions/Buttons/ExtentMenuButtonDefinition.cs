@@ -19,7 +19,7 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
         public ExtentMenuButtonDefinition(
             string name,
             Action<IExtent> onPressed,
-            string imageName,
+            string? imageName,
             string categoryName,
             int priority = 0) : base(name, NavigationScope.Extent, imageName, categoryName, priority)
         {

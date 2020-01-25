@@ -11,6 +11,6 @@ namespace DatenMeister.Models.Example.ZipCode
         /// <summary>
         /// State to which the zipcode belongs
         /// </summary>
-        public string state { get; set; }
+        public string? state { get; set; }
     }
 }

@@ -82,7 +82,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     NavigationCategories.Form + ".Form Manager");
 
                 yield return new ApplicationMenuButtonDefinition(
-                    "Create as default form for type...",
+                    "Set as default form for type...",
                     CreateAsDefaultType,
                     null,
                     NavigationCategories.Form + ".Form Manager");

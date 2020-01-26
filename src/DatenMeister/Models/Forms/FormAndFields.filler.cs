@@ -71,6 +71,41 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "AnyDataFieldData") // Looking for class
+                        {
+                            tree.__AnyDataFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                         if(name == "CheckboxFieldData") // Looking for class
                         {
                             tree.__CheckboxFieldData = value;

@@ -531,7 +531,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 // If we have something else than a primitive type and it is not for a list form
                 var element = _factory.create(propertyIsEnumeration
                     ? _formAndFields.__SubElementFieldData
-                    : _formAndFields.__TextFieldData);
+                    : _formAndFields.__AnyDataFieldData);
 
                 // It can just contain one element
                 element.set(_FormAndFields._SubElementFieldData.name, propertyName);

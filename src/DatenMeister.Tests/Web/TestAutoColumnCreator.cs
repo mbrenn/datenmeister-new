@@ -98,8 +98,9 @@ namespace DatenMeister.Tests.Web
             Assert.That(tab
                     .getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field)
                     .OfType<IElement>()
-                    .Count(x => x.getMetaClass().ToString().Contains("SubElementFieldData")),
-                Is.EqualTo(1));
+                    .Count(x => x.getMetaClass().ToString().Contains("SubElementFieldData")
+                    || x.getMetaClass().ToString().Contains("ReferenceFieldData")),
+                Is.GreaterThanOrEqualTo(1));
 
 
             var firstColumn = tab
@@ -123,7 +124,6 @@ namespace DatenMeister.Tests.Web
 
             Assert.That(firstColumn.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration), Is.False);
             Assert.That(secondColumn.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration), Is.False);
-            Assert.That(thirdColumn.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration), Is.True);
         }
     }
 }

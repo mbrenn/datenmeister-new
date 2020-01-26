@@ -413,7 +413,6 @@ namespace DatenMeister.WPF.Windows
                     }
                 }
 
-                control.UpdateView();
                 control.ElementSaved += (x, y) =>
                 {
                     OnSaved(control.DetailElement, control.AttachedElement);

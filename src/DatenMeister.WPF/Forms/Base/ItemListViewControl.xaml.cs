@@ -82,9 +82,15 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private FormLogic _formLogic;
+        private readonly FormLogic _formLogic;
 
         private INavigationHost? _navigationHost;
+        
+        /// <summary>
+        /// Stores a cached instance of the change event manager
+        /// </summary>
+        private ChangeEventManager? _changeEventManager;
+
         public ItemListViewControl()
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
@@ -127,8 +133,8 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var selectedItems = DataGrid.SelectedItems;
             if (selectedItems.Count == 0)
-                // If no item is selected, get all items
-                selectedItems = DataGrid.Items;
+                // If no item is selected, get no item
+                yield break;
 
             foreach (var item in selectedItems)
                 if (item is ExpandoObject selectedItem)
@@ -285,7 +291,13 @@ namespace DatenMeister.WPF.Forms.Base
                 var extent = asExtent.Extent;
                 if (extent != null)
                 {
-                    _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                    _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
+                    if (_changeEventHandle != null)
+                    {
+                        _changeEventManager.Unregister(_changeEventHandle);
+                    }
+                    
+                    _changeEventHandle = _changeEventManager.RegisterFor(
                         extent,
                         (innerExtent, element) => _delayedDispatcher.RequestRefresh());
                 }
@@ -306,6 +318,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (_changeEventHandle != null)
             {
+                _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
                 GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
                 _changeEventHandle = null;
             }
@@ -344,12 +357,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
-            if ( EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
+            if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
             
             var watch = new StopWatchLogger(Logger, "UpdateView");
             var listItems = new ObservableCollection<ExpandoObject>();
 
             var selectedItem = GetSelectedItem();
+            var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
+            ExpandoObject? selectedExpandoObject = null;
             
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
@@ -438,6 +453,12 @@ namespace DatenMeister.WPF.Forms.Base
 
                         _itemMapping[itemObject] = item;
                         listItems.Add(itemObject);
+                        
+                        
+                        if (item.Equals(selectedItem))
+                        {
+                            selectedExpandoObject = itemObject;
+                        }
 
                         // Adds the notification for the property
                         var noMessageBox = false;
@@ -464,10 +485,32 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 watch.IntermediateLog("Before setting");
 
-                Dispatcher?.Invoke(() => { DataGrid.ItemsSource = listItems; });
+                Dispatcher?.Invoke(() =>
+                {
+                    DataGrid.ItemsSource = listItems;
+                    if (selectedExpandoObject != null)
+                    {
+                        DataGrid.SelectedItem = selectedExpandoObject;
+                    }
+                    else if (selectedItemPosition != -1 && listItems.Count > 0)
+                    {
+                        DataGrid.SelectedIndex = selectedItemPosition < listItems.Count
+                            ? selectedItemPosition
+                            : selectedItemPosition - 1;
+                    }
+
+                });
 
                 watch.Stop();
             });
+        }
+
+        /// <summary>
+        /// Forces a refresh of the view
+        /// </summary>
+        public void ForceRefresh()
+        {
+            _delayedDispatcher.ForceRefresh();
         }
 
         /// <summary>

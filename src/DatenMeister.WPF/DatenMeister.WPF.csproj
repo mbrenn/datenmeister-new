@@ -95,6 +95,7 @@
     <Compile Include="Forms\Base\ViewExtensions\TreeView\TreeViewItemCommandDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ViewExtension.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ViewExtensionTargetInformation.cs" />
+    <Compile Include="Forms\Fields\AnyDataField.cs" />
     <Compile Include="Forms\Fields\CheckboxField.cs" />
     <Compile Include="Forms\Fields\DateTimeField.cs" />
     <Compile Include="Forms\Fields\DropdownField.cs" />
@@ -125,6 +126,9 @@
     <Compile Include="Modules\DefaultTypes\DefaultTypesPlugin.cs" />
     <Compile Include="Modules\FormManager\FormManagerPlugin.cs" />
     <Compile Include="Modules\FormManager\FormManagerViewExtension.cs" />
+    <Compile Include="Modules\FormManager\FormManagerViewExtension.DetailForm.cs" />
+    <Compile Include="Modules\FormManager\FormManagerViewExtension.ItemExplorerControl.cs" />
+    <Compile Include="Modules\FormManager\FormManagerViewExtension.ApplicationWindow.cs" />
     <Compile Include="Modules\FormManager\NavigatorForForms.cs" />
     <Compile Include="Modules\Icons.cs" />
     <Compile Include="Modules\IIconRepository.cs" />

@@ -73,12 +73,18 @@ namespace DatenMeister.Runtime
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            if (typeof(T) == typeof(object))
+            if (typeof(T) == typeof(object) && value is MofExtent)
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
 
                 return (T) metaObject.GetMetaObject().get(property, noReferences);
+            }
+
+            if (typeof(T) == typeof(object))
+            {
+                return (T) value.GetAsSingle(property, noReferences);
             }
 
             if (typeof(T) == typeof(string))

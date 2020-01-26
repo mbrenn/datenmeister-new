@@ -9,6 +9,11 @@ namespace DatenMeister.Models.Forms
     /// </summary>
     public class FormAssociation
     {
+        /// <summary>
+        /// Gets or sets the name
+        /// </summary>
+        public string name { get; set; } = string.Empty;
+        
         public FormType? formType { get; set; }
 
         public IObject? metaClass { get; set; }

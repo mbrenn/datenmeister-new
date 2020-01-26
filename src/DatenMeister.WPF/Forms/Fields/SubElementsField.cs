@@ -182,6 +182,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
 
                     reflectiveSequence.MoveElementUp(selectedItem);
+                    _listViewControl.ForceRefresh();
                 };
 
                 SetStyle(buttonUp);
@@ -197,6 +198,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
 
                     reflectiveSequence.MoveElementDown(selectedItem);
+                    _listViewControl.ForceRefresh();
                 };
                 SetStyle(buttonDown);
                 
@@ -219,6 +221,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 }
 
                 RemoveItem(collection, selectedItem);
+                _listViewControl.ForceRefresh();
             };
             
             SetStyle(buttonDelete);

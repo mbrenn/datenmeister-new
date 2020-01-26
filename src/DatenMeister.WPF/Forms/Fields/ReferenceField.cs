@@ -114,7 +114,7 @@ namespace DatenMeister.WPF.Forms.Fields
 
         private UIElement CreateSelectionField(IObject value, INavigationHost navigationHost, FieldParameter fieldFlags, bool isReadOnly)
         {
-            if (_name == null ) throw new InvalidOperationException("_name == null");
+            if (_name == null) throw new InvalidOperationException("_name == null");
             
             var panel = new Grid
             {
@@ -123,7 +123,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)}, // Text field
                     new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Select button
                     new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Remove button
-                }
+                },
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             SelectedValue = value.getOrDefault<IElement>(_name);

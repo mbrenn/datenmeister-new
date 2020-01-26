@@ -21,9 +21,6 @@ namespace DatenMeister.WPF.Forms.Fields
             var groupName = StringManipulation.RandomString(10);
             var stackPanel = new StackPanel
                 {Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch};
-
-            var upperStackPanel = new StackPanel
-                {Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch};
             
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
             if (_name == null)
@@ -52,24 +49,19 @@ namespace DatenMeister.WPF.Forms.Fields
             
             _textRadioButton.Content = _textBoxForString;
 
-            upperStackPanel.Children.Add(_textRadioButton);
-
-            var lowerStackPanel = new StackPanel
-                {Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch};
-
             _referenceRadioButton = new RadioButton
             {
-                GroupName = groupName
+                GroupName = groupName,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch
             };
             
             _referenceField = new ReferenceField();
             var panel = _referenceField.CreateElement(value, fieldData, detailForm, fieldFlags);
             _referenceRadioButton.Content = panel;
 
-            lowerStackPanel.Children.Add(_referenceRadioButton);
-
-            stackPanel.Children.Add(upperStackPanel);
-            stackPanel.Children.Add(lowerStackPanel);
+            stackPanel.Children.Add(_textRadioButton);
+            stackPanel.Children.Add(_referenceRadioButton);
             stackPanel.Margin = new Thickness(10);
 
             if (elementValue != null && DotNetHelper.IsOfPrimitiveType(elementValue))

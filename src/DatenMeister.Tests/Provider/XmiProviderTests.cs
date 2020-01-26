@@ -27,5 +27,12 @@ namespace DatenMeister.Tests.Provider
             var provider = new XmiProvider();
             ProviderTestHelper.TestListMovement(provider);
         }
+
+        [Test]
+        public void TestSetReferenceAndSetValue()
+        {
+            var provider = new XmiProvider();
+            ProviderTestHelper.TestSetReferenceAndSetValue(provider);
+        }
     }
 }

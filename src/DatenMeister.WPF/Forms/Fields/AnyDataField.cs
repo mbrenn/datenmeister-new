@@ -19,8 +19,11 @@ namespace DatenMeister.WPF.Forms.Fields
         public UIElement? CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
         {
             var groupName = StringManipulation.RandomString(10);
-            var stackPanel = new StackPanel {Orientation = Orientation.Vertical};
-            var upperStackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            var stackPanel = new StackPanel
+                {Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch};
+
+            var upperStackPanel = new StackPanel
+                {Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch};
             
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
             if (_name == null)
@@ -36,20 +39,23 @@ namespace DatenMeister.WPF.Forms.Fields
             _textRadioButton = new RadioButton
             {
                 GroupName = groupName,
-                HorizontalAlignment = HorizontalAlignment.Stretch
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch
             };
 
             _textBoxForString = new TextBox
             {
                 Text = "",
-                Width = 300,
-                HorizontalAlignment = HorizontalAlignment.Stretch
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch
             };
+            
             _textRadioButton.Content = _textBoxForString;
 
             upperStackPanel.Children.Add(_textRadioButton);
 
-            var lowerStackPanel = new StackPanel {Orientation = Orientation.Horizontal};
+            var lowerStackPanel = new StackPanel
+                {Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch};
 
             _referenceRadioButton = new RadioButton
             {

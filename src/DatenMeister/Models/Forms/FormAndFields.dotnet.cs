@@ -31,6 +31,13 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
+                var type = typeof(DatenMeister.Models.Forms.AnyDataFieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__AnyDataFieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.Forms.CheckboxFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);

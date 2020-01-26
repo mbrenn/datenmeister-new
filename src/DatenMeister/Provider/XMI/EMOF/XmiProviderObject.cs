@@ -53,7 +53,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <param name="propertyName">The name of the property to be converted</param>
         /// <returns>The proeprty with added-ref</returns>
         private static string ConvertPropertyToReference(string propertyName) =>
-            propertyName + "-ref";
+            NormalizePropertyName(propertyName) + "-ref";
 
         /// <summary>
         /// Gets the Xml Node
@@ -203,7 +203,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             var normalizedPropertyName = NormalizePropertyName(property);
 
             var propertyAsString = ReturnObjectAsString(normalizedPropertyName);
-            var propertyAsReference = ConvertPropertyToReference(normalizedPropertyName);
+            var propertyAsReference = ConvertPropertyToReference(property);
 
             return XmlNode.Attribute(propertyAsString) != null
                    || XmlNode.Attribute(propertyAsReference) != null
@@ -215,13 +215,11 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             var normalizePropertyName = NormalizePropertyName(property);
 
-            var propertyAsString = ReturnObjectAsString(normalizePropertyName);
-
             // Check, if there are subelements as the given value
-            if (XmlNode.Elements(propertyAsString).Any())
+            if (XmlNode.Elements(normalizePropertyName).Any())
             {
                 var list = new List<object>();
-                foreach (var element in XmlNode.Elements(propertyAsString))
+                foreach (var element in XmlNode.Elements(normalizePropertyName))
                 {
                     var hrefAttribute = element.Attribute("href");
                     if (hrefAttribute != null)
@@ -246,13 +244,13 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
 
             // Check, if there is the attribute, otherwise null
-            var attribute = XmlNode.Attribute(propertyAsString);
+            var attribute = XmlNode.Attribute(normalizePropertyName);
             if (attribute != null)
             {
                 return attribute.Value;
             }
 
-            var uriAttribute = XmlNode.Attribute(ConvertPropertyToReference(propertyAsString));
+            var uriAttribute = XmlNode.Attribute(ConvertPropertyToReference(property));
             if (uriAttribute != null)
             {
                 return new UriReference(uriAttribute.Value);
@@ -297,6 +295,8 @@ namespace DatenMeister.Provider.XMI.EMOF
             var normalizePropertyName = NormalizePropertyName(property);
 
             XmlNode.Attributes(normalizePropertyName).FirstOrDefault()?.Remove();
+            XmlNode.Attributes(ConvertPropertyToReference(property)).FirstOrDefault()?.Remove();
+            
             foreach (var x in XmlNode.Elements(normalizePropertyName).ToList())
             {
                 x.Remove();
@@ -309,18 +309,16 @@ namespace DatenMeister.Provider.XMI.EMOF
         public void SetProperty(string property, object? value)
         {
             var normalizePropertyName = NormalizePropertyName(property);
-
+            DeleteProperty(property);
+            
             if (value == null)
             {
-                DeleteProperty(property);
                 return;
             }
 
-            var propertyAsString = ReturnObjectAsString(normalizePropertyName);
-
             if (value is UriReference uriReference)
             {
-                XmlNode.SetAttributeValue(ConvertPropertyToReference(propertyAsString), uriReference.Uri);
+                XmlNode.SetAttributeValue(ConvertPropertyToReference(property), uriReference.Uri);
             }
             else if (value is XmiProviderObject elementAsXml)
             {
@@ -335,7 +333,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                 var xmlTextValue = ReturnObjectAsString(value);
                 if (!string.IsNullOrEmpty(xmlTextValue))
                 {
-                    XmlNode.SetAttributeValue(propertyAsString, xmlTextValue);
+                    XmlNode.SetAttributeValue(normalizePropertyName, xmlTextValue);
                 }
             }
         }

@@ -59,12 +59,10 @@ namespace DatenMeister.WPF.Navigation
                 MessageBox.Show($"No item found at {extentUrl}");
                 return null;
             }
-            else
-            {
-                return await NavigatorForItems.NavigateToElementDetailView(
-                    navigationHost,
-                    foundItem);
-            }
+
+            return await NavigatorForItems.NavigateToElementDetailView(
+                navigationHost,
+                foundItem);
         }
 
         /// <summary>

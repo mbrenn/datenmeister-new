@@ -10,6 +10,7 @@ namespace DatenMeister.Models.Forms
             return new[]
             {
                 typeof(FieldData),
+                typeof(AnyDataFieldData),
                 typeof(CheckboxFieldData),
                 typeof(DateTimeFieldData),
                 typeof(FormAssociation),

@@ -82,9 +82,9 @@ namespace DatenMeister.Runtime
                 return (T) metaObject.GetMetaObject().get(property, noReferences);
             }
 
-            if (typeof(T) == typeof(object))
+            if (typeof(T) == typeof(object) && value is MofObject mofObject2)
             {
-                return (T) value.GetAsSingle(property, noReferences);
+                return (T) mofObject2.get(property, noReferences);
             }
 
             if (typeof(T) == typeof(string))

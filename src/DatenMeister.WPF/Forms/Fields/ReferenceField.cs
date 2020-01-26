@@ -42,23 +42,61 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <summary>
         /// The value that is modified
         /// </summary>
-        private IObject? _value;
+        private IObject? _element;
+
+        /// <summary>
+        /// Gets or sets a selected value
+        /// </summary>
+        public IObject? SelectedValue { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a flag whether the value shall be unset
+        /// </summary>
+        public bool IsValueUnsetted { get; set; }
+
+        /// <summary>
+        /// Gets or sets the flag whether the form is inline
+        /// </summary>
+        private bool _isInline;
+
+        private TextBlock? _inputTextBox;
+
+        private bool _isEnabled = true;
+        private Button? _removeButton;
+        
+        private Button? _selectButton;
+
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                if (!_isInline && _selectButton != null && _removeButton != null)
+                {
+                    _selectButton.IsEnabled = value;
+                    _removeButton.IsEnabled = value;
+                }
+            }
+        }
 
         public UIElement CreateElement(
-            IObject value,
+            IObject element,
             IElement fieldData,
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (element == null) throw new ArgumentNullException(nameof(element));
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
             
-            var isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
+            var navigationHost = detailForm.NavigationHost;
+            
+            _isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
             var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isReadOnly);
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
             _detailFormControl = detailForm;
-            _value = value;
+            _element = element;
 
             if (_name == null)
             {
@@ -69,65 +107,15 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             // Checks, whether the reference shall be included as an inline selection
-            if (isInline)
-            {
-                // Defines the locate element control in which the user can select
-                // workspace, extent and element
-                _control = new LocateElementControl
-                {
-                    MinHeight = 400,
-                    MaxHeight = 400,
-                    MinWidth = 600
-                };
+            return _isInline
+                ? CreateInlineField(fieldData, fieldFlags)
+                : CreateSelectionField(element, navigationHost, fieldFlags, isReadOnly);
+        }
 
-                var filterMetaClasses =
-                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
-                if (filterMetaClasses != null)
-                {
-                    _control.FilterMetaClasses = filterMetaClasses.OfType<IElement>();
-                }
-
-                var showAllChildren = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.showAllChildren);
-                if (showAllChildren) _control.ShowAllChildren = true;
-
-                var element = fieldData.getOrDefault<IElement>(_FormAndFields._ReferenceFieldData.defaultValue);
-                if (element != null)
-                {
-                    _control.Select(element);
-                }
-                else
-                {
-                    var workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
-                    var extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
-
-                    if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
-                    {
-                        var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                        workspaceLogic.RetrieveWorkspaceAndExtent(
-                            workspace,
-                            extent,
-                            out var foundWorkspace,
-                            out var foundExtent);
-                        if (foundWorkspace != null && foundExtent != null)
-                        {
-                            _control.Select(foundWorkspace, foundExtent);
-                        }
-                    }
-                    else if (!string.IsNullOrEmpty(workspace))
-                    {
-                        var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                        var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
-                        if (foundWorkspace != null)
-                        {
-                            _control.Select((IWorkspace) foundWorkspace);
-                        }
-                    }
-                }
-
-                fieldFlags.CanBeFocused = true;
-                return _control;
-            }
-
+        private UIElement CreateSelectionField(IObject value, INavigationHost navigationHost, FieldParameter fieldFlags, bool isReadOnly)
+        {
+            if (_name == null) throw new InvalidOperationException("_name == null");
+            
             var panel = new Grid
             {
                 ColumnDefinitions =
@@ -135,70 +123,150 @@ namespace DatenMeister.WPF.Forms.Fields
                     new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)}, // Text field
                     new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Select button
                     new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Remove button
-                }
+                },
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
-            var foundItem = value.getOrDefault<IElement>(_name);
+            SelectedValue = value.getOrDefault<IElement>(_name);
 
-            var itemText = new TextBlock
+            _inputTextBox = new TextBlock
             {
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            UpdateTextOfTextBlock(foundItem, itemText);
-            
-            var selectButton = new Button
+            UpdateTextOfTextBlock(SelectedValue);
+
+            _selectButton = new Button
             {
                 Content = "Select",
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            
-            selectButton.Click += (sender, args) =>
+
+            _selectButton.Click += (sender, args) =>
             {
                 // TODO: Select the one, of the currently referenced field
                 var selectedItem = NavigatorForDialogs.Locate(
-                    detailForm.NavigationHost,
+                    navigationHost,
                     null /* workspace */,
                     (value as IHasExtent)?.Extent);
-                
+
                 if (selectedItem != null)
                 {
-                    value.set(_name, selectedItem);
-                    UpdateTextOfTextBlock(selectedItem, itemText);
+                    IsValueUnsetted = false;
+                    SelectedValue = selectedItem;
+                    UpdateTextOfTextBlock(selectedItem);
                 }
             };
 
-            var removeButton = new Button
+            _removeButton = new Button
             {
                 Content = "Remove",
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
-            
-            removeButton.Click += (sender, args) => { value.unset(_name); };
+
+            _removeButton.Click += (sender, args) =>
+            {
+                SelectedValue = null;
+                IsValueUnsetted = false;
+                UpdateTextOfTextBlock(null);
+            };
 
             // Adds the ui elements
-            Grid.SetColumn(selectButton, 1);
-            Grid.SetColumn(removeButton, 2);
-            panel.Children.Add(itemText);
+            Grid.SetColumn(_selectButton, 1);
+            Grid.SetColumn(_removeButton, 2);
+            panel.Children.Add(_inputTextBox);
 
             if (!isReadOnly)
             {
-                panel.Children.Add(selectButton);
-                panel.Children.Add(removeButton);
+                panel.Children.Add(_selectButton);
+                panel.Children.Add(_removeButton);
             }
 
             fieldFlags.CanBeFocused = true;
             return panel;
         }
 
+        private UIElement CreateInlineField(IObject fieldData, FieldParameter fieldFlags)
+        {
+            // Defines the locate element control in which the user can select
+            // workspace, extent and element
+            _control = new LocateElementControl
+            {
+                MinHeight = 400,
+                MaxHeight = 400,
+                MinWidth = 600
+            };
+
+            var filterMetaClasses =
+                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+            if (filterMetaClasses != null)
+            {
+                _control.FilterMetaClasses = filterMetaClasses.OfType<IElement>();
+            }
+
+            var showAllChildren = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.showAllChildren);
+            if (showAllChildren) _control.ShowAllChildren = true;
+
+            var element = fieldData.getOrDefault<IElement>(_FormAndFields._ReferenceFieldData.defaultValue);
+            if (element != null)
+            {
+                _control.Select(element);
+            }
+            else
+            {
+                var workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
+                var extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
+
+                if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
+                {
+                    var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+                    workspaceLogic.RetrieveWorkspaceAndExtent(
+                        workspace,
+                        extent,
+                        out var foundWorkspace,
+                        out var foundExtent);
+                    if (foundWorkspace != null && foundExtent != null)
+                    {
+                        _control.Select(foundWorkspace, foundExtent);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(workspace))
+                {
+                    var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+                    var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
+                    if (foundWorkspace != null)
+                    {
+                        _control.Select((IWorkspace) foundWorkspace);
+                    }
+                }
+            }
+
+            fieldFlags.CanBeFocused = true;
+            return _control;
+        }
+
         public void CallSetAction(IObject element)
         {
             if(_name == null) throw new InvalidOperationException("_name == null");
-            
-            var selectedElement = _control?.SelectedElement;
-            if (selectedElement != null)
+
+            if (_isInline)
             {
-                element.set(_name, selectedElement);
+                var selectedElement = _control?.SelectedElement;
+                if (selectedElement != null)
+                {
+                    element.set(_name, selectedElement);
+                }
+            }
+            else
+            {
+                if (IsValueUnsetted)
+                {
+                    element.unset(_name);
+                }
+                else
+                {
+                    element.set(_name, SelectedValue);
+                }
             }
         }
 
@@ -206,31 +274,33 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Updates the text of the text block. 
         /// </summary>
         /// <param name="value">The item which is used to set the textfield</param>
-        /// <param name="textBlock">The textblock which shall be followed</param>
+        /// <param name="_inputTextBox">The textblock which shall be followed</param>
         /// <returns>true, if an item was given</returns>
-        private void UpdateTextOfTextBlock(IObject? value, TextBlock textBlock)
+        private void UpdateTextOfTextBlock(IObject? value)
         {
+            if (_inputTextBox == null) throw new InvalidOperationException("_inputTextBox == null");
+            
             if (value == null)
             {
-                textBlock.Text = "No item";
-                textBlock.FontStyle = FontStyles.Italic;
+                _inputTextBox.Text = "No item";
+                _inputTextBox.FontStyle = FontStyles.Italic;
 
                 return;
             }
 
-            textBlock.Text = value.ToString();
-            textBlock.TextDecorations = TextDecorations.Underline;
-            textBlock.Cursor = Cursors.Hand;
-            textBlock.MouseDown += TextBlockOnMouseDown;
+            _inputTextBox.Text = value.ToString();
+            _inputTextBox.TextDecorations = TextDecorations.Underline;
+            _inputTextBox.Cursor = Cursors.Hand;
+            _inputTextBox.MouseDown += TextBlockOnMouseDown;
         }
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if ( _name == null) throw new InvalidOperationException("_name == null");
-            if (_value == null ) throw new InvalidOperationException("_value == null");
+            if (_name == null) throw new InvalidOperationException("_name == null");
+            if (_element == null) throw new InvalidOperationException("_value == null");
             if (_detailFormControl == null) throw new InvalidOperationException("_detailFormControl == null");
 
-            var itemToOpen = _value.getOrDefault<IElement>(_name);
+            var itemToOpen = _element.getOrDefault<IElement>(_name);
             if (itemToOpen == null)
             {
                 MessageBox.Show("No item selected");
@@ -240,6 +310,20 @@ namespace DatenMeister.WPF.Forms.Fields
                 _ = NavigatorForItems.NavigateToElementDetailView(
                     _detailFormControl.NavigationHost,
                     itemToOpen);
+            }
+        }
+
+        public void SetSelectedValue(object? elementValue)
+        {
+            if ( !(elementValue is IObject elementAsObject))
+            {
+                SelectedValue = null;
+                UpdateTextOfTextBlock(null);                
+            }
+            else
+            {
+                SelectedValue = elementAsObject;
+                UpdateTextOfTextBlock(SelectedValue);
             }
         }
     }

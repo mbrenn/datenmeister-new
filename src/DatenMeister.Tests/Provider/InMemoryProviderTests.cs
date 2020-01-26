@@ -26,5 +26,12 @@ namespace DatenMeister.Tests.Provider
             var provider = new InMemoryProvider();
             ProviderTestHelper.TestListMovement(provider);
         }
+        
+        [Test]
+        public void TestSetReferenceAndSetValue()
+        {
+            var provider = new InMemoryProvider();
+            ProviderTestHelper.TestSetReferenceAndSetValue(provider);
+        }
     }
 }

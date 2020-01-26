@@ -95,6 +95,7 @@
     <Compile Include="Forms\Base\ViewExtensions\TreeView\TreeViewItemCommandDefinition.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ViewExtension.cs" />
     <Compile Include="Forms\Base\ViewExtensions\ViewExtensionTargetInformation.cs" />
+    <Compile Include="Forms\Fields\AnyDataField.cs" />
     <Compile Include="Forms\Fields\CheckboxField.cs" />
     <Compile Include="Forms\Fields\DateTimeField.cs" />
     <Compile Include="Forms\Fields\DropdownField.cs" />

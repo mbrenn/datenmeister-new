@@ -806,7 +806,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 button.Click += (x, y) =>
                 {
-                    var selectedElement = NavigationTreeView.SelectedElement;
+                    var selectedElement = NavigationTreeView.GetSelectedItem();
                     if (selectedElement == null)
                     {
                         MessageBox.Show("No item is selected");

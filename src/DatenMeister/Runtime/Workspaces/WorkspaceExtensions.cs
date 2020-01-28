@@ -329,13 +329,13 @@ namespace DatenMeister.Runtime.Workspaces
 
         public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic) => logic.GetWorkspace(WorkspaceNames.NameViews);
 
-        public static IUriExtent GetUserViewsExtent(this IWorkspaceLogic logic)
+        public static IUriExtent GetUserFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
             return mgmt.FindExtent(WorkspaceNames.UriUserFormExtent);
         }
 
-        public static IUriExtent GetInternalViewsExtent(this IWorkspaceLogic logic)
+        public static IUriExtent GetInternalFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
             return mgmt.FindExtent(WorkspaceNames.UriInternalFormExtent);

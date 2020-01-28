@@ -141,7 +141,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void SetOverridingForm(IElement form)
         {
             OverridingViewDefinition = new FormDefinition(form);
-            RecreateViews();
+            RecreateForms();
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void ClearOverridingForm()
         {
             OverridingViewDefinition = null;
-            RecreateViews();
+            RecreateForms();
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void ForceAutoGenerationOfForm()
         {
             OverridingViewDefinition = new FormDefinition(FormDefinitionMode.ViaFormCreator);
-            RecreateViews();
+            RecreateForms();
         }
         
         /// <summary>
@@ -228,7 +228,7 @@ namespace DatenMeister.WPF.Forms.Base
             yield return
                 new ExtentMenuButtonDefinition(
                     "Refresh",
-                    x => RecreateViews(),
+                    x => RecreateForms(),
                     Icons.Refresh,
                     NavigationCategories.Form + ".View");
 
@@ -268,7 +268,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             RootItem = value;
             UpdateTreeContent();
-            RecreateViews();
+            RecreateForms();
 
             watch.Stop();
         }
@@ -285,7 +285,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Recreates all views
         /// </summary>
-        protected void RecreateViews()
+        protected void RecreateForms()
         {
             using var watch = new StopWatchLogger(_logger, "RecreateViews");
             
@@ -728,14 +728,14 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 SelectedItem = e.Item;
                 IsExtentSelectedInTreeview = false;
-                RecreateViews();
+                RecreateForms();
             }
             else
             {
                 // When user has selected the root element or no other item, all items are shown
                 SelectedItem = RootItem;
                 IsExtentSelectedInTreeview = true;
-                RecreateViews();
+                RecreateForms();
             }
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
+using BurnSystems;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -144,16 +145,20 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         /// <param name="reflectiveCollection">Defines the reflective collection from which the item will be removed</param>
         /// <param name="item">The item to be removed</param>
-        private static void RemoveItem(IReflectiveCollection reflectiveCollection, IObject item)
+        private static void RemoveItem(IReflectiveCollection reflectiveCollection, IList<IObject> items)
         {
+            var names = items.Select(NamedElementMethods.GetName).Join(", ");
             if (MessageBox.Show(
                     $"Are you sure to delete the item: " +
-                    $"{NamedElementMethods.GetName(item)}?", 
-                    "Confirmation", 
+                    $"{names}?",
+                    "Confirmation",
                     MessageBoxButton.YesNo) ==
                 MessageBoxResult.Yes)
             {
-                reflectiveCollection.remove(item);
+                foreach (var item in items)
+                {
+                    reflectiveCollection.remove(item);
+                }
             }
         }
 
@@ -213,14 +218,14 @@ namespace DatenMeister.WPF.Forms.Fields
             var buttonDelete = new Button {Content = "✗"};
             buttonDelete.Click += (x, y) =>
             {
-                var selectedItem = _listViewControl.GetSelectedItem();
-                if (selectedItem == null)
+                var selectedItems = _listViewControl.GetSelectedItems().ToList();
+                if (selectedItems.Count == 0)
                 {
                     MessageBox.Show("No item is currently selected");
                     return;
                 }
 
-                RemoveItem(collection, selectedItem);
+                RemoveItem(collection, selectedItems);
                 _listViewControl.ForceRefresh();
             };
             

@@ -1,12 +1,15 @@
 ﻿#nullable enable
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
+using System.Windows.Forms;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using Menu = System.Windows.Controls.Menu;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -185,6 +188,44 @@ namespace DatenMeister.WPF.Windows
                     AddNavigationButton(viewExtension);
                 }
             }
+        }
+
+        public static MenuItem GetOrCreateMenu(List<MenuItem> menuItems, string category, string text)
+        {
+            if (string.IsNullOrEmpty(category))
+            {
+                var result = new MenuItem
+                {
+                    Header = text
+                };
+                
+                menuItems.Add(result);
+
+                return result;
+            }
+
+            var menu = GetOrCreateMenuForCategory(menuItems, category);
+            
+            var innerResult = new MenuItem
+            {
+                Header = text
+            };
+
+            menu.Items.Add(innerResult);
+            return innerResult;
+        }
+
+        public static MenuItem GetOrCreateMenuForCategory(IList<MenuItem> menuItems, string category)
+        {
+            foreach (var menuItem in menuItems
+                .Where(menuItem => menuItem.Header.ToString() == category))
+            {
+                return menuItem;
+            }
+
+            var newMenuItem = new MenuItem {Header = category};
+            menuItems.Add(newMenuItem);
+            return newMenuItem;
         }
     }
 }

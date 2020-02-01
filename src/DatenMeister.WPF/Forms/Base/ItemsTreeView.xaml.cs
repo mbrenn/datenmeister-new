@@ -19,6 +19,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 using Clipboard = System.Windows.Clipboard;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Controls.MenuItem;
@@ -554,10 +555,7 @@ namespace DatenMeister.WPF.Forms.Base
                     continue;
                 }
 
-                var menuItem = new MenuItem
-                {
-                    Header = extension.Text
-                };
+                var menuItem = MenuHelper.GetOrCreateMenu(menuItems, extension.CategoryName, extension.Text);
 
                 if (extension.Action == null)
                 {
@@ -568,8 +566,6 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     extension.Action?.Invoke(selectedItem);
                 };
-
-                menuItems.Add(menuItem);
             }
 
             ItemContextMenu.ItemsSource = menuItems;

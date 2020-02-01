@@ -93,6 +93,20 @@ namespace DatenMeister.Modules.DefaultTypes
             }
         }
 
+        public void RemoveFromExtentOrElement(IObject container, IObject child)
+        {
+            if (container is IExtent extent)
+            {
+                extent.elements().remove(child);
+            }
+            else
+            {
+                var propertyName = GetDefaultPackagePropertyName(container);
+                container.RemoveCollectionItem(propertyName, child);
+            }
+            
+        }
+
         /// <summary>
         /// Gets the information whether the given element is a package to which
         /// an additional object can be added as an enumeration. If this method returns true,

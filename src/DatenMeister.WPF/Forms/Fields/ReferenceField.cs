@@ -142,10 +142,10 @@ namespace DatenMeister.WPF.Forms.Fields
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
-            _selectButton.Click += (sender, args) =>
+            _selectButton.Click += async (sender, args) =>
             {
                 // TODO: Select the one, of the currently referenced field
-                var selectedItem = NavigatorForDialogs.Locate(
+                var selectedItem = await NavigatorForDialogs.Locate(
                     navigationHost,
                     null /* workspace */,
                     (value as IHasExtent)?.Extent);

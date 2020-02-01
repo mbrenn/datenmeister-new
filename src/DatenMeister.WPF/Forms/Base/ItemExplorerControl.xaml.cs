@@ -210,11 +210,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation()
-            {
-                NavigationGuest = this,
-                NavigationHost = NavigationHost
-            };
+            var extentData = new ViewExtensionTargetInformation(NavigationHost, this);
 
             foreach (var plugin in viewExtensionPlugins)
             {
@@ -358,10 +354,8 @@ namespace DatenMeister.WPF.Forms.Base
                 
                 // 3) Queries the plugins
                 var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-                var extentData = new ViewExtensionTargetInformationForTab()
+                var extentData = new ViewExtensionTargetInformationForTab(NavigationHost, this)
                 {
-                    NavigationGuest = this,
-                    NavigationHost = NavigationHost,
                     TabFormDefinition = tab
                 };
 
@@ -481,10 +475,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                     if (!string.IsNullOrEmpty(propertyName))
                     {
-                        var extentData = new ViewExtensionForItemPropertiesInformation
+                        var extentData = new ViewExtensionForItemPropertiesInformation(NavigationHost, control)
                         {
-                            NavigationGuest = control,
-                            NavigationHost = NavigationHost,
                             Value = value,
                             Property = propertyName
                         };
@@ -790,11 +782,8 @@ namespace DatenMeister.WPF.Forms.Base
         private void AddTreeViewUiElement(List<IViewExtensionFactory> viewExtensionPlugins)
         {
             // Gets the elements of the plugin
-            var data = new ViewExtensionTargetInformation
-            {
-                NavigationHost = NavigationHost,
-                NavigationGuest = NavigationTreeView
-            };
+            var data = new ViewExtensionTargetInformation(NavigationHost, NavigationTreeView);
+            
             foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
                 .OfType<ItemButtonDefinition>())
             {

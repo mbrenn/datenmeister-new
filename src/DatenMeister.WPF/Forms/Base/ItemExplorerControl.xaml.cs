@@ -521,10 +521,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                 if (!string.IsNullOrEmpty(propertyName))
                 {
-                    var extentData = new ViewExtensionForItemPropertiesInformation
+                    var extentData = new ViewExtensionForItemPropertiesInformation(NavigationHost, control)
                     {
-                        NavigationGuest = control,
-                        NavigationHost = NavigationHost,
                         Value = value,
                         Property = propertyName
                     };
@@ -845,6 +843,11 @@ namespace DatenMeister.WPF.Forms.Base
         public void ClearTreeViewUiElement()
         {
             TreeViewButtonArea.Children.Clear();
+        }
+        
+        public virtual void OnMouseDoubleClick(IObject element)
+        {
+            NavigateToElement(element);
         }
     }
 }

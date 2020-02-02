@@ -6,8 +6,10 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 
@@ -61,9 +63,12 @@ namespace DatenMeister.WPF.Forms.Lists
             if (SelectedItem == null)
                 return;
 
-            var overridingDefinition = OverridingViewDefinition;
+            var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
 
-            if (IsExtentSelectedInTreeview)
+            var overridingDefinition = OverridingViewDefinition;
+            
+            if (IsExtentSelectedInTreeview || 
+                SelectedPackage is IElement selectedElement && selectedElement.metaclass?.@equals(managementProvider.__Workspace) == true)
             {
                 var viewDefinition = overridingDefinition ?? 
                                      WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId, NavigationHost);

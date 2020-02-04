@@ -191,7 +191,7 @@ namespace DatenMeister.WPF.Forms.Base
                 return treeViewItem.Tag as IObject;
             }
 
-            return ItemsSource;
+            return null;
         }
 
         /// <summary>

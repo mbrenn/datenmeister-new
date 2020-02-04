@@ -85,12 +85,14 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
             var hints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
             var container = (o as IElement)?.container();
-            hints.AddToExtentOrElement(found, o);
 
             if (container != null || extent != null)
             {
                 hints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
             }
+            
+            hints.AddToExtentOrElement(found, o);
+
         }
 
         private void DeleteItem(INavigationHost navigationHost, IObject? o)

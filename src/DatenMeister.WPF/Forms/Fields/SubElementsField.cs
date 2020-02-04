@@ -278,7 +278,7 @@ namespace DatenMeister.WPF.Forms.Fields
             var listItems = new List<Tuple<string, Action>>
             {
                 new Tuple<string, Action>(
-                    "Select Type",
+                    "Select Type...",
                     () =>
                     {
                         var referencedExtent = (element as MofObject)?.ReferencedExtent;

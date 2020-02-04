@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.DefaultTypes
         private static readonly ILogger Logger = new ClassLogger(typeof(DefaultClassifierHints));
 
         private IWorkspaceLogic _workspaceLogic;
-        private _UML _uml;
+        private readonly _UML _uml;
 
         public DefaultClassifierHints(IWorkspaceLogic workspaceLogic)
         {

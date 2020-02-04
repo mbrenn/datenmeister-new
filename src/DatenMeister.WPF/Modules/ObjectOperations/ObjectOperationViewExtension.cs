@@ -52,17 +52,15 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                 navigationHost,
                 extent?.GetWorkspace(),
                 extent);
+
             if (found == null)
             {
+                // Nothing selected
                 return;
             }
 
-            var options = new CopyOption {CloneAllReferences = false};
-            
-            var copied = ObjectCopier.Copy(new MofFactory(found), o, options);
-
-            var hints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
-            hints.AddToExtentOrElement(found, copied);
+            var objectOperation = GiveMe.Scope.Resolve<DatenMeister.Modules.DefaultTypes.ObjectOperations>();
+            objectOperation.CopyObject(o, found);
         }
 
         private async Task MoveItem(INavigationHost navigationHost, IObject? o)
@@ -80,18 +78,12 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
             if (found == null)
             {
+                // Nothing selected
                 return;
             }
 
-            var hints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
-            var container = (o as IElement)?.container();
-
-            if (container != null || extent != null)
-            {
-                hints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
-            }
-            
-            hints.AddToExtentOrElement(found, o);
+            var objectOperation = GiveMe.Scope.Resolve<DatenMeister.Modules.DefaultTypes.ObjectOperations>();
+            objectOperation.MoveObject(o, found);
 
         }
 

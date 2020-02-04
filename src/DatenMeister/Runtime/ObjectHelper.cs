@@ -282,7 +282,7 @@ namespace DatenMeister.Runtime
             var reflection = new MofReflectiveSequence((MofObject) value, property);
             return reflection.remove(toBeRemoved);
         }
-
+       
         public static Dictionary<object, object> AsDictionary(
             this IObject value,
             IEnumerable<string> properties)

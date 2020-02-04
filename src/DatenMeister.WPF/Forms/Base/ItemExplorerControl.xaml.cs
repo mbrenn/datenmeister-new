@@ -588,7 +588,7 @@ namespace DatenMeister.WPF.Forms.Base
             var menuItems = new List<MenuItem>();
             var menuItem = new MenuItem
             {
-                Header = "New Item"
+                Header = "Select Type..."
             };
 
             menuItem.Click += (x, y) => CreateNewElementByUser(null, null);
@@ -662,7 +662,7 @@ namespace DatenMeister.WPF.Forms.Base
             // Sets the button for the new item
             usedViewExtensions.Add(
                 new GenericButtonDefinition(
-                    "New Item",
+                    "New Item...",
                     () => _ = new ContextMenu {ItemsSource = menuItems, IsOpen = true}));
         }
 

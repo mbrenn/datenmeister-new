@@ -27,16 +27,17 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             {
                 yield return new TreeViewItemCommandDefinition(
                     "Move...",
-                     async (x) => { await MoveItem(viewExtensionTargetInformation.NavigationHost, x); }) {CategoryName = "Object"};
+                     async (x) => { await MoveItem(viewExtensionTargetInformation.NavigationHost, x); }
+                    ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                     "Copy...",
                     async (x) => {await CopyItem(viewExtensionTargetInformation.NavigationHost, x); }
-                ) {CategoryName = "Object"};
+                ) {CategoryName = "Item"};
                 
                 yield return new TreeViewItemCommandDefinition(
                     "Delete...", (x) => {DeleteItem(viewExtensionTargetInformation.NavigationHost, x); }
-                ) {CategoryName = "Object"};
+                ) {CategoryName = "Item"};
             }
         }
 

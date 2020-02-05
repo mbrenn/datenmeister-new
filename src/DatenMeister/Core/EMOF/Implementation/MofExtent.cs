@@ -433,6 +433,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return reference;
             }
 
+            if (DotNetHelper.IsUriReference(value))
+            {
+                return value;
+            }
+
             if (DotNetHelper.IsOfMofObject(value))
             {
                 if (extent == null)

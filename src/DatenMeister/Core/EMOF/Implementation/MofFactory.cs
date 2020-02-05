@@ -4,6 +4,7 @@ using System;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 
@@ -17,12 +18,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the provider, which is used to create the elements
         /// </summary>
-        private readonly IProvider _provider;
+        private IProvider _provider;
 
         /// <summary>
         /// Gets the Mof Extent being connected to the factory
         /// </summary>
-        public MofExtent? Extent { get; }
+        public MofExtent? Extent { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the Factory
@@ -30,10 +31,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent"></param>
         public MofFactory(MofExtent extent)
         {
-            Extent = extent ?? throw new ArgumentNullException(nameof(extent));
-
-            _provider = extent.Provider;
-            if (_provider == null) throw new ArgumentNullException(nameof(_provider));
+            InitializeByMofExtent(extent);
+            _provider = _provider ?? throw new InvalidOperationException("Provider is not set");
         }
 
         /// <summary>
@@ -50,6 +49,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="value">Value to be set</param>
         public MofFactory(IObject value)
         {
+            // Checks, if the given value is a mof extent, and if yes, initialize by mof extent
+            if (value is MofExtent mofExtent)
+            {
+                InitializeByMofExtent(mofExtent);
+                _provider = _provider ?? throw new InvalidOperationException("Provider is not set");
+                return;
+            }
+            
             var asMofObject = value as MofObject ?? throw new ArgumentException("value is null or not of Type MofObject");
             var extent = asMofObject.Extent;
             if (extent != null)
@@ -76,6 +83,19 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent"></param>
         public MofFactory(IExtent extent) : this((MofExtent) extent)
         {
+        }
+
+        /// <summary>
+        /// Performs the initialization (constructor) by the MofExtent
+        /// </summary>
+        /// <param name="extent"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        private void InitializeByMofExtent(MofExtent extent)
+        {
+            Extent = extent ?? throw new ArgumentNullException(nameof(extent));
+
+            _provider = extent.Provider;
+            if (_provider == null) throw new ArgumentNullException(nameof(_provider));
         }
 
         /// <inheritdoc />

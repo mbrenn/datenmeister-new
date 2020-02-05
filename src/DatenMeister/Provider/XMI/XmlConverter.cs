@@ -56,13 +56,14 @@ namespace DatenMeister.Provider.XMI
         /// <returns>Converted element to be shown</returns>
         public XElement ConvertToXml(IEnumerable<object?> elements)
         {
+            var copyOptions = new CopyOption {CloneAllReferences = false};
             var factory = new MofFactory(_extent);
             var copier = new ObjectCopier(factory);
             var rootItem = (MofObject) factory.create(null);
 
             var list =
                 elements.Cast<IElement>()
-                    .Select(element => copier.Copy(element))
+                    .Select(element => copier.Copy(element, copyOptions))
                     .Cast<object>().ToList();
 
             rootItem.set("items", list);

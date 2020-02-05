@@ -216,6 +216,12 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigationCategories.Extents + ".Export");
 
             yield return new ExtentMenuButtonDefinition(
+                "Show as Xmi",
+                x => ShowAsXmi(),
+                null,
+                NavigationCategories.Extents + ".Export");
+
+            yield return new ExtentMenuButtonDefinition(
                 "Open Extent-Folder",
                 x => OpenExtentFolder(),
                 null,
@@ -256,6 +262,13 @@ namespace DatenMeister.WPF.Forms.Lists
                         MessageBox.Show(exc.Message);
                     }
                 }
+            }
+
+            void ShowAsXmi()
+            {
+                var dlg = new ItemXmlViewWindow();
+                dlg.UpdateContent(Extent.elements());
+                dlg.Show();
             }
 
             void OpenExtentFolder()

@@ -14,7 +14,7 @@
                       HorizontalContentAlignment="Left"
                       VerticalContentAlignment="Center">
                 <TreeView.ContextMenu>
-                    <ContextMenu x:Name="ItemContextMenu"></ContextMenu>
+                    <ContextMenu x:Name="ItemContextMenu" Opened="ItemContextMenu_OnOpened"></ContextMenu>
                 </TreeView.ContextMenu>
             </TreeView>
     </Grid>

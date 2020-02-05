@@ -45,7 +45,7 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                 return null;
 
             // Check, if the selected element is a package or an extent
-            if (treeView.SelectedElement is IElement selectedElement 
+            if (treeView.GetSelectedItem() is IElement selectedElement 
                 && !_defaultClassifierHints.IsPackageLike(selectedElement))
                 return null;
 

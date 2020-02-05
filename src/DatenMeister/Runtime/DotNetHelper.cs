@@ -421,5 +421,12 @@ namespace DatenMeister.Runtime
         /// <param name="value">Value to be converted</param>
         /// <returns>true, if the value is of type MofShadow</returns>
         public static bool IsOfMofShadow(object value) => value is MofObjectShadow;
+
+        /// <summary>
+        /// Checks whether the given value is of type UriReference
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>true, if given type is urireference</returns>
+        public static bool IsUriReference(object? value) => value is UriReference;
     }
 }

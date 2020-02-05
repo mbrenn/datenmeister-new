@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.DefaultTypes
         private static readonly ILogger Logger = new ClassLogger(typeof(DefaultClassifierHints));
 
         private IWorkspaceLogic _workspaceLogic;
-        private _UML _uml;
+        private readonly _UML _uml;
 
         public DefaultClassifierHints(IWorkspaceLogic workspaceLogic)
         {
@@ -91,6 +91,20 @@ namespace DatenMeister.Modules.DefaultTypes
                 var propertyName = GetDefaultPackagePropertyName(container);
                 container.AddCollectionItem(propertyName, child);
             }
+        }
+
+        public void RemoveFromExtentOrElement(IObject container, IObject child)
+        {
+            if (container is IExtent extent)
+            {
+                extent.elements().remove(child);
+            }
+            else
+            {
+                var propertyName = GetDefaultPackagePropertyName(container);
+                container.RemoveCollectionItem(propertyName, child);
+            }
+            
         }
 
         /// <summary>

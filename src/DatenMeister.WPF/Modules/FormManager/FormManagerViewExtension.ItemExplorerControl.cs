@@ -200,7 +200,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             {
                 var extent = rootItem.GetExtentOf();
                 var extentType = extent?.GetExtentType();
-                if (extentType == FormLogic.ViewExtentType)
+                if (extentType == FormLogic.FormExtentType)
                 {
                     yield return new ItemMenuButtonDefinition(
                         "Create Extent Form by Classifier",

@@ -6,8 +6,10 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 
@@ -61,12 +63,18 @@ namespace DatenMeister.WPF.Forms.Lists
             if (SelectedItem == null)
                 return;
 
+            var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>()
+                                     ?? throw new InvalidOperationException("_ManagementProvider == null");
+
             var overridingDefinition = OverridingViewDefinition;
 
-            if (IsExtentSelectedInTreeview)
+            if (IsExtentSelectedInTreeview ||
+                SelectedPackage is IElement selectedElement &&
+                selectedElement.metaclass?.@equals(managementProvider.__Workspace) == true)
             {
-                var viewDefinition = overridingDefinition ?? 
-                                     WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId, NavigationHost);
+                var viewDefinition = overridingDefinition ??
+                                     WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,
+                                         NavigationHost);
 
                 EvaluateForm(
                     SelectedItem,
@@ -76,7 +84,7 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default)
-                    ?? throw new InvalidOperationException("form == null") ;
+                           ?? throw new InvalidOperationException("form == null");
                 var viewDefinition = overridingDefinition ??
                                      new FormDefinition(form);
 

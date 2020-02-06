@@ -38,6 +38,8 @@ namespace DatenMeister.WPF.Windows
 
             TheLog.MessageLogged += Action;
             Closed += (x, y) => TheLog.MessageLogged -= Action;
+
+            _dispatcher.ForceRefresh();
         }
 
         private void UpdateMessageContent()

@@ -511,7 +511,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 var formCreator = CreateFormCreator();
-                var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All);
+                var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All | CreationMode.OnlyCommonProperties);
 
                 return createdForm;
             }

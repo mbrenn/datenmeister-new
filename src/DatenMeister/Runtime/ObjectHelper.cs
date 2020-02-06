@@ -269,6 +269,20 @@ namespace DatenMeister.Runtime
             reflection.add(toBeAdded);
         }
 
+        /// <summary>
+        /// Removes a list item to the reflective sequence from the given value.
+        /// If the given property is not already a reflective sequence, it will become to one
+        /// </summary>
+        /// <param name="value">Value to be updated</param>
+        /// <param name="property">Property whose Reflective Collection shall be modified</param>
+        /// <param name="toBeRemoved">Element to be removed</param>
+        /// <returns>true, if removal has been successful</returns>
+        public static bool RemoveCollectionItem(this IObject value, string property, object toBeRemoved)
+        {
+            var reflection = new MofReflectiveSequence((MofObject) value, property);
+            return reflection.remove(toBeRemoved);
+        }
+       
         public static Dictionary<object, object> AsDictionary(
             this IObject value,
             IEnumerable<string> properties)

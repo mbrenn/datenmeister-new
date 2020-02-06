@@ -41,7 +41,7 @@ namespace DatenMeister.Tests.Modules
             var dataView = helper.CreateDataview("Test", "dm:///view/test");
             var model = helper.GetModel();
 
-            var userViewExtent = helper.GetUserViewExtent();
+            var userViewExtent = helper.GetUserFormExtent();
 
             var factory = new MofFactory(userViewExtent);
             var extentSource = factory.create(model.__SourceExtentNode);

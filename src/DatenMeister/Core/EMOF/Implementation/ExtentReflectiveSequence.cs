@@ -96,7 +96,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
                 
                 return false;
-                
+            }
+
+            if (value is MofObjectShadow shadow)
+            {
+                //_extent.Provider.DeleteElement(shadow);
             }
 
             throw new NotImplementedException("Only the deletion of values are supported");

@@ -46,6 +46,16 @@ namespace DatenMeister.Runtime.Copier
     public class ObjectCopier
     {
         /// <summary>
+        /// Stores the current depth
+        /// </summary>
+        private int _currentDepth = 0;
+
+        /// <summary>
+        /// Defines the maximum recursion depth that is accepted by the object copier
+        /// </summary>
+        private const int MaxRecursionDepth = 100;
+        
+        /// <summary>
         /// Contains the factory method
         /// </summary>
         private readonly IFactory _factory;
@@ -95,6 +105,13 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="copyOptions">Options to be copied</param>
         public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption? copyOptions = null)
         {
+            _currentDepth++;
+            if (_currentDepth >= MaxRecursionDepth)
+            {
+                // Can't go deeper
+                return;
+            }
+            
             copyOptions ??= CopyOptions.None;
 
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
@@ -115,11 +132,13 @@ namespace DatenMeister.Runtime.Copier
             // Transfers the properties
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
-                var value = sourceElement.get(property);
+                var value = sourceElement.get<object>(property, !copyOptions.CloneAllReferences);
                 var result = CopyValue(value, targetElement as IElement, copyOptions);
 
                 targetElement.set(property, result);
             }
+
+            _currentDepth--;
         }
 
         /// <summary>

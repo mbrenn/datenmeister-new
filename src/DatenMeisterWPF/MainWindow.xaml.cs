@@ -185,11 +185,7 @@ namespace DatenMeisterWPF
             }
 
             // 3) The plugins
-            var data = new ViewExtensionTargetInformation()
-            {
-                NavigationHost = this,
-                NavigationGuest = guest
-            };
+            var data = new ViewExtensionTargetInformation(this, guest);
 
             foreach (var plugin in viewExtensionPlugins)
             {

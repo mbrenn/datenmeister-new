@@ -14,12 +14,19 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// <summary>
         /// Gets or sets the navigation host querying the view extensions
         /// </summary>
-        public INavigationHost? NavigationHost { get; set; }
+        public INavigationHost NavigationHost { get; set; }
 
         /// <summary>
         /// Gets or sets the navigation guest which is currently
         /// </summary>
         public INavigationGuest? NavigationGuest { get; set; }
+
+        public ViewExtensionTargetInformation(INavigationHost navigationHost, INavigationGuest? navigationGuest)
+        {
+            NavigationHost = navigationHost;
+            NavigationGuest = navigationGuest;
+        }
+        
     }
 
     public class ViewExtensionTargetInformationForTab : ViewExtensionTargetInformation
@@ -28,6 +35,11 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Gets or sets the definition for the tab
         /// </summary>
         public IElement? TabFormDefinition { get; set; }
+
+        public ViewExtensionTargetInformationForTab(INavigationHost navigationHost, INavigationGuest navigationGuest) 
+            : base(navigationHost, navigationGuest)
+        {
+        }
     }
 
     public static class ViewExtensionTargetInformationExtension
@@ -106,5 +118,9 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         /// Gets or sets the property which is queried to be shown
         /// </summary>
         public string? Property { get; set; }
+
+        public ViewExtensionForItemPropertiesInformation(INavigationHost navigationHost, INavigationGuest navigationGuest) : base(navigationHost, navigationGuest)
+        {
+        }
     }
 }

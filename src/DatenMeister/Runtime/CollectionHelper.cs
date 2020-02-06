@@ -120,6 +120,7 @@ namespace DatenMeister.Runtime
                 }
             }
             
+            // Object does not support moving up, so we have to do it manually. 
             var n = 0;
             var position = -1;
             foreach (var element in collection)

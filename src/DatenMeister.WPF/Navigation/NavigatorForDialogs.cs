@@ -72,7 +72,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspaceName">Name of the workspace which shall be pre-selected</param>
         /// <param name="extentUri">Uri of the workspace </param>
         /// <returns>The selected workspace by the user or null, if the user has not selected a workspace</returns>
-        public static IObject? Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
+        public static async Task<IObject?> Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
         {
             var workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspace(workspaceName);
             IExtent? extent = null;
@@ -81,7 +81,7 @@ namespace DatenMeister.WPF.Navigation
                 extent = workspace.FindExtent(extentUri);
             }
 
-            return Locate(navigationHost, workspace, extent);
+            return await Locate(navigationHost, workspace, extent);
         }
 
         /// <summary>
@@ -91,8 +91,9 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspace">Defines the workspace to which shall be navigated</param>
         /// <param name="defaultExtent">Extent that shall be opened per default</param>
         /// <returns></returns>
-        public static IObject? Locate(INavigationHost navigationHost, IWorkspace? workspace = null, IExtent? defaultExtent = null)
+        public static async Task<IObject?> Locate(INavigationHost navigationHost, IWorkspace? workspace = null, IExtent? defaultExtent = null)
         {
+            var task = new TaskCompletionSource<IObject?>();
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
@@ -119,10 +120,12 @@ namespace DatenMeister.WPF.Navigation
 
             if (dlg.ShowDialog() == true)
             {
-                return dlg.SelectedElement;
+                task.SetResult(dlg.SelectedElement);
+                return await task.Task;
             }
-
-            return null;
+            
+            task.SetResult(null);
+            return await task.Task;
         }
     }
 }

@@ -298,7 +298,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     uri);
             }
 
-            async void LoadExtent(IObject item)
+            async void LoadExtent(IObject? item)
             {
                 var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)

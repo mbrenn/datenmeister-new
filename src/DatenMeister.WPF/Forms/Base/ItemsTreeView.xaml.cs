@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -20,6 +19,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 using Clipboard = System.Windows.Clipboard;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MenuItem = System.Windows.Controls.MenuItem;
@@ -156,7 +156,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the list of hints for the default classifier
         /// </summary>
-        private DefaultClassifierHints _defaultClassifierHints;
+        private readonly DefaultClassifierHints _defaultClassifierHints;
 
         private INavigationHost? _navigationHost;
 
@@ -176,24 +176,22 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public IObject? SelectedElement
+        public void SetSelectedItem(IObject? value)
         {
-            get
+            if (value != null && _mappingItems.TryGetValue(value, out var treeviewItem))
             {
-                if (TreeView.SelectedItem is TreeViewItem treeViewItem)
-                {
-                    return treeViewItem.Tag as IObject;
-                }
+                treeviewItem.IsSelected = true;
+            }
+        }
 
-                return ItemsSource;
-            }
-            set
+        public IObject? GetSelectedItem()
+        {
+            if (TreeView.SelectedItem is TreeViewItem treeViewItem)
             {
-                if (value != null && _mappingItems.TryGetValue(value, out var treeviewItem))
-                {
-                    treeviewItem.IsSelected = true;
-                }
+                return treeViewItem.Tag as IObject;
             }
+
+            return null;
         }
 
         /// <summary>
@@ -537,36 +535,46 @@ namespace DatenMeister.WPF.Forms.Base
 
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
+            ViewExtensions.Clear();
+            ViewExtensions.AddRange(viewExtensions);
+        }
+
+        /// <summary>
+        /// Shows the context menu
+        /// </summary>
+        public void ShowContextMenu()
+        {
             var menuItems = new List<MenuItem>();
+            var selectedItem = GetSelectedItem();
+
             foreach (var extension in ViewExtensions.OfType<TreeViewItemCommandDefinition>())
             {
-                var menuItem = new MenuItem
+                if (extension.FilterFunction != null && !extension.FilterFunction(selectedItem))
                 {
-                    Header = extension.Text
-                };
+                    // Skip item
+                    continue;
+                }
+
+                var menuItem = MenuHelper.GetOrCreateMenu(menuItems, extension.CategoryName, extension.Text);
 
                 if (extension.Action == null)
                 {
                     continue;
                 }
-                
-                
+
                 menuItem.Click += (x, y) =>
                 {
-                    var selectedItem = SelectedElement;
-                    if (selectedItem == null)
-                    {
-                        System.Windows.MessageBox.Show("No item selected");
-                        return;
-                    }
-
                     extension.Action?.Invoke(selectedItem);
                 };
-                
-                menuItems.Add(menuItem);
             }
 
             ItemContextMenu.ItemsSource = menuItems;
+            ItemContextMenu.IsOpen = true;
+        }
+
+        private void ItemContextMenu_OnOpened(object sender, RoutedEventArgs e)
+        {
+            ShowContextMenu();
         }
     }
 }

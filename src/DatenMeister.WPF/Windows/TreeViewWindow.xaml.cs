@@ -90,5 +90,10 @@ namespace DatenMeister.WPF.Windows
         {
             ObjectTreeView.UpdateView();
         }
+
+        private void TreeViewWindow_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
+        }
     }
 }

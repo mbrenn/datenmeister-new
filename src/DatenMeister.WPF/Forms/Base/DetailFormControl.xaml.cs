@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using Autofac;

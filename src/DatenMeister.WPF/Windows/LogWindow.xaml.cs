@@ -38,6 +38,8 @@ namespace DatenMeister.WPF.Windows
 
             TheLog.MessageLogged += Action;
             Closed += (x, y) => TheLog.MessageLogged -= Action;
+
+            _dispatcher.ForceRefresh();
         }
 
         private void UpdateMessageContent()
@@ -85,6 +87,11 @@ namespace DatenMeister.WPF.Windows
                 TheLog.FilterThreshold =
                     (LogLevel) Enum.Parse(typeof(LogLevel), selectedValue);
             }
+        }
+
+        private void LogWindow_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
         }
     }
 }

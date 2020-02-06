@@ -21,7 +21,7 @@ namespace DatenMeister.WPF.Windows
     }
 
     /// <summary>
-    /// Interaktionslogik für ExcelImportDefinitionDialog.xaml
+    /// Interaktionslogik für ExcelImportDefinitioOnClosedxaml
     /// </summary>
     public partial class ExcelImportDefinitionDialog : Window
     {
@@ -247,5 +247,10 @@ namespace DatenMeister.WPF.Windows
         /// <returns>The configuration object describing the elements</returns>
         public IObject? GetConfigurationObject()
             => _importer?.Settings?.GetSettingsAsMofObject();
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
+        }
     }
 }

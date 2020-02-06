@@ -14,7 +14,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Modules.Validators;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -310,6 +309,8 @@ namespace DatenMeister.WPF.Windows
             {
                 OnCancelled(null, null);
             }
+
+            Owner?.Focus();
         }
 
         /// <summary>

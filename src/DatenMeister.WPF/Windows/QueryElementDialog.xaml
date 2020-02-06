@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Query Element" Width="500" SizeToContent="Height"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner" Closed="QueryElementDialog_OnClosed">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="5,2,5,2"></Setter>

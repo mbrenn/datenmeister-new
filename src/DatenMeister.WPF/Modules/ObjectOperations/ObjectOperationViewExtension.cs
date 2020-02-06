@@ -1,15 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents.DocumentStructures;
-using System.Windows.Forms;
 using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;

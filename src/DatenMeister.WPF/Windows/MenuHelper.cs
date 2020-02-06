@@ -1,10 +1,8 @@
 ﻿#nullable enable
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
-using System.Windows.Forms;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;

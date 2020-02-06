@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Xml of item window" Height="600" Width="1000"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner" Closed="OnClosed">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
             <CheckBox x:Name="IgnoreIDs" Click="Ignore_IDs_OnClick">Ignore the IDs</CheckBox>

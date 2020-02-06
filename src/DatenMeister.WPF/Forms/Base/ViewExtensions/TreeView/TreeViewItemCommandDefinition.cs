@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System;
-using BurnSystems.Collections;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView

@@ -135,5 +135,10 @@ namespace DatenMeister.WPF.Windows
         {
             UpdateContent();
         }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
+        }
     }
 }

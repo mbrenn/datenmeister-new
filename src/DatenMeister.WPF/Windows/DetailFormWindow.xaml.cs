@@ -309,6 +309,8 @@ namespace DatenMeister.WPF.Windows
             {
                 OnCancelled(null, null);
             }
+
+            Owner?.Focus();
         }
 
         /// <summary>

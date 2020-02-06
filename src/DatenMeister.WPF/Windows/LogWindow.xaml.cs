@@ -86,5 +86,10 @@ namespace DatenMeister.WPF.Windows
                     (LogLevel) Enum.Parse(typeof(LogLevel), selectedValue);
             }
         }
+
+        private void LogWindow_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
+        }
     }
 }

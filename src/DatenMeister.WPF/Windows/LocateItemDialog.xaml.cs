@@ -164,5 +164,10 @@ namespace DatenMeister.WPF.Windows
         {
             ItemChosen?.Invoke(this, new ItemEventArgs(chosenElement));
         }
+
+        private void LocateItemDialog_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
+        }
     }
 }

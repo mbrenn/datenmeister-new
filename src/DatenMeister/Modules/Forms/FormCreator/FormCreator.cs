@@ -125,7 +125,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (!cache.CoveredMetaClasses.Contains(metaClass))
                 {
                     cache.CoveredMetaClasses.Add(metaClass);
-                    wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode);
+                    wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode, cache);
                 }
                 else
                 {

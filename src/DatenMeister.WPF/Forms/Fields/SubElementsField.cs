@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -35,6 +36,7 @@ namespace DatenMeister.WPF.Forms.Fields
         private IElement? _fieldData;
         private string _propertyName = string.Empty;
         private ItemListViewControl? _listViewControl;
+        private bool _includeSpecializationsForDefaultTypes;
 
         /// <summary>
         /// Creates the element
@@ -88,6 +90,9 @@ namespace DatenMeister.WPF.Forms.Fields
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
             var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
             var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly);
+            _includeSpecializationsForDefaultTypes =
+                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData
+                    .includeSpecializationsForDefaultTypes);
 
             valueOfElement ??= _element.get<IReflectiveCollection>(_propertyName);
             var valueCount = valueOfElement.Count();
@@ -307,14 +312,24 @@ namespace DatenMeister.WPF.Forms.Fields
                     })
             };
 
+            var getAllSpecializations = _includeSpecializationsForDefaultTypes;
             // Gets the buttons for specific types
             if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
                 .defaultTypesForNewElements) is { } defaultTypesForNewItems)
             {
-                var specializedTypes =
-                    (from type in defaultTypesForNewItems.OfType<IElement>()
-                        from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                        select newSpecializationType).Distinct();
+                IEnumerable<IElement> specializedTypes;
+
+                if (getAllSpecializations)
+                {
+                    specializedTypes =
+                        (from type in defaultTypesForNewItems.OfType<IElement>()
+                            from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                            select newSpecializationType).Distinct();
+                }
+                else
+                {
+                    specializedTypes = defaultTypesForNewItems.OfType<IElement>();
+                }
 
                 listItems.AddRange(
                     from x in specializedTypes

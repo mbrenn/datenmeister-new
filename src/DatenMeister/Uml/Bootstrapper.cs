@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
@@ -298,10 +299,14 @@ namespace DatenMeister.Uml
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Extent").ElementAt(0));
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Element").ElementAt(0));
 
+            // Gets all the elements which are classes of the uml
             var umlMetaClasses =
                 umlElements
                     .Cast<IElement>()
-                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class");
+                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                    .ToList();
+
+            // Caches all the classes.
 
             var umlNameCache = umlMetaClasses
                 .ToDictionary(x => x.getOrDefault<string>("name"), x => x);
@@ -347,9 +352,30 @@ namespace DatenMeister.Uml
                 extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUmlExtent)
                     .element(WorkspaceNames.UriUmlExtent + "#Generalization");
             EvaluateGeneralizations(umlDescendents, metaClassGeneralization);
+            
+            // Go through all the elements and get the ownedAttributes and sets the correct property types
+            foreach (var classes in umlMetaClasses)
+            {
+                var ownedAttributes =
+                    classes.getOrDefault<IReflectiveCollection>(_UML._StructuredClassifiers._Class.ownedAttribute);
+                if (ownedAttributes == null)
+                {
+                    continue;
+                }
+
+                foreach (var ownedAttribute in ownedAttributes.OfType<IElement>())
+                {
+                    var type = ownedAttribute.getOrDefault<string>(_UML._CommonStructure._TypedElement.type);
+                    if (!string.IsNullOrEmpty(type) && UmlClasses.TryGetValue(type, out var foundUml))
+                    {
+                        ownedAttribute.set(_UML._CommonStructure._TypedElement.type, foundUml);
+                    }
+                }
+            }
 
             // ConvertPropertiesToRealProperties(allElements);
         }
+
 
         /// <summary>
         /// Evaluates the

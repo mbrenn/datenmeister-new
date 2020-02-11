@@ -16,6 +16,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Modules.Validators;
@@ -61,6 +62,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private string? _internalTitle;
 
+        private IObject? _effectiveForm;
+
         public DetailFormControl()
         {
             InitializeComponent();
@@ -85,7 +88,19 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        public IObject? EffectiveForm { get; set; }
+        public IObject? EffectiveForm
+        {
+            get => _effectiveForm;
+            set
+            {
+                _effectiveForm = value;
+#if DEBUG
+                if (value != null && !new FormMethods().ValidateForm(value)) 
+                    throw new InvalidOperationException("The form did not pass validation");
+#endif
+            }
+        }
+
 
         /// <summary>
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element

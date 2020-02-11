@@ -20,6 +20,7 @@ using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
@@ -90,6 +91,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private ChangeEventManager? _changeEventManager;
 
+        private IObject? _effectiveForm;
+
         public ItemListViewControl()
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
@@ -108,7 +111,18 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Defines the current form definition of the window as provided by the
         ///     derived method 'RequestForm'.
         /// </summary>
-        public IObject? EffectiveForm { get; set; }
+        public IObject? EffectiveForm
+        {
+            get => _effectiveForm;
+            set
+            {
+                _effectiveForm = value;
+#if DEBUG
+                if (value != null && !new FormMethods().ValidateForm(value)) 
+                    throw new InvalidOperationException("The form did not pass validation");
+#endif
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the view extensions
@@ -411,6 +425,12 @@ namespace DatenMeister.WPF.Forms.Base
                         foreach (var field in fields.Cast<IElement>())
                         {
                             var columnName = fieldDataNames[n];
+                            if (asDictionary.ContainsKey(columnName))
+                            {
+                                Logger.Warn($"Column {columnName} skipped because it is given multiple times");
+                                continue;
+                            }
+                            
                             var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
                             var value = GetValueOfElement(item, field);
 

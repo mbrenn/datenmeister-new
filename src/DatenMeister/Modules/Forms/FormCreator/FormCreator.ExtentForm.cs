@@ -335,22 +335,24 @@ namespace DatenMeister.Modules.Forms.FormCreator
             foreach (var pair in propertiesWithCollection)
             {
                 var elementsAsObjects = pair.propertyContent.OfType<IObject>().ToList();
-                var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
-                {
-                    if (x is IElement innerElement)
-                    {
-                        return innerElement.getMetaClass() == null;
-                    }
-
-                    return true;
-                }).ToList();
-
-                var elementsWithMetaClass = elementsAsObjects
-                    .OfType<IElement>()
-                    .GroupBy(x => x.getMetaClass());
 
                 if (ConfigurationFormCreatorSeparateProperties)
+#pragma warning disable 162
                 {
+                    var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
+                    {
+                        if (x is IElement innerElement)
+                        {
+                            return innerElement.getMetaClass() == null;
+                        }
+
+                        return true;
+                    }).ToList();
+
+                    var elementsWithMetaClass = elementsAsObjects
+                        .OfType<IElement>()
+                        .GroupBy(x => x.getMetaClass());
+                    
                     if (elementsWithoutMetaClass.Any() || !elementsAsObjects.Any())
                     {
                         // If there are elements included and they are filled
@@ -389,6 +391,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         }
                     }
                 }
+#pragma warning restore 162
                 else
                 {
                     // If there are elements included and they are filled

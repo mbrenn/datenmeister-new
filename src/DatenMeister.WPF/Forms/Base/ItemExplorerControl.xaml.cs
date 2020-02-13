@@ -108,7 +108,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Gets the currently selected item in the tree view. May be null, if no item is selected
+        /// Gets the currently selected item in the tree view. May be the root element, if no item is selected
         /// </summary>
         public IObject? SelectedItem { get; protected set; }
 

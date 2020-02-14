@@ -2,6 +2,6 @@
 {
     public class ReportElement
     {
-        
+        public string name { get; set; }
     }
 }

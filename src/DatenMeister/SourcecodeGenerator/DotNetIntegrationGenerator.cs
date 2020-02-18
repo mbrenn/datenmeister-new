@@ -50,7 +50,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine(
                 $"{stack.Indentation}public static void Assign(" +
                 "_UML uml, IFactory factory, IReflectiveCollection collection, " +
-                $"_{packageName} filledStructure, MofUriExtent extent)");
+                $"_{packageName} filledStructure, MofExtent extent)");
             Result.AppendLine($"{stack.Indentation}{{");
 
             stack = stack.Next;

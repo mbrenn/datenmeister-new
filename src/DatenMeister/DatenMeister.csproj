@@ -43,7 +43,6 @@
     <Folder Include="Models\Example" />
     <Folder Include="Models\ManagementProvider\" />
     <Folder Include="Modules\Forms" />
-    <Folder Include="Modules\Reports" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />

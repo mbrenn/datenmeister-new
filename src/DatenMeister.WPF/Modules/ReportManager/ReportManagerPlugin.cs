@@ -6,7 +6,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
     {
         public void Start(PluginLoadingPosition position)
         {
-            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ReportManagerViewExtension());
+            GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new DefaultReportManagerViewExtensions());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Navigation;
@@ -26,9 +27,11 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
             NavigationHost = navigationHost;
             NavigationGuest = navigationGuest;
         }
-        
     }
 
+    /// <summary>
+    /// This class is instantiated for each tab of the ItemExplorerTab
+    /// </summary>
     public class ViewExtensionTargetInformationForTab : ViewExtensionTargetInformation
     {
         /// <summary>
@@ -42,62 +45,88 @@ namespace DatenMeister.WPF.Forms.Base.ViewExtensions
         }
     }
 
+    /// <summary>
+    /// Defines methods for view extensions
+    /// </summary>
     public static class ViewExtensionTargetInformationExtension
     {
         /// <summary>
-        /// Gets the information whether the event was created by the event
+        /// Gets the application window if the navigation host is referring to an application window
         /// </summary>
         /// <param name="targetInformation">TargetInformation to be used</param>
-        public static bool IsMainApplicationWindow(this ViewExtensionTargetInformation targetInformation) =>
-            targetInformation.NavigationHost is IApplicationWindow;
+        public static IApplicationWindow?
+            GetMainApplicationWindow(this ViewExtensionTargetInformation targetInformation) =>
+            targetInformation.NavigationHost as IApplicationWindow;
+
+        
+        /// <summary>
+        /// Gets the information whether the event is thrown out of the ItemExplorerControl
+        /// </summary>
+        /// <param name="targetInformation">The target information being used</param>
+        /// <returns>null, if not a valid ItemExplorerControl</returns>
+        public static ItemExplorerControl? GetExplorerControl(this ViewExtensionTargetInformation targetInformation) =>
+            targetInformation.NavigationGuest as ItemExplorerControl;
 
         /// <summary>
         /// Gets the information whether the target information currently indicates an ExplorerControl in
-        /// which the items of an extents are shown. 
+        /// which the items of an extents are shown. This event will not be filtered if thrown during the
+        /// creation of the tabs
         /// </summary>
         /// <param name="targetInformation">TargetInformation to be used</param>
         /// <returns>true, if that is the case</returns>
-        public static bool IsItemsInExtentExplorerControl(this ViewExtensionTargetInformation targetInformation) =>
-            targetInformation.NavigationGuest is ItemsInExtentList &&
-            !(targetInformation is ViewExtensionTargetInformationForTab);
-        
+        public static ItemsInExtentList? GetItemsInExtentExplorerControl(this ViewExtensionTargetInformation targetInformation)
+        {
+            return targetInformation is ViewExtensionTargetInformationForTab
+                ? null
+                : targetInformation.NavigationGuest as ItemsInExtentList;
+        }
+
         /// <summary>
         /// Gets the information whether the event is sent out of the explorer control for workspace list
         /// </summary>
         /// <param name="targetInformation">TargetInformation to be used</param>
         /// <returns>true, if that is the case</returns>
-        public static bool IsWorkspaceListExplorerControl(this ViewExtensionTargetInformation targetInformation) =>
-            targetInformation.NavigationGuest is WorkspaceList&&
-            !(targetInformation is ViewExtensionTargetInformationForTab);
+        public static WorkspaceList? GetWorkspaceListExplorerControl(this ViewExtensionTargetInformation targetInformation)
+        {
+            return targetInformation is ViewExtensionTargetInformationForTab
+                ? null
+                : targetInformation.NavigationGuest as WorkspaceList;
+        }
         
         /// <summary>
         /// Gets the information whether the event is sent out of the explorer control for extent list
         /// </summary>
         /// <param name="targetInformation">TargetInformation to be used</param>
         /// <returns>true, if that is the case</returns>
-        public static bool IsExtentListExplorerControl(this ViewExtensionTargetInformation targetInformation) =>
-            targetInformation.NavigationGuest is ExtentList &&
-            !(targetInformation is ViewExtensionTargetInformationForTab);
-        
-        public static bool IsListViewForItemsTab(this ViewExtensionTargetInformation targetInformation) =>
-            targetInformation.NavigationGuest is ItemsInExtentList &&
-            targetInformation is ViewExtensionTargetInformationForTab;
+        public static ExtentList? GetExtentListExplorerControl(this ViewExtensionTargetInformation targetInformation)
+        {
+            return targetInformation is ViewExtensionTargetInformationForTab
+                ? null
+                : targetInformation.NavigationGuest as ExtentList;
+        }
+
+        public static ItemsInExtentList? GetListViewForItemsTab(this ViewExtensionTargetInformation targetInformation)
+        {
+            return targetInformation is ViewExtensionTargetInformationForTab
+                ? targetInformation.NavigationGuest as ItemsInExtentList
+                : null;
+        }
 
         /// <summary>
-        /// Checks, if a tab is created for the items within in an extent having a certain extent type 
+        /// Checks, if a tab is created for the items within in an extent having a certain extent type.
         /// </summary>
-        /// <param name="targetInformation"></param>
-        /// <param name="extentType"></param>
-        /// <returns></returns>
+        /// <param name="targetInformation">The target information to be used</param>
+        /// <param name="extentType">The extent type which is requested</param>
+        /// <returns>null, if the item is not fitting or the ItemsInExtentList if the
+        /// extent type is fitting</returns>
         public static ItemsInExtentList? GetListViewForItemsTabForExtentType(
             this ViewExtensionTargetInformation targetInformation,
             string extentType)
-
         {
             var extentList = targetInformation.NavigationGuest as ItemsInExtentList;
-            var isCorrect =  extentList != null && 
-                targetInformation is ViewExtensionTargetInformationForTab &&
-                extentList.Extent?.GetExtentType() == extentType;
+            var isCorrect = extentList != null &&
+                            targetInformation is ViewExtensionTargetInformationForTab &&
+                            extentList.Extent.GetExtentType() == extentType;
 
             return isCorrect ? extentList : null;
         }

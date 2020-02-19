@@ -16,7 +16,7 @@ using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ReportManager
 {
-    public class ReportManagerViewExtension : IViewExtensionFactory
+    public class DefaultReportManagerViewExtensions : IViewExtensionFactory
     {
         public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
         {
@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                     );
             }
 
-            // Check fi the the query is about the current view
+            // Check if the the query is about the current view
             if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl viewControl)
             {
                 var effectiveForm = viewControl.EffectiveForm ??

@@ -7,8 +7,10 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using MessageBox = System.Windows.MessageBox;
 
@@ -17,22 +19,22 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
     public class ObjectOperationViewExtension : IViewExtensionFactory
     {
         public IEnumerable<ViewExtension> GetViewExtensions(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            if (viewExtensionTargetInformation.GetItemsInExtentExplorerControl() != null)
+            if (viewExtensionInfo.GetItemsInExtentExplorerControl() != null)
             {
                 yield return new TreeViewItemCommandDefinition(
                     "Move...",
-                     async (x) => { await MoveItem(viewExtensionTargetInformation.NavigationHost, x); }
+                     async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x); }
                     ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                     "Copy...",
-                    async (x) => {await CopyItem(viewExtensionTargetInformation.NavigationHost, x); }
+                    async (x) => {await CopyItem(viewExtensionInfo.NavigationHost, x); }
                 ) {CategoryName = "Item"};
                 
                 yield return new TreeViewItemCommandDefinition(
-                    "Delete...", (x) => {DeleteItem(viewExtensionTargetInformation.NavigationHost, x); }
+                    "Delete...", (x) => {DeleteItem(viewExtensionInfo.NavigationHost, x); }
                 ) {CategoryName = "Item"};
             }
         }

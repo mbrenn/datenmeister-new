@@ -3,7 +3,7 @@
 using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
 {
     public class ItemButtonDefinition : ViewExtension
     {

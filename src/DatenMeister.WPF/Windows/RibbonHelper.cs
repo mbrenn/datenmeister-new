@@ -7,9 +7,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
@@ -218,7 +219,6 @@ namespace DatenMeister.WPF.Windows
             {
                 // Check, navigation button is already given
                 var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
-                if (foundTuple != null)
                 {
                     copiedList.Remove(foundTuple);
 
@@ -234,10 +234,6 @@ namespace DatenMeister.WPF.Windows
                     foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
                     foundTuple.Button.IsEnabled = viewExtension.IsEnabled;
-                }
-                else
-                {
-                    AddNavigationButton(viewExtension);
                 }
             }
 

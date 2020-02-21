@@ -3,7 +3,7 @@
 using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
 {
     /// <summary>
     /// This menu button is allocated to the shown or selected item and will shown as a menu on this item

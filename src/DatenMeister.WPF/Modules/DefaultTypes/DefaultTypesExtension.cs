@@ -8,8 +8,10 @@ using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.DefaultTypes
@@ -23,9 +25,9 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
             _defaultClassifierHints = hints;
         }
         
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
-            var btn = GetNewPackageButton(viewExtensionTargetInformation);
+            var btn = GetNewPackageButton(viewExtensionInfo);
             if (btn != null)
             {
                 yield return btn;
@@ -33,9 +35,9 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
         }
 
         private ItemButtonDefinition? GetNewPackageButton(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            if (!(viewExtensionTargetInformation.NavigationGuest is ItemsTreeView treeView))
+            if (!(viewExtensionInfo.NavigationGuest is ItemsTreeView treeView))
                 return null;
 
             if (!(treeView.RootElement is MofExtent extent))
@@ -68,10 +70,10 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                             clickedItem, 
                             package);
 
-                        var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+                        var navigationHost = viewExtensionInfo.NavigationHost ??
                                              throw new InvalidOperationException("NavigationHost == null");
                         _ = NavigatorForItems.NavigateToElementDetailView(
-                            viewExtensionTargetInformation.NavigationHost,
+                            viewExtensionInfo.NavigationHost,
                             package);
                     });
         }

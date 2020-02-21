@@ -21,11 +21,13 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using Button = System.Windows.Controls.Button;
 using ContextMenu = System.Windows.Controls.ContextMenu;
@@ -210,8 +212,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation(NavigationHost, this);
-            
+            var extentData = GetViewExtensionInfo();
+                
             foreach (var plugin in viewExtensionPlugins)
             {
                 foreach (var extension in plugin.GetViewExtensions(extentData))
@@ -225,7 +227,18 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Gets the default view extentsions for any item explorer control
+        /// Gets the view extension information 
+        /// </summary>
+        /// <returns>The view extension fitting to item explorer</returns>
+        public virtual ViewExtensionInfo GetViewExtensionInfo() =>
+            new ViewExtensionInfoExplore(NavigationHost, this)
+            {
+                RootElement = _rootItem,
+                SelectedElement = SelectedItem
+            };
+
+        /// <summary>
+        /// Gets the default view extensions for any item explorer control
         /// </summary>
         /// <returns>enumeration of view extensions</returns>
         private IEnumerable<ViewExtension> GetDefaultViewExtensions()
@@ -358,7 +371,7 @@ namespace DatenMeister.WPF.Forms.Base
                 
                 // 3) Queries the plugins
                 var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-                var extentData = new ViewExtensionTargetInformationForTab(NavigationHost, this)
+                var extentData = new ViewExtensionInfoTab(NavigationHost, this)
                 {
                     TabFormDefinition = tab
                 };
@@ -420,7 +433,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (createdUserControl is INavigationGuest navigationGuest)
             {
-                usedViewExtensions.AddRange(navigationGuest.GetViewExtensions());
+                // usedViewExtensions.AddRange(navigationGuest.GetViewExtensions());
                 tabControl.EvaluateViewExtensions(usedViewExtensions);
             }
 
@@ -520,7 +533,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 if (!string.IsNullOrEmpty(propertyName))
                 {
-                    var extentData = new ViewExtensionForItemPropertiesInformation(NavigationHost, control)
+                    var extentData = new ViewExtensionItemPropertiesInformation(NavigationHost, control)
                     {
                         Value = value,
                         Property = propertyName
@@ -800,7 +813,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void AddTreeViewUiElement(List<IViewExtensionFactory> viewExtensionPlugins)
         {
             // Gets the elements of the plugin
-            var data = new ViewExtensionTargetInformation(NavigationHost, NavigationTreeView);
+            var data = new ViewExtensionInfo(NavigationHost, NavigationTreeView);
             
             foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
                 .OfType<ItemButtonDefinition>())

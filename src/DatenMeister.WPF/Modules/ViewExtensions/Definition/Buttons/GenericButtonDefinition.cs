@@ -2,7 +2,7 @@
 
 using System;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
 {
     public class GenericButtonDefinition : ViewExtension
     {

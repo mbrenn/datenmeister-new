@@ -10,7 +10,9 @@ using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -24,26 +26,26 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// <summary>
         /// Gets the view extension
         /// </summary>
-        /// <param name="viewExtensionTargetInformation"></param>
+        /// <param name="viewExtensionInfo"></param>
         /// <returns></returns>
         public IEnumerable<ViewExtension> GetViewExtensions(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            var navigationGuest = viewExtensionTargetInformation.NavigationGuest;
-            var navigationHost = viewExtensionTargetInformation.NavigationHost;
+            var navigationGuest = viewExtensionInfo.NavigationGuest;
+            var navigationHost = viewExtensionInfo.NavigationHost;
             
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
             var detailFormWindow = navigationHost as DetailFormWindow;
 
             if (navigationHost is IApplicationWindow)
             {
-                yield return GetForApplicationWindow(viewExtensionTargetInformation);
+                yield return GetForApplicationWindow(viewExtensionInfo);
             }
 
             if (detailFormWindow != null)
             {
                 foreach (var viewExtension in GetForDetailWindow(
-                    viewExtensionTargetInformation,
+                    viewExtensionInfo,
                     detailFormWindow))
                 {
                     yield return viewExtension;

@@ -13,8 +13,10 @@ using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using MessageBox = System.Windows.MessageBox;
@@ -30,11 +32,11 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// <summary>
         /// Gets the view extenstions for the detail window
         /// </summary>
-        /// <param name="viewExtensionTargetInformation">The information about guests and hosts</param>
+        /// <param name="viewExtensionInfo">The information about guests and hosts</param>
         /// <param name="detailWindow"></param>
         /// <returns></returns>
         private static IEnumerable<ViewExtension> GetForDetailWindow(
-            ViewExtensionTargetInformation viewExtensionTargetInformation,
+            ViewExtensionInfo viewExtensionInfo,
             DetailFormWindow detailWindow)
         {
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>()
@@ -173,7 +175,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             void CreateFieldByProperty()
             {
-                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 
                 if (NavigatorForDialogs.Locate(
@@ -191,7 +193,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             async void CreateAsDefaultType()
             {
-                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 var defaultTypeClassifierHints = new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic);
                 var extent = (detailAsElement as IHasExtent)?.Extent;

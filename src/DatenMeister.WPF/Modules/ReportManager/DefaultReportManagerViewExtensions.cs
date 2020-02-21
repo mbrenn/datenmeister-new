@@ -10,19 +10,21 @@ using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ReportManager
 {
     public class DefaultReportManagerViewExtensions : IViewExtensionFactory
     {
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
             // Check if the current query is about the detail form
-            if (viewExtensionTargetInformation.NavigationHost is DetailFormWindow
-                && viewExtensionTargetInformation.NavigationGuest is DetailFormControl detailFormControl)
+            if (viewExtensionInfo.NavigationHost is DetailFormWindow
+                && viewExtensionInfo.NavigationGuest is DetailFormControl detailFormControl)
             {
                 var effectiveForm = detailFormControl.EffectiveForm ??
                                     throw new InvalidOperationException("effectiveForm == null");
@@ -36,7 +38,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             }
 
             // Check if the the query is about the current view
-            if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl viewControl)
+            if (viewExtensionInfo.NavigationGuest is ItemListViewControl viewControl)
             {
                 var effectiveForm = viewControl.EffectiveForm ??
                                     throw new InvalidOperationException("effectiveForm == null");
@@ -50,7 +52,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 };
             }
 
-            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl explorerControl)
+            if (viewExtensionInfo.NavigationGuest is ItemExplorerControl explorerControl)
             {
                 var effectiveForm = explorerControl.EffectiveForm ??
                                     throw new InvalidOperationException("EffectiveForm == null");

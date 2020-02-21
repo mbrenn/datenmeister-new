@@ -1,7 +1,7 @@
 #nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews
 {
     /// <summary>
     /// Defines a view definition which allows the user to create a new instance

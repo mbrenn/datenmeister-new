@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Validators;
 using DatenMeister.Runtime;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -28,11 +28,22 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets the corresponding element
         /// </summary>
         public IObject? Element { get; }
-        
+
         /// <summary>
         /// Stores the list of validators
         /// </summary>
-        public List<IElementValidator> Validators = new List<IElementValidator>();
+        public readonly List<IElementValidator> Validators = new List<IElementValidator>();
+
+        /// <summary>
+        /// Gets the view definitions that are application for the complete extent form
+        /// </summary>
+        public List<ViewExtension> ViewExtensions { get; set; } = new List<ViewExtension>();
+
+        /// <summary>
+        /// Gets or sets the function that will receive a list of view extensions dependent on the form for the tab being used
+        /// This function is called by the ItemExplorerControl to figure the valid extensions
+        /// </summary>
+        public Func<IElement, IEnumerable<ViewExtension>>? TabViewExtensionsFunction { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the new ViewDefinition class
@@ -55,7 +66,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public FormDefinition(FormDefinitionMode mode) : this (string.Empty, null, mode)
+        public FormDefinition(FormDefinitionMode mode) : this(string.Empty, null, mode)
         {
         }
 
@@ -74,17 +85,6 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        /// <summary>
-        /// Gets the view definitions that are application for the complete extent form
-        /// </summary>
-        public List<ViewExtension> ViewExtensions { get; set; } = new List<ViewExtension>();
-
-        /// <summary>
-        /// Gets or sets the function that will receive a list of view extensions dependent on the form for the tab being used
-        /// This function is called by the ItemExplorerControl to figure the valid extensions
-        /// </summary>
-        public Func<IElement, IEnumerable<ViewExtension>>? TabViewExtensionsFunction { get; set; }
-        
         /// <summary>
         /// Converts the view definition to a string
         /// </summary>

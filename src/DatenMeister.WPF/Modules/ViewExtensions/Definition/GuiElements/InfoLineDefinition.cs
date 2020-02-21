@@ -3,7 +3,7 @@
 using System;
 using System.Windows;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements
+namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements
 {
     public class InfoLineDefinition : ViewExtension
     {

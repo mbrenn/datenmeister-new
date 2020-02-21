@@ -11,9 +11,11 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.ImportExtentManager
@@ -30,9 +32,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             _plugin = plugin;
         }
 
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
-            if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
+            if (viewExtensionInfo.NavigationGuest is ItemsInExtentList itemInExtentList)
             {
                 // Adds the import elements
                 yield return new ExtentMenuButtonDefinition(
@@ -57,7 +59,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             // Imports the existing extent
             async void ImportExistingExtent(IExtent extent)
             {
-                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                var navigationHost = viewExtensionInfo.NavigationHost
                     ?? throw new InvalidOperationException("navigationHost == null");
                 
                 var controlNavigation = await NavigatorForItems.NavigateToElementDetailViewAsync(
@@ -116,7 +118,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
             async void ImportNewExtent(IExtent extent)
             {
-                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(
                     navigationHost);

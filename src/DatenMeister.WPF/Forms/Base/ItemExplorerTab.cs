@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 

@@ -6,9 +6,11 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.TypeManager
@@ -16,12 +18,12 @@ namespace DatenMeister.WPF.Modules.TypeManager
     public class TypeManagerViewExtension : IViewExtensionFactory
     {
         public IEnumerable<ViewExtension> GetViewExtensions(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+            var navigationHost = viewExtensionInfo.NavigationHost ??
                                  throw new InvalidOperationException("NavigationHost == null");
 
-            if (viewExtensionTargetInformation.NavigationHost is IApplicationWindow)
+            if (viewExtensionInfo.NavigationHost is IApplicationWindow)
             {
                 yield return new ApplicationMenuButtonDefinition(
                     "Goto User Types", async () => await NavigatorForItems.NavigateToItemsInExtent(
@@ -32,7 +34,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     NavigationCategories.DatenMeisterNavigation);
             }
 
-            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)
+            if (viewExtensionInfo.NavigationGuest is ItemExplorerControl itemInExtentList)
             {
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
                 var extent = itemInExtentList.RootItem.GetExtentOf();
@@ -63,7 +65,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 }
             }
 
-            var listControl = viewExtensionTargetInformation.GetListViewForItemsTabForExtentType("Uml.Classes");
+            var listControl = viewExtensionInfo.GetListViewForItemsTabForExtentType("Uml.Classes");
             if (listControl != null)
             {
                 var extent = listControl.Extent;
@@ -85,8 +87,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 }
             }
 
-            if (viewExtensionTargetInformation.NavigationGuest is ItemListViewControl extentList
-                && viewExtensionTargetInformation is ViewExtensionForItemPropertiesInformation propertiesInformation)
+            if (viewExtensionInfo.NavigationGuest is ItemListViewControl extentList
+                && viewExtensionInfo is ViewExtensionItemPropertiesInformation propertiesInformation)
             {
                 if (propertiesInformation.Value is IElement selectedPackage)
                 {

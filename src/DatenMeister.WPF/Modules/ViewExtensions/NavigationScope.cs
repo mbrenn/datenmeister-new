@@ -1,6 +1,6 @@
 using System;
 
-namespace DatenMeister.WPF.Forms.Base.ViewExtensions
+namespace DatenMeister.WPF.Modules.ViewExtensions
 {
     /// <summary>
     /// Defines the scope of the menu. Only view extensions of the given scope

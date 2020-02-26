@@ -20,7 +20,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         /// <param name="collection">Collection that shall be filled</param>
         /// <param name="filledStructure">The form and fields structure</param>
         /// <param name="extent">And finally extent to which the types shall be registered</param>
-        public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _ManagementProvider filledStructure, MofUriExtent extent)
+        public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _ManagementProvider filledStructure, MofExtent extent)
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {

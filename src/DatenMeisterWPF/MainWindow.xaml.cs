@@ -15,9 +15,11 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -185,7 +187,7 @@ namespace DatenMeisterWPF
             }
 
             // 3) The plugins
-            var data = new ViewExtensionTargetInformation(this, guest);
+            var data = new ViewExtensionInfoApplication(this, guest);
 
             foreach (var plugin in viewExtensionPlugins)
             {

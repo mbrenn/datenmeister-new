@@ -1,7 +1,8 @@
 using System;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.FormManager
@@ -11,12 +12,12 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// <summary>
         /// Gets the navigation for the application window
         /// </summary>
-        /// <param name="viewExtensionTargetInformation"></param>
+        /// <param name="viewExtensionInfo"></param>
         /// <returns></returns>
         private static ViewExtension GetForApplicationWindow(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+            var navigationHost = viewExtensionInfo.NavigationHost ??
                                  throw new InvalidOperationException("navigationHost == null");
             
             var result = new ApplicationMenuButtonDefinition(

@@ -1,15 +1,18 @@
 ﻿using System.Runtime.Remoting.Messaging;
+using System.Windows.Forms;
+using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Information
 {
     /// <summary>
     /// Defines methods for view extensions
     /// </summary>
-    public static class ViewExtensionTargetInfoExtension
+    public static class ViewExtensionInfoExtension
     {
         /// <summary>
         /// Gets the application window if the navigation host is referring to an application window
@@ -64,6 +67,14 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
                 ? null
                 : info.NavigationGuest as ExtentList;
         }
+        
+        /// <summary>
+        /// Gets the list view control if it is the navigation guest
+        /// </summary>
+        /// <param name="info">Info to be queried</param>
+        /// <returns>The found item or null</returns>
+        public static ItemListViewControl? GetListViewControl(this ViewExtensionInfo info) => 
+            info.NavigationGuest as ItemListViewControl;
 
         /// <summary>
         /// Checks, if a tab is created for the items within in an extent having a certain extent type.
@@ -87,5 +98,24 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
 
             return isCorrect ? extentList : null;
         }
+        
+        /// <summary>
+        /// Gets the detailform window, if the given view extension reflects a detail form window
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static DetailFormWindow? GetDetailFormWindow(this ViewExtensionInfo info)
+        {
+            return info.NavigationHost as DetailFormWindow;
+        }
+
+        /// <summary>
+        /// Gets the detailform control if the navigation host is the DetailFormWindow.
+        /// This means that the value is only not null if a detail view is hosted within the DetailFinwo
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static DetailFormControl? GetDetailFormControlOfDetailWindow(this ViewExtensionInfo info) => 
+            info.NavigationHost is DetailFormWindow ? info.NavigationGuest as DetailFormControl : null;
     }
 }

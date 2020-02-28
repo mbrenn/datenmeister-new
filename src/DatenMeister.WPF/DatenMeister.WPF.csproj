@@ -150,7 +150,7 @@
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoItem.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoTab.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionItemPropertiesInformation.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionTargetInfoExtension.cs" />
+    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExtension.cs" />
     <Compile Include="Modules\ViewExtensions\IViewExtensionFactory.cs" />
     <Compile Include="Modules\ViewExtensions\NavigationScope.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />

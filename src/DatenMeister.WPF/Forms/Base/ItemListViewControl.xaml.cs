@@ -270,7 +270,10 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 2) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionInfo(NavigationHost, this);
+            var extentData = new ViewExtensionInfoCollection(NavigationHost, this)
+            {
+                Collection = Items
+            };
 
             foreach (var plugin in viewExtensionPlugins)
             {
@@ -312,7 +315,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            // If form  defines constraints upon metaclass, then the filtering will occur here
+            // If form defines constraints upon metaclass, then the filtering will occur here
             Items = items;
 
             EffectiveForm = formDefinition;

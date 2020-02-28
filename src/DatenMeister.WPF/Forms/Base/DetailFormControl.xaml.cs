@@ -28,6 +28,7 @@ using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Button = System.Windows.Controls.Button;
@@ -243,6 +244,24 @@ namespace DatenMeister.WPF.Forms.Base
                     null,
                     NavigationCategories.DatenMeister);
             }
+            
+            
+            // 2) Get the view extensions by the plugins
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            var viewExtensionInfo = new ViewExtensionInfoItem(NavigationHost, this)
+            {
+                Item = DetailElement
+            };
+
+            foreach (var plugin in viewExtensionPlugins)
+            {
+                foreach (var extension in plugin.GetViewExtensions(viewExtensionInfo))
+                {
+                    yield return extension;
+                }
+            }
+
+            ///////////////////
 
             // Local methods for the buttons
             void ViewConfig()

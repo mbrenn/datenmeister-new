@@ -11,6 +11,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Lists
@@ -72,25 +73,25 @@ namespace DatenMeister.WPF.Forms.Lists
                 SelectedPackage is IElement selectedElement &&
                 selectedElement.metaclass?.@equals(managementProvider.__Workspace) == true)
             {
-                var viewDefinition = overridingDefinition ??
+                var formDefinition = overridingDefinition ??
                                      WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,
                                          NavigationHost);
 
                 EvaluateForm(
                     SelectedItem,
-                    viewDefinition);
+                    formDefinition);
             }
             else if (SelectedPackage != null)
             {
                 var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default)
                            ?? throw new InvalidOperationException("form == null");
-                var viewDefinition = overridingDefinition ??
+                var formDefinition = overridingDefinition ??
                                      new FormDefinition(form);
 
                 EvaluateForm(
                     SelectedItem,
-                    viewDefinition);
+                    formDefinition);
             }
         }
 
@@ -102,6 +103,17 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigationHost,
                 WorkspaceId,
                 uri);
+        }
+
+        /// <inheritdoc />
+        public override ViewExtensionInfo GetViewExtensionInfo()
+        {
+            return new ViewExtensionInfoExploreExtents(NavigationHost, this)
+            {
+                WorkspaceId = WorkspaceId,
+                RootElement = RootItem,
+                SelectedElement = SelectedItem
+            };
         }
     }
 }

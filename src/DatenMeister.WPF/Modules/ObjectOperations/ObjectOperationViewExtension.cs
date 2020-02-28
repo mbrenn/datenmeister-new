@@ -21,7 +21,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionInfo viewExtensionInfo)
         {
-            if (viewExtensionInfo.GetItemsInExtentExplorerControl() != null)
+            if (viewExtensionInfo.GetItemExplorerControl() != null)
             {
                 yield return new TreeViewItemCommandDefinition(
                     "Move...",

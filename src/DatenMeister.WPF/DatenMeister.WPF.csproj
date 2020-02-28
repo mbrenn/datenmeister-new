@@ -142,13 +142,15 @@
     <Compile Include="Modules\ViewExtensions\Definition\ViewExtension.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfo.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoApplication.cs" />
+    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoCollection.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExplore.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreExtents.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreItems.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreWorkspace.cs" />
+    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoItem.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoTab.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionItemPropertiesInformation.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionTargetInformationExtension.cs" />
+    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionTargetInfoExtension.cs" />
     <Compile Include="Modules\ViewExtensions\IViewExtensionFactory.cs" />
     <Compile Include="Modules\ViewExtensions\NavigationScope.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
@@ -301,8 +303,7 @@
     <Resource Include="icons.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Forms\Base\ViewExtensions" />
-    <Folder Include="Navigation\Validators" />
+    <Folder Include="Navigation\Validators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

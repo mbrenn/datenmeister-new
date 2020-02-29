@@ -284,7 +284,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
         {
         }
 

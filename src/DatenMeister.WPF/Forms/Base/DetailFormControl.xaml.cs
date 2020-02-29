@@ -852,7 +852,7 @@ namespace DatenMeister.WPF.Forms.Base
             public IObject View { get; }
         }
 
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> extensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> extensions)
         {
             ClearGenericButtons();
             AddDefaultButtons();

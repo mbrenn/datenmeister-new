@@ -742,7 +742,10 @@ namespace DatenMeister.WPF.Forms.Base
         private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
         {
             SelectedPackage = e.Item;
-            if (e.Item != null)
+            
+            // Only, if the selected package is null (indicating the root) and
+            // if the selected package is not the root package, then assume that a child is selected
+            if (e.Item != null && SelectedPackage?.@equals(RootItem) != false)
             {
                 SelectedItem = e.Item;
                 IsExtentSelectedInTreeview = false;
@@ -778,36 +781,26 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Resets the view extensions for the attached navigation view
         /// </summary>
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
         {
             NavigationTreeView.EvaluateViewExtensions(viewExtensions);
+            
+            // Creates the buttons for the treeview
+            ClearTreeViewUiElement();
+            AddTreeViewUiElement(viewExtensions);
         }
 
         private void ItemExplorerControl_OnUnloaded(object sender, RoutedEventArgs e)
         {
             Unregister();
         }
-        
-        
-        /// <summary>
-        /// Queries the plugins and asks for the navigation buttons for the treeview area 
-        /// </summary>
-        private void RebuildNavigationForTreeView()
-        {
-            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            
-            // Creates the buttons for the treeview
-            ClearTreeViewUiElement();
-            AddTreeViewUiElement(viewExtensionPlugins);
-        }
 
-        private void AddTreeViewUiElement(List<IViewExtensionFactory> viewExtensionPlugins)
+        private void AddTreeViewUiElement(IEnumerable<ViewExtension> viewExtensionInfo)
         {
             // Gets the elements of the plugin
             var data = new ViewExtensionInfo(NavigationHost, NavigationTreeView);
             
-            foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
-                .OfType<ItemButtonDefinition>())
+            foreach (var buttonView in viewExtensionInfo.OfType<ItemButtonDefinition>())
             {
                 var button = new Button
                 {

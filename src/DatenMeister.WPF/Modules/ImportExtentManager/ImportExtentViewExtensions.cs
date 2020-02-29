@@ -60,6 +60,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             // Imports the existing extent
             async void ImportExistingExtent(IExtent extent)
             {
+                if (itemsInExtentList == null)
+                    return ;
+                
                 var navigationHost = viewExtensionInfo.NavigationHost
                     ?? throw new InvalidOperationException("navigationHost == null");
                 
@@ -119,6 +122,9 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
             async void ImportNewExtent(IExtent extent)
             {
+                if (itemsInExtentList == null)
+                    return;
+                
                 var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(

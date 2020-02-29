@@ -236,6 +236,10 @@ namespace DatenMeister.WPF.Windows
                     foundTuple.Button.Click += foundTuple.ClickEvent;
                     foundTuple.Button.IsEnabled = viewExtension.IsEnabled;
                 }
+                else
+                {
+                    AddNavigationButton(viewExtension);
+                }
             }
 
             // Now, remove the buttons that are not needed anymore

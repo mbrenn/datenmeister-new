@@ -17,6 +17,7 @@ using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using MessageBox = System.Windows.MessageBox;
 
@@ -110,6 +111,16 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             var workspaceId = element.getOrDefault<string>("id");
             NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
+        }
+
+        /// <inheritdoc />
+        public override ViewExtensionInfo GetViewExtensionInfo()
+        {
+            return new ViewExtensionInfoExploreWorkspace(NavigationHost, this)
+            {
+                RootElement = RootItem,
+                SelectedElement = SelectedItem
+            };
         }
     }
 }

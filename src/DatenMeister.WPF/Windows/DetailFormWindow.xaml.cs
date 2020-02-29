@@ -58,12 +58,6 @@ namespace DatenMeister.WPF.Windows
         private bool _finalEventsThrown;
 
         /// <summary>
-        /// Stores the view definition as requested by the creator of the window.
-        /// This view definition may be overridden by the OverridingViewDefinition
-        /// </summary>
-        private FormDefinition? _requestedFormDefinition;
-
-        /// <summary>
         /// Gets a helper for menu
         /// </summary>
         private MenuHelper MenuHelper { get; }
@@ -127,6 +121,12 @@ namespace DatenMeister.WPF.Windows
         /// Gets the ui element of the main control
         /// </summary>
         public UIElement? MainControl => MainContent.Content as UIElement;
+
+        /// <summary>
+        /// Stores the view definition as requested by the creator of the window.
+        /// This view definition may be overridden by the OverridingViewDefinition
+        /// </summary>
+        public FormDefinition? RequestedFormDefinition { get; set; }
 
         public async Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
@@ -348,7 +348,7 @@ namespace DatenMeister.WPF.Windows
         {
             DetailElement = detailElement;
             ContainerCollection = container;
-            _requestedFormDefinition = formDefinition;
+            RequestedFormDefinition = formDefinition;
             
             RecreateView();
         }
@@ -358,7 +358,7 @@ namespace DatenMeister.WPF.Windows
             if (DetailElement == null)
                 throw new InvalidOperationException("DetailElement == null");
 
-            var formDefinition = _requestedFormDefinition;
+            var formDefinition = RequestedFormDefinition;
             
             IObject? effectiveForm = null;
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
@@ -382,11 +382,11 @@ namespace DatenMeister.WPF.Windows
             if (effectiveForm == null)
             {
                 formDefinition = 
-                    _requestedFormDefinition ??= new FormDefinition(FormDefinitionMode.Default);
+                    RequestedFormDefinition ??= new FormDefinition(FormDefinitionMode.Default);
                 
-                if (_requestedFormDefinition.Mode == FormDefinitionMode.Specific)
+                if (RequestedFormDefinition.Mode == FormDefinitionMode.Specific)
                 {
-                    effectiveForm = _requestedFormDefinition.Element ??
+                    effectiveForm = RequestedFormDefinition.Element ??
                                     throw new InvalidOperationException("_requestedFormDefinition.Element == null");
                 }
                 else
@@ -395,7 +395,7 @@ namespace DatenMeister.WPF.Windows
                         viewLogic.GetDetailForm(
                             DetailElement,
                             DetailElement.GetUriExtentOf(),
-                            _requestedFormDefinition.Mode);
+                            RequestedFormDefinition.Mode);
                 }
             }
 

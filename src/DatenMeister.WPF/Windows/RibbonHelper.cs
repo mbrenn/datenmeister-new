@@ -219,6 +219,7 @@ namespace DatenMeister.WPF.Windows
             {
                 // Check, navigation button is already given
                 var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
+                if (foundTuple != null)
                 {
                     copiedList.Remove(foundTuple);
 

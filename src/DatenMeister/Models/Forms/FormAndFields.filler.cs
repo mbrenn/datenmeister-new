@@ -408,6 +408,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.SubElementFieldData._defaultTypesForNewElements = value;
                                 }
+                                if(name == "includeSpecializationsForDefaultTypes") // Looking for property
+                                {
+                                    tree.SubElementFieldData._includeSpecializationsForDefaultTypes = value;
+                                }
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.SubElementFieldData._isAttached = value;

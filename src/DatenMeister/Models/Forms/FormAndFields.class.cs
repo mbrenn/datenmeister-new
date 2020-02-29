@@ -271,6 +271,9 @@ namespace DatenMeister.Models.Forms
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
             public IElement? _defaultTypesForNewElements = null;
 
+            public static string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
+            public IElement? _includeSpecializationsForDefaultTypes = null;
+
             public static string @isAttached = "isAttached";
             public IElement? _isAttached = null;
 

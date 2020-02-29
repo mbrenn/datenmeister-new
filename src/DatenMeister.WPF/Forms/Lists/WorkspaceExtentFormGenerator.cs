@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     throw new InvalidOperationException("List form could not be created"));
             }
 
-            var viewDefinition = new FormDefinition("Workspaces", formElement)
+            var formDefinition = new FormDefinition("Workspaces", formElement)
             {
                 TabViewExtensionsFunction = form =>
                 {
@@ -82,28 +82,28 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
             };
 
-            viewDefinition.ViewExtensions.Add(
+            formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Add Workspace",
                     NewWorkspace,
                     "workspaces-new",
                     NavigationCategories.DatenMeister + "." + "Workspaces"));
 
-            viewDefinition.ViewExtensions.Add(
+            formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Open Workspace-Folder",
                     (x) => NavigatorForWorkspaces.OpenFolder(navigationHost),
                     null,
                     NavigationCategories.DatenMeister + ".Workspaces"));
 
-            viewDefinition.ViewExtensions.Add(
+            formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Reset DatenMeister",
                     (x) => NavigatorForWorkspaces.ResetDatenMeister(navigationHost),
                     null,
                     NavigationCategories.DatenMeister + ".Workspaces"));
 
-            return viewDefinition;
+            return formDefinition;
 
             void NewWorkspace(IObject workspaceObject)
             {

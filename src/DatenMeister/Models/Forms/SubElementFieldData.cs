@@ -40,5 +40,11 @@ namespace DatenMeister.Models.Forms
         /// Stores an enumeration of default types that can be used for creation
         /// </summary>
         public IList<IElement>? defaultTypesForNewElements { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether specializations shall also be included
+        /// to the user as option to get directly created
+        /// </summary>
+        public bool includeSpecializationsForDefaultTypes { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Information

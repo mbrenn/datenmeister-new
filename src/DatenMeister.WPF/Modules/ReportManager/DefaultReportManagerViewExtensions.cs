@@ -23,8 +23,8 @@ namespace DatenMeister.WPF.Modules.ReportManager
         public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
             // Check if the current query is about the detail form
-            if (viewExtensionInfo.NavigationHost is DetailFormWindow
-                && viewExtensionInfo.NavigationGuest is DetailFormControl detailFormControl)
+            var detailFormControl = viewExtensionInfo.GetDetailFormControlOfDetailWindow();
+            if (detailFormControl != null)
             {
                 var effectiveForm = detailFormControl.EffectiveForm ??
                                     throw new InvalidOperationException("effectiveForm == null");
@@ -38,9 +38,10 @@ namespace DatenMeister.WPF.Modules.ReportManager
             }
 
             // Check if the the query is about the current view
-            if (viewExtensionInfo.NavigationGuest is ItemListViewControl viewControl)
+            var listViewControl = viewExtensionInfo.GetListViewControl();
+            if (listViewControl != null)
             {
-                var effectiveForm = viewControl.EffectiveForm ??
+                var effectiveForm = listViewControl.EffectiveForm ??
                                     throw new InvalidOperationException("effectiveForm == null");
                 yield return new CollectionMenuButtonDefinition(
                     "As Html",
@@ -52,9 +53,10 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 };
             }
 
-            if (viewExtensionInfo.NavigationGuest is ItemExplorerControl explorerControl)
+            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
+            if (itemExplorerControl != null)
             {
-                var effectiveForm = explorerControl.EffectiveForm ??
+                var effectiveForm = itemExplorerControl.EffectiveForm ??
                                     throw new InvalidOperationException("EffectiveForm == null");
                 
                 yield return new ItemMenuButtonDefinition(

@@ -2,12 +2,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
@@ -82,14 +85,19 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// </summary>
         /// <param name="itemExplorerControl">Navigational element to create the windows</param>
         /// <param name="type">Type of the form to be created</param>
-        private static void AskUserAndCreateFormInstance(
+        private static async void AskUserAndCreateFormInstance(
             ItemExplorerControl itemExplorerControl, 
             CreateFormByClassifierType type)
         {
             var navigationHost = itemExplorerControl.NavigationHost ??
                                  throw new InvalidOperationException("navigationHost == null");
+            if (!(itemExplorerControl.SelectedItem is { } selectedItem))
+            {
+                MessageBox.Show("No item is selected.");
+                return;
+            }
             
-            if (NavigatorForDialogs.Locate(
+            if (await NavigatorForDialogs.Locate(
                 itemExplorerControl.NavigationHost,
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
@@ -110,8 +118,10 @@ namespace DatenMeister.WPF.Modules.FormManager
                     default:
                         throw new InvalidOperationException();
                 }
-
-                userViewExtent.elements().add(createdForm);
+                
+                GiveMe.Scope.Resolve<DefaultClassifierHints>().AddToExtentOrElement(
+                    selectedItem, 
+                    createdForm);
 
                 _ = NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,

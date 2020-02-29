@@ -24,6 +24,7 @@ using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -308,6 +309,17 @@ namespace DatenMeister.WPF.Forms.Lists
             }
 
             foreach (var extension in base.GetViewExtensions()) yield return extension;
+        }
+
+        public override ViewExtensionInfo GetViewExtensionInfo()
+        {
+            return new ViewExtensionInfoExploreItems(NavigationHost, this)
+            {
+                WorkspaceId = WorkspaceId,
+                ExtentUrl = ExtentUrl,
+                RootElement = RootItem,
+                SelectedElement = SelectedItem
+            };
         }
     }
 }

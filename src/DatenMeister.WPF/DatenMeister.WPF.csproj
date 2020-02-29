@@ -150,7 +150,7 @@
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoItem.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoTab.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionItemPropertiesInformation.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionTargetInformationExtension.cs" />
+    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExtension.cs" />
     <Compile Include="Modules\ViewExtensions\IViewExtensionFactory.cs" />
     <Compile Include="Modules\ViewExtensions\NavigationScope.cs" />
     <Compile Include="Navigation\ControlNavigation.cs" />
@@ -303,8 +303,7 @@
     <Resource Include="icons.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Forms\Base\ViewExtensions" />
-    <Folder Include="Navigation\Validators" />
+    <Folder Include="Navigation\Validators\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

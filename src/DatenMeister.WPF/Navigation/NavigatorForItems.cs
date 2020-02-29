@@ -217,23 +217,24 @@ namespace DatenMeister.WPF.Navigation
         /// Creates a new item for the given extent being located in the workspace
         /// </summary>
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="element">The item to which one of the properties will be aded
+        /// <param name="containerElement">The item to which one of the properties will be aded
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <param name="parentProperty">The property on which the new element will be attached to the parent property</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static IControlNavigationNewItem NavigateToNewItemForItem(
             INavigationHost window,
-            IObject element,
+            IObject containerElement,
             IElement? metaclass,
             string parentProperty = "")
             =>
                 NavigateToNewItemForItem(
                     window,
-                    new NavigateToItemConfig(element)
+                    new NavigateToItemConfig(containerElement)
                     {
                         MetaClass = metaclass,
-                        ContainerProperty = parentProperty
+                        ContainerProperty = parentProperty,
+                        ContainerElement = containerElement
                     });
 
         /// <summary>
@@ -248,7 +249,7 @@ namespace DatenMeister.WPF.Navigation
             INavigationHost window,
             NavigateToItemConfig config)
         {
-            var containerElement2 = config.ContainerElement
+            var containerElement = config.ContainerElement
                                     ?? throw new InvalidOperationException("containerElement == null");
             
             var result = new ControlNavigation();
@@ -258,7 +259,7 @@ namespace DatenMeister.WPF.Navigation
                 createableTypes.Closed += (x, y)
                     => CreateElementItself(createableTypes.SelectedType);
 
-                var extent = containerElement2.GetExtentOf();
+                var extent = containerElement.GetExtentOf();
                 if (extent != null)
                 {
                     _ = createableTypes.NavigateToSelectCreateableType(window, extent);
@@ -273,8 +274,7 @@ namespace DatenMeister.WPF.Navigation
             // may be chosen by the user
             async void CreateElementItself(IElement? selectedMetaclass)
             {
-                
-                var factory = new MofFactory(containerElement2);
+                var factory = new MofFactory(containerElement);
                 var newElement = factory.create(selectedMetaclass);
                 var typeWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
 
@@ -290,9 +290,8 @@ namespace DatenMeister.WPF.Navigation
                                 .get<IReflectiveSequence>(_FormAndFields._DetailForm.field);
                             var formFactory = new MofFactory(fields);
                             var containerProperty = config.ContainerProperty;
-                            var containerElement = config.ContainerElement;
 
-                            if (containerProperty == null && containerElement != null) // ParentProperty is not given, so user gives property
+                            if (containerProperty == null) // ParentProperty is not given, so user gives property
                             {
                                 // Parent property is already given by function call
                                 var dropField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__DropDownFieldData);
@@ -325,12 +324,15 @@ namespace DatenMeister.WPF.Navigation
 
                 if (detailControlView != null && detailControlView.Result == NavigationResult.Saved)
                 {
-                    var attachedElement = detailControlView.AttachedElement ??
+                    var attachedElement = detailControlView.AttachedElement;
+                    var containerProperty = config.ContainerProperty;
+                    if (attachedElement == null && containerProperty == null)
                         throw new InvalidOperationException("attachedElement == null");
-                    var selectedProperty = config.ContainerProperty
-                                           ?? attachedElement.getOrDefault<string>("ParentProperty");
+                    
+                    var selectedProperty = containerProperty
+                                           ?? attachedElement?.getOrDefault<string>("ParentProperty");
 
-                    if (string.IsNullOrEmpty(selectedProperty))
+                    if (selectedProperty == null || string.IsNullOrEmpty(selectedProperty))
                     {
                         MessageBox.Show("Property to which the new item will be added is not set.");
                         return;
@@ -339,8 +341,7 @@ namespace DatenMeister.WPF.Navigation
                     var detailElement = detailControlView.DetailElement ??
                                         throw new InvalidOperationException("DetailElement == null");
 
-                    var containerElement = config.ContainerElement;
-                    containerElement?.AddCollectionItem(selectedProperty, detailElement);
+                    containerElement.AddCollectionItem(selectedProperty, detailElement);
 
                     // Adds the element to the dialog
                     // collection.add(newElement);

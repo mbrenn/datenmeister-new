@@ -598,7 +598,7 @@ namespace DatenMeister.WPF.Forms.Base
                 Header = "Select Type..."
             };
 
-            menuItem.Click += (x, y) => CreateNewElementByUser(null, null);
+            menuItem.Click += (x, y) => CreateNewElementByUser(null, parentProperty);
             menuItems.Add(menuItem);
 
             // Sets the generic buttons to create the new types
@@ -745,7 +745,7 @@ namespace DatenMeister.WPF.Forms.Base
             
             // Only, if the selected package is null (indicating the root) and
             // if the selected package is not the root package, then assume that a child is selected
-            if (e.Item != null && SelectedPackage?.@equals(RootItem) != false)
+            if (e.Item != null && SelectedPackage?.@equals(RootItem) != true)
             {
                 SelectedItem = e.Item;
                 IsExtentSelectedInTreeview = false;

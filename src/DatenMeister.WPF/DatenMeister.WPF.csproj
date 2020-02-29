@@ -142,10 +142,12 @@
     <Compile Include="Modules\ViewExtensions\Definition\ViewExtension.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfo.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoApplication.cs" />
+    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoCollection.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExplore.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreExtents.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreItems.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreWorkspace.cs" />
+    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoItem.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoTab.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionItemPropertiesInformation.cs" />
     <Compile Include="Modules\ViewExtensions\Information\ViewExtensionTargetInformationExtension.cs" />

@@ -310,8 +310,6 @@ namespace DatenMeister.WPF.Forms.Base
             Tabs.Clear();
             OnRecreateViews();
             NavigationHost?.RebuildNavigation();
-
-            RebuildNavigationForTreeView();
         }
 
         /// <summary>
@@ -720,7 +718,7 @@ namespace DatenMeister.WPF.Forms.Base
                 listFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.noItemsWithMetaClass);
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = listFormDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
+            var metaClass = listFormDefinition.getOrDefault<IElement?>(_FormAndFields._ListForm.metaClass);
 
             if (metaClass != null)
             {
@@ -785,38 +783,26 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
-            var newViewExtensions = new List<ViewExtension>();
-            foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
-                newViewExtensions.Add(extension);
-
-            NavigationTreeView.EvaluateViewExtensions(newViewExtensions);
+            var viewExtensionsList = viewExtensions.ToList();
+            NavigationTreeView.EvaluateViewExtensions(viewExtensionsList.OfType<TreeViewItemCommandDefinition>());
+            
+            
+            // Creates the buttons for the treeview
+            ClearTreeViewUiElement();
+            AddTreeViewUiElement(viewExtensionsList);
         }
 
         private void ItemExplorerControl_OnUnloaded(object sender, RoutedEventArgs e)
         {
             Unregister();
         }
-        
-        
-        /// <summary>
-        /// Queries the plugins and asks for the navigation buttons for the treeview area 
-        /// </summary>
-        private void RebuildNavigationForTreeView()
-        {
-            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            
-            // Creates the buttons for the treeview
-            ClearTreeViewUiElement();
-            AddTreeViewUiElement(viewExtensionPlugins);
-        }
 
-        private void AddTreeViewUiElement(List<IViewExtensionFactory> viewExtensionPlugins)
+        private void AddTreeViewUiElement(IEnumerable<ViewExtension> viewExtensions)
         {
             // Gets the elements of the plugin
             var data = new ViewExtensionInfo(NavigationHost, NavigationTreeView);
             
-            foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
-                .OfType<ItemButtonDefinition>())
+            foreach (var buttonView in viewExtensions.OfType<ItemButtonDefinition>())
             {
                 var button = new Button
                 {

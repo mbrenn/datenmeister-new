@@ -152,7 +152,10 @@ namespace DatenMeister.WPF.Windows
 
             // 3) Ask the plugin
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionInfo(this, navigationGuest);
+            var data = new ViewExtensionInfoItem(this, navigationGuest)
+            {
+                Item = DetailElement
+            };
 
             extensions.AddRange(
                 viewExtensionPlugins.SelectMany(

@@ -23,7 +23,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
             var navigationHost = viewExtensionInfo.NavigationHost ??
                                  throw new InvalidOperationException("NavigationHost == null");
 
-            if (viewExtensionInfo.NavigationHost is IApplicationWindow)
+            if (viewExtensionInfo.GetMainApplicationWindow() != null)
             {
                 yield return new ApplicationMenuButtonDefinition(
                     "Goto User Types", async () => await NavigatorForItems.NavigateToItemsInExtent(
@@ -34,16 +34,17 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     NavigationCategories.DatenMeisterNavigation);
             }
 
-            if (viewExtensionInfo.NavigationGuest is ItemExplorerControl itemInExtentList)
+            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
+            if (itemExplorerControl != null)
             {
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
-                var extent = itemInExtentList.RootItem.GetExtentOf();
+                var extent = itemExplorerControl.RootItem.GetExtentOf();
                 if (extent != null)
                 {
                     var extentType = extent.GetExtentType();
                     if (extentType == "Uml.Classes")
                     {
-                        if (itemInExtentList.IsExtentSelectedInTreeview)
+                        if (itemExplorerControl.IsExtentSelectedInTreeview)
                         {
                             var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
                             if (classMetaClass == null)
@@ -87,8 +88,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 }
             }
 
-            if (viewExtensionInfo.NavigationGuest is ItemListViewControl extentList
-                && viewExtensionInfo is ViewExtensionItemPropertiesInformation propertiesInformation)
+            if (viewExtensionInfo is ViewExtensionItemPropertiesInformation propertiesInformation)
             {
                 if (propertiesInformation.Value is IElement selectedPackage)
                 {

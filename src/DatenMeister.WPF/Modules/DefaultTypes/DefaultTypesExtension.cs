@@ -34,20 +34,34 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
             }
         }
 
+        /// <summary>
+        /// Creates a button allowing to create a new package
+        /// </summary>
+        /// <param name="viewExtensionInfo"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         private ItemButtonDefinition? GetNewPackageButton(
             ViewExtensionInfo viewExtensionInfo)
         {
-            if (!(viewExtensionInfo.NavigationGuest is ItemsTreeView treeView))
+            // Only, if the navigation guest is the item explorer view
+            var itemExplorerView = viewExtensionInfo.GetItemExplorerControl();
+            
+            // Check, if we are in an item explorer control
+            if (itemExplorerView == null)
                 return null;
 
-            if (!(treeView.RootElement is MofExtent extent))
+            // Only if the root element is an extent, otherwise it is a special thing which we
+            // don't want to handle
+            if (!(itemExplorerView.RootItem is MofExtent extent))
                 return null;
 
+            // DotNetProvider and ExtentOfWorkspaces are also special providers
             if (extent.Provider is DotNetProvider || extent.Provider is ExtentOfWorkspaces)
                 return null;
 
             // Check, if the selected element is a package or an extent
-            if (treeView.GetSelectedItem() is IElement selectedElement 
+            // which allows 
+            if (itemExplorerView.SelectedItem is IElement selectedElement 
                 && !_defaultClassifierHints.IsPackageLike(selectedElement))
                 return null;
 

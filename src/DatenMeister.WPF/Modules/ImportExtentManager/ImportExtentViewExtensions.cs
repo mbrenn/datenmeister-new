@@ -34,7 +34,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
         public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
-            if (viewExtensionInfo.NavigationGuest is ItemsInExtentList itemInExtentList)
+            var itemsInExtentList = viewExtensionInfo.GetItemsInExtentExplorerControl();
+            if (itemsInExtentList != null)
             {
                 // Adds the import elements
                 yield return new ExtentMenuButtonDefinition(
@@ -107,7 +108,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
                     var itemCountBefore = sourceExtent.elements().Count();
-                    var elements = (itemInExtentList.RootItem as IExtent)?.elements()
+                    var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                    ?? throw new InvalidOperationException("elements == null");
                     _plugin.PerformImport(sourceExtent, elements);
                     var itemCountAfter = sourceExtent.elements().Count();
@@ -130,7 +131,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     if (loadedExtent != null)
                     {
                         var itemCountBefore = loadedExtent.elements().Count();
-                        var elements = (itemInExtentList.RootItem as IExtent)?.elements()
+                        var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                        ?? throw new InvalidOperationException("elements == null");
                         _plugin.PerformImport(loadedExtent, elements);
                         var itemCountAfter = loadedExtent.elements().Count();

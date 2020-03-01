@@ -67,6 +67,7 @@
     <Compile Include="Modules\ChangeEventManager.cs" />
     <Compile Include="Modules\DataviewTests.cs" />
     <Compile Include="Modules\FormatterTests.cs" />
+    <Compile Include="Modules\Form\FormTests.cs" />
     <Compile Include="Modules\Provider\ManagementProviderTests.cs" />
     <Compile Include="Modules\UserManagementTests.cs" />
     <Compile Include="Modules\ViewLogicTests.cs" />

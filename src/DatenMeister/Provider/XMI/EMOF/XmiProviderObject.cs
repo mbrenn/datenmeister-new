@@ -520,5 +520,37 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             return true;
         }
+
+        /// <summary>
+        /// Converts the xmiproviderobject to string
+        /// </summary>
+        /// <returns>The converted object</returns>
+        public override string ToString()
+        {
+            if (XmlNode == null)
+            {
+                return base.ToString();
+            }
+
+            var attribute = XmlNode.Attribute("id");
+            if (attribute != null)
+            {
+                return attribute.Value;
+            }
+            
+            attribute = XmlNode.Attribute("name");
+            if (attribute != null)
+            {
+                return attribute.Value;
+            }
+
+            attribute = XmlNode.Attribute("title");
+            if (attribute != null)
+            {
+                return attribute.Value;
+            }
+            
+            return base.ToString();
+        }
     }
 }

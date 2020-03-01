@@ -8,6 +8,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -49,7 +50,8 @@ namespace DatenMeister.Modules.DefaultTypes
             {
                 // If not found, check for the default package model in the types workspace
                 findByUrl = extent.GetUriResolver()
-                    .Resolve("datenmeister:///_internal/types/internal#DatenMeister.Modules.DefaultTypes.Model.Package",
+                    .Resolve(
+                        WorkspaceNames.UriInternalTypesExtent + "#" + typeof(Package).FullName, 
                         ResolveType.OnlyMetaClasses);
             }
 
@@ -82,14 +84,19 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <param name="child">Child element which will be added</param>
         public void AddToExtentOrElement(IObject container, IObject child)
         {
-            if (container is IExtent extent)
+            switch (container)
             {
-                extent.elements().add(child);
-            }
-            else
-            {
-                var propertyName = GetDefaultPackagePropertyName(container);
-                container.AddCollectionItem(propertyName, child);
+                case null:
+                    throw new InvalidOperationException("container is null");
+                case IExtent extent:
+                    extent.elements().add(child);
+                    break;
+                default:
+                {
+                    var propertyName = GetDefaultPackagePropertyName(container);
+                    container.AddCollectionItem(propertyName, child);
+                    break;
+                }
             }
         }
 

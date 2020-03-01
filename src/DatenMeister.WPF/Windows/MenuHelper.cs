@@ -4,8 +4,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using Menu = System.Windows.Controls.Menu;
 using MenuItem = System.Windows.Controls.MenuItem;
 

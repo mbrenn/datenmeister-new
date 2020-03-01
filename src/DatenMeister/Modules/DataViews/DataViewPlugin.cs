@@ -51,10 +51,13 @@ namespace DatenMeister.Modules.DataViews
                     var workspace = new Workspace(WorkspaceNames.NameViews, "Container of all views which are created dynamically.");
                     _workspaceLogic.AddWorkspace(workspace);
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_workspaceLogic, _dataViewLogic));
-
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:
-                    _localTypeSupport.AddInternalTypes(GetTypes(), DataViewLogic.PackagePathTypesDataView);
+                    _localTypeSupport.ImportTypes(
+                        DataViewLogic.PackagePathTypesDataView,
+                        _DataViews.TheOne,
+                        IntegrateDataViews.Assign
+                    );
                     break;
             }
         }

@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -29,7 +29,7 @@ namespace DatenMeister.WPF.Navigation
         /// creation of menus, context menus or other
         /// </summary>
         /// <param name="viewExtensions">View Extensions to be evaluated</param>
-        void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions);
+        void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions);
 
         /// <summary>
         ///  Updates the content

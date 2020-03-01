@@ -2,15 +2,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -24,26 +29,26 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// <summary>
         /// Gets the view extension
         /// </summary>
-        /// <param name="viewExtensionTargetInformation"></param>
+        /// <param name="viewExtensionInfo"></param>
         /// <returns></returns>
         public IEnumerable<ViewExtension> GetViewExtensions(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            var navigationGuest = viewExtensionTargetInformation.NavigationGuest;
-            var navigationHost = viewExtensionTargetInformation.NavigationHost;
+            var navigationGuest = viewExtensionInfo.NavigationGuest;
+            var navigationHost = viewExtensionInfo.NavigationHost;
             
             var itemExplorerControl = navigationGuest as ItemExplorerControl;
             var detailFormWindow = navigationHost as DetailFormWindow;
 
             if (navigationHost is IApplicationWindow)
             {
-                yield return GetForApplicationWindow(viewExtensionTargetInformation);
+                yield return GetForApplicationWindow(viewExtensionInfo);
             }
 
             if (detailFormWindow != null)
             {
                 foreach (var viewExtension in GetForDetailWindow(
-                    viewExtensionTargetInformation,
+                    viewExtensionInfo,
                     detailFormWindow))
                 {
                     yield return viewExtension;
@@ -80,14 +85,19 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// </summary>
         /// <param name="itemExplorerControl">Navigational element to create the windows</param>
         /// <param name="type">Type of the form to be created</param>
-        private static void AskUserAndCreateFormInstance(
+        private static async void AskUserAndCreateFormInstance(
             ItemExplorerControl itemExplorerControl, 
             CreateFormByClassifierType type)
         {
             var navigationHost = itemExplorerControl.NavigationHost ??
                                  throw new InvalidOperationException("navigationHost == null");
+            if (!(itemExplorerControl.SelectedItem is { } selectedItem))
+            {
+                MessageBox.Show("No item is selected.");
+                return;
+            }
             
-            if (NavigatorForDialogs.Locate(
+            if (await NavigatorForDialogs.Locate(
                 itemExplorerControl.NavigationHost,
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
@@ -108,8 +118,10 @@ namespace DatenMeister.WPF.Modules.FormManager
                     default:
                         throw new InvalidOperationException();
                 }
-
-                userViewExtent.elements().add(createdForm);
+                
+                GiveMe.Scope.Resolve<DefaultClassifierHints>().AddToExtentOrElement(
+                    selectedItem, 
+                    createdForm);
 
                 _ = NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,

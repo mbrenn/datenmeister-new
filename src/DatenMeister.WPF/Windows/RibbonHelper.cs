@@ -7,9 +7,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows

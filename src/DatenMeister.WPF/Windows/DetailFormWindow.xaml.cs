@@ -19,8 +19,10 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using UserControl = System.Windows.Controls.UserControl;
@@ -54,12 +56,6 @@ namespace DatenMeister.WPF.Windows
         /// This information is used to decide whether to throw an event when user closes the dialogue
         /// </summary>
         private bool _finalEventsThrown;
-
-        /// <summary>
-        /// Stores the view definition as requested by the creator of the window.
-        /// This view definition may be overridden by the OverridingViewDefinition
-        /// </summary>
-        private FormDefinition? _requestedFormDefinition;
 
         /// <summary>
         /// Gets a helper for menu
@@ -126,6 +122,12 @@ namespace DatenMeister.WPF.Windows
         /// </summary>
         public UIElement? MainControl => MainContent.Content as UIElement;
 
+        /// <summary>
+        /// Stores the view definition as requested by the creator of the window.
+        /// This view definition may be overridden by the OverridingViewDefinition
+        /// </summary>
+        public FormDefinition? RequestedFormDefinition { get; set; }
+
         public async Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
@@ -150,7 +152,10 @@ namespace DatenMeister.WPF.Windows
 
             // 3) Ask the plugin
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var data = new ViewExtensionTargetInformation(this, navigationGuest);
+            var data = new ViewExtensionInfoItem(this, navigationGuest)
+            {
+                Item = DetailElement
+            };
 
             extensions.AddRange(
                 viewExtensionPlugins.SelectMany(
@@ -343,7 +348,7 @@ namespace DatenMeister.WPF.Windows
         {
             DetailElement = detailElement;
             ContainerCollection = container;
-            _requestedFormDefinition = formDefinition;
+            RequestedFormDefinition = formDefinition;
             
             RecreateView();
         }
@@ -353,7 +358,7 @@ namespace DatenMeister.WPF.Windows
             if (DetailElement == null)
                 throw new InvalidOperationException("DetailElement == null");
 
-            var formDefinition = _requestedFormDefinition;
+            var formDefinition = RequestedFormDefinition;
             
             IObject? effectiveForm = null;
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
@@ -377,11 +382,11 @@ namespace DatenMeister.WPF.Windows
             if (effectiveForm == null)
             {
                 formDefinition = 
-                    _requestedFormDefinition ??= new FormDefinition(FormDefinitionMode.Default);
+                    RequestedFormDefinition ??= new FormDefinition(FormDefinitionMode.Default);
                 
-                if (_requestedFormDefinition.Mode == FormDefinitionMode.Specific)
+                if (RequestedFormDefinition.Mode == FormDefinitionMode.Specific)
                 {
-                    effectiveForm = _requestedFormDefinition.Element ??
+                    effectiveForm = RequestedFormDefinition.Element ??
                                     throw new InvalidOperationException("_requestedFormDefinition.Element == null");
                 }
                 else
@@ -390,7 +395,7 @@ namespace DatenMeister.WPF.Windows
                         viewLogic.GetDetailForm(
                             DetailElement,
                             DetailElement.GetUriExtentOf(),
-                            _requestedFormDefinition.Mode);
+                            RequestedFormDefinition.Mode);
                 }
             }
 

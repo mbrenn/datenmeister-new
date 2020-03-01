@@ -17,6 +17,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
     public partial class FormCreator
     {
         /// <summary>
+        /// Stores the configuration whether we require a tab for each property
+        /// </summary>
+        private const bool ConfigurationFormCreatorSeparateProperties = false;
+
+        /// <summary>
         /// Checks whether a detail form is already within the element form.
         /// If yes, then it is directly returned, otherwise a new detail form is created and added to the form
         /// </summary>
@@ -330,56 +335,77 @@ namespace DatenMeister.Modules.Forms.FormCreator
             foreach (var pair in propertiesWithCollection)
             {
                 var elementsAsObjects = pair.propertyContent.OfType<IObject>().ToList();
-                var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
+
+                if (ConfigurationFormCreatorSeparateProperties)
+#pragma warning disable 162
                 {
-                    if (x is IElement innerElement)
+                    var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
                     {
-                        return innerElement.getMetaClass() == null;
+                        if (x is IElement innerElement)
+                        {
+                            return innerElement.getMetaClass() == null;
+                        }
+
+                        return true;
+                    }).ToList();
+
+                    var elementsWithMetaClass = elementsAsObjects
+                        .OfType<IElement>()
+                        .GroupBy(x => x.getMetaClass());
+                    
+                    if (elementsWithoutMetaClass.Any() || !elementsAsObjects.Any())
+                    {
+                        // If there are elements included and they are filled
+                        // OR, if there is no element included at all, create the corresponding list form
+                        var form = _factory.create(_formAndFields.__ListForm);
+                        form.set(_FormAndFields._ListForm.name, pair.propertyName);
+                        form.set(_FormAndFields._ListForm.property, pair.propertyName);
+                        form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
+
+                        foreach (var item in elementsWithoutMetaClass)
+                        {
+                            AddToForm(form, item, creationMode, cache);
+                        }
+
+                        tabs.Add(form);
                     }
 
-                    return true;
-                }).ToList();
-
-                var elementsWithMetaClass = elementsAsObjects
-                    .OfType<IElement>()
-                    .GroupBy(x => x.getMetaClass());
-
-                if (elementsWithoutMetaClass.Any() || !elementsAsObjects.Any())
+                    foreach (var group in elementsWithMetaClass)
+                    {
+                        // Now try to figure out the metaclass
+                        var groupedMetaclass = group.Key;
+                        if (_formLogic != null)
+                        {
+                            var form = _formLogic.GetListFormForExtentForPropertyInObject(
+                                element,
+                                extent,
+                                pair.propertyName,
+                                groupedMetaclass,
+                                FormDefinitionMode.Default);
+                            tabs.Add(form);
+                        }
+                        else
+                        {
+                            tabs.Add(
+                                CreateListFormForPropertyInObject(groupedMetaclass, pair.propertyName, creationMode));
+                        }
+                    }
+                }
+#pragma warning restore 162
+                else
                 {
                     // If there are elements included and they are filled
                     // OR, if there is no element included at all, create the corresponding list form
                     var form = _factory.create(_formAndFields.__ListForm);
                     form.set(_FormAndFields._ListForm.name, pair.propertyName);
                     form.set(_FormAndFields._ListForm.property, pair.propertyName);
-                    form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
 
-                    foreach (var item in elementsWithoutMetaClass)
+                    foreach (var item in elementsAsObjects)
                     {
                         AddToForm(form, item, creationMode, cache);
                     }
 
                     tabs.Add(form);
-                }
-
-                foreach (var group in elementsWithMetaClass)
-                {
-                    // Now try to figure out the metaclass
-                    var groupedMetaclass = group.Key;
-                    if (_formLogic != null)
-                    {
-                        var form = _formLogic.GetListFormForExtentForPropertyInObject(
-                            element,
-                            extent,
-                            pair.propertyName,
-                            groupedMetaclass,
-                            FormDefinitionMode.Default);
-                        tabs.Add(form);
-                    }
-                    else
-                    {
-                        tabs.Add(
-                            CreateListFormForPropertyInObject(groupedMetaclass, pair.propertyName, creationMode));
-                    }
                 }
             }
 

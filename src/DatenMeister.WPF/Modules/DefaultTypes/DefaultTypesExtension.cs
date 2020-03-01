@@ -8,8 +8,10 @@ using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.DefaultTypes
@@ -23,29 +25,43 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
             _defaultClassifierHints = hints;
         }
         
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
-            var btn = GetNewPackageButton(viewExtensionTargetInformation);
+            var btn = GetNewPackageButton(viewExtensionInfo);
             if (btn != null)
             {
                 yield return btn;
             }
         }
 
+        /// <summary>
+        /// Creates a button allowing to create a new package
+        /// </summary>
+        /// <param name="viewExtensionInfo"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         private ItemButtonDefinition? GetNewPackageButton(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            if (!(viewExtensionTargetInformation.NavigationGuest is ItemsTreeView treeView))
+            // Only, if the navigation guest is the item explorer view
+            var itemExplorerView = viewExtensionInfo.GetItemExplorerControl();
+            
+            // Check, if we are in an item explorer control
+            if (itemExplorerView == null)
                 return null;
 
-            if (!(treeView.RootElement is MofExtent extent))
+            // Only if the root element is an extent, otherwise it is a special thing which we
+            // don't want to handle
+            if (!(itemExplorerView.RootItem is MofExtent extent))
                 return null;
 
+            // DotNetProvider and ExtentOfWorkspaces are also special providers
             if (extent.Provider is DotNetProvider || extent.Provider is ExtentOfWorkspaces)
                 return null;
 
             // Check, if the selected element is a package or an extent
-            if (treeView.GetSelectedItem() is IElement selectedElement 
+            // which allows 
+            if (itemExplorerView.SelectedItem is IElement selectedElement 
                 && !_defaultClassifierHints.IsPackageLike(selectedElement))
                 return null;
 
@@ -68,10 +84,10 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                             clickedItem, 
                             package);
 
-                        var navigationHost = viewExtensionTargetInformation.NavigationHost ??
+                        var navigationHost = viewExtensionInfo.NavigationHost ??
                                              throw new InvalidOperationException("NavigationHost == null");
                         _ = NavigatorForItems.NavigateToElementDetailView(
-                            viewExtensionTargetInformation.NavigationHost,
+                            viewExtensionInfo.NavigationHost,
                             package);
                     });
         }

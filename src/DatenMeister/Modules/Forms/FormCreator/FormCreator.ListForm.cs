@@ -32,7 +32,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var nameOfListForm = NamedElementMethods.GetName(metaClass);
             result.set(_FormAndFields._ListForm.title, nameOfListForm);
             result.set(_FormAndFields._ListForm.name, nameOfListForm);
-            AddToFormByMetaclass(result, metaClass, creationMode);
+            AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
 
             var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
             defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);

@@ -20,6 +20,7 @@ using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
@@ -29,11 +30,12 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Commands;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -90,6 +92,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private ChangeEventManager? _changeEventManager;
 
+        private IObject? _effectiveForm;
+
         public ItemListViewControl()
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
@@ -108,7 +112,18 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Defines the current form definition of the window as provided by the
         ///     derived method 'RequestForm'.
         /// </summary>
-        public IObject? EffectiveForm { get; set; }
+        public IObject? EffectiveForm
+        {
+            get => _effectiveForm;
+            set
+            {
+                _effectiveForm = value;
+#if DEBUG
+                if (value != null && !new FormMethods().ValidateForm(value)) 
+                    throw new InvalidOperationException("The form did not pass validation");
+#endif
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the view extensions
@@ -164,7 +179,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
-            // Clears the info lines
             void ViewCollection(IReflectiveCollection reflectiveCollection)
             {
                 var dlg = new ItemXmlViewWindow
@@ -254,9 +268,12 @@ namespace DatenMeister.WPF.Forms.Base
                     null,
                     "Selection");
 
-            // 3) Get the view extensions by the plugins
+            // 2) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation(NavigationHost, this);
+            var extentData = new ViewExtensionInfoCollection(NavigationHost, this)
+            {
+                Collection = Items
+            };
 
             foreach (var plugin in viewExtensionPlugins)
             {
@@ -267,7 +284,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
         {
         }
 
@@ -298,7 +315,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            // If form  defines constraints upon metaclass, then the filtering will occur here
+            // If form defines constraints upon metaclass, then the filtering will occur here
             Items = items;
 
             EffectiveForm = formDefinition;
@@ -411,6 +428,12 @@ namespace DatenMeister.WPF.Forms.Base
                         foreach (var field in fields.Cast<IElement>())
                         {
                             var columnName = fieldDataNames[n];
+                            if (asDictionary.ContainsKey(columnName))
+                            {
+                                Logger.Warn($"Column {columnName} skipped because it is given multiple times");
+                                continue;
+                            }
+                            
                             var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
                             var value = GetValueOfElement(item, field);
 
@@ -648,11 +671,11 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (selectedElement == null) return;
 
-            _ = NavigatorForItems.NavigateToElementDetailViewAsync(
+            _ = NavigatorForItems.NavigateToElementDetailView(
                 NavigationHost,
                 new NavigateToItemConfig(selectedElement)
                 {
-                    DetailElementContainer = Items
+                    ContainerCollection = Items
                 });
         }
 

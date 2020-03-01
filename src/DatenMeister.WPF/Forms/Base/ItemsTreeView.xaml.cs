@@ -16,8 +16,8 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Clipboard = System.Windows.Clipboard;
@@ -533,10 +533,10 @@ namespace DatenMeister.WPF.Forms.Base
         public IEnumerable<ViewExtension> GetViewExtensions()
             => Array.Empty<ViewExtension>();
 
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
         {
             ViewExtensions.Clear();
-            ViewExtensions.AddRange(viewExtensions);
+            ViewExtensions.AddRange(viewExtensions.OfType<TreeViewItemCommandDefinition>());
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
@@ -21,11 +22,13 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.ListViews;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using Button = System.Windows.Controls.Button;
 using ContextMenu = System.Windows.Controls.ContextMenu;
@@ -210,8 +213,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             // 3) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation(NavigationHost, this);
-
+            var extentData = GetViewExtensionInfo();
+                
             foreach (var plugin in viewExtensionPlugins)
             {
                 foreach (var extension in plugin.GetViewExtensions(extentData))
@@ -220,13 +223,24 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-
             // Gets the default view extensions
-            foreach (var viewExtension1 in GetDefaultViewExtensions()) yield return viewExtension1;
+            foreach (var defaultViewExtension in GetDefaultViewExtensions()) 
+                yield return defaultViewExtension;
         }
 
         /// <summary>
-        /// Gets the default view extentsions for any item explorer control
+        /// Gets the view extension information 
+        /// </summary>
+        /// <returns>The view extension fitting to item explorer</returns>
+        public virtual ViewExtensionInfo GetViewExtensionInfo() =>
+            new ViewExtensionInfoExplore(NavigationHost, this)
+            {
+                RootElement = _rootItem,
+                SelectedElement = SelectedItem
+            };
+
+        /// <summary>
+        /// Gets the default view extensions for any item explorer control
         /// </summary>
         /// <returns>enumeration of view extensions</returns>
         private IEnumerable<ViewExtension> GetDefaultViewExtensions()
@@ -298,8 +312,6 @@ namespace DatenMeister.WPF.Forms.Base
             Tabs.Clear();
             OnRecreateViews();
             NavigationHost?.RebuildNavigation();
-
-            RebuildNavigationForTreeView();
         }
 
         /// <summary>
@@ -359,7 +371,7 @@ namespace DatenMeister.WPF.Forms.Base
                 
                 // 3) Queries the plugins
                 var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-                var extentData = new ViewExtensionTargetInformationForTab(NavigationHost, this)
+                var extentData = new ViewExtensionInfoTab(NavigationHost, this)
                 {
                     TabFormDefinition = tab
                 };
@@ -385,7 +397,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="viewExtensions">Stores the view extensions</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
-        public ItemExplorerTab? AddTab( 
+        private ItemExplorerTab? AddTab( 
             IObject value,
             IElement tabForm,
             IEnumerable<ViewExtension> viewExtensions,
@@ -418,12 +430,8 @@ namespace DatenMeister.WPF.Forms.Base
                 Control = createdUserControl,
                 Header = name
             };
-
-            if (createdUserControl is INavigationGuest navigationGuest)
-            {
-                usedViewExtensions.AddRange(navigationGuest.GetViewExtensions());
-                tabControl.EvaluateViewExtensions(usedViewExtensions);
-            }
+            
+            tabControl.EvaluateViewExtensions(usedViewExtensions);
 
             Tabs.Add(tabControl);
 
@@ -521,7 +529,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 if (!string.IsNullOrEmpty(propertyName))
                 {
-                    var extentData = new ViewExtensionForItemPropertiesInformation(NavigationHost, control)
+                    var extentData = new ViewExtensionItemPropertiesInformation(NavigationHost, control)
                     {
                         Value = value,
                         Property = propertyName
@@ -591,7 +599,7 @@ namespace DatenMeister.WPF.Forms.Base
                 Header = "Select Type..."
             };
 
-            menuItem.Click += (x, y) => CreateNewElementByUser(null, null);
+            menuItem.Click += async (x, y) => await CreateNewElementByUser(null, parentProperty);
             menuItems.Add(menuItem);
 
             // Sets the generic buttons to create the new types
@@ -621,7 +629,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                     usedViewExtensions.Add(new GenericButtonDefinition(
                         $"New {typeName}", 
-                        () => CreateNewElementByUser(newType, innerParentProperty)));
+                        async () => await CreateNewElementByUser(newType, innerParentProperty)));
 
                     foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
                     {
@@ -631,16 +639,16 @@ namespace DatenMeister.WPF.Forms.Base
                             Header = $"New {newSpecializationType}"
                         };
 
-                        menuItem.Click += (x, y) => CreateNewElementByUser(newSpecializationType, null);
+                        menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, null);
                         menuItems.Add(menuItem);
                     }
                 }
             }
 
-            void CreateNewElementByUser(IElement? type, string? innerParentProperty)
+            async Task CreateNewElementByUser(IElement? type, string? innerParentProperty)
             {
                 if (IsExtentSelectedInTreeview)
-                    NavigatorForItems.NavigateToNewItemForExtent(
+                    await NavigatorForItems.NavigateToNewItemForExtent(
                         NavigationHost,
                         Extent,
                         type);
@@ -651,11 +659,10 @@ namespace DatenMeister.WPF.Forms.Base
                     if (SelectedPackage == null)
                         throw new InvalidOperationException("SelectedPackage == null");
 
-                    NavigatorForItems.NavigateToNewItemForItem(
+                    await NavigatorForItems.NavigateToNewItemForItem(
                         NavigationHost,
                         SelectedPackage,
-                        type,
-                        innerParentProperty);
+                        innerParentProperty, type);
                 }
             }
 
@@ -708,7 +715,7 @@ namespace DatenMeister.WPF.Forms.Base
                 listFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.noItemsWithMetaClass);
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = listFormDefinition.getOrDefault<IElement>(_FormAndFields._ListForm.metaClass);
+            var metaClass = listFormDefinition.getOrDefault<IElement?>(_FormAndFields._ListForm.metaClass);
 
             if (metaClass != null)
             {
@@ -735,7 +742,10 @@ namespace DatenMeister.WPF.Forms.Base
         private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
         {
             SelectedPackage = e.Item;
-            if (e.Item != null)
+            
+            // Only, if the selected package is null (indicating the root) and
+            // if the selected package is not the root package, then assume that a child is selected
+            if (e.Item != null && SelectedPackage?.@equals(RootItem) != true)
             {
                 SelectedItem = e.Item;
                 IsExtentSelectedInTreeview = false;
@@ -771,40 +781,26 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Resets the view extensions for the attached navigation view
         /// </summary>
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
         {
-            var newViewExtensions = new List<ViewExtension>();
-            foreach (var extension in GetViewExtensions().OfType<TreeViewItemCommandDefinition>())
-                newViewExtensions.Add(extension);
-
-            NavigationTreeView.EvaluateViewExtensions(newViewExtensions);
+            NavigationTreeView.EvaluateViewExtensions(viewExtensions);
+            
+            // Creates the buttons for the treeview
+            ClearTreeViewUiElement();
+            AddTreeViewUiElement(viewExtensions);
         }
 
         private void ItemExplorerControl_OnUnloaded(object sender, RoutedEventArgs e)
         {
             Unregister();
         }
-        
-        
-        /// <summary>
-        /// Queries the plugins and asks for the navigation buttons for the treeview area 
-        /// </summary>
-        private void RebuildNavigationForTreeView()
-        {
-            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            
-            // Creates the buttons for the treeview
-            ClearTreeViewUiElement();
-            AddTreeViewUiElement(viewExtensionPlugins);
-        }
 
-        private void AddTreeViewUiElement(List<IViewExtensionFactory> viewExtensionPlugins)
+        private void AddTreeViewUiElement(IEnumerable<ViewExtension> viewExtensionInfo)
         {
             // Gets the elements of the plugin
-            var data = new ViewExtensionTargetInformation(NavigationHost, NavigationTreeView);
+            var data = new ViewExtensionInfo(NavigationHost, NavigationTreeView);
             
-            foreach (var buttonView in viewExtensionPlugins.SelectMany(x => x.GetViewExtensions(data))
-                .OfType<ItemButtonDefinition>())
+            foreach (var buttonView in viewExtensionInfo.OfType<ItemButtonDefinition>())
             {
                 var button = new Button
                 {

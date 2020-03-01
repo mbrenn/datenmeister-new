@@ -1,6 +1,6 @@
 ﻿#nullable enable
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using System.Collections.Generic;
+using DatenMeister.WPF.Modules.ViewExtensions;
 
 namespace DatenMeister.WPF
 {

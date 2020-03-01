@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
@@ -54,7 +54,6 @@ namespace DatenMeister.WPF.Windows
             ObjectTreeView.SetDefaultProperties();
         }
 
-
         private void OnItemSelected(object? item)
         {
             if (item is IObject element)
@@ -82,8 +81,9 @@ namespace DatenMeister.WPF.Windows
         /// Currently, the TreeViewWindow does not support viewextensions
         /// </summary>
         /// <param name="viewExtensions">Viewextensions being evaluated</param>
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
         {
+            ObjectTreeView.EvaluateViewExtensions(viewExtensions);
         }
 
         public void UpdateView()

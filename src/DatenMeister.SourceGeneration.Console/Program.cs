@@ -4,6 +4,7 @@ using DatenMeister.Excel.Models;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
@@ -79,6 +80,21 @@ namespace DatenMeister.SourceGeneration.Console
                 });
 
             System.Console.WriteLine(" Done");
+            
+            
+
+            System.Console.Write("Create Sourcecode for Reports...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    Name = "Reports",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.Reports",
+                    Types = ReportTypes.GetTypes()
+                });
+
+            System.Console.WriteLine(" Done");
 
 #if !DEBUG
             File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Core/Filler/primitivetypes.cs", true);
@@ -107,6 +123,10 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy("./DataViews.filler.cs", "../../../DatenMeister/Models/DataViews/DataViews.filler.cs", true);
             File.Copy("./DataViews.class.cs", "../../../DatenMeister/Models/DataViews/DataViews.class.cs", true);
             File.Copy("./DataViews.dotnet.cs", "../../../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
+
+            File.Copy("./Reports.filler.cs", "../../../DatenMeister/Models/Reports/Reports.filler.cs", true);
+            File.Copy("./Reports.class.cs", "../../../DatenMeister/Models/Reports/Reports.class.cs", true);
+            File.Copy("./Reports.dotnet.cs", "../../../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
 
 #endif
         }

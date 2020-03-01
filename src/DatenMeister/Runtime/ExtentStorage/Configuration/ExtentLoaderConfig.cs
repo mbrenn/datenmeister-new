@@ -10,6 +10,11 @@ namespace DatenMeister.Runtime.ExtentStorage.Configuration
     /// </summary>
     public class ExtentLoaderConfig
     {
+        public ExtentLoaderConfig()
+        {
+            extentUri = string.Empty;
+        }
+        
         public ExtentLoaderConfig(string extentUri)
         {
             this.extentUri = extentUri;

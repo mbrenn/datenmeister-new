@@ -11,6 +11,11 @@ namespace DatenMeister.Provider.Xml
 
         public bool keepNamespaces { get; set; }
 
+        public XmlReferenceSettings()
+        {
+            
+        }
+        
         public XmlReferenceSettings(string extentUri) : base(extentUri)
         {
         }

@@ -17,6 +17,11 @@ namespace DatenMeister.Provider.CSV.Runtime
             return base.ToString();
         }
 
+        public CsvExtentLoaderConfig()
+        {
+            
+        }
+
         public CsvExtentLoaderConfig(string extentUri) : base(extentUri)
         {
         }

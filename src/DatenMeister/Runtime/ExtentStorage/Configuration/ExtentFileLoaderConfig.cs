@@ -12,6 +12,11 @@ namespace DatenMeister.Runtime.ExtentStorage.Configuration
         /// <returns>Eine Zeichenfolge, die das aktuelle Objekt darstellt.</returns>
         public override string ToString() => $"{GetType().Name} - {System.IO.Path.GetFileName(filePath)}";
 
+        public ExtentFileLoaderConfig()
+        {
+            
+        }
+        
         public ExtentFileLoaderConfig(string extentUri) : base(extentUri)
         {
         }

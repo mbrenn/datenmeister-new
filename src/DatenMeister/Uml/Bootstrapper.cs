@@ -251,7 +251,7 @@ namespace DatenMeister.Uml
             foreach (var element in allElements.OfType<IElement>())
             {
                 // Skip the package imports since we are not able to handle these
-                if (element.isSet(TypeProperty) && element.get(TypeProperty).ToString() == "uml:PackageImport")
+                if (element.isSet(TypeProperty) && element.getOrDefault<string>(TypeProperty) == "uml:PackageImport")
                 {
                     continue;
                 }

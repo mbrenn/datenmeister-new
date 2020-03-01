@@ -7,6 +7,11 @@
         /// </summary>
         public string? extentPath { get; set; }
 
+        public ExcelImportSettings()
+        {
+            
+        }
+        
         public ExcelImportSettings(string extentUri) : base(extentUri)
         {
         }

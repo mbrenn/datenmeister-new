@@ -190,7 +190,7 @@ namespace DatenMeister.Uml.Helper
             switch (element)
             {
                 case IHasId elementAsHasId:
-                    return elementAsHasId.Id;
+                    return elementAsHasId.Id ?? string.Empty;
                 case IElement asIElement when asIElement.metaclass != null:
                 {
                     var name = GetName(asIElement.metaclass);

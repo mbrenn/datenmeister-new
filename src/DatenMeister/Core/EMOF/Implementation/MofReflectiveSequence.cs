@@ -166,7 +166,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public object get(int index)
         {
             var providerObject = GetPropertyAsEnumerable().ElementAt(index);
-            return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject);
+            return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject) ?? string.Empty;
         }
 
         /// <inheritdoc />

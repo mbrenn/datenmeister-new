@@ -100,7 +100,7 @@ namespace DatenMeister.Runtime.Workspaces
                 return dataLayer.extent
                     .Select(x => x as IUriExtent)
                     .Where(x => x != null)
-                    .ToList();
+                    .ToList()!;
             }
         }
 
@@ -122,7 +122,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// Gets the default workspace
         /// </summary>
         /// <returns>The default workspace</returns>
-        public Workspace GetDefaultWorkspace()
+        public Workspace? GetDefaultWorkspace()
         {
             lock (_fileData)
             {

@@ -103,7 +103,11 @@ namespace DatenMeister.Modules.ChangeEvents
             foreach (var handle in handles)
             {
                 handle.ExtentAction?.Invoke(extent, null);
-                handle.WorkspaceAction?.Invoke(workspace, extent, null);
+
+                if (workspace != null)
+                {
+                    handle.WorkspaceAction?.Invoke(workspace, extent, null);
+                }
             }
         }
 

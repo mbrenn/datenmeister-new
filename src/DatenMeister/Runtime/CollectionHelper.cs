@@ -13,11 +13,11 @@ namespace DatenMeister.Runtime
 {
     public static class CollectionHelper
     {
-        public static IList<T> ToList<T>(this IReflectiveCollection collection) =>
+        public static IList<T> ToList<T>(this IReflectiveCollection collection) where T : notnull =>
             new ReflectiveList<T>(collection);
 
         public static IList<T> ToList<T>(this IReflectiveCollection collection, Func<object, T> wrapFunc,
-            Func<T, object> unwrapFunc)
+            Func<T, object> unwrapFunc) where T : notnull 
             =>
                 new ReflectiveList<T>(collection, wrapFunc, unwrapFunc);
 
@@ -41,7 +41,13 @@ namespace DatenMeister.Runtime
 
         public static IEnumerable<IObject> OnlyObjects(this IEnumerable<object> values)
         {
-            return values.Select(x => x as IObject).Where(x => x != null);
+            foreach (var x in values)
+            {
+                if (x is IObject onlyObject)
+                {
+                    yield return onlyObject;
+                }
+            }
         }
 
         /// <summary>
@@ -51,7 +57,21 @@ namespace DatenMeister.Runtime
         /// <returns>Enumeration of distincting elements</returns>
         public static IEnumerable<IElement> GetMetaClasses(this IEnumerable<object> values)
         {
-            return values.OfType<IElement>().Select(x => x.getMetaClass()).Where(x => x != null).Distinct();
+            var set = new HashSet<IElement?>();
+            foreach (var value in values)
+            {
+                if (value is IElement x)
+                {
+                    var metaClass = x.getMetaClass();
+                    if (metaClass is IElement result)
+                    {
+                        if (set.Add(metaClass))
+                        {
+                            yield return result;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>

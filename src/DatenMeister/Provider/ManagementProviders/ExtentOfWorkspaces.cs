@@ -46,7 +46,7 @@ namespace DatenMeister.Provider.ManagementProviders
 
         public IProviderObject? Get(string? id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (id == null || string.IsNullOrEmpty(id))
             {
                 return null;
             }

@@ -137,7 +137,7 @@ namespace DatenMeister.Modules.TypeSupport
             IReflectiveSequence children;
             if (package.isSet(_UML._Packages._Package.packagedElement))
             {
-                children = (IReflectiveSequence) package.get(_UML._Packages._Package.packagedElement);
+                children = package.get<IReflectiveSequence>(_UML._Packages._Package.packagedElement);
             }
             else
             {

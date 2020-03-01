@@ -95,7 +95,12 @@ namespace DatenMeister.Runtime.Dynamic
                 var result = new List<object>();
                 foreach (var innerValue in enumeration)
                 {
-                    result.Add(ConvertValue(innerValue, wrapInObject));
+                    var convertedValue = ConvertValue(innerValue, wrapInObject);
+
+                    if (convertedValue != null)
+                    {
+                        result.Add(convertedValue);
+                    }
                 }
 
                 return result;

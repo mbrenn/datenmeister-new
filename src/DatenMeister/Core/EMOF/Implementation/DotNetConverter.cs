@@ -79,7 +79,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             // Gets the uri of the lookup up type
             var metaClassUri = _extent?.GetMetaClassUri(value.GetType());
-            var metaClass = metaClassUri == null ? null : _extent.Resolve(metaClassUri, ResolveType.OnlyMetaClasses);
+            var metaClass = metaClassUri == null ? null : _extent?.Resolve(metaClassUri, ResolveType.OnlyMetaClasses);
 
             return ConvertToMofObject(value, metaClass, requestedId);
         }
@@ -111,7 +111,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var enumeration = (IEnumerable) innerValue;
                     foreach (var innerElementValue in enumeration)
                     {
-                        list.Add(ConvertToMofIfNotPrimitive(innerElementValue));
+                        var convertedValue = ConvertToMofIfNotPrimitive(innerElementValue);
+                        list.Add(convertedValue);
                     }
 
                     createdElement.set(reflectedProperty.Name, list);

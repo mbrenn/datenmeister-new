@@ -386,7 +386,7 @@ namespace DatenMeister.Runtime
         /// <param name="extent">Extent being used to find references and/or meta classes</param>
         /// <param name="factory">Factory being used to create a new instance</param>
         /// <returns>The converted object that can directly be set. </returns>
-        private static object ConvertPropertyValue(object value, MofUriExtent extent, IFactory factory)
+        private static object? ConvertPropertyValue(object value, MofUriExtent extent, IFactory factory)
         {
             if (IsOfPrimitiveType(value))
             {

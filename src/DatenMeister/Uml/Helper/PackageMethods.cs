@@ -243,7 +243,10 @@ namespace DatenMeister.Uml.Helper
         public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
-            var objectCopier = new ObjectCopier(new MofFactory(targetPackage.GetExtentOf()));
+            var objectCopier = new ObjectCopier(new MofFactory(
+                targetPackage.GetExtentOf() ??
+                throw new InvalidOperationException("targetPackage does not belong to an extent")));
+            
             foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
             {
                 var copiedObject = objectCopier.Copy(subElement, copyOptions);

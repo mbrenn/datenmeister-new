@@ -30,7 +30,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
         /// If not, it will be created.
         /// </summary>
         /// <returns>The loaded workspace</returns>
-        public WorkspaceFileData Load()
+        public WorkspaceFileData? Load()
         {
             try
             {

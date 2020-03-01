@@ -29,6 +29,12 @@ namespace DatenMeister.Provider.CSV.Runtime
 
             var provider = new InMemoryProvider();
 
+            var filePath = csvConfiguration.filePath;
+            if (filePath == null || string.IsNullOrEmpty(filePath))
+            {
+                throw new InvalidOperationException("FilePath is empty");    
+            }
+            
             var doesFileExist = File.Exists(csvConfiguration.filePath);
             if (doesFileExist)
             {

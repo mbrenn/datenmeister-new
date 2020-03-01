@@ -126,7 +126,11 @@ namespace DatenMeister.Runtime.Copier
                 && sourceElement is IHasId sourceWithId
                 && targetElement is ICanSetId targetCanSetId)
             {
-                targetCanSetId.Id = sourceWithId.Id;
+                var id = sourceWithId.Id;
+                if (id != null)
+                {
+                    targetCanSetId.Id = id;
+                }
             }
 
             // Transfers the properties

@@ -174,7 +174,7 @@ namespace DatenMeister.Provider.Xml
                 }
             }
 
-            return result;
+            return result ?? string.Empty;
         }
 
         private string GetNameNormalized(XName xname)

@@ -40,7 +40,9 @@ namespace DatenMeister.Runtime.Proxies
         public ReflectiveList(IReflectiveCollection collection, Func<object, T> wrapFunc, Func<T, object> unwrapFunc)
         {
             _collection = collection;
-            _sequence = _collection as IReflectiveSequence;
+            _sequence = _collection as IReflectiveSequence??
+                        throw new InvalidOperationException("Collection is not IReflectiveSequence");
+            
             _wrapFunc = wrapFunc;
             _unwrapFunc = unwrapFunc;
         }

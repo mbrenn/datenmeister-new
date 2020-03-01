@@ -48,12 +48,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="noReferences">true, if UriReferences shall be resolved</param>
         /// <returns>Enumeration of collection</returns>
-        internal IEnumerable<object?> Enumerate(bool noReferences = false)
+        internal IEnumerable<object> Enumerate(bool noReferences = false)
         {
             var result = GetPropertyAsEnumerable();
             foreach (var item in result)
             {
-                yield return MofObject.ConvertToMofObject(MofObject, PropertyName, item, noReferences || NoReferences);
+                var convertedObject =
+                    MofObject.ConvertToMofObject(MofObject, PropertyName, item, noReferences || NoReferences);
+                if (convertedObject != null)
+                {
+                    yield return convertedObject;
+                }
             }
         }
 
@@ -157,6 +162,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (value == null) return; // null will ot be added
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
+            if (valueToBeAdded == null) return;
+
             MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded, index);
 
             UpdateContent();
@@ -172,12 +179,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void remove(int index)
         {
-            var foundvalue = ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(PropertyName)).ElementAt(index);
-            if (foundvalue != null)
+            var foundValue = ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(PropertyName)).ElementAt(index);
+            if (foundValue != null)
             {
                 MofObject.ProviderObject.RemoveFromProperty(
                     PropertyName,
-                    foundvalue);
+                    foundValue);
 
                 UpdateContent();
             }

@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost">Host for navigation being to be used</param>
         /// <param name="extent">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public async static Task<NavigateToElementDetailResult?> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
+        public static async Task<NavigateToElementDetailResult?> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
         {
             if (extent is MofExtent mofExtent)
             {

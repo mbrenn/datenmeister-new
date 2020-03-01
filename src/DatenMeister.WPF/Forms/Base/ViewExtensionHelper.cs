@@ -29,9 +29,9 @@ namespace DatenMeister.WPF.Forms.Base
             var typeName = metaclass.get(_UML._CommonStructure._NamedElement.name);
 
             return new GenericButtonDefinition(
-                $"New {typeName}", () =>
+                $"New {typeName}", async () =>
                 {
-                    NavigatorForItems.NavigateToNewItemForCollection(
+                    await NavigatorForItems.NavigateToNewItemForCollection(
                         navigationHost,
                         collection,
                         metaclass);

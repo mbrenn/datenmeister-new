@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
@@ -598,7 +599,7 @@ namespace DatenMeister.WPF.Forms.Base
                 Header = "Select Type..."
             };
 
-            menuItem.Click += (x, y) => CreateNewElementByUser(null, parentProperty);
+            menuItem.Click += async (x, y) => await CreateNewElementByUser(null, parentProperty);
             menuItems.Add(menuItem);
 
             // Sets the generic buttons to create the new types
@@ -628,7 +629,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                     usedViewExtensions.Add(new GenericButtonDefinition(
                         $"New {typeName}", 
-                        () => CreateNewElementByUser(newType, innerParentProperty)));
+                        async () => await CreateNewElementByUser(newType, innerParentProperty)));
 
                     foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
                     {
@@ -638,16 +639,16 @@ namespace DatenMeister.WPF.Forms.Base
                             Header = $"New {newSpecializationType}"
                         };
 
-                        menuItem.Click += (x, y) => CreateNewElementByUser(newSpecializationType, null);
+                        menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, null);
                         menuItems.Add(menuItem);
                     }
                 }
             }
 
-            void CreateNewElementByUser(IElement? type, string? innerParentProperty)
+            async Task CreateNewElementByUser(IElement? type, string? innerParentProperty)
             {
                 if (IsExtentSelectedInTreeview)
-                    NavigatorForItems.NavigateToNewItemForExtent(
+                    await NavigatorForItems.NavigateToNewItemForExtent(
                         NavigationHost,
                         Extent,
                         type);
@@ -658,11 +659,10 @@ namespace DatenMeister.WPF.Forms.Base
                     if (SelectedPackage == null)
                         throw new InvalidOperationException("SelectedPackage == null");
 
-                    NavigatorForItems.NavigateToNewItemForItem(
+                    await NavigatorForItems.NavigateToNewItemForItem(
                         NavigationHost,
                         SelectedPackage,
-                        type,
-                        innerParentProperty);
+                        innerParentProperty, type);
                 }
             }
 

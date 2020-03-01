@@ -675,7 +675,7 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationHost,
                 new NavigateToItemConfig(selectedElement)
                 {
-                    DetailElementContainer = Items
+                    ContainerCollection = Items
                 });
         }
 

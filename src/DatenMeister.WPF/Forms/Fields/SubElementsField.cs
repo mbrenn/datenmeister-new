@@ -283,27 +283,27 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 new Tuple<string, Action>(
                     "Select Type...",
-                    () =>
+                    async () =>
                     {
                         var referencedExtent = (element as MofObject)?.ReferencedExtent;
                         if (referencedExtent == null)
                             throw new InvalidOperationException("referencedExtent == null");
 
-                        var result = NavigatorForItems.NavigateToCreateNewItem(
+                        var result = await NavigatorForItems.NavigateToCreateNewItem(
                             navigationHost,
                             referencedExtent,
                             null);
-
-                        result.NewItemCreated += (a, b) =>
+                        
+                        if (result?.IsNewObjectCreated == true && result.NewObject != null)
                         {
                             var propertyCollection = element.getOrDefault<IReflectiveCollection>(_propertyName); 
                             if (propertyCollection != null)
                             {
-                                propertyCollection.add(b.NewItem);
+                                propertyCollection.add(result.NewObject);
                             }
                             else
                             {
-                                element.set(_propertyName, new List<object> {b.NewItem});
+                                element.set(_propertyName, new List<object> {result.NewObject});
                             }
 
                             panel.Children.Clear();
@@ -373,24 +373,24 @@ namespace DatenMeister.WPF.Forms.Fields
 
             var result = new Tuple<string, Action>(
                 $"New {typeName}",
-                () =>
+                async () =>
                 {
                     var referencedExtent = (_element as MofObject)?.ReferencedExtent
                                            ?? throw new InvalidOperationException("referencedExtent == null");
 
                     var elements =
-                        NavigatorForItems.NavigateToCreateNewItem(
+                        await NavigatorForItems.NavigateToCreateNewItem(
                             _navigationHost, referencedExtent, type);
-                    elements.NewItemCreated += (x, y) =>
+                    if (elements?.IsNewObjectCreated == true && elements.NewObject != null)
                     {
                         var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 
                         if (propertyCollection != null)
                         {
-                            propertyCollection.add(y.NewItem);
+                            propertyCollection.add(elements.NewObject);
                         }
                         else
                         {
-                            _element.set(_propertyName, new List<object> {y.NewItem});
+                            _element.set(_propertyName, new List<object> {elements.NewObject});
                         }
 
                         _panel.Children.Clear();

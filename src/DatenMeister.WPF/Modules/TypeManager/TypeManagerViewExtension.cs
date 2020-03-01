@@ -54,8 +54,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
 
                             yield return new ApplicationMenuButtonDefinition(
                                 "Create new Class",
-                                () =>
-                                    NavigatorForItems.NavigateToCreateNewItemInExtent(
+                                async () =>
+                                    await NavigatorForItems.NavigateToCreateNewItemInExtent(
                                         navigationHost,
                                         extent!,
                                         classMetaClass),
@@ -78,8 +78,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     yield return
                         new CollectionMenuButtonDefinition(
                             "Create new Class",
-                            (x) =>
-                                NavigatorForItems.NavigateToNewItemForExtent(
+                            async (x) =>
+                                await NavigatorForItems.NavigateToNewItemForExtent(
                                     navigationHost,
                                     listControl.Extent,
                                     classMetaClass),
@@ -110,8 +110,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                                 yield return
                                     new CollectionMenuButtonDefinition(
                                         "Create new Property",
-                                        (x) =>
-                                            NavigatorForItems.NavigateToNewItemForPropertyCollection(
+                                        async (x) =>
+                                            await NavigatorForItems.NavigateToNewItemForPropertyCollection(
                                                 navigationHost,
                                                 selectedPackage,
                                                 _UML._StructuredClassifiers._Class.ownedAttribute,

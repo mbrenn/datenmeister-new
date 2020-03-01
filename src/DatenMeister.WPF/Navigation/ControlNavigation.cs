@@ -1,8 +1,10 @@
 ﻿using System;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.WPF.Navigation
 {
-    public class ControlNavigation : IControlNavigation, IControlNavigationSaveItem, IControlNavigationNewItem
+    
+    public class ControlNavigation : IControlNavigation, IControlNavigationSaveItem, IControlNavigationNewObject
     {
         public INavigationGuest? NavigationGuest { get; set; }
 
@@ -10,7 +12,13 @@ namespace DatenMeister.WPF.Navigation
 
         public event EventHandler? Closed;
         public event EventHandler<ItemEventArgs>? Saved;
-        public event EventHandler<NewItemEventArgs>? NewItemCreated;
+        public event EventHandler<NewItemEventArgs>? NewObjectCreated;
+        
+        /// <inheritdoc />
+        public bool IsNewObjectCreated { get; set; }
+
+        /// <inheritdoc />
+        public IObject? NewObject { get; set; }
 
         public virtual void OnSaved(ItemEventArgs e)
         {
@@ -19,7 +27,7 @@ namespace DatenMeister.WPF.Navigation
 
         public virtual void OnNewItemCreated(NewItemEventArgs e)
         {
-            NewItemCreated?.Invoke(this, e);
+            NewObjectCreated?.Invoke(this, e);
         }
 
         public virtual void OnClosed()

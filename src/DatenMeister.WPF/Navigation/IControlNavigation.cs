@@ -30,12 +30,22 @@ namespace DatenMeister.WPF.Navigation
     /// <summary>
     /// This interface is created for every navigated element
     /// </summary>
-    public interface IControlNavigationNewItem : IControlNavigation
+    public interface IControlNavigationNewObject : IControlNavigation
     {
         /// <summary>
         /// This event will be called, when a new item is created
         /// </summary>
-        event EventHandler<NewItemEventArgs> NewItemCreated;
+        event EventHandler<NewItemEventArgs> NewObjectCreated;
+        
+        /// <summary>
+        /// Gets of sets indicating whether a new item has been created. 
+        /// </summary>
+        bool IsNewObjectCreated { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the item that has been created
+        /// </summary>
+        IObject? NewObject { get; set; }
     }
 
     public class NewItemEventArgs : EventArgs

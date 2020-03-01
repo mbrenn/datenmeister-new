@@ -298,7 +298,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 wasInMetaClass = true;
                 var propertyName = property.get<string?>("name");
 
-                if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
+                if (propertyName == null || 
+                    focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
                 {
                     // Skip the property name, when we would like to have focus on certain property names
                     continue;

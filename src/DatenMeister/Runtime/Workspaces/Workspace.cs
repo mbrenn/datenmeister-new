@@ -282,7 +282,7 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
 
-            return null;
+            return default;
         }
 
         public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()

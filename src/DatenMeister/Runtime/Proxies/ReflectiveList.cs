@@ -10,7 +10,7 @@ namespace DatenMeister.Runtime.Proxies
     /// Abstracts a reflective collection/sequence into a list
     /// </summary>
     /// <typeparam name="T">Type of the elements of the list</typeparam>
-    public class ReflectiveList<T> : IList<T>
+    public class ReflectiveList<T> : IList<T> where T : notnull
     {
         private readonly IReflectiveCollection _collection;
 
@@ -30,7 +30,8 @@ namespace DatenMeister.Runtime.Proxies
         public ReflectiveList(IReflectiveCollection collection)
         {
             _collection = collection;
-            _sequence = _collection as IReflectiveSequence;
+            _sequence = _collection as IReflectiveSequence ??
+                        throw new InvalidOperationException("Collection is not IReflectiveSequence");
 
             _wrapFunc = x => (T) x;
             _unwrapFunc = x => x;

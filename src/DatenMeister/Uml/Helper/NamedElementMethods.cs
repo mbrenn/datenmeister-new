@@ -153,7 +153,7 @@ namespace DatenMeister.Uml.Helper
                     propertyValue = value.get(property);
                 }
 
-                if (!DotNetHelper.IsOfEnumeration(propertyValue))
+                if (!DotNetHelper.IsOfEnumeration(propertyValue) || propertyValue == null)
                 {
                     continue;
                 }

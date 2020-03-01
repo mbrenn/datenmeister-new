@@ -126,6 +126,12 @@ namespace DatenMeister.Modules.DataViews
             }
 
             var targetElement = NamedElementMethods.GetByFullName(input, pathNode);
+            if (targetElement == null)
+            {
+                // Path is not found
+                return new PureReflectiveSequence();
+            }
+            
             return new TemporaryReflectiveSequence(NamedElementMethods.GetAllPropertyValues(targetElement));
         }
 

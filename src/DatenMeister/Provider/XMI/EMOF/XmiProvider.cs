@@ -91,7 +91,10 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
-            _rootNode.Add(((XmiProviderObject) valueAsObject).XmlNode);
+            if (valueAsObject is XmiProviderObject providerObject)
+            {
+                _rootNode.Add(providerObject.XmlNode);
+            }
         }
 
         /// <inheritdoc />

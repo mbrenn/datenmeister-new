@@ -71,7 +71,8 @@ namespace DatenMeister.Uml.Helper
                 packagePath,
                 _UML._CommonStructure._NamedElement.name,
                 _UML._Packages._Package.packagedElement,
-                uml.Packages.__Package);
+                uml.Packages.__Package)
+                ?? throw new InvalidOperationException("No package was returned");
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="metaClass">The Metaclass being used to create the child packages</param>
         /// <param name="flagCreate">true, if the structure shall be really created.
         /// If false, null will be returned if the package is not found</param>
-        public static IElement GetOrCreatePackageStructure(
+        public static IElement? GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             IFactory factory,
             string packagePath,
@@ -131,7 +132,7 @@ namespace DatenMeister.Uml.Helper
                         continue;
                     }
 
-                    if (innerElement.get(nameProperty).ToString() == elementName)
+                    if (innerElement.getOrDefault<string>(nameProperty) == elementName)
                     {
                         childElement = innerElement;
                     }

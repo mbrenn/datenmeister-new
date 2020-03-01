@@ -10,5 +10,9 @@ namespace DatenMeister.Excel.Helper
     {
         public string? filePath { get; set; }
         public string? idColumnName { get; set; }
+
+        public ExcelExtentSettings(string extentUri) : base(extentUri)
+        {
+        }
     }
 }

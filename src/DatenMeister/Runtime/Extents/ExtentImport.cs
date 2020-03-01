@@ -27,9 +27,8 @@ namespace DatenMeister.Runtime.Extents
                 File.Copy(importSettings.fileToBeImported, importSettings.fileToBeExported);
             }
 
-            var resultingExtent = _extentManager.LoadExtent(new XmiStorageConfiguration
+            var resultingExtent = _extentManager.LoadExtent(new XmiStorageConfiguration(importSettings.newExtentUri)
             {
-                extentUri = importSettings.newExtentUri,
                 filePath = importSettings.fileToBeExported,
                 workspaceId = importSettings.Workspace
             });

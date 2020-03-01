@@ -95,7 +95,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             // After having the uri, create the required element
             var createdElement = _factory.create(metaClass);
-            if (!string.IsNullOrEmpty(requestedId) && createdElement is ICanSetId canSetId)
+            if (requestedId != null && !string.IsNullOrEmpty(requestedId) && createdElement is ICanSetId canSetId)
             {
                 canSetId.Id = requestedId;
             }

@@ -2,5 +2,8 @@
 {
     public class ExcelReferenceSettings : ExcelSettings
     {
+        public ExcelReferenceSettings(string extentUri) : base(extentUri)
+        {
+        }
     }
 }

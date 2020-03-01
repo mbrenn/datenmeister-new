@@ -5,6 +5,8 @@ namespace DatenMeister.Provider.InMemory
 {
     public class InMemoryLoaderConfig : ExtentLoaderConfig
     {
-        
+        public InMemoryLoaderConfig(string extentUri) : base(extentUri)
+        {
+        }
     }
 }

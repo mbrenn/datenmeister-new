@@ -28,7 +28,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 var valueAsObject = value as IElement;
 
-                if (IsInList(valueAsObject))
+                if (valueAsObject != null && IsInList(valueAsObject))
                 {
                     yield return valueAsObject;
                 }
@@ -41,6 +41,9 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IElement;
+                if (valueAsObject == null) 
+                    continue;
+                
                 if (IsInList(valueAsObject))
                 {
                     result++;

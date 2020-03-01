@@ -25,5 +25,9 @@ namespace DatenMeister.Excel.Helper
         {
             return DotNetConverter.ConvertFromDotNetObject(this);
         }
+
+        public ExcelSettings(string extentUri) : base(extentUri)
+        {
+        }
     }
 }

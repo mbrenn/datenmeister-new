@@ -81,7 +81,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool add(object value)
+        public bool add(object? value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
             if (valueToBeAdded != null)
@@ -105,6 +105,9 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             foreach (var element in value)
             {
+                if (element == null)
+                    continue;
+                
                 if (result == null)
                 {
                     result = add(element);
@@ -129,6 +132,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool remove(object? value)
         {
+            if (value == null) return false;
             bool result;
             if (value is MofObject valueAsMofObject)
             {
@@ -151,6 +155,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void add(int index, object value)
         {
+            if (value == null) return; // null will ot be added
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
             MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded, index);
 

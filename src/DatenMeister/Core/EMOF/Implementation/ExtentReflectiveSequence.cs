@@ -62,6 +62,8 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             foreach (var element in value)
             {
+                if (element == null) continue;
+                
                 if (result == null)
                 {
                     result = add(element);

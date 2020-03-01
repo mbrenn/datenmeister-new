@@ -56,9 +56,8 @@ namespace DatenMeister.Tests.Excel
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var excelReferenceSettings = new ExcelReferenceSettings
+                var excelReferenceSettings = new ExcelReferenceSettings("dm:///excel2")
                 {
-                    extentUri = "dm:///excel2",
                     filePath = Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"),
                     hasHeader = true,
                     sheetName = "Tabelle1"
@@ -102,9 +101,8 @@ namespace DatenMeister.Tests.Excel
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var excelReferenceSettings = new ExcelImportSettings
+                var excelReferenceSettings = new ExcelImportSettings("dm:///excel2")
                 {
-                    extentUri = "dm:///excel2",
                     filePath = Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"),
                     extentPath = Path.Combine(currentDirectory, "test.xmi"),
                     hasHeader = true,

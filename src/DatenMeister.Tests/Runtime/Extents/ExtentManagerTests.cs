@@ -18,9 +18,8 @@ namespace DatenMeister.Tests.Runtime.Extents
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<IExtentManager>();
 
-            var loaderConfig = new InMemoryLoaderConfig
+            var loaderConfig = new InMemoryLoaderConfig("dm:///test")
             {
-                extentUri = "dm:///test",
                 workspaceId = WorkspaceNames.NameData
             };
                     

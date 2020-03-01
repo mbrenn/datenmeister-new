@@ -110,9 +110,19 @@ namespace DatenMeister.Uml
 
             _wasRun = true;
 
-            var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
-            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveTypesInfrastructure).ToList();
-            var mofDescendents = AllDescendentsQuery.GetDescendents(MofInfrastructure).ToList();
+            var umlDescendents = AllDescendentsQuery
+                .GetDescendents(UmlInfrastructure 
+                                ?? throw new InvalidOperationException("Uml Workspace not found"))
+                .ToList();
+            var primitiveDescendents = AllDescendentsQuery
+                .GetDescendents(PrimitiveTypesInfrastructure 
+                                ?? throw new InvalidOperationException("PrimitiveTypes Workspace not found"))
+                .ToList();
+            var mofDescendents = AllDescendentsQuery
+                .GetDescendents(MofInfrastructure
+                                ?? throw new InvalidOperationException("Mof Workspace not found"))
+                .ToList();
+            
             var allElements =
                 umlDescendents
                     .Union(primitiveDescendents)

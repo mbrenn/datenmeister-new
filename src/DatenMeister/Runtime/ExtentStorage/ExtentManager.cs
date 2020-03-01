@@ -205,7 +205,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="extent">The extent whose configuration is retrieved</param>
         /// <returns>The configuration</returns>
-        public ExtentLoaderConfig GetLoadConfigurationFor(IUriExtent extent)
+        public ExtentLoaderConfig? GetLoadConfigurationFor(IUriExtent extent)
         {
             ExtentStorageData.LoadedExtentInformation information;
             lock (_extentStorageData.LoadedExtents)
@@ -515,21 +515,25 @@ namespace DatenMeister.Runtime.ExtentStorage
                              && x.ExtentUri == entry.Configuration.extentUri);
 
                     if (found != null)
-                    {
                         throw new InvalidOperationException("Database integrity is not given anymore");
-                    }
-                    
-                    list.Add(new VerifyDatabaseEntry
-                    {
-                        Workspace = entry.Configuration.workspaceId,
-                        ExtentUri = entry.Configuration.extentUri
-                    });
+
+                    list.Add(
+                        new VerifyDatabaseEntry(
+                            entry.Configuration.workspaceId,
+                            entry.Configuration.extentUri
+                        ));
                 }
             }
         }
 
         private class VerifyDatabaseEntry
         {
+            public VerifyDatabaseEntry(string workspace, string extentUri)
+            {
+                Workspace = workspace;
+                ExtentUri = extentUri;
+            }
+
             public string Workspace { get; set; }
             
             public string ExtentUri { get; set; }

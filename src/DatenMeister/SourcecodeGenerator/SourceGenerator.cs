@@ -63,7 +63,8 @@ namespace DatenMeister.SourcecodeGenerator
             ////////////////////////////////////////
             // Creates now the filler
             var fillerGenerator = new FillClassTreeByExtentCreator(options.Name + "Filler", sourceParser)
-            {Namespace = options.Namespace,
+            {
+                Namespace = options.Namespace,
                 ClassNameOfTree = classTreeGenerator.UsedClassName
             };
 

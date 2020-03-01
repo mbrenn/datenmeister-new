@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
             throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
-        public override bool remove(object value) =>
+        public override bool remove(object? value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
     }
 }

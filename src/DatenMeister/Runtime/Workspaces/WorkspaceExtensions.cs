@@ -24,7 +24,7 @@ namespace DatenMeister.Runtime.Workspaces
 
     public static class WorkspaceExtensions
     {
-        public static IObject FindElementByUri(this Workspace workspace, string uri)
+        public static IObject? FindElementByUri(this Workspace workspace, string uri)
         {
             return FindElementByUri(
                 workspace.extent.Select(x => x as IUriExtent)
@@ -382,12 +382,12 @@ namespace DatenMeister.Runtime.Workspaces
             return uml.Get<_PrimitiveTypes>();
         }
 
-        public static Workspace GetUmlWorkspace(
-            this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameUml);
+        public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameUml) ??
+            throw new InvalidOperationException("Uml Workspace not foudn");
 
-        public static Workspace GetMofWorkspace(
-            this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameMof);
+        public static Workspace GetMofWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameMof) ??
+            throw new InvalidOperationException("Mof Workspace not foudn");
     }
 }

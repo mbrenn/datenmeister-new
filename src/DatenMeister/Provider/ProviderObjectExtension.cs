@@ -12,7 +12,7 @@ namespace DatenMeister.Provider
         /// <param name="value">providerObject to be evaluated</param>
         /// <param name="propertyName">Name of the property</param>
         /// <returns>The found property</returns>
-        public static object GetPropertyAsSingle(this IProviderObject value, string propertyName)
+        public static object? GetPropertyAsSingle(this IProviderObject value, string propertyName)
         {
             if (!value.IsPropertySet(propertyName))
             {

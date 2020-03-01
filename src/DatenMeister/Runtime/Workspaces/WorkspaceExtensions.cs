@@ -32,7 +32,7 @@ namespace DatenMeister.Runtime.Workspaces
                 uri);
         }
 
-        public static IObject FindElementByUri(this IEnumerable<IUriExtent> extents, string uri)
+        public static IObject? FindElementByUri(this IEnumerable<IUriExtent> extents, string uri)
         {
             foreach (var extent in extents)
             {
@@ -321,13 +321,21 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic) => logic.GetWorkspace(WorkspaceNames.NameManagement);
+        public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameManagement)
+            ?? throw new InvalidOperationException("Management is not found");
 
-        public static Workspace GetDataWorkspace(this IWorkspaceLogic logic) => logic.GetWorkspace(WorkspaceNames.NameData);
+        public static Workspace GetDataWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameData)
+            ?? throw new InvalidOperationException("Data is not found");
 
-        public static Workspace GetTypesWorkspace(this IWorkspaceLogic logic) => logic.GetWorkspace(WorkspaceNames.NameTypes);
+        public static Workspace GetTypesWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameTypes)
+            ?? throw new InvalidOperationException("Types is not found");
 
-        public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic) => logic.GetWorkspace(WorkspaceNames.NameViews);
+        public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameViews)
+            ?? throw new InvalidOperationException("Views is not found");
 
         public static IUriExtent GetUserFormsExtent(this IWorkspaceLogic logic)
         {

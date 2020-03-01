@@ -129,6 +129,8 @@ namespace DatenMeister.Modules.TypeSupport
                 "name",
                 _UML._Packages._Package.packagedElement,
                 _workspaceLogic.GetUmlData().Packages.__Package);
+            if (package == null)
+                throw new InvalidOperationException("package == null");
 
             package.set(_UML._Packages._Package.packagedElement, new List<object>());
 
@@ -270,7 +272,7 @@ namespace DatenMeister.Modules.TypeSupport
         {
             return GetInternalTypeExtent(_workspaceLogic);
         }
-        
+
         /// <summary>
         /// Gets the extent containing the types being created by the user
         /// </summary>
@@ -278,6 +280,9 @@ namespace DatenMeister.Modules.TypeSupport
         public IUriExtent GetUserTypeExtent()
         {
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            if (workspace == null)
+                throw new InvalidOperationException("Types workspace does not exist");
+            
             var internalTypeExtent = GetUserTypeExtent(workspace);
             return internalTypeExtent;
         }

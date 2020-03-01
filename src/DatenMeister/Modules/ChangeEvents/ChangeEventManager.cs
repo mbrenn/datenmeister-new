@@ -35,7 +35,7 @@ namespace DatenMeister.Modules.ChangeEvents
         public void SendChangeEvent(IObject value)
         {
             var extent = value.GetExtentOf();
-            var workspace = extent.GetWorkspace();
+            var workspace = extent?.GetWorkspace();
 
             RegisteredEventHandle[] handles;
             try
@@ -160,7 +160,7 @@ namespace DatenMeister.Modules.ChangeEvents
             }
         }
 
-        public EventHandle RegisterFor(IExtent extent, Action<IExtent, IObject> extentAction)
+        public EventHandle RegisterFor(IExtent extent, Action<IExtent, IObject?> extentAction)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace DatenMeister.Modules.ChangeEvents
             }
         }
 
-        public EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent, IObject> workspaceAction)
+        public EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent, IObject?> workspaceAction)
         {
             try
             {

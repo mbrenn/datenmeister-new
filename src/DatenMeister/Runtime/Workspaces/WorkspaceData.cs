@@ -9,6 +9,8 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public class WorkspaceData
     {
+        private Workspace? _default;
+
         /// <summary>
         /// Stores the workspaces
         /// </summary>
@@ -17,7 +19,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Gets or sets the default layer that shall be assumed, if no information is considered as available.
         /// </summary>
-        public Workspace? Default { get; set; }
+        public Workspace Default
+        {
+            get => _default ?? throw new InvalidOperationException("Default is not set");
+            set => _default = value;
+        }
 
 
         public Workspace Data

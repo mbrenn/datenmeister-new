@@ -31,7 +31,7 @@ namespace DatenMeister.Provider.ManagementProviders
         public IProviderObject CreateElement(string? metaClassUri) =>
             throw new System.NotImplementedException();
 
-        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
             throw new System.NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace DatenMeister.Provider.ManagementProviders
             throw new System.NotImplementedException();
         }
 
-        public IProviderObject? Get(string id)
+        public IProviderObject? Get(string? id)
         {
             if (string.IsNullOrEmpty(id))
             {

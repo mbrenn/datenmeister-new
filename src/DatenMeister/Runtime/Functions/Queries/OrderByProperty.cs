@@ -49,7 +49,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             }
         }
 
-        public bool remove(object value) => _parent.remove(value);
+        public bool remove(object? value) => _parent.remove(value);
 
         public int size() =>
             _parent.size();

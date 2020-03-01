@@ -198,7 +198,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         public static object? ConvertToDotNetObject(IElement element)
         {
             var mofElement = (MofElement) element;
-            var metaClassUri = mofElement.metaclass.GetUri();
+            var metaClassUri = mofElement.metaclass?.GetUri();
+            if (metaClassUri == null)
+                throw new InvalidOperationException("metaClassUri is null");
 
             var type = mofElement.ReferencedExtent.ResolveDotNetType(metaClassUri, ResolveType.Default);
 

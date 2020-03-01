@@ -62,7 +62,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="workspace">Workspace to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IWorkspace workspace, string fullName)
+        public static IElement? GetByFullName(IWorkspace workspace, string fullName)
         {
             return workspace.extent
                 .Select(extent => GetByFullName(extent.elements(), fullName))
@@ -75,7 +75,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="extent">Extent to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IUriExtent extent, string fullName) =>
+        public static IElement? GetByFullName(IUriExtent extent, string fullName) =>
             GetByFullName(extent.elements(), fullName);
 
         /// <summary>

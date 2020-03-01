@@ -321,7 +321,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">The extent being used to create and resolve the element</param>
         /// <returns>The converted element</returns>
-        public static IObject ConvertToMofElement(
+        public static IObject? ConvertToMofElement(
             object value,
             IUriExtent extent) =>
             ConvertToMofElement(
@@ -359,7 +359,7 @@ namespace DatenMeister.Runtime
 
             var typeUri = extent.GetMetaClassUri(value.GetType());
 
-            if (!string.IsNullOrEmpty(typeUri))
+            if (typeUri != null && !string.IsNullOrEmpty(typeUri))
             {
                 valueType = extent.Resolve(typeUri, ResolveType.OnlyMetaClasses);
             }

@@ -64,10 +64,10 @@ namespace DatenMeister.Modules.DataViews
         public string contextURI() =>
             _dataViewElement.getOrDefault<string>(_DataViews._DataView.uri);
 
-        public string uri(IElement element) =>
+        public string? uri(IElement element) =>
             element.GetUri();
 
-        public IElement element(string uri)
+        public IElement? element(string uri)
         {
             return elements().FirstOrDefault(x => x != null && x.AsIElement()?.GetUri() == uri) as IElement;
         }

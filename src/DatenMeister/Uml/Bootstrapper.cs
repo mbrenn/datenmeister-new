@@ -223,8 +223,12 @@ namespace DatenMeister.Uml
 
             _wasRun = true;
 
-            var umlDescendents = AllDescendentsQuery.GetDescendents(UmlInfrastructure).ToList();
-            var primitiveDescendents = AllDescendentsQuery.GetDescendents(PrimitiveTypesInfrastructure).ToList();
+            var umlDescendents = AllDescendentsQuery
+                .GetDescendents(UmlInfrastructure ?? throw new InvalidOperationException("UmlInfrastructure == null"))
+                .ToList();
+            var primitiveDescendents = AllDescendentsQuery
+                .GetDescendents(PrimitiveTypesInfrastructure ??
+                                throw new InvalidOperationException("PrimitiveTypesInfrastructure == null")).ToList();
             var allElements =
                 umlDescendents
                     .Union(primitiveDescendents)

@@ -89,7 +89,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
             _rootNode.Add(((XmiProviderObject) valueAsObject).XmlNode);
         }
@@ -129,7 +129,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject? Get(string id)
+        public IProviderObject? Get(string? id)
         {
             if (id == null)
             {

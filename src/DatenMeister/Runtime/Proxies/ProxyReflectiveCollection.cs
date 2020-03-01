@@ -61,7 +61,7 @@ namespace DatenMeister.Runtime.Proxies
             }
         }
 
-        public virtual bool remove(object value)
+        public virtual bool remove(object? value)
         {
             value = PrivatizeElementFunc(value);
             return Collection.remove(value);

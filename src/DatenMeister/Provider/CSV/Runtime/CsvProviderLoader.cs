@@ -47,6 +47,9 @@ namespace DatenMeister.Provider.CSV.Runtime
         {
             var csvConfiguration = (CsvExtentLoaderConfig) configuration;
 
+            if (csvConfiguration.filePath == null)
+                throw new InvalidOperationException("csvConfiguration.filePath == null");
+            
             var provider = new CsvLoader(_workspaceLogic);
             provider.Save(extent, csvConfiguration.filePath, csvConfiguration.Settings);
         }

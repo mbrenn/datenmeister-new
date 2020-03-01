@@ -188,7 +188,9 @@ namespace DatenMeister.Provider.CSV
                     streamWriter,
                     settings,
                     columns,
-                    x => element.IsPropertySet(x) ? element.GetProperty(x) : string.Empty);
+                    x => element.IsPropertySet(x) 
+                        ? element.GetProperty(x) ?? string.Empty
+                        : string.Empty);
             }
         }
 

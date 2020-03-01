@@ -11,6 +11,6 @@ namespace DatenMeister.Modules
             e?.Invoke(this, new LifeTimeScopeEventArgs(scope));
         }
 
-        public event EventHandler<LifeTimeScopeEventArgs> AfterInitialization;
+        public event EventHandler<LifeTimeScopeEventArgs>? AfterInitialization;
     }
 }

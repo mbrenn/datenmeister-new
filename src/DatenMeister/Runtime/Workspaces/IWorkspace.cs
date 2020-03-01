@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Type of the filled type</typeparam>
         /// <returns>The found instance</returns>
-        TFilledType? Get<TFilledType>()
+        TFilledType Get<TFilledType>()
             where TFilledType : class, new();
 
         /// <summary>

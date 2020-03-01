@@ -64,7 +64,7 @@ namespace DatenMeister.Runtime.Proxies
             }
         }
 
-        public bool remove(object value)
+        public bool remove(object? value)
         {
             lock (_elements)
             {

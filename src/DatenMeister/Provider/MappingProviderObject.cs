@@ -75,7 +75,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="property">Property to be set</param>
         /// <returns>Value to be set</returns>
-        public object GetProperty(string property)
+        public object? GetProperty(string property)
         {   
             _mappings.TryGetValue(property, out var result);
 
@@ -152,8 +152,8 @@ namespace DatenMeister.Provider
                 SetFunction = setFunction;
             }
 
-            public Func<T, object> GetFunction { get; }
-            public Action<T, object> SetFunction { get; }
+            public Func<T, object?> GetFunction { get; }
+            public Action<T, object?> SetFunction { get; }
         }
 
         /// <summary>

@@ -187,7 +187,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public TFilledType? Get<TFilledType>()
+        public TFilledType Get<TFilledType>()
             where TFilledType : class, new()
         {
             lock (_syncObject)

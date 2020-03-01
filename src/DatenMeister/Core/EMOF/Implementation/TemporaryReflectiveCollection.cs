@@ -73,7 +73,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public virtual bool remove(object value)
+        public virtual bool remove(object? value)
         {
             CheckForReadOnly();
             throw new NotImplementedException();

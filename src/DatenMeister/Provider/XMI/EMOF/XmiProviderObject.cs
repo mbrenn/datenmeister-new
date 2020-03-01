@@ -411,7 +411,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <param name="property">Property, which is selected</param>
         /// <param name="value">Value, which is required</param>
         /// <returns>The found element</returns>
-        private XElement FindInPropertyList(string property, object value)
+        private XElement? FindInPropertyList(string property, object value)
         {
             var normalizePropertyName = NormalizePropertyName(property);
 
@@ -446,7 +446,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// Gets the container of the object
         /// </summary>
         /// <returns></returns>
-        public IProviderObject GetContainer()
+        public IProviderObject? GetContainer()
         {
             if (HasContainer())
             {

@@ -35,7 +35,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IElement GetPackageStructure(
+        public IElement? GetPackageStructure(
             IReflectiveCollection rootElements,
             string packagePath)
         {
@@ -58,7 +58,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IElement? GetOrCreatePackageStructure(
+        public IElement GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             string packagePath)
         {
@@ -80,19 +80,12 @@ namespace DatenMeister.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IReflectiveCollection? GetPackagedObjects(
+        public IReflectiveCollection GetPackagedObjects(
             IReflectiveCollection rootElements,
             string packagePath)
         {
             var element = GetOrCreatePackageStructure(rootElements, packagePath);
-            if (element == null || !(element is MofObject mofObject))
-            {
-                return null;
-            }
-            
-            return new MofReflectiveSequence(
-                mofObject,
-                _UML._Packages._Package.packagedElement);
+            return element.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
         }
 
         /// <summary>
@@ -107,7 +100,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="metaClass">The Metaclass being used to create the child packages</param>
         /// <param name="flagCreate">true, if the structure shall be really created.
         /// If false, null will be returned if the package is not found</param>
-        public static IElement? GetOrCreatePackageStructure(
+        public static IElement GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             IFactory factory,
             string packagePath,
@@ -124,13 +117,13 @@ namespace DatenMeister.Uml.Helper
 
             var id = "_package";
 
-            IElement found = null;
+            IElement? found = null;
             foreach (var elementName in elementNames)
             {
                 id += $"_{elementName}";
 
                 // Looks for the element with the given name
-                IElement childElement = null;
+                IElement? childElement = null;
                 foreach (var innerElement in rootElements.OfType<IElement>())
                 {
                     if (!innerElement.isSet(nameProperty))
@@ -183,7 +176,7 @@ namespace DatenMeister.Uml.Helper
                 found = childElement;
             }
 
-            return found;
+            return found ?? throw new InvalidOperationException("Something weird happened. Should not be null");
         }
 
         /// <summary>
@@ -231,6 +224,10 @@ namespace DatenMeister.Uml.Helper
         {
             var targetPackage = GetOrCreatePackageStructure(target, packagePath);
 
+            // Check, if the target package was found
+            if (targetPackage == null) 
+                return;
+            
             // We got the package, import the elements
             ImportPackage(sourcePackage, targetPackage);
         }

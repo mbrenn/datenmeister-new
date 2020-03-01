@@ -10,7 +10,7 @@ namespace DatenMeister.Modules.Formatter
 {
     public class TableFormatter
     {
-        private StringBuilder _result;
+        private StringBuilder _result = new StringBuilder();
 
         /// <summary>
         /// Converts an enumeration of elements to a table like text
@@ -19,7 +19,7 @@ namespace DatenMeister.Modules.Formatter
         /// <returns>The string containing all the values</returns>
         public string ConvertToText(IReflectiveCollection collection)
         {
-            _result = new StringBuilder();
+            _result.Clear();
             var columnWidth = new Dictionary<string, int>();
             var properties = ExtentHelper.GetProperties(collection).ToList();
 

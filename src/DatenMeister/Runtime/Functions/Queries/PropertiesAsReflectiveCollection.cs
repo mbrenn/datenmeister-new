@@ -78,7 +78,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             throw new System.NotImplementedException();
         }
 
-        public bool remove(object value) => throw new System.NotImplementedException();
+        public bool remove(object? value) => throw new System.NotImplementedException();
 
         public int size() => this.Count();
 

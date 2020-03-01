@@ -83,7 +83,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool remove(object value)
+        public bool remove(object? value)
         {
             if (value is MofObject valueAsObject)
             {

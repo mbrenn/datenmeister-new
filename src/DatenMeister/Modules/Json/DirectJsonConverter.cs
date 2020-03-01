@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -68,9 +69,9 @@ namespace DatenMeister.Modules.Json
             {
                 ConvertToJson(builder, propertyValue as IObject, newIndentation);
             }
-            else if (DotNetHelper.IsOfEnumeration(propertyValue))
+            else if (DotNetHelper.IsOfEnumeration(propertyValue)
+                     && propertyValue is IEnumerable enumeration)
             {
-                var enumeration = propertyValue as IEnumerable;
                 Debug.Assert(enumeration != null, "enumeration != null");
 
                 builder.Append("[");

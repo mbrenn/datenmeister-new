@@ -138,7 +138,7 @@ namespace DatenMeisterWPF
             var viewExtensions = new List<ViewExtension>
             {
                 new ApplicationMenuButtonDefinition(
-                    "Goto Home",
+                    "Goto Data",
                     () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
                     Icons.FileHome,
                     NavigationCategories.DatenMeisterNavigation,

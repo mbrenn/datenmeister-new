@@ -296,7 +296,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             foreach (var property in classifierMethods)
             {
                 wasInMetaClass = true;
-                var propertyName = property.get("name")!.ToString();
+                var propertyName = property.get<string?>("name");
 
                 if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
                 {
@@ -323,7 +323,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             {
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
-                form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
+                form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(metaClassField);
 
                 cache.MetaClassAlreadyAdded = true;
             }

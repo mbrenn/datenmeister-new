@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:base="clr-namespace:DatenMeister.WPF.Forms.Base"
         mc:Ignorable="d"
-        Title="TreeViewWindow" Height="300" Width="300" WindowStartupLocation="CenterOwner">
+        Title="TreeViewWindow" Height="300" Width="300" WindowStartupLocation="CenterOwner" Closed="TreeViewWindow_OnClosed">
     <Grid>
         <base:ItemsTreeView x:Name="ObjectTreeView" ItemChosen="TreeView_OnItemSelected"></base:ItemsTreeView>
     </Grid>

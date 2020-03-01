@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using Autofac;
@@ -18,6 +16,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Modules.Validators;
@@ -26,9 +25,10 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Commands;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Fields;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Button = System.Windows.Controls.Button;
@@ -63,6 +63,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private string? _internalTitle;
 
+        private IObject? _effectiveForm;
+
         public DetailFormControl()
         {
             InitializeComponent();
@@ -87,7 +89,19 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Defines the form definition being used in the detail for
         /// </summary>
-        public IObject? EffectiveForm { get; set; }
+        public IObject? EffectiveForm
+        {
+            get => _effectiveForm;
+            set
+            {
+                _effectiveForm = value;
+#if DEBUG
+                if (value != null && !new FormMethods().ValidateForm(value)) 
+                    throw new InvalidOperationException("The form did not pass validation");
+#endif
+            }
+        }
+
 
         /// <summary>
         ///     Gets or sets a value indicating whether new properties may be added by the user to the element
@@ -193,13 +207,13 @@ namespace DatenMeister.WPF.Forms.Base
                 "Show Form Definition",
                 ViewConfig,
                 null,
-                NavigationCategories.Form);
+                NavigationCategories.Form + ".Current");
 
             yield return new ApplicationMenuButtonDefinition(
                 "Save Form Definition",
                 CopyForm,
                 null,
-                NavigationCategories.Form);
+                NavigationCategories.Form + ".Current");
 
 
             if (DetailElementContainer != null && DetailElement != null)
@@ -230,6 +244,24 @@ namespace DatenMeister.WPF.Forms.Base
                     null,
                     NavigationCategories.DatenMeister);
             }
+            
+            
+            // 2) Get the view extensions by the plugins
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            var viewExtensionInfo = new ViewExtensionInfoItem(NavigationHost, this)
+            {
+                Item = DetailElement
+            };
+
+            foreach (var plugin in viewExtensionPlugins)
+            {
+                foreach (var extension in plugin.GetViewExtensions(viewExtensionInfo))
+                {
+                    yield return extension;
+                }
+            }
+
+            ///////////////////
 
             // Local methods for the buttons
             void ViewConfig()
@@ -820,7 +852,7 @@ namespace DatenMeister.WPF.Forms.Base
             public IObject View { get; }
         }
 
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> extensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> extensions)
         {
             ClearGenericButtons();
             AddDefaultButtons();

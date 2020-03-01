@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
@@ -43,26 +43,33 @@ namespace DatenMeister.WPF.Navigation
         /// Lets the user decide for an item and if he selects it, it will be opened
         /// </summary>
         /// <param name="navigationHost">The navigation host to be used</param>
-        public static void LocateAndOpen(INavigationHost navigationHost)
+        public static async Task<IObject?> LocateAndOpen(INavigationHost navigationHost)
         {
+            var task = new TaskCompletionSource<IObject?>();
+            
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
-                AsToolBox = true,
                 Owner = navigationHost as Window
             };
 
-
-            dlg.ItemChosen += async (x, y) =>
+            if (dlg.ShowDialog() == true)
             {
-                var item = y.Item;
-                if (item == null) return;
-                await NavigatorForItems.NavigateToElementDetailView(
-                    navigationHost,
-                    item);
-            };
+                if (dlg.SelectedElement != null)
+                {
+                    task.SetResult(dlg.SelectedElement);
+                    
+                    await NavigatorForItems.NavigateToElementDetailView(
+                        navigationHost,
+                        dlg.SelectedElement);
+                }
+                else
+                {
+                    task.SetResult(null);    
+                }
+            }
 
-            dlg.Show();
+            return await task.Task;
         }
 
         /// <summary>
@@ -72,7 +79,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspaceName">Name of the workspace which shall be pre-selected</param>
         /// <param name="extentUri">Uri of the workspace </param>
         /// <returns>The selected workspace by the user or null, if the user has not selected a workspace</returns>
-        public static IObject? Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
+        public static async Task<IObject?> Locate(INavigationHost navigationHost, string workspaceName, string extentUri)
         {
             var workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspace(workspaceName);
             IExtent? extent = null;
@@ -81,7 +88,7 @@ namespace DatenMeister.WPF.Navigation
                 extent = workspace.FindExtent(extentUri);
             }
 
-            return Locate(navigationHost, workspace, extent);
+            return await Locate(navigationHost, workspace, extent);
         }
 
         /// <summary>
@@ -91,8 +98,9 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspace">Defines the workspace to which shall be navigated</param>
         /// <param name="defaultExtent">Extent that shall be opened per default</param>
         /// <returns></returns>
-        public static IObject? Locate(INavigationHost navigationHost, IWorkspace? workspace = null, IExtent? defaultExtent = null)
+        public static async Task<IObject?> Locate(INavigationHost navigationHost, IWorkspace? workspace = null, IExtent? defaultExtent = null)
         {
+            var task = new TaskCompletionSource<IObject?>();
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
@@ -119,10 +127,12 @@ namespace DatenMeister.WPF.Navigation
 
             if (dlg.ShowDialog() == true)
             {
-                return dlg.SelectedElement;
+                task.SetResult(dlg.SelectedElement);
+                return await task.Task;
             }
-
-            return null;
+            
+            task.SetResult(null);
+            return await task.Task;
         }
     }
 }

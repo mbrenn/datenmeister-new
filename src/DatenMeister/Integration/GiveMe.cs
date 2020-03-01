@@ -24,6 +24,12 @@ namespace DatenMeister.Integration
         }
 
         /// <summary>
+        /// Gets the scope, even if it is null
+        /// </summary>
+        /// <returns>The created scope</returns>
+        public static IDatenMeisterScope? TryGetScope() => _scope;
+
+        /// <summary>
         /// Return the DatenMeisterScope asynchronisously as a task.
         /// </summary>
         /// <param name="settings">Settings to be used</param>

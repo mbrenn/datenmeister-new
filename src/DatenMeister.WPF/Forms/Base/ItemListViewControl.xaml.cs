@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -21,6 +20,7 @@ using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.FastViewFilter;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
@@ -30,11 +30,12 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Commands;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -82,9 +83,17 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private FormLogic _formLogic;
+        private readonly FormLogic _formLogic;
 
         private INavigationHost? _navigationHost;
+        
+        /// <summary>
+        /// Stores a cached instance of the change event manager
+        /// </summary>
+        private ChangeEventManager? _changeEventManager;
+
+        private IObject? _effectiveForm;
+
         public ItemListViewControl()
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
@@ -103,7 +112,18 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Defines the current form definition of the window as provided by the
         ///     derived method 'RequestForm'.
         /// </summary>
-        public IObject? EffectiveForm { get; set; }
+        public IObject? EffectiveForm
+        {
+            get => _effectiveForm;
+            set
+            {
+                _effectiveForm = value;
+#if DEBUG
+                if (value != null && !new FormMethods().ValidateForm(value)) 
+                    throw new InvalidOperationException("The form did not pass validation");
+#endif
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the view extensions
@@ -127,8 +147,8 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var selectedItems = DataGrid.SelectedItems;
             if (selectedItems.Count == 0)
-                // If no item is selected, get all items
-                selectedItems = DataGrid.Items;
+                // If no item is selected, get no item
+                yield break;
 
             foreach (var item in selectedItems)
                 if (item is ExpandoObject selectedItem)
@@ -159,7 +179,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
-            // Clears the info lines
             void ViewCollection(IReflectiveCollection reflectiveCollection)
             {
                 var dlg = new ItemXmlViewWindow
@@ -249,12 +268,11 @@ namespace DatenMeister.WPF.Forms.Base
                     null,
                     "Selection");
 
-            // 3) Get the view extensions by the plugins
+            // 2) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
-            var extentData = new ViewExtensionTargetInformation()
+            var extentData = new ViewExtensionInfoCollection(NavigationHost, this)
             {
-                NavigationGuest = this,
-                NavigationHost = NavigationHost
+                Collection = Items
             };
 
             foreach (var plugin in viewExtensionPlugins)
@@ -266,7 +284,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
         {
         }
 
@@ -285,13 +303,19 @@ namespace DatenMeister.WPF.Forms.Base
                 var extent = asExtent.Extent;
                 if (extent != null)
                 {
-                    _changeEventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+                    _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
+                    if (_changeEventHandle != null)
+                    {
+                        _changeEventManager.Unregister(_changeEventHandle);
+                    }
+                    
+                    _changeEventHandle = _changeEventManager.RegisterFor(
                         extent,
                         (innerExtent, element) => _delayedDispatcher.RequestRefresh());
                 }
             }
 
-            // If form  defines constraints upon metaclass, then the filtering will occur here
+            // If form defines constraints upon metaclass, then the filtering will occur here
             Items = items;
 
             EffectiveForm = formDefinition;
@@ -306,6 +330,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (_changeEventHandle != null)
             {
+                _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
                 GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
                 _changeEventHandle = null;
             }
@@ -344,12 +369,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public void UpdateView()
         {
-            if ( EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
+            if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
             
             var watch = new StopWatchLogger(Logger, "UpdateView");
             var listItems = new ObservableCollection<ExpandoObject>();
 
             var selectedItem = GetSelectedItem();
+            var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
+            ExpandoObject? selectedExpandoObject = null;
             
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
@@ -401,6 +428,12 @@ namespace DatenMeister.WPF.Forms.Base
                         foreach (var field in fields.Cast<IElement>())
                         {
                             var columnName = fieldDataNames[n];
+                            if (asDictionary.ContainsKey(columnName))
+                            {
+                                Logger.Warn($"Column {columnName} skipped because it is given multiple times");
+                                continue;
+                            }
+                            
                             var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
                             var value = GetValueOfElement(item, field);
 
@@ -438,6 +471,12 @@ namespace DatenMeister.WPF.Forms.Base
 
                         _itemMapping[itemObject] = item;
                         listItems.Add(itemObject);
+                        
+                        
+                        if (item.Equals(selectedItem))
+                        {
+                            selectedExpandoObject = itemObject;
+                        }
 
                         // Adds the notification for the property
                         var noMessageBox = false;
@@ -464,10 +503,32 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 watch.IntermediateLog("Before setting");
 
-                Dispatcher?.Invoke(() => { DataGrid.ItemsSource = listItems; });
+                Dispatcher?.Invoke(() =>
+                {
+                    DataGrid.ItemsSource = listItems;
+                    if (selectedExpandoObject != null)
+                    {
+                        DataGrid.SelectedItem = selectedExpandoObject;
+                    }
+                    else if (selectedItemPosition != -1 && listItems.Count > 0)
+                    {
+                        DataGrid.SelectedIndex = selectedItemPosition < listItems.Count
+                            ? selectedItemPosition
+                            : selectedItemPosition - 1;
+                    }
+
+                });
 
                 watch.Stop();
             });
+        }
+
+        /// <summary>
+        /// Forces a refresh of the view
+        /// </summary>
+        public void ForceRefresh()
+        {
+            _delayedDispatcher.ForceRefresh();
         }
 
         /// <summary>
@@ -610,11 +671,11 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (selectedElement == null) return;
 
-            _ = NavigatorForItems.NavigateToElementDetailViewAsync(
+            _ = NavigatorForItems.NavigateToElementDetailView(
                 NavigationHost,
                 new NavigateToItemConfig(selectedElement)
                 {
-                    DetailElementContainer = Items
+                    ContainerCollection = Items
                 });
         }
 

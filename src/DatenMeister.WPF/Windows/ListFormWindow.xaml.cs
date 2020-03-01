@@ -70,5 +70,10 @@ namespace DatenMeister.WPF.Windows
         /// <inheritdoc />
         public Window GetWindow()
             => this;
+
+        private void ListFormWindow_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
+        }
     }
 }

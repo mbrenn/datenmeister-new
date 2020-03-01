@@ -33,6 +33,31 @@ namespace DatenMeister.Models.Forms
         public _FieldData @FieldData = new _FieldData();
         public IElement @__FieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FieldData");
 
+        public class _AnyDataFieldData
+        {
+            public static string @isAttached = "isAttached";
+            public IElement? _isAttached = null;
+
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @title = "title";
+            public IElement? _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement? _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement? _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
+
+        }
+
+        public _AnyDataFieldData @AnyDataFieldData = new _AnyDataFieldData();
+        public IElement @__AnyDataFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.AnyDataFieldData");
+
         public class _CheckboxFieldData
         {
             public static string @lineHeight = "lineHeight";
@@ -97,6 +122,9 @@ namespace DatenMeister.Models.Forms
 
         public class _FormAssociation
         {
+            public static string @name = "name";
+            public IElement? _name = null;
+
             public static string @formType = "formType";
             public IElement? _formType = null;
 
@@ -242,6 +270,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
             public IElement? _defaultTypesForNewElements = null;
+
+            public static string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
+            public IElement? _includeSpecializationsForDefaultTypes = null;
 
             public static string @isAttached = "isAttached";
             public IElement? _isAttached = null;

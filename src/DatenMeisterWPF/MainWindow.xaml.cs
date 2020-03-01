@@ -15,9 +15,11 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -136,7 +138,7 @@ namespace DatenMeisterWPF
             var viewExtensions = new List<ViewExtension>
             {
                 new ApplicationMenuButtonDefinition(
-                    "Goto Home",
+                    "Goto Data",
                     () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
                     Icons.FileHome,
                     NavigationCategories.DatenMeisterNavigation,
@@ -185,11 +187,7 @@ namespace DatenMeisterWPF
             }
 
             // 3) The plugins
-            var data = new ViewExtensionTargetInformation()
-            {
-                NavigationHost = this,
-                NavigationGuest = guest
-            };
+            var data = new ViewExtensionInfoApplication(this, guest);
 
             foreach (var plugin in viewExtensionPlugins)
             {

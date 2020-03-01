@@ -98,7 +98,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <returns>The created element</returns>
         public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
             => CreateExtentForm(extent.elements(), creationMode);
-        
+
         /// <summary>
         /// Creates the fields of the form by evaluation of the given object.
         /// Depending on the creation mode, the evaluation will be done by metaclass
@@ -125,7 +125,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (!cache.CoveredMetaClasses.Contains(metaClass))
                 {
                     cache.CoveredMetaClasses.Add(metaClass);
-                    wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode);
+                    wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode, cache);
                 }
                 else
                 {
@@ -168,6 +168,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(metaClassField);
             }
+
+#if DEBUG
+            if (!new FormMethods().ValidateForm(form))
+                throw new InvalidOperationException("Something went wrong during creation of form");
+#endif
         }
 
         /// <summary>
@@ -258,6 +263,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     _FormAndFields._FieldData.isEnumeration,
                     column.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration) | DotNetHelper.IsEnumeration(propertyValue?.GetType()));
             }
+            
+#if DEBUG
+            if (!new FormMethods().ValidateForm(form))
+                throw new InvalidOperationException("Something went wrong during creation of form");
+#endif
         }
 
         /// <summary>
@@ -282,20 +292,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 ClassifierMethods.GetPropertiesOfClassifier(metaClass)
                     .Where(x => x.isSet("name")).ToList();
             var focusOnPropertyNames = cache.FocusOnPropertyNames.Any();
-
-            if (!cache.MetaClassAlreadyAdded && creationMode.HasFlagFast(CreationMode.AddMetaClass))
-            {
-                var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
-                metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
-                form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
-
-                cache.MetaClassAlreadyAdded = true;
-            }
             
             foreach (var property in classifierMethods)
             {
                 wasInMetaClass = true;
-                var propertyName = property.get("name")!.ToString();
+                var propertyName = property.get<string?>("name");
 
                 if (focusOnPropertyNames && !cache.FocusOnPropertyNames.Contains(propertyName))
                 {
@@ -317,6 +318,21 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
             }
 
+            // After having created all the properties, add the meta class information at the end
+            if (!cache.MetaClassAlreadyAdded && creationMode.HasFlagFast(CreationMode.AddMetaClass))
+            {
+                var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(metaClassField);
+
+                cache.MetaClassAlreadyAdded = true;
+            }
+
+#if DEBUG
+            if (!new FormMethods().ValidateForm(form))
+                throw new InvalidOperationException("Something went wrong during creation of form");
+#endif
+            
             return wasInMetaClass;
         }
 
@@ -324,7 +340,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// Takes the given uml item and includes it into the form.
         /// The element can be of type enumeration, class or property.
         ///
-        /// For the creation rules, see user_formmanager.adoc
+        /// For the creation rules, see chapter "FormManager" in the Documentation
         /// </summary>
         /// <param name="form">Form that will be enriched</param>
         /// <param name="umlElement">The uml element, property, class or type that will be added</param>
@@ -531,7 +547,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 // If we have something else than a primitive type and it is not for a list form
                 var element = _factory.create(propertyIsEnumeration
                     ? _formAndFields.__SubElementFieldData
-                    : _formAndFields.__TextFieldData);
+                    : _formAndFields.__AnyDataFieldData);
 
                 // It can just contain one element
                 element.set(_FormAndFields._SubElementFieldData.name, propertyName);

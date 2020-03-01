@@ -16,7 +16,7 @@ namespace DatenMeisterWPF
         {
             try
             {
-                GiveMe.Scope?.UnuseDatenMeister();
+                GiveMe.TryGetScope()?.UnuseDatenMeister();
             }
             catch (Exception exc)
             {

@@ -59,12 +59,10 @@ namespace DatenMeister.WPF.Navigation
                 MessageBox.Show($"No item found at {extentUrl}");
                 return null;
             }
-            else
-            {
-                return await NavigatorForItems.NavigateToElementDetailView(
-                    navigationHost,
-                    foundItem);
-            }
+
+            return await NavigatorForItems.NavigateToElementDetailView(
+                navigationHost,
+                foundItem);
         }
 
         /// <summary>
@@ -73,7 +71,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost">Host for navigation being to be used</param>
         /// <param name="extent">Url of the extent to be shown</param>
         /// <returns>Navigation to be used</returns>
-        public async static Task<NavigateToElementDetailResult?> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
+        public static async Task<NavigateToElementDetailResult?> OpenPropertiesOfExtent(INavigationHost navigationHost, IExtent extent)
         {
             if (extent is MofExtent mofExtent)
             {
@@ -122,7 +120,7 @@ namespace DatenMeister.WPF.Navigation
                 MessageBox.Show(text);
             }
 
-            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(window, navigateToItemConfig);
+            var result = await NavigatorForItems.NavigateToElementDetailView(window, navigateToItemConfig);
             var detailElement = result?.DetailElement ?? 
                                 throw new InvalidOperationException("detailElement == null");
             if (result.Result == NavigationResult.Saved)

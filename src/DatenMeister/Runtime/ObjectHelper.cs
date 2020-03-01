@@ -73,12 +73,18 @@ namespace DatenMeister.Runtime
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
-            if (typeof(T) == typeof(object))
+            if (typeof(T) == typeof(object) && value is MofExtent)
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
 
                 return (T) metaObject.GetMetaObject().get(property, noReferences);
+            }
+
+            if (typeof(T) == typeof(object) && value is MofObject mofObject2)
+            {
+                return (T) mofObject2.get(property, noReferences);
             }
 
             if (typeof(T) == typeof(string))
@@ -263,6 +269,20 @@ namespace DatenMeister.Runtime
             reflection.add(toBeAdded);
         }
 
+        /// <summary>
+        /// Removes a list item to the reflective sequence from the given value.
+        /// If the given property is not already a reflective sequence, it will become to one
+        /// </summary>
+        /// <param name="value">Value to be updated</param>
+        /// <param name="property">Property whose Reflective Collection shall be modified</param>
+        /// <param name="toBeRemoved">Element to be removed</param>
+        /// <returns>true, if removal has been successful</returns>
+        public static bool RemoveCollectionItem(this IObject value, string property, object toBeRemoved)
+        {
+            var reflection = new MofReflectiveSequence((MofObject) value, property);
+            return reflection.remove(toBeRemoved);
+        }
+       
         public static Dictionary<object, object> AsDictionary(
             this IObject value,
             IEnumerable<string> properties)

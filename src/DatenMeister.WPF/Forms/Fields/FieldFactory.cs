@@ -34,6 +34,8 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             var id = (metaClass as IHasId)?.Id;
+            if (id == typeof(AnyDataFieldData).FullName)
+                return new AnyDataField();
             if (id == typeof(SeparatorLineFieldData).FullName)
                 return new SeparatorLineField();
             if (id == typeof(SubElementFieldData).FullName)

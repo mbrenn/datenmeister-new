@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
+using BurnSystems;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -12,11 +14,10 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Transformation;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 using Button = System.Windows.Controls.Button;
 using ContextMenu = System.Windows.Controls.ContextMenu;
@@ -35,6 +36,7 @@ namespace DatenMeister.WPF.Forms.Fields
         private IElement? _fieldData;
         private string _propertyName = string.Empty;
         private ItemListViewControl? _listViewControl;
+        private bool _includeSpecializationsForDefaultTypes;
 
         /// <summary>
         /// Creates the element
@@ -88,6 +90,9 @@ namespace DatenMeister.WPF.Forms.Fields
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
             var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
             var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly);
+            _includeSpecializationsForDefaultTypes =
+                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData
+                    .includeSpecializationsForDefaultTypes);
 
             valueOfElement ??= _element.get<IReflectiveCollection>(_propertyName);
             var valueCount = valueOfElement.Count();
@@ -144,16 +149,20 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         /// <param name="reflectiveCollection">Defines the reflective collection from which the item will be removed</param>
         /// <param name="item">The item to be removed</param>
-        private static void RemoveItem(IReflectiveCollection reflectiveCollection, IObject item)
+        private static void RemoveItem(IReflectiveCollection reflectiveCollection, IList<IObject> items)
         {
+            var names = items.Select(NamedElementMethods.GetName).Join(", ");
             if (MessageBox.Show(
                     $"Are you sure to delete the item: " +
-                    $"{NamedElementMethods.GetName(item)}?", 
-                    "Confirmation", 
+                    $"{names}?",
+                    "Confirmation",
                     MessageBoxButton.YesNo) ==
                 MessageBoxResult.Yes)
             {
-                reflectiveCollection.remove(item);
+                foreach (var item in items)
+                {
+                    reflectiveCollection.remove(item);
+                }
             }
         }
 
@@ -182,6 +191,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
 
                     reflectiveSequence.MoveElementUp(selectedItem);
+                    _listViewControl.ForceRefresh();
                 };
 
                 SetStyle(buttonUp);
@@ -197,6 +207,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
 
                     reflectiveSequence.MoveElementDown(selectedItem);
+                    _listViewControl.ForceRefresh();
                 };
                 SetStyle(buttonDown);
                 
@@ -211,14 +222,15 @@ namespace DatenMeister.WPF.Forms.Fields
             var buttonDelete = new Button {Content = "✗"};
             buttonDelete.Click += (x, y) =>
             {
-                var selectedItem = _listViewControl.GetSelectedItem();
-                if (selectedItem == null)
+                var selectedItems = _listViewControl.GetSelectedItems().ToList();
+                if (selectedItems.Count == 0)
                 {
                     MessageBox.Show("No item is currently selected");
                     return;
                 }
 
-                RemoveItem(collection, selectedItem);
+                RemoveItem(collection, selectedItems);
+                _listViewControl.ForceRefresh();
             };
             
             SetStyle(buttonDelete);
@@ -270,28 +282,28 @@ namespace DatenMeister.WPF.Forms.Fields
             var listItems = new List<Tuple<string, Action>>
             {
                 new Tuple<string, Action>(
-                    "Select Type",
-                    () =>
+                    "Select Type...",
+                    async () =>
                     {
                         var referencedExtent = (element as MofObject)?.ReferencedExtent;
                         if (referencedExtent == null)
                             throw new InvalidOperationException("referencedExtent == null");
 
-                        var result = NavigatorForItems.NavigateToCreateNewItem(
+                        var result = await NavigatorForItems.NavigateToCreateNewItem(
                             navigationHost,
                             referencedExtent,
                             null);
-
-                        result.NewItemCreated += (a, b) =>
+                        
+                        if (result?.IsNewObjectCreated == true && result.NewObject != null)
                         {
                             var propertyCollection = element.getOrDefault<IReflectiveCollection>(_propertyName); 
                             if (propertyCollection != null)
                             {
-                                propertyCollection.add(b.NewItem);
+                                propertyCollection.add(result.NewObject);
                             }
                             else
                             {
-                                element.set(_propertyName, new List<object> {b.NewItem});
+                                element.set(_propertyName, new List<object> {result.NewObject});
                             }
 
                             panel.Children.Clear();
@@ -300,14 +312,24 @@ namespace DatenMeister.WPF.Forms.Fields
                     })
             };
 
+            var getAllSpecializations = _includeSpecializationsForDefaultTypes;
             // Gets the buttons for specific types
             if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
                 .defaultTypesForNewElements) is { } defaultTypesForNewItems)
             {
-                var specializedTypes =
-                    (from type in defaultTypesForNewItems.OfType<IElement>()
-                        from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                        select newSpecializationType).Distinct();
+                IEnumerable<IElement> specializedTypes;
+
+                if (getAllSpecializations)
+                {
+                    specializedTypes =
+                        (from type in defaultTypesForNewItems.OfType<IElement>()
+                            from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                            select newSpecializationType).Distinct();
+                }
+                else
+                {
+                    specializedTypes = defaultTypesForNewItems.OfType<IElement>();
+                }
 
                 listItems.AddRange(
                     from x in specializedTypes
@@ -351,24 +373,24 @@ namespace DatenMeister.WPF.Forms.Fields
 
             var result = new Tuple<string, Action>(
                 $"New {typeName}",
-                () =>
+                async () =>
                 {
                     var referencedExtent = (_element as MofObject)?.ReferencedExtent
                                            ?? throw new InvalidOperationException("referencedExtent == null");
 
                     var elements =
-                        NavigatorForItems.NavigateToCreateNewItem(
+                        await NavigatorForItems.NavigateToCreateNewItem(
                             _navigationHost, referencedExtent, type);
-                    elements.NewItemCreated += (x, y) =>
+                    if (elements?.IsNewObjectCreated == true && elements.NewObject != null)
                     {
                         var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 
                         if (propertyCollection != null)
                         {
-                            propertyCollection.add(y.NewItem);
+                            propertyCollection.add(elements.NewObject);
                         }
                         else
                         {
-                            _element.set(_propertyName, new List<object> {y.NewItem});
+                            _element.set(_propertyName, new List<object> {elements.NewObject});
                         }
 
                         _panel.Children.Clear();

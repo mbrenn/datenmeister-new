@@ -19,11 +19,12 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -216,6 +217,12 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigationCategories.Extents + ".Export");
 
             yield return new ExtentMenuButtonDefinition(
+                "Show as Xmi",
+                x => ShowAsXmi(),
+                null,
+                NavigationCategories.Extents + ".Export");
+
+            yield return new ExtentMenuButtonDefinition(
                 "Open Extent-Folder",
                 x => OpenExtentFolder(),
                 null,
@@ -258,6 +265,13 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
             }
 
+            void ShowAsXmi()
+            {
+                var dlg = new ItemXmlViewWindow();
+                dlg.UpdateContent(Extent.elements());
+                dlg.Show();
+            }
+
             void OpenExtentFolder()
             {
                 var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
@@ -295,6 +309,17 @@ namespace DatenMeister.WPF.Forms.Lists
             }
 
             foreach (var extension in base.GetViewExtensions()) yield return extension;
+        }
+
+        public override ViewExtensionInfo GetViewExtensionInfo()
+        {
+            return new ViewExtensionInfoExploreItems(NavigationHost, this)
+            {
+                WorkspaceId = WorkspaceId,
+                ExtentUrl = ExtentUrl,
+                RootElement = RootItem,
+                SelectedElement = SelectedItem
+            };
         }
     }
 }

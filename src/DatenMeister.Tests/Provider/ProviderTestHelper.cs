@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
@@ -132,7 +134,56 @@ namespace DatenMeister.Tests.Provider
             Assert.That(DotNetHelper.AsString(asEnumerable[0].GetProperty("name")), Is.EqualTo("a"));
             Assert.That(DotNetHelper.AsString(asEnumerable[1].GetProperty("name")), Is.EqualTo("b"));
             Assert.That(DotNetHelper.AsString(asEnumerable[2].GetProperty("name")), Is.EqualTo("c"));
+        }
 
+        public static void TestSetReferenceAndSetValue(IProvider provider)
+        {
+            var element = provider.CreateElement(null);
+            var child1 = provider.CreateElement(null);
+            child1.SetProperty("name", "Brenn");
+
+            // Set the child element
+            element.SetProperty("child", child1);
+
+            var property = element.GetPropertyAsSingle("child") as IProviderObject;
+            Assert.That(property, Is.Not.Null);
+            Assert.That(property.GetProperty("name"), Is.EqualTo("Brenn"));
+
+            // Overwrite it with local element
+            element.SetProperty("child", "123");
+
+            var propertyString = element.GetProperty("child") as string;
+            Assert.That(propertyString, Is.Not.Null);
+            Assert.That(propertyString, Is.EqualTo("123"));
+
+            // Write again the child element
+            element.SetProperty("child", child1);
+
+            property = element.GetPropertyAsSingle("child") as IProviderObject;
+            Assert.That(property, Is.Not.Null);
+            Assert.That(property.GetProperty("name"), Is.EqualTo("Brenn"));
+
+            /////////////
+            // Now try it with Uri references
+            element.SetProperty("child", new UriReference("http://abc"));
+            var uriReference = element.GetPropertyAsSingle("child") as UriReference;
+            Assert.That(uriReference, Is.Not.Null);
+            Assert.That(uriReference.Uri, Is.EqualTo("http://abc"));
+            
+            
+            
+            element.SetProperty("child", "123");
+
+             propertyString = element.GetProperty("child") as string;
+            Assert.That(propertyString, Is.Not.Null);
+            Assert.That(propertyString, Is.EqualTo("123"));
+            
+            element.SetProperty("child", new UriReference("http://abc"));
+            uriReference = element.GetPropertyAsSingle("child") as UriReference;
+            Assert.That(uriReference, Is.Not.Null);
+            Assert.That(uriReference.Uri, Is.EqualTo("http://abc"));
+            
+            
         }
     }
 }

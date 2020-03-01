@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
@@ -64,7 +63,7 @@ namespace DatenMeister.WPF.Navigation
                 formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
             }
 
-            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(
+            var result = await NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
                 new NavigateToItemConfig()
                 {

@@ -31,7 +31,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <summary>
         /// Stores the type of the extent containing the views
         /// </summary>
-        public const string ViewExtentType = "DatenMeister.Views";
+        public const string FormExtentType = "DatenMeister.Forms";
 
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
@@ -74,7 +74,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     // Creates the internal views for the DatenMeister
                     var dotNetUriExtent =
                         new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalFormExtent);
-                    dotNetUriExtent.SetExtentType(ViewExtentType);
+                    dotNetUriExtent.SetExtentType(FormExtentType);
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     break;
 
@@ -82,8 +82,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                         WorkspaceNames.NameManagement,
                         WorkspaceNames.UriUserFormExtent,
-                        "DatenMeister.Views_User",
-                        ViewExtentType,
+                        "DatenMeister.Forms_User",
+                        FormExtentType,
                         _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
                     );
 
@@ -511,7 +511,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 var formCreator = CreateFormCreator();
-                var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All);
+                var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All | CreationMode.OnlyCommonProperties);
 
                 return createdForm;
             }

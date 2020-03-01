@@ -115,11 +115,12 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost"></param>
         /// <param name="navigateToItemConfig"></param>
         /// <returns></returns>
-        public async static Task<NavigateToElementDetailResult?> CreateDetailWindow(
+        public static async Task<NavigateToElementDetailResult?> CreateDetailWindow(
             INavigationHost navigationHost,
             NavigateToItemConfig navigateToItemConfig)
         {
-            if (navigateToItemConfig == null) throw new ArgumentNullException(nameof(navigateToItemConfig));
+            if (navigateToItemConfig == null) 
+                throw new ArgumentNullException(nameof(navigateToItemConfig));
             
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
@@ -132,13 +133,12 @@ namespace DatenMeister.WPF.Navigation
             detailFormWindow.SetContent(
                 navigateToItemConfig.DetailElement,
                 navigateToItemConfig.Form,
-                navigateToItemConfig.DetailElementContainer);
+                navigateToItemConfig.ContainerCollection);
 
             detailFormWindow.Cancelled += (x, y) =>
             {
                 result.Result = NavigationResult.Cancelled;
                 task.SetResult(result);
-                navigationHost.GetWindow();
             };
 
             detailFormWindow.Saved += (x, y) =>
@@ -150,8 +150,7 @@ namespace DatenMeister.WPF.Navigation
 
             detailFormWindow.SwitchToMinimumSize();
 
-            var mainControl = detailFormWindow.MainControl as DetailFormControl;
-            if (mainControl != null)
+            if (detailFormWindow.MainControl is DetailFormControl mainControl)
             {
                 navigateToItemConfig.AfterCreatedFunction?.Invoke(mainControl);
                 detailFormWindow.Show();
@@ -167,7 +166,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="factoryMethod">Factory method to be used to create the usercontrol</param>
         /// <param name="navigationMode">Mode of the navigation</param>
         /// <returns>Creates a new window which can be used by the user. </returns>
-        public async static Task<NavigateToElementDetailResult?> NavigateByCreatingAWindow(
+        public static async Task<NavigateToElementDetailResult?> NavigateByCreatingAWindow(
             Window parentWindow,
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)

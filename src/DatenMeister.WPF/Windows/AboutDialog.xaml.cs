@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -32,6 +33,11 @@ namespace DatenMeister.WPF.Windows
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(e.Uri.ToString());
+        }
+
+        private void AboutDialog_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
         }
     }
 }

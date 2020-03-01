@@ -24,12 +24,12 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.TreeView;
 using DatenMeister.WPF.Forms.Specific;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     throw new InvalidOperationException("List form could not be created"));
             }
 
-            var viewDefinition = new FormDefinition("Workspaces", formElement)
+            var formDefinition = new FormDefinition("Workspaces", formElement)
             {
                 TabViewExtensionsFunction = form =>
                 {
@@ -82,28 +82,28 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
             };
 
-            viewDefinition.ViewExtensions.Add(
+            formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Add Workspace",
                     NewWorkspace,
                     "workspaces-new",
                     NavigationCategories.DatenMeister + "." + "Workspaces"));
 
-            viewDefinition.ViewExtensions.Add(
+            formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Open Workspace-Folder",
                     (x) => NavigatorForWorkspaces.OpenFolder(navigationHost),
                     null,
                     NavigationCategories.DatenMeister + ".Workspaces"));
 
-            viewDefinition.ViewExtensions.Add(
+            formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Reset DatenMeister",
                     (x) => NavigatorForWorkspaces.ResetDatenMeister(navigationHost),
                     null,
                     NavigationCategories.DatenMeister + ".Workspaces"));
 
-            return viewDefinition;
+            return formDefinition;
 
             void NewWorkspace(IObject workspaceObject)
             {
@@ -298,7 +298,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     uri);
             }
 
-            async void LoadExtent(IObject item)
+            async void LoadExtent(IObject? item)
             {
                 var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)

@@ -1,8 +1,8 @@
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -29,9 +29,9 @@ namespace DatenMeister.WPF.Forms.Base
             var typeName = metaclass.get(_UML._CommonStructure._NamedElement.name);
 
             return new GenericButtonDefinition(
-                $"New {typeName}", () =>
+                $"New {typeName}", async () =>
                 {
-                    NavigatorForItems.NavigateToNewItemForCollection(
+                    await NavigatorForItems.NavigateToNewItemForCollection(
                         navigationHost,
                         collection,
                         metaclass);

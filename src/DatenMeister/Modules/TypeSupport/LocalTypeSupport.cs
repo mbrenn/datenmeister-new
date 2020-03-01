@@ -116,7 +116,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="types"></param>
-        /// <returns>Elements beng added to the external types</returns>
+        /// <returns>Elements being added to the external types</returns>
         public IList<IElement> AddInternalTypes(string packageName, IEnumerable<Type> types)
         {
             var internalTypeExtent = GetInternalTypeExtent();
@@ -322,5 +322,22 @@ namespace DatenMeister.Modules.TypeSupport
         /// <returns></returns>
         public static IUriExtent GetUserTypeExtent(IWorkspace workspace) =>
             workspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
+
+        public void ImportTypes<T>(string packageName,
+            T type,
+            Action<_UML, IFactory, IReflectiveCollection, T, MofExtent> parseMethods)
+        {
+            var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
+            IReflectiveCollection rootElements = internalTypeExtent.elements();
+            if (packageName != null)
+            {
+                rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
+            }
+            
+            var uml = _workspaceLogic.GetUmlData();
+            var factory = new MofFactory(internalTypeExtent);
+
+            parseMethods(uml, factory, rootElements, type, internalTypeExtent);
+        }
     }
 }

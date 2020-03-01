@@ -50,7 +50,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets the selected element
         /// </summary>
-        public IObject? SelectedElement => items.SelectedElement;
+        public IObject? SelectedElement => items.GetSelectedItem();
 
         public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
             "IsReadOnly", typeof(bool), typeof(LocateElementControl),
@@ -262,7 +262,7 @@ namespace DatenMeister.WPF.Controls
             var extent = value.GetExtentOf();
             Select(extent);
             
-            items.SelectedElement = value;
+            items.SetSelectedItem(value);
         }
 
         /// <summary>

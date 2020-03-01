@@ -20,7 +20,7 @@ namespace DatenMeister.Models.Forms
         /// <param name="collection">Collection that shall be filled</param>
         /// <param name="filledStructure">The form and fields structure</param>
         /// <param name="extent">And finally extent to which the types shall be registered</param>
-        public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _FormAndFields filledStructure, MofUriExtent extent)
+        public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _FormAndFields filledStructure, MofExtent extent)
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
@@ -28,6 +28,13 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.AnyDataFieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__AnyDataFieldData = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {

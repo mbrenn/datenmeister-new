@@ -17,7 +17,7 @@ namespace DatenMeister.Modules.DataViews
         private static readonly ILogger Logger = new ClassLogger(typeof(DataViewLogic));
 
         /// <summary>
-        /// Defines the path to the packages of the fast view filters
+        /// Defines the path to the packages of the dataviews
         /// </summary>
         public const string PackagePathTypesDataView = "DatenMeister::DataViews";
 

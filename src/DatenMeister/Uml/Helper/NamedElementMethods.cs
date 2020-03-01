@@ -187,27 +187,28 @@ namespace DatenMeister.Uml.Helper
                 return element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
             }
 
-            if (element is IElement asIElement && asIElement.metaclass != null)
-            {
-                var name = GetName(asIElement.metaclass);
-                if (!string.IsNullOrEmpty(name))
-                {
-                    return $"({name})";
-                }
-            }
-            
-            // Now switch to last fallback strategy to have at least one human readable name
             switch (element)
             {
                 case IHasId elementAsHasId:
                     return elementAsHasId.Id;
-                case MofObjectShadow shadowedObject:
-                    return shadowedObject.Uri;
-                case MofObject _:
-                    return "MofObject";
-                default:
-                    return element.ToString();
+                case IElement asIElement when asIElement.metaclass != null:
+                {
+                    var name = GetName(asIElement.metaclass);
+                    if (name != null && !string.IsNullOrEmpty(name))
+                    {
+                        return $"({name})";
+                    }
+
+                    break;
+                }
             }
+
+            return element switch
+            {
+                MofObjectShadow shadowedObject => shadowedObject.Uri,
+                MofObject _ => "MofObject",
+                _ => element.ToString()
+            };
         }
 
         /// <summary>

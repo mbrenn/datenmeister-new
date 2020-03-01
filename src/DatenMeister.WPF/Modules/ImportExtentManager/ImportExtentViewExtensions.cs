@@ -6,15 +6,16 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.Buttons;
 using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.ImportExtentManager
@@ -31,9 +32,10 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             _plugin = plugin;
         }
 
-        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionTargetInformation viewExtensionTargetInformation)
+        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
-            if (viewExtensionTargetInformation.NavigationGuest is ItemsInExtentList itemInExtentList)
+            var itemsInExtentList = viewExtensionInfo.GetItemsInExtentExplorerControl();
+            if (itemsInExtentList != null)
             {
                 // Adds the import elements
                 yield return new ExtentMenuButtonDefinition(
@@ -58,15 +60,18 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             // Imports the existing extent
             async void ImportExistingExtent(IExtent extent)
             {
-                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                if (itemsInExtentList == null)
+                    return ;
+                
+                var navigationHost = viewExtensionInfo.NavigationHost
                     ?? throw new InvalidOperationException("navigationHost == null");
                 
-                var controlNavigation = await NavigatorForItems.NavigateToElementDetailViewAsync(
+                var controlNavigation = await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
                     new NavigateToItemConfig
                     {
                         Form = new FormDefinition(
-                            GiveMe.Scope.WorkspaceLogic.GetInternalViewsExtent()
+                            GiveMe.Scope.WorkspaceLogic.GetInternalFormsExtent()
                                 .element("#ImportManagerFindExtent")
                             ?? throw new InvalidOperationException("#ImportManagerFindExtent not found"))
                     });
@@ -106,7 +111,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
 
                     var itemCountBefore = sourceExtent.elements().Count();
-                    var elements = (itemInExtentList.RootItem as IExtent)?.elements()
+                    var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                    ?? throw new InvalidOperationException("elements == null");
                     _plugin.PerformImport(sourceExtent, elements);
                     var itemCountAfter = sourceExtent.elements().Count();
@@ -117,7 +122,10 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
             async void ImportNewExtent(IExtent extent)
             {
-                var navigationHost = viewExtensionTargetInformation.NavigationHost
+                if (itemsInExtentList == null)
+                    return;
+                
+                var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(
                     navigationHost);
@@ -129,7 +137,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     if (loadedExtent != null)
                     {
                         var itemCountBefore = loadedExtent.elements().Count();
-                        var elements = (itemInExtentList.RootItem as IExtent)?.elements()
+                        var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                        ?? throw new InvalidOperationException("elements == null");
                         _plugin.PerformImport(loadedExtent, elements);
                         var itemCountAfter = loadedExtent.elements().Count();

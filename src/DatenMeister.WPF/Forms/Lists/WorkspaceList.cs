@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -16,8 +15,9 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
-using DatenMeister.WPF.Forms.Base.ViewExtensions.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using MessageBox = System.Windows.MessageBox;
 
@@ -111,6 +111,16 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             var workspaceId = element.getOrDefault<string>("id");
             NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);
+        }
+
+        /// <inheritdoc />
+        public override ViewExtensionInfo GetViewExtensionInfo()
+        {
+            return new ViewExtensionInfoExploreWorkspace(NavigationHost, this)
+            {
+                RootElement = RootItem,
+                SelectedElement = SelectedItem
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
+using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -42,26 +43,33 @@ namespace DatenMeister.WPF.Navigation
         /// Lets the user decide for an item and if he selects it, it will be opened
         /// </summary>
         /// <param name="navigationHost">The navigation host to be used</param>
-        public static void LocateAndOpen(INavigationHost navigationHost)
+        public static async Task<IObject?> LocateAndOpen(INavigationHost navigationHost)
         {
+            var task = new TaskCompletionSource<IObject?>();
+            
             var dlg = new LocateItemDialog
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
-                AsToolBox = true,
                 Owner = navigationHost as Window
             };
 
-
-            dlg.ItemChosen += async (x, y) =>
+            if (dlg.ShowDialog() == true)
             {
-                var item = y.Item;
-                if (item == null) return;
-                await NavigatorForItems.NavigateToElementDetailView(
-                    navigationHost,
-                    item);
-            };
+                if (dlg.SelectedElement != null)
+                {
+                    task.SetResult(dlg.SelectedElement);
+                    
+                    await NavigatorForItems.NavigateToElementDetailView(
+                        navigationHost,
+                        dlg.SelectedElement);
+                }
+                else
+                {
+                    task.SetResult(null);    
+                }
+            }
 
-            dlg.Show();
+            return await task.Task;
         }
 
         /// <summary>

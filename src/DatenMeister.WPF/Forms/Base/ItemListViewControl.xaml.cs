@@ -671,7 +671,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (selectedElement == null) return;
 
-            _ = NavigatorForItems.NavigateToElementDetailViewAsync(
+            _ = NavigatorForItems.NavigateToElementDetailView(
                 NavigationHost,
                 new NavigateToItemConfig(selectedElement)
                 {

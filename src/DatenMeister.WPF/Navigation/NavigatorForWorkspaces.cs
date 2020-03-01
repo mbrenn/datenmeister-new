@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Navigation
                 formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
             }
 
-            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(
+            var result = await NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
                 new NavigateToItemConfig()
                 {

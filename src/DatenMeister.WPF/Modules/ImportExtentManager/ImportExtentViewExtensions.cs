@@ -66,7 +66,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 var navigationHost = viewExtensionInfo.NavigationHost
                     ?? throw new InvalidOperationException("navigationHost == null");
                 
-                var controlNavigation = await NavigatorForItems.NavigateToElementDetailViewAsync(
+                var controlNavigation = await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
                     new NavigateToItemConfig
                     {

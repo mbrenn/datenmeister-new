@@ -108,7 +108,7 @@ namespace DatenMeister.WPF.Navigation
             Action<DetailFormControl>? afterCreated = null,
             string title = "")
             =>
-                await NavigateToElementDetailViewAsync(
+                await NavigateToElementDetailView(
                     window,
                     new NavigateToItemConfig(element)
                     {
@@ -123,7 +123,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="window">Window to be used as navigation host</param>
         /// <param name="navigateToItemConfig">Configuration for navigation</param>
         /// <returns>The task providing the result</returns>
-        public static async Task<NavigateToElementDetailResult?> NavigateToElementDetailViewAsync(
+        public static async Task<NavigateToElementDetailResult?> NavigateToElementDetailView(
             INavigationHost window,
             NavigateToItemConfig navigateToItemConfig)
             =>
@@ -226,7 +226,8 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="parentProperty">The property on which the new element will be attached to the parent property</param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static async Task<IControlNavigationNewObject> NavigateToNewItemForItem(INavigationHost window,
+        public static async Task<IControlNavigationNewObject> NavigateToNewItemForItem(
+            INavigationHost window,
             IObject containerElement,
             string parentProperty,
             IElement? metaclass)

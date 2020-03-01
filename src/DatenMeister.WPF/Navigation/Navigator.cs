@@ -119,7 +119,8 @@ namespace DatenMeister.WPF.Navigation
             INavigationHost navigationHost,
             NavigateToItemConfig navigateToItemConfig)
         {
-            if (navigateToItemConfig == null) throw new ArgumentNullException(nameof(navigateToItemConfig));
+            if (navigateToItemConfig == null) 
+                throw new ArgumentNullException(nameof(navigateToItemConfig));
             
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
@@ -138,7 +139,6 @@ namespace DatenMeister.WPF.Navigation
             {
                 result.Result = NavigationResult.Cancelled;
                 task.SetResult(result);
-                navigationHost.GetWindow();
             };
 
             detailFormWindow.Saved += (x, y) =>
@@ -150,8 +150,7 @@ namespace DatenMeister.WPF.Navigation
 
             detailFormWindow.SwitchToMinimumSize();
 
-            var mainControl = detailFormWindow.MainControl as DetailFormControl;
-            if (mainControl != null)
+            if (detailFormWindow.MainControl is DetailFormControl mainControl)
             {
                 navigateToItemConfig.AfterCreatedFunction?.Invoke(mainControl);
                 detailFormWindow.Show();

@@ -120,7 +120,7 @@ namespace DatenMeister.WPF.Navigation
                 MessageBox.Show(text);
             }
 
-            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(window, navigateToItemConfig);
+            var result = await NavigatorForItems.NavigateToElementDetailView(window, navigateToItemConfig);
             var detailElement = result?.DetailElement ?? 
                                 throw new InvalidOperationException("detailElement == null");
             if (result.Result == NavigationResult.Saved)

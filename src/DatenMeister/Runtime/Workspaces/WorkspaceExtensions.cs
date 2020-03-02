@@ -232,7 +232,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspaceId">Id of the workspace to be added</param>
         /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IExtent FindExtent(
+        public static IExtent? FindExtent(
             this IWorkspaceLogic collection,
             string workspaceId,
             string extentUri)
@@ -240,7 +240,10 @@ namespace DatenMeister.Runtime.Workspaces
             if (string.IsNullOrEmpty(workspaceId))
             {
                 // If the workspace is empty return it itself
-                workspaceId = collection.GetDefaultWorkspace().id;
+                var workspace = collection.GetDefaultWorkspace();
+                if (workspace == null) return null;
+                
+                workspaceId = workspace.id;
             }
 
             return collection.Workspaces

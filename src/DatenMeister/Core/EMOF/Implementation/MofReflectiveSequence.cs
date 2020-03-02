@@ -191,7 +191,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public object set(int index, object value)
+        public object? set(int index, object value)
         {
             var valueToBeRemoved = GetPropertyAsEnumerable().ElementAt(index);
             MofObject.ProviderObject.RemoveFromProperty(PropertyName, valueToBeRemoved);

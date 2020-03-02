@@ -61,6 +61,8 @@ namespace DatenMeister.Runtime.Functions.Queries
 
                     foreach (var child in valueAsCollection)
                     {
+                        if (child == null) continue;
+                        
                         yield return child;
                     }
                 }

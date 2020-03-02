@@ -49,11 +49,11 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 {
                     if (dictionary.TryGetValue(metaClass, out var list))
                     {
-                        list.Add(value);
+                        list.Add(value!);
                     }
                     else
                     {
-                        list = new List<object> {value};
+                        list = new List<object> {value!};
                         dictionary[metaClass] = list;
                     }
                 }

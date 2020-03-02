@@ -37,7 +37,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <param name="form">Form to be evaluated</param>
         /// <param name="propertyName">Name of the property to which the propertyname shall belong</param>
         /// <returns>The found element</returns>
-        public static IElement GetListTabForPropertyName(IElement form, string propertyName)
+        public static IElement? GetListTabForPropertyName(IElement form, string propertyName)
         {
             if (_FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab)
                 throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");

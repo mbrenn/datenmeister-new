@@ -154,7 +154,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
 
             Result.AppendLine(
-                $"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri() ?? string.Empty}\");");
+                $"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement?.GetUri() ?? string.Empty}\");");
         }
     }
 }

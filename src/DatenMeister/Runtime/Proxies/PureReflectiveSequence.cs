@@ -68,6 +68,8 @@ namespace DatenMeister.Runtime.Proxies
         {
             lock (_elements)
             {
+                if (value == null) return false;
+                
                 return _elements.Remove(value);
             }
         }

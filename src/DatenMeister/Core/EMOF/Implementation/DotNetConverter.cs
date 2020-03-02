@@ -112,7 +112,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                     foreach (var innerElementValue in enumeration)
                     {
                         var convertedValue = ConvertToMofIfNotPrimitive(innerElementValue);
-                        list.Add(convertedValue);
+                        if (convertedValue != null)
+                        {
+                            list.Add(convertedValue);
+                        }
                     }
 
                     createdElement.set(reflectedProperty.Name, list);
@@ -180,7 +183,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns></returns>
         public static object? ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
         {
-            var uri = element.metaclass.GetUri() ?? throw new InvalidOperationException("Uri is not set");
+            var uri = element.metaclass?.GetUri() ?? throw new InvalidOperationException("Uri is not set");
             var type = lookup.ToType(uri);
             if (type == null)
             {

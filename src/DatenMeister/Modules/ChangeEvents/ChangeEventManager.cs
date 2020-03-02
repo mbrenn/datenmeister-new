@@ -141,7 +141,7 @@ namespace DatenMeister.Modules.ChangeEvents
             }
         }
 
-        public EventHandle RegisterFor(IObject value, Action<IObject> valueAction)
+        public EventHandle RegisterFor(IObject value, Action<IObject?> valueAction)
         {
             try
             {

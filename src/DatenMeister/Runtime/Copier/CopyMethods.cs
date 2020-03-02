@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -105,9 +106,12 @@ namespace DatenMeister.Runtime.Copier
             string targetPath,
             string targetProperty)
         {
-            var sourceElement = NamedElementMethods.GetByFullName(sourceExtent, sourcePath);
+            var sourceElement = NamedElementMethods.GetByFullName(sourceExtent, sourcePath)
+                                ?? throw new InvalidOperationException("sourcePath does not show to source element");
             var copiedElement = new ObjectCopier(new MofFactory(targetExtent)).Copy(sourceElement);
-            var targetElement = NamedElementMethods.GetByFullName(targetExtent, targetPath);
+            var targetElement = NamedElementMethods.GetByFullName(targetExtent, targetPath)
+                                ?? throw new InvalidOperationException("targetPath does not show to source element");
+
             if (!targetElement.isSet(targetProperty))
             {
                 var newList = new object[] {copiedElement};

@@ -8,6 +8,6 @@
 
         void remove(int index);
 
-        object set(int index, object value);
+        object? set(int index, object value);
     }
 }

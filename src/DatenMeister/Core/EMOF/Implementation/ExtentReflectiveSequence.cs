@@ -147,8 +147,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     $"An instance of a primitive type may not be added to the extent root elements: {value}");
             }
 
-            var convertedElement = (IProviderObject) _extent.ConvertForSetting(value);
-            if (convertedElement != null)
+            if (_extent.ConvertForSetting(value) is IProviderObject convertedElement)
             {
                 _extent?.Provider.AddElement(convertedElement, index);
             }

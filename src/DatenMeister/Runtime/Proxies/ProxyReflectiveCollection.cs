@@ -17,13 +17,13 @@ namespace DatenMeister.Runtime.Proxies
         /// Gets or sets the conversion method being used, when content of the
         /// reflective collection is being extracted out of the reflective collection.
         /// </summary>
-        public Func<object, object> PublicizeElementFunc { get; set; }
+        public Func<object?, object?> PublicizeElementFunc { get; set; }
 
         /// <summary>
         /// Gets or sets the conversion method being used, when content of the
         /// reflective collection is being stored into the reflective collection.
         /// </summary>
-        public Func<object, object> PrivatizeElementFunc { get; set; }
+        public Func<object?, object?> PrivatizeElementFunc { get; set; }
 
         public ProxyReflectiveCollection(IReflectiveCollection collection)
         {

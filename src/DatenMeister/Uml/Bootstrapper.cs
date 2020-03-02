@@ -303,10 +303,10 @@ namespace DatenMeister.Uml
                     .ToList();
 
             // Hacky hack to get rid of one of the tags and the duplicate MOF Elements
-            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(0));
+            mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Tag").ElementAt(0));
             while (mofMetaClasses.Count(x => x.getOrDefault<string>("name") == "Tag") > 1)
             {
-                mofMetaClasses.Remove(mofMetaClasses.Where(x => x.get("name").ToString() == "Tag").ElementAt(1));
+                mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Tag").ElementAt(1));
             }
 
             mofMetaClasses.Remove(mofMetaClasses.Where(x => x.getOrDefault<string>("name") == "Factory").ElementAt(0));
@@ -317,7 +317,7 @@ namespace DatenMeister.Uml
             var umlMetaClasses =
                 umlElements
                     .Cast<IElement>()
-                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                    .Where(x => x.isSet("name") && x.metaclass?.getOrDefault<string>("name") == "Class")
                     .ToList();
 
             // Caches all the classes.
@@ -547,11 +547,20 @@ namespace DatenMeister.Uml
                 }
                 else
                 {
-                    loader.LoadFromFile(new MofFactory(primitiveExtent), primitiveExtent, paths.PathPrimitive);
-                    loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, paths.PathUml);
+                    loader.LoadFromFile(
+                        new MofFactory(primitiveExtent),
+                        primitiveExtent,
+                        paths.PathPrimitive ?? throw new InvalidOperationException("PathPrimitive == null"));
+                    loader.LoadFromFile(
+                        new MofFactory(umlExtent),
+                        umlExtent,
+                        paths.PathUml ?? throw new InvalidOperationException("PathUml == null"));
                     if (mode == BootstrapMode.Mof)
                     {
-                        loader.LoadFromFile(new MofFactory(mofExtent), mofExtent, paths.PathMof);
+                        loader.LoadFromFile(
+                            new MofFactory(mofExtent),
+                            mofExtent,
+                            paths.PathMof ?? throw new InvalidOperationException("PathMof == null"));
                     }
                 }
             }

@@ -17,9 +17,9 @@ namespace DatenMeister.Runtime.Functions.Transformation
         public static void Convert(HierarchyByParentSettings settings)
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
-            Debug.Assert(settings.Sequence != null);
-            Debug.Assert(settings.TargetFactory != null);
-            Debug.Assert(settings.TargetSequence != null);
+            if (settings.Sequence == null) throw new InvalidOperationException("settings.Sequence == null");
+            if (settings.TargetFactory == null) throw new InvalidOperationException("target.TargetFactory == null");
+            if (settings.TargetSequence == null) throw new InvalidOperationException("target.TargetSequence == null");
 
             // Stores the lists
             var lists = new Dictionary<object, List<object>>();

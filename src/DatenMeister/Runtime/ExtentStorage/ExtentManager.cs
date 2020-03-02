@@ -302,6 +302,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             lock (_extentStorageData.LoadedExtents)
             {
                 var workspace = WorkspaceLogic.GetWorkspaceOfExtent(extent);
+                if (workspace == null) return;
 
                 // Removes the loading information of the extent
                 DetachExtent(extent);

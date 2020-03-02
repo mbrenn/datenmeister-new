@@ -149,7 +149,7 @@ namespace DatenMeister.Runtime
         /// <returns>true, if the element is a string</returns>
         public static bool IsOfString(object? value) => value is string;
 
-        public static string AsString(object? value)
+        public static string? AsString(object? value)
         {
             if (value == null)
             {
@@ -405,7 +405,8 @@ namespace DatenMeister.Runtime
                     }
                     else
                     {
-                        list.Add(ConvertToMofElement(listItem, extent, factory));
+                        var convertedElement = ConvertToMofElement(listItem, extent, factory);
+                        list.Add(convertedElement);
                     }
                 }
 

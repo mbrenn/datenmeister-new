@@ -2,7 +2,7 @@
 
 namespace DatenMeister.Runtime.Functions.Interfaces
 {
-    public abstract class AggregatorByFunction<T, TItem> : Aggregator<T, TItem> where T : notnull
+    public abstract class AggregatorByFunction<T, TItem> : Aggregator<T, TItem> 
     {
         private T _aggregationResult;
 

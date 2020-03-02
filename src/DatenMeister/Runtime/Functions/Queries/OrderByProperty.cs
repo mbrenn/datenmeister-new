@@ -45,6 +45,8 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var item in _parent
                 .OrderBy(x => (x as IObject)?.get(_orderByProperty).ToString()))
             {
+                if (item == null) continue;
+                
                 yield return item;
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.DotNet;
@@ -40,7 +41,9 @@ namespace DatenMeister.SourcecodeGenerator
                 {
                     // And adds the converted elements to package and the package to the temporary MOF Extent
                     PackageMethods.AddObjectToPackage(package, typeObject);
-                    extent.TypeLookup.Add(typeObject.GetUri(), type);
+                    extent.TypeLookup.Add(
+                        typeObject.GetUri() ?? throw new NotImplementedException("GetUri() == null"),
+                        type);
                 }
             }
 
@@ -65,7 +68,7 @@ namespace DatenMeister.SourcecodeGenerator
             var fillerGenerator = new FillClassTreeByExtentCreator(options.Name + "Filler", sourceParser)
             {
                 Namespace = options.Namespace,
-                ClassNameOfTree = classTreeGenerator.UsedClassName
+                ClassNameOfTree = classTreeGenerator.UsedClassName ?? string.Empty
             };
 
             fillerGenerator.Walk(extent);
@@ -77,7 +80,10 @@ namespace DatenMeister.SourcecodeGenerator
             ////////////////////////////////////////
             // Creates the Dot Net Integration Parser
             var dotNetGenerator = new DotNetIntegrationGenerator();
-            dotNetGenerator.Create(options.Namespace, options.Name, options.Types);
+            dotNetGenerator.Create(
+                options.Namespace ?? string.Empty,
+                options.Name ?? string.Empty,
+                options.Types);
 
             var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");
             File.WriteAllText(pathOfDotNetIntegration, dotNetGenerator.Result.ToString());

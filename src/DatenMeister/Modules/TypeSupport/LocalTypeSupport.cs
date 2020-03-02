@@ -215,7 +215,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="type">Type to be defined</param>
         /// <returns>The element of the meta class</returns>
-        public IElement GetMetaClassFor(Type type)
+        public IElement? GetMetaClassFor(Type type)
         {
             var internalTypeExtent = GetInternalTypeExtent();
             var found = internalTypeExtent.element(internalTypeExtent.contextURI() + "#" + type.FullName);

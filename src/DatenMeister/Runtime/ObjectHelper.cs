@@ -24,7 +24,7 @@ namespace DatenMeister.Runtime
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
         private static object? GetAsSingle(this IObject value, string property, bool noReferences = false)
         {
-            object propertyValue;
+            object? propertyValue;
             if (noReferences && value is MofObject valueAsMofObject)
             {
                 propertyValue = valueAsMofObject.get(property, true);
@@ -540,7 +540,7 @@ namespace DatenMeister.Runtime
             {
                 var asElement = x as IObject;
                 var valueOfChild = asElement?.get(propertyOfChild);
-                if (valueOfChild?.Equals(requestValue) == true)
+                if (valueOfChild?.Equals(requestValue) == true && asElement != null)
                 {
                     yield return asElement;
                 }

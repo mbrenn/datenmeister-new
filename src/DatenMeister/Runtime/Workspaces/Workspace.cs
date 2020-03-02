@@ -341,7 +341,7 @@ namespace DatenMeister.Runtime.Workspaces
             return result;
         }
 
-        public IElement ResolveById(string elementId)
+        public IElement? ResolveById(string elementId)
         {
             return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId)).FirstOrDefault(found => found != null);
         }

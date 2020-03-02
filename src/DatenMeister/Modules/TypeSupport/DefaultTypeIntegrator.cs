@@ -1,3 +1,4 @@
+using System;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -25,14 +26,14 @@ namespace DatenMeister.Modules.TypeSupport
             _integrationSettings = integrationSettings;
             _packageMethods = new PackageMethods(_workspaceLogic);
         }
-        
+
         /// <summary>
         /// Creates the default types
         /// </summary>
         public void CreateDefaultTypes()
         {
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
-            
+
             // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
@@ -49,9 +50,10 @@ namespace DatenMeister.Modules.TypeSupport
 
                 // Copy the primitive type into a new extent for the type workspace
                 CopyMethods.CopyToElementsProperty(
-                    _workspaceLogic.GetUmlWorkspace()
+                    (_workspaceLogic.GetUmlWorkspace()
                         .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
-                        .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
+                        ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection)
+                    ?? throw new InvalidOperationException("PrimitiveTypes is not found"),
                     foundPackage,
                     _UML._Packages._Package.packagedElement,
                     CopyOptions.CopyId);
@@ -67,7 +69,7 @@ namespace DatenMeister.Modules.TypeSupport
                 ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
                 dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
                 PackageMethods.AddObjectToPackage(package, dateTime);
-                
+
                 // Create the class for the default types
                 _localTypeSupport.AddInternalType("Default", typeof(Package));
             }

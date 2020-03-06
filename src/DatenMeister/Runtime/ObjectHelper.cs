@@ -61,6 +61,8 @@ namespace DatenMeister.Runtime
             return false;
         }
 
+        #nullable disable
+        
         /// <summary>
         /// Gets the typed value of the property.
         /// </summary>
@@ -191,6 +193,8 @@ namespace DatenMeister.Runtime
 
             throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
         }
+        
+        #nullable enable
 
         public static T? getOrNull<T>(this IObject value, string property, bool noReferences = false) where T : struct
         {

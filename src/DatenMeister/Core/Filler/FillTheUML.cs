@@ -14,12 +14,12 @@ namespace DatenMeister.Core.Filler
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, DatenMeister.Core._UML tree)
+        public void Fill(IEnumerable<object?> collection, DatenMeister.Core._UML tree)
         {
             FillTheUML.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, DatenMeister.Core._UML tree)
+        public static void DoFill(IEnumerable<object?> collection, DatenMeister.Core._UML tree)
         {
             string? name;
             IElement? value;

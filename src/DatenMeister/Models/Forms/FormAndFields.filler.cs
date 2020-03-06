@@ -14,12 +14,12 @@ namespace DatenMeister.Models.Forms
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _FormAndFields tree)
+        public void Fill(IEnumerable<object?> collection, _FormAndFields tree)
         {
             FillTheFormAndFields.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _FormAndFields tree)
+        public static void DoFill(IEnumerable<object?> collection, _FormAndFields tree)
         {
             string? name;
             IElement? value;

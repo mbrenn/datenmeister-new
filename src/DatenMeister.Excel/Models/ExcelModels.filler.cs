@@ -14,12 +14,12 @@ namespace DatenMeister.Excel
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _ExcelModels tree)
+        public void Fill(IEnumerable<object?> collection, _ExcelModels tree)
         {
             FillTheExcelModels.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _ExcelModels tree)
+        public static void DoFill(IEnumerable<object?> collection, _ExcelModels tree)
         {
             string? name;
             IElement? value;

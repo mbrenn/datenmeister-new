@@ -14,12 +14,12 @@ namespace DatenMeister.Core.Filler
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, DatenMeister.Core._MOF tree)
+        public void Fill(IEnumerable<object?> collection, DatenMeister.Core._MOF tree)
         {
             FillTheMOF.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, DatenMeister.Core._MOF tree)
+        public static void DoFill(IEnumerable<object?> collection, DatenMeister.Core._MOF tree)
         {
             string? name;
             IElement? value;

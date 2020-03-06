@@ -105,7 +105,7 @@ namespace DatenMeister.Runtime.Proxies
             var unwrapped = _unwrapFunc(item);
             foreach (var value in _collection)
             {
-                if (value.Equals(unwrapped))
+                if (value != null && value.Equals(unwrapped))
                 {
                     return n;
                 }

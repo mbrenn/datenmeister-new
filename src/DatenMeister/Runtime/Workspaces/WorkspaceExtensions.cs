@@ -62,7 +62,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="dataLayer">The datalayer that is requested</param>
         /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
         /// <returns>The instance of the type</returns>
-        public static TFilledType GetFromMetaLayer<TFilledType>(
+        public static TFilledType? GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
             Workspace dataLayer,
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
@@ -78,13 +78,18 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="extent">The extent that is requested</param>
         /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
         /// <returns>The instance of the type</returns>
-        public static TFilledType GetFromMetaLayer<TFilledType>(
+        public static TFilledType? GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
             IExtent extent,
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
             var dataLayer = logic.GetWorkspaceOfExtent(extent);
+            if (dataLayer == null)
+            {
+                throw new InvalidOperationException("Workspace is not found");
+            }
+            
             return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
         }
 

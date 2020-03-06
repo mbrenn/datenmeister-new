@@ -65,7 +65,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
                 }
 
                 if (list.Count > 0)
-                    created.set(_configuration.SubItemProperty, list);
+                    created.set(_configuration.SubItemProperty ?? string.Empty, list);
             }
         }
     }

@@ -294,6 +294,8 @@ namespace DatenMeister.Modules.TypeSupport
         private IEnumerable<IUriExtent> GetOtherTypeExtents()
         {
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            if (workspace == null)
+                throw new InvalidOperationException("Types workspace does not exist");
 
             return workspace.extent
                 .OfType<IUriExtent>()
@@ -309,6 +311,9 @@ namespace DatenMeister.Modules.TypeSupport
         public static IUriExtent GetInternalTypeExtent(IWorkspaceLogic workspaceLogic)
         {
             var workspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            if (workspace == null)
+                throw new InvalidOperationException("Types workspace does not exist");
+            
             return GetInternalTypeExtent(workspace);
         }
 
@@ -338,7 +343,10 @@ namespace DatenMeister.Modules.TypeSupport
             {
                 rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
             }
-            
+
+            if (rootElements == null)
+                throw new InvalidOperationException("rootElements == null");
+
             var uml = _workspaceLogic.GetUmlData();
             var factory = new MofFactory(internalTypeExtent);
 

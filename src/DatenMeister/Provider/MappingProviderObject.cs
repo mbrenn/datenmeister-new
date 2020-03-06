@@ -136,7 +136,7 @@ namespace DatenMeister.Provider
             return ContainerMapping?.GetFunction(Value);
         }
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             ContainerMapping?.SetFunction(Value, value);
         }
@@ -146,7 +146,7 @@ namespace DatenMeister.Provider
         /// </summary>
         private class MappingProperty
         {
-            public MappingProperty(Func<T, object> getFunction, Action<T, object> setFunction)
+            public MappingProperty(Func<T, object?> getFunction, Action<T, object> setFunction)
             {
                 GetFunction = getFunction;
                 SetFunction = setFunction;

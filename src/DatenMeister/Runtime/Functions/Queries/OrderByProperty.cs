@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public IEnumerator<object> GetEnumerator()
         {
             foreach (var item in _parent
-                .OrderBy(x => (x as IObject)?.get(_orderByProperty).ToString()))
+                .OrderBy(x => (x as IObject)?.getOrDefault<string>(_orderByProperty)))
             {
                 if (item == null) continue;
                 
@@ -62,7 +62,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <summary>
         /// Gets the extent associated to the parent extent
         /// </summary>
-        public IExtent Extent =>
+        public IExtent? Extent =>
             (_parent as IHasExtent)?.Extent;
     }
 }

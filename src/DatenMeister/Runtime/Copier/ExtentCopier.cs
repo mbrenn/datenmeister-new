@@ -35,7 +35,7 @@ namespace DatenMeister.Runtime.Copier
             var copier = new ObjectCopier(_factory);
             foreach (var copiedElement in sourceSequence
                 .Select(element => element as IElement)
-                .Select(elementAsElement => copier.Copy(elementAsElement, copyOptions)))
+                .Select(elementAsElement => copier.Copy(elementAsElement!, copyOptions)))
             {
                 targetSequence.add(copiedElement);
             }

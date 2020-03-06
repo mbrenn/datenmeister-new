@@ -31,7 +31,7 @@ namespace DatenMeister.Modules.DataViews
 
         public IEnumerable<IElement> GetDataViewElements()
         {
-            var metaClass = (IElement)
+            var metaClass = (IElement?)
                 (_workspaceLogic.GetTypesWorkspace()
                     .FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView"));
             if (metaClass == null)

@@ -4,7 +4,7 @@
     {
         void add(int index, object value);
 
-        object get(int index);
+        object? get(int index);
 
         void remove(int index);
 

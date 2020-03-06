@@ -137,7 +137,7 @@ namespace DatenMeister.Runtime.Copier
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
                 var value = sourceElement.get<object>(property, !copyOptions.CloneAllReferences);
-                var result = CopyValue(value, targetElement as IElement, copyOptions);
+                var result = CopyValue(value, copyOptions);
 
                 targetElement.set(property, result);
             }
@@ -149,10 +149,9 @@ namespace DatenMeister.Runtime.Copier
         /// Copies the value, so it can be added to the target extent
         /// </summary>
         /// <param name="value">Value to be copied</param>
-        /// <param name="containingElement">Element to which the element will be copied</param>
         /// <param name="copyOptions">Copy options being used</param>
         /// <returns>The object that has been copied</returns>
-        private object? CopyValue(object? value, IElement containingElement, CopyOption? copyOptions = null)
+        private object? CopyValue(object? value, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
             var noRecursion = copyOptions.NoRecursion;
@@ -187,7 +186,7 @@ namespace DatenMeister.Runtime.Copier
                     return null;
                 case IReflectiveCollection valueAsCollection:
                     return valueAsCollection
-                        .Select(innerValue => CopyValue(innerValue, containingElement, copyOptions));
+                        .Select(innerValue => CopyValue(innerValue, copyOptions));
                 default:
                     return value;
             }

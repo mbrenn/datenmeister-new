@@ -118,7 +118,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         public IUriExtent LoadExtentWithoutAdding(ExtentLoaderConfig configuration) =>
             LoadExtentWithoutAddingInternal(ref configuration, ExtentCreationFlags.LoadOnly).Item1;
 
-        private (IUriExtent, bool) LoadExtentWithoutAddingInternal(ref ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
+        private (IUriExtent?, bool) LoadExtentWithoutAddingInternal(ref ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
             if (configuration is ExtentFileLoaderConfig fileConfiguration)
@@ -150,7 +150,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace)
             {
                 return (
-                    (IUriExtent) WorkspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
+                    (IUriExtent?) WorkspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
                         loadedProviderInfo.UsedConfig.extentUri),
                     true);
             }

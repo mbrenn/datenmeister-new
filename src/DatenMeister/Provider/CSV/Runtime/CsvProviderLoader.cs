@@ -35,10 +35,11 @@ namespace DatenMeister.Provider.CSV.Runtime
                 throw new InvalidOperationException("FilePath is empty");    
             }
             
-            var doesFileExist = File.Exists(csvConfiguration.filePath);
+            
+            var doesFileExist = File.Exists(filePath);
             if (doesFileExist)
             {
-                dataProvider.Load(provider, csvConfiguration.filePath, csvConfiguration.Settings);
+                dataProvider.Load(provider, filePath, csvConfiguration.Settings);
             }
             else if (extentCreationFlags == ExtentCreationFlags.LoadOnly)
             {

@@ -79,42 +79,42 @@ namespace DatenMeister.Runtime
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
 
-                return (T) metaObject.GetMetaObject().get(property, noReferences);
+                return (T) metaObject.GetMetaObject().get(property, noReferences)!;
             }
 
             if (typeof(T) == typeof(object) && value is MofObject mofObject2)
             {
-                return (T) mofObject2.get(property, noReferences);
+                return (T) mofObject2.get(property, noReferences)!;
             }
 
             if (typeof(T) == typeof(string))
             {
-                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences)!);
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!);
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences)!);
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return (T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences));
+                return ((T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences)))!;
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                return (T) (value.GetAsSingle(property, noReferences) as IObject);
+                return ((T) (value.GetAsSingle(property, noReferences) as IObject))!;
             }
 
             if (typeof(T) == typeof(IElement))
             {
-                return (T) (value.GetAsSingle(property, noReferences) as IElement);
+                return ((T) (value.GetAsSingle(property, noReferences) as IElement))!;
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))
@@ -154,7 +154,7 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(object))
             {
-                return (T) value.GetAsSingle(property, noReferences);
+                return ((T) value.GetAsSingle(property, noReferences))!;
             }
 
             if (typeof(T).IsEnum)

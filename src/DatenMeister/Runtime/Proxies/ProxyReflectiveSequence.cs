@@ -19,7 +19,7 @@ namespace DatenMeister.Runtime.Proxies
             Sequence.add(index, PrivatizeElementFunc(value));
         }
 
-        public virtual object get(int index) =>
+        public virtual object? get(int index) =>
             PublicizeElementFunc(Sequence.get(index));
 
         public virtual void remove(int index)

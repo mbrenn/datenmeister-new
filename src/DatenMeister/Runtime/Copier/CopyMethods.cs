@@ -58,7 +58,7 @@ namespace DatenMeister.Runtime.Copier
                         targetCollection.add(copiedElement);
                     }
                 }
-                else
+                else if (setProperty != null)
                 {
                     var newList = new List<object> {setProperty};
                     newList.AddRange(copiedElements);

@@ -217,7 +217,7 @@ namespace DatenMeister.Provider.CSV
                 }
 
                 var cellValue = DotNetHelper.AsString(conversion(value));
-                if (cellValue.Contains(settings.Separator))
+                if (cellValue != null && cellValue.Contains(settings.Separator))
                 {
                     cellValue = $"\"{cellValue.Replace("\"", "\"\"")}\"";
                 }

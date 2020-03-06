@@ -73,8 +73,10 @@ namespace DatenMeister.Runtime.Functions.Transformation
                 if (element.isSet(settings.IdColumn))
                 {
                     var key = element.get(settings.IdColumn);
-                    List<object> list;
-                    if (lists.TryGetValue(key, out list))
+                    if (key == null)
+                        continue;
+
+                    if (lists.TryGetValue(key, out var list))
                     {
                         values[key].set(settings.NewChildColumn, list);
                     }
@@ -88,6 +90,15 @@ namespace DatenMeister.Runtime.Functions.Transformation
             Debug.Assert(settings.Sequence != null);
             Debug.Assert(settings.TargetFactory != null);
             Debug.Assert(settings.TargetSequence != null);
+            
+            if (settings.TargetFactory == null)
+                throw new InvalidOperationException("settings.TargetFactory == null");
+            
+            if (settings.TargetSequence == null)
+                throw new InvalidOperationException("settings.TargetSequence == null");
+            
+            if (settings.Sequence == null)
+                throw new InvalidOperationException("settings.Sequence == null");
 
             // Copies the elements
             var copiedElements = CopyElements(settings);
@@ -138,6 +149,12 @@ namespace DatenMeister.Runtime.Functions.Transformation
         /// <returns></returns>
         private static Dictionary<object, IObject> CopyElements(HierarchyMakerBase settings)
         {
+            if (settings.TargetFactory == null)
+                throw new InvalidOperationException("settings.TargetFactory == null");
+            
+            if (settings.IdColumn == null)
+                throw new InvalidOperationException("settings.IdColumn == null");
+            
             // First: List items by id
             var copier = new ObjectCopier(settings.TargetFactory);
             var values = new Dictionary<object, IObject>();

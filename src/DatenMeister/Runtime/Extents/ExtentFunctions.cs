@@ -56,6 +56,11 @@ namespace DatenMeister.Runtime.Extents
         public CreateableTypeResult GetCreatableTypes(IExtent extent)
         {
             var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
+            if (dataLayer == null)
+            {
+                throw new InvalidOperationException("Datalayer is not found");
+            }
+            
             var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault();
             var umlLayer = typeLayer?.MetaWorkspaces.FirstOrDefault();
 

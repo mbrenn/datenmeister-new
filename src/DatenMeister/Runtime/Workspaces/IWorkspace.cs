@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Type of the filled type</typeparam>
         /// <returns>The found instance</returns>
-        TFilledType Get<TFilledType>()
+        TFilledType? Get<TFilledType>()
             where TFilledType : class, new();
 
         /// <summary>
@@ -55,6 +55,6 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
-        TFilledType GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne) where TFilledType : class, new();
+        TFilledType? GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne) where TFilledType : class, new();
     }
 }

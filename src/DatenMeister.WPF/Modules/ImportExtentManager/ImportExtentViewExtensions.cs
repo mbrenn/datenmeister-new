@@ -109,6 +109,10 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
                     // Gets the extent from which the data shall be imported
                     var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
+                    if (sourceExtent == null)
+                    {
+                        MessageBox.Show($"Source extent with {uri} is not found. ");
+                    }
 
                     var itemCountBefore = sourceExtent.elements().Count();
                     var elements = (itemsInExtentList.RootItem as IExtent)?.elements()

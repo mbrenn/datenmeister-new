@@ -281,8 +281,8 @@ namespace DatenMeister.Uml
             // Go through all found classes and store them into the dictionaries
             foreach (var classInstance in umlDescendents.OfType<IElement>().Where(x => x.isSet("name")))
             {
-                var name = classInstance.get("name").ToString();
-                var typeValue = classInstance.isSet(TypeProperty) ? classInstance.get(TypeProperty).ToString() : null;
+                var name = classInstance.getOrDefault<string>("name");
+                var typeValue = classInstance.isSet(TypeProperty) ? classInstance.getOrDefault<string>(TypeProperty) : null;
                 if (typeValue == "uml:Class")
                     UmlClasses[name] = classInstance;
 
@@ -299,7 +299,7 @@ namespace DatenMeister.Uml
             var mofMetaClasses =
                 mofElements
                     .Cast<IElement>()
-                    .Where(x => x.isSet("name") && x.metaclass?.get("name").ToString() == "Class")
+                    .Where(x => x.isSet("name") && x.metaclass?.getOrDefault<string>("name") == "Class")
                     .ToList();
 
             // Hacky hack to get rid of one of the tags and the duplicate MOF Elements
@@ -441,7 +441,7 @@ namespace DatenMeister.Uml
         private void ConvertPropertiesToRealProperties(IEnumerable<IObject> allElements)
         {
             // Now we replace the property information from string form to real properties
-            List<Action> actions = new List<Action>();
+            var actions = new List<Action>();
 
             foreach (var element in allElements.OfType<IObjectAllProperties>())
             {

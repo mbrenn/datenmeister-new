@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime
         /// <typeparam name="TFilledType">Requested filled type information</typeparam>
         /// <param name="factory">Factory, which is queried</param>
         /// <returns>The resulting filled type</returns>
-        public static TFilledType GetMetaInformation<TFilledType>(
+        public static TFilledType? GetMetaInformation<TFilledType>(
             this IFactory factory)
             where TFilledType : class, new()
         {
@@ -22,6 +22,7 @@ namespace DatenMeister.Runtime
                              throw new ArgumentException(
                                  @"Not of type MofExtent",
                                  nameof(factory));
+            
             return mofFactory.Extent?.Workspace?.GetFromMetaWorkspace<TFilledType>();
         }
 
@@ -39,6 +40,11 @@ namespace DatenMeister.Runtime
             where TFilledType : class, new()
         {
             var metaInfo = GetMetaInformation<TFilledType>(factory);
+            if (metaInfo == null)
+            {
+                throw new InvalidOperationException("metaInfo is not found");
+            }
+            
             return factory.create(type(metaInfo));
         }
 
@@ -58,6 +64,11 @@ namespace DatenMeister.Runtime
             where TFilledType : class, new()
         {
             var filledType = workspace.Get<TFilledType>();
+            if (filledType == null)
+            {
+                throw new InvalidOperationException("FilledType is not found");
+            }
+
             var typeToCreated = funcType(filledType);
             return factory.create(typeToCreated);
         }

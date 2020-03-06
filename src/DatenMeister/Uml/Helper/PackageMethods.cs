@@ -42,6 +42,8 @@ namespace DatenMeister.Uml.Helper
             var extent = ((IHasExtent) rootElements).Extent  ?? throw new InvalidOperationException("extent is not set");
 
             var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
+            if (uml == null) return null;
+            
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
@@ -58,13 +60,15 @@ namespace DatenMeister.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IElement GetOrCreatePackageStructure(
+        public IElement? GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             string packagePath)
         {
             var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
             
             var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
+            if (uml == null) return null;
+            
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
@@ -81,12 +85,13 @@ namespace DatenMeister.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IReflectiveCollection GetPackagedObjects(
+        public IReflectiveCollection? GetPackagedObjects(
             IReflectiveCollection rootElements,
             string packagePath)
         {
             var element = GetOrCreatePackageStructure(rootElements, packagePath);
-            return element.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+
+            return element?.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
         }
 
         /// <summary>
@@ -273,6 +278,9 @@ namespace DatenMeister.Uml.Helper
             var targetPackage = GetOrCreatePackageStructure(
                 targetExtent.elements(), targetPackageName);
 
+            if (targetPackage == null)
+                throw new InvalidOperationException("targetPackage == null");
+
             using (var stream = typeof(PackageMethods).GetTypeInfo()
                 .Assembly.GetManifestResourceStream(manifestName))
             {
@@ -291,6 +299,10 @@ namespace DatenMeister.Uml.Helper
                 var sourcePackage = GetOrCreatePackageStructure(
                     pseudoExtent.elements(),
                     sourcePackageName);
+                
+                if (sourcePackage == null)
+                    throw new InvalidOperationException("sourcePackage == null");
+                
                 PackageMethods.ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
             }
         }

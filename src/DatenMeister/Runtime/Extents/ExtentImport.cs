@@ -21,6 +21,9 @@ namespace DatenMeister.Runtime.Extents
         {
             var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings)
                                  ?? throw new InvalidOperationException("mofImportSettings == null");
+            var extentUri = importSettings.newExtentUri;
+            if (extentUri == null)
+                throw new InvalidOperationException("extentUri == null");
 
             if (importSettings.fileToBeImported != importSettings.fileToBeExported)
             {

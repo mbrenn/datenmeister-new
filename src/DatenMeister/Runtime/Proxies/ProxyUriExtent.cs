@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime.Proxies
 
         public virtual IReflectiveSequence elements() => PublicizeReflectiveSequenceFunc(Extent.elements());
 
-        public virtual string uri(IElement element) => Extent.uri(PrivatizeElementFunc(element));
+        public virtual string? uri(IElement element) => Extent.uri(PrivatizeElementFunc(element));
 
         public virtual bool useContainment() => Extent.useContainment();
 

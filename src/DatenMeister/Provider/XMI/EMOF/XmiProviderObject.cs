@@ -67,7 +67,17 @@ namespace DatenMeister.Provider.XMI.EMOF
         public string? Id
         {
             get => XmiId.Get(XmlNode);
-            set => XmiId.Set(XmlNode, value);
+            set
+            {
+                if (value == null || string.IsNullOrEmpty(value))
+                {
+                    XmiId.Remove(XmlNode);
+                }
+                else
+                {
+                    XmiId.Set(XmlNode, value);
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -456,7 +466,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             return null;
         }
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             if (!(value is XmiProviderObject providerObject))
             {

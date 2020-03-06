@@ -18,7 +18,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the types being used for the mapping
         /// </summary>
-        private readonly Dictionary<Type, Func<ILifetimeScope, IProviderLoader>> _mapping = new Dictionary<Type, Func<ILifetimeScope, IProviderLoader>>();
+        private readonly Dictionary<Type, Func<ILifetimeScope, IProviderLoader?>> _mapping = new Dictionary<Type, Func<ILifetimeScope, IProviderLoader?>>();
 
         /// <summary>
         /// Checks, if a mapping for the given configuration type exists which configures a specific extet loader
@@ -38,14 +38,14 @@ namespace DatenMeister.Runtime.ExtentStorage
             _mapping[typeConfiguration] = scope => scope.Resolve(typeExtentStorage) as IProviderLoader;
         }
 
-        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IProviderLoader> factoryExtentStorage)
+        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IProviderLoader?> factoryExtentStorage)
         {
             _mapping[typeConfiguration] = factoryExtentStorage;
         }
 
         public IProviderLoader CreateFor(ILifetimeScope scope, ExtentLoaderConfig configuration)
         {
-            if (!_mapping.TryGetValue(configuration.GetType(), out Func<ILifetimeScope, IProviderLoader> foundType))
+            if (!_mapping.TryGetValue(configuration.GetType(), out var foundType))
             {
                 Logger.Error($"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
                 throw new InvalidOperationException($"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");

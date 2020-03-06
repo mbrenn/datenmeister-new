@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -82,17 +83,20 @@ namespace DatenMeister.Modules.UserManagement
         /// </summary>
         public void ClearDatabase()
         {
-            GetsUserDatabase().elements().clear();
+            GetUserDatabase().elements().clear();
         }
 
         public (string password, string salt) HashPassword(string password)
         {
-            var userDatabase = GetsUserDatabase();
+            var userDatabase = GetUserDatabase();
             var salt = RandomFunctions.GetRandomAlphanumericString(16);
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
-            var settings = userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
 
-            Debug.Assert(settings != null, "settings != null");
+            if (!(userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))
+            {
+                throw new InvalidOperationException("UserManagementSettings is not found");
+            }
+            
             var globalSalt = settings.getOrDefault<string>(nameof(UserManagementSettings.salt));
 
             var totalPassword = salt + password + globalSalt;
@@ -100,9 +104,14 @@ namespace DatenMeister.Modules.UserManagement
             return (totalPassword, salt);
         }
 
-        private IUriExtent GetsUserDatabase()
+        private IUriExtent GetUserDatabase()
         {
-            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement).FindExtent(ExtentName);
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement)?.FindExtent(ExtentName);
+            if (userDatabase == null)
+            {
+                throw new InvalidOperationException("User Database was not found");
+            }
+            
             return userDatabase;
         }
 

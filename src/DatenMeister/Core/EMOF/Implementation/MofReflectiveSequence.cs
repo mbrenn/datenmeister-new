@@ -179,7 +179,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void remove(int index)
         {
-            var foundValue = ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(PropertyName)).ElementAt(index);
+            var value = MofObject.ProviderObject.GetProperty(PropertyName) as IEnumerable<object>;
+            var foundValue = value?.ElementAt(index);
             if (foundValue != null)
             {
                 MofObject.ProviderObject.RemoveFromProperty(

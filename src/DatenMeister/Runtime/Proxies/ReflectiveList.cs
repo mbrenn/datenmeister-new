@@ -19,12 +19,12 @@ namespace DatenMeister.Runtime.Proxies
         /// <summary>
         /// Stores the function that is used to convert an object to the given type
         /// </summary>
-        private readonly Func<object, T> _wrapFunc;
+        private readonly Func<object?, T> _wrapFunc;
 
         /// <summary>
         /// Converts the function that is used to unwrap the function
         /// </summary>
-        private readonly Func<T, object> _unwrapFunc;
+        private readonly Func<T, object?> _unwrapFunc;
 
 
         public ReflectiveList(IReflectiveCollection collection)
@@ -33,11 +33,11 @@ namespace DatenMeister.Runtime.Proxies
             _sequence = _collection as IReflectiveSequence ??
                         throw new InvalidOperationException("Collection is not IReflectiveSequence");
 
-            _wrapFunc = x => (T) x;
+            _wrapFunc = x => ((T) x)!;
             _unwrapFunc = x => x;
         }
 
-        public ReflectiveList(IReflectiveCollection collection, Func<object, T> wrapFunc, Func<T, object> unwrapFunc)
+        public ReflectiveList(IReflectiveCollection collection, Func<object?, T> wrapFunc, Func<T, object?> unwrapFunc)
         {
             _collection = collection;
             _sequence = _collection as IReflectiveSequence??
@@ -59,7 +59,10 @@ namespace DatenMeister.Runtime.Proxies
 
         public void Add(T item)
         {
-            _collection.add(_unwrapFunc(item));
+            var unwrap = _unwrapFunc(item);
+            if (unwrap == null) return;
+            
+            _collection.add(unwrap);
         }
 
         public void Clear()
@@ -70,7 +73,7 @@ namespace DatenMeister.Runtime.Proxies
         public bool Contains(T item)
         {
             var unwrapped = _unwrapFunc(item);
-            return _collection.Any(x => x.Equals(unwrapped));
+            return _collection.Any(x => x != null && x.Equals(unwrapped));
         }
 
         public void CopyTo(T[] array, int arrayIndex)

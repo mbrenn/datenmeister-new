@@ -51,7 +51,13 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException($"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
             }
 
-            return foundType(scope);
+            var result = foundType(scope);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Converter return a null provider");
+            }
+
+            return result;
         }
 
         public bool ContainsConfigurationFor(Type typeConfiguration) =>

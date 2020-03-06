@@ -109,8 +109,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var xmlData = SerializeToXElement(extent.Configuration);
                 xmlData.Name = "config";
                 // Stores the .Net datatype to allow restore of the right element
-                Debug.Assert(extent?.Configuration?.GetType() != null);
-                xmlData.Add(new XAttribute("configType", extent.Configuration.GetType().FullName));
+                var fullName = extent.Configuration?.GetType().FullName;
+                if (fullName == null) continue;
+                
+                xmlData.Add(new XAttribute("configType",fullName));
                 xmlExtent.Add(xmlData);
 
                 // Stores the metadata

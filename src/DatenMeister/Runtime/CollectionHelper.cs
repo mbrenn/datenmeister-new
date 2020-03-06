@@ -16,8 +16,8 @@ namespace DatenMeister.Runtime
         public static IList<T> ToList<T>(this IReflectiveCollection collection) where T : notnull =>
             new ReflectiveList<T>(collection);
 
-        public static IList<T> ToList<T>(this IReflectiveCollection collection, Func<object, T> wrapFunc,
-            Func<T, object> unwrapFunc) where T : notnull 
+        public static IList<T> ToList<T>(this IReflectiveCollection collection, Func<object?, T> wrapFunc,
+            Func<T, object?> unwrapFunc) where T : notnull 
             =>
                 new ReflectiveList<T>(collection, wrapFunc, unwrapFunc);
 

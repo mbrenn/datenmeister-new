@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -39,6 +40,11 @@ namespace DatenMeister.Runtime.Functions.Aggregation
             // Perform the grouping
             foreach (var value in _reflectiveCollection)
             {
+                if (value == null)
+                {
+                    continue;
+                }
+                
                 var element = value as IElement;
                 var metaClass = element?.getMetaClass();
                 if (metaClass == null)

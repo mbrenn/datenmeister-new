@@ -8,7 +8,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 {
     public class FilterOnMetaClass : ProxyReflectiveCollection
     {
-        private readonly IElement[] _filteredMetaClass;
+        private readonly IElement[]? _filteredMetaClass;
 
         public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
             : base(collection)

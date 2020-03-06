@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                         continue;
 
                     var propertyAsText = valueAsObject.get(property);
-                    if (!DotNetHelper.IsOfPrimitiveType(propertyAsText))
+                    if (propertyAsText != null && !DotNetHelper.IsOfPrimitiveType(propertyAsText))
                         continue;
 
                     if (propertyAsText.ToString().IndexOf(_searchString, _comparison) >= 0)

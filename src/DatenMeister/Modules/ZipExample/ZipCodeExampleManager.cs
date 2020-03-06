@@ -102,7 +102,9 @@ namespace DatenMeister.Modules.ZipExample
                 }
             };
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration);
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
+                               ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");
+            
             loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
 
             if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(

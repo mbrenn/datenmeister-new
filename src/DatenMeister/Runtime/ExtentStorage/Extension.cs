@@ -17,7 +17,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="uri"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static IUriExtent CreateAndAddXmiExtent(this IExtentManager extentManager, string uri, string filename)
+        public static IUriExtent? CreateAndAddXmiExtent(this IExtentManager extentManager, string uri, string filename)
         {
             var xmiConfiguration = new XmiStorageConfiguration(uri)
             {
@@ -37,7 +37,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="loaderConfiguration">The loader configuration being used to load the extent</param>
         /// <param name="flags">The extent creation flags being used to load the extent</param>
         /// <returns>The found or loaded extent</returns>
-        public static IUriExtent LoadExtentIfNotAlreadyLoaded(
+        public static IUriExtent? LoadExtentIfNotAlreadyLoaded(
             this IExtentManager extentManager,
             ExtentLoaderConfig loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)

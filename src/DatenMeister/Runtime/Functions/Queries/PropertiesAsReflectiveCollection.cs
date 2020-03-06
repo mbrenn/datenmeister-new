@@ -24,6 +24,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public PropertiesAsReflectiveCollection(IObject value)
         {
             _value = value;
+            _propertyNames = new List<string>();
         }
 
         /// <summary>
@@ -87,6 +88,6 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <summary>
         /// Gets the extent associated to the parent extent
         /// </summary>
-        public IExtent Extent => (_value as IHasExtent)?.Extent;
+        public IExtent? Extent => (_value as IHasExtent)?.Extent;
     }
 }

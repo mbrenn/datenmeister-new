@@ -188,7 +188,7 @@ namespace DatenMeister.Modules.ChangeEvents
             }
         }
 
-        public EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent, IObject?> workspaceAction)
+        public EventHandle RegisterFor(IWorkspace workspace, Action<IWorkspace, IExtent?, IObject?> workspaceAction)
         {
             try
             {

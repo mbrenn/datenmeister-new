@@ -97,7 +97,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public IObject? Container
         {
-            set => ProviderObject.SetContainer(((MofObject) value).ProviderObject);
+            set => ProviderObject.SetContainer(((MofObject?) value)?.ProviderObject);
         }
 
         /// <summary>

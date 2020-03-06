@@ -87,7 +87,7 @@ namespace DatenMeister.Modules.TypeSupport
             var extentTypes = new MofUriExtent(
                 new InMemoryProvider(),
                 WorkspaceNames.UriInternalTypesExtent);
-            var typeWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
             extentTypes.SetExtentType("Uml.Classes");
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
         }
@@ -156,10 +156,15 @@ namespace DatenMeister.Modules.TypeSupport
         public IList<IElement> AddInternalTypes(IEnumerable<Type> types, string? packageName = null)
         {
             var internalTypeExtent = GetInternalTypeExtent();
-            IReflectiveCollection rootElements = internalTypeExtent.elements();
+            IReflectiveCollection? rootElements = internalTypeExtent.elements();
             if (packageName != null)
             {
                 rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
+            }
+
+            if (rootElements == null)
+            {
+                throw new InvalidOperationException("Packaged object could not be created");
             }
 
             return AddInternalTypes(rootElements, types);
@@ -185,7 +190,11 @@ namespace DatenMeister.Modules.TypeSupport
                 rootElements.add(element); // Adds to the extent
                 result.Add(element); // Adds to the internal return list
 
-                internalTypeExtent.TypeLookup.Add(element.GetUri(), type);
+                var uri = element.GetUri();
+                if (uri != null && !string.IsNullOrEmpty(uri))
+                {
+                    internalTypeExtent.TypeLookup.Add(uri, type);
+                }
             }
 
             return result;
@@ -338,7 +347,7 @@ namespace DatenMeister.Modules.TypeSupport
             Action<_UML, IFactory, IReflectiveCollection, T, MofExtent> parseMethods)
         {
             var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
-            IReflectiveCollection rootElements = internalTypeExtent.elements();
+            IReflectiveCollection? rootElements = internalTypeExtent.elements();
             if (packageName != null)
             {
                 rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);

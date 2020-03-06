@@ -46,6 +46,8 @@ namespace DatenMeister.Modules.TypeSupport
                 // Looks for the primitive type in the UML Workspace
                 var foundPackage =
                     _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
+                if ( foundPackage == null) throw new InvalidOperationException("Package for PrimitiveTypes could not be created"); 
+                
                 _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
 
                 // Copy the primitive type into a new extent for the type workspace
@@ -63,6 +65,9 @@ namespace DatenMeister.Modules.TypeSupport
                 var factory = new MofFactory(internalUserExtent);
                 var package =
                     _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
+                if (package == null)
+                    throw new InvalidOperationException("PrimitiveTypes could not be created");
+                
                 var umlData = _workspaceLogic.GetUmlData();
 
                 var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);

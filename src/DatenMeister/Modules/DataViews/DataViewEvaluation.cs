@@ -165,7 +165,8 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            return new TemporaryReflectiveSequence(input.WhenMetaClassIs(type));
+            return new TemporaryReflectiveSequence(
+                input.WhenMetaClassIs(type));
         }
 
         private IReflectiveSequence GetElementsForFilterPropertyNode(IElement viewNode)

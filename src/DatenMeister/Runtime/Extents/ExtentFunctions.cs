@@ -61,7 +61,9 @@ namespace DatenMeister.Runtime.Extents
                 throw new InvalidOperationException("Datalayer is not found");
             }
             
-            var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault();
+            var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault() 
+                            ?? _workspaceLogic.GetTypesWorkspace();
+
             var umlLayer = typeLayer?.MetaWorkspaces.FirstOrDefault();
 
             var uml = umlLayer?.Get<_UML>();
@@ -80,7 +82,7 @@ namespace DatenMeister.Runtime.Extents
             return new CreateableTypeResult
             {
                 MetaLayer = typeLayer,
-                CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer)
+                CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer!)
                     .SelectMany(x => x.elements().GetAllDescendants().WhenMetaClassIs(classType))
                     .Cast<IElement>()
                     .ToList()

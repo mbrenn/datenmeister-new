@@ -27,8 +27,8 @@ namespace DatenMeister.Runtime.Workspaces
         public static IObject? FindElementByUri(this Workspace workspace, string uri)
         {
             return FindElementByUri(
-                workspace.extent.Select(x => x as IUriExtent)
-                .Where(x => x != null),
+                workspace.extent.Select(x => x as IUriExtent )
+                    .Where(x => x != null)!,
                 uri);
         }
 
@@ -221,7 +221,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IExtent FindExtent(
+        public static IExtent? FindExtent(
             this IWorkspaceLogic collection,
             string extentUri)
         {
@@ -376,7 +376,7 @@ namespace DatenMeister.Runtime.Workspaces
         public static _UML GetUmlData(this IWorkspaceLogic workspaceLogic)
         {
             var uml = workspaceLogic.GetUmlWorkspace();
-            return uml.Get<_UML>();
+            return uml.Get<_UML>() ?? throw new InvalidOperationException("Uml not found");
         }
 
         /// <summary>
@@ -387,7 +387,7 @@ namespace DatenMeister.Runtime.Workspaces
         public static _PrimitiveTypes GetPrimitiveData(this IWorkspaceLogic workspaceLogic)
         {
             var uml = workspaceLogic.GetUmlWorkspace();
-            return uml.Get<_PrimitiveTypes>();
+            return uml.Get<_PrimitiveTypes>() ?? throw new InvalidOperationException("PrimitiveTypes not found");
         }
 
         public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>

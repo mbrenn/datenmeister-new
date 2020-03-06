@@ -86,9 +86,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="extentCreationFlags">The flags for the creation</param>
         /// <returns>The loaded extent</returns>
-        public IUriExtent LoadExtent(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly)
+        public IUriExtent? LoadExtent(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly)
         {
             var (uriExtent, isAlreadyAdded) = LoadExtentWithoutAddingInternal(ref configuration, extentCreationFlags);
+            if (uriExtent == null) return null;
+            
             if (isAlreadyAdded)
             {
                 return uriExtent;
@@ -115,7 +117,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="configuration">Configuration to be loaded</param>
         /// <returns>Resulting uri extent</returns>
-        public IUriExtent LoadExtentWithoutAdding(ExtentLoaderConfig configuration) =>
+        public IUriExtent? LoadExtentWithoutAdding(ExtentLoaderConfig configuration) =>
             LoadExtentWithoutAddingInternal(ref configuration, ExtentCreationFlags.LoadOnly).Item1;
 
         private (IUriExtent?, bool) LoadExtentWithoutAddingInternal(ref ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
@@ -149,9 +151,21 @@ namespace DatenMeister.Runtime.ExtentStorage
             // If the extent is already added (for example, the provider loader calls itself LoadExtent due to an indirection), then the resulting event extent will
             if (loadedProviderInfo.IsExtentAlreadyAddedToWorkspace)
             {
+                var workspaceId = loadedProviderInfo.UsedConfig?.workspaceId ?? string.Empty;
+                var extentUri = loadedProviderInfo.UsedConfig?.extentUri ?? string.Empty;
+                var alreadyFoundExtent = (IUriExtent?) WorkspaceLogic.FindExtent(
+                    workspaceId,
+                    extentUri);
+                if (alreadyFoundExtent == null)
+                {
+                    throw new InvalidOperationException("The extent was not found: " +
+                                                        extentUri);
+                }
+                
                 return (
-                    (IUriExtent?) WorkspaceLogic.FindExtent(loadedProviderInfo.UsedConfig.workspaceId,
-                        loadedProviderInfo.UsedConfig.extentUri),
+                    (IUriExtent?) WorkspaceLogic.FindExtent(
+                        workspaceId,
+                        extentUri),
                     true);
             }
 

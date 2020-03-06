@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Copier;
 
@@ -27,8 +28,10 @@ namespace DatenMeister.Runtime.Functions.Transformation
             var values = CopyElements(settings);
 
             // Now: Do the adding of the children into a temporary lists and copy
-            foreach (var element in settings.Sequence.Select(x => x as IObject).Where(x => x != null))
+            foreach (var element in settings.Sequence.Select(x => x as IObject))
             {
+                if (element == null) continue;
+                
                 var id = element.getOrDefault<object>(settings.IdColumn);
 
                 if (id != null && element.isSet(settings.OldParentColumn))
@@ -56,7 +59,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Copies all the elements which do not have parent into the generic one
             foreach (var element in settings.Sequence.Select(x => x as IElement).Where(x => x != null))
             {
-                var id = element.getOrDefault<object>(settings.IdColumn);
+                var id = element!.getOrDefault<object>(settings.IdColumn);
                 if (id != null && element.isSet(settings.OldParentColumn))
                 {
                     var parentId = element.get(settings.OldParentColumn);

@@ -36,7 +36,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information
         /// about the meta classes
         /// </summary>
-        public IUriResolver UriResolver { get; set; }
+        public IUriResolver? UriResolver { get; set; }
 
         public XmiProvider( /*string rootNodeName = DefaultRootNodeName*/)
         {

@@ -406,7 +406,10 @@ namespace DatenMeister.Runtime
                     else
                     {
                         var convertedElement = ConvertToMofElement(listItem, extent, factory);
-                        list.Add(convertedElement);
+                        if (convertedElement != null)
+                        {
+                            list.Add(convertedElement);
+                        }
                     }
                 }
 

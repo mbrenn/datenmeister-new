@@ -34,14 +34,14 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="name">Name of the extent (being used to stored into database). The
         /// name needs to be unique</param>
         /// <returns>The uri extent being found</returns>
-        public static IUriExtent GetOrCreateXmiExtentInInternalDatabase(ILifetimeScope scope, string workspace,
+        public static IUriExtent? GetOrCreateXmiExtentInInternalDatabase(ILifetimeScope scope, string workspace,
             string uri, string name)
         {
             var creator = scope.Resolve<ExtentCreator>();
             return creator.GetOrCreateXmiExtentInInternalDatabase(workspace, uri, name);
         }
 
-        public IUriExtent GetOrCreateXmiExtentInInternalDatabase(
+        public IUriExtent? GetOrCreateXmiExtentInInternalDatabase(
             string workspace,
             string uri,
             string name,
@@ -68,10 +68,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                     foundExtent.SetExtentType(extentType);
                 }
 
-                return (IUriExtent) foundExtent;
+                return (IUriExtent?) foundExtent;
             }
 
-            return (IUriExtent) foundExtent;
+            return (IUriExtent?) foundExtent;
         }
     }
 }

@@ -62,6 +62,10 @@ namespace DatenMeister.Modules.UserManagement
                 ExtentName,
                 "",
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
+            if (extent == null)
+            {
+                throw new InvalidOperationException("Extent could not be created");
+            }
 
             if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement))
             {

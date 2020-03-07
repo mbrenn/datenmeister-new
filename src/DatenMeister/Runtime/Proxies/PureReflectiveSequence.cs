@@ -49,6 +49,8 @@ namespace DatenMeister.Runtime.Proxies
             {
                 foreach (var value in values)
                 {
+                    if (value == null) continue;
+                    
                     result |= add(value);
                 }
             }

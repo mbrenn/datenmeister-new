@@ -42,22 +42,27 @@ namespace DatenMeister.Runtime.Proxies
 
         public virtual IReflectiveSequence elements() => PublicizeReflectiveSequenceFunc(Extent.elements());
 
-        public virtual string? uri(IElement element) => Extent.uri(PrivatizeElementFunc(element));
+        public virtual string? uri(IElement element)
+        {
+            var convertedElement = PrivatizeElementFunc(element);
+            if (convertedElement == null) return null;
+            return Extent.uri(convertedElement);
+        }
 
         public virtual bool useContainment() => Extent.useContainment();
 
         public ProxyUriExtent ActivateObjectConversion()
         {
             return ActivateObjectConversion(
-                x => new ProxyMofElement((MofElement) x),
+                x => x == null ? null : new ProxyMofElement((MofElement) x),
                 x => new ProxyReflectiveSequence(x),
-                x => x.GetProxiedElement());
+                x => x?.GetProxiedElement());
         }
 
         public ProxyUriExtent ActivateObjectConversion<TElementType>(
-            Func<IElement, TElementType> publicizeElement,
+            Func<IElement?, TElementType?> publicizeElement,
             Func<IReflectiveSequence, IReflectiveSequence> publicizeReflectiveSequence,
-            Func<TElementType, IElement> privatizeElement)
+            Func<TElementType?, IElement?> privatizeElement)
             where TElementType : class, IElement
         {
             PublicizeElementFunc = publicizeElement;

@@ -105,6 +105,9 @@ namespace DatenMeister.Modules.TypeSupport
                 "Uml.Classes",
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
             );
+            
+            if( foundExtent == null )
+                throw new InvalidOperationException("Extent for users is not found");
 
             // Creates the user types, if not existing
             var numberOfTypes = foundExtent.elements().Count();

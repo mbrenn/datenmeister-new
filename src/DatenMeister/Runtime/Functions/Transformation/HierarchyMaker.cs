@@ -60,9 +60,9 @@ namespace DatenMeister.Runtime.Functions.Transformation
             foreach (var element in settings.Sequence.Select(x => x as IElement).Where(x => x != null))
             {
                 var id = element!.getOrDefault<object>(settings.IdColumn);
-                if (id != null && element.isSet(settings.OldParentColumn))
+                if (id != null && element!.isSet(settings.OldParentColumn))
                 {
-                    var parentId = element.get(settings.OldParentColumn);
+                    var parentId = element!.get(settings.OldParentColumn);
                     if (parentId == null || !values.ContainsKey(parentId))
                     {
                         targetExtent.add(values[id]);
@@ -73,9 +73,9 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Adds the children to the target elements
             foreach (var element in targetExtent.Select(x => x as IObject).Where(x => x != null))
             {
-                if (element.isSet(settings.IdColumn))
+                if (element!.isSet(settings.IdColumn))
                 {
-                    var key = element.get(settings.IdColumn);
+                    var key = element!.get(settings.IdColumn);
                     if (key == null)
                         continue;
 
@@ -161,11 +161,14 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // First: List items by id
             var copier = new ObjectCopier(settings.TargetFactory);
             var values = new Dictionary<object, IObject>();
-            foreach (var element in settings.Sequence.OnlyObjects())
+            var sequence = settings.Sequence?.OnlyObjects();
+            if (sequence == null) return values;
+            
+            foreach (var element in sequence)
             {
                 if (element.isSet(settings.IdColumn))
                 {
-                    values[element.get(settings.IdColumn)] = copier.Copy(element);
+                    values[element.get(settings.IdColumn) ?? string.Empty] = copier.Copy(element);
                 }
             }
 

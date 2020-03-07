@@ -101,12 +101,13 @@ namespace DatenMeister.Runtime.Functions.Aggregation
                 }
 
                 var groupByValue = element.get(groupByColumn);
+                if (groupByValue == null) continue;
 
-                List<IAggregator> aggregators;
                 if (!aggregatedValues.TryGetValue(
                     groupByValue,
-                    out aggregators))
+                    out var aggregators))
                 {
+                    
                     aggregators = new List<IAggregator>();
 
                     foreach (var aggregateFactory in listAggregators)

@@ -39,7 +39,7 @@ namespace DatenMeister.Runtime
             return value;
         }
 
-        public static IEnumerable<IObject> OnlyObjects(this IEnumerable<object> values)
+        public static IEnumerable<IObject> OnlyObjects(this IEnumerable<object?> values)
         {
             foreach (var x in values)
             {

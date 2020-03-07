@@ -258,7 +258,7 @@ namespace DatenMeister.Uml
 
                 if (element.isSet(IdProperty))
                 {
-                    var id = element.get(IdProperty).ToString();
+                    var id = element.getOrDefault<string>(IdProperty) ?? string.Empty;
                     if (id.StartsWith("_"))
                     {
                         // Due to a problem in the uml.xmi, duplicate IDs might be in the packageImport
@@ -365,6 +365,9 @@ namespace DatenMeister.Uml
             var metaClassGeneralization =
                 extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUmlExtent)
                     .element(WorkspaceNames.UriUmlExtent + "#Generalization");
+            if (metaClassGeneralization == null)
+                throw new InvalidOperationException("Type for Generalization is not found");
+            
             EvaluateGeneralizations(umlDescendents, metaClassGeneralization);
             
             // Go through all the elements and get the ownedAttributes and sets the correct property types

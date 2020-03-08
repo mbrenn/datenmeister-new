@@ -206,6 +206,8 @@ namespace DatenMeister.Runtime
             return get<T>(value, property, noReferences);
         }
 
+        #nullable disable
+        
         public static T getOrDefault<T>(this IObject value, string property, bool noReferences = false)
         {
             if (!value.isSet(property))
@@ -215,6 +217,8 @@ namespace DatenMeister.Runtime
 
             return get<T>(value, property, noReferences);
         }
+        
+        #nullable enable
 
         /// <summary>
         /// Gets the value of a property if the property is set.
@@ -250,7 +254,7 @@ namespace DatenMeister.Runtime
                 var result = value.get(property);
                 if (DotNetHelper.IsOfEnumeration(result))
                 {
-                    var resultAsEnumeration = (IEnumerable<object>) result;
+                    var resultAsEnumeration = (IEnumerable<object>) result!;
                     return resultAsEnumeration.FirstOrDefault();
                 }
 

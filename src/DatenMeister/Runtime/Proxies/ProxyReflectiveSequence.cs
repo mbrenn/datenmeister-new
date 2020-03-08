@@ -47,7 +47,13 @@ namespace DatenMeister.Runtime.Proxies
             if (PrivatizeElementFunc == null)
                 throw new InvalidOperationException("PrivatizeElementFunc is not set");
 
-            return PublicizeElementFunc(Sequence.set(index, PrivatizeElementFunc(value)));
+            var newValue = PrivatizeElementFunc(value);
+            if (newValue != null)
+            {
+                return PublicizeElementFunc(Sequence.set(index, newValue));
+            }
+
+            return null;
         }
 
         IEnumerator IEnumerable.GetEnumerator() =>

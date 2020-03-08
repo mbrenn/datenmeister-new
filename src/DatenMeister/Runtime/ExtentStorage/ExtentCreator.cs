@@ -63,7 +63,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 foundExtent = _extentManager.LoadExtent(storageConfiguration, extentCreationFlags);
 
-                if (extentType != null)
+                if (extentType != null && foundExtent != null)
                 {
                     foundExtent.SetExtentType(extentType);
                 }

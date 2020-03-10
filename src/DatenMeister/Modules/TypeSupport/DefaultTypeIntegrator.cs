@@ -1,3 +1,4 @@
+using System;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -25,14 +26,14 @@ namespace DatenMeister.Modules.TypeSupport
             _integrationSettings = integrationSettings;
             _packageMethods = new PackageMethods(_workspaceLogic);
         }
-        
+
         /// <summary>
         /// Creates the default types
         /// </summary>
         public void CreateDefaultTypes()
         {
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
-            
+
             // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
@@ -45,13 +46,16 @@ namespace DatenMeister.Modules.TypeSupport
                 // Looks for the primitive type in the UML Workspace
                 var foundPackage =
                     _packageMethods.GetOrCreatePackageStructure(primitiveTypes.elements(), "PrimitiveTypes");
+                if ( foundPackage == null) throw new InvalidOperationException("Package for PrimitiveTypes could not be created"); 
+                
                 _workspaceLogic.AddExtent(typeWorkspace, primitiveTypes);
 
                 // Copy the primitive type into a new extent for the type workspace
                 CopyMethods.CopyToElementsProperty(
-                    _workspaceLogic.GetUmlWorkspace()
+                    (_workspaceLogic.GetUmlWorkspace()
                         .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
-                        .get(_UML._Packages._Package.packagedElement) as IReflectiveCollection,
+                        ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection)
+                    ?? throw new InvalidOperationException("PrimitiveTypes is not found"),
                     foundPackage,
                     _UML._Packages._Package.packagedElement,
                     CopyOptions.CopyId);
@@ -61,13 +65,16 @@ namespace DatenMeister.Modules.TypeSupport
                 var factory = new MofFactory(internalUserExtent);
                 var package =
                     _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
+                if (package == null)
+                    throw new InvalidOperationException("PrimitiveTypes could not be created");
+                
                 var umlData = _workspaceLogic.GetUmlData();
 
                 var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);
                 ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
                 dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
                 PackageMethods.AddObjectToPackage(package, dateTime);
-                
+
                 // Create the class for the default types
                 _localTypeSupport.AddInternalType("Default", typeof(Package));
             }

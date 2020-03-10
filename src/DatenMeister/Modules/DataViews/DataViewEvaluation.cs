@@ -126,6 +126,12 @@ namespace DatenMeister.Modules.DataViews
             }
 
             var targetElement = NamedElementMethods.GetByFullName(input, pathNode);
+            if (targetElement == null)
+            {
+                // Path is not found
+                return new PureReflectiveSequence();
+            }
+            
             return new TemporaryReflectiveSequence(NamedElementMethods.GetAllPropertyValues(targetElement));
         }
 
@@ -159,7 +165,8 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            return new TemporaryReflectiveSequence(input.WhenMetaClassIs(type));
+            return new TemporaryReflectiveSequence(
+                input.WhenMetaClassIs(type));
         }
 
         private IReflectiveSequence GetElementsForFilterPropertyNode(IElement viewNode)

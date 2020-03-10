@@ -35,13 +35,15 @@ namespace DatenMeister.Uml.Helper
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IElement GetPackageStructure(
+        public IElement? GetPackageStructure(
             IReflectiveCollection rootElements,
             string packagePath)
         {
             var extent = ((IHasExtent) rootElements).Extent  ?? throw new InvalidOperationException("extent is not set");
 
             var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
+            if (uml == null) return null;
+            
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
@@ -65,13 +67,16 @@ namespace DatenMeister.Uml.Helper
             var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
             
             var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
+            if (uml == null) return null;
+            
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
                 packagePath,
                 _UML._CommonStructure._NamedElement.name,
                 _UML._Packages._Package.packagedElement,
-                uml.Packages.__Package);
+                uml.Packages.__Package)
+                ?? throw new InvalidOperationException("No package was returned");
         }
 
         /// <summary>
@@ -85,14 +90,8 @@ namespace DatenMeister.Uml.Helper
             string packagePath)
         {
             var element = GetOrCreatePackageStructure(rootElements, packagePath);
-            if (element == null || !(element is MofObject mofObject))
-            {
-                return null;
-            }
-            
-            return new MofReflectiveSequence(
-                mofObject,
-                _UML._Packages._Package.packagedElement);
+
+            return element?.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
         }
 
         /// <summary>
@@ -124,13 +123,13 @@ namespace DatenMeister.Uml.Helper
 
             var id = "_package";
 
-            IElement found = null;
+            IElement? found = null;
             foreach (var elementName in elementNames)
             {
                 id += $"_{elementName}";
 
                 // Looks for the element with the given name
-                IElement childElement = null;
+                IElement? childElement = null;
                 foreach (var innerElement in rootElements.OfType<IElement>())
                 {
                     if (!innerElement.isSet(nameProperty))
@@ -138,7 +137,7 @@ namespace DatenMeister.Uml.Helper
                         continue;
                     }
 
-                    if (innerElement.get(nameProperty).ToString() == elementName)
+                    if (innerElement.getOrDefault<string>(nameProperty) == elementName)
                     {
                         childElement = innerElement;
                     }
@@ -183,7 +182,7 @@ namespace DatenMeister.Uml.Helper
                 found = childElement;
             }
 
-            return found;
+            return found ?? throw new InvalidOperationException("Something weird happened. Should not be null");
         }
 
         /// <summary>
@@ -231,6 +230,10 @@ namespace DatenMeister.Uml.Helper
         {
             var targetPackage = GetOrCreatePackageStructure(target, packagePath);
 
+            // Check, if the target package was found
+            if (targetPackage == null) 
+                return;
+            
             // We got the package, import the elements
             ImportPackage(sourcePackage, targetPackage);
         }
@@ -245,7 +248,10 @@ namespace DatenMeister.Uml.Helper
         public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
-            var objectCopier = new ObjectCopier(new MofFactory(targetPackage.GetExtentOf()));
+            var objectCopier = new ObjectCopier(new MofFactory(
+                targetPackage.GetExtentOf() ??
+                throw new InvalidOperationException("targetPackage does not belong to an extent")));
+            
             foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
             {
                 var copiedObject = objectCopier.Copy(subElement, copyOptions);
@@ -272,6 +278,9 @@ namespace DatenMeister.Uml.Helper
             var targetPackage = GetOrCreatePackageStructure(
                 targetExtent.elements(), targetPackageName);
 
+            if (targetPackage == null)
+                throw new InvalidOperationException("targetPackage == null");
+
             using (var stream = typeof(PackageMethods).GetTypeInfo()
                 .Assembly.GetManifestResourceStream(manifestName))
             {
@@ -290,6 +299,10 @@ namespace DatenMeister.Uml.Helper
                 var sourcePackage = GetOrCreatePackageStructure(
                     pseudoExtent.elements(),
                     sourcePackageName);
+                
+                if (sourcePackage == null)
+                    throw new InvalidOperationException("sourcePackage == null");
+                
                 PackageMethods.ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
             }
         }

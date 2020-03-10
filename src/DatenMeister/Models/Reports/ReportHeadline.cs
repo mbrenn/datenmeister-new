@@ -2,6 +2,6 @@
 {
     public class ReportHeadline : ReportElement
     {
-        public string title { get; set; }
+        public string? title { get; set; }
     }
 }

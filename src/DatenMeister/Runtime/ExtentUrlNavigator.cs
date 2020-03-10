@@ -39,7 +39,7 @@ namespace DatenMeister.Runtime
             if (_cacheIds.TryGetValue(uri, out var result))
             {
                 var resultAsMof = result as T;
-                if (this.uri(resultAsMof) == uri)
+                if (this.uri(resultAsMof!) == uri)
                 {
                     return resultAsMof;
                 }

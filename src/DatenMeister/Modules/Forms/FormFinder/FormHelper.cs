@@ -37,17 +37,18 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <param name="form">Form to be evaluated</param>
         /// <param name="propertyName">Name of the property to which the propertyname shall belong</param>
         /// <returns>The found element</returns>
-        public static IElement GetListTabForPropertyName(IElement form, string propertyName)
+        public static IElement? GetListTabForPropertyName(IElement form, string propertyName)
         {
             if (_FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab)
                 throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
             var tabs = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
+            if ( formAndFields == null) throw new InvalidOperationException("_FormAndFields were not found");
 
             foreach (var tab in tabs.OfType<IElement>())
             {
-                if ( ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(), formAndFields.__ListForm))
+                if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(), formAndFields.__ListForm))
                 {
                     var property = tab.getOrDefault<string>(_FormAndFields._ListForm.property);
                     if (property == propertyName)

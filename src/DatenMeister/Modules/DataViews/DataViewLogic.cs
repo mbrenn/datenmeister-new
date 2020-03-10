@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -30,7 +31,15 @@ namespace DatenMeister.Modules.DataViews
 
         public IEnumerable<IElement> GetDataViewElements()
         {
-            var metaClass = (IElement)_workspaceLogic.GetTypesWorkspace().FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView");
+            var metaClass = (IElement?)
+                (_workspaceLogic.GetTypesWorkspace()
+                    .FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView"));
+            if (metaClass == null)
+            {
+                Logger.Warn("DataView MetaClass was not found");
+                yield break;
+            }
+                 
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
             foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
                 .Where(extent => extent.contextURI() != WorkspaceNames.ExtentManagementExtentUri)

@@ -86,6 +86,9 @@ namespace DatenMeister.Modules.Forms.FormFinder
                         FormExtentType,
                         _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
                     );
+                    
+                    if ( extent == null )
+                        throw new InvalidOperationException("Extent for users is not found");
 
                     var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ?? throw new InvalidOperationException("FormAndFields not found");
 

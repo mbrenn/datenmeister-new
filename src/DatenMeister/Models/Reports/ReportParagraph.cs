@@ -2,6 +2,6 @@
 {
     public class ReportParagraph : ReportElement
     {
-        public string paragraph { get; set; }
+        public string? paragraph { get; set; }
     }
 }

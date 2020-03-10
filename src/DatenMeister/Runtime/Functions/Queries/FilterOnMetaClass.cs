@@ -8,7 +8,7 @@ namespace DatenMeister.Runtime.Functions.Queries
 {
     public class FilterOnMetaClass : ProxyReflectiveCollection
     {
-        private readonly IElement[] _filteredMetaClass;
+        private readonly IElement[]? _filteredMetaClass;
 
         public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
             : base(collection)
@@ -28,7 +28,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 var valueAsObject = value as IElement;
 
-                if (IsInList(valueAsObject))
+                if (valueAsObject != null && IsInList(valueAsObject))
                 {
                     yield return valueAsObject;
                 }
@@ -41,6 +41,9 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IElement;
+                if (valueAsObject == null) 
+                    continue;
+                
                 if (IsInList(valueAsObject))
                 {
                     result++;

@@ -28,10 +28,9 @@ namespace DatenMeister.Tests.CSV
             var csvOtherFile = "eens 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             File.WriteAllText(PathForTemporaryDataFile, csvFile);
 
-            var storageConfiguration = new CsvExtentLoaderConfig
+            var storageConfiguration = new CsvExtentLoaderConfig("datenmeister:///test")
             {
                 filePath = PathForTemporaryDataFile,
-                extentUri = "datenmeister:///test",
                 Settings =
                 {
                     HasHeader = false,

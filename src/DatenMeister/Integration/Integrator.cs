@@ -113,10 +113,7 @@ namespace DatenMeister.Integration
             kernel.RegisterInstance(changeEventManager).As<ChangeEventManager>();
 
             // Loading and storing the workspaces
-            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
-            {
-                filepath = PathWorkspaces
-            };
+            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig(PathWorkspaces);
 
             kernel.RegisterInstance(workspaceLoadingConfiguration).As<WorkspaceLoaderConfig>();
             kernel.RegisterType<WorkspaceLoader>().As<WorkspaceLoader>();

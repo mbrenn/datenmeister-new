@@ -169,7 +169,7 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestDotNetConversion()
         {
-            var settings = new ExcelImportSettings
+            var settings = new ExcelImportSettings("dm:///test")
             {
                 countColumns = 1,
                 countRows = 5,

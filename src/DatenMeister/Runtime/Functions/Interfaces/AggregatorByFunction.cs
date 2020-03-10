@@ -1,12 +1,14 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 
 namespace DatenMeister.Runtime.Functions.Interfaces
 {
-    public abstract class AggregatorByFunction<T, TItem> : Aggregator<T, TItem>
+    public abstract class AggregatorByFunction<T, TItem> : Aggregator<T, TItem> where T : notnull
     {
         private T _aggregationResult;
 
-        internal Func<T, TItem, T>? Aggregation { get; set; }
+        internal Func<T, TItem, T> Aggregation { get; set; }
 
         internal T Start { get; set; }
 

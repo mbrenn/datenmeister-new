@@ -16,7 +16,7 @@ namespace DatenMeister.Excel.EMOF
         public ExcelProvider(XSSFWorkbook workbook, ExcelExtentSettings settings)
         {
             _workbook = workbook;
-            Settings = settings ?? new ExcelExtentSettings();
+            Settings = settings;
         }
 
         /// <inheritdoc />

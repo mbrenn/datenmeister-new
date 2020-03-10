@@ -64,14 +64,14 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine();
 
                 Result.AppendLine(
-                    $"{methodStack.Indentation}public void Fill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
+                    $"{methodStack.Indentation}public void Fill(IEnumerable<object?> collection, {ClassNameOfTree} tree)");
                 Result.AppendLine($"{methodStack.Indentation}{{");
                 Result.AppendLine($"{foreachStack.Indentation}FillThe{name}.DoFill(collection, tree);");
                 Result.AppendLine($"{methodStack.Indentation}}}");
                 Result.AppendLine();
 
                 Result.AppendLine(
-                    $"{methodStack.Indentation}public static void DoFill(IEnumerable<object> collection, {ClassNameOfTree} tree)");
+                    $"{methodStack.Indentation}public static void DoFill(IEnumerable<object?> collection, {ClassNameOfTree} tree)");
                 Result.AppendLine($"{methodStack.Indentation}{{");
                 Result.AppendLine($"{foreachStack.Indentation}string? name;");
                 Result.AppendLine($"{foreachStack.Indentation}IElement? value;");

@@ -14,7 +14,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
         }
 
-        public TemporaryReflectiveSequence(IEnumerable<object> values) : base(values)
+        public TemporaryReflectiveSequence(IEnumerable<object?> values) : base(values)
         {
         }
 
@@ -23,7 +23,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             throw new NotImplementedException();
         }
 
-        public object get(int index) => Values.ElementAt(index);
+        public object? get(int index) => Values.ElementAt(index);
 
         public void remove(int index)
         {

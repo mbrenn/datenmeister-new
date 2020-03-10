@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Copier;
 
@@ -17,9 +18,9 @@ namespace DatenMeister.Runtime.Functions.Transformation
         public static void Convert(HierarchyByParentSettings settings)
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
-            Debug.Assert(settings.Sequence != null);
-            Debug.Assert(settings.TargetFactory != null);
-            Debug.Assert(settings.TargetSequence != null);
+            if (settings.Sequence == null) throw new InvalidOperationException("settings.Sequence == null");
+            if (settings.TargetFactory == null) throw new InvalidOperationException("target.TargetFactory == null");
+            if (settings.TargetSequence == null) throw new InvalidOperationException("target.TargetSequence == null");
 
             // Stores the lists
             var lists = new Dictionary<object, List<object>>();
@@ -27,8 +28,10 @@ namespace DatenMeister.Runtime.Functions.Transformation
             var values = CopyElements(settings);
 
             // Now: Do the adding of the children into a temporary lists and copy
-            foreach (var element in settings.Sequence.Select(x => x as IObject).Where(x => x != null))
+            foreach (var element in settings.Sequence.Select(x => x as IObject))
             {
+                if (element == null) continue;
+                
                 var id = element.getOrDefault<object>(settings.IdColumn);
 
                 if (id != null && element.isSet(settings.OldParentColumn))
@@ -56,10 +59,10 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Copies all the elements which do not have parent into the generic one
             foreach (var element in settings.Sequence.Select(x => x as IElement).Where(x => x != null))
             {
-                var id = element.getOrDefault<object>(settings.IdColumn);
-                if (id != null && element.isSet(settings.OldParentColumn))
+                var id = element!.getOrDefault<object>(settings.IdColumn);
+                if (id != null && element!.isSet(settings.OldParentColumn))
                 {
-                    var parentId = element.get(settings.OldParentColumn);
+                    var parentId = element!.get(settings.OldParentColumn);
                     if (parentId == null || !values.ContainsKey(parentId))
                     {
                         targetExtent.add(values[id]);
@@ -70,11 +73,13 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Adds the children to the target elements
             foreach (var element in targetExtent.Select(x => x as IObject).Where(x => x != null))
             {
-                if (element.isSet(settings.IdColumn))
+                if (element!.isSet(settings.IdColumn))
                 {
-                    var key = element.get(settings.IdColumn);
-                    List<object> list;
-                    if (lists.TryGetValue(key, out list))
+                    var key = element!.get(settings.IdColumn);
+                    if (key == null)
+                        continue;
+
+                    if (lists.TryGetValue(key, out var list))
                     {
                         values[key].set(settings.NewChildColumn, list);
                     }
@@ -88,6 +93,15 @@ namespace DatenMeister.Runtime.Functions.Transformation
             Debug.Assert(settings.Sequence != null);
             Debug.Assert(settings.TargetFactory != null);
             Debug.Assert(settings.TargetSequence != null);
+            
+            if (settings.TargetFactory == null)
+                throw new InvalidOperationException("settings.TargetFactory == null");
+            
+            if (settings.TargetSequence == null)
+                throw new InvalidOperationException("settings.TargetSequence == null");
+            
+            if (settings.Sequence == null)
+                throw new InvalidOperationException("settings.Sequence == null");
 
             // Copies the elements
             var copiedElements = CopyElements(settings);
@@ -138,14 +152,23 @@ namespace DatenMeister.Runtime.Functions.Transformation
         /// <returns></returns>
         private static Dictionary<object, IObject> CopyElements(HierarchyMakerBase settings)
         {
+            if (settings.TargetFactory == null)
+                throw new InvalidOperationException("settings.TargetFactory == null");
+            
+            if (settings.IdColumn == null)
+                throw new InvalidOperationException("settings.IdColumn == null");
+            
             // First: List items by id
             var copier = new ObjectCopier(settings.TargetFactory);
             var values = new Dictionary<object, IObject>();
-            foreach (var element in settings.Sequence.OnlyObjects())
+            var sequence = settings.Sequence?.OnlyObjects();
+            if (sequence == null) return values;
+            
+            foreach (var element in sequence)
             {
                 if (element.isSet(settings.IdColumn))
                 {
-                    values[element.get(settings.IdColumn)] = copier.Copy(element);
+                    values[element.get(settings.IdColumn) ?? string.Empty] = copier.Copy(element);
                 }
             }
 

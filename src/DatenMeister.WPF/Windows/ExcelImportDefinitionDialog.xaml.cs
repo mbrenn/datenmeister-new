@@ -45,7 +45,7 @@ namespace DatenMeister.WPF.Windows
             txtFileName.Text = Path.GetFileName(filePath);
 
             _importer = new ExcelImporter(
-                new ExcelImportSettings {filePath = filePath}
+                new ExcelImportSettings("dm:///dm_temp") {filePath = filePath}
             );
 
             await Task.Run(() => _importer.LoadExcel());

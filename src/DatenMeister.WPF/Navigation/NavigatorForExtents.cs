@@ -125,11 +125,12 @@ namespace DatenMeister.WPF.Navigation
                                 throw new InvalidOperationException("detailElement == null");
             if (result.Result == NavigationResult.Saved)
             {
-                var configuration = new XmiStorageConfiguration
+                var uri = detailElement.isSet("uri")
+                    ? detailElement.getOrDefault<string>("uri")
+                    : string.Empty;
+                
+                var configuration = new XmiStorageConfiguration(uri)
                 {
-                    extentUri = detailElement.isSet("uri")
-                        ? detailElement.getOrDefault<string>("uri")
-                        : string.Empty,
                     filePath = detailElement.isSet("filepath")
                         ? detailElement.getOrDefault<string>("filepath")
                         : string.Empty,

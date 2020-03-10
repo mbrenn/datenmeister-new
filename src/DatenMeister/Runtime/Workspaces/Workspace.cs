@@ -247,7 +247,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
-        public TFilledType GetFromMetaWorkspace<TFilledType>(
+        public TFilledType? GetFromMetaWorkspace<TFilledType>(
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
@@ -282,7 +282,7 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
 
-            return null;
+            return default;
         }
 
         public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
@@ -327,7 +327,7 @@ namespace DatenMeister.Runtime.Workspaces
             throw new NotImplementedException();
         }
 
-        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing)
+        public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing)
         {
             var result = _extent
                 .Select(theExtent =>
@@ -341,7 +341,7 @@ namespace DatenMeister.Runtime.Workspaces
             return result;
         }
 
-        public IElement ResolveById(string elementId)
+        public IElement? ResolveById(string elementId)
         {
             return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId)).FirstOrDefault(found => found != null);
         }

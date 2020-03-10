@@ -56,7 +56,11 @@ namespace DatenMeister.Runtime
         {
             foreach (var element in elements)
             {
-                if (DotNetHelper.IsOfPrimitiveType(element))
+                if (element == null)
+                {
+                    _builder.AppendLine($"{_currentIndent}null");
+                }
+                else if (DotNetHelper.IsOfPrimitiveType(element))
                 {
                     _builder.AppendLine($"{_currentIndent}{element}");
                 }

@@ -112,6 +112,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     if (sourceExtent == null)
                     {
                         MessageBox.Show($"Source extent with {uri} is not found. ");
+                        return;
                     }
 
                     var itemCountBefore = sourceExtent.elements().Count();

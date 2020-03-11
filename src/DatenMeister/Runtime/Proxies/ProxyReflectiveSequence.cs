@@ -41,6 +41,8 @@ namespace DatenMeister.Runtime.Proxies
         {
             if (PublicizeElementFunc == null)
                 throw new InvalidOperationException("PublicizeElementFunc is not set");
+            if (PrivatizeElementFunc == null)
+                throw new InvalidOperationException("PrivatizeElementFunc is not set");
             
             return PublicizeElementFunc(Sequence.set(index, PrivatizeElementFunc(value)));
         }

@@ -18,16 +18,18 @@ namespace DatenMeister.Tests.Runtime.Extents
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = dm.Resolve<IExtentManager>();
 
-            var loaderConfig = new InMemoryLoaderConfig
+            var loaderConfig = new InMemoryLoaderConfig("dm:///test")
             {
-                extentUri = "dm:///test",
                 workspaceId = WorkspaceNames.NameData
             };
                     
             extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
             extentManager.DeleteExtent(loaderConfig.workspaceId, loaderConfig.extentUri);
             var extent = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
-            extentManager.DeleteExtent(extent);
+
+            Assert.That(extent, Is.Not.Null);
+            
+            extentManager.DeleteExtent(extent!);
             extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
         }
     }

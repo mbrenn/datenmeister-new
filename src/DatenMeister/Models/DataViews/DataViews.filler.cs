@@ -14,12 +14,12 @@ namespace DatenMeister.Models.DataViews
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _DataViews tree)
+        public void Fill(IEnumerable<object?> collection, _DataViews tree)
         {
             FillTheDataViews.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _DataViews tree)
+        public static void DoFill(IEnumerable<object?> collection, _DataViews tree)
         {
             string? name;
             IElement? value;

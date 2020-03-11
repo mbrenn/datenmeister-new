@@ -87,7 +87,7 @@ namespace DatenMeister.Modules.TypeSupport
             var extentTypes = new MofUriExtent(
                 new InMemoryProvider(),
                 WorkspaceNames.UriInternalTypesExtent);
-            var typeWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
             extentTypes.SetExtentType("Uml.Classes");
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
         }
@@ -105,6 +105,9 @@ namespace DatenMeister.Modules.TypeSupport
                 "Uml.Classes",
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
             );
+            
+            if( foundExtent == null )
+                throw new InvalidOperationException("Extent for users is not found");
 
             // Creates the user types, if not existing
             var numberOfTypes = foundExtent.elements().Count();
@@ -129,13 +132,15 @@ namespace DatenMeister.Modules.TypeSupport
                 "name",
                 _UML._Packages._Package.packagedElement,
                 _workspaceLogic.GetUmlData().Packages.__Package);
+            if (package == null)
+                throw new InvalidOperationException("package == null");
 
             package.set(_UML._Packages._Package.packagedElement, new List<object>());
 
             IReflectiveSequence children;
             if (package.isSet(_UML._Packages._Package.packagedElement))
             {
-                children = (IReflectiveSequence) package.get(_UML._Packages._Package.packagedElement);
+                children = package.get<IReflectiveSequence>(_UML._Packages._Package.packagedElement);
             }
             else
             {
@@ -154,10 +159,15 @@ namespace DatenMeister.Modules.TypeSupport
         public IList<IElement> AddInternalTypes(IEnumerable<Type> types, string? packageName = null)
         {
             var internalTypeExtent = GetInternalTypeExtent();
-            IReflectiveCollection rootElements = internalTypeExtent.elements();
+            IReflectiveCollection? rootElements = internalTypeExtent.elements();
             if (packageName != null)
             {
                 rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
+            }
+
+            if (rootElements == null)
+            {
+                throw new InvalidOperationException("Packaged object could not be created");
             }
 
             return AddInternalTypes(rootElements, types);
@@ -183,7 +193,11 @@ namespace DatenMeister.Modules.TypeSupport
                 rootElements.add(element); // Adds to the extent
                 result.Add(element); // Adds to the internal return list
 
-                internalTypeExtent.TypeLookup.Add(element.GetUri(), type);
+                var uri = element.GetUri();
+                if (uri != null && !string.IsNullOrEmpty(uri))
+                {
+                    internalTypeExtent.TypeLookup.Add(uri, type);
+                }
             }
 
             return result;
@@ -213,7 +227,7 @@ namespace DatenMeister.Modules.TypeSupport
         /// </summary>
         /// <param name="type">Type to be defined</param>
         /// <returns>The element of the meta class</returns>
-        public IElement GetMetaClassFor(Type type)
+        public IElement? GetMetaClassFor(Type type)
         {
             var internalTypeExtent = GetInternalTypeExtent();
             var found = internalTypeExtent.element(internalTypeExtent.contextURI() + "#" + type.FullName);
@@ -270,7 +284,7 @@ namespace DatenMeister.Modules.TypeSupport
         {
             return GetInternalTypeExtent(_workspaceLogic);
         }
-        
+
         /// <summary>
         /// Gets the extent containing the types being created by the user
         /// </summary>
@@ -278,6 +292,9 @@ namespace DatenMeister.Modules.TypeSupport
         public IUriExtent GetUserTypeExtent()
         {
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            if (workspace == null)
+                throw new InvalidOperationException("Types workspace does not exist");
+            
             var internalTypeExtent = GetUserTypeExtent(workspace);
             return internalTypeExtent;
         }
@@ -289,6 +306,8 @@ namespace DatenMeister.Modules.TypeSupport
         private IEnumerable<IUriExtent> GetOtherTypeExtents()
         {
             var workspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            if (workspace == null)
+                throw new InvalidOperationException("Types workspace does not exist");
 
             return workspace.extent
                 .OfType<IUriExtent>()
@@ -304,6 +323,9 @@ namespace DatenMeister.Modules.TypeSupport
         public static IUriExtent GetInternalTypeExtent(IWorkspaceLogic workspaceLogic)
         {
             var workspace = workspaceLogic.GetWorkspace(WorkspaceNames.NameTypes);
+            if (workspace == null)
+                throw new InvalidOperationException("Types workspace does not exist");
+            
             return GetInternalTypeExtent(workspace);
         }
 
@@ -328,12 +350,15 @@ namespace DatenMeister.Modules.TypeSupport
             Action<_UML, IFactory, IReflectiveCollection, T, MofExtent> parseMethods)
         {
             var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
-            IReflectiveCollection rootElements = internalTypeExtent.elements();
+            IReflectiveCollection? rootElements = internalTypeExtent.elements();
             if (packageName != null)
             {
                 rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
             }
-            
+
+            if (rootElements == null)
+                throw new InvalidOperationException("rootElements == null");
+
             var uml = _workspaceLogic.GetUmlData();
             var factory = new MofFactory(internalTypeExtent);
 

@@ -9,6 +9,6 @@ namespace DatenMeister.SourcecodeGenerator
         public string? Name { get; set; }
         public string? Path { get; set; }
         public string? Namespace { get; set; }
-        public IEnumerable<Type>? Types { get; set; }
+        public IEnumerable<Type> Types { get; set; } = new List<Type>();
     }
 }

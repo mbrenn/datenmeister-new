@@ -30,7 +30,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
         /// If not, it will be created.
         /// </summary>
         /// <returns>The loaded workspace</returns>
-        public WorkspaceFileData Load()
+        public WorkspaceFileData? Load()
         {
             try
             {
@@ -74,11 +74,8 @@ namespace DatenMeister.Runtime.Workspaces.Data
             var workSpaceData = new WorkspaceFileData();
             foreach (var workSpace in WorkspaceLogic.Workspaces)
             {
-                workSpaceData.workspaces.Add(new WorkspaceInfo
-                {
-                    id = workSpace.id,
-                    annotation = workSpace.annotation
-                });
+                workSpaceData.workspaces.Add(
+                    new WorkspaceInfo(workSpace.id, workSpace.annotation));
             }
 
             Save(Config.filepath, workSpaceData);

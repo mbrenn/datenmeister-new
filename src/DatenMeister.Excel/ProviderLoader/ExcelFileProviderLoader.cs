@@ -17,9 +17,9 @@ namespace DatenMeister.Excel.ProviderLoader
         /// Loads an excel file and returns
         /// </summary>
         /// <param name="excelPath"></param>
-        public static ExcelProvider LoadProvider(ExcelExtentSettings settings = null)
+        public static ExcelProvider LoadProvider(ExcelExtentSettings settings)
         {
-            settings = settings ?? new ExcelExtentSettings();
+            settings = settings ?? new ExcelExtentSettings("dm:///excel");
             if (!File.Exists(settings.filePath))
             {
                 throw new IOException($"File not found: {settings.filePath}");

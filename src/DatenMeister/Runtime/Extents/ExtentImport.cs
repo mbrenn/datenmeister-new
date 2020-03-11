@@ -21,18 +21,23 @@ namespace DatenMeister.Runtime.Extents
         {
             var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings)
                                  ?? throw new InvalidOperationException("mofImportSettings == null");
+            var extentUri = importSettings.newExtentUri;
+            if (extentUri == null)
+                throw new InvalidOperationException("extentUri == null");
 
             if (importSettings.fileToBeImported != importSettings.fileToBeExported)
             {
                 File.Copy(importSettings.fileToBeImported, importSettings.fileToBeExported);
             }
 
-            var resultingExtent = _extentManager.LoadExtent(new XmiStorageConfiguration
+            var resultingExtent = _extentManager.LoadExtent(new XmiStorageConfiguration(extentUri)
             {
-                extentUri = importSettings.newExtentUri,
                 filePath = importSettings.fileToBeExported,
                 workspaceId = importSettings.Workspace
             });
+            
+            if ( resultingExtent == null )
+                 throw new InvalidOperationException("Loading did not succeed");
 
             return resultingExtent;
         }

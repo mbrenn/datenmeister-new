@@ -10,5 +10,14 @@ namespace DatenMeister.Provider.Xml
         public string? filePath { get; set; }
 
         public bool keepNamespaces { get; set; }
+
+        public XmlReferenceSettings()
+        {
+            
+        }
+        
+        public XmlReferenceSettings(string extentUri) : base(extentUri)
+        {
+        }
     }
 }

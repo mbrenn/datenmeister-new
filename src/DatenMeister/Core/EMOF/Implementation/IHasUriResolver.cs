@@ -9,6 +9,6 @@
         /// Gets or sets the uri resolver. This instance can be used by the Provider to retrieve information about the
         /// metaclasses
         /// </summary>
-        IUriResolver UriResolver { get; set; }
+        IUriResolver? UriResolver { get; set; }
     }
 }

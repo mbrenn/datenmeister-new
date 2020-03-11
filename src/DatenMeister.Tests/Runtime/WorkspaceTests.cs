@@ -20,9 +20,9 @@ namespace DatenMeister.Tests.Runtime
             workspaceLoader = new WorkspaceLoader(
                 workSpaceCollection,
                 new WorkspaceLoaderConfig
-                {
-                    filepath = DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
-                });
+                (
+                    DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
+                ));
             workspaceLoader.Load();
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(0));
@@ -108,10 +108,8 @@ namespace DatenMeister.Tests.Runtime
         {
             var workspaceLoader = new WorkspaceLoader(
                 workSpaceCollection,
-                new WorkspaceLoaderConfig
-                {
-                    filepath = DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
-                });
+                new WorkspaceLoaderConfig(DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
+                ));
             return workspaceLoader;
         }
 

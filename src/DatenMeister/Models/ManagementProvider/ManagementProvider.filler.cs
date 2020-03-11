@@ -14,12 +14,12 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _ManagementProvider tree)
+        public void Fill(IEnumerable<object?> collection, _ManagementProvider tree)
         {
             FillTheManagementProvider.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _ManagementProvider tree)
+        public static void DoFill(IEnumerable<object?> collection, _ManagementProvider tree)
         {
             string? name;
             IElement? value;

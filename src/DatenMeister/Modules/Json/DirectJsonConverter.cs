@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -45,6 +46,7 @@ namespace DatenMeister.Modules.Json
                 builder.AppendLine(komma);
                 builder.Append($"{newIndentation}{property}: ");
                 var propertyValue = value.get(property);
+                
                 ConvertValue(builder, propertyValue, newIndentation);
 
                 komma = ",";
@@ -54,7 +56,7 @@ namespace DatenMeister.Modules.Json
             builder.AppendLine($"{indentation}}}");
         }
 
-        private void ConvertValue(StringBuilder builder, object propertyValue, string newIndentation)
+        private void ConvertValue(StringBuilder builder, object? propertyValue, string newIndentation)
         {
             if (DotNetHelper.IsNull(propertyValue))
             {
@@ -66,16 +68,16 @@ namespace DatenMeister.Modules.Json
             }
             else if (DotNetHelper.IsOfMofObject(propertyValue))
             {
-                ConvertToJson(builder, propertyValue as IObject, newIndentation);
+                ConvertToJson(builder, (propertyValue as IObject)!, newIndentation);
             }
-            else if (DotNetHelper.IsOfEnumeration(propertyValue))
+            else if (DotNetHelper.IsOfEnumeration(propertyValue)
+                     && propertyValue is IEnumerable enumeration)
             {
-                var enumeration = propertyValue as IEnumerable;
                 Debug.Assert(enumeration != null, "enumeration != null");
 
                 builder.Append("[");
                 var komma = string.Empty;
-                foreach (var innerValue in enumeration)
+                foreach (var innerValue in enumeration!)
                 {
                     builder.AppendLine(komma);
                     ConvertValue(builder, innerValue, "    " + newIndentation);

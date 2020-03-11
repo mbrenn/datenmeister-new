@@ -28,10 +28,9 @@ namespace DatenMeister.Tests.Runtime
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig
+            var configuration = new CsvExtentLoaderConfig("datenmeister:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
-                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,
@@ -67,10 +66,9 @@ namespace DatenMeister.Tests.Runtime
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig
+            var configuration = new CsvExtentLoaderConfig("datenmeister:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
-                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,

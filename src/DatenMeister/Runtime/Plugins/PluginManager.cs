@@ -247,7 +247,7 @@ namespace DatenMeister.Runtime.Plugins
         /// </summary>
         /// <param name="type">Instance which is queried</param>
         /// <returns>The dependencies</returns>
-        private PluginLoadingAttribute GetPluginLoadingAttribute(Type type)
+        private PluginLoadingAttribute? GetPluginLoadingAttribute(Type type)
         {
             foreach (var attribute in type.GetCustomAttributes(typeof(PluginLoadingAttribute), false))
             {

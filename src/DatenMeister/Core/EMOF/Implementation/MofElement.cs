@@ -95,9 +95,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Sets the container for the element
         /// </summary>
-        public IObject Container
+        public IObject? Container
         {
-            set => ProviderObject.SetContainer(((MofObject) value).ProviderObject);
+            set => ProviderObject.SetContainer(((MofObject?) value)?.ProviderObject);
         }
 
         /// <summary>

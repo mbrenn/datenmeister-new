@@ -16,8 +16,6 @@ namespace DatenMeister.Provider.Xml
     {
         private readonly XmlReferenceSettings _settings;
 
-        private MofFactory? _factory;
-
         /// <summary>
         /// Initializes a new instance of the XmlToExtentConverter
         /// </summary>
@@ -44,11 +42,11 @@ namespace DatenMeister.Provider.Xml
         /// <param name="collection"></param>
         public void Convert(XDocument document, IReflectiveCollection collection)
         {
-            _factory = new MofFactory(collection);
+            var factory = new MofFactory(collection);
             foreach (var element in document.Elements())
             {
-                var mofElement = _factory.create(null);
-                Convert(element, mofElement, string.Empty);
+                var mofElement = factory.create(null);
+                Convert(element, mofElement, string.Empty, factory);
                 collection.add(mofElement);
             }
         }
@@ -59,7 +57,7 @@ namespace DatenMeister.Provider.Xml
         /// <param name="xmlElement">Xml element to be converted</param>
         /// <param name="mofElement">Element which shall be filled</param>
         /// <param name="innerName">The name for hte inner element</param>
-        private void Convert(XElement xmlElement, IElement mofElement, string innerName)
+        private void Convert(XElement xmlElement, IElement mofElement, string innerName, MofFactory factory)
         {
             // Converts the attributes
             foreach (var attribute in xmlElement.Attributes())
@@ -105,7 +103,7 @@ namespace DatenMeister.Provider.Xml
                 // Check, if the element also has subelements
                 if (innerElement.HasElements)
                 {
-                    var innerMofElement = _factory.create(null);
+                    var innerMofElement = factory.create(null);
 
                     if (!set.TryGetValue(name, out var list))
                     {
@@ -113,7 +111,7 @@ namespace DatenMeister.Provider.Xml
                         set[name] = list;
                     }
 
-                    Convert(innerElement, innerMofElement, id);
+                    Convert(innerElement, innerMofElement, id, factory);
 
                     list.Add(innerMofElement);
                 }
@@ -176,7 +174,7 @@ namespace DatenMeister.Provider.Xml
                 }
             }
 
-            return result;
+            return result ?? string.Empty;
         }
 
         private string GetNameNormalized(XName xname)

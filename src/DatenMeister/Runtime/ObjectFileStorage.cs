@@ -16,9 +16,9 @@ namespace DatenMeister.Runtime
         /// all possibly inherited types need to be returned within this overloadable method
         /// </summary>
         /// <returns>The types that might be serialized/deserialized</returns>
-        public virtual Type[] GetAdditionalTypes() => null;
+        public virtual Type[] GetAdditionalTypes() => new Type[] { };
 
-        public T Load(string filePath)
+        public T? Load(string filePath)
         {
             if (!File.Exists(filePath))
             {

@@ -214,7 +214,7 @@ namespace DatenMeister.Provider.InMemory
 
         public IProviderObject? GetContainer() => _container;
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             _container = value;
         }

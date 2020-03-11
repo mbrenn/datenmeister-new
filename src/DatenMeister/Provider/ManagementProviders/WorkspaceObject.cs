@@ -29,7 +29,7 @@ namespace DatenMeister.Provider.ManagementProviders
             AddMapping(
                 "annotation",
                 w => w.annotation,
-                (w, v) => w.annotation = v.ToString());
+                (w, v) => w.annotation = v?.ToString() ?? string.Empty);
 
             AddMapping(
                 "extents",

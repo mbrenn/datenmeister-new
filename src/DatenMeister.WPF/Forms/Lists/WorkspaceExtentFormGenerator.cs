@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -32,6 +33,7 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Forms.Lists
 {
@@ -235,16 +237,19 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var uri = element.getOrDefault<string>("uri");
                 if (MessageBox.Show(
-                        $"Are you sure, you would like to delete the extent '{uri}'?",
-                        "Delete Extent",
-                        MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    $"Are you sure, you would like to delete the extent '{uri}'?",
+                    "Delete Extent",
+                    MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
 
                     var extentToBeDeleted =
                         workspaceLogic.FindExtent(workspaceId, uri);
-                    extentManager.DeleteExtent(extentToBeDeleted);
+                    if (extentToBeDeleted != null)
+                    {
+                        extentManager.DeleteExtent(extentToBeDeleted);
+                    }
                 }
             }
 
@@ -307,8 +312,17 @@ namespace DatenMeister.WPF.Forms.Lists
 
                     try
                     {
-                        var loadedExtent = extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
-                        Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
+                        var loadedExtent =
+                            extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
+                        if (loadedExtent == null)
+                        {
+                            Logger.Info("Extent could not be created.");
+                            MessageBox.Show("Extent could not be created");
+                        }
+                        else
+                        {
+                            Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
+                        }
                     }
                     catch (Exception exc)
                     {
@@ -322,12 +336,15 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var uri = item.getOrDefault<string>(nameof(Extent.uri));
                 var storeExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, uri);
-                
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                extentManager.StoreExtent(storeExtent);
 
-                MessageBox.Show("Extent saved");
-                navigationGuest.UpdateView();
+                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                if (storeExtent != null)
+                {
+                    extentManager.StoreExtent(storeExtent);
+
+                    MessageBox.Show("Extent saved");
+                    navigationGuest.UpdateView();
+                }
             }
         }
 
@@ -344,10 +361,22 @@ namespace DatenMeister.WPF.Forms.Lists
 
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+            if (extent == null)
+            {
+                Logger.Error("Extent for Types is not found");
+                return null;
+            }
 
             var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
             var package =
-                packageMethods.GetPackageStructure(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
+                packageMethods.GetPackageStructure(
+                    extent.elements(), 
+                    ExtentManager.PackagePathTypesExtentLoaderConfig);
+            if (package == null)
+            {
+                throw new InvalidOperationException(ExtentManager.PackagePathTypesExtentLoaderConfig + " not found");
+            }
+            
             dlg.SetAsRoot(package);
 
             // User has selected the type

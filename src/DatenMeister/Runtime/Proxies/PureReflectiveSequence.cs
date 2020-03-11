@@ -49,6 +49,8 @@ namespace DatenMeister.Runtime.Proxies
             {
                 foreach (var value in values)
                 {
+                    if (value == null) continue;
+                    
                     result |= add(value);
                 }
             }
@@ -64,10 +66,12 @@ namespace DatenMeister.Runtime.Proxies
             }
         }
 
-        public bool remove(object value)
+        public bool remove(object? value)
         {
             lock (_elements)
             {
+                if (value == null) return false;
+                
                 return _elements.Remove(value);
             }
         }

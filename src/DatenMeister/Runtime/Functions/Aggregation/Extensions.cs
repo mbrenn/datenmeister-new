@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable disable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -23,7 +25,10 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         {
             foreach (var item in items)
             {
-                aggregator.Add(item);
+                if (item != null)
+                {
+                    aggregator.Add(item);
+                }
             }
 
             return (T) aggregator.Result;
@@ -43,7 +48,10 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         {
             foreach (var item in items)
             {
-                aggregator.Add((T) item);
+                if (item != null)
+                {
+                    aggregator.Add((T) item);
+                }
             }
 
             return (T) aggregator.Result;

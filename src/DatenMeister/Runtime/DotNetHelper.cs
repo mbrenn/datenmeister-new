@@ -149,7 +149,7 @@ namespace DatenMeister.Runtime
         /// <returns>true, if the element is a string</returns>
         public static bool IsOfString(object? value) => value is string;
 
-        public static string AsString(object? value)
+        public static string? AsString(object? value)
         {
             if (value == null)
             {
@@ -321,7 +321,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">The extent being used to create and resolve the element</param>
         /// <returns>The converted element</returns>
-        public static IObject ConvertToMofElement(
+        public static IObject? ConvertToMofElement(
             object value,
             IUriExtent extent) =>
             ConvertToMofElement(
@@ -359,7 +359,7 @@ namespace DatenMeister.Runtime
 
             var typeUri = extent.GetMetaClassUri(value.GetType());
 
-            if (!string.IsNullOrEmpty(typeUri))
+            if (typeUri != null && !string.IsNullOrEmpty(typeUri))
             {
                 valueType = extent.Resolve(typeUri, ResolveType.OnlyMetaClasses);
             }
@@ -386,7 +386,7 @@ namespace DatenMeister.Runtime
         /// <param name="extent">Extent being used to find references and/or meta classes</param>
         /// <param name="factory">Factory being used to create a new instance</param>
         /// <returns>The converted object that can directly be set. </returns>
-        private static object ConvertPropertyValue(object value, MofUriExtent extent, IFactory factory)
+        private static object? ConvertPropertyValue(object value, MofUriExtent extent, IFactory factory)
         {
             if (IsOfPrimitiveType(value))
             {
@@ -405,7 +405,11 @@ namespace DatenMeister.Runtime
                     }
                     else
                     {
-                        list.Add(ConvertToMofElement(listItem, extent, factory));
+                        var convertedElement = ConvertToMofElement(listItem, extent, factory);
+                        if (convertedElement != null)
+                        {
+                            list.Add(convertedElement);
+                        }
                     }
                 }
 

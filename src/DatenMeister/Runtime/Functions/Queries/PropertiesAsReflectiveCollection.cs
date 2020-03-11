@@ -24,6 +24,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         public PropertiesAsReflectiveCollection(IObject value)
         {
             _value = value;
+            _propertyNames = new List<string>();
         }
 
         /// <summary>
@@ -61,6 +62,8 @@ namespace DatenMeister.Runtime.Functions.Queries
 
                     foreach (var child in valueAsCollection)
                     {
+                        if (child == null) continue;
+                        
                         yield return child;
                     }
                 }
@@ -78,13 +81,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             throw new System.NotImplementedException();
         }
 
-        public bool remove(object value) => throw new System.NotImplementedException();
+        public bool remove(object? value) => throw new System.NotImplementedException();
 
         public int size() => this.Count();
 
         /// <summary>
         /// Gets the extent associated to the parent extent
         /// </summary>
-        public IExtent Extent => (_value as IHasExtent)?.Extent;
+        public IExtent? Extent => (_value as IHasExtent)?.Extent;
     }
 }

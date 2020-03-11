@@ -36,7 +36,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information
         /// about the meta classes
         /// </summary>
-        public IUriResolver UriResolver { get; set; }
+        public IUriResolver? UriResolver { get; set; }
 
         public XmiProvider( /*string rootNodeName = DefaultRootNodeName*/)
         {
@@ -89,9 +89,12 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
-            _rootNode.Add(((XmiProviderObject) valueAsObject).XmlNode);
+            if (valueAsObject is XmiProviderObject providerObject)
+            {
+                _rootNode.Add(providerObject.XmlNode);
+            }
         }
 
         /// <inheritdoc />
@@ -129,7 +132,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject? Get(string id)
+        public IProviderObject? Get(string? id)
         {
             if (id == null)
             {

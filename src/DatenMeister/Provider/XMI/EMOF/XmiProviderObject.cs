@@ -67,7 +67,17 @@ namespace DatenMeister.Provider.XMI.EMOF
         public string? Id
         {
             get => XmiId.Get(XmlNode);
-            set => XmiId.Set(XmlNode, value);
+            set
+            {
+                if (value == null || string.IsNullOrEmpty(value))
+                {
+                    XmiId.Remove(XmlNode);
+                }
+                else
+                {
+                    XmiId.Set(XmlNode, value);
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -411,7 +421,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <param name="property">Property, which is selected</param>
         /// <param name="value">Value, which is required</param>
         /// <returns>The found element</returns>
-        private XElement FindInPropertyList(string property, object value)
+        private XElement? FindInPropertyList(string property, object value)
         {
             var normalizePropertyName = NormalizePropertyName(property);
 
@@ -446,7 +456,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// Gets the container of the object
         /// </summary>
         /// <returns></returns>
-        public IProviderObject GetContainer()
+        public IProviderObject? GetContainer()
         {
             if (HasContainer())
             {
@@ -456,7 +466,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             return null;
         }
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             if (!(value is XmiProviderObject providerObject))
             {

@@ -22,7 +22,7 @@ namespace DatenMeister.Provider.XMI
         /// <summary>
         /// Stores the uri resolver being used to figure out the href instances.
         /// </summary>
-        private readonly IUriResolver _uriResolver;
+        private readonly IUriResolver? _uriResolver;
 
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 

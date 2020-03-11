@@ -24,7 +24,7 @@ namespace DatenMeister.Runtime
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
         private static object? GetAsSingle(this IObject value, string property, bool noReferences = false)
         {
-            object propertyValue;
+            object? propertyValue;
             if (noReferences && value is MofObject valueAsMofObject)
             {
                 propertyValue = valueAsMofObject.get(property, true);
@@ -61,6 +61,8 @@ namespace DatenMeister.Runtime
             return false;
         }
 
+        #nullable disable
+        
         /// <summary>
         /// Gets the typed value of the property.
         /// </summary>
@@ -79,42 +81,42 @@ namespace DatenMeister.Runtime
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
 
-                return (T) metaObject.GetMetaObject().get(property, noReferences);
+                return (T) metaObject.GetMetaObject().get(property, noReferences)!;
             }
 
             if (typeof(T) == typeof(object) && value is MofObject mofObject2)
             {
-                return (T) mofObject2.get(property, noReferences);
+                return (T) mofObject2.get(property, noReferences)!;
             }
 
             if (typeof(T) == typeof(string))
             {
-                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences)!)!;
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!)!;
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences)!)!;
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return (T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences));
+                return ((T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences)))!;
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                return (T) (value.GetAsSingle(property, noReferences) as IObject);
+                return ((T) (value.GetAsSingle(property, noReferences) as IObject)!)!;
             }
 
             if (typeof(T) == typeof(IElement))
             {
-                return (T) (value.GetAsSingle(property, noReferences) as IElement);
+                return ((T) (value.GetAsSingle(property, noReferences) as IElement)!)!;
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))
@@ -154,7 +156,7 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(object))
             {
-                return (T) value.GetAsSingle(property, noReferences);
+                return ((T) value.GetAsSingle(property, noReferences))!;
             }
 
             if (typeof(T).IsEnum)
@@ -191,6 +193,8 @@ namespace DatenMeister.Runtime
 
             throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
         }
+        
+        #nullable enable
 
         public static T? getOrNull<T>(this IObject value, string property, bool noReferences = false) where T : struct
         {
@@ -202,6 +206,8 @@ namespace DatenMeister.Runtime
             return get<T>(value, property, noReferences);
         }
 
+        #nullable disable
+        
         public static T getOrDefault<T>(this IObject value, string property, bool noReferences = false)
         {
             if (!value.isSet(property))
@@ -211,6 +217,8 @@ namespace DatenMeister.Runtime
 
             return get<T>(value, property, noReferences);
         }
+        
+        #nullable enable
 
         /// <summary>
         /// Gets the value of a property if the property is set.
@@ -246,7 +254,7 @@ namespace DatenMeister.Runtime
                 var result = value.get(property);
                 if (DotNetHelper.IsOfEnumeration(result))
                 {
-                    var resultAsEnumeration = (IEnumerable<object>) result;
+                    var resultAsEnumeration = (IEnumerable<object>) result!;
                     return resultAsEnumeration.FirstOrDefault();
                 }
 
@@ -283,7 +291,7 @@ namespace DatenMeister.Runtime
             return reflection.remove(toBeRemoved);
         }
        
-        public static Dictionary<object, object> AsDictionary(
+        public static Dictionary<object, object?> AsDictionary(
             this IObject value,
             IEnumerable<string> properties)
         {
@@ -540,7 +548,7 @@ namespace DatenMeister.Runtime
             {
                 var asElement = x as IObject;
                 var valueOfChild = asElement?.get(propertyOfChild);
-                if (valueOfChild?.Equals(requestValue) == true)
+                if (valueOfChild?.Equals(requestValue) == true && asElement != null)
                 {
                     yield return asElement;
                 }

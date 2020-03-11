@@ -14,12 +14,12 @@ namespace DatenMeister.Models.Reports
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _Reports tree)
+        public void Fill(IEnumerable<object?> collection, _Reports tree)
         {
             FillTheReports.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _Reports tree)
+        public static void DoFill(IEnumerable<object?> collection, _Reports tree)
         {
             string? name;
             IElement? value;

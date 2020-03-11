@@ -24,7 +24,7 @@ namespace DatenMeister.Runtime.Proxies
         public virtual bool equals(object? other) =>
             Object.equals(other);
 
-        public virtual object get(string property) =>
+        public virtual object? get(string property) =>
             Object.get(property);
 
         public virtual void set(string property, object? value)

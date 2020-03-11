@@ -5,6 +5,11 @@
     /// </summary>
     public class WorkspaceLoaderConfig
     {
+        public WorkspaceLoaderConfig(string filepath)
+        {
+            this.filepath = filepath;
+        }
+
         /// <summary>
         /// Sets the file path being used to store the workspaces
         /// </summary>

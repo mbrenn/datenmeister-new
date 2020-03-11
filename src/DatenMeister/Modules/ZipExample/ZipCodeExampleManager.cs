@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Example.ZipCode;
@@ -17,6 +19,8 @@ namespace DatenMeister.Modules.ZipExample
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ZipCodeExampleManager
     {
+        private static readonly ILogger Logger = new ClassLogger(typeof(ZipCodeExampleManager));
+        
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentManager _extentManager;
         private readonly ZipCodeModel _zipCodeModel;
@@ -77,9 +81,8 @@ namespace DatenMeister.Modules.ZipExample
             File.Copy(originalFilename, filename);
 
             // Creates the configuration
-            var defaultConfiguration = new CsvExtentLoaderConfig
+            var defaultConfiguration = new CsvExtentLoaderConfig($"datenmeister:///zipcodes/{randomNumber}")
             {
-                extentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 filePath = filename,
                 workspaceId = workspaceId,
                 Settings =
@@ -99,13 +102,20 @@ namespace DatenMeister.Modules.ZipExample
                 }
             };
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration);
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
+                               ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");
+            
             loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
 
-            var zipCodeTypePackage =
-                _workspaceLogic.GetTypesWorkspace().FindElementByUri(
-                    "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) as IElement;
-            loadedExtent.SetDefaultTypePackages(new[] {zipCodeTypePackage});
+            if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
+                "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
+            {
+                loadedExtent.SetDefaultTypePackages(new[] {zipCodeTypePackage});
+            }
+            else
+            {
+                Logger.Warn("datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath + "not found");
+            }
 
             return loadedExtent;
         }

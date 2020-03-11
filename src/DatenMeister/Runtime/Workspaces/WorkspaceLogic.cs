@@ -100,7 +100,7 @@ namespace DatenMeister.Runtime.Workspaces
                 return dataLayer.extent
                     .Select(x => x as IUriExtent)
                     .Where(x => x != null)
-                    .ToList();
+                    .ToList()!;
             }
         }
 
@@ -122,7 +122,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// Gets the default workspace
         /// </summary>
         /// <returns>The default workspace</returns>
-        public Workspace GetDefaultWorkspace()
+        public Workspace? GetDefaultWorkspace()
         {
             lock (_fileData)
             {
@@ -185,7 +185,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <param name="id">Id of the workspace</param>
         /// <returns>Found the workspace</returns>
-        public Workspace GetWorkspace(string id)
+        public Workspace? GetWorkspace(string id)
         {
             lock (_fileData)
             {
@@ -213,7 +213,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="id">Id of the workspace to be deleted</param>
         public void RemoveWorkspace(string id)
         {
-            Workspace workspaceToBeDeleted;
+            Workspace? workspaceToBeDeleted;
             lock (_fileData)
             {
                 workspaceToBeDeleted = GetWorkspace(id);
@@ -224,7 +224,10 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
 
-            SendEventForWorkspaceChange(workspaceToBeDeleted);
+            if (workspaceToBeDeleted != null)
+            {
+                SendEventForWorkspaceChange(workspaceToBeDeleted);
+            }
         }
 
         /// <summary>

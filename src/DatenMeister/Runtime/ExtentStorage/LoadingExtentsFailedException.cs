@@ -9,7 +9,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets the failed extents that could not be loaded
         /// </summary>
-        public List<string> FailedExtents { get; }
+        public List<string> FailedExtents { get; } = new List<string>();
 
         public LoadingExtentsFailedException(List<string> failedExtents)
         {

@@ -79,7 +79,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             // Gets the uri of the lookup up type
             var metaClassUri = _extent?.GetMetaClassUri(value.GetType());
-            var metaClass = metaClassUri == null ? null : _extent.Resolve(metaClassUri, ResolveType.OnlyMetaClasses);
+            var metaClass = metaClassUri == null ? null : _extent?.Resolve(metaClassUri, ResolveType.OnlyMetaClasses);
 
             return ConvertToMofObject(value, metaClass, requestedId);
         }
@@ -95,7 +95,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             // After having the uri, create the required element
             var createdElement = _factory.create(metaClass);
-            if (!string.IsNullOrEmpty(requestedId) && createdElement is ICanSetId canSetId)
+            if (requestedId != null && !string.IsNullOrEmpty(requestedId) && createdElement is ICanSetId canSetId)
             {
                 canSetId.Id = requestedId;
             }
@@ -111,7 +111,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                     var enumeration = (IEnumerable) innerValue;
                     foreach (var innerElementValue in enumeration)
                     {
-                        list.Add(ConvertToMofIfNotPrimitive(innerElementValue));
+                        var convertedValue = ConvertToMofIfNotPrimitive(innerElementValue);
+                        if (convertedValue != null)
+                        {
+                            list.Add(convertedValue);
+                        }
                     }
 
                     createdElement.set(reflectedProperty.Name, list);
@@ -179,7 +183,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns></returns>
         public static object? ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
         {
-            var uri = element.metaclass.GetUri() ?? throw new InvalidOperationException("Uri is not set");
+            var uri = element.metaclass?.GetUri() ?? throw new InvalidOperationException("Uri is not set");
             var type = lookup.ToType(uri);
             if (type == null)
             {
@@ -198,7 +202,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         public static object? ConvertToDotNetObject(IElement element)
         {
             var mofElement = (MofElement) element;
-            var metaClassUri = mofElement.metaclass.GetUri();
+            var metaClassUri = mofElement.metaclass?.GetUri();
+            if (metaClassUri == null)
+                throw new InvalidOperationException("metaClassUri is null");
 
             var type = mofElement.ReferencedExtent.ResolveDotNetType(metaClassUri, ResolveType.Default);
 

@@ -147,7 +147,7 @@ namespace DatenMeister.SourcecodeGenerator
             // Check, if we have namespaces
             if (!string.IsNullOrEmpty(Namespace))
             {
-                stack = stack.Owner;
+                stack = stack.Owner ?? throw new InvalidOperationException("Stack underflow");
                 var indentation = stack.Indentation;
                 Result.AppendLine($"{indentation}}}");
 

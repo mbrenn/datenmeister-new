@@ -62,7 +62,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="workspace">Workspace to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IWorkspace workspace, string fullName)
+        public static IElement? GetByFullName(IWorkspace workspace, string fullName)
         {
             return workspace.extent
                 .Select(extent => GetByFullName(extent.elements(), fullName))
@@ -75,7 +75,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="extent">Extent to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IUriExtent extent, string fullName) =>
+        public static IElement? GetByFullName(IUriExtent extent, string fullName) =>
             GetByFullName(extent.elements(), fullName);
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace DatenMeister.Uml.Helper
                     propertyValue = value.get(property);
                 }
 
-                if (!DotNetHelper.IsOfEnumeration(propertyValue))
+                if (!DotNetHelper.IsOfEnumeration(propertyValue) || propertyValue == null)
                 {
                     continue;
                 }
@@ -190,7 +190,7 @@ namespace DatenMeister.Uml.Helper
             switch (element)
             {
                 case IHasId elementAsHasId:
-                    return elementAsHasId.Id;
+                    return elementAsHasId.Id ?? string.Empty;
                 case IElement asIElement when asIElement.metaclass != null:
                 {
                     var name = GetName(asIElement.metaclass);

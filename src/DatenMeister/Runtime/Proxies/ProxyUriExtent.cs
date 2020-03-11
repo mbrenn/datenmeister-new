@@ -14,13 +14,13 @@ namespace DatenMeister.Runtime.Proxies
         /// Gets or sets the conversion method being used, when content of the
         /// reflective collection is being returned.
         /// </summary>
-        public Func<IElement, IElement> PublicizeElementFunc { get; set; }
+        public Func<IElement?, IElement?> PublicizeElementFunc { get; set; }
 
         /// <summary>
         /// Gets or sets the conversion method being used, when content of the
         /// reflective collection is being returned.
         /// </summary>
-        public Func<IElement, IElement> PrivatizeElementFunc { get; set; }
+        public Func<IElement?, IElement?> PrivatizeElementFunc { get; set; }
 
         /// <summary>
         /// Gets or sets the conversion method being used, when content of the
@@ -38,26 +38,31 @@ namespace DatenMeister.Runtime.Proxies
 
         public virtual string contextURI() => Extent.contextURI();
 
-        public virtual IElement element(string uri) => PublicizeElementFunc(Extent.element(uri));
+        public virtual IElement? element(string uri) => PublicizeElementFunc(Extent.element(uri));
 
         public virtual IReflectiveSequence elements() => PublicizeReflectiveSequenceFunc(Extent.elements());
 
-        public virtual string uri(IElement element) => Extent.uri(PrivatizeElementFunc(element));
+        public virtual string? uri(IElement element)
+        {
+            var convertedElement = PrivatizeElementFunc(element);
+            if (convertedElement == null) return null;
+            return Extent.uri(convertedElement);
+        }
 
         public virtual bool useContainment() => Extent.useContainment();
 
         public ProxyUriExtent ActivateObjectConversion()
         {
             return ActivateObjectConversion(
-                x => new ProxyMofElement((MofElement) x),
+                x => x == null ? null : new ProxyMofElement((MofElement) x),
                 x => new ProxyReflectiveSequence(x),
-                x => x.GetProxiedElement());
+                x => x?.GetProxiedElement());
         }
 
         public ProxyUriExtent ActivateObjectConversion<TElementType>(
-            Func<IElement, TElementType> publicizeElement,
+            Func<IElement?, TElementType?> publicizeElement,
             Func<IReflectiveSequence, IReflectiveSequence> publicizeReflectiveSequence,
-            Func<TElementType, IElement> privatizeElement)
+            Func<TElementType?, IElement?> privatizeElement)
             where TElementType : class, IElement
         {
             PublicizeElementFunc = publicizeElement;
@@ -71,7 +76,7 @@ namespace DatenMeister.Runtime.Proxies
         public bool @equals(object? other) => Extent.@equals(other);
 
         /// <inheritdoc />
-        public object get(string property) => Extent.get(property);
+        public object? get(string property) => Extent.get(property);
 
         /// <inheritdoc />
         public void set(string property, object? value)

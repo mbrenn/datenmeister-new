@@ -72,5 +72,11 @@ namespace DatenMeister.Provider.XMI.Standards
         /// <returns>true, if element has an id</returns>
         public static bool HasId(XElement node) =>
             node.Attribute(Namespaces.Xmi + "id") != null;
+
+        public static void Remove(XElement node)
+        {
+            node.Attribute(Namespaces.Xmi + "id")?.Remove();
+            
+        }
     }
 }

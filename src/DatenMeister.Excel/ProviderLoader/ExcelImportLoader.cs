@@ -29,9 +29,8 @@ namespace DatenMeister.Excel.ProviderLoader
             }
 
             // Creates the XMI being used as a target
-            var xmiConfiguration = new XmiStorageConfiguration
+            var xmiConfiguration = new XmiStorageConfiguration(settings.extentUri)
             {
-                extentUri = settings.extentUri,
                 filePath = settings.extentPath,
                 workspaceId = settings.workspaceId
             };

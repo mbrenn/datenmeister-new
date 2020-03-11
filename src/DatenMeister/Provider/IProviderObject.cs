@@ -60,6 +60,6 @@ namespace DatenMeister.Provider
         /// Sets the container element for the given object
         /// </summary>
         /// <param name="value">Value to be set</param>
-        void SetContainer(IProviderObject value);
+        void SetContainer(IProviderObject? value);
     }
 }

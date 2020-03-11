@@ -84,7 +84,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                         yield return innerValue;
                     }
                 }
-                else if (DotNetHelper.IsOfEnumeration(value))
+                else if (value != null && DotNetHelper.IsOfEnumeration(value))
                 {
                     // Value is a real enumeration. Unfortunately strings are also
                     // enumeration, but we would like to skip them. Their content
@@ -98,7 +98,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             }
         }
 
-        private IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable, ICollection<string> byFollowingProperties)
+        private IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable, ICollection<string>? byFollowingProperties)
         {
             if (valueAsEnumerable is MofReflectiveSequence reflectiveSequence)
             {

@@ -151,7 +151,7 @@ namespace DatenMeister.Provider.DotNet
         public IProviderObject? GetContainer() =>
             null;
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
         }
 

@@ -376,7 +376,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                         try
                         {
                             var extent = LoadExtent(extentLoaderConfig);
-                            if (xElement != null)
+                            if (xElement != null && extent != null)
                             {
                                 ((MofExtent) extent).LocalMetaElementXmlNode = xElement;
                             }
@@ -395,7 +395,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     try
                     {
                         var extent = LoadExtent(extentLoaderConfig);
-                        if (xElement != null)
+                        if (xElement != null && extent != null)
                         {
                             ((MofExtent) extent).LocalMetaElementXmlNode = xElement;
                         }

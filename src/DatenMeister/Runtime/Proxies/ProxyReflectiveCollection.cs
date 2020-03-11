@@ -35,9 +35,14 @@ namespace DatenMeister.Runtime.Proxies
         {
             if (PrivatizeElementFunc == null)
                 throw new InvalidOperationException("PrivatizeElementFunc is not set");
-            
+
             var newValue = PrivatizeElementFunc(value);
-            return Collection.add(newValue);
+            if (newValue != null)
+            {
+                return Collection.add(newValue);
+            }
+
+            return false;
         }
 
         public virtual bool addAll(IReflectiveSequence value)
@@ -48,7 +53,10 @@ namespace DatenMeister.Runtime.Proxies
             var result = false;
             foreach (var element in value.Select(x => PrivatizeElementFunc(x)))
             {
-                result |= Collection.add(element);
+                if (element != null)
+                {
+                    result |= Collection.add(element);
+                }
             }
 
             return result;
@@ -72,8 +80,16 @@ namespace DatenMeister.Runtime.Proxies
 
         public virtual bool remove(object? value)
         {
+            if (PrivatizeElementFunc == null)
+                throw new InvalidOperationException("PrivatizeElementFunc is not set");
+
             value = PrivatizeElementFunc(value);
-            return Collection.remove(value);
+            if (value != null)
+            {
+                return Collection.remove(value);
+            }
+
+            return false;
         }
 
         public virtual int size() =>

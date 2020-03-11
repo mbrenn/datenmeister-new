@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime.Proxies
             _sequence = _collection as IReflectiveSequence ??
                         throw new InvalidOperationException("Collection is not IReflectiveSequence");
 
-            _wrapFunc = x => ((T) x)!;
+            _wrapFunc = x => ((T) x!)!;
             _unwrapFunc = x => x;
         }
 
@@ -82,7 +82,9 @@ namespace DatenMeister.Runtime.Proxies
             {
                 foreach (var value in array)
                 {
-                    _sequence.add(arrayIndex, _unwrapFunc(value));
+                    var unWrappedValue = _unwrapFunc(value);
+                    if (unWrappedValue == null) continue;
+                    _sequence.add(arrayIndex, unWrappedValue);
                     arrayIndex++;
                 }
             }
@@ -90,7 +92,10 @@ namespace DatenMeister.Runtime.Proxies
             {
                 foreach (var value in array)
                 {
-                    _collection.add(_unwrapFunc(value));
+                    var unWrappedValue = _unwrapFunc(value);
+                    if (unWrappedValue == null) continue;
+                    
+                    _collection.add(unWrappedValue);
                     arrayIndex++;
                 }
             }
@@ -106,6 +111,7 @@ namespace DatenMeister.Runtime.Proxies
         {
             var n = 0;
             var unwrapped = _unwrapFunc(item);
+            if (unwrapped == null) return -1;
             foreach (var value in _collection)
             {
                 if (value != null && value.Equals(unwrapped))
@@ -121,13 +127,17 @@ namespace DatenMeister.Runtime.Proxies
 
         public void Insert(int index, T item)
         {
+            var unWrappedValue = _unwrapFunc(item);
+            if (unWrappedValue == null) return;
+            
             if (_sequence != null)
             {
-                _sequence.add(index, _unwrapFunc(item));
+
+                _sequence.add(index, unWrappedValue);
             }
             else
             {
-                _collection.add(_unwrapFunc(item));
+                _collection.add(unWrappedValue);
             }
         }
 
@@ -148,9 +158,13 @@ namespace DatenMeister.Runtime.Proxies
             get => _wrapFunc(_collection.ElementAt(index));
             set
             {
+                
+                var unwrapped = _unwrapFunc(value);
+                if (unwrapped == null) return;
+                
                 if (_sequence != null)
                 {
-                    _sequence.set(index, _unwrapFunc(value));
+                    _sequence.set(index, unwrapped);
                 }
                 else
                 {

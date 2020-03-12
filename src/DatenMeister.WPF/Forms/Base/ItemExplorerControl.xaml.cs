@@ -512,9 +512,13 @@ namespace DatenMeister.WPF.Forms.Base
                 // Filter MofObject Shadows out, they are not useable anyway.
                 defaultTypesForNewItems = defaultTypesForNewItems.Where(x => !(x is MofObjectShadow)).ToList();
 
-                // 
-                // Creates the menu and buttons for the default types. 
-                CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, null);
+                var inhibitNewButtons = tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
+                if (!inhibitNewButtons)
+                {
+                    // 
+                    // Creates the menu and buttons for the default types. 
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, null);
+                }
 
                 // Extent shall be shown
                 IReflectiveCollection elements = extent.elements();
@@ -561,10 +565,15 @@ namespace DatenMeister.WPF.Forms.Base
                         }
                     }
                 }
+                
+                var inhibitNewButtons = tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
 
-                // 
-                // Creates the menu and buttons for the default types. 
-                CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, propertyName);
+                if (!inhibitNewButtons)
+                {
+                    //
+                    // Creates the menu and buttons for the default types. 
+                    CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, propertyName);
+                }
 
                 // The properties of a specific item shall be shown
                 var elements = GetPropertiesAsReflection(value, propertyName);

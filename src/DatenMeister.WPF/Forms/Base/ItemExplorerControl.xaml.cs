@@ -819,12 +819,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                 button.Click += (x, y) =>
                 {
-                    var selectedElement = NavigationTreeView.GetSelectedItem();
-                    if (selectedElement == null)
-                    {
-                        MessageBox.Show("No item is selected");
-                        return;
-                    }
+                    var selectedElement = NavigationTreeView.GetSelectedItem()
+                                          ?? RootItem;
 
                     buttonView.OnPressed(selectedElement);
                 };

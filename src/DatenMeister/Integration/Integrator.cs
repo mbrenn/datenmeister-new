@@ -12,6 +12,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders;
@@ -34,9 +35,20 @@ namespace DatenMeister.Integration
         /// </summary>
         private IntegrationSettings _settings;
 
-        public string PathWorkspaces { get; }
+        private string? _pathWorkspaces;
+        private string? _pathExtents;
 
-        public string PathExtents { get; }
+        public string PathWorkspaces
+        {
+            get => _pathWorkspaces ?? throw new InvalidOperationException("PathWorkspaces is not set");
+            private set => _pathWorkspaces = value;
+        }
+
+        public string PathExtents
+        {
+            get => _pathExtents?? throw new InvalidOperationException("PathExtents is not set");
+            private set => _pathExtents = value;
+        }
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
 
@@ -54,18 +66,11 @@ namespace DatenMeister.Integration
         public Integrator(IntegrationSettings settings)
         {
             _settings = settings;
-
-            PathWorkspaces = GetPathToWorkspaces(settings);
-            PathExtents = GetPathToExtents(settings);
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
         {
-            if (_settings == null)
-            {
-                Logger.Info("No integration settings were given. Loading the default values.");
-                _settings = new IntegrationSettings();
-            }
+            PrepareSettings();
 
             kernel.RegisterInstance(_settings).As<IntegrationSettings>();
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
@@ -248,6 +253,41 @@ namespace DatenMeister.Integration
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 
             return builder;
+        }
+
+        private void PrepareSettings()
+        {
+            if (_settings == null)
+            {
+                Logger.Info("No integration settings were given. Loading the default values.");
+                _settings = new IntegrationSettings();
+            }
+
+            // Checks whether a public setting is available
+            try
+            {
+                var path = Assembly.GetEntryAssembly()?.Location;
+                if (path != null)
+                {
+                    var publicSettings = PublicSettingHandler.LoadSettings(Path.GetDirectoryName(path));
+                    if (publicSettings != null)
+                    {
+                        if (publicSettings.databasePath != null && !string.IsNullOrEmpty(publicSettings.databasePath))
+                        {
+                            Logger.Info($"Overwriting database path to {publicSettings.databasePath}");
+
+                            _settings.DatabasePath = publicSettings.databasePath;
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Warn($"Error during loading of public settings {exc.Message}");
+            }
+
+            PathWorkspaces = GetPathToWorkspaces(_settings);
+            PathExtents = GetPathToExtents(_settings);
         }
     }
 }

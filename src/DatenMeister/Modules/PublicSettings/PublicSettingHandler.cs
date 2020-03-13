@@ -17,7 +17,7 @@ namespace DatenMeister.Modules.PublicSettings
         /// <summary>
         /// Defines the XmiFileName
         /// </summary>
-        public static string XmiFileName = "dm_configuration.xmi";
+        public static string XmiFileName = "DatenMeister.Settings.xmi";
         
         /// <summary>
         /// Defines the class logger
@@ -49,7 +49,7 @@ namespace DatenMeister.Modules.PublicSettings
                 return DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
             }
 
-            Logger.Info($"No Configuration file found in ${directoryPath}");
+            Logger.Info($"No Configuration file found in {directoryPath}");
             return null;
         }
     }

@@ -67,6 +67,27 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
                 ? null
                 : info.NavigationGuest as ExtentList;
         }
+
+
+        /// <summary>
+        /// Gets the information whether the event is sent out of the explorer control for extent list
+        /// </summary>
+        /// <param name="info">TargetInformation to be used</param>
+        /// <param name="rootExtentType">Defines the extent type which shall be used as a filter</param>
+        /// <returns>true, if that is the case</returns>
+        public static ItemExplorerControl? GetItemExplorerControlForExtentType(this ViewExtensionInfo info, string rootExtentType)
+        {
+            var extentList = info is ViewExtensionInfoExploreExtents
+                ? null
+                : info.NavigationGuest as ItemExplorerControl;
+            
+            var isCorrect = extentList != null &&
+                            extentList.Extent.GetExtentType() == rootExtentType;
+
+            return isCorrect ? extentList : null;
+            
+        }
+
         
         /// <summary>
         /// Gets the list view control if it is the navigation guest

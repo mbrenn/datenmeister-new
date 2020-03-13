@@ -34,35 +34,28 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     NavigationCategories.DatenMeisterNavigation);
             }
 
-            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
+            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControlForExtentType("Uml.Classes");
             if (itemExplorerControl != null)
             {
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
-                var extent = itemExplorerControl.RootItem.GetExtentOf();
+                var extent = itemExplorerControl.Extent.GetExtentOf();
                 if (extent != null)
                 {
-                    var extentType = extent.GetExtentType();
-                    if (extentType == "Uml.Classes")
-                    {
-                        if (itemExplorerControl.IsExtentSelectedInTreeview)
-                        {
-                            var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                            if (classMetaClass == null)
-                                throw new InvalidOperationException("Class could not be found");
+                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                        if (classMetaClass == null)
+                            throw new InvalidOperationException("Class could not be found");
 
-                            yield return new NewInstanceViewDefinition(classMetaClass);
+                        yield return new NewInstanceViewDefinition(classMetaClass);
 
-                            yield return new ApplicationMenuButtonDefinition(
-                                "Create new Class",
-                                async () =>
-                                    await NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                        navigationHost,
-                                        extent!,
-                                        classMetaClass),
-                                string.Empty,
-                                NavigationCategories.Type + "." + "Manager");
-                        }
-                    }
+                        yield return new ApplicationMenuButtonDefinition(
+                            "Create new Class",
+                            async () =>
+                                await NavigatorForItems.NavigateToCreateNewItemInExtentOrPackage(
+                                    navigationHost,
+                                    itemExplorerControl.SelectedItem ?? itemExplorerControl.RootItem,
+                                    classMetaClass),
+                            string.Empty,
+                            NavigationCategories.Type + "." + "Manager");
                 }
             }
 

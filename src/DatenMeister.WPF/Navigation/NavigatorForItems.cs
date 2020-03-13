@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -430,6 +431,32 @@ namespace DatenMeister.WPF.Navigation
             if (result?.IsNewObjectCreated == true && result.NewObject != null)
             {
                 extent.elements().add(result.NewObject);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new item for the given extent being located in the workspace and adds it to the given item
+        /// The default classifier hints will be used to add the item
+        /// </summary>
+        /// <param name="window">Navigation extent being used to open up the new dialog</param>
+        /// <param name="container">Extent which will be used for the factory to create the new item.
+        /// </param>
+        /// <param name="metaclass">Metaclass, whose instance will be created</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public static async Task<IControlNavigationNewObject?> NavigateToCreateNewItemInExtentOrPackage(
+            INavigationHost window,
+            IObject container,
+            IElement metaclass)
+        {
+            var extent = container.GetExtentOf()
+                         ?? throw new InvalidOperationException("The extent was not found");
+
+            var result = await NavigateToCreateNewItem(window, extent, metaclass);
+            if (result?.IsNewObjectCreated == true && result.NewObject != null)
+            {
+                GiveMe.Scope.Resolve<DefaultClassifierHints>().AddToExtentOrElement(container, result.NewObject);
             }
 
             return result;

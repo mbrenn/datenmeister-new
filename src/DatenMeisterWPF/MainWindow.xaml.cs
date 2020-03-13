@@ -89,6 +89,13 @@ namespace DatenMeisterWPF
                     Process.Start(databasePath);
                 }
             }
+            
+            // Sets the title of the mainwindow
+            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            if (integrationSettings.WindowTitle != null)
+            {
+                Title = integrationSettings.WindowTitle;
+            }
         }
 
         /// <summary>

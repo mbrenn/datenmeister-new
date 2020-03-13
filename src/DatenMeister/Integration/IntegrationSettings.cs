@@ -38,6 +38,11 @@ namespace DatenMeister.Integration
         /// </summary>
         public bool AllowNoFailOfLoading { get; set; }
 
+        /// <summary>
+        /// Gets or sets the title of the mainwindow 
+        /// </summary>
+        public string? WindowTitle { get; set; }
+
         public IntegrationSettings()
         {
             DatabasePath = GiveMe.DefaultDatabasePath;

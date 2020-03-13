@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Xml.Xsl;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using BurnSystems.Logging;
@@ -277,6 +278,11 @@ namespace DatenMeister.Integration
                             Logger.Info($"Overwriting database path to {publicSettings.databasePath}");
 
                             _settings.DatabasePath = publicSettings.databasePath;
+                        }
+
+                        if (publicSettings.windowTitle != null && !string.IsNullOrEmpty(publicSettings.windowTitle))
+                        {
+                            _settings.WindowTitle = publicSettings.windowTitle;
                         }
                     }
                 }

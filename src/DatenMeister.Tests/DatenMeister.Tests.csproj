@@ -69,6 +69,7 @@
     <Compile Include="Modules\FormatterTests.cs" />
     <Compile Include="Modules\Form\FormTests.cs" />
     <Compile Include="Modules\Provider\ManagementProviderTests.cs" />
+    <Compile Include="Modules\PublicIntegrationSettings.cs" />
     <Compile Include="Modules\UserManagementTests.cs" />
     <Compile Include="Modules\ViewLogicTests.cs" />
     <Compile Include="Mof\Core\MofObjectTests.cs" />

@@ -11,7 +11,6 @@ namespace DatenMeister.Integration
         /// </summary>
         public bool PerformSlimIntegration { get; set; }
 
-        
         /// <summary>
         /// Gets or sets the path to the xml files. It may be null, if the xmis shall be loaded
         /// from the embedded resources 

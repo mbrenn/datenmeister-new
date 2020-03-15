@@ -84,15 +84,18 @@ namespace DatenMeister.Modules.Forms.FormFinder
                         WorkspaceNames.UriUserFormExtent,
                         "DatenMeister.Forms_User",
                         FormExtentType,
-                        _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
+                        _integrationSettings.InitializeDefaultExtents
+                            ? ExtentCreationFlags.CreateOnly
+                            : ExtentCreationFlags.LoadOrCreate
                     );
-                    
-                    if ( extent == null )
+
+                    if (extent == null)
                         throw new InvalidOperationException("Extent for users is not found");
 
-                    var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ?? throw new InvalidOperationException("FormAndFields not found");
+                    var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
+                                        throw new InvalidOperationException("FormAndFields not found");
 
-                    extent.AddDefaultTypePackages(new[] {formAndFields.__Form});
+                    extent.AddDefaultTypePackages(new[] {formAndFields.__Form, formAndFields.__FormAssociation});
                     break;
             }
         }

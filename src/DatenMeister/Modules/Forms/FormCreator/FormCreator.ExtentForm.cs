@@ -218,7 +218,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 // Now try to figure out the metaclass
                 var form = CreateListFormForMetaClass(
                     propertyType,
-                    CreationMode.ByMetaClass);
+                    CreationMode.ByMetaClass,
+                    pair.property);
 
                 tabs.Add(form);
             }

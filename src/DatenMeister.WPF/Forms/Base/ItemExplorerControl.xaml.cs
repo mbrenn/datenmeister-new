@@ -625,7 +625,10 @@ namespace DatenMeister.WPF.Forms.Base
                         type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty)
                         ?? parentProperty;
 
-                    Create(newType, tempParentProperty);
+                    if (newType != null)
+                    {
+                        Create(newType, tempParentProperty);
+                    }
                 }
                 else
                 {

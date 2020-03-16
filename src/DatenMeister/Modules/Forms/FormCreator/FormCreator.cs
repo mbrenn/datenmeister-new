@@ -527,7 +527,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                         
                         // Create the internal form out of the metaclass
-                        var enumerationListForm = CreateListFormForMetaClass(propertyType, CreationMode.All);
+                        var enumerationListForm = CreateListFormForMetaClass(propertyType, CreationMode.All, property as IElement);
                         elements.set(_FormAndFields._SubElementFieldData.form, enumerationListForm);
 
                         return elements;

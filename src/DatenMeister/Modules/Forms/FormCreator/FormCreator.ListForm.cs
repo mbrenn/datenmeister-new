@@ -20,7 +20,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         /// <param name="metaClass"></param>
         /// <param name="creationMode"></param>
-        public IElement CreateListFormForMetaClass(IElement metaClass, CreationMode creationMode)
+        /// <param name="property">Property being used</param>
+        public IElement CreateListFormForMetaClass(
+            IElement? metaClass,
+            CreationMode creationMode,
+            IElement? property = null)
         {
             if (!creationMode.HasFlag(CreationMode.ByMetaClass))
             {
@@ -28,11 +32,14 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             var result = _factory.create(_formAndFields.__ListForm);
+            var propertyName = property != null ? NamedElementMethods.GetName(property) : "List";
 
-            var nameOfListForm = NamedElementMethods.GetName(metaClass);
-            result.set(_FormAndFields._ListForm.title, nameOfListForm);
-            result.set(_FormAndFields._ListForm.name, nameOfListForm);
-            AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
+            result.set(_FormAndFields._ListForm.title, propertyName);
+            result.set(_FormAndFields._ListForm.name, propertyName);
+            if (metaClass != null)
+            {
+                AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
+            }
 
             var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
             defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);

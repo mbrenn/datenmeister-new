@@ -128,8 +128,11 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
             var itemDialog = new ItemXmlViewWindow
             {
-                IgnoreIDs = true
+                IgnoreIDs = true,
+                Owner = navigationHost.GetWindow(),
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
             };
+
             itemDialog.UpdateContent(o);
             itemDialog.Show();
             itemDialog.CopyToClipboard();

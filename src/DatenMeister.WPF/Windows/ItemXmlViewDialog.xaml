@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterOwner" Closed="OnClosed">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
-            <CheckBox x:Name="IgnoreIDs" Click="Ignore_IDs_OnClick">Ignore the IDs</CheckBox>
+            <CheckBox x:Name="IgnoreIDsBtn" Click="Ignore_IDs_OnClick">Ignore the IDs</CheckBox>
             <Button x:Name="UpdateButton" Click="UpdateButton_OnClick" IsDefault="True">Update</Button>
             <Button x:Name="CloseButton" Click="CloseButton_Click" IsCancel="True">Close</Button>
         </StackPanel>

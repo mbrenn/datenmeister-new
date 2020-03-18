@@ -2,6 +2,7 @@
 
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -26,6 +27,12 @@ namespace DatenMeister.WPF.Windows
                 UpdateButton.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
                 XmlTextField.IsReadOnly = !value;
             }
+        }
+
+        public bool IgnoreIDs
+        {
+            get => IgnoreIDsBtn.IsChecked == true;
+            set => IgnoreIDsBtn.IsChecked = value;
         }
 
         /// <summary>
@@ -85,7 +92,7 @@ namespace DatenMeister.WPF.Windows
         {
             var converter = new XmlConverter
             {
-                SkipIds = IgnoreIDs.IsChecked == true
+                SkipIds = IgnoreIDsBtn.IsChecked == true
             };
 
             if (_usedReflectiveCollection != null)

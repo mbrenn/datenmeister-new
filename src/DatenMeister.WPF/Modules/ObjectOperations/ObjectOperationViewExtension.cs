@@ -12,6 +12,7 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.ObjectOperations
@@ -35,6 +36,10 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
                 yield return new TreeViewItemCommandDefinition(
                     "Delete...", (x) => { DeleteItem(viewExtensionInfo.NavigationHost, x); }
+                ) {CategoryName = "Item"};
+
+                yield return new TreeViewItemCommandDefinition(
+                    "Copy as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x); }
                 ) {CategoryName = "Item"};
             }
         }
@@ -111,6 +116,21 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                 }
 
             }
+        }
+
+        private void CopyAsXmi(INavigationHost navigationHost, IObject? o)
+        {
+            if (o == null)
+            {
+                return;
+            }
+
+            var itemDialog = new ItemXmlViewWindow
+            {
+                IgnoreIDs = true
+            };
+            itemDialog.UpdateContent(o);
+            itemDialog.Show();
         }
     }
 }

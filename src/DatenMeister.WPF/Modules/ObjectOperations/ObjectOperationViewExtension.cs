@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -131,6 +132,13 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             };
             itemDialog.UpdateContent(o);
             itemDialog.Show();
+            itemDialog.CopyToClipboard();
+            MessageBox.Show(
+                itemDialog,
+                "Content copied to clipboard",
+                "Done",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
     }
 }

@@ -123,6 +123,14 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
+        /// <summary>
+        /// Copies the content of the item to the clipboard
+        /// </summary>
+        public void CopyToClipboard()
+        {
+            Clipboard.SetText(XmlTextField.Text);
+        }
+
         /*
         /// <summary>
         /// Event arguments being used when the user performs an update

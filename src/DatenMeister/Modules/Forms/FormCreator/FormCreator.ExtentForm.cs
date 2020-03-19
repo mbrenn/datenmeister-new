@@ -105,6 +105,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
             {
                 // Now try to figure out the metaclass
                 var groupedMetaclass = group.Key;
+                if (groupedMetaclass == null)
+                {
+                    // Should not happen, but we need to handle this
+                    continue;
+                }
+
                 IElement form;
                 if (_formLogic != null) // View logic is used to ask for a default list view. 
                 {
@@ -200,7 +206,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     fields.Add(field);
                 }
 
-                if (creationMode.HasFlag(CreationMode.AddMetaClass))
+                if (creationMode.HasFlag(CreationMode.AddMetaClass)
+                    || !FormMethods.HasMetaClassFieldInForm(detailForm))
                 {
                     // Add the element itself
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
@@ -320,13 +327,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
                 }
 
-                if (!cache.MetaClassAlreadyAdded && creationMode.HasFlag(CreationMode.AddMetaClass))
+                if (!cache.MetaClassAlreadyAdded
+                    && creationMode.HasFlag(CreationMode.AddMetaClass)
+                    && !FormMethods.HasMetaClassFieldInForm(detailForm))
                 {
                     // Add the element itself
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                     metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
                     fields.Add(metaClassField);
-                    
+
                     cache.MetaClassAlreadyAdded = true;
                 }
 

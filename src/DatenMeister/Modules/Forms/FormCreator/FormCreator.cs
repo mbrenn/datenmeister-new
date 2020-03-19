@@ -152,12 +152,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             // Third phase: Add metaclass element itself
             var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
-            if (!cache.MetaClassAlreadyAdded &&
-                isMetaClass &&
-                !form
-                    .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
-                    .OfType<IElement>()
-                    .Any(x => x.getMetaClass()?.@equals(_formAndFields.__MetaClassElementFieldData) ?? false))
+            if (!cache.MetaClassAlreadyAdded
+                && isMetaClass
+                && !FormMethods.HasMetaClassFieldInForm(form))
             {
                 // Sets the information in cache, that the element was already added
                 cache.MetaClassAlreadyAdded = true;
@@ -320,7 +317,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             // After having created all the properties, add the meta class information at the end
-            if (!cache.MetaClassAlreadyAdded && creationMode.HasFlagFast(CreationMode.AddMetaClass))
+            if (!cache.MetaClassAlreadyAdded
+                && creationMode.HasFlagFast(CreationMode.AddMetaClass)
+                && !FormMethods.HasMetaClassFieldInForm(form))
             {
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");

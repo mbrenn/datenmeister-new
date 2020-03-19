@@ -88,11 +88,14 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     // of a metaclass
                     firstElementMetaClass = metaClass;
                 }
+
                 else if (firstElementMetaClass != metaClass &&
                          !metaClassAdded &&
-                         creationMode.HasFlagFast(CreationMode.AddMetaClass))
+                         creationMode.HasFlagFast(CreationMode.AddMetaClass)
+                         && !FormMethods.HasMetaClassFieldInForm(result))
                 {
                     metaClassAdded = true;
+                    cache.MetaClassAlreadyAdded = true;
                     
                     // Create the metaclass as a field
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);

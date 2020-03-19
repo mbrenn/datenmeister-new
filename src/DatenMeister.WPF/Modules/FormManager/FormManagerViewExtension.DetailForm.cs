@@ -216,7 +216,16 @@ namespace DatenMeister.WPF.Modules.FormManager
                 formAssociation.set(
                     _FormAndFields._FormAssociation.name, 
                     "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
-                formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
+
+                var formMetaClass = detailAsElement.metaclass;
+                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, formAndFields.__DetailForm);
+                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, formAndFields.__ExtentForm);
+                var formType = 
+                    isExtentForm ? FormType.TreeItemDetail :
+                    isDetailForm ? FormType.Detail :
+                    FormType.TreeItemExtent;
+
+                formAssociation.set(_FormAndFields._FormAssociation.formType, formType);
                 formAssociation.set(_FormAndFields._FormAssociation.form, detailAsElement);
 
                 await NavigatorForItems.NavigateToElementDetailView(navigationHost, formAssociation);

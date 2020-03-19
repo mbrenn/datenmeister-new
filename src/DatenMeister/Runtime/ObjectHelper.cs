@@ -422,6 +422,13 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Gets the extent of the given element
+        /// </summary>
+        /// <param name="hasExtent">The interface being able to request the extent</param>
+        /// <returns>The found extent</returns>
+        public static IExtent? GetExtentOf(this IHasExtent hasExtent) => hasExtent.Extent;
+
+        /// <summary>
         /// Tries to retrieve the extent as given by the implemented interface
         /// IObjectKnowsExtent. If the interface is not implemented by the root element
         /// of the given element, the method will return a failure

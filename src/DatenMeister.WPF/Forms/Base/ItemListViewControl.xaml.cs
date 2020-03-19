@@ -119,7 +119,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _effectiveForm = value;
 #if DEBUG
-                if (value != null && !new FormMethods().ValidateForm(value)) 
+                if (value != null && !FormMethods.ValidateForm(value)) 
                     throw new InvalidOperationException("The form did not pass validation");
 #endif
             }

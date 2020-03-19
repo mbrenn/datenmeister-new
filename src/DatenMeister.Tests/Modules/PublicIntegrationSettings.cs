@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestReadingXmiFile()
         {
-            var directory = Environment.CurrentDirectory;
+            var directory = Path.GetTempPath();
             var filename = Path.Combine(directory, PublicSettingHandler.XmiFileName);
 
             if (File.Exists(filename))

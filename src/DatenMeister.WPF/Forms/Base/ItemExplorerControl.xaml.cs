@@ -625,7 +625,10 @@ namespace DatenMeister.WPF.Forms.Base
                         type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty)
                         ?? parentProperty;
 
-                    Create(newType, tempParentProperty);
+                    if (newType != null)
+                    {
+                        Create(newType, tempParentProperty);
+                    }
                 }
                 else
                 {
@@ -775,10 +778,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="selectedObject">Selected element</param>
         private void NavigateToElement(IObject selectedObject)
         {
-            if (selectedObject is IElement selectedElement)
-                _ = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedElement);
-            else
-                throw new InvalidOperationException("Element is IElement");
+            _ = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedObject);
         }
 
 

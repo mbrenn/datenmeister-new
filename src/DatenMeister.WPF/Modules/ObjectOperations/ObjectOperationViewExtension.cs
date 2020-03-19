@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,6 +35,10 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                     "Copy...",
                     async (x) => { await CopyItem(viewExtensionInfo.NavigationHost, x); }
                 ) {CategoryName = "Item"};
+
+                yield return new TreeViewItemCommandDefinition(
+                        "Edit...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x); }
+                    ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                     "Delete...", (x) => { DeleteItem(viewExtensionInfo.NavigationHost, x); }
@@ -116,6 +121,23 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                     hints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
                 }
 
+            }
+        }
+
+        private async void EditItem(INavigationHost navigationHost, IObject? o)
+        {
+            if (o == null)
+            {
+                return;
+            }
+
+            try
+            {
+                await NavigatorForItems.NavigateToElementDetailView(navigationHost, o);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
 

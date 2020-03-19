@@ -570,6 +570,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <returns>The created instance of the form creator</returns>
         public FormCreator.FormCreator CreateFormCreator()
-            => new FormCreator.FormCreator(this, new DefaultClassifierHints(_workspaceLogic));
+            => new FormCreator.FormCreator(WorkspaceLogic, this, new DefaultClassifierHints(_workspaceLogic));
     }
 }

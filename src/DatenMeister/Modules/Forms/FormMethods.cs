@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Forms
 {
@@ -18,13 +20,20 @@ namespace DatenMeister.Modules.Forms
         /// Logger being used
         /// </summary>
         private static readonly ClassLogger Logger = new ClassLogger(typeof(FormMethods));
-        
+
+        private IWorkspaceLogic _workspaceLogic;
+
+        public FormMethods(IWorkspaceLogic workspaceLogic)
+        {
+            _workspaceLogic = workspaceLogic;
+        }
+
         /// <summary>
         /// Performs a verification of the form and returns false, if the form is not in a valid state
         /// </summary>
         /// <param name="form">Form to be evaluated</param>
         /// <returns>true, if the form is valid</returns>
-        public bool ValidateForm(IObject form)
+        public static bool ValidateForm(IObject form)
         {
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
             if (fields != null)
@@ -78,6 +87,23 @@ namespace DatenMeister.Modules.Forms
                                 ?? _FormAndFields.TheOne;
             return form
                 .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
+                .OfType<IElement>()
+                .Any(x => x.getMetaClass()?.@equals(formAndFields.__MetaClassElementFieldData) ?? false);
+        }
+
+        /// <summary>
+        /// Checks if the given element already has a metaclass within the form
+        /// </summary>
+        /// <param name="extent">Defines the extent</param>
+        /// <param name="fields">Enumeration fo fields</param>
+        /// <returns>true, if the form already contains a metaclass form</returns>
+        public bool HasMetaClassFieldInForm(IExtent extent, IEnumerable<object> fields)
+        {
+            var typesWorkspace = _workspaceLogic.GetTypesWorkspace();
+            var formAndFields = typesWorkspace.Get<_FormAndFields>()
+                                ?? _FormAndFields.TheOne;
+
+            return fields
                 .OfType<IElement>()
                 .Any(x => x.getMetaClass()?.@equals(formAndFields.__MetaClassElementFieldData) ?? false);
         }

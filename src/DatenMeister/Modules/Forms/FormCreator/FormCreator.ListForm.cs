@@ -1,7 +1,6 @@
 #nullable enable
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
@@ -89,14 +88,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     firstElementMetaClass = metaClass;
                 }
 
-                else if (firstElementMetaClass != metaClass &&
-                         !metaClassAdded &&
-                         creationMode.HasFlagFast(CreationMode.AddMetaClass)
+                else if (firstElementMetaClass != metaClass
+                         && !metaClassAdded
+                         && !cache.MetaClassAlreadyAdded
+                         && creationMode.HasFlagFast(CreationMode.AddMetaClass)
                          && !FormMethods.HasMetaClassFieldInForm(result))
                 {
                     metaClassAdded = true;
                     cache.MetaClassAlreadyAdded = true;
-                    
+
                     // Create the metaclass as a field
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                     metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");

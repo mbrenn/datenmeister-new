@@ -36,12 +36,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
-            => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc />
-        public IEnumerator<object> GetEnumerator()
-            => Enumerate().GetEnumerator();
+        public IEnumerator<object> GetEnumerator() => Enumerate().GetEnumerator();
 
         /// <summary>
         /// Performs an enumeration of all members of the collection

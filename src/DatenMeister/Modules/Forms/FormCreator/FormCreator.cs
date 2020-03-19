@@ -61,14 +61,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Initializes a new instance of the FormCreator class
         /// </summary>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="formLogic">View logic being used</param>
         /// <param name="defaultClassifierHints">The classifier hints</param>
-        public FormCreator(FormLogic? formLogic, DefaultClassifierHints defaultClassifierHints)
+        public FormCreator(IWorkspaceLogic? workspaceLogic, FormLogic? formLogic, DefaultClassifierHints defaultClassifierHints)
         {
             _formLogic = formLogic;
             _defaultClassifierHints = defaultClassifierHints;
 
-            _workspaceLogic = _formLogic?.WorkspaceLogic;
+            _workspaceLogic = workspaceLogic;
             
             var userExtent = _formLogic?.GetUserFormExtent();
             _factory = userExtent != null
@@ -156,18 +157,18 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 && isMetaClass
                 && !FormMethods.HasMetaClassFieldInForm(form))
             {
-                // Sets the information in cache, that the element was already added
-                cache.MetaClassAlreadyAdded = true;
-
                 // Add the element itself
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
 
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(metaClassField);
+
+                // Sets the information in cache, that the element was already added
+                cache.MetaClassAlreadyAdded = true;
             }
 
 #if DEBUG
-            if (!new FormMethods().ValidateForm(form))
+            if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
         }
@@ -262,7 +263,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
             
 #if DEBUG
-            if (!new FormMethods().ValidateForm(form))
+            if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
         }
@@ -274,6 +275,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="form">Form that will be extended. Must be list or detail form.</param>
         /// <param name="metaClass">Metaclass to be used</param>
         /// <param name="creationMode">Creation Mode to be used</param>
+        /// <param name="cache">Cache of creator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
         private bool AddToFormByMetaclass(IObject form, IElement metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
         {
@@ -329,7 +331,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
 #if DEBUG
-            if (!new FormMethods().ValidateForm(form))
+            if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
             

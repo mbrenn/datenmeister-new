@@ -246,6 +246,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <returns>Created Extent form as MofObject</returns>
         public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
         {
+            if (_workspaceLogic == null)
+                throw new InvalidOperationException("WorkspaceLogic is null");
+            
             var cache = new FormCreatorCache();
 
             var extentForm = _factory.create(_formAndFields.__ExtentForm);

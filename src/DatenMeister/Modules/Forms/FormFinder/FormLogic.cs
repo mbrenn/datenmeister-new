@@ -18,6 +18,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms.FormFinder
 {
@@ -213,6 +214,29 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 .Union(userViewExtent.elements())
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
                 .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
+        }
+
+        /// <summary>
+        /// Adds a new form association between the form and the metaclass
+        /// </summary>
+        /// <param name="form">Form to be used to create the form association</param>
+        /// <param name="metaClass">The metaclass being used for form association</param>
+        /// <param name="formType">Type to be added</param>
+        /// <returns></returns>
+        public IElement AddFormAssociationForMetaclass(IElement form, IElement metaClass, FormType formType)
+        {
+            var factory = new MofFactory(form);
+            var formAndFields = GetFormAndFieldInstance();
+            
+            var formAssociation = factory.create(formAndFields.__FormAssociation);
+            var name = NamedElementMethods.GetName(form);
+            
+            formAssociation.set(_FormAndFields._FormAssociation.formType, formType);
+            formAssociation.set(_FormAndFields._FormAssociation.form, form);
+            formAssociation.set(_FormAndFields._FormAssociation.metaClass, metaClass);
+            formAssociation.set(_FormAndFields._FormAssociation.name, $"Association for {name}");
+
+            return formAssociation;
         }
 
         /// <summary>

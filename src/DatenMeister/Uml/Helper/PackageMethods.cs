@@ -281,7 +281,7 @@ namespace DatenMeister.Uml.Helper
             if (targetPackage == null)
                 throw new InvalidOperationException("targetPackage == null");
 
-            using (var stream = typeof(PackageMethods).GetTypeInfo()
+            using (var stream = manifestType.GetTypeInfo()
                 .Assembly.GetManifestResourceStream(manifestName))
             {
                 if (stream == null)
@@ -303,7 +303,7 @@ namespace DatenMeister.Uml.Helper
                 if (sourcePackage == null)
                     throw new InvalidOperationException("sourcePackage == null");
                 
-                PackageMethods.ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
+                ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
             }
         }
     }

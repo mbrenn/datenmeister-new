@@ -220,7 +220,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         "Form.Form Manager");
 
                     yield return new ItemMenuButtonDefinition(
-                        "Create Forms and association",
+                        "Create Forms and Association",
                         (x) => AskUserForFormsAndAssociation(itemExplorerControl),
                         null,
                         "Form.Form Manager");

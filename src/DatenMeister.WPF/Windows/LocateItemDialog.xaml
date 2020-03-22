@@ -6,7 +6,7 @@
         xmlns:dmforms="clr-namespace:DatenMeister.WPF.Forms.Base"
         xmlns:controls="clr-namespace:DatenMeister.WPF.Controls"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="LocateItemDialog" Height="600" Width="800" Closed="LocateItemDialog_OnClosed">
+        Title="Locate the item" Height="600" Width="800" Closed="LocateItemDialog_OnClosed">
     <Window.Resources>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="5,2,5,2"></Setter>

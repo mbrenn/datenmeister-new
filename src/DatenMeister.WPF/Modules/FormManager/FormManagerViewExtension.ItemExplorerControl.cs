@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
@@ -217,6 +218,12 @@ namespace DatenMeister.WPF.Modules.FormManager
                         (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.DetailForm),
                         null,
                         "Form.Form Manager");
+
+                    yield return new ItemMenuButtonDefinition(
+                        "Create Forms and association",
+                        (x) => AskUserForFormsAndAssociation(itemExplorerControl),
+                        null,
+                        "Form.Form Manager");
                 }
             }
         }
@@ -255,7 +262,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             }
             
             if (await NavigatorForDialogs.Locate(
-                itemExplorerControl.NavigationHost,
+                navigationHost,
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
             {
@@ -281,6 +288,53 @@ namespace DatenMeister.WPF.Modules.FormManager
                 _ = NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
                     createdForm);
+            }
+        }
+
+        /// <summary>
+        /// Creates a form by using the classifier
+        /// </summary>
+        /// <param name="itemExplorerControl">Navigational element to create the windows</param>
+        /// <param name="type">Type of the form to be created</param>
+        private static async void AskUserForFormsAndAssociation(
+            ItemExplorerControl itemExplorerControl)
+        {   
+            var navigationHost = itemExplorerControl.NavigationHost ??
+                                 throw new InvalidOperationException("navigationHost == null");
+            if (!(itemExplorerControl.SelectedItem is { } selectedItem))
+            {
+                MessageBox.Show("No item is selected.");
+                return;
+            }
+
+            if (await NavigatorForDialogs.Locate(
+                navigationHost,
+                WorkspaceNames.NameTypes,
+                WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
+            {
+                var formCreator = GiveMe.Scope.Resolve<FormCreator>();
+                var defaultClassifierHints = GiveMe.Scope.Resolve<DefaultClassifierHints>(); 
+                // Creates the detail form
+                var detailForm = formCreator.CreateDetailFormByMetaClass(locatedItem);
+                defaultClassifierHints.AddToExtentOrElement(
+                    selectedItem, 
+                    detailForm);
+                
+                // Creates the extent form
+                var extentForm = formCreator.CreateExtentFormByMetaClass(locatedItem);
+                defaultClassifierHints.AddToExtentOrElement(
+                    selectedItem, 
+                    extentForm);
+                
+                // Creates association
+                var formLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var association1 = 
+                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.Detail);
+                var association2 = 
+                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.TreeItemExtent);
+                
+                defaultClassifierHints.AddToExtentOrElement(selectedItem, association1);
+                defaultClassifierHints.AddToExtentOrElement(selectedItem, association2);
             }
         }
     }

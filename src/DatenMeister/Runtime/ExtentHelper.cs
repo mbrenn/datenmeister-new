@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -224,6 +223,36 @@ namespace DatenMeister.Runtime
         {
             var filledType = ((MofExtent) extent).Workspace?.GetFromMetaWorkspace<TFilledType>();
             return filledType == null ? null : type(filledType);
+        }
+
+        /// <summary>
+        /// Checks whether the requested id is still available in the extent.
+        /// If that's the case, the element receives the given id, otherwise, the id will get a unique suffix
+        /// </summary>
+        /// <param name="extent">Extent to which the element is planned to be added</param>
+        /// <param name="element">Element which is planned to be added</param>
+        /// <param name="requestedId">Requested id</param>
+        /// <returns>The actual id being added</returns>
+        public static string SetAvailableId(IUriExtent extent, IElement element, string requestedId)
+        {
+            if (!(element is ICanSetId canSetId)) throw new InvalidOperationException("element is not of type ICanSetId");
+
+            var testedId = requestedId;
+            var currentNr = 0;
+
+            do
+            {
+                var found = extent.element("#" + testedId);
+                if (found == null)
+                {
+                    canSetId.Id = testedId;
+                    return testedId;
+                }
+
+                currentNr++;
+                testedId = requestedId + "-" + currentNr;
+
+            } while (true);
         }
     }
 }

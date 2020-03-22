@@ -10,12 +10,12 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -312,6 +312,10 @@ namespace DatenMeister.WPF.Modules.FormManager
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
             {
+                var containerExtent = selectedItem.GetUriExtentOf() ??
+                                      throw new InvalidOperationException("Extent is not found");
+                var fullName = NamedElementMethods.GetFullName(locatedItem);
+
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
                 var defaultClassifierHints = GiveMe.Scope.Resolve<DefaultClassifierHints>(); 
                 // Creates the detail form
@@ -319,13 +323,17 @@ namespace DatenMeister.WPF.Modules.FormManager
                 defaultClassifierHints.AddToExtentOrElement(
                     selectedItem, 
                     detailForm);
+                var name = fullName + "FormDetail";
+                ExtentHelper.SetAvailableId(containerExtent, detailForm, name);
                 
                 // Creates the extent form
                 var extentForm = formCreator.CreateExtentFormByMetaClass(locatedItem);
                 defaultClassifierHints.AddToExtentOrElement(
                     selectedItem, 
                     extentForm);
-                
+                name = fullName + "FormList";
+                ExtentHelper.SetAvailableId(containerExtent, extentForm, name);
+
                 // Creates association
                 var formLogic = GiveMe.Scope.Resolve<FormLogic>();
                 var association1 = 
@@ -334,7 +342,12 @@ namespace DatenMeister.WPF.Modules.FormManager
                     formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.TreeItemExtent);
                 
                 defaultClassifierHints.AddToExtentOrElement(selectedItem, association1);
+                name = fullName + "AssociationDetail";
+                ExtentHelper.SetAvailableId(containerExtent, association1, name);
+
                 defaultClassifierHints.AddToExtentOrElement(selectedItem, association2);
+                name = fullName + "AssociationList";
+                ExtentHelper.SetAvailableId(containerExtent, association2, name);
             }
         }
     }

@@ -56,8 +56,14 @@ namespace DatenMeister.Core.EMOF.Implementation
                 _provider = _provider ?? throw new InvalidOperationException("Provider is not set");
                 return;
             }
-            
-            var asMofObject = value as MofObject ?? throw new ArgumentException("value is null or not of Type MofObject");
+
+            if (value is MofObjectShadow)
+                throw new InvalidOperationException("A MofObjectShadow cannot be used as argument for MofFactory");
+
+            var asMofObject = value as MofObject
+                              ?? throw new InvalidOperationException(
+                                  "value is null or not of type MofObject: It is "
+                                  + (value == null ? "null" : value.GetType().FullName));
             var extent = asMofObject.Extent;
             if (extent != null)
             {

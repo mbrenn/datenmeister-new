@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using Autofac;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -29,6 +30,11 @@ namespace DatenMeister.Modules.Forms.FormFinder
     // ReSharper disable once ClassNeverInstantiated.Global
     public class FormLogic : IDatenMeisterPlugin
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(FormLogic));
+        
         /// <summary>
         /// Stores the type of the extent containing the views
         /// </summary>
@@ -365,6 +371,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 if (foundForm != null)
                 {
+                    Logger.Info("GetDetailForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     return foundForm;
                 }
             }
@@ -388,6 +395,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 if (foundForm != null)
                 {
+                    Logger.Info("GetExtentForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     return foundForm;
                 }
             }
@@ -440,8 +448,10 @@ namespace DatenMeister.Modules.Forms.FormFinder
                         metaClass = metaClass
                     }).FirstOrDefault();
 
+                
                 if (foundForm != null)
                 {
+                    Logger.Info("GetListFormForExtent: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     return foundForm;
                 }
             }
@@ -480,6 +490,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 if (foundForm != null)
                 {
+                    Logger.Info("GetListFormForElementsProperty: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     return foundForm;
                 }
             }
@@ -534,6 +545,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 if (foundForm != null)
                 {
+                    Logger.Info("GetItemTreeFormForObject: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     return foundForm;
                 }
             }
@@ -579,7 +591,10 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 }).FirstOrDefault();
 
                 if (foundForm != null)
+                {
+                    Logger.Info("GetListFormForExtentForPropertyInObject: Found form: " + NamedElementMethods.GetFullName(foundForm));
                     return foundForm;
+                }
             }
 
             var formCreator = CreateFormCreator();

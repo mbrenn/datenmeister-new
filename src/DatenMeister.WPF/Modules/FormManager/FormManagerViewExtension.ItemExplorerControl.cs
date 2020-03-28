@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -312,16 +313,26 @@ namespace DatenMeister.WPF.Modules.FormManager
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
             {
+                // Prepare the variables and fullname
                 var containerExtent = selectedItem.GetUriExtentOf() ??
                                       throw new InvalidOperationException("Extent is not found");
-                var fullName = NamedElementMethods.GetFullName(locatedItem);
-
+                var factory = new MofFactory(containerExtent);
+                var fullName = NamedElementMethods.GetFullName(locatedItem, ".");
+                var className = NamedElementMethods.GetName(locatedItem);
+                
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                var defaultClassifierHints = GiveMe.Scope.Resolve<DefaultClassifierHints>(); 
+                var defaultClassifierHints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
+                
+                // Creates the package
+                var packageClassifier = defaultClassifierHints.GetDefaultPackageClassifier(containerExtent);
+                var package = factory.create(packageClassifier);
+                package.set(_UML._CommonStructure._NamedElement.name, className);
+                defaultClassifierHints.AddToExtentOrElement(selectedItem, package);
+
                 // Creates the detail form
                 var detailForm = formCreator.CreateDetailFormByMetaClass(locatedItem);
                 defaultClassifierHints.AddToExtentOrElement(
-                    selectedItem, 
+                    package, 
                     detailForm);
                 var name = fullName + "FormDetail";
                 ExtentHelper.SetAvailableId(containerExtent, detailForm, name);
@@ -329,7 +340,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 // Creates the extent form
                 var extentForm = formCreator.CreateExtentFormByMetaClass(locatedItem);
                 defaultClassifierHints.AddToExtentOrElement(
-                    selectedItem, 
+                    package, 
                     extentForm);
                 name = fullName + "FormList";
                 ExtentHelper.SetAvailableId(containerExtent, extentForm, name);
@@ -339,13 +350,13 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var association1 = 
                     formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.Detail);
                 var association2 = 
-                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.TreeItemExtent);
+                    formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, FormType.TreeItemDetail);
                 
-                defaultClassifierHints.AddToExtentOrElement(selectedItem, association1);
+                defaultClassifierHints.AddToExtentOrElement(package, association1);
                 name = fullName + "AssociationDetail";
                 ExtentHelper.SetAvailableId(containerExtent, association1, name);
 
-                defaultClassifierHints.AddToExtentOrElement(selectedItem, association2);
+                defaultClassifierHints.AddToExtentOrElement(package, association2);
                 name = fullName + "AssociationList";
                 ExtentHelper.SetAvailableId(containerExtent, association2, name);
             }

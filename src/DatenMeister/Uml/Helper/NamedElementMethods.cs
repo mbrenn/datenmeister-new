@@ -24,8 +24,9 @@ namespace DatenMeister.Uml.Helper
         /// objects and retrieves the partial names by 'name'.
         /// </summary>
         /// <param name="value">Value to be queried</param>
+        /// <param name="separator">Separator</param>
         /// <returns>Full name of the element</returns>
-        public static string GetFullName(IObject value)
+        public static string GetFullName(IObject value, string separator = "::")
         {
             switch (value)
             {
@@ -39,7 +40,7 @@ namespace DatenMeister.Uml.Helper
                     while (current != null)
                     {
                         var currentName = GetName(current);
-                        result = $"{currentName}::{result}";
+                        result = $"{currentName}{separator}{result}";
                         current = current.container();
                         depth++;
 

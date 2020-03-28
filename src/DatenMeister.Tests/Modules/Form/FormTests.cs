@@ -15,7 +15,6 @@ namespace DatenMeister.Tests.Modules.Form
         {
             using var scope = DatenMeisterTests.GetDatenMeisterScope();
             var formAndFields = scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
-            var formMethods = new FormMethods();
 
             Assert.That(formAndFields, Is.Not.Null);
             var extent = scope.CreateXmiExtent("dm:///test");
@@ -37,17 +36,17 @@ namespace DatenMeister.Tests.Modules.Form
 
             form.set(_FormAndFields._DetailForm.field, new[] {field1, field2, field3, field4});
 
-            Assert.That(formMethods.ValidateForm(form), Is.True);
+            Assert.That(FormMethods.ValidateForm(form), Is.True);
 
             form.set(_FormAndFields._DetailForm.field, new[] {field1, field2, field3, field4, field5});
-            Assert.That(formMethods.ValidateForm(form), Is.False);
+            Assert.That(FormMethods.ValidateForm(form), Is.False);
 
             var newForm = factory.create(formAndFields.__ExtentForm);
             newForm.set(_FormAndFields._ExtentForm.tab, new[]{form});
-            Assert.That(formMethods.ValidateForm(newForm), Is.False);
+            Assert.That(FormMethods.ValidateForm(newForm), Is.False);
             
             form.set(_FormAndFields._DetailForm.field, new[] {field1, field2, field3, field4});
-            Assert.That(formMethods.ValidateForm(newForm), Is.True);
+            Assert.That(FormMethods.ValidateForm(newForm), Is.True);
         }
     }
 }

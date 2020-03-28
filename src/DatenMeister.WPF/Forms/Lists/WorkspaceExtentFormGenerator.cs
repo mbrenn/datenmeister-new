@@ -168,6 +168,7 @@ namespace DatenMeister.WPF.Forms.Lists
                                throw new InvalidOperationException("listForm == null");
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
                 listForm.set(_FormAndFields._ListForm.inhibitNewItems, true);
+                listForm.set(_FormAndFields._ListForm.property, nameof(_ManagementProvider._Workspace.extents));
 
                 result = viewLogic.GetExtentFormForSubforms(listForm);
             }

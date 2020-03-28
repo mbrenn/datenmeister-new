@@ -29,10 +29,14 @@ namespace DatenMeister.Tests.Runtime.Extents
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
             Assert.That(workspaceExtent, Is.Not.Null);
-            var asData = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameData);
-            var asManagement = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);
-            var asTypes = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameTypes);
-            var asMof = workspaceExtent.elements().Cast<IElement>().First(x => x.get("id").ToString() == WorkspaceNames.NameMof);
+            var asData = workspaceExtent.elements().Cast<IElement>()
+                .First(x => x.get("id").ToString() == WorkspaceNames.NameData);
+            var asManagement = workspaceExtent.elements().Cast<IElement>()
+                .First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);
+            var asTypes = workspaceExtent.elements().Cast<IElement>()
+                .First(x => x.get("id").ToString() == WorkspaceNames.NameTypes);
+            var asMof = workspaceExtent.elements().Cast<IElement>()
+                .First(x => x.get("id").ToString() == WorkspaceNames.NameMof);
 
             Assert.That(asData, Is.Not.Null);
             Assert.That(asManagement, Is.Not.Null);
@@ -43,7 +47,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
             Assert.That(extents, Is.Not.Null);
 
-            var mofExtent = extents.Cast<IElement>().First( x=> x.get("uri").ToString() == WorkspaceNames.UriMofExtent);
+            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri").ToString() == WorkspaceNames.UriMofExtent);
             Assert.That(mofExtent, Is.Not.Null);
         }
 
@@ -56,7 +60,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 filePath = path,
                 workspaceId = WorkspaceNames.NameData
             };
-            
+
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
@@ -121,9 +125,9 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(zipCodeModel, Is.Not.Null);
 
             var dataWorkspace = workspaceLogic.GetDataWorkspace();
-                
+
             var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
-                
+
             // Per Default, one is included
             var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
             Assert.That(setDefaultTypePackage, Is.Not.Null);
@@ -142,7 +146,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
             Assert.That(setDefaultTypePackage, Is.Not.Null);
             Assert.That(setDefaultTypePackage.Count, Is.EqualTo(0));
-                
+
             // Checks, if adding works now correctly
             zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
             setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
@@ -204,6 +208,28 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(mofExtent.AlternativeUris.Count, Is.EqualTo(2));
             Assert.That(mofExtent.AlternativeUris.Contains("dm:///test"), Is.True);
             Assert.That(mofExtent.AlternativeUris.Contains("dm:///test2"), Is.True);
+        }
+
+        [Test]
+        public static void TestAutoSettingOfIds()
+        {
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///a");
+            var mofFactory = new MofFactory(mofExtent);
+
+            var element1 = mofFactory.create(null);
+            mofExtent.elements().add(element1);
+            var element2 = mofFactory.create(null);
+            mofExtent.elements().add(element2);
+
+            var n1 = ExtentHelper.SetAvailableId(mofExtent, element1, "name");
+            var n2 = ExtentHelper.SetAvailableId(mofExtent, element2, "name");
+
+            Assert.That(n1, Is.EqualTo("name"));
+            Assert.That(n2, Is.EqualTo("name-1"));
+
+            Assert.That((element1 as IHasId)?.Id, Is.EqualTo("name"));
+            Assert.That((element2 as IHasId)?.Id, Is.Not.EqualTo("name"));
+            Assert.That((element2 as IHasId)?.Id, Contains.Substring("name"));
         }
     }
 }

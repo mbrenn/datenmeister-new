@@ -40,7 +40,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
         public IElement CreateDetailFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
         {
             var createdForm = _factory.create(_formAndFields.__DetailForm);
-            createdForm.set(_FormAndFields._DetailForm.name, $"{NamedElementMethods.GetName(metaClass)} - Detail");
+            var name = NamedElementMethods.GetName(metaClass);
+            var fullName = NamedElementMethods.GetFullName(metaClass);
+            createdForm.set(_FormAndFields._DetailForm.name, $"{name} - Detail");
+            var id = fullName + "Detail";
 
             if (creationMode.HasFlag(CreationMode.AddMetaClass))
             {

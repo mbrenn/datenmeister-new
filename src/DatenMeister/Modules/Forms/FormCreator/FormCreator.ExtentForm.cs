@@ -472,7 +472,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         {
                             AddToFormByMetaclass(
                                 form,
-                                PropertyMethods.GetPropertyType(propertyType),
+                                propertyType,
                                 creationMode);
                         }
                     }

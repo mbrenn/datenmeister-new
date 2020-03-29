@@ -9,12 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Xmi\IssueMeister.xml" />
+    <ProjectReference Include="..\..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <ProjectReference Include="..\..\..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
-    <ProjectReference Include="..\..\..\DatenMeister\DatenMeister.csproj" />
+    <EmbeddedResource Include="Xmi\IssueMeister.Types.xml" />
+    <EmbeddedResource Include="Xmi\IssueMeister.Forms.xml" />
   </ItemGroup>
 
 </Project>

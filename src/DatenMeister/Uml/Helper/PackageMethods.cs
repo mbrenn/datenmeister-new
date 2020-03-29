@@ -272,10 +272,14 @@ namespace DatenMeister.Uml.Helper
         /// <param name="targetExtent">Extent to which the extent shall be imported</param>
         /// <param name="targetPackageName">Path within the extent that shall receive
         /// the package</param>
-        public void ImportByManifest(Type manifestType, 
+        /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
+        /// in case the loading failed. </param>
+        public IElement? ImportByManifest(Type manifestType, 
             string manifestName,
             string sourcePackageName,
-            IExtent targetExtent, string targetPackageName)
+            IExtent targetExtent,
+            string targetPackageName,
+            bool loadingRequired = true)
         {
             // Creates the package for "ManagementProvider" containing the views
             var targetPackage = GetOrCreatePackageStructure(
@@ -303,11 +307,23 @@ namespace DatenMeister.Uml.Helper
                     pseudoExtent.elements(),
                     sourcePackageName,
                     false);
-                
+
                 if (sourcePackage == null)
-                    throw new InvalidOperationException("sourcePackage == null. Probably not found");
-                
+                {
+                    if (loadingRequired)
+                    {
+                        throw new InvalidOperationException(
+                            $"sourcePackage == null. Probably {sourcePackageName} in {manifestName} not found");
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                    
                 ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
+
+                return sourcePackage;
             }
         }
     }

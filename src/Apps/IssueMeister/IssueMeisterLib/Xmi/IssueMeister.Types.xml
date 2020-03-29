@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <item>
-  <package name="IssueMeister">
-
+  <package name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="datenmeister:///_internal/xmi/uml#Class" p1:id="eee00fdc-667f-4ef1-b5b7-b651ac1a8b8e" name="Issue">
+      <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="b779b260-656d-42e3-924d-ad07a5bed8eb" name="id" isID="True" type-ref="datenmeister:///_internal/xmi/primitivetypes#Integer" />
+      <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="13311769-d516-4294-9bdb-77da11bcdae8" name="name" type-ref="datenmeister:///_internal/xmi/primitivetypes#String" />
+      <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" p1:id="855478ae-8fb6-4046-ac27-e8cce666c7be" name="state" type-ref="datenmeister:///_internal/xmi/primitivetypes#String" />
+    </packagedElement>
   </package>
 </item>

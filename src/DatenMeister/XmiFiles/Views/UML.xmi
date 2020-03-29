@@ -56,7 +56,7 @@
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.Classification.Property" name="Property" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.Classification.PropertyFormDetail" name="Property - Detail" hideMetaInformation="True">
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="02c7a998-505d-473b-b65b-aecfb0e71f63" name="name" title="name" />
-        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" p1:id="3b84c046-67b8-44f6-8553-24d72ce69088" name="type" title="type" isReadOnly="True" />
+        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" p1:id="3b84c046-67b8-44f6-8553-24d72ce69088" name="type" title="type" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" p1:id="04d8d653-854a-4292-8639-6897999d83db" name="isID" title="isID" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" p1:id="2f0236b8-f4be-4d9f-8915-13fed1aa58a3" name="isComposite" title="isComposite" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="2ada2e97-438c-4a25-b0d8-b9fdd2c21d23" name="lower" title="lower" width="10" />

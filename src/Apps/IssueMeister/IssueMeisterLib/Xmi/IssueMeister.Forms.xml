@@ -1,6 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <item>
-  <package name="IssueMeister">
-
-  </package>
+  <item p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="666a0ed7-d1d9-4784-9946-4243f1c78814" name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-Issue" name="Issue">
+      <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="IssueFormDetail" name="Issue - Detail" hideMetaInformation="True">
+        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" width="10" />
+        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" />
+        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" />
+        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+      </packagedElement>
+      <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="IssueFormList" name="Issue - List">
+        <tab p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="9a2fa649-ea8d-432f-a965-709a88a184b2" name="Detail">
+          <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="a1427f98-103a-4254-9d65-447a39eef9d3" name="id" title="id" isReadOnly="True" width="10" />
+          <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="7a9dde03-b7c4-49ed-8711-d68adc24dc5a" name="name" title="name" isReadOnly="True" />
+          <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="cbdab7e4-dbe1-4262-a399-f86b7f77cd50" name="state" title="state" isReadOnly="True" />
+          <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" />
+          <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="d30f08b4-3593-44eb-8a1e-be503e02a2bb" name="Metaclass" />
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="IssueAssociationDetail" formType="Detail" form-ref="#IssueFormDetail" metaClass-ref="datenmeister:///_internal/types/internal#IssueMeister.Issue" name="Association for Issue - Detail" />
+      <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="IssueAssociationList" formType="TreeItemDetail" form-ref="#IssueFormList" metaClass-ref="datenmeister:///_internal/types/internal#IssueMeister.Issue" name="Association for Issue - List" />
+    </packagedElement>
+  </item>
 </item>

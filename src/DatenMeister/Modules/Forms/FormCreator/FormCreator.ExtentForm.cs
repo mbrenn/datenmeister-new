@@ -96,6 +96,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 foreach (var item in elementsWithoutMetaClass)
                     AddToForm(form, item, creationMode, cache);
 
+                AddTextFieldForNameIfNoFieldAvailable(form);
+                
                 SetDefaultTypes(form);
 
                 tabs.Add(form);
@@ -477,18 +479,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         }
                     }
                     
-                    // If the field is empty, create an empty textfield with 'name' as a placeholder
-                    var fieldLength =
-                        form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field)?.Count() ?? 0;
-                    if (fieldLength == 0)
-                    {
-                        var factory = new MofFactory(form);
-                        var textFieldData = factory.create(_formAndFields.__TextFieldData);
-                        textFieldData.set(_FormAndFields._TextFieldData.name, "name");
-                        textFieldData.set(_FormAndFields._TextFieldData.title, "name");
-                        
-                        form.AddCollectionItem(_FormAndFields._ListForm.field, textFieldData);
-                    }
+                    AddTextFieldForNameIfNoFieldAvailable(form);
 
                     // Adds the form to the tabs
                     tabs.Add(form);
@@ -499,6 +490,26 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             return extentForm;
         }
-        
+
+        /// <summary>
+        /// Checks whether at least one field is given.
+        /// If no field is given, then the one text field for the name will be added
+        /// </summary>
+        /// <param name="form">Form to be checked</param>
+        private void AddTextFieldForNameIfNoFieldAvailable(IObject form)
+        {
+            // If the field is empty, create an empty textfield with 'name' as a placeholder
+            var fieldLength =
+                form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field)?.Count() ?? 0;
+            if (fieldLength == 0)
+            {
+                var factory = new MofFactory(form);
+                var textFieldData = factory.create(_formAndFields.__TextFieldData);
+                textFieldData.set(_FormAndFields._TextFieldData.name, "name");
+                textFieldData.set(_FormAndFields._TextFieldData.title, "name");
+
+                form.AddCollectionItem(_FormAndFields._ListForm.field, textFieldData);
+            }
+        }
     }
 }

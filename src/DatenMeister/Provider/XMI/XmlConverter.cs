@@ -40,11 +40,12 @@ namespace DatenMeister.Provider.XMI
         /// <returns>Converted element to be shown</returns>
         public XElement ConvertToXml(IObject element)
         {
+            var copyOptions = new CopyOption {CloneAllReferences = false, CopyId = true};
             var extentName = (element as IElement)?.GetUriExtentOf()?.contextURI() ??
                              string.Empty;
             var copier = new ObjectCopier(new MofFactory(_extent));
 
-            var result = (MofElement) copier.Copy(element); // Copies the element
+            var result = (MofElement) copier.Copy(element, copyOptions); // Copies the element
             var xmlNode = ((XmiProviderObject) result.ProviderObject).XmlNode;
 
             if (SkipIds)
@@ -71,7 +72,7 @@ namespace DatenMeister.Provider.XMI
         /// <returns>Converted element to be shown</returns>
         public XElement ConvertToXml(IEnumerable<object?> elements)
         {
-            var copyOptions = new CopyOption {CloneAllReferences = false};
+            var copyOptions = new CopyOption {CloneAllReferences = false, CopyId = true};
             var factory = new MofFactory(_extent);
             var copier = new ObjectCopier(factory);
             var rootItem = (MofObject) factory.create(null);

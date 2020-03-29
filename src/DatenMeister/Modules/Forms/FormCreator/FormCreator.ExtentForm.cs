@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -236,6 +237,31 @@ namespace DatenMeister.Modules.Forms.FormCreator
             return extentForm;
         }
 
+        public class P
+        {
+            public string? PropertyName { get; set; }
+            
+            public IElement? PropertyType { get; set; }
+
+            public class PropertyNameEqualityComparer : IEqualityComparer<P>
+            {
+                public bool Equals(P x, P y)
+                {
+                    if (x == null || y == null)
+                    {
+                        return false;
+                    }
+
+                    return x.PropertyName?.Equals(y.PropertyName) == true;
+                }
+
+                public int GetHashCode(P obj)
+                {
+                    return obj.PropertyName?.GetHashCode() ?? 0;
+                }
+            }
+        }
+
         /// <summary>
         /// Creates the extent form for a specific object which is selected in the item explorer view.
         /// </summary>
@@ -259,8 +285,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
             // Get all properties of the elements
             var flagAddByMetaClass = creationMode.HasFlag(CreationMode.ByMetaClass) ||
                                      creationMode.HasFlag(CreationMode.AddMetaClass);
-            var propertyNamesWithCollection = new List<string>();
-            var propertyNamesWithoutCollection = new List<string>();
+            var propertyNamesWithCollection = new List<P>();
+            var propertyNamesWithoutCollection = new List<P>();
             
             // Adds the properties by the stored properties of the element
             if (creationMode.HasFlag(CreationMode.ByPropertyValues))
@@ -272,13 +298,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     where element.IsPropertyOfType<IReflectiveCollection>(p)
                     let propertyContent = element.get<IReflectiveCollection>(p)
                     where propertyContent != null
-                    select p).ToList();
+                    select new P {PropertyName = p}).ToList();
 
                 propertyNamesWithoutCollection = (from p in properties
                     where !element.IsPropertyOfType<IReflectiveCollection>(p)
                     let propertyContent = element.get(p)
                     where propertyContent != null
-                    select p).ToList();
+                    select new P {PropertyName = p}).ToList();
             }
 
             // Adds the properties by the metaclasses
@@ -289,25 +315,39 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 {
                     if (PropertyMethods.IsCollection(property))
                     {
-                        propertyNamesWithCollection.Add(NamedElementMethods.GetName(property));
+                        propertyNamesWithCollection.Add(
+                            new P
+                            {
+                                PropertyName = NamedElementMethods.GetName(property),
+                                PropertyType = property
+                            });
                     }
                     else
                     {
-                        propertyNamesWithoutCollection.Add(NamedElementMethods.GetName(property));
+                        propertyNamesWithoutCollection.Add(
+                            new P
+                            {
+                                PropertyName = NamedElementMethods.GetName(property),
+                                PropertyType = property
+                            });
                     }
                 }
             }
 
             // Now collect the property Values
+            propertyNamesWithCollection.Reverse();
+            propertyNamesWithoutCollection.Reverse();
+            
             var propertiesWithCollection =
-                from p in propertyNamesWithCollection.Distinct()
-                let propertyContent = element.get<IReflectiveCollection>(p)
-                select new {propertyName = p, propertyContent};
+                from p in propertyNamesWithCollection.Distinct(new P.PropertyNameEqualityComparer())
+                let propertyContent = element.get<IReflectiveCollection>(p.PropertyName)
+                select new {propertyName = p.PropertyName, propertyType =p.PropertyType, propertyContent};
 
             var propertiesWithoutCollection =
-                (from p in propertyNamesWithoutCollection.Distinct()
-                    let propertyContent = element.getOrDefault<object>(p)
-                    select new {propertyName = p, propertyContent}).ToList();
+                (from p in propertyNamesWithoutCollection.Distinct(new P.PropertyNameEqualityComparer())
+                    let propertyContent = element.getOrDefault<object>(p.PropertyName)
+                    select new {propertyName = p.PropertyName, propertyType = p.PropertyType, propertyContent})
+                .ToList();
 
             if (propertiesWithoutCollection.Any() || creationMode.HasFlag(CreationMode.AddMetaClass))
             {
@@ -407,8 +447,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         }
                     }
                 }
-#pragma warning restore 162
                 else
+#pragma warning restore 162
                 {
                     // If there are elements included and they are filled
                     // OR, if there is no element included at all, create the corresponding list form
@@ -416,11 +456,41 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     form.set(_FormAndFields._ListForm.name, pair.propertyName);
                     form.set(_FormAndFields._ListForm.property, pair.propertyName);
 
-                    foreach (var item in elementsAsObjects)
+                    if (creationMode.HasFlagFast(CreationMode.ByPropertyValues))
                     {
-                        AddToForm(form, item, creationMode, cache);
+                        foreach (var item in elementsAsObjects)
+                        {
+                            AddToForm(form, item, creationMode, cache);
+                        }
                     }
 
+                    if (creationMode.HasFlagFast(CreationMode.ByMetaClass))
+                    {
+                        var property = pair.propertyType;
+                        var propertyType = property != null ? PropertyMethods.GetPropertyType(property) : null;
+                        if (propertyType != null)
+                        {
+                            AddToFormByMetaclass(
+                                form,
+                                propertyType,
+                                creationMode);
+                        }
+                    }
+                    
+                    // If the field is empty, create an empty textfield with 'name' as a placeholder
+                    var fieldLength =
+                        form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field)?.Count() ?? 0;
+                    if (fieldLength == 0)
+                    {
+                        var factory = new MofFactory(form);
+                        var textFieldData = factory.create(_formAndFields.__TextFieldData);
+                        textFieldData.set(_FormAndFields._TextFieldData.name, "name");
+                        textFieldData.set(_FormAndFields._TextFieldData.title, "name");
+                        
+                        form.AddCollectionItem(_FormAndFields._ListForm.field, textFieldData);
+                    }
+
+                    // Adds the form to the tabs
                     tabs.Add(form);
                 }
             }

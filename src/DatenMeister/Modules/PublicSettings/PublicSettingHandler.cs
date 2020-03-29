@@ -33,22 +33,31 @@ namespace DatenMeister.Modules.PublicSettings
         public static PublicIntegrationSettings? LoadSettings(string directoryPath)
         {
             var path = Path.Combine(directoryPath, XmiFileName);
+            
             if (File.Exists(path))
             {
-                Logger.Info($"Loading public integration from {path}");
-                var provider = new XmiProvider(XDocument.Load(path));
-                var extent = new MofExtent(provider);
-                var element = extent.elements().FirstOrDefault() as IObject;
-                if (element == null)
+                try
                 {
-                    var message = "The given extent does not contain an element being usable for conversion";
-                    Logger.Warn(message);
-                    throw new InvalidOperationException(message);
-                }
+                    Logger.Info($"Loading public integration from {path}");
+                    var provider = new XmiProvider(XDocument.Load(path));
+                    var extent = new MofExtent(provider);
+                    var element = extent.elements().FirstOrDefault() as IObject;
+                    if (element == null)
+                    {
+                        var message = "The given extent does not contain an element being usable for conversion";
+                        Logger.Warn(message);
+                        throw new InvalidOperationException(message);
+                    }
 
-                return DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+                    return DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error($"Exception occured during Loading of Xmi: {exc.Message}");
+                }
             }
 
+            Logger.Info($"No Xmi-File found in: {path}");
             Logger.Info($"No Configuration file found in {directoryPath}");
             return null;
         }

@@ -143,6 +143,10 @@
       <Project>{c2bc0e95-4d38-4584-b6a0-b08dec6de504}</Project>
       <Name>DatenMeister.Icons</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj">
+      <Project>{263e74ec-019d-47fb-a653-362f84ccde5d}</Project>
+      <Name>IssueMeisterLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj">
       <Project>{9026f9a3-c366-43da-abad-8cc94a3e793f}</Project>
       <Name>DatenMeister.Excel</Name>

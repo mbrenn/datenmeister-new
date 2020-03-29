@@ -11,7 +11,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms.FormCreator
@@ -374,7 +373,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (!cache.MetaClassAlreadyAdded
                     && creationMode.HasFlag(CreationMode.AddMetaClass)
                     && extent != null
-                    && !new FormMethods(_workspaceLogic).HasMetaClassFieldInForm(extent, fields))
+                    && (_workspaceLogic == null ||
+                        !new FormMethods(_workspaceLogic).HasMetaClassFieldInForm(extent, fields)))
                 {
                     // Add the element itself
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);

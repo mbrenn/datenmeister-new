@@ -59,10 +59,13 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
+        /// <param name="createIfNotFound">Gets or sets the flag that the package will be automatically created
+        /// in case it is not found</param>
         /// <returns>Found element</returns>
         public IElement? GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
-            string packagePath)
+            string packagePath,
+            bool createIfNotFound = true)
         {
             var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
             
@@ -75,8 +78,8 @@ namespace DatenMeister.Uml.Helper
                 packagePath,
                 _UML._CommonStructure._NamedElement.name,
                 _UML._Packages._Package.packagedElement,
-                uml.Packages.__Package)
-                ?? throw new InvalidOperationException("No package was returned");
+                uml.Packages.__Package,
+                createIfNotFound);
         }
 
         /// <summary>
@@ -298,10 +301,11 @@ namespace DatenMeister.Uml.Helper
 
                 var sourcePackage = GetOrCreatePackageStructure(
                     pseudoExtent.elements(),
-                    sourcePackageName);
+                    sourcePackageName,
+                    false);
                 
                 if (sourcePackage == null)
-                    throw new InvalidOperationException("sourcePackage == null");
+                    throw new InvalidOperationException("sourcePackage == null. Probably not found");
                 
                 PackageMethods.ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
             }

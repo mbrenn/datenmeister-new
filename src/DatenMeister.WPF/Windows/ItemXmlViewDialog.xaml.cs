@@ -44,6 +44,7 @@ namespace DatenMeister.WPF.Windows
         {
             InitializeComponent();
             SupportWriting = false;
+            RelativePaths.IsChecked = true;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

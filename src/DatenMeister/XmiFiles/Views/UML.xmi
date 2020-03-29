@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <item>
-  <item p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="UML" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+  <item p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Uml" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Package">
       <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Package - Detail" hideMetaInformation="True">
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
@@ -35,7 +35,7 @@
           <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
           <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
         </tab>
-        <tab p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedAttribute" name="ownedAttribute">
+        <tab p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedAttribute" name="ownedAttribute" property="ownedAttribute">
           <defaultTypesForNewElements p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="Property" metaClass-ref="datenmeister:///_internal/xmi/uml#Property" parentProperty="ownedAttribute" />
         </tab>
         <tab p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedOperation" name="ownedOperation">
@@ -52,8 +52,8 @@
       <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Property - Detail" hideMetaInformation="True">
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" name="type" title="type" />
-        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="isComposite" title="isComposite" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="isID" title="isID" />
+        <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="isComposite" title="isComposite" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="lower" title="lower" width="10" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="upper" title="upper" />
         <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />

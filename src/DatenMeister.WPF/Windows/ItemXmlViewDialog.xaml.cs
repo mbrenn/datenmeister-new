@@ -44,6 +44,7 @@ namespace DatenMeister.WPF.Windows
         {
             InitializeComponent();
             SupportWriting = false;
+            RelativePaths.IsChecked = true;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -92,7 +93,9 @@ namespace DatenMeister.WPF.Windows
         {
             var converter = new XmlConverter
             {
-                SkipIds = IgnoreIDsBtn.IsChecked == true
+                SkipIds = IgnoreIDsBtn.IsChecked == true,
+                RelativePaths = RelativePaths.IsChecked == true
+                
             };
 
             if (_usedReflectiveCollection != null)
@@ -147,6 +150,10 @@ namespace DatenMeister.WPF.Windows
             }
         }*/
         private void Ignore_IDs_OnClick(object sender, RoutedEventArgs e)
+        {
+            UpdateContent();
+        }
+        private void RelativePaths_OnClick(object sender, RoutedEventArgs e)
         {
             UpdateContent();
         }

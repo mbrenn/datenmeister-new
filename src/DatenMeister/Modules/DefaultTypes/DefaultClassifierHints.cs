@@ -43,7 +43,16 @@ namespace DatenMeister.Modules.DefaultTypes
         public IElement? GetDefaultPackageClassifier(IHasExtent uriExtent)
         {
             var extent = uriExtent.Extent ?? throw new InvalidOperationException("UriExtent does not have an extent");
+            return GetDefaultPackageClassifier(extent);
+        }
 
+        /// <summary>
+        /// Gets the default package classifier for a given extent
+        /// </summary>
+        /// <param name="extent">Extent to be used</param>
+        /// <returns>The found extent</returns>
+        public IElement? GetDefaultPackageClassifier(IExtent extent)
+        {
             // First look into the standard uml meta classes
             var findByUrl = extent.FindInMeta<_UML>(x => x.Packages.__Package);
             if (findByUrl == null)

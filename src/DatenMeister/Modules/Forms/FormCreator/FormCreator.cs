@@ -393,7 +393,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             // First, let's parse the properties
             if (isDetailForm && isPropertyUml || isListForm && isPropertyUml)
             {
-                if (noDuplicate && FormHelper.GetField(form, NamedElementMethods.GetName(umlElement)) != null)
+                if (noDuplicate && FormMethods.GetField(form, NamedElementMethods.GetName(umlElement)) != null)
                 {
                     // Field is already existing
                     return false;
@@ -418,7 +418,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 else
                 {
                     var propertyName = umlElement.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
-                    if (noDuplicate && FormHelper.GetListTabForPropertyName(form, propertyName) != null )
+                    if (noDuplicate && FormMethods.GetListTabForPropertyName(form, propertyName) != null )
                     {
                         // List form is already existing
                         return false;

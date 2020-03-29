@@ -111,12 +111,14 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(IObject))
             {
-                return ((T) (value.GetAsSingle(property, noReferences) as IObject)!)!;
+                var asSingle = (value.GetAsSingle(property, noReferences) as IObject)!;
+                return ((T) asSingle)!;
             }
 
             if (typeof(T) == typeof(IElement))
             {
-                return ((T) (value.GetAsSingle(property, noReferences) as IElement)!)!;
+                var asSingle = (value.GetAsSingle(property, noReferences) as IElement)!;
+                return asSingle is MofObjectShadow ? default : (T) asSingle;
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))

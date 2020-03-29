@@ -31,13 +31,24 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             var result = _factory.create(_formAndFields.__ListForm);
-            var propertyName = property != null ? NamedElementMethods.GetName(property) : "List";
+            var realPropertyName = NamedElementMethods.GetName(property);
+            var propertyName = property != null ? realPropertyName : "List";
 
             result.set(_FormAndFields._ListForm.title, propertyName);
             result.set(_FormAndFields._ListForm.name, propertyName);
+            result.set(_FormAndFields._ListForm.property, realPropertyName);
             if (metaClass != null)
             {
                 AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
+            }
+            else
+            {
+                // Ok, we have no metaclass, but let's add at least the name
+                var nameProperty = _uml?.CommonStructure.NamedElement._name;
+                if (nameProperty != null)
+                {
+                    AddToFormByUmlElement(result, nameProperty, CreationMode.ForListForms | CreationMode.ByMetaClass);
+                }
             }
 
             var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);

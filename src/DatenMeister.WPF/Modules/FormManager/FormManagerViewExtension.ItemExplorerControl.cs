@@ -323,11 +323,14 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
                 var defaultClassifierHints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
                 
+                ////////////////////////////////////
                 // Creates the package
                 var packageClassifier = defaultClassifierHints.GetDefaultPackageClassifier(containerExtent);
                 var package = factory.create(packageClassifier);
                 package.set(_UML._CommonStructure._NamedElement.name, className);
                 defaultClassifierHints.AddToExtentOrElement(selectedItem, package);
+                var packageName = "Package-" + fullName;
+                ExtentHelper.SetAvailableId(containerExtent, package, packageName);
 
                 // Creates the detail form
                 var detailForm = formCreator.CreateDetailFormByMetaClass(locatedItem);

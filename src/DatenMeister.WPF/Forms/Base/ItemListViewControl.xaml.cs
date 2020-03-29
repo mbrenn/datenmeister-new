@@ -386,6 +386,12 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Updates all columns and returns the fieldnames and fields
             var (fieldDataNames, fields) = UpdateColumnDefinitions();
+            if (fields == null)
+            {
+                Logger.Warn("UpdateColumnDefinitions did not return any fields.");
+                return;
+            }
+            
             watch.IntermediateLog("UpdateColumnDefinitions done");
 
             Task.Run(() =>
@@ -540,7 +546,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </returns>
         private (IList<string> names, IReflectiveCollection? fields) UpdateColumnDefinitions()
         {
-            if (!(EffectiveForm?.get(_FormAndFields._ListForm.field) is IReflectiveCollection fields))
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
+            if (fields == null)
                 return (new string[] { }, null);
 
             ClearInfoLines();

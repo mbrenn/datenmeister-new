@@ -173,12 +173,12 @@ namespace DatenMeister.WPF.Modules.FormManager
                 MessageBox.Show("View Association created");
             }
 
-            void CreateFieldByProperty()
+            async void CreateFieldByProperty()
             {
                 var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 
-                if (NavigatorForDialogs.Locate(
+                if (await NavigatorForDialogs.Locate(
                     navigationHost,
                     WorkspaceNames.NameTypes,
                     WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)

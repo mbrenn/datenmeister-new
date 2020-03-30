@@ -61,8 +61,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 _contentBlock = new TextBox
                 {
                     Text = _valueText,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                    HorizontalAlignment = HorizontalAlignment.Stretch
                 };
 
                 if (width > 0)
@@ -81,7 +80,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     _contentBlock.Height = 10 * height;
                     _contentBlock.VerticalAlignment = VerticalAlignment.Top;
                     _contentBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                    _contentBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    _contentBlock.TextWrapping = TextWrapping.Wrap;
                 }
 
                 fieldFlags.CanBeFocused = true;

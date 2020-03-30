@@ -246,10 +246,20 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _alreadyVisited.Clear();
                 _mappingItems.Clear();
-                var found = CreateTreeViewItem(ItemsSource, true);
-                if (found != null)
-                    model.Add(found);
-                
+
+                var availableTreeViewItem = (container.ItemsSource as List<TreeViewItem>)?.FirstOrDefault();
+                if (availableTreeViewItem == null)
+                {
+                    var found = CreateTreeViewItem(ItemsSource, true);
+                    if (found != null)
+                        model.Add(found);
+                }
+                else
+                {
+                    UpdateTreeViewItem(availableTreeViewItem, ItemsSource);
+                }
+
+
                 container.ItemsSource = model;
             }
 
@@ -258,6 +268,24 @@ namespace DatenMeister.WPF.Forms.Base
                 _newSelectedItem.IsSelected = true;
                 _newSelectedItem.IsExpanded = true;
                 _newSelectedItem.BringIntoView();
+            }
+        }
+
+        /// <summary>
+        /// Updates the treeview item by using the current item and compares it to the given item
+        /// which should be matching to the treeview item
+        /// </summary>
+        /// <param name="availableTreeViewItem"></param>
+        /// <param name="itemsSource"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void UpdateTreeViewItem(TreeViewItem availableTreeViewItem, IObject? itemsSource)
+        {
+            availableTreeViewItem.Header = GetItemHeader(itemsSource);
+            availableTreeViewItem.Tag = itemsSource;
+
+            if (availableTreeViewItem.ItemsSource is List<TreeViewItem> children)
+            {
+                
             }
         }
 
@@ -302,17 +330,8 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            // Filtering agrees to the item, so it will be added
-            var itemHeader = item is IExtent ? "Root" : item.ToString();
-            if (_cacheShowMetaClasses)
-            {
-                if (item is IElement element)
-                {
-                    var metaClass = element.getMetaClass();
-                    itemHeader += " [" + (metaClass != null ? metaClass.ToString() : "Unclassified") + "]";
-                }
-            }
-            
+            var itemHeader = GetItemHeader(item);
+
             var treeViewItem = new TreeViewItem
             {
                 Header = itemHeader,
@@ -398,6 +417,22 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             return treeViewItem;
+        }
+
+        private string GetItemHeader(object item)
+        {
+            // Filtering agrees to the item, so it will be added
+            var itemHeader = item is IExtent ? "Root" : item.ToString();
+            if (_cacheShowMetaClasses)
+            {
+                if (item is IElement element)
+                {
+                    var metaClass = element.getMetaClass();
+                    itemHeader += " [" + (metaClass != null ? metaClass.ToString() : "Unclassified") + "]";
+                }
+            }
+
+            return itemHeader;
         }
 
 

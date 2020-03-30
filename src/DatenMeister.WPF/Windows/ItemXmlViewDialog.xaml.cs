@@ -4,9 +4,11 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.XMI.EMOF;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -72,9 +74,11 @@ namespace DatenMeister.WPF.Windows
         public IElement GetCurrentContentAsMof(IFactory factory)
         {
             var xmlElement = XElement.Parse(XmlTextField.Text);
-            var xmlConverter = new XmlConverter();
-
-            return (IElement) xmlConverter.ConvertFromXml(xmlElement, factory);
+            
+            var provider = new XmiProvider();
+            var extent = new MofExtent(provider);
+            var xmlProviderObject = new XmiProviderObject(xmlElement, provider);
+            return new MofElement(xmlProviderObject, extent);
         }
 
         /// <summary>

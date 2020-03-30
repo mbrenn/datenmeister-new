@@ -282,10 +282,17 @@ namespace DatenMeister.WPF.Forms.Base
 
                 dlg.UpdateButtonPressed += (x, y) =>
                 {
-                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
-                    var factory = new MofFactory(temporaryExtent);
+                    if (EffectiveForm == null)
+                    {
+                        MessageBox.Show("No detail item is linked to the current view, so updating is not possible.");
+                        return;
+                    }
+                    
+                    var factory = new MofFactory(EffectiveForm);
                     EffectiveForm = dlg.GetCurrentContentAsMof(factory);
                     UpdateView();
+                    
+                    dlg.Close();
                 };
 
                 dlg.ShowDialog();

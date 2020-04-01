@@ -3,10 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml.XPath;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -247,20 +249,20 @@ namespace DatenMeister.WPF.Forms.Base
                 _alreadyVisited.Clear();
                 _mappingItems.Clear();
 
+                // Checks, if a tree views are already created
                 var availableTreeViewItem = (container.ItemsSource as List<TreeViewItem>)?.FirstOrDefault();
                 if (availableTreeViewItem == null)
                 {
                     var found = CreateTreeViewItem(ItemsSource, true);
                     if (found != null)
                         model.Add(found);
+                    
+                    container.ItemsSource = model;
                 }
                 else
                 {
                     UpdateTreeViewItem(availableTreeViewItem, ItemsSource);
                 }
-
-
-                container.ItemsSource = model;
             }
 
             if (_newSelectedItem != null)
@@ -276,16 +278,58 @@ namespace DatenMeister.WPF.Forms.Base
         /// which should be matching to the treeview item
         /// </summary>
         /// <param name="availableTreeViewItem"></param>
-        /// <param name="itemsSource"></param>
+        /// <param name="item"></param>
         /// <exception cref="NotImplementedException"></exception>
-        private void UpdateTreeViewItem(TreeViewItem availableTreeViewItem, IObject? itemsSource)
+        private void UpdateTreeViewItem(TreeViewItem availableTreeViewItem, IObject item)
         {
-            availableTreeViewItem.Header = GetItemHeader(itemsSource);
-            availableTreeViewItem.Tag = itemsSource;
+            // Updates the current item
+            availableTreeViewItem.Header = GetItemHeader(item);
+            availableTreeViewItem.Tag = item;
 
-            if (availableTreeViewItem.ItemsSource is List<TreeViewItem> children)
+            var childrenOfItem = GetChildrenOfItem(item).ToList();
+            
+            if (availableTreeViewItem.ItemsSource is List<TreeViewItem> viewChildren)
             {
+                foreach (var viewChild in viewChildren.ToList())
+                {
+                    if (!(viewChild.Tag is IObject viewChildItem))
+                    {
+                        // If the tag is not an IObject, remove it
+                        // Should not happen, but who knows
+                        viewChildren.Remove(viewChild);
+                        continue;
+                    }
+                    
+                    // Checks, if the given element is in the children of Item
+                    if (childrenOfItem.FirstOrDefault(x => viewChildItem.@equals(x))
+                        is IObject found)
+                    {
+                        // If the element was found, add it
+                        UpdateTreeViewItem(viewChild, found);
+                        childrenOfItem.Remove(found);
+                    }
+                    else
+                    {
+                        // If the element is not found, remove it
+                        viewChildren.Remove(viewChild);
+                    }
+                }
                 
+                // Now add the items which are left
+                foreach (var child in childrenOfItem)
+                {
+                    if (child is null)
+                        continue;
+
+                    var createdTreeViewItem = CreateTreeViewItem(child);
+                    if (createdTreeViewItem != null)
+                    {
+                        viewChildren.Add(createdTreeViewItem);
+                    }
+                }
+
+                availableTreeViewItem.ItemsSource = viewChildren;
+                availableTreeViewItem.Items.Refresh();
             }
         }
 
@@ -351,7 +395,7 @@ namespace DatenMeister.WPF.Forms.Base
                 _mappingItems[extent] = treeViewItem;
                 var childModels = new List<TreeViewItem>();
                 var n = 0;
-                foreach (var element in extent.elements())
+                foreach (var element in GetChildrenOfItem(extent))
                 {
                     if (element == null) continue; // Skip the empty ones
                     
@@ -372,15 +416,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // Gets the properties
                 var childModels = new List<TreeViewItem>();
-                var propertiesForChildren =
-                    ShowAllChildren // Defines whether all children shall be shown
-                        ? (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>()
-                        : _defaultClassifierHints.GetPackagingPropertyNames(itemAsObject);
-
-                foreach (var property in propertiesForChildren)
+                foreach (var propertyValue in GetChildrenOfItem(itemAsObject))
                 {
-                    // Goes through the properties
-                    var propertyValue = itemAsObject.getOrDefault<object>(property, true);
                     if (propertyValue is IReflectiveCollection childItems)
                     {
                         // If, we have a collection of properties, add the enumeration of the properties
@@ -417,6 +454,48 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             return treeViewItem;
+        }
+
+        /// <summary>
+        /// Gets the children of the items as they would be listed in the tree.
+        /// This methods parsed extents and objects. 
+        /// </summary>
+        /// <param name="item">Item whose children are evaluated</param>
+        /// <returns>Enumeration of children</returns>
+        public IEnumerable<object?> GetChildrenOfItem(IObject item)
+        {
+            if (item is IExtent extent)
+            {
+                return extent.elements();
+            }
+
+            var result = new List<object>();
+            var propertiesForChildren =
+                ShowAllChildren // Defines whether all children shall be shown
+                    ? (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>()
+                    : _defaultClassifierHints.GetPackagingPropertyNames(item);
+            foreach (var property in propertiesForChildren)
+            {
+                // Goes through the properties
+                var propertyValue = item.getOrDefault<object>(property, true);
+                
+                if (propertyValue is IReflectiveCollection childItems)
+                {
+                    // If, we have a collection of properties, add the enumeration of the properties
+                    // to the treeview (as long as we don't have too many items)
+                    // Do not perform a resolving of the items
+                    foreach (var childItem in CollectionHelper.EnumerateWithNoResolving(childItems, true))
+                    {
+                        result.Add(childItem);
+                    }
+                }
+                else if (propertyValue is IElement element)
+                {
+                    result.Add(propertyValue);
+                }
+            }
+
+            return result;
         }
 
         private string GetItemHeader(object item)

@@ -20,7 +20,7 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the information whether the complete form is readonly
         /// </summary>
-        public bool IsReadOnly { get; set; }
+        public bool isReadOnly { get; set; }
 
         /// <summary>
         /// Indicate whether the meta information shall not be shown in the form.

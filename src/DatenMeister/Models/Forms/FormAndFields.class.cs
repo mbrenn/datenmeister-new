@@ -412,8 +412,8 @@ namespace DatenMeister.Models.Forms
             public static string @title = "title";
             public IElement? _title = null;
 
-            public static string @IsReadOnly = "IsReadOnly";
-            public IElement? _IsReadOnly = null;
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
@@ -449,8 +449,8 @@ namespace DatenMeister.Models.Forms
             public static string @title = "title";
             public IElement? _title = null;
 
-            public static string @IsReadOnly = "IsReadOnly";
-            public IElement? _IsReadOnly = null;
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
@@ -492,8 +492,8 @@ namespace DatenMeister.Models.Forms
             public static string @title = "title";
             public IElement? _title = null;
 
-            public static string @IsReadOnly = "IsReadOnly";
-            public IElement? _IsReadOnly = null;
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
@@ -517,8 +517,8 @@ namespace DatenMeister.Models.Forms
             public static string @title = "title";
             public IElement? _title = null;
 
-            public static string @IsReadOnly = "IsReadOnly";
-            public IElement? _IsReadOnly = null;
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;

@@ -699,6 +699,8 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationHost = NavigationHost
             };
 
+            tabForm.set(_FormAndFields._Form.isReadOnly, true);
+
             control.SetContent(value, tabForm, container);
             control.ElementSaved += (x, y) => MessageBox.Show("Element saved.");
             return control;

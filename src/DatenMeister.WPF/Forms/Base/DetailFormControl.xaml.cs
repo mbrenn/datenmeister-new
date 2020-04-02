@@ -427,10 +427,12 @@ namespace DatenMeister.WPF.Forms.Base
             if (fields == null) throw new ArgumentNullException(nameof(fields));
             if (DetailElement == null) throw new InvalidOperationException("DetailElement == null");
 
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true;
+
             var anyFocused = false;
             foreach (var field in fields.Cast<IElement>())
             {
-                var flags = new FieldParameter();
+                var flags = new FieldParameter {IsReadOnly = isFormReadOnly};
 
                 var (detailElement, contentBlock) =
                     FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
@@ -440,7 +442,8 @@ namespace DatenMeister.WPF.Forms.Base
                     if (!flags.IsSpanned)
                     {
                         var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
-                        var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+                        var isReadOnly = 
+                            field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly) || isFormReadOnly;
 
                         // Sets the title block
                         var titleBlock = new TextBlock

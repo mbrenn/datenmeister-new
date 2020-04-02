@@ -394,8 +394,6 @@ namespace DatenMeister.Models.Forms
             public IElement @__Detail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-Detail");
             public static string @TreeItemExtent = "TreeItemExtent";
             public IElement @__TreeItemExtent = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemExtent");
-            public static string @TreeItemList = "TreeItemList";
-            public IElement @__TreeItemList = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemList");
             public static string @TreeItemDetail = "TreeItemDetail";
             public IElement @__TreeItemDetail = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FormType-TreeItemDetail");
             public static string @ObjectList = "ObjectList";
@@ -413,6 +411,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @title = "title";
             public IElement? _title = null;
+
+            public static string @IsReadOnly = "IsReadOnly";
+            public IElement? _IsReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
@@ -447,6 +448,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @title = "title";
             public IElement? _title = null;
+
+            public static string @IsReadOnly = "IsReadOnly";
+            public IElement? _IsReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
@@ -488,6 +492,9 @@ namespace DatenMeister.Models.Forms
             public static string @title = "title";
             public IElement? _title = null;
 
+            public static string @IsReadOnly = "IsReadOnly";
+            public IElement? _IsReadOnly = null;
+
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
 
@@ -509,6 +516,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @title = "title";
             public IElement? _title = null;
+
+            public static string @IsReadOnly = "IsReadOnly";
+            public IElement? _IsReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;

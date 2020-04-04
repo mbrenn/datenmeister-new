@@ -81,6 +81,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     _contentBlock.VerticalAlignment = VerticalAlignment.Top;
                     _contentBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                     _contentBlock.TextWrapping = TextWrapping.Wrap;
+                    _contentBlock.AcceptsReturn = true;
                 }
 
                 fieldFlags.CanBeFocused = true;

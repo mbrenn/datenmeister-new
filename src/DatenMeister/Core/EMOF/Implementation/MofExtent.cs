@@ -26,7 +26,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the configuration for the extent
         /// </summary>
-        public ExtentConfiguration ExtentConfiguration { get; } = new ExtentConfiguration();
+        public ExtentConfiguration ExtentConfiguration { get; }
         
         /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes.
@@ -120,6 +120,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             MetaXmiElement = new MofObject(
                 new XmiProviderObject(new XElement("meta"), rootProvider),
                 this);
+            ExtentConfiguration = new ExtentConfiguration(this);
         }
 
         /// <inheritdoc />
@@ -267,7 +268,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Resolves the DotNetType by navigating through the current and the meta instances.
         /// </summary>
         /// <param name="metaclassUri">Uri class to be retrieved</param>
-        /// <param name="resolveType">The resolveing strategy</param>
+        /// <param name="resolveType">The resolving strategy</param>
         /// <returns>Resolved .Net Type as IElement</returns>
         public Type? ResolveDotNetType(string metaclassUri, ResolveType resolveType)
         {

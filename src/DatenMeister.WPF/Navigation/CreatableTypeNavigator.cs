@@ -36,7 +36,7 @@ namespace DatenMeister.WPF.Navigation
             var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
-            var defaultTypePackage = extent?.GetDefaultTypePackages()?.ToList();
+            var defaultTypePackage = extent?.GetConfiguration().GetDefaultTypePackages()?.ToList();
             IWorkspace? metaWorkspace = null;
             IExtent? metaExtent = null;
             if (defaultTypePackage == null || !defaultTypePackage.Any())

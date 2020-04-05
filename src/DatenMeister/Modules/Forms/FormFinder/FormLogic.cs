@@ -81,7 +81,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     // Creates the internal views for the DatenMeister
                     var dotNetUriExtent =
                         new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalFormExtent);
-                    dotNetUriExtent.SetExtentType(FormExtentType);
+                    dotNetUriExtent.GetConfiguration().SetExtentType(FormExtentType);
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     break;
 
@@ -102,7 +102,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
                                         throw new InvalidOperationException("FormAndFields not found");
 
-                    extent.AddDefaultTypePackages(new[] {formAndFields.__Form, formAndFields.__FormAssociation});
+                    extent.GetConfiguration().AddDefaultTypePackages(new[] {formAndFields.__Form, formAndFields.__FormAssociation});
                     break;
             }
         }
@@ -366,7 +366,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     {
                         metaClass = (element as IElement)?.getMetaClass(),
                         FormType = FormType.Detail,
-                        extentType = extent == null ? string.Empty : extent.GetExtentType()
+                        extentType = extent == null ? string.Empty : extent.GetConfiguration().GetExtentType()
                     }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -389,7 +389,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
-                        extentType = extent.GetExtentType(),
+                        extentType = extent.GetConfiguration().GetExtentType(),
                         FormType = FormType.TreeItemExtent
                     }).FirstOrDefault();
 
@@ -443,7 +443,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
-                        extentType = extent.GetExtentType(),
+                        extentType = extent.GetConfiguration().GetExtentType(),
                         FormType = FormType.TreeItemExtent,
                         metaClass = metaClass
                     }).FirstOrDefault();
@@ -484,7 +484,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
-                        extentType = (element as IHasExtent)?.Extent?.GetExtentType() ?? string.Empty,
+                        extentType = (element as IHasExtent)?.Extent?.GetConfiguration().GetExtentType() ?? string.Empty,
                         FormType = FormType.ObjectList
                     }).FirstOrDefault();
 
@@ -538,7 +538,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var viewFinder = new FormFinder(this);
                 var foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
-                    extentType = extent.GetExtentType(),
+                    extentType = extent.GetConfiguration().GetExtentType(),
                     metaClass = (element as IElement)?.getMetaClass(),
                     FormType = FormType.TreeItemDetail
                 }).FirstOrDefault();
@@ -583,7 +583,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var viewFinder = new FormFinder(this);
                 var foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
-                    extentType = extent.GetExtentType(),
+                    extentType = extent.GetConfiguration().GetExtentType(),
                     metaClass = metaClass,
                     FormType = FormType.TreeItemDetail,
                     parentProperty = propertyName,

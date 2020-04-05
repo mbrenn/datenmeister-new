@@ -105,12 +105,12 @@ namespace DatenMeister.Modules.ZipExample
             var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
                                ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");
             
-            loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
+            loadedExtent.GetConfiguration().SetExtentType("DatenMeister.Example.ZipCodes");
 
             if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
                 "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
             {
-                loadedExtent.SetDefaultTypePackages(new[] {zipCodeTypePackage});
+                loadedExtent.GetConfiguration().SetDefaultTypePackages(new[] {zipCodeTypePackage});
             }
             else
             {

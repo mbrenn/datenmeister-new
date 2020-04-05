@@ -82,7 +82,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
                 : info.NavigationGuest as ItemExplorerControl;
             
             var isCorrect = extentList != null &&
-                            extentList.Extent.GetExtentType() == rootExtentType;
+                            extentList.Extent.GetConfiguration().GetExtentType() == rootExtentType;
 
             return isCorrect ? extentList : null;
             
@@ -115,7 +115,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
             
             var extentList = info.NavigationGuest as ItemsInExtentList;
             var isCorrect = extentList != null &&
-                            extentList.Extent.GetExtentType() == extentType;
+                            extentList.Extent.GetConfiguration().GetExtentType() == extentType;
 
             return isCorrect ? extentList : null;
         }

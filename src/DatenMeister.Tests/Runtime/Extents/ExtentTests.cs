@@ -71,7 +71,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var extentLoader = dm.Resolve<IExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
                 loadedExtent.set("test", "this is a test");
-                loadedExtent.SetExtentType("Happy Extent");
+                loadedExtent.GetConfiguration().SetExtentType("Happy Extent");
                 extentLoader.StoreExtent(loadedExtent);
 
                 dm.UnuseDatenMeister();
@@ -84,7 +84,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Assert.That(foundExtent, Is.Not.Null);
 
                 Assert.That(foundExtent.get("test"), Is.EqualTo("this is a test"));
-                Assert.That(foundExtent.GetExtentType(), Is.EqualTo("Happy Extent"));
+                Assert.That(foundExtent.GetConfiguration().GetExtentType(), Is.EqualTo("Happy Extent"));
 
                 dm.UnuseDatenMeister();
             }
@@ -104,7 +104,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var dataWorkspace = workspaceLogic.GetDataWorkspace();
 
             var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
-            var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            var setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
 
             Assert.That(setDefaultTypePackage, Is.Not.Null);
             Assert.That(zipCodeModel, Is.Not.Null);
@@ -129,27 +129,27 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipExample = zipCodeExample.AddZipCodeExample(dataWorkspace);
 
             // Per Default, one is included
-            var setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            var setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
             Assert.That(setDefaultTypePackage, Is.Not.Null);
             Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
             Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
             // Checks, if adding another one does not work
-            zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
-            setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            zipExample.GetConfiguration().AddDefaultTypePackages(new[] {zipCodeModel});
+            setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
             Assert.That(setDefaultTypePackage, Is.Not.Null);
             Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
             Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
 
             // Checks, if removing works
-            zipExample.SetDefaultTypePackages(new IElement[] { });
-            setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            zipExample.GetConfiguration().SetDefaultTypePackages(new IElement[] { });
+            setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
             Assert.That(setDefaultTypePackage, Is.Not.Null);
             Assert.That(setDefaultTypePackage.Count, Is.EqualTo(0));
 
             // Checks, if adding works now correctly
-            zipExample.AddDefaultTypePackages(new[] {zipCodeModel});
-            setDefaultTypePackage = zipExample.GetDefaultTypePackages()?.ToList();
+            zipExample.GetConfiguration().AddDefaultTypePackages(new[] {zipCodeModel});
+            setDefaultTypePackage = zipExample.GetConfiguration().GetDefaultTypePackages()?.ToList();
             Assert.That(setDefaultTypePackage, Is.Not.Null);
             Assert.That(setDefaultTypePackage.Count, Is.EqualTo(1));
             Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
@@ -176,8 +176,8 @@ namespace DatenMeister.Tests.Runtime.Extents
                         filePath = "./test.xmi"
                     }, ExtentCreationFlags.LoadOrCreate);
 
-                csvExtent.SetExtentType("CSVExtent");
-                mofExtent.SetExtentType("XMIExtent");
+                csvExtent.GetConfiguration().SetExtentType("CSVExtent");
+                mofExtent.GetConfiguration().SetExtentType("XMIExtent");
 
                 dm.UnuseDatenMeister();
             }
@@ -191,8 +191,8 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Assert.That(csvExtent, Is.Not.Null);
                 Assert.That(xmiExtent, Is.Not.Null);
 
-                Assert.That(csvExtent.GetExtentType(), Is.EqualTo("CSVExtent"));
-                Assert.That(xmiExtent.GetExtentType(), Is.EqualTo("XMIExtent"));
+                Assert.That(csvExtent.GetConfiguration().GetExtentType(), Is.EqualTo("CSVExtent"));
+                Assert.That(xmiExtent.GetConfiguration().GetExtentType(), Is.EqualTo("XMIExtent"));
 
                 dm.UnuseDatenMeister();
             }

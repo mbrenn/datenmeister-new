@@ -35,8 +35,8 @@ namespace DatenMeister.Provider.ManagementProviders
 
             AddMapping(
                 "extentType",
-                e => (e as MofExtent)?.GetExtentType(),
-                (e, v) => (e as MofExtent)?.SetExtentType(v?.ToString() ?? string.Empty));
+                e => (e as MofExtent)?.GetConfiguration().GetExtentType(),
+                (e, v) => (e as MofExtent)?.GetConfiguration().SetExtentType(v?.ToString() ?? string.Empty));
 
             AddMapping(
                 "isModified",

@@ -64,6 +64,11 @@ namespace DatenMeister.WPF.Forms.Base
         private string? _internalTitle;
 
         private IObject? _effectiveForm;
+        
+        /// <summary>
+        /// Gets the form parameter for the detail form
+        /// </summary>
+        public FormParameter? FormParameter { get; private set; }
 
         public DetailFormControl()
         {
@@ -372,11 +377,12 @@ namespace DatenMeister.WPF.Forms.Base
             OnViewDefined();
         }
 
-        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection? collection = null)
+        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection? collection = null, FormParameter? formParameter = null)
         {
             DetailElement = value;
             EffectiveForm = detailForm;
             DetailElementContainer = collection;
+            FormParameter = formParameter;
             UpdateView();
         }
 
@@ -427,10 +433,13 @@ namespace DatenMeister.WPF.Forms.Base
             if (fields == null) throw new ArgumentNullException(nameof(fields));
             if (DetailElement == null) throw new InvalidOperationException("DetailElement == null");
 
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true
+                                 || FormParameter?.IsReadOnly == true;
+
             var anyFocused = false;
             foreach (var field in fields.Cast<IElement>())
             {
-                var flags = new FieldParameter();
+                var flags = new FieldParameter {IsReadOnly = isFormReadOnly};
 
                 var (detailElement, contentBlock) =
                     FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
@@ -440,7 +449,8 @@ namespace DatenMeister.WPF.Forms.Base
                     if (!flags.IsSpanned)
                     {
                         var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
-                        var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+                        var isReadOnly = 
+                            field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly) || isFormReadOnly;
 
                         // Sets the title block
                         var titleBlock = new TextBlock

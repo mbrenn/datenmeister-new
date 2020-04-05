@@ -583,6 +583,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.Form._title = value;
                                 }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.Form._isReadOnly = value;
+                                }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.Form._hideMetaInformation = value;
@@ -629,6 +633,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "title") // Looking for property
                                 {
                                     tree.DetailForm._title = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.DetailForm._isReadOnly = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -685,6 +693,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._title = value;
                                 }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.ListForm._isReadOnly = value;
+                                }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.ListForm._hideMetaInformation = value;
@@ -715,6 +727,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "title") // Looking for property
                                 {
                                     tree.ExtentForm._title = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.ExtentForm._isReadOnly = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {

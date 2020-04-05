@@ -30,7 +30,8 @@ namespace DatenMeister.WPF.Forms.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DropDownFieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DropDownFieldData.isReadOnly)
+                || fieldFlags.IsReadOnly;
 
             _propertyValue = null;
             if (value.isSet(_name))

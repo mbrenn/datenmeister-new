@@ -25,7 +25,8 @@ namespace DatenMeister.WPF.Forms.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+                || fieldFlags.IsReadOnly;
             
             _valueText = string.Empty;
             if (!string.IsNullOrEmpty(_name) && value.isSet(_name))

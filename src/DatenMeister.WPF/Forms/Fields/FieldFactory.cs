@@ -100,5 +100,21 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Gets or sets the information whether the element is spanned through the complete row
         /// </summary>
         public bool IsSpanned { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the information whether the field shall be readonly despite the form settings
+        /// </summary>
+        public bool IsReadOnly { get; set; }
+    }
+
+    /// <summary>
+    /// Stores the form parameter
+    /// </summary>
+    public class FormParameter
+    {
+        /// <summary>
+        /// Gets or sets the flag whether the fields are read-only
+        /// </summary>
+        public bool IsReadOnly { get; set; }
     }
 }

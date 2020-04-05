@@ -22,6 +22,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -699,7 +700,9 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationHost = NavigationHost
             };
 
-            control.SetContent(value, tabForm, container);
+            var formParameter = new FormParameter {IsReadOnly = true};
+
+            control.SetContent(value, tabForm, container, formParameter);
             control.ElementSaved += (x, y) => MessageBox.Show("Element saved.");
             return control;
         }

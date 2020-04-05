@@ -18,6 +18,9 @@ namespace DatenMeister.WPF.Forms.Fields
 
         public UIElement? CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
         {
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._AnyDataFieldData.isReadOnly) ||
+                             fieldFlags.IsReadOnly;
+            
             var groupName = StringManipulation.RandomString(10);
             var stackPanel = new StackPanel
                 {Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch};
@@ -66,12 +69,12 @@ namespace DatenMeister.WPF.Forms.Fields
 
             if (elementValue != null && DotNetHelper.IsOfPrimitiveType(elementValue))
             {
-                _textRadioButton.IsChecked = true;
+                _textRadioButton.IsChecked = !isReadOnly;
                 _textBoxForString.Text = elementValue.ToString();
             }
             else
             {
-                _referenceRadioButton.IsChecked = true;
+                _referenceRadioButton.IsChecked = !isReadOnly;
                 _referenceField.SetSelectedValue(elementValue);
                 _textBoxForString.IsEnabled = false;
             }
@@ -79,12 +82,12 @@ namespace DatenMeister.WPF.Forms.Fields
             _referenceRadioButton.Checked += (x, y) =>
             {
                 _textBoxForString.IsEnabled = false;
-                _referenceField.IsEnabled = true;
+                _referenceField.IsEnabled = !isReadOnly;
             };
 
             _textRadioButton.Checked += (x, y) =>
             {
-                _textBoxForString.IsEnabled = true;
+                _textBoxForString.IsEnabled = !isReadOnly;
                 _referenceField.IsEnabled = false;
             };
             

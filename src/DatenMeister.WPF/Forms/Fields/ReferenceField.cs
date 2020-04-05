@@ -93,7 +93,8 @@ namespace DatenMeister.WPF.Forms.Fields
             var navigationHost = detailForm.NavigationHost;
             
             _isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isReadOnly)
+                || fieldFlags.IsReadOnly;
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
             _detailFormControl = detailForm;
             _element = element;

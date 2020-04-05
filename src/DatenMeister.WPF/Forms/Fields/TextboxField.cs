@@ -25,7 +25,8 @@ namespace DatenMeister.WPF.Forms.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
             
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+                || fieldFlags.IsReadOnly;
             var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
             var height = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.lineHeight);
 

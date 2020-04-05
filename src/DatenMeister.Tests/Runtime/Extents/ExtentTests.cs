@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ZipExample;
@@ -110,6 +111,45 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(zipCodeModel, Is.Not.Null);
 
             Assert.That(setDefaultTypePackage.FirstOrDefault(), Is.EqualTo(zipCodeModel));
+        }
+
+        [Test]
+        public void TestAutoEnumerateType()
+        {
+            var path = "./test.xmi";
+            var loaderConfig = new XmiStorageConfiguration("datenmeister:///data")
+            {
+                filePath = path,
+                workspaceId = WorkspaceNames.NameData
+            };
+
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
+                var extentLoader = dm.Resolve<IExtentManager>();
+                var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
+                loadedExtent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
+                extentLoader.StoreExtent(loadedExtent);
+
+                dm.UnuseDatenMeister();
+            }
+
+            using (var dm = DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
+            {
+                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+                var foundExtent = workspaceLogic.FindExtent("datenmeister:///data");
+                Assert.That(foundExtent, Is.Not.Null);
+                Assert.That(foundExtent.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Ordinal));
+                
+                foundExtent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Guid;
+                Assert.That(foundExtent.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Guid));
+
+                dm.UnuseDatenMeister();
+            }
         }
 
         [Test]

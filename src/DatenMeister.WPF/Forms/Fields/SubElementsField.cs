@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Fields
         private string _propertyName = string.Empty;
         private ItemListViewControl? _listViewControl;
         private bool _includeSpecializationsForDefaultTypes;
-        private FieldParameter _fieldFlags;
+        private FieldParameter? _fieldFlags;
 
         /// <summary>
         /// Creates the element
@@ -92,7 +92,7 @@ namespace DatenMeister.WPF.Forms.Fields
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
             var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
             var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly)
-                || _fieldFlags.IsReadOnly;
+                || _fieldFlags?.IsReadOnly == true;
             _includeSpecializationsForDefaultTypes =
                 _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData
                     .includeSpecializationsForDefaultTypes);

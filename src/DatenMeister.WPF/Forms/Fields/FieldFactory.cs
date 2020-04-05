@@ -106,4 +106,15 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         public bool IsReadOnly { get; set; }
     }
+
+    /// <summary>
+    /// Stores the form parameter
+    /// </summary>
+    public class FormParameter
+    {
+        /// <summary>
+        /// Gets or sets the flag whether the fields are read-only
+        /// </summary>
+        public bool IsReadOnly { get; set; }
+    }
 }

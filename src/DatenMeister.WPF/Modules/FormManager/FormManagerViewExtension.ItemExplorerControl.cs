@@ -124,7 +124,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                     if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
                     {
-                        var selectedExtentType = selectedExtent.GetConfiguration().GetExtentType();
+                        var selectedExtentType = selectedExtent.GetConfiguration().ExtentType;
                         if (string.IsNullOrEmpty(selectedExtentType))
                         {
                             MessageBox.Show("Given Extent does not contain an extent type, so rule cannot be created");
@@ -168,7 +168,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 {
                     if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
                     {
-                        var selectedExtentType = selectedExtent.GetConfiguration().GetExtentType();
+                        var selectedExtentType = selectedExtent.GetConfiguration().ExtentType;
                         if (string.IsNullOrEmpty(selectedExtentType))
                         {
                             MessageBox.Show("Given Extent does not contain an extent type, so rule cannot be created");
@@ -205,7 +205,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             if (rootItem != null)
             {
                 var extent = rootItem.GetExtentOf();
-                var extentType = extent?.GetConfiguration().GetExtentType();
+                var extentType = extent?.GetConfiguration().ExtentType;
                 if (extentType == FormLogic.FormExtentType)
                 {
                     yield return new ItemMenuButtonDefinition(

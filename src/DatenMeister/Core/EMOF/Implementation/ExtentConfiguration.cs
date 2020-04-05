@@ -20,8 +20,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Saves the type of the extent
         /// </summary>
-        private const string ExtentType = "__ExtentType";
+        private const string ExtentTypeProperty = "__ExtentType";
 
+
+        /// <summary>
+        /// Saves the type of the extent
+        /// </summary>
+        private const string AutoEnumerateTypeProperty = "__AutoEnumerateType";
         /// <summary>
         /// Stores the extent
         /// </summary>
@@ -39,22 +44,20 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Defines the type of the enumeration being used for properties with 'IsID == true'
         /// </summary>
-        public AutoEnumerateType AutoEnumerateType { get; set; } = AutoEnumerateType.Ordinal;
+        public AutoEnumerateType AutoEnumerateType
+        {
+            get => _extent.getOrDefault<AutoEnumerateType>(AutoEnumerateTypeProperty);
+            set => _extent.set(AutoEnumerateTypeProperty, value);
+        }
+
 
         /// <summary>
         /// Gets the extent type
         /// </summary>
-        public string GetExtentType()
-            => _extent?.getOrDefault<string>(ExtentType) ?? string.Empty;
-
-
-        /// <summary>
-        /// Sets the extent type
-        /// </summary>
-        /// <param name="extentType">Type of the extent to be set</param>
-        public void SetExtentType(string extentType)
+        public string ExtentType
         {
-            _extent.set(ExtentType, extentType);
+            get => _extent?.getOrDefault<string>(ExtentTypeProperty) ?? string.Empty;
+            set => _extent.set(ExtentTypeProperty, value);
         }
 
         /// <summary>

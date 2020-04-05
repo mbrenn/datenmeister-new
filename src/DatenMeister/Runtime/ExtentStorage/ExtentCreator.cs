@@ -65,7 +65,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 if (extentType != null && foundExtent != null)
                 {
-                    foundExtent.GetConfiguration().SetExtentType(extentType);
+                    foundExtent.GetConfiguration().ExtentType = extentType;
                 }
 
                 return (IUriExtent?) foundExtent;

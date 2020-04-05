@@ -88,7 +88,7 @@ namespace DatenMeister.Modules.TypeSupport
                 new InMemoryProvider(),
                 WorkspaceNames.UriInternalTypesExtent);
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
-            extentTypes.GetConfiguration().SetExtentType("Uml.Classes");
+            extentTypes.GetConfiguration().ExtentType = "Uml.Classes";
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
         }
 

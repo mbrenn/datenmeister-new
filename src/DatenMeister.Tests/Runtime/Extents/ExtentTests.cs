@@ -71,7 +71,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 var extentLoader = dm.Resolve<IExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
                 loadedExtent.set("test", "this is a test");
-                loadedExtent.GetConfiguration().SetExtentType("Happy Extent");
+                loadedExtent.GetConfiguration().ExtentType = "Happy Extent";
                 extentLoader.StoreExtent(loadedExtent);
 
                 dm.UnuseDatenMeister();
@@ -84,7 +84,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Assert.That(foundExtent, Is.Not.Null);
 
                 Assert.That(foundExtent.get("test"), Is.EqualTo("this is a test"));
-                Assert.That(foundExtent.GetConfiguration().GetExtentType(), Is.EqualTo("Happy Extent"));
+                Assert.That(foundExtent.GetConfiguration().ExtentType, Is.EqualTo("Happy Extent"));
 
                 dm.UnuseDatenMeister();
             }
@@ -176,8 +176,8 @@ namespace DatenMeister.Tests.Runtime.Extents
                         filePath = "./test.xmi"
                     }, ExtentCreationFlags.LoadOrCreate);
 
-                csvExtent.GetConfiguration().SetExtentType("CSVExtent");
-                mofExtent.GetConfiguration().SetExtentType("XMIExtent");
+                csvExtent.GetConfiguration().ExtentType = "CSVExtent";
+                mofExtent.GetConfiguration().ExtentType = "XMIExtent";
 
                 dm.UnuseDatenMeister();
             }
@@ -191,8 +191,8 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Assert.That(csvExtent, Is.Not.Null);
                 Assert.That(xmiExtent, Is.Not.Null);
 
-                Assert.That(csvExtent.GetConfiguration().GetExtentType(), Is.EqualTo("CSVExtent"));
-                Assert.That(xmiExtent.GetConfiguration().GetExtentType(), Is.EqualTo("XMIExtent"));
+                Assert.That(csvExtent.GetConfiguration().ExtentType, Is.EqualTo("CSVExtent"));
+                Assert.That(xmiExtent.GetConfiguration().ExtentType, Is.EqualTo("XMIExtent"));
 
                 dm.UnuseDatenMeister();
             }

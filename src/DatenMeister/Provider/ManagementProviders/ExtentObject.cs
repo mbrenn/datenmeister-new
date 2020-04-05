@@ -35,10 +35,16 @@ namespace DatenMeister.Provider.ManagementProviders
 
             AddMapping(
                 "extentType",
-                e => (e as MofExtent)?.GetConfiguration().GetExtentType(),
-                (e, v) => (e as MofExtent)?.GetConfiguration().SetExtentType(v?.ToString() ?? string.Empty));
+                e => (e as MofExtent)?.GetConfiguration().ExtentType,
+                (e, v) =>
+                {
+                    if (e is MofExtent mofExtent)
+                    {
+                        mofExtent.GetConfiguration().ExtentType = v?.ToString() ?? string.Empty;
+                    }
+                });
 
-            AddMapping(
+        AddMapping(
                 "isModified",
                 e => (e as MofExtent)?.IsModified == true,
                 (e, v) => throw new InvalidOperationException("isModified cannot be set"));

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DatenMeister.Core.EMOF.Implementation
+namespace DatenMeister.Core.EMOF.Implementation.DotNet
 {
     /// <summary>
     /// Implements a lookup from MOF metaclassUri to dotnet type and vice

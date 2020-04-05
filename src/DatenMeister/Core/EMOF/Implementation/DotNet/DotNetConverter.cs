@@ -9,7 +9,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Core.EMOF.Implementation
+namespace DatenMeister.Core.EMOF.Implementation.DotNet
 {
     /// <summary>
     /// A supporting class, that converts a .Net Element to a MOF object or a MOF object to a .Net Object

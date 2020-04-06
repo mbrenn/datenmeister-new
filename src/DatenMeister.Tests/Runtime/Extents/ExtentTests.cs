@@ -2,10 +2,12 @@
 using System.IO;
 using System.Linq;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.InMemory;
@@ -156,6 +158,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestAddDefaultExtentType()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
@@ -270,6 +273,107 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That((element1 as IHasId)?.Id, Is.EqualTo("name"));
             Assert.That((element2 as IHasId)?.Id, Is.Not.EqualTo("name"));
             Assert.That((element2 as IHasId)?.Id, Contains.Substring("name"));
+        }
+
+        [Test]
+        public static void TestAutoEnumerateGuidProperty()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            
+            var extent = CreateType(dm, out var type);
+
+            var extentFactory = new MofFactory(extent);
+
+            extent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Guid;
+            var createdType = extentFactory.create(type);
+            Assert.That(createdType, Is.Not.Null);
+            Assert.That(createdType.getOrDefault<string>("id"), Is.Not.Null);
+
+            var id = createdType.getOrDefault<string>("id");
+            Assert.That(id.Length, Is.EqualTo(36));
+                
+                
+            var createdType2 = extentFactory.create(type);
+            Assert.That(createdType2, Is.Not.Null);
+            Assert.That(createdType2.getOrDefault<string>("id"), Is.Not.Null);
+
+            var id2 = createdType2.getOrDefault<string>("id");
+            Assert.That(id2.Length, Is.EqualTo(36));
+            Assert.That(id2, Is.Not.EqualTo(id));
+        }
+
+
+        [Test]
+        public static void TestAutoEnumerateOrdinalProperty()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var extent = CreateType(dm, out var type);
+
+            var extentFactory = new MofFactory(extent);
+
+            extent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
+            var createdType = extentFactory.create(type);
+            Assert.That(createdType, Is.Not.Null);
+            Assert.That(createdType.getOrDefault<string>("id"), Is.Not.Null);
+
+            var id = createdType.getOrDefault<int>("id");
+            Assert.That(id, Is.EqualTo(1));
+                
+                
+            var createdType2 = extentFactory.create(type);
+            Assert.That(createdType2, Is.Not.Null);
+            Assert.That(createdType2.getOrDefault<int>("id"), Is.Not.Null);
+
+            var id2 = createdType2.getOrDefault<int>("id");
+            Assert.That(id2, Is.EqualTo(2));
+            
+            extent.unset(AutoEnumerateHandler.AutoEnumerateTypeValue);
+            
+            
+            var createdType3 = extentFactory.create(type);
+            Assert.That(createdType3, Is.Not.Null);
+            Assert.That(createdType3.getOrDefault<int>("id"), Is.Not.Null);
+
+            var id3 = createdType3.getOrDefault<int>("id");
+            Assert.That(id3, Is.EqualTo(1));
+
+            extent.elements().add(createdType);
+            extent.elements().add(createdType2);
+            extent.elements().add(createdType3);
+            
+            extent.unset(AutoEnumerateHandler.AutoEnumerateTypeValue);
+            
+            var createdType4 = extentFactory.create(type);
+            Assert.That(createdType4, Is.Not.Null);
+            Assert.That(createdType4.getOrDefault<int>("id"), Is.Not.Null);
+            
+
+            var id4 = createdType4.getOrDefault<int>("id");
+            Assert.That(id4, Is.EqualTo(3));
+        }
+
+        private static MofExtent CreateType(IDatenMeisterScope dm, out IElement type)
+        {
+            var uml = dm.WorkspaceLogic.GetUmlData();
+            var localTypeSupport = dm.Resolve<LocalTypeSupport>();
+            var userTypes = localTypeSupport.GetUserTypeExtent();
+            var factory = new MofFactory(userTypes);
+
+            var extent = new MofUriExtent(new InMemoryProvider());
+
+            type = factory.create(uml.StructuredClassifiers.__Class);
+            var property1 = factory.create(uml.Classification.__Property);
+            property1.set(_UML._Classification._Property.isID, true);
+            property1.set(_UML._CommonStructure._NamedElement.name, "id");
+            
+            var property2 = factory.create(uml.Classification.__Property);
+            property2.set(_UML._CommonStructure._NamedElement.name, "name");
+
+            type.set(_UML._StructuredClassifiers._StructuredClassifier.ownedAttribute, new[] {property1, property2});
+            type.set(_UML._CommonStructure._NamedElement.name, "your");
+
+            userTypes.elements().add(type);
+            return extent;
         }
     }
 }

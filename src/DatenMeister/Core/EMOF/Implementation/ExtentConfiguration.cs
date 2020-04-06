@@ -21,12 +21,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Saves the type of the extent
         /// </summary>
         private const string ExtentTypeProperty = "__ExtentType";
-
-
-        /// <summary>
-        /// Saves the type of the extent
-        /// </summary>
-        private const string AutoEnumerateTypeProperty = "__AutoEnumerateType";
         /// <summary>
         /// Stores the extent
         /// </summary>
@@ -46,8 +40,8 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public AutoEnumerateType AutoEnumerateType
         {
-            get => _extent.getOrDefault<AutoEnumerateType>(AutoEnumerateTypeProperty);
-            set => _extent.set(AutoEnumerateTypeProperty, value);
+            get => _extent.getOrDefault<AutoEnumerateType>(AutoEnumerateHandler.AutoEnumerateTypeProperty);
+            set => _extent.set(AutoEnumerateHandler.AutoEnumerateTypeProperty, value);
         }
 
 

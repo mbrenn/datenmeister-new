@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
@@ -17,6 +18,10 @@ namespace DatenMeister.WPF.Modules.TypeManager
 {
     public class TypeManagerViewExtension : IViewExtensionFactory
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(TypeManagerViewExtension)); 
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionInfo viewExtensionInfo)
         {
@@ -41,10 +46,14 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 var extent = itemExplorerControl.Extent.GetExtentOf();
                 if (extent != null)
                 {
-                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                        if (classMetaClass == null)
-                            throw new InvalidOperationException("Class could not be found");
+                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
 
+                    if (classMetaClass == null)
+                    {
+                        Logger.Warn("UML Classes not found in meta extent");
+                    }
+                    else
+                    {
                         yield return new NewInstanceViewDefinition(classMetaClass);
 
                         yield return new ApplicationMenuButtonDefinition(
@@ -56,6 +65,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                                     classMetaClass),
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");
+                    }
                 }
             }
 
@@ -66,18 +76,25 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 if (extent != null)
                 {
                     var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                    if (classMetaClass == null) throw new InvalidOperationException("Class not found");
-                    
-                    yield return
-                        new CollectionMenuButtonDefinition(
-                            "Create new Class",
-                            async (x) =>
-                                await NavigatorForItems.NavigateToNewItemForExtent(
-                                    navigationHost,
-                                    listControl.Extent,
-                                    classMetaClass),
-                            string.Empty,
-                            NavigationCategories.Type);
+
+
+                    if (classMetaClass == null)
+                    {
+                        Logger.Warn("UML Classes not found in meta extent");
+                    }
+                    else
+                    {
+                        yield return
+                            new CollectionMenuButtonDefinition(
+                                "Create new Class",
+                                async (x) =>
+                                    await NavigatorForItems.NavigateToNewItemForExtent(
+                                        navigationHost,
+                                        listControl.Extent,
+                                        classMetaClass),
+                                string.Empty,
+                                NavigationCategories.Type);
+                    }
                 }
             }
 
@@ -97,7 +114,6 @@ namespace DatenMeister.WPF.Modules.TypeManager
                             var propertyMetaClass = extent.FindInMeta<_UML>(x => x.Classification.__Property);
                             if (propertyMetaClass != null)
                             {
-
                                 yield return new NewInstanceViewDefinition(propertyMetaClass);
 
                                 yield return

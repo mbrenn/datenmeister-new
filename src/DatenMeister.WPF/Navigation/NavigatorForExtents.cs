@@ -16,6 +16,7 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.ExtentStorage.Validators;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Forms.Lists;
 using MessageBox = System.Windows.MessageBox;
 
@@ -75,9 +76,17 @@ namespace DatenMeister.WPF.Navigation
         {
             if (extent is MofExtent mofExtent)
             {
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+                var managementWorkspace = workspaceLogic.GetManagementWorkspace();
+                var resolvedForm = managementWorkspace.Resolve("datenmeister:///management/forms/internal#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
+                var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
+                {
+                    Form = new FormDefinition(resolvedForm)
+                };
+                
                 return await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
-                    mofExtent.GetMetaObject());
+                    config);
             }
 
             return await NavigatorForItems.NavigateToElementDetailView(

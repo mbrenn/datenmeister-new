@@ -133,6 +133,16 @@ namespace DatenMeister.WPF.Windows
             NavigationMode navigationMode)
             => await Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
 
+
+        /// <summary>
+        /// Forces the generation of the form via the form creator
+        /// </summary>
+        public void ForceAutoGenerationOfForm()
+        {
+            RequestedFormDefinition = new FormDefinition(FormDefinitionMode.ViaFormCreator);
+            RecreateView();
+        }
+
         /// <summary>
         /// Rebuilds the navigation by going through all view extensions
         /// </summary>

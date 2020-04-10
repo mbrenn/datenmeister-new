@@ -33,8 +33,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var result = _factory.create(_formAndFields.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
             var propertyName = property != null ? realPropertyName : "List";
+            
+            var title = 
+                (metaClass != null ? NamedElementMethods.GetName(metaClass) : string.Empty) +
+                (metaClass != null && property != null ? " - " : "") +
+                (property != null ? NamedElementMethods.GetName(property) : "");
 
-            result.set(_FormAndFields._ListForm.title, propertyName);
+            result.set(_FormAndFields._ListForm.title, title);
             result.set(_FormAndFields._ListForm.name, propertyName);
             result.set(_FormAndFields._ListForm.property, realPropertyName);
             if (metaClass != null)

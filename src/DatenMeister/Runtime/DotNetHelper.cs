@@ -237,9 +237,12 @@ namespace DatenMeister.Runtime
                     return int.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultAsDouble)
                         ? resultAsDouble
                         : 0;
+
+                case IConvertible convertible:
+                    return Convert.ToInt32(convertible, CultureInfo.InvariantCulture);
             }
 
-            return Convert.ToInt32(value, CultureInfo.InvariantCulture);
+            return 0;
         }
 
         /// <summary>

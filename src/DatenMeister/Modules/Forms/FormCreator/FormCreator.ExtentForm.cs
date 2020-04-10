@@ -158,7 +158,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             void SetDefaultTypes(IElement form)
             {
                 var extent = elements.GetAssociatedExtent();
-                var defaultTypePackages = extent?.GetDefaultTypePackages();
+                var defaultTypePackages = extent?.GetConfiguration().GetDefaultTypePackages();
                 if (defaultTypePackages != null)
                     form.set(_FormAndFields._ListForm.defaultTypesForNewElements, defaultTypePackages);
             }

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -22,6 +23,11 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties, IHasExtent, IHasMofExtentMetaObject
     {
+        /// <summary>
+        /// Stores the configuration for the extent
+        /// </summary>
+        public ExtentConfiguration ExtentConfiguration { get; }
+        
         /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes.
         /// It is only used, if the data is directly set as a .Net object
@@ -114,6 +120,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             MetaXmiElement = new MofObject(
                 new XmiProviderObject(new XElement("meta"), rootProvider),
                 this);
+            ExtentConfiguration = new ExtentConfiguration(this);
         }
 
         /// <inheritdoc />
@@ -261,7 +268,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Resolves the DotNetType by navigating through the current and the meta instances.
         /// </summary>
         /// <param name="metaclassUri">Uri class to be retrieved</param>
-        /// <param name="resolveType">The resolveing strategy</param>
+        /// <param name="resolveType">The resolving strategy</param>
         /// <returns>Resolved .Net Type as IElement</returns>
         public Type? ResolveDotNetType(string metaclassUri, ResolveType resolveType)
         {

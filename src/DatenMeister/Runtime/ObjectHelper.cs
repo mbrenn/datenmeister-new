@@ -99,6 +99,11 @@ namespace DatenMeister.Runtime
                 return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!)!;
             }
 
+            if (typeof(T) == typeof(int?))
+            {
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!)!;
+            }
+
             if (typeof(T) == typeof(double))
             {
                 return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences)!)!;

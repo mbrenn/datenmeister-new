@@ -70,6 +70,13 @@ namespace DatenMeister.WPF.Modules.FormManager
                 ClearAssociation,
                 null,
                 NavigationCategories.Form+".Current");
+            
+
+            yield return new ApplicationMenuButtonDefinition(
+                "Autogenerate form",
+                detailWindow.ForceAutoGenerationOfForm,
+                string.Empty,
+                NavigationCategories.Form + ".Current");
 
 
             // The currently selected element is a form

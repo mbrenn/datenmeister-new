@@ -331,14 +331,14 @@ namespace DatenMeister.Tests.Xmi.EMOF
 
             xmi.elements().add(first);
             xmi.elements().add(second);
-            xmi.SetExtentType("Test");
+            xmi.GetConfiguration().ExtentType = "Test";
             Assert.That(xmi.elements().Count(), Is.EqualTo(2));
-            Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
+            Assert.That(xmi.GetConfiguration().ExtentType, Is.EqualTo("Test"));
 
             xmi.elements().clear();
 
             Assert.That(xmi.elements().Count(), Is.EqualTo(0));
-            Assert.That(xmi.GetExtentType(), Is.EqualTo("Test"));
+            Assert.That(xmi.GetConfiguration().ExtentType, Is.EqualTo("Test"));
         }
     }
 }

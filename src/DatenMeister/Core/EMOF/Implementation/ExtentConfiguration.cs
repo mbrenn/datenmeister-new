@@ -50,9 +50,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public string ExtentType
         {
-            get => _extent?.getOrDefault<string>(ExtentTypeProperty) ?? string.Empty;
+            get => _extent.getOrDefault<string>(ExtentTypeProperty) ?? string.Empty;
             set => _extent.set(ExtentTypeProperty, value);
         }
+
+        /// <summary>
+        /// Checks whether the extent's types contains at least the given extent type
+        /// </summary>
+        /// <param name="extentType">Type of the extent being queried</param>
+        /// <returns>true, if the extent's type contains the given extent type</returns>
+        public bool ContainsExtentType(string extentType) 
+            => ExtentType.Contains(extentType);
 
         /// <summary>
         /// Sets the default type package which is shown, when the user wants

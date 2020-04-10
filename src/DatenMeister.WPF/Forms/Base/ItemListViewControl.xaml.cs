@@ -401,14 +401,20 @@ namespace DatenMeister.WPF.Forms.Base
                 // Creates the rows
                 if (Items != null)
                 {
+                    var items = Items;
+                    if (_effectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.includeDescendents))
+                    {
+                        items = items.GetAllDescendantsIncludingThemselves();
+                    }
+
                     // Get the items and honor searching
-                    var items = Items.OfType<IObject>();
+                    items = items.WhenElementIsObject();
                     if (!string.IsNullOrEmpty(_searchText))
                     {
                         var columnNames = fields.OfType<IElement>()
                             .Select(x => x.get("name")?.ToString())
                             .Where(x => x != null);
-                        items = Items.WhenOneOfThePropertyContains(columnNames!, _searchText).OfType<IObject>();
+                        items = items.WhenOneOfThePropertyContains(columnNames!, _searchText);
                     }
 
                     // Goes through the fast filters and filters the items
@@ -421,11 +427,11 @@ namespace DatenMeister.WPF.Forms.Base
                             continue;
                         }
 
-                        items = items.Where(x => converter.IsFiltered(x));
+                        items = items.WhenFiltered(x => converter.IsFiltered(x));
                     }
 
                     // Go through the items and build up the list of elements
-                    foreach (var item in items)
+                    foreach (var item in items.OfType<IObject>())
                     {
                         var itemObject = new ExpandoObject();
                         var asDictionary = (IDictionary<string, object?>) itemObject;

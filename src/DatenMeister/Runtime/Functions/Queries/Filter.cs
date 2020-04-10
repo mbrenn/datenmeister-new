@@ -33,6 +33,12 @@ namespace DatenMeister.Runtime.Functions.Queries
                 property,
                 x => x?.StartsWith(value) == true);
         }
+        
+
+        public static IReflectiveCollection WhenElementIsObject(
+            this IReflectiveCollection collection)
+            =>
+                new FilterOnElementType<IObject>(collection);
 
         public static IReflectiveCollection WhenMetaClassIs(
             this IReflectiveCollection collection,
@@ -92,6 +98,19 @@ namespace DatenMeister.Runtime.Functions.Queries
                     value,
                     comparer);
 
+
+        /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="filter">Filter to be added</param>
+        /// <returns>A reflective collection, containing all items</returns>
+        public static IReflectiveSequence WhenFiltered(
+            this IReflectiveCollection collection,
+            Func<object, bool> filter)
+            =>
+                new TemporaryReflectiveSequence(collection.Where(filter).ToList());
+
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively
         /// </summary>
@@ -114,7 +133,6 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new TemporaryReflectiveSequence(
                 collection.AsEnumerable().Union(
                     AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList()));
-            
         }
 
         /// <summary>

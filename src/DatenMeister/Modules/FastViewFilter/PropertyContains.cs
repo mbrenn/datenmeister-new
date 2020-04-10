@@ -18,19 +18,24 @@ namespace DatenMeister.Modules.FastViewFilter
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool IsFiltered(IObject value)
+        public bool IsFiltered(object value)
         {
-            var filterValue = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Value);
-            var propertyName = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Property);
-
-            if (filterValue == null || propertyName == null)
+            if (value is IObject valueAsObject)
             {
-                return true;
+                var filterValue = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Value);
+                var propertyName = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Property);
+
+                if (filterValue == null || propertyName == null)
+                {
+                    return true;
+                }
+
+                var propertyValue = valueAsObject.getOrDefault<string>(propertyName);
+                var result = propertyValue?.Contains(filterValue);
+                return result == null || result == true;
             }
 
-            var propertyValue = value.getOrDefault<string>(propertyName);
-            var result = propertyValue?.Contains(filterValue);
-            return result == null || result == true;
+            return false;
         }
     }
 }

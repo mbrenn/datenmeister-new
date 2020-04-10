@@ -45,21 +45,21 @@ namespace DatenMeister.Modules.Forms.FormCreator
             if (metaClass != null)
             {
                 AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
+                
+                var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
+                result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
             }
             else
             {
-                // Ok, we have no metaclass, but let's add at least the name
+                // Ok, we have no metaclass, but let's add at least the columns for the property 'name'
                 var nameProperty = _uml?.CommonStructure.NamedElement._name;
                 if (nameProperty != null)
                 {
                     AddToFormByUmlElement(result, nameProperty, CreationMode.ForListForms | CreationMode.ByMetaClass);
                 }
             }
-
-            var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
-            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
 
             return result;
         }

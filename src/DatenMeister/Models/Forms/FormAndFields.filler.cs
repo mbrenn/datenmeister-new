@@ -661,6 +661,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._metaClass = value;
                                 }
+                                if(name == "includeDescendents") // Looking for property
+                                {
+                                    tree.ListForm._includeDescendents = value;
+                                }
                                 if(name == "noItemsWithMetaClass") // Looking for property
                                 {
                                     tree.ListForm._noItemsWithMetaClass = value;

@@ -300,6 +300,8 @@ namespace DatenMeister.Tests.Runtime.Extents
             var id2 = createdType2.getOrDefault<string>("id");
             Assert.That(id2.Length, Is.EqualTo(36));
             Assert.That(id2, Is.Not.EqualTo(id));
+            var setId= (createdType2 as IHasId)?.Id;
+            Assert.That(setId, Is.EqualTo(id2));
         }
 
 
@@ -326,6 +328,8 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             var id2 = createdType2.getOrDefault<int>("id");
             Assert.That(id2, Is.EqualTo(2));
+            var setId= (createdType2 as IHasId)?.Id;
+            Assert.That(setId, Is.EqualTo(id2.ToString()));
             
             extent.unset(AutoEnumerateHandler.AutoEnumerateTypeValue);
             

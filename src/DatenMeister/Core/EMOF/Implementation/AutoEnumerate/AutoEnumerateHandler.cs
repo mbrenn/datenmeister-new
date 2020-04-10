@@ -45,6 +45,8 @@ namespace DatenMeister.Core.EMOF.Implementation.AutoEnumerate
             }
 
             var properties = ClassifierMethods.GetPropertiesOfClassifier(type);
+
+            string? id = null;
             foreach (var property in properties)
             {
                 var isId = property.getOrDefault<bool>(_UML._Classification._Property.isID);
@@ -52,34 +54,49 @@ namespace DatenMeister.Core.EMOF.Implementation.AutoEnumerate
                 if (isId)
                 {
                     var name = property.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
-                    if (autoEnumerateType == AutoEnumerateType.Guid)
+                    switch (autoEnumerateType)
                     {
-                        element.set(name, Guid.NewGuid());
-                    }
-
-                    if (autoEnumerateType == AutoEnumerateType.Ordinal)
-                    {
-                        var lastValue = parentExtent.getOrDefault<int>(AutoEnumerateTypeValue);
-                        if (lastValue == 0)
+                        case AutoEnumerateType.Guid:
+                            id ??= Guid.NewGuid().ToString();
+                            break;
+                        case AutoEnumerateType.Ordinal:
                         {
-                            foreach (var innerElement in parentExtent.elements().GetAllDescendants())
+                            var lastValue = parentExtent.getOrDefault<int>(AutoEnumerateTypeValue);
+                            if (lastValue == 0)
                             {
-                                if (innerElement is IElement innerElementAsElement)
+                                foreach (var innerElement in parentExtent.elements().GetAllDescendants())
                                 {
-                                    var id = innerElementAsElement.getOrDefault<int>(name);
-                                    if (id > lastValue)
+                                    if (innerElement is IElement innerElementAsElement)
                                     {
-                                        lastValue = id;
+                                        var idNumber = innerElementAsElement.getOrDefault<int>(name);
+                                        if (idNumber > lastValue)
+                                        {
+                                            lastValue = idNumber;
+                                        }
                                     }
                                 }
                             }
+
+                            if (id == null)
+                            {
+                                lastValue += 1;
+                                id = lastValue.ToString();
+                                parentExtent.set(AutoEnumerateTypeValue, lastValue);
+                            }
+
+                            break;
                         }
-                        
-                        lastValue++;
+                    }
 
-                        element.set(name, lastValue);
+                    // Sets the id
+                    if (id != null)
+                    {
+                        element.set(name, id);
 
-                        parentExtent.set(AutoEnumerateTypeValue, lastValue);
+                        if (element is ICanSetId canSetId)
+                        {
+                            canSetId.Id = id;
+                        }
                     }
                 }
             }

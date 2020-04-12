@@ -15,6 +15,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Modules.TypeSupport
 {
@@ -88,7 +89,7 @@ namespace DatenMeister.Modules.TypeSupport
                 new InMemoryProvider(),
                 WorkspaceNames.UriInternalTypesExtent);
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
-            extentTypes.GetConfiguration().ExtentType = "Uml.Classes";
+            extentTypes.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
         }
 
@@ -102,7 +103,7 @@ namespace DatenMeister.Modules.TypeSupport
                 WorkspaceNames.NameTypes,
                 WorkspaceNames.UriUserTypesExtent,
                 "DatenMeister.Types_User",
-                "Uml.Classes",
+                UmlPlugin.ExtentType,
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
             );
             

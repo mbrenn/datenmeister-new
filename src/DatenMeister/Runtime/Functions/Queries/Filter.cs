@@ -107,7 +107,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <returns>A reflective collection, containing all items</returns>
         public static IReflectiveSequence WhenFiltered(
             this IReflectiveCollection collection,
-            Func<object, bool> filter)
+            Func<object?, bool> filter)
             =>
                 new TemporaryReflectiveSequence(collection.Where(filter).ToList());
 

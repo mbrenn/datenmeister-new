@@ -5,6 +5,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Plugin;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
@@ -39,7 +40,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                     NavigationCategories.DatenMeisterNavigation);
             }
 
-            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControlForExtentType("Uml.Classes");
+            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControlForExtentType(UmlPlugin.ExtentType);
             if (itemExplorerControl != null)
             {
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
@@ -69,7 +70,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 }
             }
 
-            var listControl = viewExtensionInfo.GetListViewForItemsTabForExtentType("Uml.Classes");
+            var listControl = viewExtensionInfo.GetListViewForItemsTabForExtentType(UmlPlugin.ExtentType);
             if (listControl != null)
             {
                 var extent = listControl.Extent;

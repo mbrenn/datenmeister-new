@@ -33,28 +33,33 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var result = _factory.create(_formAndFields.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
             var propertyName = property != null ? realPropertyName : "List";
+            
+            var title = 
+                (metaClass != null ? NamedElementMethods.GetName(metaClass) : string.Empty) +
+                (metaClass != null && property != null ? " - " : "") +
+                (property != null ? NamedElementMethods.GetName(property) : "");
 
-            result.set(_FormAndFields._ListForm.title, propertyName);
+            result.set(_FormAndFields._ListForm.title, title);
             result.set(_FormAndFields._ListForm.name, propertyName);
             result.set(_FormAndFields._ListForm.property, realPropertyName);
             if (metaClass != null)
             {
                 AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
+                
+                var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
+                result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
             }
             else
             {
-                // Ok, we have no metaclass, but let's add at least the name
+                // Ok, we have no metaclass, but let's add at least the columns for the property 'name'
                 var nameProperty = _uml?.CommonStructure.NamedElement._name;
                 if (nameProperty != null)
                 {
                     AddToFormByUmlElement(result, nameProperty, CreationMode.ForListForms | CreationMode.ByMetaClass);
                 }
             }
-
-            var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
-            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
 
             return result;
         }

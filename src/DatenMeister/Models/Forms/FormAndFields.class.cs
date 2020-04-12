@@ -468,6 +468,9 @@ namespace DatenMeister.Models.Forms
             public static string @metaClass = "metaClass";
             public IElement? _metaClass = null;
 
+            public static string @includeDescendents = "includeDescendents";
+            public IElement? _includeDescendents = null;
+
             public static string @noItemsWithMetaClass = "noItemsWithMetaClass";
             public IElement? _noItemsWithMetaClass = null;
 

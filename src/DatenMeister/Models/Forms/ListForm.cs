@@ -18,10 +18,24 @@ namespace DatenMeister.Models.Forms
             AddFields(fieldsToBeAdded);
         }
 
+        /// <summary>
+        /// Defines the property name of the property whose values are retrieved from the given item 
+        /// </summary>
         public string? property { get; set; }
 
+        /// <summary>
+        /// Defines the filter for metaclasses being used
+        /// </summary>
         public IElement? metaClass { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the descendents shall be included
+        /// </summary>
+        public bool includeDescendents { get; set; }
 
+        /// <summary>
+        /// Indicates a flag whether all items having a metaclass shall not be shown in the fields
+        /// </summary>
         public bool noItemsWithMetaClass { get; set; }
 
         /// <summary>

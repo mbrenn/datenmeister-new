@@ -1,5 +1,4 @@
 ﻿using System;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -7,7 +6,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.ManagementProviders
+namespace DatenMeister.Provider.ManagementProviders.View
 {
     public class ManagementViewDefinitions
     {

@@ -57,7 +57,7 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                 return null;
 
             // DotNetProvider and ExtentOfWorkspaces are also special providers
-            if (extent.Provider is DotNetProvider || extent.Provider is ExtentOfWorkspaces)
+            if (extent.Provider is DotNetProvider || extent.Provider is ExtentOfWorkspaceProvider)
                 return null;
 
             // Check, if the selected element is a package or an extent

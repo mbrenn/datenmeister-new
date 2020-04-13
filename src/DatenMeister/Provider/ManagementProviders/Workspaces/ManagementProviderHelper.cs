@@ -19,7 +19,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         {
             // Adds the extent containing the workpsaces
             workspaceLogic.GetManagementWorkspace().AddExtent(
-                new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), WorkspaceNames.ExtentManagementExtentUri));
+                new MofUriExtent(new ExtentOfWorkspaceProvider(workspaceLogic), WorkspaceNames.ExtentManagementExtentUri));
         }
 
         /// <summary>

@@ -531,6 +531,16 @@ namespace DatenMeister.Models.Forms
         public _ExtentForm @ExtentForm = new _ExtentForm();
         public IElement @__ExtentForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ExtentForm");
 
+        public class _ViewMode
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+        }
+
+        public _ViewMode @ViewMode = new _ViewMode();
+        public IElement @__ViewMode = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewModes.ViewMode");
+
         public static _FormAndFields TheOne = new _FormAndFields();
 
     }

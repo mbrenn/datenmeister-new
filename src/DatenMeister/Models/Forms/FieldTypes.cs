@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DatenMeister.Models.Forms.ViewModes;
 
 namespace DatenMeister.Models.Forms
 {
@@ -29,7 +30,10 @@ namespace DatenMeister.Models.Forms
                 typeof(Form),
                 typeof(DetailForm),
                 typeof(ListForm),
-                typeof(ExtentForm)
+                typeof(ExtentForm), 
+                
+                // Now the view modes
+                typeof(ViewMode)
             };
         }
     }

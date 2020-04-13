@@ -742,6 +742,21 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "ViewMode") // Looking for class
+                        {
+                            tree.__ViewMode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ViewMode._name = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

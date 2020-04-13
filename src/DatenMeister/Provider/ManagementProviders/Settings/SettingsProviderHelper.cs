@@ -1,6 +1,7 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Workspaces;
 
@@ -15,14 +16,16 @@ namespace DatenMeister.Provider.ManagementProviders.Settings
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         public static void Initialize(ILifetimeScope scope, IWorkspaceLogic workspaceLogic)
         {
+            var dotNetProvider = new ManagementSettingsProvider();
             var settingsExtent =
-                new MofUriExtent(new ManagementSettingsProvider(), WorkspaceNames.ManagementSettingExtentUri);
+                new MofUriExtent(dotNetProvider, WorkspaceNames.ManagementSettingExtentUri);
             
             // Adds the extent containing the settings
             workspaceLogic.GetManagementWorkspace().AddExtent(settingsExtent);
 
             var settings = scope.Resolve<ExtentSettings>();
-            settingsExtent.elements().add(settings);
+            var settingsObject = new DotNetProviderObject(dotNetProvider, settings, "");
+            settingsExtent.elements().add(settingsObject);
         }
 
     }

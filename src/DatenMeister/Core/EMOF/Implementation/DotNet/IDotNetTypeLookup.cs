@@ -22,14 +22,14 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// </summary>
         /// <param name="type">Type to be converted</param>
         /// <returns>String of the element</returns>
-        string ToElement(Type type);
+        string? ToElement(Type type);
 
         /// <summary>
         /// Finds the element by the uri and converts the element to a real .Net Type
         /// </summary>
         /// <param name="metaclassUri">Uri of the element to be converted</param>
         /// <returns>Converted element</returns>
-        Type ToType(string metaclassUri);
+        Type? ToType(string metaclassUri);
 
         /// <summary>
         /// Gets the id of a certain element. The method is used to support the caching

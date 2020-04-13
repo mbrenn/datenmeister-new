@@ -373,14 +373,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 foreach (var metaWorkspace in metaWorkspaces)
                 {
-                    foreach (var metaExtent in metaWorkspace.extent.OfType<MofExtent>())
-                    {
-                        var element = metaExtent.TypeLookup.ToElement(type);
-                        if (!string.IsNullOrEmpty(element))
-                        {
-                            return element;
-                        }
-                    }
+                    var metaClassUri = WorkspaceDotNetHelper.GetMetaClassUriOfDotNetType(metaWorkspace, type);
+                    if (metaClassUri != null) return metaClassUri;
                 }
             }
 
@@ -485,10 +479,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                     .Select(innerValue => ConvertForSetting(innerValue, extent, container)).ToList();
             }
 
-            /*if (DotNetHelper.IsOfProviderObject(value))
+            if (DotNetHelper.IsOfProviderObject(value))
             {
                 return value;
-            }*/
+            }
 
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
             if (!(extent is IUriExtent asUriExtent))

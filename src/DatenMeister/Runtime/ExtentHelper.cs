@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime
         public static IElement? ToResolvedElement(this MofExtent extent, Type type)
         {
             var element = extent.TypeLookup.ToElement(type);
-            if (string.IsNullOrEmpty(element))
+            if (element == null || string.IsNullOrEmpty(element))
                 return null;
 
             return extent.GetUriResolver().Resolve(element, ResolveType.Default);

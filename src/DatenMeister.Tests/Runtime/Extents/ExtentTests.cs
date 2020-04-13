@@ -123,9 +123,9 @@ namespace DatenMeister.Tests.Runtime.Extents
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var extentSettings = dm.Resolve<ExtentSettings>();
-            Assert.That(extentSettings.ExtentTypeSettings.Any(x => x.Name == UmlPlugin.ExtentType), Is.True);
-            Assert.That(extentSettings.ExtentTypeSettings.Any(x => x.Name == FormLogic.FormExtentType), Is.True);
-            Assert.That(extentSettings.ExtentTypeSettings.Any(x => x.Name == ZipCodePlugin.ExtentType), Is.True);
+            Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == UmlPlugin.ExtentType), Is.True);
+            Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == FormLogic.FormExtentType), Is.True);
+            Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ExtentType), Is.True);
         }
 
         [Test]

@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.ManagementProviders.Model;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
-namespace DatenMeister.Provider.ManagementProviders
+namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
     public class WorkspaceObject : MappingProviderObject<Workspace>
     {

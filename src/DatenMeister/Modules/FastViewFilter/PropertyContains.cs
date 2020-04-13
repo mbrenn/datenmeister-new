@@ -18,7 +18,7 @@ namespace DatenMeister.Modules.FastViewFilter
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool IsFiltered(object value)
+        public bool IsFiltered(object? value)
         {
             if (value is IObject valueAsObject)
             {

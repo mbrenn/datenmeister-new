@@ -62,6 +62,26 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         public _CreateNewWorkspaceModel @CreateNewWorkspaceModel = new _CreateNewWorkspaceModel();
         public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
 
+        public class _ExtentTypeSetting
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+        }
+
+        public _ExtentTypeSetting @ExtentTypeSetting = new _ExtentTypeSetting();
+        public IElement @__ExtentTypeSetting = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentTypeSetting");
+
+        public class _ExtentSettings
+        {
+            public static string @extentTypeSettings = "extentTypeSettings";
+            public IElement? _extentTypeSettings = null;
+
+        }
+
+        public _ExtentSettings @ExtentSettings = new _ExtentSettings();
+        public IElement @__ExtentSettings = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentSettings");
+
         public static _ManagementProvider TheOne = new _ManagementProvider();
 
     }

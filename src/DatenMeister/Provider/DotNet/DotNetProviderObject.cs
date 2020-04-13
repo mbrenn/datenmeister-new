@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Autofac.Features.Metadata;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -47,11 +48,13 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="provider">The Dotnet Provider storing the items</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
-        public DotNetProviderObject(DotNetProvider provider, object value, string metaClassUri)
+        public DotNetProviderObject(DotNetProvider provider, object value, string? metaClassUri = null)
         {
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _value = value ?? throw new ArgumentNullException(nameof(value));
-            MetaclassUri = metaClassUri ?? throw new ArgumentNullException(nameof(metaClassUri));
+            
+            // Gets the metaclass uri if explicitly given, otherwise look up into the types
+            MetaclassUri = metaClassUri ?? Provider.TypeLookup.ToElement(value.GetType());
             _type = value.GetType();
 
             Id = provider.TypeLookup.GetId(value);

@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -56,7 +57,7 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                 return null;
 
             // DotNetProvider and ExtentOfWorkspaces are also special providers
-            if (extent.Provider is DotNetProvider || extent.Provider is ExtentOfWorkspaces)
+            if (extent.Provider is DotNetProvider || extent.Provider is ExtentOfWorkspaceProvider)
                 return null;
 
             // Check, if the selected element is a package or an extent

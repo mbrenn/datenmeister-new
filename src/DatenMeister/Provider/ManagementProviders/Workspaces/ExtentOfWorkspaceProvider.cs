@@ -2,12 +2,12 @@
 using System.Linq;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.ManagementProviders
+namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
     /// <summary>
     /// Contains all workspaces in an extent like structure
     /// </summary>
-    public class ExtentOfWorkspaces : IProvider
+    public class ExtentOfWorkspaceProvider : IProvider
     {
         /// <summary>
         /// Gets the uri of the extent which contains the workspaces
@@ -18,7 +18,7 @@ namespace DatenMeister.Provider.ManagementProviders
         /// Initializes a new instance of the ExtentOfWorkspaces
         /// </summary>
         /// <param name="workspaceLogic">Logic of the workspace</param>
-        public ExtentOfWorkspaces(IWorkspaceLogic workspaceLogic)
+        public ExtentOfWorkspaceProvider(IWorkspaceLogic workspaceLogic)
         {
             WorkspaceLogic = workspaceLogic;
         }

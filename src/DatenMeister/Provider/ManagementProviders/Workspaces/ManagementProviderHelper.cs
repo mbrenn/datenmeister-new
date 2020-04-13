@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.ManagementProviders
+namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
     /// <summary>
     /// Defines the static helper
@@ -19,7 +19,7 @@ namespace DatenMeister.Provider.ManagementProviders
         {
             // Adds the extent containing the workpsaces
             workspaceLogic.GetManagementWorkspace().AddExtent(
-                new MofUriExtent(new ExtentOfWorkspaces(workspaceLogic), WorkspaceNames.ExtentManagementExtentUri));
+                new MofUriExtent(new ExtentOfWorkspaceProvider(workspaceLogic), WorkspaceNames.ExtentManagementExtentUri));
         }
 
         /// <summary>

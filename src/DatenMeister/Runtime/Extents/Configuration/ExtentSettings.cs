@@ -11,6 +11,6 @@ namespace DatenMeister.Runtime.Extents.Configuration
         /// <summary>
         /// Stores the extent type setting
         /// </summary>
-        public List<ExtentTypeSetting> ExtentTypeSettings { get; } = new List<ExtentTypeSetting>();
+        public List<ExtentTypeSetting> extentTypeSettings { get; } = new List<ExtentTypeSetting>();
     }
 }

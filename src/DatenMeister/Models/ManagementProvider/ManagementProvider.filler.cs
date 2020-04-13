@@ -113,6 +113,36 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 }
                             }
                         }
+                        if(name == "ExtentTypeSetting") // Looking for class
+                        {
+                            tree.__ExtentTypeSetting = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ExtentTypeSetting._name = value;
+                                }
+                            }
+                        }
+                        if(name == "ExtentSettings") // Looking for class
+                        {
+                            tree.__ExtentSettings = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "extentTypeSettings") // Looking for property
+                                {
+                                    tree.ExtentSettings._extentTypeSettings = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

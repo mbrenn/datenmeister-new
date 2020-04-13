@@ -57,7 +57,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         }
 
         /// <inheritdoc />
-        public Type ToType(string metaclassUri)
+        public Type? ToType(string metaclassUri)
         {
             _elementsToTypes.TryGetValue(metaclassUri, out var result);
             return result;

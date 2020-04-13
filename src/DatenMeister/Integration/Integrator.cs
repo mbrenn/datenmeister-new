@@ -18,6 +18,8 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.Settings;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -219,6 +221,7 @@ namespace DatenMeister.Integration
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
+                SettingsProviderHelper.Initialize(scope, workspaceLogic);
 
                 // Finally loads the plugin
                 pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
@@ -260,6 +263,9 @@ namespace DatenMeister.Integration
             return builder;
         }
 
+        /// <summary>
+        /// Prepares the settings by looking into the public settings which may reside within the file
+        /// </summary>
         private void PrepareSettings()
         {
             if (_settings == null)

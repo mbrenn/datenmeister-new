@@ -3,7 +3,7 @@ using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
 
-namespace DatenMeister.Provider.ManagementProviders
+namespace DatenMeister.Provider.ManagementProviders.View
 {
     [PluginDependency(typeof(UmlPlugin))]
     // ReSharper disable once UnusedMember.Global

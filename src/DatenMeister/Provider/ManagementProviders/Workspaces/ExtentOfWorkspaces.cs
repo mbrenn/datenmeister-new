@@ -2,7 +2,7 @@
 using System.Linq;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.ManagementProviders
+namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
     /// <summary>
     /// Contains all workspaces in an extent like structure

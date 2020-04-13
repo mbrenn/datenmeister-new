@@ -7,12 +7,12 @@ namespace DatenMeister.Runtime.Extents.Configuration
     {
         public ExtentTypeSetting(string name)
         {
-            Name = name;
+            this.name = name;
         }
         
         /// <summary>
         /// Gets or sets the name
         /// </summary>
-        public string Name { get; set; }
+        public string name { get; set; }
     }
 }

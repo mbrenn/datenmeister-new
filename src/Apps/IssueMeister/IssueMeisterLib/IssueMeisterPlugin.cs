@@ -55,7 +55,7 @@ namespace IssueMeisterLib
                 _localTypeSupport.InternalTypes,
                 PackageName);
             
-            _extentSettings.ExtentTypeSettings.Add(
+            _extentSettings.extentTypeSettings.Add(
                 new ExtentTypeSetting(ExtentTypeName));
         }
     }

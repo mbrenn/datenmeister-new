@@ -62,7 +62,7 @@ namespace DatenMeister.Modules.ZipExample
                     break;
                 }
                 case PluginLoadingPosition.AfterBootstrapping:
-                    _extentSettings.ExtentTypeSettings.Add(
+                    _extentSettings.extentTypeSettings.Add(
                         new ExtentTypeSetting(ExtentType));
                     break;
             }

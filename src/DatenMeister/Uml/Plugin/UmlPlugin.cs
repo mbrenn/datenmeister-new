@@ -26,7 +26,7 @@ namespace DatenMeister.Uml.Plugin
         {
             _formLogic = formLogic;
             _packageMethods = packageMethods;
-            extentSettings.ExtentTypeSettings.Add(
+            extentSettings.extentTypeSettings.Add(
                 new ExtentTypeSetting(ExtentType));
             
         }

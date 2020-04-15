@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
@@ -91,7 +92,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     _extentSettings.extentTypeSettings.Add(new ExtentTypeSetting(FormExtentType));
-                    
+
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:
@@ -112,6 +113,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
                                         throw new InvalidOperationException("FormAndFields not found");
 
                     extent.GetConfiguration().AddDefaultTypePackages(new[] {formAndFields.__Form, formAndFields.__FormAssociation});
+                    
+                    
+                    // Includes the default view modes
+                    var packageMethods = new PackageMethods(_workspaceLogic);
+                    var internalFormExtent = GetInternalFormExtent();
+                    var package = packageMethods.GetOrCreatePackageStructure(internalFormExtent.elements(), "ViewModes");
+                    var created = MofFactory.Create(internalFormExtent, GetFormAndFieldInstance(internalFormExtent).__ViewMode);
+                    created.set(_FormAndFields._ViewMode.id, "Default");
+                    created.set(_FormAndFields._ViewMode.name, "Default");
+                    PackageMethods.AddObjectToPackage(package, created);
                     break;
             }
         }

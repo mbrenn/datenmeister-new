@@ -29,12 +29,12 @@ namespace DatenMeister.Modules.Forms.FormFinder
     /// </summary>
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class FormLogic : IDatenMeisterPlugin
+    public class FormsPlugin : IDatenMeisterPlugin
     {
         /// <summary>
         /// Defines the logger
         /// </summary>
-        private static readonly ILogger Logger = new ClassLogger(typeof(FormLogic));
+        private static readonly ILogger Logger = new ClassLogger(typeof(FormsPlugin));
         
         /// <summary>
         /// Stores the type of the extent containing the views
@@ -63,7 +63,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <param name="extentCreator">The support class to create extents</param>
         /// <param name="integrationSettings">The settings that had been used for integration</param>
         /// <param name="extentSettings">Added the extent settings</param>
-        public FormLogic(IWorkspaceLogic workspaceLogic, 
+        public FormsPlugin(IWorkspaceLogic workspaceLogic, 
             ExtentCreator extentCreator,
             IntegrationSettings integrationSettings,
             ExtentSettings extentSettings)

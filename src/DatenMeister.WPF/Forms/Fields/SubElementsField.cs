@@ -112,7 +112,7 @@ namespace DatenMeister.WPF.Forms.Fields
             if (form == null)
             {
                 // otherwise, we have to automatically create a form
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 form = viewLogic.GetListFormForElementsProperty(_element, _propertyName) ??
                        throw new InvalidOperationException("Form could not be created");
             }

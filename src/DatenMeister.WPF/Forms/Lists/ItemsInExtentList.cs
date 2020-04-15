@@ -117,7 +117,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         private void CreateFormForItems()
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
                 

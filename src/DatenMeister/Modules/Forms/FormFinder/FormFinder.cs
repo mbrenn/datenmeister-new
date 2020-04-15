@@ -29,16 +29,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
         private const bool ActivateDebuggingForViewRetrieval = false;
 #endif
 
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         /// <summary>
         /// Initializes a new instance of the ViewFinder class
         /// </summary>
-        /// <param name="formLogic">View logic</param>
+        /// <param name="formsPlugin">View logic</param>
         public FormFinder(
-            FormLogic formLogic)
+            FormsPlugin formsPlugin)
         {
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns>The found view or null, if not found</returns>
         public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
-            var formAssociations = _formLogic.GetAllFormAssociations().Select(x => x as IElement).ToList();
+            var formAssociations = _formsPlugin.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
             InternalDebug("# of FormAssociations: " + formAssociations.Count);
 

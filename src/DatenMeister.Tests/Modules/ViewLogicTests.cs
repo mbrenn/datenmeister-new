@@ -15,7 +15,7 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabiltyOfInternalViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var viewLogic = datenMeister.Resolve<FormsPlugin>();
             var internalViewExtent = viewLogic.GetInternalFormExtent();
 
             Assert.That(internalViewExtent, Is.Not.Null);
@@ -25,7 +25,7 @@ namespace DatenMeister.Tests.Modules
         public void TestAvailabiltyOfUserViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var viewLogic = datenMeister.Resolve<FormsPlugin>();
             var userViewExtent = viewLogic.GetUserFormExtent();
 
             Assert.That(userViewExtent, Is.Not.Null);
@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Modules
         public void TestGetAllViews()
         {
             var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var viewLogic = datenMeister.Resolve<FormsPlugin>();
             var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             

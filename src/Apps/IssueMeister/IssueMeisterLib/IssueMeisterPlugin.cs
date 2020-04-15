@@ -16,7 +16,7 @@ namespace IssueMeisterLib
         public const string ExtentTypeName = "IssueMeister";
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly PackageMethods _packageMethods;
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly ExtentSettings _extentSettings;
 
@@ -25,14 +25,14 @@ namespace IssueMeisterLib
         /// </summary>
         /// <param name="workspaceLogic">Defines the workspacelogic</param>
         /// <param name="packageMethods"></param>
-        /// <param name="formLogic">Sets the form logic</param>
+        /// <param name="formsPlugin">Sets the form logic</param>
         /// <param name="localTypeSupport">Sets the local type support</param>
-        public IssueMeisterPlugin(IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, FormLogic formLogic,
+        public IssueMeisterPlugin(IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, FormsPlugin formsPlugin,
             LocalTypeSupport localTypeSupport, ExtentSettings extentSettings)
         {
             _workspaceLogic = workspaceLogic;
             _packageMethods = packageMethods;
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
             _localTypeSupport = localTypeSupport;
             _extentSettings = extentSettings;
         }
@@ -44,7 +44,7 @@ namespace IssueMeisterLib
                 typeof(IssueMeisterPlugin),
                 "IssueMeisterLib.Xmi.IssueMeister.Forms.xml",
                 PackageName,
-                _formLogic.GetInternalFormExtent(),
+                _formsPlugin.GetInternalFormExtent(),
                 PackageName);
             
             // Import 

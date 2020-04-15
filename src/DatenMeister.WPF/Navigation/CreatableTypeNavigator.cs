@@ -34,7 +34,7 @@ namespace DatenMeister.WPF.Navigation
             string buttonName = "Create")
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
             var defaultTypePackage = extent?.GetConfiguration().GetDefaultTypePackages()?.ToList();

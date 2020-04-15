@@ -10,11 +10,11 @@ namespace DatenMeister.Provider.ManagementProviders.View
 {
     public class ManagementViewDefinitions
     {
-        private FormLogic _formLogic;
+        private FormsPlugin _formsPlugin;
 
-        public ManagementViewDefinitions(FormLogic formLogic)
+        public ManagementViewDefinitions(FormsPlugin formsPlugin)
         {
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace DatenMeister.Provider.ManagementProviders.View
 
             form.AddFields(type2Field);
 
-            var createdForm = DotNetConverter.ConvertToMofObject(_formLogic.GetInternalFormExtent(), form) as IElement;
+            var createdForm = DotNetConverter.ConvertToMofObject(_formsPlugin.GetInternalFormExtent(), form) as IElement;
             return createdForm ?? throw new InvalidOperationException("Form could not be created");
         }
     }

@@ -13,13 +13,13 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
     {
         public const string PackageName = "ImportExtentManager";
 
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         private readonly PackageMethods _packageMethods;
 
-        public ImportExtentManagerPlugin(FormLogic formLogic, PackageMethods packageMethods)
+        public ImportExtentManagerPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods)
         {
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
             _packageMethods = packageMethods;
         }
 
@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.ImportExtentManager.xmi",
                 PackageName,
-                _formLogic.GetInternalFormExtent(),
+                _formsPlugin.GetInternalFormExtent(),
                 PackageName);
         }
 

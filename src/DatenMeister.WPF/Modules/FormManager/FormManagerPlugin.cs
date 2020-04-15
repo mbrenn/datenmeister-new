@@ -14,14 +14,14 @@ namespace DatenMeister.WPF.Modules.FormManager
     {
         private readonly PackageMethods _packageMethods;
 
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         public const string PackageName = "FormManager";
 
-        public FormManagerPlugin(PackageMethods packageMethods, FormLogic formLogic)
+        public FormManagerPlugin(PackageMethods packageMethods, FormsPlugin formsPlugin)
         {
             _packageMethods = packageMethods;
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
         }
 
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.Formmanager.xmi",
                 PackageName,
-                _formLogic.GetInternalFormExtent(),
+                _formsPlugin.GetInternalFormExtent(),
                 PackageName);
         }
     }

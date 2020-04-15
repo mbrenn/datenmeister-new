@@ -9,17 +9,17 @@ namespace DatenMeister.Provider.ManagementProviders.View
     // ReSharper disable once UnusedMember.Global
     public class ManagementViewPlugin : IDatenMeisterPlugin
     {
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
         private readonly PackageMethods _packageMethods;
 
         /// <summary>
         /// Initializes a new instance of the ManagementViewDefinitions class
         /// </summary>
-        /// <param name="formLogic">View logic being used to find View Extent</param>
+        /// <param name="formsPlugin">View logic being used to find View Extent</param>
         /// <param name="packageMethods">The helper for package methods</param>
-        public ManagementViewPlugin(FormLogic formLogic, PackageMethods packageMethods)
+        public ManagementViewPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods)
         {
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
             _packageMethods = packageMethods;
         }
 
@@ -37,7 +37,7 @@ namespace DatenMeister.Provider.ManagementProviders.View
                 typeof(ManagementViewPlugin),
                 "DatenMeister.XmiFiles.Views.WorkspacesAndExtents.xmi",
                 ManagementViewDefinitions.PackageName,
-                _formLogic.GetInternalFormExtent(),
+                _formsPlugin.GetInternalFormExtent(),
                 ManagementViewDefinitions.PackageName);
         }
     }

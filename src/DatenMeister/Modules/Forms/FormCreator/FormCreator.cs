@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// Stores the reference to the view logic which is required to get the views
         /// for the tabs of the extent form
         /// </summary>
-        private readonly FormLogic? _formLogic;
+        private readonly FormsPlugin? _formLogic;
 
         private readonly DefaultClassifierHints _defaultClassifierHints;
 
@@ -64,7 +64,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="formLogic">View logic being used</param>
         /// <param name="defaultClassifierHints">The classifier hints</param>
-        public FormCreator(IWorkspaceLogic? workspaceLogic, FormLogic? formLogic, DefaultClassifierHints defaultClassifierHints)
+        public FormCreator(IWorkspaceLogic? workspaceLogic, FormsPlugin? formLogic, DefaultClassifierHints defaultClassifierHints)
         {
             _formLogic = formLogic;
             _defaultClassifierHints = defaultClassifierHints;

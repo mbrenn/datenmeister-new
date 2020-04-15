@@ -11,7 +11,7 @@ namespace DatenMeister.Uml.Plugin
         /// <summary>
         /// Defines the view logic
         /// </summary>
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         private readonly PackageMethods _packageMethods;
 
@@ -22,9 +22,9 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         public const string ExtentType = "Uml.Classes";
 
-        public UmlPlugin(FormLogic formLogic, PackageMethods packageMethods, ExtentSettings extentSettings)
+        public UmlPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods, ExtentSettings extentSettings)
         {
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
             _packageMethods = packageMethods;
             extentSettings.extentTypeSettings.Add(
                 new ExtentTypeSetting(ExtentType));
@@ -45,7 +45,7 @@ namespace DatenMeister.Uml.Plugin
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.UML.xmi",
                 PackageName,
-                _formLogic.GetInternalFormExtent(),
+                _formsPlugin.GetInternalFormExtent(),
                 PackageName);
         }
     }

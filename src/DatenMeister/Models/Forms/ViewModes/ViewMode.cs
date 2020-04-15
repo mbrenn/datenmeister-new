@@ -9,5 +9,10 @@ namespace DatenMeister.Models.Forms.ViewModes
         /// Gets or sets the name of the view node.
         /// </summary>
         public string? name { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the id of the viewmode
+        /// </summary>
+        public string? id { get; set; }
     }
 }

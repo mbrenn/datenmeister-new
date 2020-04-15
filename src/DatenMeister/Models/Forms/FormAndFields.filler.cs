@@ -755,6 +755,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ViewMode._name = value;
                                 }
+                                if(name == "id") // Looking for property
+                                {
+                                    tree.ViewMode._id = value;
+                                }
                             }
                         }
                     }

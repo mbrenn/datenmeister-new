@@ -5,7 +5,7 @@ using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
-namespace DatenMeister.Provider.ManagementProviders
+namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
     public class ExtentObject : MappingProviderObject<IUriExtent>
     {

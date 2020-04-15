@@ -18,6 +18,9 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.Settings;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
@@ -113,6 +116,9 @@ namespace DatenMeister.Integration
             var workspaceData = WorkspaceLogic.InitDefault();
             kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
+            
+            var extentSettings = new ExtentSettings();
+            kernel.RegisterInstance<ExtentSettings>(extentSettings).As<ExtentSettings>();
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
@@ -215,6 +221,7 @@ namespace DatenMeister.Integration
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
+                SettingsProviderHelper.Initialize(scope, workspaceLogic);
 
                 // Finally loads the plugin
                 pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
@@ -256,6 +263,9 @@ namespace DatenMeister.Integration
             return builder;
         }
 
+        /// <summary>
+        /// Prepares the settings by looking into the public settings which may reside within the file
+        /// </summary>
         private void PrepareSettings()
         {
             if (_settings == null)

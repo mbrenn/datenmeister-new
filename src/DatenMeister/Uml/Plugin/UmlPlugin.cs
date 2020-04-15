@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 
@@ -16,10 +17,18 @@ namespace DatenMeister.Uml.Plugin
 
         public const string PackageName = "Uml";
 
-        public UmlPlugin(FormLogic formLogic, PackageMethods packageMethods)
+        /// <summary>
+        /// Stores the name of the extent type
+        /// </summary>
+        public const string ExtentType = "Uml.Classes";
+
+        public UmlPlugin(FormLogic formLogic, PackageMethods packageMethods, ExtentSettings extentSettings)
         {
             _formLogic = formLogic;
             _packageMethods = packageMethods;
+            extentSettings.extentTypeSettings.Add(
+                new ExtentTypeSetting(ExtentType));
+            
         }
 
         public void Start(PluginLoadingPosition position)

@@ -15,6 +15,7 @@ using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Plugins;
@@ -43,7 +44,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentCreator _extentCreator;
         private readonly IntegrationSettings _integrationSettings;
-        
+        private readonly ExtentSettings _extentSettings;
+
         /// <summary>
         /// Stores the cached form and fields
         /// </summary>
@@ -60,11 +62,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <param name="workspaceLogic">The workspace being used</param>
         /// <param name="extentCreator">The support class to create extents</param>
         /// <param name="integrationSettings">The settings that had been used for integration</param>
-        public FormLogic(IWorkspaceLogic workspaceLogic, ExtentCreator extentCreator, IntegrationSettings integrationSettings)
+        /// <param name="extentSettings">Added the extent settings</param>
+        public FormLogic(IWorkspaceLogic workspaceLogic, 
+            ExtentCreator extentCreator,
+            IntegrationSettings integrationSettings,
+            ExtentSettings extentSettings)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
             _integrationSettings = integrationSettings;
+            _extentSettings = extentSettings;
         }
 
         /// <summary>
@@ -83,6 +90,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                         new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalFormExtent);
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
+                    _extentSettings.extentTypeSettings.Add(new ExtentTypeSetting(FormExtentType));
+                    
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:

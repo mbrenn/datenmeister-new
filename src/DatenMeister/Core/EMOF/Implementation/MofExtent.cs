@@ -373,14 +373,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 foreach (var metaWorkspace in metaWorkspaces)
                 {
-                    foreach (var metaExtent in metaWorkspace.extent.OfType<MofExtent>())
-                    {
-                        var element = metaExtent.TypeLookup.ToElement(type);
-                        if (!string.IsNullOrEmpty(element))
-                        {
-                            return element;
-                        }
-                    }
+                    var metaClassUri = WorkspaceDotNetHelper.GetMetaClassUriOfDotNetType(metaWorkspace, type);
+                    if (metaClassUri != null) return metaClassUri;
                 }
             }
 
@@ -485,6 +479,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                     .Select(innerValue => ConvertForSetting(innerValue, extent, container)).ToList();
             }
 
+            if (DotNetHelper.IsOfProviderObject(value))
+            {
+                return value;
+            }
+
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
             if (!(extent is IUriExtent asUriExtent))
             {
@@ -499,14 +498,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject.
         /// An arbitrary object shall be stored into the database
         /// </summary>
-        /// <param name="value">The Mofobject for which the element will be created</param>
+        /// <param name="recipient">The Mofobject for which the element will be created</param>
         /// <param name="childValue">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public static object? ConvertForSetting(IObject value, object? childValue)
+        public static object? ConvertForSetting(IObject recipient, object? childValue)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (recipient == null) throw new ArgumentNullException(nameof(recipient));
 
-            if (value is MofObject mofObject)
+            if (recipient is MofObject mofObject)
             {
                 var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, mofObject);
 
@@ -524,7 +523,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return result;
             }
 
-            if (value is MofExtent extent)
+            if (recipient is MofExtent extent)
             {
                 var result = ConvertForSetting(childValue, extent, null);
 

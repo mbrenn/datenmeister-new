@@ -12,6 +12,6 @@ namespace DatenMeister.Modules.FastViewFilter
         /// </summary>
         /// <param name="value">Value to be filtered</param>
         /// <returns>true, if the value shall be passing the filter</returns>
-        bool IsFiltered(object value);
+        bool IsFiltered(object? value);
     }
 }

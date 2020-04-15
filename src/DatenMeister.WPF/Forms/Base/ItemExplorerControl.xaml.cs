@@ -24,18 +24,12 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Modules;
-using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
-using Button = System.Windows.Controls.Button;
-using ContextMenu = System.Windows.Controls.ContextMenu;
-using MenuItem = System.Windows.Controls.MenuItem;
-using MessageBox = System.Windows.MessageBox;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -60,6 +54,11 @@ namespace DatenMeister.WPF.Forms.Base
         private INavigationHost? _navigationHost;
         private IObject? _rootItem;
 
+        /// <summary>
+        /// Stores the current view mode as being selected by the user
+        /// </summary>
+        private IElement _currentViewMode;
+
         public ItemExplorerControl()
         {
             InitializeComponent();
@@ -72,8 +71,7 @@ namespace DatenMeister.WPF.Forms.Base
             set => _navigationHost = value;
         }
 
-        /// <summary>
-        /// Gets the extent being connected
+        ///BtnViewMode_OnClick/// Gets the extent being connected
         /// </summary>
         public IExtent Extent
         {
@@ -411,11 +409,11 @@ namespace DatenMeister.WPF.Forms.Base
             var usedViewExtensions = viewExtensions.ToList();
 
             UserControl? createdUserControl = null;
-            if (tabForm.getMetaClass()?.@equals(formAndFields.__DetailForm) == true)
+            if (tabForm.getMetaClass()?.equals(formAndFields.__DetailForm) == true)
             {
                 createdUserControl = CreateDetailForm(value, tabForm, container);
             }
-            else if (tabForm.getMetaClass()?.@equals(formAndFields.__ListForm) == true)
+            else if (tabForm.getMetaClass()?.equals(formAndFields.__ListForm) == true)
             {
                 createdUserControl = CreateListControl(value, tabForm, usedViewExtensions);
             }
@@ -616,7 +614,7 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var type in defaultTypesForNewItems.OfType<IElement>())
             {
                 // Check if type is a directly type or the DefaultTypeForNewElement
-                if (type.metaclass?.@equals(
+                if (type.metaclass?.equals(
                     GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
                         x => x.__DefaultTypeForNewElement)) == true)
                 {
@@ -760,7 +758,7 @@ namespace DatenMeister.WPF.Forms.Base
             
             // Only, if the selected package is null (indicating the root) and
             // if the selected package is not the root package, then assume that a child is selected
-            if (e.Item != null && SelectedPackage?.@equals(RootItem) != true)
+            if (e.Item != null && SelectedPackage?.equals(RootItem) != true)
             {
                 SelectedItem = e.Item;
                 IsExtentSelectedInTreeview = false;
@@ -852,6 +850,40 @@ namespace DatenMeister.WPF.Forms.Base
         public virtual void OnMouseDoubleClick(IObject element)
         {
             NavigateToElement(element);
+        }
+
+        private void btnViewMode_OnClick(object sender, RoutedEventArgs e)
+        {
+            var managementWorkspace = GiveMe.Scope.WorkspaceLogic.GetManagementWorkspace();
+            var form = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>() ??
+                       throw new InvalidOperationException("FormAndFields not found");
+            var viewModes = managementWorkspace.GetAllDescendentsOfType(form.__ViewMode);
+            var contextMenu = new ContextMenu();
+
+            var list = new List<MenuItem>();
+            var selectedViewModeId = _currentViewMode?.getOrDefault<string>(_FormAndFields._ViewMode.id);
+            
+            foreach (var mode in viewModes.OfType<IElement>())
+            {
+                var viewMode = mode;
+                var item = new MenuItem
+                {
+                    Header = viewMode.getOrDefault<string>(_FormAndFields._ViewMode.name), 
+                    Tag = viewMode
+                };
+
+                item.IsChecked = item.Header?.ToString() == selectedViewModeId;
+                item.Click += (x, y) =>
+                {
+                    _currentViewMode = viewMode; 
+                    UpdateView();
+                };
+                
+                list.Add(item);
+            }
+
+            contextMenu.ItemsSource = list;
+            contextMenu.IsOpen = true;
         }
     }
 }

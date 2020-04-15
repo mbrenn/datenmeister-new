@@ -57,7 +57,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the current view mode as being selected by the user
         /// </summary>
-        private IElement _currentViewMode;
+        private IElement? _currentViewMode;
 
         public ItemExplorerControl()
         {
@@ -71,7 +71,8 @@ namespace DatenMeister.WPF.Forms.Base
             set => _navigationHost = value;
         }
 
-        ///BtnViewMode_OnClick/// Gets the extent being connected
+        /// <summary>
+        /// Gets the extent being connected
         /// </summary>
         public IExtent Extent
         {

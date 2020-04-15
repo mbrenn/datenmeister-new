@@ -763,6 +763,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ViewMode._id = value;
                                 }
+                                if(name == "defaultExtentType") // Looking for property
+                                {
+                                    tree.ViewMode._defaultExtentType = value;
+                                }
                             }
                         }
                     }

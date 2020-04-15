@@ -542,6 +542,9 @@ namespace DatenMeister.Models.Forms
             public static string @id = "id";
             public IElement? _id = null;
 
+            public static string @defaultExtentType = "defaultExtentType";
+            public IElement? _defaultExtentType = null;
+
         }
 
         public _ViewMode @ViewMode = new _ViewMode();

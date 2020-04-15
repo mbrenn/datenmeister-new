@@ -13,7 +13,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets a value whether the temporary collection is read-only and hinders adding new items
         /// </summary>
-        protected bool IsReadOnly { get; set; }
+        public bool IsReadOnly { get; set; }
 
         public TemporaryReflectiveCollection()
         {

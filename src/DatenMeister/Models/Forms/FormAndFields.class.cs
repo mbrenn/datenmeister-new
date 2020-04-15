@@ -134,6 +134,9 @@ namespace DatenMeister.Models.Forms
             public static string @extentType = "extentType";
             public IElement? _extentType = null;
 
+            public static string @viewModeId = "viewModeId";
+            public IElement? _viewModeId = null;
+
             public static string @parentMetaClass = "parentMetaClass";
             public IElement? _parentMetaClass = null;
 

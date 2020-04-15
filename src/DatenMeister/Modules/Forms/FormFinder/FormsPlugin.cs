@@ -92,7 +92,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     _extentSettings.extentTypeSettings.Add(new ExtentTypeSetting(FormExtentType));
-
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:
@@ -112,14 +111,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
                                         throw new InvalidOperationException("FormAndFields not found");
 
-                    extent.GetConfiguration().AddDefaultTypePackages(new[] {formAndFields.__Form, formAndFields.__FormAssociation});
-                    
-                    
+                    extent.GetConfiguration()
+                        .AddDefaultTypePackages(new[] {formAndFields.__Form, formAndFields.__FormAssociation});
+
                     // Includes the default view modes
                     var packageMethods = new PackageMethods(_workspaceLogic);
                     var internalFormExtent = GetInternalFormExtent();
-                    var package = packageMethods.GetOrCreatePackageStructure(internalFormExtent.elements(), "ViewModes");
-                    var created = MofFactory.Create(internalFormExtent, GetFormAndFieldInstance(internalFormExtent).__ViewMode);
+                    var package =
+                        packageMethods.GetOrCreatePackageStructure(internalFormExtent.elements(), "ViewModes");
+                    var created = MofFactory.Create(internalFormExtent,
+                        GetFormAndFieldInstance(internalFormExtent).__ViewMode);
                     created.set(_FormAndFields._ViewMode.id, "Default");
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);

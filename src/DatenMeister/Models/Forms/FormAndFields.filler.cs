@@ -217,6 +217,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.FormAssociation._extentType = value;
                                 }
+                                if(name == "viewModeId") // Looking for property
+                                {
+                                    tree.FormAssociation._viewModeId = value;
+                                }
                                 if(name == "parentMetaClass") // Looking for property
                                 {
                                     tree.FormAssociation._parentMetaClass = value;

@@ -93,9 +93,11 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var associationParentProperty =
                     element.getOrDefault<string>(_FormAndFields._FormAssociation.parentProperty);
                 var associationForm = element.getOrDefault<IElement>(_FormAndFields._FormAssociation.form);
+                var associationViewModeId = element.getOrDefault<string>(_FormAndFields._FormAssociation.viewModeId);
                 if (associationExtentType == null && associationMetaClass == null
                                                   && associationParentMetaclass == null 
-                                                  && associationParentProperty == null)
+                                                  && associationParentProperty == null
+                                                  && associationViewModeId == null)
                 {
                     // Skip item because it is too unspecific
                     continue;
@@ -126,6 +128,25 @@ namespace DatenMeister.Modules.Forms.FormFinder
                         InternalDebug("-- NO MATCH: ExtentType: " + query.extentType +
                                       ", FormAssociation ExtentType: " +
                                       associationExtentType);
+                        isMatching = false;
+                    }
+                }
+                
+                // ViewMode Id
+                if (!string.IsNullOrEmpty(associationViewModeId))
+                {
+                    if (!string.IsNullOrEmpty(query.viewModeId)
+                        && query.extentType.Equals(associationViewModeId))
+                    {
+                        InternalDebug("-- MATCH: ViewMode: " + query.viewModeId + ", FormAssociation ExtentType: " +
+                                      associationViewModeId);
+                        points++;
+                    }
+                    else
+                    {
+                        InternalDebug("-- NO MATCH: ExtentType: " + query.viewModeId +
+                                      ", FormAssociation ExtentType: " +
+                                      associationViewModeId);
                         isMatching = false;
                     }
                 }

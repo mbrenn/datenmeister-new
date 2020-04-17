@@ -303,8 +303,23 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private void SetDefaultViewMode()
         {
+            var extent = (RootItem as IHasExtent)?.Extent;
+            
+            // Checks, if the user has already selected something
+            var uri = (extent as IUriExtent)?.contextURI();
+            if (uri != null)
+            {
+                var found = GuiObjectCollection.TheOne.UserProperties.GetViewModeSelection(uri);
+                if (found != null)
+                {
+                    CurrentViewMode = found.viewMode;
+                    return;
+                }
+            }
+
+            // Checks the default by extent type
             var formMethods = GiveMe.Scope.Resolve<FormMethods>();
-            var viewMode = formMethods.GetDefaultViewMode((RootItem as IHasExtent)?.Extent);
+            var viewMode = formMethods.GetDefaultViewMode(extent);
             CurrentViewMode = viewMode;
         }
 
@@ -891,7 +906,15 @@ namespace DatenMeister.WPF.Forms.Base
                 item.IsChecked = item.Header?.ToString() == selectedViewModeId;
                 item.Click += (x, y) =>
                 {
-                    CurrentViewMode = viewMode; 
+                    CurrentViewMode = viewMode;
+                    var uri = ((RootItem as IHasExtent)?.Extent as IUriExtent)?.contextURI();
+
+                    if (uri != null)
+                    {
+                        // Adds the chosen selection to the user properties
+                        GuiObjectCollection.TheOne.UserProperties.AddViewModeSelection(uri, viewMode);
+                    }
+
                     UpdateView();
                 };
                 

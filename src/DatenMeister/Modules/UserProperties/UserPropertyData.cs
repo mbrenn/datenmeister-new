@@ -22,7 +22,7 @@ namespace DatenMeister.Modules.UserProperties
         {
             lock (_viewModeSelection)
             {
-                var foundViewMode = GetViewModeSelection(extentUri, tag);
+                var foundViewMode = Get(extentUri, tag);
                 if (foundViewMode == null)
                 {
                     var newViewMode = new ViewModeSelection
@@ -36,9 +36,21 @@ namespace DatenMeister.Modules.UserProperties
                 }
                 else
                 {
-                    foundViewMode.extentUri = extentUri;
+                    foundViewMode.viewMode = viewMode;
                 }
             }
+        }
+        
+
+        /// <summary>
+        /// Gets the first view mode of the user 
+        /// </summary>
+        /// <param name="extentUri">Uri of the extent</param>
+        /// <param name="tag">Tag to be used</param>
+        /// <returns>The found viewmode selection</returns>
+        public IElement? GetViewModeSelection(string extentUri, string? tag = null)
+        {
+            return Get(extentUri, tag)?.viewMode;
         }
 
         /// <summary>
@@ -47,7 +59,7 @@ namespace DatenMeister.Modules.UserProperties
         /// <param name="extentUri">Uri of the extent</param>
         /// <param name="tag">Tag to be used</param>
         /// <returns>The found viewmode selection</returns>
-        public ViewModeSelection? GetViewModeSelection(string extentUri, string? tag = null)
+        private ViewModeSelection? Get(string extentUri, string? tag = null)
         {
             lock (_viewModeSelection)
             {

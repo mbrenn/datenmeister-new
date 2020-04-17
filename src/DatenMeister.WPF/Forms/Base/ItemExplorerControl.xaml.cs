@@ -312,7 +312,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var found = GuiObjectCollection.TheOne.UserProperties.GetViewModeSelection(uri);
                 if (found != null)
                 {
-                    CurrentViewMode = found.viewMode;
+                    CurrentViewMode = found;
                     return;
                 }
             }

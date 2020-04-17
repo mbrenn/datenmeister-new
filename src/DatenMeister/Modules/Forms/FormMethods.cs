@@ -147,7 +147,7 @@ namespace DatenMeister.Modules.Forms
 
             var tabs = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
-            if ( formAndFields == null) throw new InvalidOperationException("_FormAndFields were not found");
+            if (formAndFields == null) throw new InvalidOperationException("_FormAndFields were not found");
 
             foreach (var tab in tabs.OfType<IElement>())
             {
@@ -164,13 +164,14 @@ namespace DatenMeister.Modules.Forms
             return null;
         }
 
-        public IElement GetDefaultViewMode(IExtent extent)
+        public IElement GetDefaultViewMode(IExtent? extent)
         {
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
-            var formAndFields = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>();
+            var formAndFields = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>()
+                                ?? throw new InvalidOperationException("_FormAndFields are empty");
             
-            var extentType = extent.GetConfiguration().ExtentType;
-            if (extentType != null && extentType != string.Empty)
+            var extentType = extent?.GetConfiguration()?.ExtentType;
+            if (!string.IsNullOrEmpty(extentType))
             {
                 var result = managementWorkspace
                     .GetAllDescendentsOfType(formAndFields.__ViewMode)

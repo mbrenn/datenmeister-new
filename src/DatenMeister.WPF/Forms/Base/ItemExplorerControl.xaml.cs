@@ -17,6 +17,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -57,7 +58,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Stores the current view mode as being selected by the user
         /// </summary>
-        private IElement? _currentViewMode;
+        public IElement? CurrentViewMode { get; private set; }
 
         public ItemExplorerControl()
         {
@@ -287,10 +288,24 @@ namespace DatenMeister.WPF.Forms.Base
             using var watch = new StopWatchLogger(_logger, "SetRootItem");
 
             RootItem = value;
+            SetDefaultViewMode();
+            
             UpdateTreeContent();
             RecreateForms();
 
             watch.Stop();
+        }
+
+        /// <summary>
+        /// Gets the default view mode.
+        /// The default view mode is automatically set by the extent type or by the last usage of the end user.
+        /// The result is stored in the local variable 'CurrentViewMode'
+        /// </summary>
+        private void SetDefaultViewMode()
+        {
+            var formMethods = GiveMe.Scope.Resolve<FormMethods>();
+            var viewMode = formMethods.GetDefaultViewMode((RootItem as IHasExtent)?.Extent);
+            CurrentViewMode = viewMode;
         }
 
         /// <summary>
@@ -339,7 +354,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     If the subform is constrained by a property or metaclass, the collection itself is filtered within the
         ///     this call
         /// </summary>
-        /// <param name="value">Value which shall be shown</param>
+        /// <param name="value">Value which shall be shown. This method is </param>
         /// <param name="formDefinition">The extent form to be shown. The tabs of the extern form are passed</param>
         /// <param name="container">Container to which the element is contained by.
         /// This information is used to remove the item</param>
@@ -862,7 +877,7 @@ namespace DatenMeister.WPF.Forms.Base
             var contextMenu = new ContextMenu();
 
             var list = new List<MenuItem>();
-            var selectedViewModeId = _currentViewMode?.getOrDefault<string>(_FormAndFields._ViewMode.id);
+            var selectedViewModeId = CurrentViewMode?.getOrDefault<string>(_FormAndFields._ViewMode.id);
             
             foreach (var mode in viewModes.OfType<IElement>())
             {
@@ -876,7 +891,7 @@ namespace DatenMeister.WPF.Forms.Base
                 item.IsChecked = item.Header?.ToString() == selectedViewModeId;
                 item.Click += (x, y) =>
                 {
-                    _currentViewMode = viewMode; 
+                    CurrentViewMode = viewMode; 
                     UpdateView();
                 };
                 

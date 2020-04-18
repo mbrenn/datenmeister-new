@@ -541,6 +541,15 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
+        /// <summary>
+        /// Returns a flag whether the extent contains the IsModified flag, indicating that the
+        /// data is not stored to the disc or other permanent database
+        /// </summary>
+        /// <param name="extent">Extent to be evaluated</param>
+        /// <returns>true, if the extent is modified</returns>
+        public static bool IsExtentModified(IExtent extent) => 
+            (extent as MofExtent)?.IsModified == true;
+
         private class VerifyDatabaseEntry
         {
             public VerifyDatabaseEntry(string workspace, string extentUri)

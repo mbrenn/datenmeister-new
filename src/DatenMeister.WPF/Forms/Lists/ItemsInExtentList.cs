@@ -117,13 +117,14 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         private void CreateFormForItems()
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var formPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
                 
             IElement? form = null;
 
             var overridingMode = OverridingViewDefinition?.Mode ?? FormDefinitionMode.Default;
+            
             // Check if the used form shall be overridden
             if (OverridingViewDefinition != null && overridingMode == FormDefinitionMode.Specific)
             {
@@ -152,7 +153,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Extent is currently selected
                     // Finds the view by the extent type
-                    form = viewLogic.GetExtentForm((IUriExtent) RootItem, overridingMode);
+                    form = formPlugin.GetExtentForm((IUriExtent) RootItem, overridingMode);
                 }
                 else
                 {
@@ -160,7 +161,7 @@ namespace DatenMeister.WPF.Forms.Lists
                         throw new InvalidOperationException("Not a root item, but also no SelectedItem");
                     
                     // User has selected a sub element and its children shall be shown
-                    form = viewLogic.GetItemTreeFormForObject(
+                    form = formPlugin.GetItemTreeFormForObject(
                         SelectedItem,
                         overridingMode);
                 }

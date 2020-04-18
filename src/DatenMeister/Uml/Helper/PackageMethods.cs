@@ -53,6 +53,23 @@ namespace DatenMeister.Uml.Helper
                 uml.Packages.__Package,
                 false);
         }
+        
+
+        /// <summary>
+        /// Gets or creates a package by following the path.
+        /// </summary>
+        /// <param name="rootElements">Collection in which the package shall be created</param>
+        /// <param name="packagePath">Path to the package</param>
+        /// <param name="createIfNotFound">Gets or sets the flag that the package will be automatically created
+        /// in case it is not found</param>
+        /// <returns>Found element</returns>
+        public IElement GetOrCreatePackageStructure(
+            IReflectiveCollection rootElements,
+            string packagePath)
+        {
+            return GetOrCreatePackageStructure(rootElements, packagePath, true)
+                   ?? throw new NotImplementedException("Should not be null");
+        }
 
         /// <summary>
         /// Gets or creates a package by following the path.
@@ -65,7 +82,7 @@ namespace DatenMeister.Uml.Helper
         public IElement? GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             string packagePath,
-            bool createIfNotFound = true)
+            bool createIfNotFound)
         {
             var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
             
@@ -94,7 +111,7 @@ namespace DatenMeister.Uml.Helper
         {
             var element = GetOrCreatePackageStructure(rootElements, packagePath);
 
-            return element?.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+            return element.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
         }
 
         /// <summary>
@@ -232,10 +249,6 @@ namespace DatenMeister.Uml.Helper
         public void ImportPackage(IObject sourcePackage, IReflectiveSequence target, string packagePath)
         {
             var targetPackage = GetOrCreatePackageStructure(target, packagePath);
-
-            // Check, if the target package was found
-            if (targetPackage == null) 
-                return;
             
             // We got the package, import the elements
             ImportPackage(sourcePackage, targetPackage);
@@ -288,43 +301,42 @@ namespace DatenMeister.Uml.Helper
             if (targetPackage == null)
                 throw new InvalidOperationException("targetPackage == null");
 
-            using (var stream = manifestType.GetTypeInfo()
-                .Assembly.GetManifestResourceStream(manifestName))
+            using var stream = manifestType.GetTypeInfo()
+                .Assembly.GetManifestResourceStream(manifestName);
+            
+            if (stream == null)
             {
-                if (stream == null)
-                {
-                    throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
-                }
-
-                var document = XDocument.Load(stream);
-                var pseudoProvider = new XmiProvider(document);
-                var pseudoExtent = new MofUriExtent(pseudoProvider)
-                {
-                    Workspace = (Workspace?) targetExtent.GetWorkspace()
-                };
-
-                var sourcePackage = GetOrCreatePackageStructure(
-                    pseudoExtent.elements(),
-                    sourcePackageName,
-                    false);
-
-                if (sourcePackage == null)
-                {
-                    if (loadingRequired)
-                    {
-                        throw new InvalidOperationException(
-                            $"sourcePackage == null. Probably {sourcePackageName} in {manifestName} not found");
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-                    
-                ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
-
-                return sourcePackage;
+                throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
             }
+
+            var document = XDocument.Load(stream);
+            var pseudoProvider = new XmiProvider(document);
+            var pseudoExtent = new MofUriExtent(pseudoProvider)
+            {
+                Workspace = (Workspace?) targetExtent.GetWorkspace()
+            };
+
+            var sourcePackage = GetOrCreatePackageStructure(
+                pseudoExtent.elements(),
+                sourcePackageName,
+                false);
+
+            if (sourcePackage == null)
+            {
+                if (loadingRequired)
+                {
+                    throw new InvalidOperationException(
+                        $"sourcePackage == null. Probably {sourcePackageName} in {manifestName} not found");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+                    
+            ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
+
+            return sourcePackage;
         }
     }
 }

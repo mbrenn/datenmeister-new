@@ -127,7 +127,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     return;
                 }
 
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 if (viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass))
                 {
                     MessageBox.Show("View Association deleted");
@@ -165,7 +165,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     return;
                 }
 
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 var userViewExtent = viewLogic.GetUserFormExtent();
                 var factory = new MofFactory(userViewExtent);
 

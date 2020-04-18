@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         return;
                     }
                     
-                    var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                    var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                     var target = viewLogic.GetUserFormExtent();
                     var copier = new ObjectCopier(new MofFactory(target));
 
@@ -139,7 +139,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                             return;
                         }
 
-                        var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                        var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                         var userViewExtent = viewLogic.GetUserFormExtent();
                         var factory = new MofFactory(userViewExtent);
                         var formAndFields = viewLogic.GetFormAndFieldInstance();
@@ -175,7 +175,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                             return;
                         }
 
-                        var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                        var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
 
                         if (viewLogic.RemoveFormAssociationForExtentType(selectedExtentType))
                         {
@@ -206,7 +206,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             {
                 var extent = rootItem.GetExtentOf();
                 var extentType = extent?.GetConfiguration().ExtentType;
-                if (extentType == FormLogic.FormExtentType)
+                if (extentType == FormsPlugin.FormExtentType)
                 {
                     yield return new ItemMenuButtonDefinition(
                         "Create Extent Form by Classifier",
@@ -349,7 +349,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 ExtentHelper.SetAvailableId(containerExtent, extentForm, name);
 
                 // Creates association
-                var formLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var formLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 var association1 = 
                     formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.Detail);
                 var association2 = 

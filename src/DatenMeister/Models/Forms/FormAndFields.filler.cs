@@ -217,6 +217,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.FormAssociation._extentType = value;
                                 }
+                                if(name == "viewModeId") // Looking for property
+                                {
+                                    tree.FormAssociation._viewModeId = value;
+                                }
                                 if(name == "parentMetaClass") // Looking for property
                                 {
                                     tree.FormAssociation._parentMetaClass = value;
@@ -739,6 +743,29 @@ namespace DatenMeister.Models.Forms
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.ExtentForm._hideMetaInformation = value;
+                                }
+                            }
+                        }
+                        if(name == "ViewMode") // Looking for class
+                        {
+                            tree.__ViewMode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ViewMode._name = value;
+                                }
+                                if(name == "id") // Looking for property
+                                {
+                                    tree.ViewMode._id = value;
+                                }
+                                if(name == "defaultExtentType") // Looking for property
+                                {
+                                    tree.ViewMode._defaultExtentType = value;
                                 }
                             }
                         }

@@ -371,7 +371,7 @@ namespace DatenMeister.WPF.Windows
             var formDefinition = RequestedFormDefinition;
             
             IObject? effectiveForm = null;
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
 
             // Checks, if there is an overriding form 
             if (OverridingFormDefinition != null)

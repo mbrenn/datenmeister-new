@@ -83,7 +83,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         private INavigationHost? _navigationHost;
         
@@ -98,7 +98,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
-            _formLogic = GiveMe.Scope.Resolve<FormLogic>();
+            _formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             InitializeComponent();
         }
 
@@ -344,10 +344,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Returned element for the </returns>
         private object? GetValueOfElement(IObject element, IElement field)
         {
-            if (_formLogic == null) throw new InvalidOperationException("_formlogic == null");
+            if (_formsPlugin == null) throw new InvalidOperationException("_formlogic == null");
             
             var fieldMetaClass = field.getMetaClass();
-            if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+            if (fieldMetaClass?.equals(_formsPlugin.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -572,7 +572,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 bool isReadOnly;
 
-                if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                if (fieldMetaClass?.equals(_formsPlugin.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";

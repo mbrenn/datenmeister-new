@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -146,7 +147,7 @@ namespace DatenMeister.Modules.Forms
 
             var tabs = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
-            if ( formAndFields == null) throw new InvalidOperationException("_FormAndFields were not found");
+            if (formAndFields == null) throw new InvalidOperationException("_FormAndFields were not found");
 
             foreach (var tab in tabs.OfType<IElement>())
             {
@@ -161,6 +162,33 @@ namespace DatenMeister.Modules.Forms
             }
 
             return null;
+        }
+
+        public IElement GetDefaultViewMode(IExtent? extent)
+        {
+            var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
+            var formAndFields = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>()
+                                ?? throw new InvalidOperationException("_FormAndFields are empty");
+            
+            var extentType = extent?.GetConfiguration()?.ExtentType;
+            if (!string.IsNullOrEmpty(extentType))
+            {
+                var result = managementWorkspace
+                    .GetAllDescendentsOfType(formAndFields.__ViewMode)
+                    .WhenPropertyHasValue(_FormAndFields._ViewMode.defaultExtentType, extentType)
+                    .OfType<IElement>()
+                    .FirstOrDefault();
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return managementWorkspace
+                .GetAllDescendentsOfType(formAndFields.__ViewMode)
+                .WhenPropertyHasValue(_FormAndFields._ViewMode.id, "Default")
+                .OfType<IElement>()
+                .FirstOrDefault();
         }
     }
 }

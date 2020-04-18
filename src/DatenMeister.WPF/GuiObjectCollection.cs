@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System.Collections.Generic;
+using DatenMeister.Modules.UserProperties;
 using DatenMeister.WPF.Modules.ViewExtensions;
 
 namespace DatenMeister.WPF
@@ -46,5 +47,10 @@ namespace DatenMeister.WPF
         /// Gets a list of the allowed view extension factories
         /// </summary>
         public List<IViewExtensionFactory> ViewExtensionFactories { get; } = new List<IViewExtensionFactory>();
+        
+        /// <summary>
+        /// Gets the user properties
+        /// </summary>
+        public UserPropertyData UserProperties { get; } = new UserPropertyData();
     }
 }

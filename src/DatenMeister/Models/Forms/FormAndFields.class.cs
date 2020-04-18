@@ -134,6 +134,9 @@ namespace DatenMeister.Models.Forms
             public static string @extentType = "extentType";
             public IElement? _extentType = null;
 
+            public static string @viewModeId = "viewModeId";
+            public IElement? _viewModeId = null;
+
             public static string @parentMetaClass = "parentMetaClass";
             public IElement? _parentMetaClass = null;
 
@@ -530,6 +533,22 @@ namespace DatenMeister.Models.Forms
 
         public _ExtentForm @ExtentForm = new _ExtentForm();
         public IElement @__ExtentForm = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ExtentForm");
+
+        public class _ViewMode
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @id = "id";
+            public IElement? _id = null;
+
+            public static string @defaultExtentType = "defaultExtentType";
+            public IElement? _defaultExtentType = null;
+
+        }
+
+        public _ViewMode @ViewMode = new _ViewMode();
+        public IElement @__ViewMode = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
         public static _FormAndFields TheOne = new _FormAndFields();
 

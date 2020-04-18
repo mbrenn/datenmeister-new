@@ -18,5 +18,10 @@ namespace DatenMeister.Modules.Forms.FormFinder
         public IElement? parentMetaClass { get; set; }
 
         public string parentProperty { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the id of the view mode being used for the query
+        /// </summary>
+        public string viewModeId { get; set; } = string.Empty;
     }
 }

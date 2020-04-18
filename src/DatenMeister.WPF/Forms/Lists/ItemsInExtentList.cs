@@ -15,6 +15,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -281,8 +282,11 @@ namespace DatenMeister.WPF.Forms.Lists
                 if (extentManager.GetLoadConfigurationFor(uriExtent) is ExtentFileLoaderConfig
                         loadConfiguration && loadConfiguration.filePath != null)
                 {
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    Process.Start(Path.GetDirectoryName(loadConfiguration.filePath));
+                    var filePath = loadConfiguration.filePath;
+                    
+                    //Clean up file path so it can be navigated OK
+                    filePath = Path.GetFullPath(filePath);
+                    Process.Start("explorer.exe", $"/select,\"{filePath}\"");
                 }
                 else
                 {

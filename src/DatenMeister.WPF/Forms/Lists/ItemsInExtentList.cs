@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -302,14 +303,15 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
             }
 
-            void SaveExtent(IExtent extent)
-            {
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                extentManager.StoreExtent(extent);
-                MessageBox.Show("Extent saved");
-            }
-
             foreach (var extension in base.GetViewExtensions()) yield return extension;
+        }
+
+        private void SaveExtent(IExtent extent)
+        {
+            var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+            extentManager.StoreExtent(extent);
+            
+            UpdateTreeContent();
         }
 
         public override ViewExtensionInfo GetViewExtensionInfo()
@@ -321,6 +323,26 @@ namespace DatenMeister.WPF.Forms.Lists
                 RootElement = RootItem,
                 SelectedElement = SelectedItem
             };
+        }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            var extent = RootItem as IExtent;
+            if (extent == null)
+            {
+                MessageBox.Show("The root item is not an extent");
+                return;
+            }
+            
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (e.Key == Key.S)
+                {
+                    SaveExtent(extent);   
+                }
+            }
+            
+            base.OnKeyDown(e);
         }
     }
 }

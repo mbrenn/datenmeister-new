@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.XPath;
+using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -17,6 +18,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
@@ -500,8 +502,21 @@ namespace DatenMeister.WPF.Forms.Base
 
         private string GetItemHeader(object item)
         {
-            // Filtering agrees to the item, so it will be added
-            var itemHeader = item is IExtent ? "Root" : item.ToString();
+            string itemHeader;
+            if (item is IExtent extent)
+            {
+                itemHeader = "Root";
+                if (ExtentManager.IsExtentModified(extent))
+                {
+                    itemHeader += "*";
+                }
+            }
+            else
+            {
+                // Filtering agrees to the item, so it will be added
+                itemHeader = item.ToString();
+            }
+
             if (_cacheShowMetaClasses)
             {
                 if (item is IElement element)

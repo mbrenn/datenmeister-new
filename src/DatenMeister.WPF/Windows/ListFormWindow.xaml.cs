@@ -44,7 +44,7 @@ namespace DatenMeister.WPF.Windows
                 }
 
                 var task = new TaskCompletionSource<NavigateToElementDetailResult?>();
-                task.SetResult(new NavigateToElementDetailResult()
+                task.SetResult(new NavigateToElementDetailResult
                 {
                     NavigationGuest = MainViewSet as INavigationGuest,
                     NavigationHost = this,

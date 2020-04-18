@@ -563,6 +563,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             var fieldNames = new List<string>();
 
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true;
+
             // Creates the column
             foreach (var field in fields.Cast<IElement>())
             {
@@ -588,7 +590,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     Header = title,
                     Binding = new Binding(name),
-                    IsReadOnly = isReadOnly,
+                    IsReadOnly = isReadOnly || isFormReadOnly,
                     ElementStyle = (Style) TryFindResource("DataGridCellCentered")
                 };
 

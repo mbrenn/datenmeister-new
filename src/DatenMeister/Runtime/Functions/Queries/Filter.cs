@@ -120,7 +120,6 @@ namespace DatenMeister.Runtime.Functions.Queries
             this IReflectiveCollection collection)
             =>
                 new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
-        
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively

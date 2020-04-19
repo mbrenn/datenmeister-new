@@ -14,6 +14,7 @@ using DatenMeister.Provider;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -67,6 +68,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the flag indicating whether the extent is modified
         /// </summary>
         public bool IsModified { get; private set; }
+
+        private int _itemCountCached;
+
+        public int ItemCount
+        {
+            get
+            {
+                if (_itemCountCached == -1)
+                {
+                    _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
+                }
+
+                return _itemCountCached;
+            }
+        }
 
         /// <summary>
         /// Gets the meta object representing the meta object. Setting, querying a list or getting
@@ -573,6 +589,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="isModified">true, if the modification flag shall be set to true</param>
         internal void SignalUpdateOfContent(bool isModified = true)
         {
+            _itemCountCached = -1;
             IsModified = isModified;
         }
     }

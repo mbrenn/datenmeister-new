@@ -2,11 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime.Functions.Queries
@@ -98,7 +96,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             // Goes through the found properties
             foreach (var property in propertyList)
             {
-                if (byFollowingProperties?.Contains(property) == false)
+                if (byFollowingProperties?.Contains(property) == false || !asMofObject.isSet(property))
                 {
                     // Skip the properties that are not defined in the given collection
                     continue;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Runtime.Extents
+﻿namespace DatenMeister.Runtime.Extents
 {
     public class ImportSettings
     {

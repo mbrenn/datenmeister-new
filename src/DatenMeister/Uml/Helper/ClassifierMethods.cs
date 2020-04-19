@@ -84,7 +84,11 @@ namespace DatenMeister.Uml.Helper
             var properties = GetPropertiesOfClassifier(classifier);
             foreach (var property in properties)
             {
-                if (property.getOrDefault<bool?>(_UML._Classification._Property.isComposite) == true)
+                if (property.getOrDefault<bool>(_UML._Classification._Property.isComposite) == true)
+                {
+                    yield return property;
+                }
+                else if (property.getOrDefault<string>(_UML._Classification._Property.aggregation) == "composite")
                 {
                     yield return property;
                 }

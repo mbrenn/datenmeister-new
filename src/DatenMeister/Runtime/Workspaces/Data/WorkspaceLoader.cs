@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using BurnSystems.Logging;
 
 namespace DatenMeister.Runtime.Workspaces.Data

@@ -100,5 +100,26 @@ namespace DatenMeister.Tests.Uml
             var foundElement = NamedElementMethods.GetByFullName(umlExtent.elements(), fullName);
             Assert.That(foundElement, Is.EqualTo(feature));
         }
+
+        [Test]
+        public void TestCompositeProperties()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+            var uml = workspaceLogic.GetUmlData();
+            var extent = dm.CreateXmiExtent("dm:///test");
+
+            var properties = ClassifierMethods.GetCompositingProperties(uml.Classification.__Classifier);
+            Assert.That(properties, Is.Not.Null);
+            var propertyList = properties.ToList();
+            Assert.That(propertyList.Count(), Is.GreaterThan(0));
+            
+            var allProperties = ClassifierMethods.GetPropertiesOfClassifier(uml.Classification.__Classifier);
+            Assert.That(allProperties, Is.Not.Null);
+            var allPropertyList = allProperties.ToList();
+            Assert.That(allPropertyList.Count, Is.GreaterThan(propertyList.Count));
+
+
+        }
     }
 }

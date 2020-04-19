@@ -1,7 +1,6 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
-using DatenMeister.Integration;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Workspaces;

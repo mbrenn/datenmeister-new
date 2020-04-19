@@ -1,10 +1,8 @@
 ﻿using System;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
@@ -29,10 +27,10 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 _ManagementProvider._Extent.count,
                 e => e.elements().size(),
                 (e, v) => throw new InvalidOperationException("count cannot be set"));
-            
+
             AddMapping(
                 _ManagementProvider._Extent.totalCount,
-                e => e.elements().GetAllCompositesIncludingThemselves().size(),
+                e => (e as MofExtent)?.ItemCount ?? 0,
                 (e, v) => throw new InvalidOperationException("totalCount cannot be set"));
 
             AddMapping(

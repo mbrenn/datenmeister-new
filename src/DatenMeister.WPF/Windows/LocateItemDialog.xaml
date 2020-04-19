@@ -3,9 +3,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dmforms="clr-namespace:DatenMeister.WPF.Forms.Base"
         xmlns:controls="clr-namespace:DatenMeister.WPF.Controls"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="LocateItemDialog" Height="600" Width="800">
+        Title="Locate the item" Height="600" Width="800" Closed="LocateItemDialog_OnClosed">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="dmforms:ViewButton">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+            <Setter Property="Width" Value="80"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,10 +36,10 @@
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="txtTitle" FontSize="24"></TextBlock>
-        <controls:LocateElementControl x:Name="LocateElementControl" Grid.Row="1" />
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
-            <Button Click="Open_Click">Open</Button>
-            <Button Click="Cancel_Click">Cancel</Button>
+        <controls:LocateElementControl x:Name="LocateElementControl" Grid.Row="1"  ShowMetaClasses="true"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">    
+            <Button Click="Cancel_Click" Width="80">Cancel</Button>
+            <Button Click="Open_Click" x:Name="SelectionButton" Width="80">Open</Button>
         </StackPanel>
     </Grid>
 </Window>

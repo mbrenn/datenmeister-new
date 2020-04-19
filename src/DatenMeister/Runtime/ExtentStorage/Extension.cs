@@ -17,11 +17,10 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="uri"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static IUriExtent CreateAndAddXmiExtent(this IExtentManager extentManager, string uri, string filename)
+        public static IUriExtent? CreateAndAddXmiExtent(this IExtentManager extentManager, string uri, string filename)
         {
-            var xmiConfiguration = new XmiStorageConfiguration
+            var xmiConfiguration = new XmiStorageConfiguration(uri)
             {
-                extentUri = uri,
                 workspaceId = WorkspaceNames.NameData,
                 filePath = filename
             };
@@ -38,20 +37,39 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="loaderConfiguration">The loader configuration being used to load the extent</param>
         /// <param name="flags">The extent creation flags being used to load the extent</param>
         /// <returns>The found or loaded extent</returns>
-        public static IUriExtent LoadExtentIfNotAlreadyLoaded(
+        public static IUriExtent? LoadExtentIfNotAlreadyLoaded(
             this IExtentManager extentManager,
-            ExtentLoaderConfig loaderConfiguration, 
+            ExtentLoaderConfig loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)
         {
             var asExtentManager = extentManager as ExtentManager
                                   ?? throw new InvalidOperationException("extentManager is not ExtentManager");
             var workspaceLogic = asExtentManager.WorkspaceLogic;
             var workspace = workspaceLogic.GetWorkspace(loaderConfiguration.workspaceId);
-            
+
             var foundExtent = workspace?.extent.OfType<IUriExtent>().FirstOrDefault(
                 x => x.contextURI() == loaderConfiguration.extentUri);
-            
+
             return foundExtent ?? extentManager.LoadExtent(loaderConfiguration, flags);
+        }
+
+        /// <summary>
+        /// Deletes the extent from the workspace and the extent manager
+        /// </summary>
+        /// <param name="manager">Manager to be used</param>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUri">Uri of the extent</param>
+        /// <returns>true, if successfully deleted</returns>
+        public static bool DeleteExtent(this IExtentManager manager, string workspaceId, string extentUri)
+        {
+            var found = manager.WorkspaceLogic.FindExtent(workspaceId, extentUri);
+            if (found != null)
+            {
+                manager.DeleteExtent(found);
+                return true;
+            }
+
+            return false;
         }
     }
 }

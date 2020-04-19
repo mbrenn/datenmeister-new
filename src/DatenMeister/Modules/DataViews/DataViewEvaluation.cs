@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.DataViews;
-using DatenMeister.Modules.DataViews.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Proxies;
@@ -24,9 +23,7 @@ namespace DatenMeister.Modules.DataViews
 
         private readonly IWorkspaceLogic _workspaceLogic;
 
-        private List<IElement> _visitedViewNodes = new List<IElement>();
-
-        private int _referenceCount = 0;
+        private int _referenceCount;
 
         private const int MaximumReferenceCount = 1000;
 
@@ -54,7 +51,7 @@ namespace DatenMeister.Modules.DataViews
                 Logger.Warn("Maximum number of references are evaluated in dataview evaluation");
                 return new PureReflectiveSequence();
             }
-            
+
 
             var dataview = _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews, _DataViews>();
             var metaClass = viewNode.getMetaClass();
@@ -64,30 +61,20 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            if (metaClass.@equals(dataview.__SourceExtentNode))
-            {
+            if (metaClass.equals(dataview.__SourceExtentNode))
                 return GetElementsForSourceExtent(viewNode);
-            }
 
-            if (metaClass.@equals(dataview.__SelectPathNode))
-            {
+            if (metaClass.equals(dataview.__SelectPathNode))
                 return GetElementsForPathNode(viewNode);
-            }
 
-            if (metaClass.@equals(dataview.__FlattenNode))
-            {
+            if (metaClass.equals(dataview.__FlattenNode))
                 return GetElementsForFlattenNode(viewNode);
-            }
 
-            if (metaClass.@equals(dataview.__FilterTypeNode))
-            {
+            if (metaClass.equals(dataview.__FilterTypeNode))
                 return GetElementsForFilterTypeNode(viewNode);
-            }
 
-            if (metaClass.@equals(dataview.__FilterPropertyNode))
-            {
+            if (metaClass.equals(dataview.__FilterPropertyNode))
                 return GetElementsForFilterPropertyNode(viewNode);
-            }
 
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
 
@@ -139,6 +126,12 @@ namespace DatenMeister.Modules.DataViews
             }
 
             var targetElement = NamedElementMethods.GetByFullName(input, pathNode);
+            if (targetElement == null)
+            {
+                // Path is not found
+                return new PureReflectiveSequence();
+            }
+            
             return new TemporaryReflectiveSequence(NamedElementMethods.GetAllPropertyValues(targetElement));
         }
 
@@ -172,8 +165,8 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            return new TemporaryReflectiveSequence(input.WhenMetaClassIs(type));
-
+            return new TemporaryReflectiveSequence(
+                input.WhenMetaClassIs(type));
         }
 
         private IReflectiveSequence GetElementsForFilterPropertyNode(IElement viewNode)
@@ -213,7 +206,7 @@ namespace DatenMeister.Modules.DataViews
         }
 
         /// <summary>
-        /// Filters the elements of the reflective sequence according the rules 
+        /// Filters the elements of the reflective sequence according the rules
         /// </summary>
         /// <param name="input">Elements to be filtered</param>
         /// <param name="property">Property upon which the filtering shall be done</param>
@@ -230,9 +223,9 @@ namespace DatenMeister.Modules.DataViews
                     continue;
                 }
 
-                var elementValue = element.get(property).ToString();
+                var elementValue = element.getOrDefault<string>(property);
 
-                var isIn = false;
+                bool isIn;
                 switch (comparisonMode)
                 {
                     case ComparisonMode.Equal:

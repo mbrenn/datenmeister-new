@@ -1,12 +1,12 @@
 ﻿using System;
-using DatenMeister.Core.Plugins;
-using DatenMeister.Modules.DataViews.Model;
+using DatenMeister.Models.DataViews;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
 {
-    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterInitialization)]
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class DataViewPlugin : IDatenMeisterPlugin
     {
         private readonly LocalTypeSupport _localTypeSupport;
@@ -51,10 +51,13 @@ namespace DatenMeister.Modules.DataViews
                     var workspace = new Workspace(WorkspaceNames.NameViews, "Container of all views which are created dynamically.");
                     _workspaceLogic.AddWorkspace(workspace);
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_workspaceLogic, _dataViewLogic));
-
                     break;
-                case PluginLoadingPosition.AfterInitialization:
-                    _localTypeSupport.AddInternalTypes(GetTypes(), DataViewLogic.PackagePathTypesDataView);
+                case PluginLoadingPosition.AfterLoadingOfExtents:
+                    _localTypeSupport.ImportTypes(
+                        DataViewLogic.PackagePathTypesDataView,
+                        _DataViews.TheOne,
+                        IntegrateDataViews.Assign
+                    );
                     break;
             }
         }

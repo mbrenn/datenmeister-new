@@ -13,7 +13,7 @@ namespace DatenMeister.Runtime.Dynamic
     public static class DynamicConverter
     {
         /// <summary>
-        /// Sets the wrapped object into the dynamic value. 
+        /// Sets the wrapped object into the dynamic value.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="objectToBeSet"></param>
@@ -21,7 +21,7 @@ namespace DatenMeister.Runtime.Dynamic
         {
             if (value != null)
             {
-                if (!(value is ExpandoObject valueAsExpandoObject))
+                if (!(value is ExpandoObject))
                 {
                     throw new InvalidOperationException("The given value is not of type ExpandObject");
                 }
@@ -43,7 +43,7 @@ namespace DatenMeister.Runtime.Dynamic
             }
         }
 
-        public static IObject GetWrappedObject(dynamic value)
+        public static IObject? GetWrappedObject(dynamic value)
         {
             if (value == null)
             {
@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime.Dynamic
         }
 
         /// <summary>
-        /// Converts the given value to a dynamic object 
+        /// Converts the given value to a dynamic object
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="wrapInObject">Flag, indicating whether the value itself shall be wrapped in</param>
@@ -70,7 +70,7 @@ namespace DatenMeister.Runtime.Dynamic
             foreach (var property in allProperties.getPropertiesBeingSet())
             {
                 var propertyValue = value.get(property);
-                ((IDictionary<string, object>)result)[property] = ConvertValue(propertyValue, wrapInObject);
+                ((IDictionary<string, object?>) result)[property] = ConvertValue(propertyValue, wrapInObject);
             }
 
             if (wrapInObject)
@@ -81,29 +81,26 @@ namespace DatenMeister.Runtime.Dynamic
             return result;
         }
 
-        private static object ConvertValue(object propertyValue, bool wrapInObject)
+        private static object? ConvertValue(object? propertyValue, bool wrapInObject)
         {
-            if (DotNetHelper.IsNull(propertyValue))
-            {
-                return null;
-            }
-            if (DotNetHelper.IsOfPrimitiveType(propertyValue))
-            {
-                return propertyValue;
-            }
-            if (DotNetHelper.IsOfMofObject(propertyValue))
-            {
-                return ToDynamic(propertyValue as IObject, wrapInObject);
-            }
+            if (propertyValue == null) return null;
+            if (DotNetHelper.IsOfPrimitiveType(propertyValue)) return propertyValue;
+            if (DotNetHelper.IsOfMofObject(propertyValue)) return ToDynamic((propertyValue as IObject)!, wrapInObject);
+
             if (DotNetHelper.IsOfEnumeration(propertyValue))
             {
                 var enumeration = propertyValue as IEnumerable;
                 Debug.Assert(enumeration != null, "enumeration != null");
 
                 var result = new List<object>();
-                foreach (var innerValue in enumeration)
+                foreach (var innerValue in enumeration!)
                 {
-                    result.Add(ConvertValue(innerValue, wrapInObject));
+                    var convertedValue = ConvertValue(innerValue, wrapInObject);
+
+                    if (convertedValue != null)
+                    {
+                        result.Add(convertedValue);
+                    }
                 }
 
                 return result;

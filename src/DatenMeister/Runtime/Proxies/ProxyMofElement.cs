@@ -6,35 +6,29 @@ namespace DatenMeister.Runtime.Proxies
 {
     public class ProxyMofElement : ProxyMofObject, IElement, IElementSetMetaClass
     {
-        private MofElement Element => Object as MofElement;
+        private MofElement Element => (Object as MofElement)!;
 
         public ProxyMofElement(MofElement element) : base(element)
         {
         }
 
         /// <summary>
-        /// Gets the proxied element which can be used to dereference the 
+        /// Gets the proxied element which can be used to dereference the
         /// content
         /// </summary>
         /// <returns>Returns the proxied element</returns>
-        public new IElement GetProxiedElement()
-        {
-            return Element;
-        }
+        public new IElement GetProxiedElement() =>
+            Element;
 
-        public virtual IElement metaclass => Element.metaclass;
+        public virtual IElement? metaclass => Element.metaclass;
 
-        public virtual IElement container()
-        {
-            return Element.container();
-        }
+        public virtual IElement? container() =>
+            Element.container();
 
-        public virtual IElement getMetaClass()
-        {
-            return Element.getMetaClass();
-        }
+        public virtual IElement? getMetaClass() =>
+            Element.getMetaClass();
 
-        public IObject Container
+        public IObject? Container
         {
             get => Element.container();
             set => Element.Container = value;

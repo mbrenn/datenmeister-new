@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,44 +34,43 @@ namespace DatenMeister.Provider.DotNet
         private readonly Type _type;
 
         /// <inheritdoc />
-        public string MetaclassUri { get; set; }
+        public string? MetaclassUri { get; set; } 
 
         /// <summary>
         /// Gets or sets the id of the object of the DotNetProviderObject
         /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the DotNetElement class. 
+        /// Initializes a new instance of the DotNetElement class.
         /// </summary>
         /// <param name="provider">The Dotnet Provider storing the items</param>
-        /// <param name="typeLookup">Typelookup to be used to create element</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
-        public DotNetProviderObject(DotNetProvider provider, object value, string metaClassUri)
+        public DotNetProviderObject(DotNetProvider provider, object value, string? metaClassUri = null)
         {
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _value = value ?? throw new ArgumentNullException(nameof(value));
-            MetaclassUri = metaClassUri ?? throw new ArgumentNullException(nameof(metaClassUri));
+            
+            // Gets the metaclass uri if explicitly given, otherwise look up into the types
+            MetaclassUri = metaClassUri ?? Provider.TypeLookup.ToElement(value.GetType());
             _type = value.GetType();
 
             Id = provider.TypeLookup.GetId(value);
         }
 
         /// <inheritdoc />
-        public bool IsPropertySet(string property)
-        {
-            return _type.GetProperty(property) != null;
-        }
+        public bool IsPropertySet(string property) =>
+            _type.GetProperty(property) != null;
 
         /// <inheritdoc />
-        public object GetProperty(string property)
+        public object? GetProperty(string property)
         {
             var result = GetValueOfProperty(property);
             return Provider.CreateDotNetElementIfNecessary(result);
         }
 
-        private object GetValueOfProperty(string property)
+        private object? GetValueOfProperty(string property)
         {
             var member = _type.GetProperty(property,
                 BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
@@ -97,7 +98,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             var member = _type.GetProperty(property);
             if (member == null)
@@ -108,14 +109,14 @@ namespace DatenMeister.Provider.DotNet
             member.SetValue(_value, DotNetProviderExtensions.ConvertToNative(value));
         }
 
-        public IList GetPropertyAsList(string property)
-        {
-            return GetValueOfProperty(property) as IList;
-        }
+        public IList? GetPropertyAsList(string property) =>
+            GetValueOfProperty(property) as IList;
 
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index = -1)
         {
+            if (value == null) return false;
+            
             var list = GetPropertyAsList(property);
             if (list == null)
             {
@@ -123,12 +124,14 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            return list.Add(DotNetProviderExtensions.ConvertToNative(value)) != -1;
+            return list!.Add(DotNetProviderExtensions.ConvertToNative(value)) != -1;
         }
 
         /// <inheritdoc />
         public bool RemoveFromProperty(string property, object value)
         {
+            if (value == null) return false;
+            
             var list = GetPropertyAsList(property);
             if (list == null)
             {
@@ -136,24 +139,21 @@ namespace DatenMeister.Provider.DotNet
                 list = GetPropertyAsList(property);
             }
 
-            value = DotNetProviderExtensions.ConvertToNative(value);
+            var newValue = DotNetProviderExtensions.ConvertToNative(value);
+            if (newValue == null) return false;
 
-            var result = list.Contains(value);
-            list.Remove(value);
+            var result = list!.Contains(newValue);
+            list.Remove(newValue);
             return result;
         }
 
-        public bool HasContainer()
-        {
-            return false;
-        }
+        public bool HasContainer() =>
+            false;
 
-        public IProviderObject GetContainer()
-        {
-            return null;
-        }
+        public IProviderObject? GetContainer() =>
+            null;
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
         }
 

@@ -14,7 +14,10 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             foreach (var element in collection.OfType<IObject>().Select(x => x.get(property)).Distinct())
             {
-                add(element);
+                if (element != null)
+                {
+                    add(element);
+                }
             }
         }
     }

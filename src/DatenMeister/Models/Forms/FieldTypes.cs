@@ -1,6 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
+using DatenMeister.Models.Forms.ViewModes;
 
 namespace DatenMeister.Models.Forms
 {
@@ -11,9 +11,10 @@ namespace DatenMeister.Models.Forms
             return new[]
             {
                 typeof(FieldData),
+                typeof(AnyDataFieldData),
                 typeof(CheckboxFieldData),
                 typeof(DateTimeFieldData),
-                typeof(ViewAssociation),
+                typeof(FormAssociation),
                 typeof(DropDownFieldData),
                 typeof(DropDownFieldData.ValuePair),
                 typeof(MetaClassElementFieldData),
@@ -25,11 +26,14 @@ namespace DatenMeister.Models.Forms
                 typeof(DefaultTypeForNewElement),
 
                 // Now the forms
-                typeof(ViewType),
+                typeof(FormType),
                 typeof(Form),
                 typeof(DetailForm),
-                typeof(ListForm), 
-                typeof(ExtentForm)
+                typeof(ListForm),
+                typeof(ExtentForm), 
+                
+                // Now the view modes
+                typeof(ViewMode)
             };
         }
     }

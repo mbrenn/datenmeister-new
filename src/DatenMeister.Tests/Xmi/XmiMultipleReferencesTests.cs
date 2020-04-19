@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestReferencesForMultipleExtents()
         {
-            const string xmi1 = 
+            const string xmi1 =
                 "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"test\" value=\"23\" /></package>";
             const string xmi2 =
                 "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\" /></package>";

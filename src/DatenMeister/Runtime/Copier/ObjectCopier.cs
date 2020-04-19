@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -47,20 +46,30 @@ namespace DatenMeister.Runtime.Copier
     public class ObjectCopier
     {
         /// <summary>
+        /// Stores the current depth
+        /// </summary>
+        private int _currentDepth = 0;
+
+        /// <summary>
+        /// Defines the maximum recursion depth that is accepted by the object copier
+        /// </summary>
+        private const int MaxRecursionDepth = 100;
+        
+        /// <summary>
         /// Contains the factory method
         /// </summary>
         private readonly IFactory _factory;
 
         /// <summary>
-        /// Stores the extent of the element to be copied. 
+        /// Stores the extent of the element to be copied.
         /// This information is used to check whether an element shall be copied or a reference
-        /// shall be used. Property values referencing to another extent are not copied... Instead uri 
+        /// shall be used. Property values referencing to another extent are not copied... Instead uri
         /// references are copied
         /// </summary>
-        private IExtent _sourceExtent;
+        private IExtent? _sourceExtent;
 
         /// <summary>
-        /// Initializes a new instance of the ObjectCopier. 
+        /// Initializes a new instance of the ObjectCopier.
         /// </summary>
         /// <param name="factory">Factory being used to get added </param>
         public ObjectCopier(IFactory factory)
@@ -74,12 +83,13 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="element">Element that shall be copied</param>
         /// <param name="copyOptions">Defines the option being used for copying</param>
         /// <returns>true, if element has been successfully copied</returns>
-        public IElement Copy(IObject element, CopyOption copyOptions = null)
+        public IElement Copy(IObject element, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             // Gets the source extent
-            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent;
+            _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent
+                            ?? throw new InvalidOperationException("element is not IHasExtent and not MofElement");
 
             var targetElement = _factory.create((element as IElement)?.getMetaClass());
             CopyProperties(element, targetElement, copyOptions);
@@ -93,9 +103,16 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="sourceElement">Source element which is verified</param>
         /// <param name="targetElement">Target element which is verified</param>
         /// <param name="copyOptions">Options to be copied</param>
-        public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption copyOptions = null)
+        public void CopyProperties(IObject sourceElement, IObject targetElement, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            _currentDepth++;
+            if (_currentDepth >= MaxRecursionDepth)
+            {
+                // Can't go deeper
+                return;
+            }
+            
+            copyOptions ??= CopyOptions.None;
 
             if (sourceElement == null) throw new ArgumentNullException(nameof(sourceElement));
             if (targetElement == null) throw new ArgumentNullException(nameof(targetElement));
@@ -106,74 +123,73 @@ namespace DatenMeister.Runtime.Copier
 
             // Transfers the id, if requested by the copy options
             if (copyOptions.CopyId
-                && sourceElement is IHasId sourceWithId 
+                && sourceElement is IHasId sourceWithId
                 && targetElement is ICanSetId targetCanSetId)
             {
-                targetCanSetId.Id = sourceWithId.Id;
+                var id = sourceWithId.Id;
+                if (id != null)
+                {
+                    targetCanSetId.Id = id;
+                }
             }
 
             // Transfers the properties
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
-                var value = sourceElement.get(property);
-                var result = CopyValue(value, targetElement as IElement, copyOptions);
+                var value = sourceElement.get<object>(property, !copyOptions.CloneAllReferences);
+                var result = CopyValue(value, copyOptions);
 
                 targetElement.set(property, result);
             }
+
+            _currentDepth--;
         }
 
         /// <summary>
         /// Copies the value, so it can be added to the target extent
         /// </summary>
         /// <param name="value">Value to be copied</param>
-        /// <param name="containingElement">Element to which the element will be copied</param>
         /// <param name="copyOptions">Copy options being used</param>
         /// <returns>The object that has been copied</returns>
-        private object CopyValue(object value, IElement containingElement, CopyOption copyOptions = null)
+        private object? CopyValue(object? value, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
             var noRecursion = copyOptions.NoRecursion;
 
-            if (value == null)
+            switch (value)
             {
-                return null;
-            }
-
-            if (value is IElement valueAsElement)
-            {
-                if (noRecursion)
-                {
+                case null:
+                case IElement _ when noRecursion:
                     return null;
-                }
-
-                var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
-                if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
+                
+                case MofObjectShadow asMofObjectShadow:
+                    return asMofObjectShadow;
+                
+                case IElement valueAsElement:
                 {
-                    // If element is not associated to an extent
-                    // Or is associated to the source extent (as it should be)
-                    // Or if all references shall be cloned
-                    // The element will be copied. 
-                    return Copy(valueAsElement, copyOptions);
+                    var propertyExtent = (valueAsElement as IHasExtent)?.Extent;
+                    if (propertyExtent == null || propertyExtent == _sourceExtent || copyOptions.CloneAllReferences)
+                    {
+                        // If element is not associated to an extent
+                        // Or is associated to the source extent (as it should be)
+                        // Or if all references shall be cloned
+                        // The element will be copied.
+                        return Copy(valueAsElement, copyOptions);
+                    }
+                    else
+                    {
+                        // See above... Don't copy the elements which are references by another extent
+                        return value;
+                    }
                 }
-                else
-                {
-                    // See above... Don't copy the elements which are references by another extent
+                case IReflectiveCollection _ when noRecursion:
+                    return null;
+                case IReflectiveCollection valueAsCollection:
+                    return valueAsCollection
+                        .Select(innerValue => CopyValue(innerValue, copyOptions));
+                default:
                     return value;
-                }
             }
-
-            if (value is IReflectiveCollection valueAsCollection)
-            {
-                if (noRecursion)
-                {
-                    return null;
-                }
-
-                return valueAsCollection
-                    .Select(innerValue => CopyValue(innerValue, containingElement, copyOptions));
-            }
-
-            return value;
         }
 
         /// <summary>
@@ -181,10 +197,11 @@ namespace DatenMeister.Runtime.Copier
         /// </summary>
         /// <param name="factory">Factory to be used to create the element</param>
         /// <param name="element">Element to be copied</param>
+        /// <param name="copyOptions">Options for copying</param>
         /// <returns>The created element that will be copied</returns>
-        public static IElement Copy(IFactory factory, IObject element, CopyOption copyOptions = null)
+        public static IElement Copy(IFactory factory, IObject element, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(factory);
             return copier.Copy(element, copyOptions);
@@ -193,13 +210,13 @@ namespace DatenMeister.Runtime.Copier
         /// <summary>
         /// Copies the given element by using the factory
         /// </summary>
-        /// <param name="factory">Factory to be used to create the element</param>
-        /// <param name="element">Element to be copied</param>
+        /// <param name="source">Element to be copied</param>
+        /// <param name="target">Target of the element</param>
         /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>The created element that will be copied</returns>
-        public static void CopyPropertiesStatic(IObject source, IObject target, CopyOption copyOptions = null)
+        public static void CopyPropertiesStatic(IObject source, IObject target, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(new MofFactory(target));
             copier.CopyProperties(source, target, copyOptions);
@@ -219,11 +236,12 @@ namespace DatenMeister.Runtime.Copier
         /// Copies the element for a temporary usage. Here, the in memory Object will be used
         /// </summary>
         /// <param name="value">Value to copied</param>
+        /// <param name="copyOptions">Defines the objects being used for copying</param>
         /// <returns>Element being copied</returns>
-        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption copyOptions = null)
+        public static IReflectiveCollection CopyForTemporary(IReflectiveCollection value, CopyOption? copyOptions = null)
         {
             var temp = new TemporaryReflectiveCollection();
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             foreach (var item in value.OfType<IObject>())
             {
@@ -231,7 +249,6 @@ namespace DatenMeister.Runtime.Copier
             }
 
             return temp;
-
         }
     }
 }

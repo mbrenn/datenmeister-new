@@ -14,22 +14,25 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Indicates that only one meta extent shall be used to figure out whether a meta extent will be used
         /// </summary>
-        JustOne, 
+        JustOne,
 
         /// <summary>
-        /// Indicates that unlimited meta extents will be resolved to find the structure. 
+        /// Indicates that unlimited meta extents will be resolved to find the structure.
         /// </summary>
         Recursively
     }
 
     public static class WorkspaceExtensions
     {
-        public static IObject FindElementByUri(this Workspace workspace, string uri)
+        public static IObject? FindElementByUri(this Workspace workspace, string uri)
         {
-            return FindElementByUri(workspace.extent.Select(x => x as IUriExtent).Where(x => x != null), uri);
+            return FindElementByUri(
+                workspace.extent.Select(x => x as IUriExtent )
+                    .Where(x => x != null)!,
+                uri);
         }
 
-        public static IObject FindElementByUri(this IEnumerable<IUriExtent> extents, string uri)
+        public static IObject? FindElementByUri(this IEnumerable<IUriExtent> extents, string uri)
         {
             foreach (var extent in extents)
             {
@@ -59,14 +62,13 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="dataLayer">The datalayer that is requested</param>
         /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
         /// <returns>The instance of the type</returns>
-        public static TFilledType GetFromMetaLayer<TFilledType>(
+        public static TFilledType? GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
-            Workspace dataLayer, 
+            Workspace dataLayer,
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
-        {
-            return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
-        }
+            =>
+                dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
 
         /// <summary>
         /// Gets the given class from the metalayer to the datalayer
@@ -76,21 +78,38 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="extent">The extent that is requested</param>
         /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
         /// <returns>The instance of the type</returns>
-        public static TFilledType GetFromMetaLayer<TFilledType>(
+        public static TFilledType? GetFromMetaLayer<TFilledType>(
             this IWorkspaceLogic logic,
             IExtent extent,
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
             var dataLayer = logic.GetWorkspaceOfExtent(extent);
+            if (dataLayer == null)
+            {
+                throw new InvalidOperationException("Workspace is not found");
+            }
+            
             return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
+        }
 
+        public static TFilledType Require<TFilledType>(
+            this IWorkspace logic)
+        
+            where TFilledType : class, new()
+        {
+            var found = logic.Get<TFilledType>();
+            if (found == null)
+            {
+                throw new InvalidOperationException($"The filled Type {typeof(TFilledType)} was not found");
+            }
+
+            return found;
         }
 
         /// <summary>
         /// Finds an extent by the given uri
         /// </summary>
-        /// <typeparam name="T">Type of the workspace</typeparam>
         /// <param name="workspace">The workspace being queried</param>
         /// <param name="extentUri">The uri of the extent that is looked for</param>
         /// <returns>The found extent or null, if not found</returns>
@@ -104,19 +123,17 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Adds an extent to the workspace, but checks, if the given uri is already existing
         /// </summary>
-        /// <typeparam name="T">Type of the extents in the workspace</typeparam>
-        /// <typeparam name="Q">Type of the extent being added. Needs to be of type IUriExtent</typeparam>
         /// <param name="workspace">Workspace where extent will be added</param>
         /// <param name="workspaceLogic">Workspacelogic being used</param>
         /// <param name="extent">Extent being added</param>
         /// <returns>true, if addition was succesfsul</returns>
-        public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent) 
+        public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent)
         {
             var contextUri = extent.contextURI();
 
             var found = workspace.extent.FirstOrDefault(
-                x => x is IUriExtent uriExtent 
-                && uriExtent.contextURI() == contextUri);
+                x => x is IUriExtent uriExtent
+                     && uriExtent.contextURI() == contextUri);
 
             if (found == null)
             {
@@ -133,10 +150,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">The workspace to be modified</param>
         /// <param name="uri">Uri of the extent</param>
         /// <returns>true, if the object can be deleted</returns>
-        public static bool RemoveExtent(this Workspace workspace, string uri)
-        {
-            return workspace.RemoveExtent(uri);
-        }
+        public static bool RemoveExtent(this Workspace workspace, string uri) => workspace.RemoveExtent(uri);
 
         /// <summary>
         /// Returns the given workspace and extents out of the urls
@@ -193,13 +207,21 @@ namespace DatenMeister.Runtime.Workspaces
             return workspaceCollection.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
         }
 
+        public static Workspace GetOrCreateWorkspace(
+            this IWorkspaceLogic workspaceLogic,
+            string name)
+        {
+            var workspace = workspaceLogic.GetWorkspace(name);
+            return workspace ?? workspaceLogic.AddWorkspace(new Workspace(name));
+        }
+
         /// <summary>
         /// Finds the extent with the given uri in one of the workspaces in the database
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IExtent FindExtent(
+        public static IExtent? FindExtent(
             this IWorkspaceLogic collection,
             string extentUri)
         {
@@ -215,7 +237,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspaceId">Id of the workspace to be added</param>
         /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IExtent FindExtent(
+        public static IExtent? FindExtent(
             this IWorkspaceLogic collection,
             string workspaceId,
             string extentUri)
@@ -223,7 +245,10 @@ namespace DatenMeister.Runtime.Workspaces
             if (string.IsNullOrEmpty(workspaceId))
             {
                 // If the workspace is empty return it itself
-                workspaceId = collection.GetDefaultWorkspace().id;
+                var workspace = collection.GetDefaultWorkspace();
+                if (workspace == null) return null;
+                
+                workspaceId = workspace.id;
             }
 
             return collection.Workspaces
@@ -238,13 +263,15 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="collection">Collection to be used</param>
         /// <param name="workspaceId">Id of the workspace being queried</param>
         /// <param name="extentUri">Uri of the extent being used</param>
+        /// <param name="workspace">The found workspace</param>
+        /// <param name="extent">The found extent</param>
         /// <returns>The tuple containing workspace and extent</returns>
         public static void FindExtentAndWorkspace(
             this IWorkspaceLogic collection,
             string workspaceId,
             string extentUri,
-            out IWorkspace workspace, 
-            out IExtent extent)
+            out IWorkspace? workspace,
+            out IExtent? extent)
         {
             workspace = collection.Workspaces
                 .FirstOrDefault(x => x.id == workspaceId);
@@ -259,7 +286,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="uri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IElement FindItem(
+        public static IElement? FindItem(
             this IWorkspaceLogic collection,
             string uri)
         {
@@ -272,9 +299,9 @@ namespace DatenMeister.Runtime.Workspaces
         public static void FindItem(
             this IWorkspaceLogic collection,
             WorkspaceExtentAndItemReference model,
-            out Workspace foundWorkspace,
-            out IUriExtent foundExtent,
-            out IElement foundItem)
+            out Workspace? foundWorkspace,
+            out IUriExtent? foundExtent,
+            out IElement? foundItem)
         {
             RetrieveWorkspaceAndExtent(collection, model, out foundWorkspace, out foundExtent);
 
@@ -302,40 +329,36 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic)
-        {
-            return logic.GetWorkspace(WorkspaceNames.NameManagement);
-        }
+        public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameManagement)
+            ?? throw new InvalidOperationException("Management is not found");
 
-        public static Workspace GetDataWorkspace(this IWorkspaceLogic logic)
-        {
-            return logic.GetWorkspace(WorkspaceNames.NameData);
-        }
+        public static Workspace GetDataWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameData)
+            ?? throw new InvalidOperationException("Data is not found");
 
-        public static Workspace GetTypesWorkspace(this IWorkspaceLogic logic)
-        {
-            return logic.GetWorkspace(WorkspaceNames.NameTypes);
-        }
+        public static Workspace GetTypesWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameTypes)
+            ?? throw new InvalidOperationException("Types is not found");
 
-        public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic)
-        {
-            return logic.GetWorkspace(WorkspaceNames.NameViews);
-        }
+        public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameViews)
+            ?? throw new InvalidOperationException("Views is not found");
 
-        public static IUriExtent GetUserViewsExtent(this IWorkspaceLogic logic)
+        public static IUriExtent GetUserFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriUserViewExtent);
+            return mgmt.FindExtent(WorkspaceNames.UriUserFormExtent);
         }
 
-        public static IUriExtent GetInternalViewsExtent(this IWorkspaceLogic logic)
+        public static IUriExtent GetInternalFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriInternalViewExtent);
+            return mgmt.FindExtent(WorkspaceNames.UriInternalFormExtent);
         }
 
         /// <summary>
-        /// Gets the data 
+        /// Gets the data
         /// </summary>
         /// <param name="scope">Scope of dependency container</param>
         /// <returns>The Uml instance being used</returns>
@@ -353,7 +376,7 @@ namespace DatenMeister.Runtime.Workspaces
         public static _UML GetUmlData(this IWorkspaceLogic workspaceLogic)
         {
             var uml = workspaceLogic.GetUmlWorkspace();
-            return uml.Get<_UML>();
+            return uml.Get<_UML>() ?? throw new InvalidOperationException("Uml not found");
         }
 
         /// <summary>
@@ -364,19 +387,15 @@ namespace DatenMeister.Runtime.Workspaces
         public static _PrimitiveTypes GetPrimitiveData(this IWorkspaceLogic workspaceLogic)
         {
             var uml = workspaceLogic.GetUmlWorkspace();
-            return uml.Get<_PrimitiveTypes>();
+            return uml.Get<_PrimitiveTypes>() ?? throw new InvalidOperationException("PrimitiveTypes not found");
         }
 
-        public static Workspace GetUmlWorkspace(
-            this IWorkspaceLogic logic)
-        {
-            return logic.GetWorkspace(WorkspaceNames.NameUml);
-        }
+        public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameUml) ??
+            throw new InvalidOperationException("Uml Workspace not foudn");
 
-        public static Workspace GetMofWorkspace(
-            this IWorkspaceLogic logic)
-        {
-            return logic.GetWorkspace(WorkspaceNames.NameMof);
-        }
+        public static Workspace GetMofWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.NameMof) ??
+            throw new InvalidOperationException("Mof Workspace not foudn");
     }
 }

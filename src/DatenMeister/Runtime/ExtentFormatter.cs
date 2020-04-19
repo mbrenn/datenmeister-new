@@ -9,7 +9,7 @@ using DatenMeister.Uml.Helper;
 namespace DatenMeister.Runtime
 {
     /// <summary>
-    /// Offers a support function, which converts the data of an extent into a human-readable 
+    /// Offers a support function, which converts the data of an extent into a human-readable
     /// </summary>
     public class ExtentFormatter
     {
@@ -24,10 +24,8 @@ namespace DatenMeister.Runtime
         private readonly StringBuilder _builder = new StringBuilder();
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            return _builder.ToString();
-        }
+        public override string ToString() =>
+            _builder.ToString();
 
         /// <summary>
         /// Converts the given extent to a text string
@@ -38,8 +36,7 @@ namespace DatenMeister.Runtime
         {
             _builder.Clear();
 
-            var uriExtent = extent as IUriExtent;
-            if (uriExtent != null)
+            if (extent is IUriExtent uriExtent)
             {
                 _builder.AppendLine($"URIExtent: {uriExtent.contextURI()}");
             }
@@ -59,13 +56,17 @@ namespace DatenMeister.Runtime
         {
             foreach (var element in elements)
             {
-                if (DotNetHelper.IsOfPrimitiveType(element))
+                if (element == null)
+                {
+                    _builder.AppendLine($"{_currentIndent}null");
+                }
+                else if (DotNetHelper.IsOfPrimitiveType(element))
                 {
                     _builder.AppendLine($"{_currentIndent}{element}");
                 }
                 else if (DotNetHelper.IsOfMofObject(element))
                 {
-                    Parse((MofObject)element);
+                    Parse((MofObject) element);
                 }
             }
         }
@@ -76,11 +77,11 @@ namespace DatenMeister.Runtime
         /// <param name="parsedValue">Mof object</param>
         private void Parse(IObject parsedValue)
         {
-            var mofObject = (MofObject)parsedValue;
+            var mofObject = (MofObject) parsedValue;
             var asProperties = (IObjectAllProperties) mofObject;
             if (mofObject is IElement)
             {
-                var mofElement = (MofElement)parsedValue;
+                var mofElement = (MofElement) parsedValue;
                 _builder.AppendLine(
                     $"{_currentIndent}Element '{NamedElementMethods.GetName(mofObject)}' [#{mofElement.Id}] of type: {NamedElementMethods.GetName(mofElement.getMetaClass())}");
             }
@@ -102,19 +103,19 @@ namespace DatenMeister.Runtime
                 {
                     _builder.AppendLine($"{_currentIndent}{property}:");
                     IncreaseIndentation();
-                    Parse((MofObject) value);
+                    Parse((MofObject) value!);
                     DecreaseIndentation();
                 }
                 else if (DotNetHelper.IsOfReflectiveCollection(value))
                 {
                     _builder.AppendLine($"{_currentIndent}{property}[]:");
                     IncreaseIndentation();
-                    Parse((IReflectiveCollection) value);
+                    Parse((IReflectiveCollection) value!);
                     DecreaseIndentation();
                 }
-                else if (value is UriReference)
+                else if (value is UriReference reference)
                 {
-                    _builder.AppendLine($"{_currentIndent}{property}->: {((UriReference)value).Uri}");
+                    _builder.AppendLine($"{_currentIndent}{property}->: {reference.Uri}");
                 }
             }
 
@@ -136,7 +137,7 @@ namespace DatenMeister.Runtime
         {
             _currentIndent = _currentIndent.Substring(2);
         }
-        
+
         /// <summary>
         /// Converts the given extent to a text string
         /// </summary>

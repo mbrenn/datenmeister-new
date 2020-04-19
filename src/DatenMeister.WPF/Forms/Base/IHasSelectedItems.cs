@@ -12,7 +12,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets the first or no selected item
         /// </summary>
         /// <returns>The selected item</returns>
-        IObject GetSelectedItem();
+        IObject? GetSelectedItem();
 
         /// <summary>
         /// Gets an enumeration of all selected items

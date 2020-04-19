@@ -20,7 +20,7 @@ namespace DatenMeister.Models.Forms
         /// <param name="collection">Collection that shall be filled</param>
         /// <param name="filledStructure">The form and fields structure</param>
         /// <param name="extent">And finally extent to which the types shall be registered</param>
-        public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _FormAndFields filledStructure, MofUriExtent extent)
+        public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _FormAndFields filledStructure, MofExtent extent)
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
@@ -28,6 +28,13 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__FieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.AnyDataFieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__AnyDataFieldData = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -45,10 +52,10 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.ViewAssociation);
+                var type = typeof(DatenMeister.Models.Forms.FormAssociation);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ViewAssociation = typeAsElement;
+                filledStructure.__FormAssociation = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -115,10 +122,10 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Forms.ViewType);
+                var type = typeof(DatenMeister.Models.Forms.FormType);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ViewType = typeAsElement;
+                filledStructure.__FormType = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
@@ -147,6 +154,13 @@ namespace DatenMeister.Models.Forms
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ExtentForm = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Forms.ViewModes.ViewMode);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ViewMode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
         }

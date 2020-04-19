@@ -35,7 +35,7 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(element.get(property1), Is.Not.Null);
 
             Assert.Throws<ReadOnlyAccessException>(() => ((IElementSetMetaClass) element).SetMetaClass(null));
-        }   
+        }
 
         /// <summary>
         /// Creates a simple extent containing three elements with four properties
@@ -47,15 +47,14 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(CSVExtentTests.PathForTemporaryDataFile, csvFile);
 
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CSVExtentLoaderConfig), scope => new CsvProviderLoader(null));
+            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var workspaceData = WorkspaceLogic.InitDefault();
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData), new IntegrationSettings());
-            var configuration = new CSVExtentLoaderConfig
+            var configuration = new CsvExtentLoaderConfig("datenmeister:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
-                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,

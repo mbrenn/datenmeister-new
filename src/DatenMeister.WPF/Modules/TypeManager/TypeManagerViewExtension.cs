@@ -1,107 +1,138 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Plugin;
+using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.TypeManager
 {
     public class TypeManagerViewExtension : IViewExtensionFactory
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(TypeManagerViewExtension)); 
         public IEnumerable<ViewExtension> GetViewExtensions(
-            ViewExtensionTargetInformation viewExtensionTargetInformation)
+            ViewExtensionInfo viewExtensionInfo)
         {
-            if (viewExtensionTargetInformation.NavigationHost != null)
+            var navigationHost = viewExtensionInfo.NavigationHost ??
+                                 throw new InvalidOperationException("NavigationHost == null");
+
+            if (viewExtensionInfo.GetMainApplicationWindow() != null)
             {
-                yield return new RibbonButtonDefinition(
-                    "View User Types",
-                    () => NavigatorForItems.NavigateToItemsInExtent(
-                        viewExtensionTargetInformation.NavigationHost,
+                yield return new ApplicationMenuButtonDefinition(
+                    "Goto User Types", async () => await NavigatorForItems.NavigateToItemsInExtent(
+                        navigationHost,
                         WorkspaceNames.NameTypes,
                         WorkspaceNames.UriUserTypesExtent),
                     string.Empty,
-                    "Navigation.User");
+                    NavigationCategories.DatenMeisterNavigation);
             }
 
-            if (viewExtensionTargetInformation.NavigationGuest is ItemExplorerControl itemInExtentList)
+            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControlForExtentType(UmlPlugin.ExtentType);
+            if (itemExplorerControl != null)
             {
-
                 // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
-                var extent = itemInExtentList.Items.GetAssociatedExtent();
-                var extentType = extent?.GetExtentType();
-                if (extentType != "Uml.Classes")
+                var extent = itemExplorerControl.Extent.GetExtentOf();
+                if (extent != null)
                 {
-                    // The extent type is not of "Uml.Classes", so we don't inject the buttons
-                    yield break;
-                }
+                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
 
-                var selectedPackage = itemInExtentList.SelectedPackage;
-                var type = SelectionType.Package;
-                if ((selectedPackage as IElement)?.metaclass?.@equals(
-                        extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class)) == true)
-                {
-                    type = SelectionType.Class;
-                }
+                    if (classMetaClass == null)
+                    {
+                        Logger.Warn("UML Classes not found in meta extent");
+                    }
+                    else
+                    {
+                        yield return new NewInstanceViewDefinition(classMetaClass);
 
-                if (type == SelectionType.Package)
-                {
-                    yield return new RibbonButtonDefinition(
-                        "Create new Class",
-                        () =>
-                        {
-                            NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                viewExtensionTargetInformation.NavigationHost,
-                                extent,
-                                extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class));
-                        },
-                        string.Empty,
-                        NavigationCategories.Type + "." + "Manager");
-                }
-                else if (type == SelectionType.Class)
-                {
-                    yield return
-                        new RibbonButtonDefinition(
-                            "Create new Property",
-                            () =>
-                            {
-                                NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                                    viewExtensionTargetInformation.NavigationHost,
-                                    selectedPackage,
-                                    _UML._StructuredClassifiers._Class.ownedAttribute,
-                                    extent.FindInMeta<_UML>(x => x.Classification.__Property));
-                            },
+                        yield return new ApplicationMenuButtonDefinition(
+                            "Create new Class",
+                            async () =>
+                                await NavigatorForItems.NavigateToCreateNewItemInExtentOrPackage(
+                                    navigationHost,
+                                    itemExplorerControl.SelectedItem ?? itemExplorerControl.RootItem,
+                                    classMetaClass),
                             string.Empty,
                             NavigationCategories.Type + "." + "Manager");
+                    }
                 }
-
-                yield return new RibbonButtonDefinition(
-                    "Create new Package",
-                    () =>
-                    {
-                        if (selectedPackage == null)
-                        {
-                            NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                viewExtensionTargetInformation.NavigationHost,
-                                extent,
-                                extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                        }
-                        else
-                        {
-                            NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                                viewExtensionTargetInformation.NavigationHost,
-                                itemInExtentList.SelectedPackage,
-                                _UML._StructuredClassifiers._Class.ownedAttribute,
-                                extent.FindInMeta<_UML>(x => x.Packages.__Package));
-                        }
-
-                    },
-                    string.Empty,
-                    NavigationCategories.Type + "." + "Manager");
             }
 
+            var listControl = viewExtensionInfo.GetListViewForItemsTabForExtentType(UmlPlugin.ExtentType);
+            if (listControl != null)
+            {
+                var extent = listControl.Extent;
+                if (extent != null)
+                {
+                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+
+
+                    if (classMetaClass == null)
+                    {
+                        Logger.Warn("UML Classes not found in meta extent");
+                    }
+                    else
+                    {
+                        yield return
+                            new CollectionMenuButtonDefinition(
+                                "Create new Class",
+                                async (x) =>
+                                    await NavigatorForItems.NavigateToNewItemForExtent(
+                                        navigationHost,
+                                        listControl.Extent,
+                                        classMetaClass),
+                                string.Empty,
+                                NavigationCategories.Type);
+                    }
+                }
+            }
+
+            if (viewExtensionInfo is ViewExtensionItemPropertiesInformation propertiesInformation)
+            {
+                if (propertiesInformation.Value is IElement selectedPackage)
+                {
+                    var extent = selectedPackage.GetExtentOf();
+                    if (extent != null)
+                    {
+                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+
+                        var propertyName = propertiesInformation.Property;
+                        if (selectedPackage.metaclass?.@equals(classMetaClass) == true
+                            && propertyName == _UML._StructuredClassifiers._Class.ownedAttribute)
+                        {
+                            var propertyMetaClass = extent.FindInMeta<_UML>(x => x.Classification.__Property);
+                            if (propertyMetaClass != null)
+                            {
+                                yield return new NewInstanceViewDefinition(propertyMetaClass);
+
+                                yield return
+                                    new CollectionMenuButtonDefinition(
+                                        "Create new Property",
+                                        async (x) =>
+                                            await NavigatorForItems.NavigateToNewItemForPropertyCollection(
+                                                navigationHost,
+                                                selectedPackage,
+                                                _UML._StructuredClassifiers._Class.ownedAttribute,
+                                                propertyMetaClass),
+                                        string.Empty,
+                                        NavigationCategories.Type);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

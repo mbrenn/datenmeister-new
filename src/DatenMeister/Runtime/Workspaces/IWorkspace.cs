@@ -1,13 +1,14 @@
 ﻿using DatenMeister.Core.Filler;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+// ReSharper disable InconsistentNaming
 
 namespace DatenMeister.Runtime.Workspaces
 {
     public interface IWorkspace
     {
         /// <summary>
-        /// Gets an instance of the filled type by using the filler. 
+        /// Gets an instance of the filled type by using the filler.
         /// The instance will be cached on first call of the method
         /// </summary>
         /// <typeparam name="TFiller">Filler to be used to create the filled type</typeparam>
@@ -18,26 +19,23 @@ namespace DatenMeister.Runtime.Workspaces
             where TFilledType : class, new();
 
         /// <summary>
-        /// Gets a cached instance of the filled type. 
-        /// This cached instance has to be created by the Create method before. If not found, 
+        /// Gets a cached instance of the filled type.
+        /// This cached instance has to be created by the Create method before. If not found,
         /// null will be returned
         /// </summary>
         /// <typeparam name="TFilledType">Type of the filled type</typeparam>
-        /// <param name="layer">Layer whose filled type shall be retrieved</param>
         /// <returns>The found instance</returns>
-        TFilledType Get<TFilledType>()
+        TFilledType? Get<TFilledType>()
             where TFilledType : class, new();
 
         /// <summary>
         /// Clears the cache, so a new instance can be created
         /// </summary>
-        /// <param name="layer">Layer, whose cache needs to be deleted</param>
         void ClearCache();
 
         /// <summary>
         /// Sets a filled type which is already prepared
         /// </summary>
-        /// <param name="layer">Datalayer being filled</param>
         /// <param name="value">Value to be set for the datalayer</param>
         void Set<TFilledType>(TFilledType value)
             where TFilledType : class, new();
@@ -57,6 +55,6 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
-        TFilledType GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne) where TFilledType : class, new();
+        TFilledType? GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne) where TFilledType : class, new();
     }
 }

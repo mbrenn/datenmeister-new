@@ -1,5 +1,6 @@
-﻿using DatenMeister.Core.Plugins;
-using DatenMeister.Modules.ViewFinder;
+﻿using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Runtime.Extents.Configuration;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Uml.Plugin
@@ -10,16 +11,24 @@ namespace DatenMeister.Uml.Plugin
         /// <summary>
         /// Defines the view logic
         /// </summary>
-        private readonly ViewLogic _viewLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         private readonly PackageMethods _packageMethods;
 
         public const string PackageName = "Uml";
 
-        public UmlPlugin(ViewLogic viewLogic, PackageMethods packageMethods)
+        /// <summary>
+        /// Stores the name of the extent type
+        /// </summary>
+        public const string ExtentType = "Uml.Classes";
+
+        public UmlPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods, ExtentSettings extentSettings)
         {
-            _viewLogic = viewLogic;
+            _formsPlugin = formsPlugin;
             _packageMethods = packageMethods;
+            extentSettings.extentTypeSettings.Add(
+                new ExtentTypeSetting(ExtentType));
+            
         }
 
         public void Start(PluginLoadingPosition position)
@@ -36,7 +45,7 @@ namespace DatenMeister.Uml.Plugin
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.UML.xmi",
                 PackageName,
-                _viewLogic.GetInternalViewExtent(),
+                _formsPlugin.GetInternalFormExtent(),
                 PackageName);
         }
     }

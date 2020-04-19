@@ -7,6 +7,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
 
+// ReSharper disable InconsistentNaming
+
 namespace DatenMeister.Runtime
 {
     /// <summary>
@@ -31,13 +33,13 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        public virtual T element(string uri)
+        public virtual T? element(string uri)
         {
             // Check, if the element is in the cache and if yes, return it
             if (_cacheIds.TryGetValue(uri, out var result))
             {
                 var resultAsMof = result as T;
-                if (this.uri(resultAsMof) == uri)
+                if (this.uri(resultAsMof!) == uri)
                 {
                     return resultAsMof;
                 }
@@ -50,14 +52,14 @@ namespace DatenMeister.Runtime
             var extentUri = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
 
             // Verifies that the extent is working
-            if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0) 
+            if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0)
             {
                 return null;
             }
 
             // Verifies whether the context can be found in context uri or alternative Uris
             if (!string.IsNullOrEmpty(extentUri) &&
-                extentUri != _extent.contextURI() && 
+                extentUri != _extent.contextURI() &&
                 !_extent.AlternativeUris.Contains(extentUri))
             {
                 return null;
@@ -95,6 +97,7 @@ namespace DatenMeister.Runtime
                     // According to MOF Specification, return null, if not found
                     return null;
                 }
+
                 if (posQuestion != -1)
                 {
                     var fullName = uri.Substring(posQuestion + 1);
@@ -110,7 +113,6 @@ namespace DatenMeister.Runtime
 
                 Logger.Fatal("No hash and no question mark");
                 throw new NotImplementedException("No hash and no question mark");
-
             }
             catch (UriFormatException exc)
             {
@@ -118,7 +120,6 @@ namespace DatenMeister.Runtime
                     $"Exception while parsing URI {nameof(uri)}: {exc.Message}");
 
                 return null;
-
             }
         }
 

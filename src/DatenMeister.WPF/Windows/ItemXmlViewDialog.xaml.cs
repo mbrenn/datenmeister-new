@@ -1,9 +1,14 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.XMI.EMOF;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -12,9 +17,10 @@ namespace DatenMeister.WPF.Windows
     /// </summary>
     public partial class ItemXmlViewWindow : Window
     {
-        private IReflectiveCollection _usedReflectiveCollection;
+        private IReflectiveCollection? _usedReflectiveCollection;
 
-        private IObject _usedObject;
+        private IObject? _usedObject;
+
         public bool SupportWriting
         {
             get => UpdateButton.Visibility == Visibility.Collapsed;
@@ -25,15 +31,22 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
+        public bool IgnoreIDs
+        {
+            get => IgnoreIDsBtn.IsChecked == true;
+            set => IgnoreIDsBtn.IsChecked = value;
+        }
+
         /// <summary>
         /// Called, if the user clicks the update button
         /// </summary>
-        public event EventHandler<EventArgs> UpdateButtonPressed;
+        public event EventHandler<EventArgs>? UpdateButtonPressed;
 
         public ItemXmlViewWindow()
         {
             InitializeComponent();
             SupportWriting = false;
+            RelativePaths.IsChecked = true;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -51,7 +64,6 @@ namespace DatenMeister.WPF.Windows
             _usedObject = null;
 
             UpdateContent();
-
         }
 
         /// <summary>
@@ -62,9 +74,11 @@ namespace DatenMeister.WPF.Windows
         public IElement GetCurrentContentAsMof(IFactory factory)
         {
             var xmlElement = XElement.Parse(XmlTextField.Text);
-            var xmlConverter = new XmlConverter();
-
-            return (IElement) xmlConverter.ConvertFromXml(xmlElement, factory);
+            
+            var provider = new XmiProvider();
+            var extent = new MofExtent(provider);
+            var xmlProviderObject = new XmiProviderObject(xmlElement, provider);
+            return new MofElement(xmlProviderObject, extent);
         }
 
         /// <summary>
@@ -81,9 +95,14 @@ namespace DatenMeister.WPF.Windows
 
         public void UpdateContent()
         {
-            var converter = new XmlConverter();
-            converter.SkipIds = IgnoreIDs.IsChecked == true;
-            if ( _usedReflectiveCollection != null )
+            var converter = new XmlConverter
+            {
+                SkipIds = IgnoreIDsBtn.IsChecked == true,
+                RelativePaths = RelativePaths.IsChecked == true
+                
+            };
+
+            if (_usedReflectiveCollection != null)
             {
                 var element = converter.ConvertToXml(_usedReflectiveCollection);
                 XmlTextField.Text = element.ToString();
@@ -110,8 +129,16 @@ namespace DatenMeister.WPF.Windows
                 MessageBox.Show("Invalid content: \r\n\r\n" + exc);
             }
         }
-        /*
 
+        /// <summary>
+        /// Copies the content of the item to the clipboard
+        /// </summary>
+        public void CopyToClipboard()
+        {
+            Clipboard.SetText(XmlTextField.Text);
+        }
+
+        /*
         /// <summary>
         /// Event arguments being used when the user performs an update
         /// </summary>
@@ -129,6 +156,15 @@ namespace DatenMeister.WPF.Windows
         private void Ignore_IDs_OnClick(object sender, RoutedEventArgs e)
         {
             UpdateContent();
+        }
+        private void RelativePaths_OnClick(object sender, RoutedEventArgs e)
+        {
+            UpdateContent();
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
         }
     }
 }

@@ -7,7 +7,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Core
+namespace DatenMeister.Tests.Xmi.EMOF
 {
     [TestFixture]
     public class DataLayerTests

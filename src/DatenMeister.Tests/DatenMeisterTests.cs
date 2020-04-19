@@ -3,8 +3,8 @@ using System.Reflection;
 using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.Plugins;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests
@@ -36,7 +36,7 @@ namespace DatenMeister.Tests
             TheLog.AddProvider(new ConsoleProvider());
             TheLog.AddProvider(new DebugProvider());
 
-            integrationSettings = integrationSettings ?? GetIntegrationSettings(dropDatabase);
+            integrationSettings ??= GetIntegrationSettings(dropDatabase);
 
             if (dropDatabase)
             {
@@ -47,7 +47,7 @@ namespace DatenMeister.Tests
         }
 
         /// <summary>
-        /// Gets the integration settings 
+        /// Gets the integration settings
         /// </summary>
         /// <param name="dropDatabase">true, if the database shall be dropped</param>
         /// <returns>The created integration settings</returns>
@@ -71,11 +71,9 @@ namespace DatenMeister.Tests
         [Test]
         public void CheckFailureFreeLoadingOfDatenMeister()
         {
-            using (var datenMeister = GetDatenMeisterScope())
-            {
-                var pluginManager = datenMeister.Resolve<PluginManager>();
-                Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
-            }
+            using var datenMeister = GetDatenMeisterScope();
+            var pluginManager = datenMeister.Resolve<PluginManager>();
+            Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }
 
         [Test]
@@ -84,11 +82,9 @@ namespace DatenMeister.Tests
             var integrationSettings = GetIntegrationSettings();
             integrationSettings.PerformSlimIntegration = true;
 
-            using (var datenMeister = GetDatenMeisterScope(integrationSettings: integrationSettings))
-            {
-                var pluginManager = datenMeister.Resolve<PluginManager>();
-                Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
-            }
+            using var datenMeister = GetDatenMeisterScope(integrationSettings: integrationSettings);
+            var pluginManager = datenMeister.Resolve<PluginManager>();
+            Assert.That(pluginManager.NoExceptionDuringLoading, Is.True);
         }
     }
 }

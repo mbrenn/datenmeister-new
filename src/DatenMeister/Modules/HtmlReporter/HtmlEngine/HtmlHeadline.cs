@@ -7,14 +7,13 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         public HtmlHeadline(object headline, int level)
         {
             if (level < 1 || level > 6)
-            {
-                throw new InvalidOperationException("Level of headline is invalid");
-            }
-            
+                throw new InvalidOperationException(
+                    "Level of headline is invalid (must be between 1 and 6)");
+
             Level = level;
             Headline = headline;
         }
-        
+
         /// <summary>
         /// Stores the text of the headline
         /// </summary>
@@ -29,9 +28,6 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// Converts the element to a string containing the html for the headline
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            return $"<h{Level}>{Headline}</h{Level}>";
-        }
+        public override string ToString() => $"<h{Level}>{Headline}</h{Level}>";
     }
 }

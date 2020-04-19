@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
@@ -11,43 +12,48 @@ namespace DatenMeister.Provider.InMemory
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object
     /// </summary>
-    public class InMemoryObject : IProviderObject
+    public class InMemoryObject : IProviderObject, IProviderObjectSupportsListMovements
     {
         public IProvider Provider { get; }
-        
-        /// <summary>
-        /// Stores the temporary factory
-        /// </summary>
-        private static IFactory _temporaryFactory;
 
         /// <summary>
         /// Stores the temporary factory
         /// </summary>
-        public static IFactory TemporaryFactory => _temporaryFactory ?? (_temporaryFactory = new MofFactory(InMemoryProvider.TemporaryExtent));
+        private static IFactory? _temporaryFactory;
+
+        /// <summary>
+        /// Stores the temporary factory
+        /// </summary>
+        public static IFactory TemporaryFactory => _temporaryFactory ??= new MofFactory(InMemoryProvider.TemporaryExtent);
 
         /// <summary>
         /// Stores the container being associated to the in memory object
         /// </summary>
-        private IProviderObject _container;
+        private IProviderObject? _container;
 
         /// <summary>
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty(IExtent uriExtent = null)
+        public static MofElement CreateEmpty(IExtent? uriExtent = null)
         {
             var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-            return factory.create(null) as MofElement;
+            if (!(factory.create(null) is MofElement element)) 
+                throw new InvalidOperationException("factory.create returned null");
+
+            return element;
         }
 
         /// <summary>
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofElement CreateEmpty(string metaClass, IExtent uriExtent = null)
+        public static MofElement? CreateEmpty(string metaClass, IExtent? uriExtent = null)
         {
             var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
-            var element = factory.create(null) as MofElement;
+            var element = (MofElement?) factory.create(null);
+            if (element == null) throw new InvalidOperationException("factory.create returned null");
+                
             element.SetMetaClass(metaClass);
             return element;
         }
@@ -60,30 +66,33 @@ namespace DatenMeister.Provider.InMemory
         public static IObject CreateEmpty(IElement type)
         {
             var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
-            return mofFactory.create(type);
+            var element= mofFactory.create(type);
+            if (element == null) throw new InvalidOperationException("factory.create returned null");
+            
+            return element;
         }
 
         /// <summary>
         ///     Stores the values direct within the memory
         /// </summary>
-        private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
+        private readonly Dictionary<string, object?> _values = new Dictionary<string, object?>();
 
         /// <inheritdoc />
-        public string MetaclassUri { get; set; }
+        public string? MetaclassUri { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the InMemoryObject.
         /// </summary>
         /// <param name="provider">Provider being the host for the element</param>
         /// <param name="metaclassUri">Uri of the metaclass</param>
-        public InMemoryObject(IProvider provider, string metaclassUri = null)
+        public InMemoryObject(IProvider provider, string? metaclassUri = null)
         {
             Provider = provider;
             Id = Guid.NewGuid().ToString();
-            MetaclassUri = metaclassUri;
+            MetaclassUri = metaclassUri ?? string.Empty;
         }
 
-        private static void CheckValue(object value)
+        private static void CheckValue(object? value)
         {
             if (value is MofReflectiveSequence || value is MofObject)
             {
@@ -91,14 +100,14 @@ namespace DatenMeister.Provider.InMemory
             }
         }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets the property of the element or returns an exception, if the property could not be found
         /// </summary>
         /// <param name="property"></param>
         /// <returns></returns>
-        public object GetProperty(string property)
+        public object? GetProperty(string property)
         {
             if (_values.TryGetValue(property, out var result))
             {
@@ -108,36 +117,30 @@ namespace DatenMeister.Provider.InMemory
             throw new MofException("Property not found: " + property);
         }
 
-        public bool IsPropertySet(string property)
-        {
-            return _values.ContainsKey(property);
-        }
+        public bool IsPropertySet(string property) =>
+            _values.ContainsKey(property);
 
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             CheckValue(value);
             _values[property] = value;
         }
 
-        public bool DeleteProperty(string property)
-        {
-            return _values.Remove(property);
-        }
+        public bool DeleteProperty(string property) =>
+            _values.Remove(property);
 
         /// <summary>
         ///     Returns an enumeration with all properties which are currently set
         /// </summary>
         /// <returns>Enumeration of all objects</returns>
-        public IEnumerable<string> GetProperties()
-        {
-            return _values.Keys;
-        }
+        public IEnumerable<string> GetProperties() =>
+            _values.Keys;
 
         public override string ToString()
         {
             if (IsPropertySet("name"))
             {
-                return GetProperty("name").ToString();
+                return GetProperty("name")?.ToString() ?? string.Empty;
             }
 
             var builder = new StringBuilder();
@@ -176,13 +179,13 @@ namespace DatenMeister.Provider.InMemory
             {
                 result.Insert(index, value);
             }
-            
+
             return true;
         }
 
         private List<object> GetListOfProperty(string property)
         {
-            List<object> result = null;
+            List<object>? result = null;
             if (_values.ContainsKey(property))
             {
                 result = _values[property] as List<object>;
@@ -205,17 +208,12 @@ namespace DatenMeister.Provider.InMemory
             return result.Remove(value);
         }
 
-        public bool HasContainer()
-        {
-            return _container != null;
-        }
+        public bool HasContainer() =>
+            _container != null;
 
-        public IProviderObject GetContainer()
-        {
-            return _container;
-        }
+        public IProviderObject? GetContainer() => _container;
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             _container = value;
         }
@@ -224,6 +222,50 @@ namespace DatenMeister.Provider.InMemory
         public void EmptyListForProperty(string property)
         {
             _values[property] = new List<object>();
+        }
+
+        public bool MoveElementUp(string property, object value)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            
+            CheckValue(value);
+            var result = GetListOfProperty(property);
+            for (var n = 1; n < result.Count; n++)
+            {
+                if (result[n]?.Equals(value) == true)
+                {
+                    var temp = result[n - 1];
+                    result[n - 1] = value;
+                    result[n] = temp;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool MoveElementDown(string property, object value)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            CheckValue(value);
+            var result = GetListOfProperty(property);
+            for (var n = 0; n < result.Count - 1; n++)
+            {
+                if (result[n]?.Equals(value) == true)
+                {
+                    var temp = result[n + 1];
+                    result[n + 1] = value;
+                    result[n] = temp;
+
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

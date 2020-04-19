@@ -16,12 +16,12 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         /// Gets or sets the name of the class that is used for the model
         /// </summary>
-        public string UsedClassName { get; set; }
+        public string? UsedClassName { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the ClassTreeGenerator
         /// </summary>
-        public ClassTreeGenerator(ISourceParser parser = null) : base(parser)
+        public ClassTreeGenerator(ISourceParser? parser = null) : base(parser)
         {
             FactoryVersion = new Version(1, 2, 0, 0);
         }
@@ -36,13 +36,14 @@ namespace DatenMeister.SourcecodeGenerator
         /// </param>
         public override void Walk(IUriExtent extent)
         {
+            Result.AppendLine("#nullable enable");
             WriteUsages(new[]
             {
                 "DatenMeister.Core.EMOF.Interface.Reflection",
                 "DatenMeister.Core.EMOF.Implementation",
                 "DatenMeister.Provider.InMemory"
             });
-            
+
             base.Walk(extent);
         }
 
@@ -87,9 +88,11 @@ namespace DatenMeister.SourcecodeGenerator
         ///     Parses the packages
         /// </summary>
         /// <param name="classInstance">The class that shall be retrieved</param>
+        /// <param name="stack">Stack being used to walk through</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
             var asElement = classInstance as IElement;
+            if (asElement == null) return;
             var name = GetNameOfElement(classInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -110,9 +113,9 @@ namespace DatenMeister.SourcecodeGenerator
             base.WalkProperty(propertyObject, stack);
 
             var nameAsObject = propertyObject.get("name");
-            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            var name = nameAsObject?.ToString() ?? string.Empty;
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
-            Result.AppendLine($"{stack.Indentation}public IElement _{name} = null;");
+            Result.AppendLine($"{stack.Indentation}public IElement? _{name} = null;");
             Result.AppendLine();
         }
 
@@ -123,7 +126,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="stack">Stack being used</param>
         protected override void WalkEnum(IObject enumInstance, CallStack stack)
         {
-            var asElement = enumInstance as IElement;
+            var asElement = (IElement) enumInstance;
             var name = GetNameOfElement(enumInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -150,7 +153,8 @@ namespace DatenMeister.SourcecodeGenerator
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
 
-            Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
+            Result.AppendLine(
+                $"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement?.GetUri() ?? string.Empty}\");");
         }
     }
 }

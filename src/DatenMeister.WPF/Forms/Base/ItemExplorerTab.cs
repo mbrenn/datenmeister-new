@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -13,6 +17,8 @@ namespace DatenMeister.WPF.Forms.Base
         public ItemExplorerTab(IElement form)
         {
             Form = form;
+            _content = new ExplorerTabContent();
+            Content = _content;
         }
 
         /// <summary>
@@ -21,14 +27,41 @@ namespace DatenMeister.WPF.Forms.Base
         public IElement Form { get; set; }
 
         /// <summary>
+        /// Stores the content
+        /// </summary>
+        private readonly ExplorerTabContent _content;
+
+        /// <summary>
         /// Gets or sets the control
         /// </summary>
-        public ItemListViewControl Control
+        public UserControl Control
         {
-            get => Content as ItemListViewControl;
-            set => Content = value;
+            get => _content.InnerContent.Content as UserControl ??
+                   throw new InvalidOperationException("UserControl == null");
+            set => _content.InnerContent.Content = value;
         }
 
-        public IEnumerable<ViewExtension> ViewExtensions { get; set; }
+        /// <summary>
+        /// Gets the enclosed control as INavigationGuest
+        /// </summary>
+        public INavigationGuest ControlAsNavigationGuest => (INavigationGuest) Control;
+
+        public void EvaluateViewExtensions(IEnumerable<ViewExtension> viewExtensions)
+        {
+            var helper = new MenuHelper(
+                _content.Menu,
+                NavigationScope.Collection | NavigationScope.Item)
+            {
+                ShowApplicationItems = false,
+                // ReSharper disable once SuspiciousTypeConversion.Global
+                Item = Control is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null,
+                Collection = Control is ICollectionNavigationGuest collectionNavigationGuest
+                    ? collectionNavigationGuest.Collection
+                    : null,
+                Extent = Control is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null
+            };
+
+            helper.EvaluateExtensions(viewExtensions);
+        }
     }
 }

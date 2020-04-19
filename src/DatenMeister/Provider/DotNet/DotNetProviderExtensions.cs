@@ -1,8 +1,11 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
@@ -11,7 +14,7 @@ namespace DatenMeister.Provider.DotNet
     public static class DotNetProviderExtensions
     {
         /// <summary>
-        /// Creates a Mof Element reflecting the .Net Element out of the given extent. 
+        /// Creates a Mof Element reflecting the .Net Element out of the given extent.
         /// </summary>
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">Defines the extent being associated to the DotNetElement</param>
@@ -19,7 +22,7 @@ namespace DatenMeister.Provider.DotNet
         public static IElement CreateDotNetMofElement(
             this MofUriExtent extent,
             object value,
-            string id = null)
+            string? id = null)
         {
             if (!(extent.Provider is DotNetProvider providerAsDotNet))
             {
@@ -34,7 +37,6 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Creates a DotNetProvider object out of the internal information. It just creates DotNetProviderObject which contains the given element
         /// </summary>
-        /// <param name="typeLookup"></param>
         /// <param name="provider"></param>
         /// <param name="value"></param>
         /// <param name="id"></param>
@@ -42,7 +44,7 @@ namespace DatenMeister.Provider.DotNet
         private static DotNetProviderObject CreateDotNetProviderObject(
             this DotNetProvider provider,
             object value,
-            string id = null)
+            string? id = null)
         {
             if (value == null)
             {
@@ -59,18 +61,19 @@ namespace DatenMeister.Provider.DotNet
             var result = new DotNetProviderObject(provider, value, metaclass);
             if (!string.IsNullOrEmpty(id))
             {
-                result.Id = id;
+                result.Id = id!;
             }
 
             return result;
         }
+
         /// <summary>
         /// Converts the given element to a .Net native object, which means that it
         /// unwraps an DotNetElement element to its abstracted value
         /// </summary>
         /// <param name="element">Element to be converted</param>
         /// <returns>The converted object</returns>
-        public static object ConvertToNative(object element)
+        public static object? ConvertToNative(object? element)
         {
             if (!DotNetHelper.IsOfProviderObject(element))
             {
@@ -86,16 +89,15 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
-        /// Verifies the type of the given element and creates a DotNetElement if the given 
+        /// Verifies the type of the given element and creates a DotNetElement if the given
         /// value is not null and is not a primitive type
         /// </summary>
-        /// <param name="dotNetTypeLookup">The .NetType Lookup being used</param>
         /// <param name="result">Value to be converted</param>
         /// <param name="provider">The provider being used to convert the .Net Value as MofElement</param>
         /// <returns>The converted or non-converted type</returns>
-        public static object CreateDotNetElementIfNecessary(
+        public static object? CreateDotNetElementIfNecessary(
             this DotNetProvider provider,
-            object result)
+            object? result)
         {
             if (result == null)
             {
@@ -121,7 +123,7 @@ namespace DatenMeister.Provider.DotNet
                 // Returns the given element itself, if it is an MofElement or MofObject
                 return result;
             }
-            
+
             var dotNetResult = provider.CreateDotNetProviderObject(result);
 
             return dotNetResult;
@@ -140,7 +142,7 @@ namespace DatenMeister.Provider.DotNet
             var dotNetTypeCreator = new DotNetTypeGenerator(factory, uml);
             var element = dotNetTypeCreator.CreateTypeFor(dotNetType);
             extent.elements().add(element);
-            
+
             extent.TypeLookup.Add(element, dotNetType);
             return element;
         }
@@ -153,7 +155,11 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="type">Type to be added</param>
         public static void Add(this IDotNetTypeLookup lookup, IElement element, Type type)
         {
-            lookup.Add(element.GetUri(), type);
+            var uri = element.GetUri();
+            if (uri != null)
+            {
+                lookup.Add(uri, type);
+            }
         }
     }
 }

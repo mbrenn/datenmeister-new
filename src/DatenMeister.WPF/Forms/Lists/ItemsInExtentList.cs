@@ -6,24 +6,27 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using Autofac;
-using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Runtime;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -32,31 +35,27 @@ namespace DatenMeister.WPF.Forms.Lists
 {
     public class ItemsInExtentList : ItemExplorerControl
     {
-        /// <summary>
-        /// Stores the extent being associated to the extentlist
-        /// </summary>
-        private IExtent _extent;
-
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
-            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateAllViews);
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
-        public string WorkspaceId { get; set; }
+        /// <summary>
+        /// Gets or sets the workspace id
+        /// </summary>
+        public string WorkspaceId { get; set; } = string.Empty;
 
-        public string ExtentUrl { get; set; }
+        /// <summary>
+        /// Gets or sets extent Url for the item being shown
+        /// </summary>
+        public string ExtentUrl { get; set; } = string.Empty;
 
         /// <summary>
         /// Stores the delayed dispatcher
         /// </summary>
         private readonly DelayedRefreshDispatcher _delayedDispatcher;
-
-        /// <summary>
-        /// Gets the extent of the item class
-        /// </summary>
-        public IExtent Extent => _extent;
 
         /// <summary>
         ///     Gets or sets a flag whether, all items shall be shown in one tab.
@@ -66,24 +65,26 @@ namespace DatenMeister.WPF.Forms.Lists
         private void ItemsInExtentList_Loaded(object sender, RoutedEventArgs e)
         {
             NavigationTreeView.ShowAllChildren = false;
-            
-            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out _extent);
-            if (_extent == null)
+
+            _workspaceLogic.FindExtentAndWorkspace(WorkspaceId, ExtentUrl, out _, out var extent);
+            if (extent == null)
             {
                 MessageBox.Show("The given workspace and extent was not found.");
                 return;
             }
 
+            Extent = extent;
+            
             EventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
-                _extent,
-                (x,y) =>
-                {
-                    _delayedDispatcher.RequestRefresh();
-                });
+                Extent,
+                (x, y) => _delayedDispatcher.RequestRefresh());
 
-            SetItems(_extent.elements());
+            SetRootItem(Extent);
         }
 
+        /// <summary>
+        /// Stores the workspace logic
+        /// </summary>
         private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
@@ -91,15 +92,15 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         protected override void OnRecreateViews()
         {
-            CreateFormForItems(SelectedItems);
+            CreateFormForItems();
         }
 
         /// <summary>
         /// Updates all views without regenerating the tabulators, which are already set
         /// </summary>
-        public override void UpdateAllViews()
+        public override void UpdateView()
         {
-            base.UpdateAllViews();
+            base.UpdateView();
             if (ShowAllItemsInOneTab)
             {
                 return;
@@ -116,162 +117,131 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         ///     Creates the tab for the given items and the metaclass that shell be shown
         /// </summary>
-        /// <param name="tabItems">Items for the tab</param>
-        private void CreateFormForItems(IReflectiveCollection tabItems)
+        private void CreateFormForItems()
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            IElement form;
+            var formPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+            var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
+            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
+                
+            IElement? form = null;
 
-            if (Items == SelectedItems)
+            var overridingMode = OverridingViewDefinition?.Mode ?? FormDefinitionMode.Default;
+            
+            // Check if the used form shall be overridden
+            if (OverridingViewDefinition != null && overridingMode == FormDefinitionMode.Specific)
             {
-                // Finds the view by the extent type
-                form = viewLogic.GetExtentForm((Items as IHasExtent)?.Extent as IUriExtent, ViewDefinitionMode.Default);
-            }
-            else
-            {
-                // User has selected a sub element and its children shall be shown
-                form = viewLogic.GetItemTreeFormForObject(
-                    SelectedPackage,
-                    ViewDefinitionMode.Default);
-            }
-
-            var className = "Items";
-            var viewDefinition = new ViewDefinition(className, form);
-            var viewExtensions = new List<ViewExtension>();
-
-            // Sets the generic buttons to create the new types
-            if (form?.GetOrDefault(_FormAndFields._ListForm.defaultTypesForNewElements)
-                is IReflectiveCollection defaultTypesForNewItems)
-            {
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
+                // Check the type
+                form = OverridingViewDefinition.Element as IElement;
+                if (form != null && isRootItem)
                 {
-                    // Check if type is a directly type or the DefaultTypeForNewElement
-                    if (type.metaclass.@equals(
-                        _workspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
-                            x => x.__DefaultTypeForNewElement)))
+                    var formMetaClass = form.getMetaClass();
+                    
+                    if (!ClassifierMethods.IsSpecializedClassifierOf(
+                        formMetaClass, 
+                        formAndFields.__ExtentForm))
                     {
-                        var newType = type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
-                        var parentProperty = type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty);
-
-                        Create(newType, parentProperty);
-                    }
-                    else
-                    {
-                        Create(type, null);
-                    }
-
-                    void Create(IElement newType, string parentProperty)
-                    {
-                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
-
-                        viewExtensions.Add(new GenericButtonDefinition(
-                            $"New {typeName}", () => { CreateNewElementByUser(newType, parentProperty); }));
+                        var formName = formMetaClass?.ToString() ?? "Unclassified";
+                        
+                        MessageBox.Show($"Overriding form is not of type ExtentForm, overriding form is of type {formName}");
+                        form = null;
                     }
                 }
             }
-
-            // Sets the button for the new item
-            viewExtensions.Add(new GenericButtonDefinition(
-                "New Item", () =>
+            
+            // If the form shall not be overridden, find it by the standard logic
+            if (form == null)
+            {
+                if (isRootItem)
                 {
-                    CreateNewElementByUser(null, null);
-                }));
-
-            // Allows the deletion of an item
-            viewExtensions.Add(new RowItemButtonDefinition(
-                "Delete",
-                (guest, item) =>
+                    // Extent is currently selected
+                    // Finds the view by the extent type
+                    form = formPlugin.GetExtentForm((IUriExtent) RootItem, overridingMode);
+                }
+                else
                 {
-                    if (MessageBox.Show(
-                            "Are you sure to delete the item?", "Confirmation", MessageBoxButton.YesNo) ==
-                        MessageBoxResult.Yes)
-                    {
-                        _extent.elements().remove(item);
-                    }
-                }));
+                    if (SelectedItem == null)
+                        throw new InvalidOperationException("Not a root item, but also no SelectedItem");
+                    
+                    // User has selected a sub element and its children shall be shown
+                    form = formPlugin.GetItemTreeFormForObject(
+                        SelectedItem,
+                        overridingMode);
+                }
+            }
 
-            PrepareNavigation(viewDefinition);
+            const string className = "Items";
+            var viewDefinition = new FormDefinition(className, form);
 
             EvaluateForm(
-                tabItems,
-                new ViewDefinition(form)
+                SelectedItem ?? throw new InvalidOperationException("No SelectedItem"),
+                new FormDefinition(form ?? throw new InvalidOperationException("form == null"))
                 {
-                    ViewExtensions = viewExtensions
+                    ViewExtensions = viewDefinition.ViewExtensions
                 });
         }
 
-        private void CreateNewElementByUser(IElement type, string parentProperty)
+        public override IEnumerable<ViewExtension> GetViewExtensions()
         {
-            if (IsExtentSelectedInTreeview)
-            {
-                NavigatorForItems.NavigateToNewItemForExtent(
-                    NavigationHost,
-                    _extent,
-                    type);
-            }
-            else
-            {
-                NavigatorForItems.NavigateToNewItemForItem(
-                    NavigationHost,
-                    SelectedPackage,
-                    type, 
-                    parentProperty);
-            }
-        }
+            if (NavigationHost == null) throw new InvalidOperationException("NavigationHost == null");
+            var navigationHost = NavigationHost;
 
-        /// <summary>
-        ///     Prepares the navigation of the host. The function is called by the navigation
-        ///     host.
-        /// </summary>
-        public void PrepareNavigation(ViewDefinition viewDefinition)
-        {
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "To Extents",
-                    () => NavigatorForExtents.NavigateToExtentList(NavigationHost, WorkspaceId),
-                    Icons.ExtentsShow,
-                    NavigationCategories.File + ".Workspaces"));
+            yield return new ApplicationMenuButtonDefinition(
+                "To Extents",
+                () => NavigatorForExtents.NavigateToExtentList(navigationHost, WorkspaceId),
+                Icons.ExtentsShow,
+                NavigationCategories.DatenMeister + ".Navigation");
 
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Extent Info",
-                    () => NavigatorForExtents.OpenDetailOfExtent(NavigationHost, ExtentUrl),
-                    null,
-                    NavigationCategories.File + ".Workspaces"));
+            yield return new ExtentMenuButtonDefinition(
+                "Extent Info", async (x) => await NavigatorForExtents.OpenDetailOfExtent(navigationHost, ExtentUrl),
+                null,
+                NavigationCategories.Extents + ".Info");
 
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Show as tree",
-                    ShowAsTree,
-                    null,
-                    NavigationCategories.File + ".Views"));
+            yield return new ExtentMenuButtonDefinition(
+                "Extent Properties", async (x) => await NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
+                null,
+                NavigationCategories.Extents + ".Info");
 
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Export as Xmi",
-                    ExportAsXmi,
-                    null,
-                    NavigationCategories.File + ".Export"));
+            yield return new ExtentMenuButtonDefinition(
+                "Show as tree",
+                x => ShowAsTree(),
+                null,
+                NavigationCategories.Extents + ".Info");
 
-            viewDefinition.ViewExtensions.Add(
-                new RibbonButtonDefinition(
-                    "Open Extent-Folder",
-                    OpenExtentFolder,
-                    null,
-                    NavigationCategories.File + ".Workspaces"));
+            yield return new ExtentMenuButtonDefinition(
+                "Save Extent",
+                SaveExtent,
+                null,
+                NavigationCategories.Extents + ".Info");
+
+            yield return new ExtentMenuButtonDefinition(
+                "Export as Xmi",
+                x => ExportAsXmi(),
+                null,
+                NavigationCategories.Extents + ".Export");
+
+            yield return new ExtentMenuButtonDefinition(
+                "Show as Xmi",
+                x => ShowAsXmi(),
+                null,
+                NavigationCategories.Extents + ".Export");
+
+            yield return new ExtentMenuButtonDefinition(
+                "Open Extent-Folder",
+                x => OpenExtentFolder(),
+                null,
+                NavigationCategories.Extents + ".Info");
 
             // Adds the infoline
-            viewDefinition.ViewExtensions.Add(
-                new InfoLineDefinition(() =>
-                    new TextBlock
+            yield return new InfoLineDefinition(() =>
+                new TextBlock
+                {
+                    Inlines =
                     {
-                        Inlines =
-                        {
-                            new Bold {Inlines = {new Run("Extent: ")}},
-                            new Run(ExtentUrl)
-                                {ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(ExtentUrl)}
-                        }
-                    }));
+                        new Bold {Inlines = {new Run("Extent: ")}},
+                        new Run(ExtentUrl)
+                            {ContextMenu = ItemListViewControl.GetCopyToClipboardContextMenu(ExtentUrl)}
+                    }
+                });
 
             void ExportAsXmi()
             {
@@ -286,8 +256,8 @@ namespace DatenMeister.WPF.Forms.Lists
                     var filename = dialog.FileName;
                     try
                     {
-                        ExtentExport.ExportToFile(_extent, filename);
-                        MessageBox.Show($"Extent exported with {_extent.elements().Count()} root elements.");
+                        ExtentExport.ExportToFile(Extent, filename);
+                        MessageBox.Show($"Extent exported with {Extent.elements().Count()} root elements.");
                         // ReSharper disable once AssignNullToNotNullAttribute
                         Process.Start(Path.GetDirectoryName(filename));
                     }
@@ -298,14 +268,25 @@ namespace DatenMeister.WPF.Forms.Lists
                 }
             }
 
+            void ShowAsXmi()
+            {
+                var dlg = new ItemXmlViewWindow();
+                dlg.UpdateContent(Extent.elements());
+                dlg.Show();
+            }
+
             void OpenExtentFolder()
             {
                 var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                if (extentManager.GetLoadConfigurationFor(_extent as IUriExtent) is ExtentFileLoaderConfig
+                var uriExtent = Extent as IUriExtent ?? throw new InvalidOperationException("Extent as IUriExtent");
+                if (extentManager.GetLoadConfigurationFor(uriExtent) is ExtentFileLoaderConfig
                         loadConfiguration && loadConfiguration.filePath != null)
                 {
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    Process.Start(Path.GetDirectoryName(loadConfiguration.filePath));
+                    var filePath = loadConfiguration.filePath;
+                    
+                    //Clean up file path so it can be navigated OK
+                    filePath = Path.GetFullPath(filePath);
+                    Process.Start("explorer.exe", $"/select,\"{filePath}\"");
                 }
                 else
                 {
@@ -315,18 +296,57 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void ShowAsTree()
             {
-                if (_extent != null)
+                if (Extent != null)
                 {
-                    var window = new TreeViewWindow {Owner = NavigationHost.GetWindow()};
+                    var window = new TreeViewWindow {Owner = navigationHost.GetWindow()};
                     window.SetDefaultProperties();
-                    window.SetCollection(_extent.elements());
-                    window.ItemSelected += (x, y) =>
-                    {
-                        NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
-                    };
+                    window.SetRootItem(Extent);
+                    window.ItemSelected += async (x, y) =>
+                        await NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
                     window.Show();
                 }
             }
+
+            foreach (var extension in base.GetViewExtensions()) yield return extension;
+        }
+
+        private void SaveExtent(IExtent extent)
+        {
+            var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+            extentManager.StoreExtent(extent);
+            
+            UpdateTreeContent();
+        }
+
+        public override ViewExtensionInfo GetViewExtensionInfo()
+        {
+            return new ViewExtensionInfoExploreItems(NavigationHost, this)
+            {
+                WorkspaceId = WorkspaceId,
+                ExtentUrl = ExtentUrl,
+                RootElement = RootItem,
+                SelectedElement = SelectedItem
+            };
+        }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            var extent = RootItem as IExtent;
+            if (extent == null)
+            {
+                MessageBox.Show("The root item is not an extent");
+                return;
+            }
+            
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (e.Key == Key.S)
+                {
+                    SaveExtent(extent);   
+                }
+            }
+            
+            base.OnKeyDown(e);
         }
     }
 }

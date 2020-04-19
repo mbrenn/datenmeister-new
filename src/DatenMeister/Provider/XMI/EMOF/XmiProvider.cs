@@ -28,17 +28,17 @@ namespace DatenMeister.Provider.XMI.EMOF
 
         public XDocument Document => _document;
 
-        private static readonly XNamespace xDatenMeisterNamespace = "http://datenmeister.net/";
+        private static readonly XNamespace XDatenMeisterNamespace = "http://datenmeister.net/";
 
-        private static readonly XName xMetaXmlNodeName = xDatenMeisterNamespace + "meta";
+        private static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
 
         /// <summary>
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information
         /// about the meta classes
         /// </summary>
-        public IUriResolver UriResolver { get; set; }
+        public IUriResolver? UriResolver { get; set; }
 
-        public XmiProvider(/*string rootNodeName = DefaultRootNodeName*/)
+        public XmiProvider( /*string rootNodeName = DefaultRootNodeName*/)
         {
             var rootNodeName = DefaultRootNodeName;
             _document = new XDocument();
@@ -47,7 +47,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             /*_rootNode.SetAttributeValue(_urlPropertyName, uri);*/
         }
 
-        public XmiProvider(XDocument document/*, string rootNodeName = DefaultRootNodeName*/)
+        public XmiProvider(XDocument document /*, string rootNodeName = DefaultRootNodeName*/)
         {
             var rootNodeName = document.Elements().First().Name;
 
@@ -66,10 +66,10 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns>The returned meta node</returns>
         private XElement GetMetaNode()
         {
-            var metaNode = _rootNode.Element(xMetaXmlNodeName);
+            var metaNode = _rootNode.Element(XMetaXmlNodeName);
             if (metaNode == null)
             {
-                metaNode = new XElement(xMetaXmlNodeName);
+                metaNode = new XElement(XMetaXmlNodeName);
                 _rootNode.AddFirst(metaNode);
             }
 
@@ -77,7 +77,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject CreateElement(string metaClassUri)
+        public IProviderObject CreateElement(string? metaClassUri)
         {
             var node = new XElement(ElementName);
             if (!string.IsNullOrEmpty(metaClassUri))
@@ -89,9 +89,12 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
-            _rootNode.Add(((XmiProviderObject) valueAsObject).XmlNode);
+            if (valueAsObject is XmiProviderObject providerObject)
+            {
+                _rootNode.Add(providerObject.XmlNode);
+            }
         }
 
         /// <inheritdoc />
@@ -114,7 +117,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             foreach (var node in _rootNode.Elements())
             {
-                if (node.Name.Namespace == xDatenMeisterNamespace)
+                if (node.Name.Namespace == XDatenMeisterNamespace)
                 {
                     continue;
                 }
@@ -129,7 +132,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public IProviderObject Get(string id)
+        public IProviderObject? Get(string? id)
         {
             if (id == null)
             {
@@ -155,7 +158,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             foreach (var element in _rootNode.Elements())
             {
-                if (element.Name.Namespace == xDatenMeisterNamespace)
+                if (element.Name.Namespace == XDatenMeisterNamespace)
                 {
                     continue;
                 }
@@ -168,9 +171,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities()
-        {
-            return ProviderCapability.StoreMetaDataInExtent;
-        }
+        public ProviderCapability GetCapabilities() =>
+            ProviderCapability.StoreMetaDataInExtent;
     }
 }

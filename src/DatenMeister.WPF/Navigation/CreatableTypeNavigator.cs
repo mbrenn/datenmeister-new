@@ -4,11 +4,13 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -17,7 +19,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Sets the selected types
         /// </summary>
-        public IElement SelectedType { get; private set; }
+        public IElement? SelectedType { get; private set; }
 
         /// <summary>
         /// Shows a dialog in which the user can select one type out of the list of createable types
@@ -26,25 +28,24 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="extent">Extent to whom the type shall be created</param>
         /// <param name="buttonName">Name of the button</param>
         /// <returns>The control navigation</returns>
-        public async Task<NavigateToElementDetailResult> NavigateToSelectCreateableType(
+        public async Task<NavigateToElementDetailResult?> NavigateToSelectCreateableType(
             INavigationHost window,
-            IExtent extent,
+            IExtent? extent,
             string buttonName = "Create")
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
-
-            var defaultTypePackage = extent.GetDefaultTypePackage();
-            IWorkspace metaWorkspace = null;
-            IExtent metaExtent = null;
-            if (defaultTypePackage == null)
+            var defaultTypePackage = extent?.GetConfiguration().GetDefaultTypePackages()?.ToList();
+            IWorkspace? metaWorkspace = null;
+            IExtent? metaExtent = null;
+            if (defaultTypePackage == null || !defaultTypePackage.Any())
             {
                 // Selects the type workspace, if the current extent is in data workspace or some other workspace whose meta level is of type
                 // Otherwise, select the first meta workspace and extent
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
-                var workspace = workspaceLogic.GetWorkspaceOfExtent(extent);
+                var workspace = extent == null ? null : workspaceLogic.GetWorkspaceOfExtent(extent);
                 if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
                 {
                     metaWorkspace = workspaceLogic.GetTypesWorkspace();
@@ -57,25 +58,29 @@ namespace DatenMeister.WPF.Navigation
                 }
             }
 
-            var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalViewExtent());
+            var element = InMemoryObject.CreateEmpty().SetReferencedExtent(viewLogic.GetInternalFormExtent());
             //var items = extentFunctions.GetCreatableTypes(extent).CreatableTypes;
-            var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage, metaWorkspace, metaExtent);
+            var formPathToType = viewDefinitions.GetFindTypeForm(defaultTypePackage?.FirstOrDefault(), metaWorkspace, metaExtent);
 
-            var navigateToItemConfig = new NavigateToItemConfig()
+            var navigateToItemConfig = new NavigateToItemConfig(element)
             {
-                DetailElement =  element,
-                FormDefinition = formPathToType
+                Form = new FormDefinition(formPathToType)
             };
 
             var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);
-            if (result.Result == NavigationResult.Saved)
+            if (result != null)
             {
-                if (result.DetailElement.GetOrDefault("selectedType") is IElement metaClass)
+                var detailElement = result.DetailElement;
+                if (result.Result == NavigationResult.Saved && detailElement != null)
                 {
-                    SelectedType = metaClass;
-                }
+                    var metaClass = detailElement.getOrDefault<IElement>("selectedType");
+                    if (metaClass != null)
+                    {
+                        SelectedType = metaClass;
+                    }
 
-                OnClosed();
+                    OnClosed();
+                }
             }
 
             return result;

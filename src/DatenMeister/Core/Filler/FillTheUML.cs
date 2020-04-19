@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
@@ -6,47 +7,48 @@ namespace DatenMeister.Core.Filler
     public class FillTheUML : DatenMeister.Core.Filler.IFiller<DatenMeister.Core._UML>
     {
         private static readonly object[] EmptyList = new object[] { };
-        private static string GetNameOfElement(IObject element)
+        private static string GetNameOfElement(IObject? element)
         {
+            if (element == null) throw new System.ArgumentNullException(nameof(element));
             var nameAsObject = element.get("name");
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, DatenMeister.Core._UML tree)
+        public void Fill(IEnumerable<object?> collection, DatenMeister.Core._UML tree)
         {
             FillTheUML.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, DatenMeister.Core._UML tree)
+        public static void DoFill(IEnumerable<object?> collection, DatenMeister.Core._UML tree)
         {
-            string name;
-            IElement value;
+            string? name;
+            IElement? value;
             bool isSet;
             foreach (var item in collection)
             {
-                value = item as IElement;
+                value = item as IElement ?? throw new System.InvalidOperationException("value == null");
                 name = GetNameOfElement(value);
                 if (name == "UML") // Looking for package
                 {
                     isSet = value.isSet("packagedElement");
-                    collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                    collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                     foreach (var item0 in collection)
                     {
-                        value = item0 as IElement;
+                        value = item0 as IElement ?? throw new System.InvalidOperationException("value == null");
                         name = GetNameOfElement(value);
                         if (name == "Activities") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Activity") // Looking for class
                                 {
                                     tree.Activities.__Activity = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -89,7 +91,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ActivityEdge = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -140,7 +142,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ActivityFinalNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -151,7 +153,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ActivityGroup = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -182,7 +184,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ActivityNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -225,7 +227,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ActivityParameterNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -240,7 +242,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ActivityPartition = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -279,7 +281,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__CentralBufferNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -290,7 +292,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ControlFlow = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -301,7 +303,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ControlNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -312,7 +314,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__DataStoreNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -323,7 +325,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__DecisionNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -342,7 +344,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ExceptionHandler = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -369,7 +371,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ExecutableNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -384,7 +386,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__FinalNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -395,7 +397,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__FlowFinalNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -406,7 +408,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ForkNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -417,7 +419,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__InitialNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -428,7 +430,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__InterruptibleActivityRegion = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -447,7 +449,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__JoinNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -466,7 +468,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__MergeNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -477,7 +479,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ObjectFlow = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -504,7 +506,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__ObjectNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -535,7 +537,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Activities.__Variable = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -555,16 +557,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "Values") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Duration") // Looking for class
                                 {
                                     tree.Values.__Duration = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -583,7 +585,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__DurationConstraint = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -602,7 +604,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__DurationInterval = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -621,7 +623,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__DurationObservation = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -640,7 +642,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__Expression = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -659,7 +661,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__Interval = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -678,7 +680,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__IntervalConstraint = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -693,7 +695,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__LiteralBoolean = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -708,7 +710,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__LiteralInteger = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -723,7 +725,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__LiteralNull = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -734,7 +736,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__LiteralReal = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -749,7 +751,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__LiteralSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -760,7 +762,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__LiteralString = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -775,7 +777,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__LiteralUnlimitedNatural = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -790,7 +792,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__Observation = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -801,7 +803,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__OpaqueExpression = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -828,7 +830,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__StringExpression = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -847,7 +849,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__TimeConstraint = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -866,7 +868,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__TimeExpression = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -885,7 +887,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__TimeInterval = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -904,7 +906,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__TimeObservation = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -923,7 +925,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Values.__ValueSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -935,16 +937,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "UseCases") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Actor") // Looking for class
                                 {
                                     tree.UseCases.__Actor = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -955,7 +957,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.UseCases.__Extend = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -982,7 +984,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.UseCases.__ExtensionPoint = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -997,7 +999,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.UseCases.__Include = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1016,7 +1018,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.UseCases.__UseCase = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1044,16 +1046,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "StructuredClassifiers") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Association") // Looking for class
                                 {
                                     tree.StructuredClassifiers.__Association = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1084,7 +1086,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__AssociationClass = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1095,7 +1097,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__Class = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1138,7 +1140,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__Collaboration = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1153,7 +1155,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__CollaborationUse = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1172,7 +1174,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__Component = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1203,7 +1205,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__ComponentRealization = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1222,7 +1224,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__ConnectableElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1241,7 +1243,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__ConnectableElementTemplateParameter = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1256,7 +1258,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__Connector = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1287,7 +1289,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__ConnectorEnd = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1310,7 +1312,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__EncapsulatedClassifier = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1325,7 +1327,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__Port = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1364,7 +1366,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StructuredClassifiers.__StructuredClassifier = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1392,16 +1394,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "StateMachines") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "ConnectionPointReference") // Looking for class
                                 {
                                     tree.StateMachines.__ConnectionPointReference = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1424,7 +1426,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__FinalState = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1435,7 +1437,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__ProtocolConformance = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1454,7 +1456,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__ProtocolStateMachine = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1469,7 +1471,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__ProtocolTransition = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1492,7 +1494,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__Pseudostate = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1515,7 +1517,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__Region = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1550,7 +1552,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__State = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1621,7 +1623,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__StateMachine = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1648,7 +1650,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__Transition = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1695,7 +1697,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.StateMachines.__Vertex = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1719,16 +1721,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "SimpleClassifiers") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "BehavioredClassifier") // Looking for class
                                 {
                                     tree.SimpleClassifiers.__BehavioredClassifier = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1751,7 +1753,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__DataType = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1770,7 +1772,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__Enumeration = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1785,7 +1787,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__EnumerationLiteral = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1804,7 +1806,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__Interface = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1839,7 +1841,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__InterfaceRealization = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1858,7 +1860,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__PrimitiveType = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1869,7 +1871,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__Reception = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1884,7 +1886,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.SimpleClassifiers.__Signal = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1900,16 +1902,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "Packages") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Extension") // Looking for class
                                 {
                                     tree.Packages.__Extension = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1932,7 +1934,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__ExtensionEnd = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1951,7 +1953,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__Image = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1974,7 +1976,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__Model = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -1989,7 +1991,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__Package = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2032,7 +2034,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__PackageMerge = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2051,7 +2053,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__Profile = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2070,7 +2072,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__ProfileApplication = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2093,7 +2095,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Packages.__Stereotype = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2113,16 +2115,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "Interactions") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "ActionExecutionSpecification") // Looking for class
                                 {
                                     tree.Interactions.__ActionExecutionSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2137,7 +2139,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__BehaviorExecutionSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2152,7 +2154,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__CombinedFragment = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2175,7 +2177,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__ConsiderIgnoreFragment = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2190,7 +2192,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__Continuation = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2205,7 +2207,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__DestructionOccurrenceSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2216,7 +2218,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__ExecutionOccurrenceSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2231,7 +2233,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__ExecutionSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2250,7 +2252,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__Gate = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2261,7 +2263,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__GeneralOrdering = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2280,7 +2282,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__Interaction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2311,7 +2313,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__InteractionConstraint = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2330,7 +2332,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__InteractionFragment = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2357,7 +2359,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__InteractionOperand = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2376,7 +2378,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__InteractionUse = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2407,7 +2409,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__Lifeline = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2438,7 +2440,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__Message = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2481,7 +2483,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__MessageEnd = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2496,7 +2498,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__MessageOccurrenceSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2507,7 +2509,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__OccurrenceSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2530,7 +2532,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__PartDecomposition = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2541,7 +2543,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Interactions.__StateInvariant = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2561,16 +2563,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "InformationFlows") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "InformationFlow") // Looking for class
                                 {
                                     tree.InformationFlows.__InformationFlow = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2609,7 +2611,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.InformationFlows.__InformationItem = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2625,16 +2627,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "Deployments") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Artifact") // Looking for class
                                 {
                                     tree.Deployments.__Artifact = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2665,7 +2667,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__CommunicationPath = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2676,7 +2678,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__DeployedArtifact = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2687,7 +2689,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__Deployment = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2710,7 +2712,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__DeploymentSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2733,7 +2735,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__DeploymentTarget = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2752,7 +2754,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__Device = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2763,7 +2765,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__ExecutionEnvironment = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2774,7 +2776,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__Manifestation = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2789,7 +2791,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Deployments.__Node = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2805,16 +2807,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "CommonStructure") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Abstraction") // Looking for class
                                 {
                                     tree.CommonStructure.__Abstraction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2829,7 +2831,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Comment = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2848,7 +2850,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Constraint = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2871,7 +2873,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Dependency = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2890,7 +2892,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__DirectedRelationship = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2909,7 +2911,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Element = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2932,7 +2934,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__ElementImport = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2959,7 +2961,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__MultiplicityElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -2994,7 +2996,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__NamedElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3029,7 +3031,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Namespace = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3064,7 +3066,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__PackageableElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3079,7 +3081,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__PackageImport = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3102,7 +3104,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__ParameterableElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3121,7 +3123,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Realization = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3132,7 +3134,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Relationship = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3147,7 +3149,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__TemplateableElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3166,7 +3168,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__TemplateBinding = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3189,7 +3191,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__TemplateParameter = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3220,7 +3222,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__TemplateParameterSubstitution = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3247,7 +3249,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__TemplateSignature = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3270,7 +3272,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Type = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3285,7 +3287,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__TypedElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3300,7 +3302,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonStructure.__Usage = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3312,16 +3314,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "CommonBehavior") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "AnyReceiveEvent") // Looking for class
                                 {
                                     tree.CommonBehavior.__AnyReceiveEvent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3332,7 +3334,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__Behavior = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3375,7 +3377,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__CallEvent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3390,7 +3392,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__ChangeEvent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3405,7 +3407,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__Event = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3416,7 +3418,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__FunctionBehavior = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3427,7 +3429,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__MessageEvent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3438,7 +3440,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__OpaqueBehavior = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3457,7 +3459,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__SignalEvent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3472,7 +3474,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__TimeEvent = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3491,7 +3493,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.CommonBehavior.__Trigger = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3511,16 +3513,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "Classification") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "Substitution") // Looking for class
                                 {
                                     tree.Classification.__Substitution = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3539,7 +3541,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__BehavioralFeature = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3574,7 +3576,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__Classifier = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3649,7 +3651,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__ClassifierTemplateParameter = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3672,7 +3674,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__Feature = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3691,7 +3693,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__Generalization = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3718,7 +3720,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__GeneralizationSet = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3745,7 +3747,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__InstanceSpecification = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3768,7 +3770,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__InstanceValue = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3783,7 +3785,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__Operation = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3858,7 +3860,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__OperationTemplateParameter = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3873,7 +3875,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__Parameter = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3916,7 +3918,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__ParameterSet = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -3935,7 +3937,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__Property = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4010,7 +4012,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__RedefinableElement = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4033,7 +4035,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__RedefinableTemplateSignature = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4056,7 +4058,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__Slot = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4079,7 +4081,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Classification.__StructuralFeature = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4095,16 +4097,16 @@ namespace DatenMeister.Core.Filler
                         if (name == "Actions") // Looking for package
                         {
                             isSet = value.isSet("packagedElement");
-                            collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException("value == null");
                                 name = GetNameOfElement(value);
                                 if(name == "ValueSpecificationAction") // Looking for class
                                 {
                                     tree.Actions.__ValueSpecificationAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4123,7 +4125,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__VariableAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4138,7 +4140,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__WriteLinkAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4149,7 +4151,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__WriteStructuralFeatureAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4168,7 +4170,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__WriteVariableAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4183,7 +4185,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__AcceptCallAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4198,7 +4200,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__AcceptEventAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4221,7 +4223,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__Action = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4256,7 +4258,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ActionInputPin = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4271,7 +4273,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__AddStructuralFeatureValueAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4290,7 +4292,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__AddVariableValueAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4309,7 +4311,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__BroadcastSignalAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4324,7 +4326,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__CallAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4343,7 +4345,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__CallBehaviorAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4358,7 +4360,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__CallOperationAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4377,7 +4379,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__Clause = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4412,7 +4414,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ClearAssociationAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4431,7 +4433,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ClearStructuralFeatureAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4446,7 +4448,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ClearVariableAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4457,7 +4459,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ConditionalNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4484,7 +4486,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__CreateLinkAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4499,7 +4501,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__CreateLinkObjectAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4514,7 +4516,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__CreateObjectAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4533,7 +4535,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__DestroyLinkAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4548,7 +4550,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__DestroyObjectAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4571,7 +4573,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ExpansionNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4590,7 +4592,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ExpansionRegion = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4613,7 +4615,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__InputPin = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4624,7 +4626,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__InvocationAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4643,7 +4645,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__LinkAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4662,7 +4664,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__LinkEndCreationData = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4681,7 +4683,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__LinkEndData = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4704,7 +4706,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__LinkEndDestructionData = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4723,7 +4725,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__LoopNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4770,7 +4772,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__OpaqueAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4797,7 +4799,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__OutputPin = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4808,7 +4810,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__Pin = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4823,7 +4825,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__QualifierValue = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4842,7 +4844,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__RaiseExceptionAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4857,7 +4859,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadExtentAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4876,7 +4878,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadIsClassifiedObjectAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4903,7 +4905,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadLinkAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4918,7 +4920,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadLinkObjectEndAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4941,7 +4943,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadLinkObjectEndQualifierAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4964,7 +4966,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadSelfAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4979,7 +4981,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadStructuralFeatureAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -4994,7 +4996,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReadVariableAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5009,7 +5011,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReclassifyObjectAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5036,7 +5038,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReduceAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5063,7 +5065,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__RemoveStructuralFeatureValueAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5082,7 +5084,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__RemoveVariableValueAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5101,7 +5103,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ReplyAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5124,7 +5126,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__SendObjectAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5143,7 +5145,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__SendSignalAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5162,7 +5164,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__SequenceNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5177,7 +5179,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__StartClassifierBehaviorAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5192,7 +5194,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__StartObjectBehaviorAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5207,7 +5209,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__StructuralFeatureAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5226,7 +5228,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__StructuredActivityNode = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5265,7 +5267,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__TestIdentityAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5288,7 +5290,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__UnmarshallAction = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;
@@ -5311,7 +5313,7 @@ namespace DatenMeister.Core.Filler
                                 {
                                     tree.Actions.__ValuePin = value;
                                     isSet = value.isSet("ownedAttribute");
-                                    collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                                    collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
                                         value = item2 as IElement;

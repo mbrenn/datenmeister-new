@@ -9,20 +9,21 @@ namespace DatenMeister.Runtime
     {
         /// <summary>
         /// Gets the filled type information of the meta extents being connected
-        /// to the factory. 
+        /// to the factory.
         /// </summary>
         /// <typeparam name="TFilledType">Requested filled type information</typeparam>
         /// <param name="factory">Factory, which is queried</param>
         /// <returns>The resulting filled type</returns>
-        public static TFilledType GetMetaInformation<TFilledType>(
-            this IFactory factory) 
+        public static TFilledType? GetMetaInformation<TFilledType>(
+            this IFactory factory)
             where TFilledType : class, new()
         {
             var mofFactory = factory as MofFactory ??
                              throw new ArgumentException(
-                                 "Not of type MofExtent", 
+                                 @"Not of type MofExtent",
                                  nameof(factory));
-           return mofFactory.Extent.Workspace.GetFromMetaWorkspace<TFilledType>();
+            
+            return mofFactory.Extent?.Workspace?.GetFromMetaWorkspace<TFilledType>();
         }
 
         /// <summary>
@@ -39,12 +40,17 @@ namespace DatenMeister.Runtime
             where TFilledType : class, new()
         {
             var metaInfo = GetMetaInformation<TFilledType>(factory);
+            if (metaInfo == null)
+            {
+                throw new InvalidOperationException("metaInfo is not found");
+            }
+            
             return factory.create(type(metaInfo));
         }
 
         /// <summary>
         /// Creates the element as being retrieved by the TFilledType
-        /// by using the given workspace. 
+        /// by using the given workspace.
         /// </summary>
         /// <typeparam name="TFilledType">Type of the FilledType</typeparam>
         /// <param name="factory">Factory being used to create the instance</param>
@@ -58,6 +64,11 @@ namespace DatenMeister.Runtime
             where TFilledType : class, new()
         {
             var filledType = workspace.Get<TFilledType>();
+            if (filledType == null)
+            {
+                throw new InvalidOperationException("FilledType is not found");
+            }
+
             var typeToCreated = funcType(filledType);
             return factory.create(typeToCreated);
         }

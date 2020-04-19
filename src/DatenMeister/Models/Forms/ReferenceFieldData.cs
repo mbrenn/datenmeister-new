@@ -8,14 +8,12 @@ namespace DatenMeister.Models.Forms
     /// </summary>
     public class ReferenceFieldData : FieldData
     {
-        public const string FieldType = "reference";
-
-        public ReferenceFieldData() : base(FieldType)
+        public ReferenceFieldData() : base()
         {
 
         }
 
-        public ReferenceFieldData(string name, string title) : base(FieldType, name, title)
+        public ReferenceFieldData(string name, string title) : base(name, title)
         {
 
         }
@@ -28,13 +26,13 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the default extent that shall be shown, when the user clicks on the selection field
         /// </summary>
-        public string defaultExtentUri { get; set; }
+        public string? defaultExtentUri { get; set; }
 
         /// <summary>
         /// Gets or sets the default workspace that will be shown, when the user clicks on the selection field. This
-        /// property is only evaluated in case of <see cref="defaultExtentUri">defaultExtentUri</see> is null or empty. 
+        /// property is only evaluated in case of <see cref="defaultExtentUri">defaultExtentUri</see> is null or empty.
         /// </summary>
-        public string defaultWorkspace { get; set; }
+        public string? defaultWorkspace { get; set; }
 
         /// <summary>
         /// Does not only set the default children
@@ -52,8 +50,8 @@ namespace DatenMeister.Models.Forms
         public bool showExtentSelection { get; set; }
 
         /// <summary>
-        /// Gets or sets the metaclasses to which all elements will be filtered. 
+        /// Gets or sets the metaclasses to which all elements will be filtered.
         /// </summary>
-        public IEnumerable<IElement> metaClassFilter { get; set; }
+        public IEnumerable<IElement>? metaClassFilter { get; set; }
     }
 }

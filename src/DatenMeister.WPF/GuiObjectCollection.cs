@@ -1,5 +1,7 @@
-﻿using DatenMeister.WPF.Forms.Base.ViewExtensions;
+﻿#nullable enable
 using System.Collections.Generic;
+using DatenMeister.Modules.UserProperties;
+using DatenMeister.WPF.Modules.ViewExtensions;
 
 namespace DatenMeister.WPF
 {
@@ -17,7 +19,7 @@ namespace DatenMeister.WPF
         /// <summary>
         /// Stores the singleton
         /// </summary>
-        private static GuiObjectCollection _theOne;
+        private static GuiObjectCollection? _theOne;
 
         /// <summary>
         /// Gets the one and only Gui Object Collection instance
@@ -45,5 +47,10 @@ namespace DatenMeister.WPF
         /// Gets a list of the allowed view extension factories
         /// </summary>
         public List<IViewExtensionFactory> ViewExtensionFactories { get; } = new List<IViewExtensionFactory>();
+        
+        /// <summary>
+        /// Gets the user properties
+        /// </summary>
+        public UserPropertyData UserProperties { get; } = new UserPropertyData();
     }
 }

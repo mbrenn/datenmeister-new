@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -18,37 +19,38 @@ namespace DatenMeister.Runtime.Copier
             _factory = factory ?? throw new InvalidOperationException(nameof(factory));
         }
 
-        public void Copy(IExtent source, IExtent target, CopyOption copyOptions = null)
+        public void Copy(IExtent source, IExtent target, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
             var sourceSequence = source.elements();
             var targetSequence = target.elements();
 
             Copy(sourceSequence, targetSequence, copyOptions);
         }
 
-        public void Copy(IReflectiveCollection sourceSequence, IReflectiveCollection targetSequence, CopyOption copyOptions = null)
+        public void Copy(IReflectiveCollection sourceSequence, IReflectiveCollection targetSequence, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(_factory);
-            foreach (var element in sourceSequence)
+            foreach (var copiedElement in sourceSequence
+                .Select(element => element as IElement)
+                .Select(elementAsElement => copier.Copy(elementAsElement!, copyOptions)))
             {
-                var elementAsElement = element as IElement;
-                var copiedElement = copier.Copy(elementAsElement, copyOptions);
                 targetSequence.add(copiedElement);
             }
         }
 
-        public void Copy(IEnumerable<object> sourceSequence, IReflectiveCollection targetSequence, CopyOption copyOptions = null)
+        public void Copy(IEnumerable<object> sourceSequence, IReflectiveCollection targetSequence, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
+            copyOptions ??= CopyOptions.None;
 
             var copier = new ObjectCopier(_factory);
-            foreach (var element in sourceSequence)
+            foreach (var copiedElement in sourceSequence
+                .Select(element => element as IElement)
+                .Where(x => x != null)
+                .Select(elementAsElement => copier.Copy(elementAsElement!, copyOptions)))
             {
-                var elementAsElement = element as IElement;
-                var copiedElement = copier.Copy(elementAsElement, copyOptions);
                 targetSequence.add(copiedElement);
             }
         }

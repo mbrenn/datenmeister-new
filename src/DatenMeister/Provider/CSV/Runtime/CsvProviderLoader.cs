@@ -11,7 +11,7 @@ namespace DatenMeister.Provider.CSV.Runtime
     /// <summary>
     /// The engine being used to load and store the extent into a csv file
     /// </summary>
-    [ConfiguredBy(typeof(CSVExtentLoaderConfig))]
+    [ConfiguredBy(typeof(CsvExtentLoaderConfig))]
     // ReSharper disable once InconsistentNaming
     public class CsvProviderLoader : IProviderLoader
     {
@@ -24,15 +24,22 @@ namespace DatenMeister.Provider.CSV.Runtime
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            var csvConfiguration = (CSVExtentLoaderConfig) configuration;
-            var dataProvider = new CSVLoader(_workspaceLogic);
+            var csvConfiguration = (CsvExtentLoaderConfig) configuration;
+            var dataProvider = new CsvLoader(_workspaceLogic);
 
             var provider = new InMemoryProvider();
 
-            var doesFileExist = File.Exists(csvConfiguration.filePath);
+            var filePath = csvConfiguration.filePath;
+            if (filePath == null || string.IsNullOrEmpty(filePath))
+            {
+                throw new InvalidOperationException("FilePath is empty");    
+            }
+            
+            
+            var doesFileExist = File.Exists(filePath);
             if (doesFileExist)
             {
-                dataProvider.Load(provider, csvConfiguration.filePath, csvConfiguration.Settings);
+                dataProvider.Load(provider, filePath, csvConfiguration.Settings);
             }
             else if (extentCreationFlags == ExtentCreationFlags.LoadOnly)
             {
@@ -45,9 +52,12 @@ namespace DatenMeister.Provider.CSV.Runtime
 
         public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
         {
-            var csvConfiguration = (CSVExtentLoaderConfig) configuration;
+            var csvConfiguration = (CsvExtentLoaderConfig) configuration;
 
-            var provider = new CSVLoader(_workspaceLogic);
+            if (csvConfiguration.filePath == null)
+                throw new InvalidOperationException("csvConfiguration.filePath == null");
+            
+            var provider = new CsvLoader(_workspaceLogic);
             provider.Save(extent, csvConfiguration.filePath, csvConfiguration.Settings);
         }
     }

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -21,7 +23,7 @@ namespace DatenMeister.WPF.Controls
         {
             InitializeComponent();
 
-            _workspaceLogic = GiveMe.Scope?.Resolve<IWorkspaceLogic>();
+            _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
@@ -38,25 +40,55 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Stores the selected workspace used by the user
         /// </summary>
-        private IWorkspace _selectedWorkspace;
+        private IWorkspace? _selectedWorkspace;
 
         /// <summary>
         /// Stores the default extent being used by the user
         /// </summary>
-        private IExtent _selectedExtent;
+        private IExtent? _selectedExtent;
 
-        public IObject SelectedElement
+        /// <summary>
+        /// Gets the selected element
+        /// </summary>
+        public IObject? SelectedElement => items.GetSelectedItem();
+
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+            "IsReadOnly", typeof(bool), typeof(LocateElementControl),
+            new PropertyMetadata(default(bool),
+                OnIsReadOnlyChanged));
+
+        private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get => items.SelectedElement;
+            if (!(d is LocateElementControl locateElementControl))
+            {
+                throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
+            }
+
+            var isReadOnly = (bool) e.NewValue;
+
+            locateElementControl.cboExtent.IsEnabled = !isReadOnly;
+            locateElementControl.cboWorkspace.IsEnabled = !isReadOnly;
+            locateElementControl.items.IsEnabled = !isReadOnly;
         }
 
-        public static readonly DependencyProperty ShowWorkspaceSelectionProperty = DependencyProperty.Register(
-            "ShowWorkspaceSelection", 
-            typeof(bool), 
-            typeof(LocateElementControl), 
-            new PropertyMetadata(
-                true,
-                OnShowWorkSpaceSelectionChanged));
+        /// <summary>
+        /// Gets or sets a flag indicating whether the control shall be read only ==> the user cannot
+        /// modify the selected item
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get => (bool) GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
+
+        public static readonly DependencyProperty ShowWorkspaceSelectionProperty =
+            DependencyProperty.Register(
+                "ShowWorkspaceSelection",
+                typeof(bool),
+                typeof(LocateElementControl),
+                new PropertyMetadata(
+                    true,
+                    OnShowWorkSpaceSelectionChanged));
 
         public bool ShowWorkspaceSelection
         {
@@ -64,19 +96,38 @@ namespace DatenMeister.WPF.Controls
             set => SetValue(ShowWorkspaceSelectionProperty, value);
         }
 
+        public static readonly DependencyProperty ShowMetaClassesProperty = DependencyProperty.Register(
+            "ShowMetaClasses", typeof(bool), typeof(LocateElementControl),
+            new PropertyMetadata(default(bool), OnShowMetaClassesChange));
+
+        private static void OnShowMetaClassesChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is LocateElementControl locateElementControl))
+            {
+                throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
+            }
+            
+            locateElementControl.items.ShowMetaClasses = (bool) e.NewValue;
+        }
+
+        public bool ShowMetaClasses
+        {
+            get => (bool) GetValue(ShowMetaClassesProperty);
+            set => SetValue(ShowMetaClassesProperty, value);
+        }
+
         private static void OnShowWorkSpaceSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (LocateElementControl) d;
-            var newValue = (bool)e.NewValue;
-            control.txtWorkspace.Visibility = 
+            var newValue = (bool) e.NewValue;
+            control.txtWorkspace.Visibility =
                 control.cboWorkspace.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
-
         }
 
         public static readonly DependencyProperty ShowExtentSelectionProperty = DependencyProperty.Register(
-            "ShowExtentSelection", 
-            typeof(bool), 
-            typeof(LocateElementControl), 
+            "ShowExtentSelection",
+            typeof(bool),
+            typeof(LocateElementControl),
             new PropertyMetadata(
                 true,
                 OnShowExtentSelectionChanged));
@@ -96,7 +147,8 @@ namespace DatenMeister.WPF.Controls
         }
 
         public static readonly DependencyProperty ShowAllChildrenProperty = DependencyProperty.Register(
-            "ShowAllChildren", typeof(bool), typeof(LocateElementControl), new PropertyMetadata(default(bool)));
+            "ShowAllChildren", typeof(bool), typeof(LocateElementControl),
+            new PropertyMetadata(default(bool)));
 
         public bool ShowAllChildren
         {
@@ -111,7 +163,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the metaclasses that will be filtered
         /// </summary>
-        public IEnumerable<IElement> FilterMetaClasses
+        public IEnumerable<IElement>? FilterMetaClasses
         {
             get => items.FilterMetaClasses;
             set => items.FilterMetaClasses = value;
@@ -120,7 +172,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        private IWorkspace SelectedWorkspace
+        private IWorkspace? SelectedWorkspace
         {
             get => _selectedWorkspace;
             set
@@ -131,13 +183,12 @@ namespace DatenMeister.WPF.Controls
                     return;
                 }
 
-                foreach (var cboItem in cboWorkspace.ItemsSource)
+                foreach (var cboItem in cboWorkspace.ItemsSource
+                    .Cast<object>()
+                    .Where(cboItem => (cboItem as ComboBoxItem)?.Tag == value))
                 {
-                    if ((cboItem as ComboBoxItem)?.Tag == value)
-                    {
-                        cboExtent.SelectedItem = cboItem;
-                        break;
-                    }
+                    cboExtent.SelectedItem = cboItem;
+                    break;
                 }
             }
         }
@@ -145,7 +196,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the default extent which is preselected
         /// </summary>
-        private IExtent SelectedExtent
+        private IExtent? SelectedExtent
         {
             get => _selectedExtent;
             set
@@ -156,13 +207,12 @@ namespace DatenMeister.WPF.Controls
                     return;
                 }
 
-                foreach (var cboItem in cboExtent.ItemsSource)
+                foreach (var cboItem in cboExtent.ItemsSource
+                    .Cast<object>()
+                    .Where(cboItem => (cboItem as ComboBoxItem)?.Tag == value))
                 {
-                    if ((cboItem as ComboBoxItem)?.Tag == value)
-                    {
-                        cboExtent.SelectedItem = cboItem;
-                        break;
-                    }
+                    cboExtent.SelectedItem = cboItem;
+                    break;
                 }
             }
         }
@@ -171,9 +221,10 @@ namespace DatenMeister.WPF.Controls
         /// Navigates to a specific workspace
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
-        public void Select(IWorkspace workspace)
+        public void Select(IWorkspace? workspace)
         {
             SelectedWorkspace = workspace;
+            SelectedExtent = null;
         }
 
         /// <summary>
@@ -181,7 +232,7 @@ namespace DatenMeister.WPF.Controls
         /// </summary>
         /// <param name="workspace">Workspace to be shown</param>
         /// <param name="extent">Extent to be selected</param>
-        public void Select(IWorkspace workspace, IExtent extent)
+        public void Select(IWorkspace? workspace, IExtent? extent)
         {
             SelectedWorkspace = workspace;
             SelectedExtent = extent;
@@ -191,18 +242,27 @@ namespace DatenMeister.WPF.Controls
         /// Selects a specific extent as a predefined one
         /// </summary>
         /// <param name="extent">Extent to be selected</param>
-        public void Select(IExtent extent)
+        public void Select(IExtent? extent)
         {
-            var workspace = _workspaceLogic.FindWorkspace(extent);
-            SelectedWorkspace = workspace;
-            SelectedExtent = extent;
+            if (extent == null)
+            {
+                SelectedWorkspace = null;
+                SelectedExtent = null;
+            }
+            else
+            {
+                var workspace = _workspaceLogic.FindWorkspace(extent);
+                SelectedWorkspace = workspace;
+                SelectedExtent = extent;
+            }
         }
 
         public void Select(IObject value)
         {
             var extent = value.GetExtentOf();
             Select(extent);
-            items.SelectedElement = value;
+            
+            items.SetSelectedItem(value);
         }
 
         /// <summary>
@@ -313,7 +373,7 @@ namespace DatenMeister.WPF.Controls
                         items.TreeView.IsEnabled = false;
                         break;
                     case IExtent extent:
-                        items.ItemsSource = extent.elements();
+                        items.ItemsSource = extent;
                         items.TreeView.IsEnabled = true;
                         break;
                     default:
@@ -322,29 +382,39 @@ namespace DatenMeister.WPF.Controls
                         break;
                 }
             }
+            else
+            {
+                items.ItemsSource = null;
+                items.TreeView.IsEnabled = false;
+            }
         }
 
         public void SelectWorkspace(string workspaceId)
         {
-            Select((IWorkspace) _workspaceLogic.GetWorkspace(workspaceId));
+            var workspace = (IWorkspace?) _workspaceLogic.GetWorkspace(workspaceId);
+            if (workspace != null)
+                Select(workspace);
         }
 
         public void SelectExtent(string extentUri)
         {
-            Select(SelectedWorkspace.FindExtent(extentUri));
+            if (SelectedWorkspace != null)
+            {
+                Select(SelectedWorkspace.FindExtent(extentUri));
+            }
         }
 
         /// <summary>
-        /// Sets the given reflection as the root objects. 
+        /// Sets the given reflection as the root objects.
         /// </summary>
-        /// <param name="collection">Collection to be shown.</param>
+        /// <param name="value">Value to be shown.</param>
         /// <param name="showOnlyObject">true, if the workspace and extent options are hidden and cannot be selected by the user</param>
-        public void SetAsRoot(IReflectiveCollection collection, bool showOnlyObject = true)
+        public void SetAsRoot(IObject value, bool showOnlyObject = true)
         {
             ShowWorkspaceSelection = !showOnlyObject;
             ShowExtentSelection = !showOnlyObject;
 
-            items.ItemsSource = collection;
+            items.ItemsSource = value;
         }
     }
 }

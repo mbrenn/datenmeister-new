@@ -1,6 +1,4 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-
-namespace DatenMeister.Modules.FastViewFilter
+﻿namespace DatenMeister.Modules.FastViewFilter
 {
     /// <summary>
     /// Gets the interface for the fast filter
@@ -12,6 +10,6 @@ namespace DatenMeister.Modules.FastViewFilter
         /// </summary>
         /// <param name="value">Value to be filtered</param>
         /// <returns>true, if the value shall be passing the filter</returns>
-        bool IsFiltered(IObject value);
+        bool IsFiltered(object? value);
     }
 }

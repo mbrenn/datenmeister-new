@@ -1,9 +1,9 @@
-﻿using System.IO;
-using DatenMeister.Core.EMOF.Implementation;
+﻿using System;
+using System.IO;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.Extents
@@ -19,19 +19,25 @@ namespace DatenMeister.Runtime.Extents
 
         public IUriExtent ImportExtent(IObject mofImportSettings)
         {
-            var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings);
+            var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings)
+                                 ?? throw new InvalidOperationException("mofImportSettings == null");
+            var extentUri = importSettings.newExtentUri;
+            if (extentUri == null)
+                throw new InvalidOperationException("extentUri == null");
 
             if (importSettings.fileToBeImported != importSettings.fileToBeExported)
             {
                 File.Copy(importSettings.fileToBeImported, importSettings.fileToBeExported);
             }
 
-            var resultingExtent = _extentManager.LoadExtent(new XmiStorageConfiguration
+            var resultingExtent = _extentManager.LoadExtent(new XmiStorageConfiguration(extentUri)
             {
-                extentUri =  importSettings.newExtentUri,
                 filePath = importSettings.fileToBeExported,
                 workspaceId = importSettings.Workspace
-                    }, ExtentCreationFlags.LoadOnly);
+            });
+            
+            if ( resultingExtent == null )
+                 throw new InvalidOperationException("Loading did not succeed");
 
             return resultingExtent;
         }

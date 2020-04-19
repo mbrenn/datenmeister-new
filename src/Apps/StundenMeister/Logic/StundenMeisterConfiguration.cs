@@ -14,12 +14,12 @@ namespace StundenMeister.Logic
         /// of a hibernation longer than HibernationDetectionTime
         /// </summary>
         public bool HibernationDetectionActive { get; set; } = true;
-        
+
         /// <summary>
         /// Defines the hibernation time which is accepted for further increases
         /// of the current time recording.
         /// If the last tick has occured for a longer time period than the amount
-        /// of time given here, then, there will be no automatic time increase. 
+        /// of time given here, then, there will be no automatic time increase.
         /// </summary>
         public TimeSpan HibernationDetectionTime { get; set; } = TimeSpan.FromHours(0.1);
     }

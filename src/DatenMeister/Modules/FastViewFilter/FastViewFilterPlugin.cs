@@ -1,13 +1,14 @@
-﻿using DatenMeister.Core.Plugins;
-using DatenMeister.Models.FastViewFilter;
+﻿using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.FastViewFilter
 {
     /// <summary>
     /// Implements the plugin adding the fast views
     /// </summary>
-    [PluginLoading(PluginLoadingPosition.AfterInitialization)]
+    [PluginLoading(PluginLoadingPosition.AfterLoadingOfExtents)]
+    // ReSharper disable once UnusedMember.Global
     public class FastViewFilterPlugin : IDatenMeisterPlugin
     {
         /// <summary>
@@ -27,7 +28,7 @@ namespace DatenMeister.Modules.FastViewFilter
         public void Start(PluginLoadingPosition position)
         {
             var internalTypes = _localTypeSupport.AddInternalTypes(
-                FastViewFilters.Types, 
+                FastViewFilters.Types,
                 FastViewFilterLogic.PackagePathTypesFastViewFilters);
             FillTheFastViewFilters.DoFill(internalTypes, _FastViewFilters.TheOne);
         }

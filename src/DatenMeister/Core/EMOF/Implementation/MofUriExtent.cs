@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -16,6 +19,75 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// </summary>
     public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
+        private class ResolverCache
+        {
+            private readonly Dictionary<ResolverKey, IElement> _cache
+             = new Dictionary<ResolverKey, IElement>();
+
+            public void Clear()
+            {
+                lock (_cache)
+                {
+                    _cache.Clear();
+                }
+            }
+
+            public IElement? GetElementFor(string uri, ResolveType resolveType)
+            {
+                lock (_cache)
+                {
+                    return _cache.TryGetValue(new ResolverKey(uri, resolveType), out var result) ? result : null;
+                }
+            }
+
+            public void AddElementFor(string uri, ResolveType resolveType, IElement foundElement)
+            {
+                lock (_cache)
+                {
+                    _cache[new ResolverKey(uri, resolveType)] = foundElement;
+                }
+            }
+
+            private class ResolverKey
+            {
+                private readonly string _uri;
+
+                private readonly ResolveType _resolveType;
+
+                public ResolverKey(string uri, ResolveType resolveType)
+                {
+                    _uri = uri;
+                    _resolveType = resolveType;
+                }
+
+                protected bool Equals(ResolverKey other)
+                {
+                    return string.Equals(_uri, other._uri, StringComparison.InvariantCulture) && _resolveType == other._resolveType;
+                }
+
+                public override bool Equals(object obj)
+                {
+                    if (ReferenceEquals(null, obj)) return false;
+                    if (ReferenceEquals(this, obj)) return true;
+                    if (obj.GetType() != GetType()) return false;
+                    return Equals((ResolverKey) obj);
+                }
+
+                public override int GetHashCode()
+                {
+                    unchecked
+                    {
+                        return (_uri.GetHashCode() * 397) ^ (int) _resolveType;
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Stores the resolver cache
+        /// </summary>
+        private ResolverCache _resolverCache = new ResolverCache();
+        
         /// <summary>
         /// Defines a possible logger
         /// </summary>
@@ -55,7 +127,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, ChangeEventManager changeEventManager = null) :
+        public MofUriExtent(IProvider provider, ChangeEventManager? changeEventManager = null) :
             base(provider, changeEventManager)
         {
             _navigator = new ExtentUrlNavigator<MofElement>(this);
@@ -68,7 +140,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, string uri, ChangeEventManager changeEventManager = null) :
+        public MofUriExtent(IProvider provider, string uri, ChangeEventManager? changeEventManager = null) :
             this(provider, changeEventManager)
         {
             UriOfExtent = uri;
@@ -84,34 +156,28 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 AlternativeUris.Add(alternativeUri);
             }
+            
+            SignalUpdateOfContent();
         }
 
         /// <inheritdoc />
         public string contextURI()
-        {
-            return UriOfExtent;
-        }
+            => UriOfExtent;
 
         /// <inheritdoc />
         public string uri(IElement element)
-        {
-            return _navigator.uri(element);
-        }
+            => _navigator.uri(element);
 
         /// <inheritdoc />
-        public IElement element(string uri)
-        {
-            return _navigator.element(uri);
-        }
+        public IElement? element(string uri)
+            => _navigator.element(uri);
 
         /// <inheritdoc />
         public override string ToString()
-        {
-            return $"UriExent: {contextURI()}";
-        }
+            => $"UriExent: {contextURI()}";
 
         /// <summary>
-        /// Gets the id of the element as defined in the uri. 
+        /// Gets the id of the element as defined in the uri.
         /// The format of the uri is expected to be like protocol://path#id.
         /// The text after the first '#' is returned
         /// </summary>
@@ -129,18 +195,32 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
+            // Check, if we have a cache...
+            var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
+            if (cachedResult != null)
+            {
+                return cachedResult;
+            }
+            
+            
+            // We have to find it
             var result = ResolveInternal(uri, resolveType);
             if (result == null && traceFailing)
             {
                 Logger.Trace($"URI not resolved: {uri}");
             }
 
+            if (result != null)
+            {
+                _resolverCache.AddElementFor(uri, resolveType, result);
+            }
+
             return result;
         }
 
-        private IElement ResolveInternal(string uri, ResolveType resolveType)
+        private IElement? ResolveInternal(string uri, ResolveType resolveType)
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
             {
@@ -152,7 +232,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
                 if ((resolveType & ResolveType.NoWorkspace) == 0)
                 {
-                    var workspaceResult = _Workspace?.Resolve(uri, resolveType, false);
+                    var workspaceResult = Workspace?.Resolve(uri, resolveType, false);
                     if (workspaceResult != null)
                     {
                         return workspaceResult;
@@ -161,20 +241,19 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             var alreadyVisited = new HashSet<Runtime.Workspaces.Workspace>();
-            
+
             if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
             {
                 // Now look into the explicit extents, if no specific constraint is given
-                foreach (var metaExtent in MetaExtents)
+                foreach (var element in
+                    MetaExtents
+                        .Select(metaExtent => metaExtent.element(uri))
+                        .Where(element => element != null))
                 {
-                    var element = metaExtent.element(uri);
-                    if (element != null)
-                    {
-                        return element;
-                    }
+                    return element;
                 }
-                
-                var workspaceResult = ResolveByMetaWorkspaces(uri, _Workspace, alreadyVisited);
+
+                var workspaceResult = ResolveByMetaWorkspaces(uri, Workspace, alreadyVisited);
                 if (workspaceResult != null)
                 {
                     return workspaceResult;
@@ -191,13 +270,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                         continue;
                     }
 
-                    foreach (var extent in workspace.extent.OfType<IUriExtent>())
+                    foreach (var result in
+                        workspace.extent
+                            .OfType<IUriExtent>()
+                            .Select(extent => extent.element(uri))
+                            .Where(result => result != null))
                     {
-                        var result = extent.element(uri);
-                        if (result != null)
-                        {
-                            return result;
-                        }
+                        return result;
                     }
                 }
             }
@@ -212,18 +291,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="workspace">Workspace whose meta workspaces were queried</param>
         /// <param name="alreadyVisited">Set of all workspaces already being visited. This avoid unnecessary recursion and unlimited recursion</param>
         /// <returns>Found element or null, if not found</returns>
-        private IElement ResolveByMetaWorkspaces(
-            string uri, 
-            Runtime.Workspaces.Workspace workspace,
-            HashSet<Runtime.Workspaces.Workspace> alreadyVisited = null)
+        private IElement? ResolveByMetaWorkspaces(
+            string uri,
+            Runtime.Workspaces.Workspace? workspace,
+            HashSet<Runtime.Workspaces.Workspace>? alreadyVisited = null)
         {
-            alreadyVisited = alreadyVisited ?? new HashSet<Runtime.Workspaces.Workspace>();
-            if (alreadyVisited.Contains(workspace))
+            alreadyVisited ??= new HashSet<Runtime.Workspaces.Workspace>();
+            if (workspace != null && alreadyVisited.Contains(workspace))
             {
                 return null;
             }
 
-            alreadyVisited.Add(workspace);
+            if (workspace != null)
+            {
+                alreadyVisited.Add(workspace);
+            }
 
             // If still not found, look into the meta workspaces. Nevertheless, no recursion
             var metaWorkspaces = workspace?.MetaWorkspaces;
@@ -231,13 +313,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 foreach (var metaWorkspace in metaWorkspaces)
                 {
-                    foreach (var metaExtent in metaWorkspace.extent.OfType<IUriExtent>())
+                    foreach (var element in
+                        metaWorkspace.extent
+                            .OfType<IUriExtent>()
+                            .Select(metaExtent => metaExtent.element(uri))
+                            .Where(element => element != null))
                     {
-                        var element = metaExtent.element(uri);
-                        if (element != null)
-                        {
-                            return element;
-                        }
+                        return element;
                     }
 
                     var elementByMeta = ResolveByMetaWorkspaces(uri, metaWorkspace, alreadyVisited);
@@ -256,7 +338,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public IElement ResolveById(string id)
+        public IElement? ResolveById(string id)
         {
             var uri = contextURI() + "#" + id;
             return element(uri);

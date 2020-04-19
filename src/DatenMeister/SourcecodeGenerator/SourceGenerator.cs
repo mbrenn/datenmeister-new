@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.SourcecodeGenerator
 {
     public static class SourceGenerator
     {
-        public static void GenerateSourceFor(SourceGeneratorOptions options, _UML uml = null)
+        public static void GenerateSourceFor(SourceGeneratorOptions options, _UML? uml = null)
         {
-            uml = uml ?? new _UML(); // Verifies that a uml is existing
-            var primitiveTypes = new _PrimitiveTypes();
+            uml ??= new _UML(); // Verifies that a uml is existing
 
             ////////////////////////////////////////
             // First of all, create all Mof types, representing the objects under concern
@@ -24,26 +24,32 @@ namespace DatenMeister.SourcecodeGenerator
             // Creates the package
             var package = factory.create(uml.Packages.__Package);
             package.set("name", options.Name);
+            extent.elements().add(package);
 
             // Do the conversion from dotnet types to real MOF Types
-            var dotNetProvider = new DotNetTypeGenerator(factory, uml);
-            var elements = new List<IElement>();
+            var dotNetProvider = new DotNetTypeGenerator(factory, uml, extent);
             foreach (var type in options.Types)
             {
-                var typeObject = dotNetProvider.CreateTypeFor(type);
+                var typeObject = dotNetProvider.CreateTypeFor(
+                    type,
+                    new DotNetTypeGeneratorOptions
+                    {
+                        IntegrateInheritedProperties = false
+                    });
+
                 if (typeObject != null)
                 {
-                    elements.Add(typeObject);
+                    // And adds the converted elements to package and the package to the temporary MOF Extent
+                    PackageMethods.AddObjectToPackage(package, typeObject);
+                    extent.TypeLookup.Add(
+                        typeObject.GetUri() ?? throw new NotImplementedException("GetUri() == null"),
+                        type);
                 }
             }
 
-            // And adds the converted elements to package and the package to the temporary MOF Extent
-            package.set(_UML._Packages._Package.packagedElement, elements);
-            extent.elements().add(package);
-
             // Creates the source parser which is needed to navigate through the package
             var sourceParser = new ElementSourceParser(uml);
-            
+
             ////////////////////////////////////////
             // Creates the class tree
             var classTreeGenerator = new ClassTreeGenerator(sourceParser)
@@ -62,7 +68,7 @@ namespace DatenMeister.SourcecodeGenerator
             var fillerGenerator = new FillClassTreeByExtentCreator(options.Name + "Filler", sourceParser)
             {
                 Namespace = options.Namespace,
-                ClassNameOfTree = classTreeGenerator.UsedClassName
+                ClassNameOfTree = classTreeGenerator.UsedClassName ?? string.Empty
             };
 
             fillerGenerator.Walk(extent);
@@ -74,7 +80,10 @@ namespace DatenMeister.SourcecodeGenerator
             ////////////////////////////////////////
             // Creates the Dot Net Integration Parser
             var dotNetGenerator = new DotNetIntegrationGenerator();
-            dotNetGenerator.Create(options.Namespace, options.Name, options.Types);
+            dotNetGenerator.Create(
+                options.Namespace ?? string.Empty,
+                options.Name ?? string.Empty,
+                options.Types);
 
             var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");
             File.WriteAllText(pathOfDotNetIntegration, dotNetGenerator.Result.ToString());

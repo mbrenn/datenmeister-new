@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              Title="DatenMeister - About Dialog"
              Width="630" Height="500" WindowStartupLocation="CenterOwner"
-             Icon="../icons.ico" >
+             Icon="../icons.ico" Closed="AboutDialog_OnClosed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

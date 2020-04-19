@@ -3,24 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dmforms="clr-namespace:DatenMeister.WPF.Forms.Base"
         mc:Ignorable="d"
         Title="Der Datenmeister" Height="600" Width="1000" Closed="DetailFormWindow_OnClosed"
-        WindowStartupLocation="CenterOwner" Loaded="DetailFormWindow_OnLoaded">
+        WindowStartupLocation="CenterOwner" Loaded="DetailFormWindow_OnLoaded"
+        PreviewKeyDown="DetailFormWindow_OnPreviewKeyDown">
     <Window.Resources>
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
         </Style>
         <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
         </Style>
         <Style TargetType="ComboBox">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
         </Style>
         <Style TargetType="CheckBox">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Margin" Value="10,2,10,2"></Setter>
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="dmforms:ViewButton">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+            <Setter Property="Width" Value="80"></Setter>
         </Style>
     </Window.Resources>
     <DockPanel>

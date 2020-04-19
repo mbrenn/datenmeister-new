@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -26,6 +27,11 @@ namespace DatenMeister.Runtime.Functions.Transformation
         /// <param name="target">Target to which the elements will be added</param>
         public void Convert(IReflectiveCollection source, IReflectiveCollection target)
         {
+            var referenceProperty = _configuration.ReferenceProperty
+                ?? throw new InvalidOperationException("referenceProperty == null");
+            var contentProperty = _configuration.ContentProperty
+                ?? throw new InvalidOperationException("contenttProperty == null");
+            
             var factory = new MofFactory(target);
             foreach (var element in source.OfType<IObject>())
             {
@@ -40,9 +46,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
                     if (_configuration.FixedProperty.Contains(property))
                     {
                         if (element.isSet(property))
-                        {
                             created.set(property, element.get(property));
-                        }
                     }
                     else
                     {
@@ -50,23 +54,18 @@ namespace DatenMeister.Runtime.Functions.Transformation
                         {
                             var value = element.get(property);
                             if (string.IsNullOrEmpty(value as string))
-                            {
                                 continue;
-                            }
 
                             var inner = factory.create(null);
-                            inner.set(_configuration.ReferenceProperty, property);
-                            inner.set(_configuration.ContentProperty, value);
+                            inner.set(referenceProperty, property);
+                            inner.set(contentProperty, value);
                             list.Add(inner);
                         }
                     }
                 }
 
                 if (list.Count > 0)
-                {
-                    created.set(_configuration.SubItemProperty, list);
-                }
-                
+                    created.set(_configuration.SubItemProperty ?? string.Empty, list);
             }
         }
     }

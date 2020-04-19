@@ -13,7 +13,7 @@ namespace DatenMeister.Provider.XMI.Standards
         /// Gets the name of the attribute for the id
         /// </summary>
         public static XName IdAttributeName { get; } = Namespaces.Xmi + "id";
-        
+
         /// <summary>
         /// Verifies of the given document is valid and does not have duplicates
         /// </summary>
@@ -41,17 +41,15 @@ namespace DatenMeister.Provider.XMI.Standards
         /// Creates a new id which is unique.
         /// </summary>
         /// <returns>The new id</returns>
-        public static string CreateNew()
-        {
-            return Guid.NewGuid().ToString();
-        }
+        public static string CreateNew() =>
+            Guid.NewGuid().ToString();
 
         /// <summary>
         /// Gets the id of a certain Xml Element
         /// </summary>
         /// <param name="element">Element whose id shall be retrieved</param>
         /// <returns>The retrieved element</returns>
-        public static string Get(XElement element)
+        public static string? Get(XElement element)
         {
             var xmlIdAttribute = element.Attribute(Namespaces.Xmi + "id");
             return xmlIdAttribute?.Value;
@@ -72,9 +70,13 @@ namespace DatenMeister.Provider.XMI.Standards
         /// </summary>
         /// <param name="node">Node to be evaluated</param>
         /// <returns>true, if element has an id</returns>
-        public static bool HasId(XElement node)
+        public static bool HasId(XElement node) =>
+            node.Attribute(Namespaces.Xmi + "id") != null;
+
+        public static void Remove(XElement node)
         {
-            return node.Attribute(Namespaces.Xmi + "id") != null;
+            node.Attribute(Namespaces.Xmi + "id")?.Remove();
+            
         }
     }
 }

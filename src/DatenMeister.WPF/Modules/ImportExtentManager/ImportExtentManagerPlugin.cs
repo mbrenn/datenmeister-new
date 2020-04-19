@@ -1,9 +1,9 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.Plugins;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 using DatenMeister.Uml.Plugin;
 
@@ -13,13 +13,13 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
     {
         public const string PackageName = "ImportExtentManager";
 
-        private readonly ViewLogic _viewLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         private readonly PackageMethods _packageMethods;
 
-        public ImportExtentManagerPlugin(ViewLogic viewLogic, PackageMethods packageMethods)
+        public ImportExtentManagerPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods)
         {
-            _viewLogic = viewLogic;
+            _formsPlugin = formsPlugin;
             _packageMethods = packageMethods;
         }
 
@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Views.ImportExtentManager.xmi",
                 PackageName,
-                _viewLogic.GetInternalViewExtent(),
+                _formsPlugin.GetInternalFormExtent(),
                 PackageName);
         }
 

@@ -19,14 +19,12 @@ namespace DatenMeister.Modules.DataViews
         /// Gets the model
         /// </summary>
         /// <returns></returns>
-        public _DataViews GetModel()
-        {
-            return _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews, _DataViews>();
-        }
+        public _DataViews GetModel() =>
+            _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews, _DataViews>();
 
         public IElement CreateDataview(string name, string extentUri)
         {
-            var viewExtent = _workspaceLogic.GetUserViewsExtent();
+            var viewExtent = _workspaceLogic.GetUserFormsExtent();
             var metaClass = GetModel().__DataView;
             var createdElement = new MofFactory(viewExtent).create(metaClass);
 
@@ -42,14 +40,10 @@ namespace DatenMeister.Modules.DataViews
         /// Gets the extent for the user views which is usually used to define the views
         /// </summary>
         /// <returns>Extent containing the user views</returns>
-        public IUriExtent GetUserViewExtent()
-        {
-            return _workspaceLogic.GetUserViewsExtent();
-        }
+        public IUriExtent GetUserFormExtent() =>
+            _workspaceLogic.GetUserFormsExtent();
 
-        public Workspace GetViewWorkspace()
-        {
-            return _workspaceLogic.GetViewsWorkspace();
-        }
+        public Workspace GetViewWorkspace() =>
+            _workspaceLogic.GetViewsWorkspace();
     }
 }

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Xmi\IssueMeister.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <ProjectReference Include="..\..\..\DatenMeister\DatenMeister.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Xmi\IssueMeister.Types.xml" />
+    <EmbeddedResource Include="Xmi\IssueMeister.Forms.xml" />
+  </ItemGroup>
+
+</Project>

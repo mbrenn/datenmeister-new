@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -17,12 +18,14 @@ namespace DatenMeister.Modules.ZipExample
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ZipCodeExampleManager
     {
+        private static readonly ILogger Logger = new ClassLogger(typeof(ZipCodeExampleManager));
+        
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IExtentManager _extentManager;
         private readonly ZipCodeModel _zipCodeModel;
 
         public ZipCodeExampleManager(
-            IWorkspaceLogic workspaceLogic, 
+            IWorkspaceLogic workspaceLogic,
             IExtentManager extentManager,
             ZipCodeModel zipCodeModel)
         {
@@ -32,13 +35,11 @@ namespace DatenMeister.Modules.ZipExample
         }
 
         /// <summary>
-        /// Adds a zipcode example 
+        /// Adds a zipcode example
         /// </summary>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
         public IUriExtent AddZipCodeExample(Workspace workspace)
-        {
-            return AddZipCodeExample(workspace.id);
-        }
+            => AddZipCodeExample(workspace.id);
 
         public IUriExtent AddZipCodeExample(string workspaceId)
         {
@@ -68,13 +69,19 @@ namespace DatenMeister.Modules.ZipExample
                 }
             } while (File.Exists(filename));
 
+            // Copies the example file to a new extent
             var originalFilename = Path.Combine(appBase, "Examples", "plz.csv");
+            if (!File.Exists(originalFilename))
+            {
+                throw new InvalidOperationException(
+                    $"The example files are not stored in folder: \r\n{originalFilename}");
+            }
 
             File.Copy(originalFilename, filename);
 
-            var defaultConfiguration = new CSVExtentLoaderConfig
+            // Creates the configuration
+            var defaultConfiguration = new CsvExtentLoaderConfig($"datenmeister:///zipcodes/{randomNumber}")
             {
-                extentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 filePath = filename,
                 workspaceId = workspaceId,
                 Settings =
@@ -90,17 +97,24 @@ namespace DatenMeister.Modules.ZipExample
                         nameof(ZipCode.positionLat),
                         nameof(ZipCode.name)
                     }.ToList(),
-                    MetaclassUri = _zipCodeModel.ZipCodeUri
+                    MetaclassUri = _zipCodeModel.ZipCodeUri ?? string.Empty
                 }
             };
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration, ExtentCreationFlags.LoadOnly);
-            loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
+                               ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");
+            
+            loadedExtent.GetConfiguration().ExtentType = ZipCodePlugin.ExtentType;
 
-            var zipCodeTypePackage =
-                _workspaceLogic.GetTypesWorkspace().FindElementByUri(
-                    "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) as IElement;
-            loadedExtent.SetDefaultTypePackage(zipCodeTypePackage);
+            if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
+                "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
+            {
+                loadedExtent.GetConfiguration().SetDefaultTypePackages(new[] {zipCodeTypePackage});
+            }
+            else
+            {
+                Logger.Warn("datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath + "not found");
+            }
 
             return loadedExtent;
         }

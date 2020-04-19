@@ -6,8 +6,8 @@ namespace DatenMeister.Runtime.Proxies
 {
     /// <summary>
     /// Defines a reflective sequence that is just a place holder for a list of objects which can be group
-    /// used within a virtual reflective sequence. 
-    /// The elements that are included into the property are not transformed. 
+    /// used within a virtual reflective sequence.
+    /// The elements that are included into the property are not transformed.
     /// </summary>
     public class PureReflectiveSequence : IReflectiveSequence
     {
@@ -49,6 +49,8 @@ namespace DatenMeister.Runtime.Proxies
             {
                 foreach (var value in values)
                 {
+                    if (value == null) continue;
+                    
                     result |= add(value);
                 }
             }
@@ -64,17 +66,22 @@ namespace DatenMeister.Runtime.Proxies
             }
         }
 
-        public bool remove(object value)
+        public bool remove(object? value)
         {
             lock (_elements)
             {
+                if (value == null) return false;
+                
                 return _elements.Remove(value);
             }
         }
 
         public int size()
         {
-            return _elements.Count;
+            lock (_elements)
+            {
+                return _elements.Count;
+            }
         }
 
         public void add(int index, object value)

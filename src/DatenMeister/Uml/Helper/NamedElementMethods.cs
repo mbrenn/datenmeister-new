@@ -17,15 +17,16 @@ namespace DatenMeister.Uml.Helper
     /// </summary>
     public class NamedElementMethods
     {
-        private const int MaxDepth            = 1000;
+        private const int MaxDepth = 1000;
 
         /// <summary>
         /// Gets the full path to the given element. It traverses through the container values of the
         /// objects and retrieves the partial names by 'name'.
         /// </summary>
         /// <param name="value">Value to be queried</param>
+        /// <param name="separator">Separator</param>
         /// <returns>Full name of the element</returns>
-        public static string GetFullName(IObject value)
+        public static string GetFullName(IObject value, string separator = "::")
         {
             switch (value)
             {
@@ -39,7 +40,7 @@ namespace DatenMeister.Uml.Helper
                     while (current != null)
                     {
                         var currentName = GetName(current);
-                        result = $"{currentName}::{result}";
+                        result = $"{currentName}{separator}{result}";
                         current = current.container();
                         depth++;
 
@@ -62,7 +63,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="workspace">Workspace to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IWorkspace workspace, string fullName)
+        public static IElement? GetByFullName(IWorkspace workspace, string fullName)
         {
             return workspace.extent
                 .Select(extent => GetByFullName(extent.elements(), fullName))
@@ -75,10 +76,8 @@ namespace DatenMeister.Uml.Helper
         /// <param name="extent">Extent to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IUriExtent extent, string fullName)
-        {
-            return GetByFullName(extent.elements(), fullName);
-        }
+        public static IElement? GetByFullName(IUriExtent extent, string fullName) =>
+            GetByFullName(extent.elements(), fullName);
 
         /// <summary>
         /// Gets the given element by the fullname by traversing through the name attributes
@@ -86,14 +85,14 @@ namespace DatenMeister.Uml.Helper
         /// <param name="collection">Collection to be queried, could also be an extent reflective collection</param>
         /// <param name="fullName">Fullname to be traversed, each element shall be separated by an ':'</param>
         /// <returns>The found element or null, if not found</returns>
-        public static IElement GetByFullName(IReflectiveCollection collection, string fullName)
+        public static IElement? GetByFullName(IReflectiveCollection collection, string fullName)
         {
             var elementNames = fullName
                 .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim()).ToList();
 
             var current = (IEnumerable<object>) collection;
-            IElement found = null;
+            IElement? found = null;
 
             foreach (var elementName in elementNames)
             {
@@ -117,7 +116,7 @@ namespace DatenMeister.Uml.Helper
                 }
 
                 // Ok, get all list properties as one big enumeration
-                current = GetAllPropertyValues(found);
+                current = GetAllPropertyValues(found, true);
             }
 
             return found;
@@ -127,8 +126,9 @@ namespace DatenMeister.Uml.Helper
         /// Creates one huge enumeration containing all the property values
         /// </summary>
         /// <param name="value">The value being queried</param>
+        /// <param name="noReferences">true, if the method call shall not resolve the references</param>
         /// <returns>An enumeration</returns>
-        public static IEnumerable<IElement> GetAllPropertyValues(IElement value)
+        public static IEnumerable<IElement> GetAllPropertyValues(IElement value, bool noReferences = false)
         {
             if (!(value is IObjectAllProperties asProperties))
             {
@@ -141,32 +141,40 @@ namespace DatenMeister.Uml.Helper
                 {
                     continue;
                 }
-                
+
                 // Property exists
-                var propertyValue = value.get(property);
-                if (!DotNetHelper.IsOfEnumeration(propertyValue))
+                object? propertyValue;
+                if (value is MofObject valueConverted && noReferences)
+                {
+                    // If no references is set and the given object supports the query via 'noReferences' 
+                    propertyValue = valueConverted.get(property, true);
+                }
+                else
+                {
+                    propertyValue = value.get(property);
+                }
+
+                if (!DotNetHelper.IsOfEnumeration(propertyValue) || propertyValue == null)
                 {
                     continue;
                 }
 
                 // and is an enumeration
                 var asEnumeration = (IEnumerable) propertyValue;
-                foreach (var innerValue in asEnumeration)
+                foreach (var enumerationElement in CollectionHelper.EnumerateWithNoResolving(asEnumeration, true)
+                    .OfType<IElement>())
                 {
-                    if (innerValue is IElement asElement)
-                    {
-                        // and inner value is an IElement
-                        yield return asElement;
-                    }
+                    yield return enumerationElement;
                 }
             }
         }
+
         /// <summary>
         /// Gets the name of the given object
         /// </summary>
         /// <param name="element">Element whose name is requested</param>
         /// <returns>The found name or null, if not found</returns>
-        public static string GetName(IObject element)
+        public static string GetName(IObject? element)
         {
             if (element == null)
             {
@@ -177,20 +185,31 @@ namespace DatenMeister.Uml.Helper
             // the default "name" property
             if (element.isSet(_UML._CommonStructure._NamedElement.name))
             {
-                return element.get(_UML._CommonStructure._NamedElement.name).ToString();
+                return element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
             }
 
             switch (element)
             {
                 case IHasId elementAsHasId:
-                    return elementAsHasId.Id;
-                case MofObjectShadow shadowedObject:
-                    return shadowedObject.Uri;
-                case MofObject _:
-                    return "MofObject";
-                default:
-                    return element.ToString();
+                    return elementAsHasId.Id ?? string.Empty;
+                case IElement asIElement when asIElement.metaclass != null:
+                {
+                    var name = GetName(asIElement.metaclass);
+                    if (name != null && !string.IsNullOrEmpty(name))
+                    {
+                        return $"({name})";
+                    }
+
+                    break;
+                }
             }
+
+            return element switch
+            {
+                MofObjectShadow shadowedObject => shadowedObject.Uri,
+                MofObject _ => "MofObject",
+                _ => element.ToString()
+            };
         }
 
         /// <summary>
@@ -206,8 +225,8 @@ namespace DatenMeister.Uml.Helper
             }
 
             return
-                !(element is IObject asObject) ?
-                    element.ToString()
+                !(element is IObject asObject)
+                    ? element.ToString()
                     : GetName(asObject);
         }
     }

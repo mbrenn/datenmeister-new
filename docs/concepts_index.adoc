@@ -1,0 +1,5 @@
+== Concepts == 
+
+This chapter contain several concept documents being used to extent the capability of DatenMeister.
+
+include::concepts_reportgenerator.adoc[]

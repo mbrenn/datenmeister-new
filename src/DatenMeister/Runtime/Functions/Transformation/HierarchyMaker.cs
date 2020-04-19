@@ -17,30 +17,30 @@ namespace DatenMeister.Runtime.Functions.Transformation
         public static void Convert(HierarchyByParentSettings settings)
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
-            Debug.Assert(settings.Sequence != null);
-            Debug.Assert(settings.TargetFactory != null);
-            Debug.Assert(settings.TargetSequence != null);
+            if (settings.Sequence == null) throw new InvalidOperationException("settings.Sequence == null");
+            if (settings.TargetFactory == null) throw new InvalidOperationException("target.TargetFactory == null");
+            if (settings.TargetSequence == null) throw new InvalidOperationException("target.TargetSequence == null");
 
             // Stores the lists
             var lists = new Dictionary<object, List<object>>();
 
             var values = CopyElements(settings);
 
-            // Now: Do the adding of the childrena into a temporary lists and copy 
-            foreach (var element in settings.Sequence.Select(x => x as IObject).Where(x => x != null))
+            // Now: Do the adding of the children into a temporary lists and copy
+            foreach (var element in settings.Sequence.Select(x => x as IObject))
             {
-                var id = element.GetOrDefault(settings.IdColumn);
+                if (element == null) continue;
+                
+                var id = element.getOrDefault<object>(settings.IdColumn);
 
                 if (id != null && element.isSet(settings.OldParentColumn))
                 {
                     var parentId = element.get(settings.OldParentColumn);
                     if (parentId != null)
                     {
-                        IObject found;
-                        if (values.TryGetValue(parentId, out found))
+                        if (values.TryGetValue(parentId, out _))
                         {
-                            List<object> foundList;
-                            if (!lists.TryGetValue(parentId, out foundList))
+                            if (!lists.TryGetValue(parentId, out var foundList))
                             {
                                 foundList = new List<object>();
                                 lists[parentId] = foundList;
@@ -58,10 +58,10 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Copies all the elements which do not have parent into the generic one
             foreach (var element in settings.Sequence.Select(x => x as IElement).Where(x => x != null))
             {
-                var id = element.GetOrDefault(settings.IdColumn);
-                if (id != null && element.isSet(settings.OldParentColumn))
+                var id = element!.getOrDefault<object>(settings.IdColumn);
+                if (id != null && element!.isSet(settings.OldParentColumn))
                 {
-                    var parentId = element.get(settings.OldParentColumn);
+                    var parentId = element!.get(settings.OldParentColumn);
                     if (parentId == null || !values.ContainsKey(parentId))
                     {
                         targetExtent.add(values[id]);
@@ -72,11 +72,13 @@ namespace DatenMeister.Runtime.Functions.Transformation
             // Adds the children to the target elements
             foreach (var element in targetExtent.Select(x => x as IObject).Where(x => x != null))
             {
-                if (element.isSet(settings.IdColumn))
+                if (element!.isSet(settings.IdColumn))
                 {
-                    var key = element.get(settings.IdColumn);
-                    List<object> list;
-                    if (lists.TryGetValue(key, out list))
+                    var key = element!.get(settings.IdColumn);
+                    if (key == null)
+                        continue;
+
+                    if (lists.TryGetValue(key, out var list))
                     {
                         values[key].set(settings.NewChildColumn, list);
                     }
@@ -91,6 +93,15 @@ namespace DatenMeister.Runtime.Functions.Transformation
             Debug.Assert(settings.TargetFactory != null);
             Debug.Assert(settings.TargetSequence != null);
             
+            if (settings.TargetFactory == null)
+                throw new InvalidOperationException("settings.TargetFactory == null");
+            
+            if (settings.TargetSequence == null)
+                throw new InvalidOperationException("settings.TargetSequence == null");
+            
+            if (settings.Sequence == null)
+                throw new InvalidOperationException("settings.Sequence == null");
+
             // Copies the elements
             var copiedElements = CopyElements(settings);
             var isChild = new HashSet<IObject>();
@@ -99,10 +110,9 @@ namespace DatenMeister.Runtime.Functions.Transformation
             foreach (var pair in copiedElements)
             {
                 var element = pair.Value;
-                var childrenId = element.GetOrDefault(settings.OldChildrenColumn)
-                    ?.ToString()
+                var childrenId = element.getOrDefault<string>(settings.OldChildrenColumn)
                     ?.Split(new[] {settings.ChildIdSeparator}, StringSplitOptions.RemoveEmptyEntries)
-                    ?.Select(x => x.Trim());
+                    .Select(x => x.Trim());
 
                 if (childrenId == null)
                 {
@@ -135,22 +145,32 @@ namespace DatenMeister.Runtime.Functions.Transformation
         }
 
         /// <summary>
-        /// Copies the elements into a dictionary where 
+        /// Copies the elements into a dictionary where
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
         private static Dictionary<object, IObject> CopyElements(HierarchyMakerBase settings)
         {
+            if (settings.TargetFactory == null)
+                throw new InvalidOperationException("settings.TargetFactory == null");
+            
+            if (settings.IdColumn == null)
+                throw new InvalidOperationException("settings.IdColumn == null");
+            
             // First: List items by id
             var copier = new ObjectCopier(settings.TargetFactory);
             var values = new Dictionary<object, IObject>();
-            foreach (var element in settings.Sequence.OnlyObjects())
+            var sequence = settings.Sequence?.OnlyObjects();
+            if (sequence == null) return values;
+            
+            foreach (var element in sequence)
             {
                 if (element.isSet(settings.IdColumn))
                 {
-                    values[element.get(settings.IdColumn)] = copier.Copy(element);
+                    values[element.get(settings.IdColumn) ?? string.Empty] = copier.Copy(element);
                 }
             }
+
             return values;
         }
     }

@@ -15,14 +15,15 @@ namespace DatenMeister.Provider.XMI
 {
     /// <summary>
     /// Includes a simple XMI loader which is attribute and element driven.
-    /// By loading an xmi file, the attributes and extents are directly stored into an existing Extent. 
+    /// By loading an xmi file, the attributes and extents are directly stored into an existing Extent.
     /// </summary>
     public class SimpleLoader
     {
         /// <summary>
         /// Stores the uri resolver being used to figure out the href instances.
         /// </summary>
-        private readonly IUriResolver _uriResolver;
+        private readonly IUriResolver? _uriResolver;
+
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
         /// <summary>
@@ -31,14 +32,13 @@ namespace DatenMeister.Provider.XMI
         private readonly List<Action> _afterLoadActions = new List<Action>();
 
         /// <summary>
-        /// Initializes a new instance of the 
+        /// Initializes a new instance of the
         /// </summary>
         /// <param name="uriResolver"></param>
-        public SimpleLoader(IUriResolver uriResolver = null)
+        public SimpleLoader(IUriResolver? uriResolver = null)
         {
             _uriResolver = uriResolver;
         }
-
 
         /// <summary>
         /// Loads the xmi from the embedded resources
@@ -99,7 +99,7 @@ namespace DatenMeister.Provider.XMI
         }
 
         /// <summary>
-        /// Loads the document from a string. 
+        /// Loads the document from a string.
         /// </summary>
         /// <param name="factory">Factory being used to create the instance</param>
         /// <param name="extent">Extent to which the elements will be added</param>
@@ -115,10 +115,8 @@ namespace DatenMeister.Provider.XMI
         /// </summary>
         /// <param name="factory">Factory to be used</param>
         /// <param name="element">Element being used</param>
-        public IObject LoadFromXmlNode(IFactory factory, XElement element)
-        {
-            return LoadElement(factory, element);
-        }
+        public IObject LoadFromXmlNode(IFactory factory, XElement element) =>
+            LoadElement(factory, element);
 
         /// <summary>
         ///     Loads the specific element with a very simple loading algorithm
@@ -196,7 +194,7 @@ namespace DatenMeister.Provider.XMI
                 else
                 {
                     resultingElement.set(name, new List<object>());
-                    currentList = resultingElement.GetAsReflectiveCollection(name);
+                    currentList = resultingElement.get<IReflectiveCollection>(name);
                     dict[name] = currentList;
                 }
 

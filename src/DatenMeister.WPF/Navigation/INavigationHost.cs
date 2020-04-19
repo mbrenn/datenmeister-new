@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -13,15 +11,15 @@ namespace DatenMeister.WPF.Navigation
     public interface INavigationHost
     {
         /// <summary>
-        /// Called, if the host shall navigate to a certain element. 
-        /// All user elements are removed after the call itself. 
+        /// Called, if the host shall navigate to a certain element.
+        /// All user elements are removed after the call itself.
         /// </summary>
         /// <param name="factoryMethod">Factory method creating the navigation element. </param>
         /// <param name="navigationMode">
-        /// Type of the navigation mode. Can create subwindows or 
+        /// Type of the navigation mode. Can create subwindows or
         /// other certain special modes. </param>
         /// <returns>The navigation information being used to receive certain events</returns>
-        Task<NavigateToElementDetailResult> NavigateTo(
+        Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode);
 
@@ -42,19 +40,5 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <returns></returns>
         Window GetWindow();
-    }
-
-    public interface IDetailNavigationHost : INavigationHost
-    {
-        IObject DetailElement { get; }
-
-        IElement AttachedElement { get; }
-
-        IElement EffectiveForm { get; }
-
-        /// <summary>
-        /// Gets the detail element container
-        /// </summary>
-        IReflectiveCollection DetailElementContainer { get; }
     }
 }

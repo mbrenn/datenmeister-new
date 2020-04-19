@@ -6,30 +6,30 @@
     /// </summary>
     public class FileSelectionFieldData: FieldData
     {
-        public FileSelectionFieldData(): base(FieldType)
+        public FileSelectionFieldData(): base()
         {
         }
 
-        public FileSelectionFieldData(string name, string title) 
-            : base (FieldType, name, title)
+        public FileSelectionFieldData(string name, string title)
+            : base (name, title)
         {
             
         }
 
         /// <summary>
-        /// Defines the field type
-        /// </summary>
-        public const string FieldType = "FileSelection";
-        
-        /// <summary>
         /// Gets or sets the default extension
         /// </summary>
-        public string defaultExtension { get; set; }
+        public string? defaultExtension { get; set; }
 
         /// <summary>
         /// Gets or sets the information whether the user will be
         /// using a save dialog or an open dialog
         /// </summary>
         public bool isSaving { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the path to the directory
+        /// </summary>
+        public string? initialPathToDirectory { get; set; }
     }
 }

@@ -1,26 +1,24 @@
-﻿using System.Collections.Generic;
-
-namespace DatenMeister.Models.Forms
+﻿namespace DatenMeister.Models.Forms
 {
     /// <summary>
-    /// Defines the view of 
+    /// Defines the view of
     /// </summary>
     public class Form
     {
         /// <summary>
         /// Gets or sets the name of the form
         /// </summary>
-        public string name { get; set; }
+        public string? name { get; set; }
 
         /// <summary>
         /// Gets or sets the title as shown in window header
         /// </summary>
-        public string title { get; set; }
-
+        public string? title { get; set; }
+        
         /// <summary>
-        /// Stores the fields which shall be shown in the form
+        /// Gets or sets the information whether the complete form is readonly
         /// </summary>
-        public IList<FieldData> field { get; set; } = new List<FieldData>();
+        public bool isReadOnly { get; set; }
 
         /// <summary>
         /// Indicate whether the meta information shall not be shown in the form.
@@ -35,23 +33,6 @@ namespace DatenMeister.Models.Forms
         public Form(string name)
         {
             this.name = name;
-        }
-
-        public Form(string name, params FieldData[] fieldsToBeAdded) : this (name )
-        {
-            AddFields(fieldsToBeAdded);
-        }
-
-        /// <summary>
-        /// Adds the fields to the form
-        /// </summary>
-        /// <param name="fieldsToBeAdded">Fields to be added</param>
-        public void AddFields(params FieldData[] fieldsToBeAdded)
-        {
-            foreach (var field in fieldsToBeAdded)
-            {
-                this.field.Add(field);
-            }
         }
     }
 }

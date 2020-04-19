@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿#nullable enable
+
+using System.IO;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -17,15 +19,15 @@ namespace DatenMeister.Integration
         /// <param name="uri">Uri for the loaded extent</param>
         /// <param name="settings">Settings being loaded</param>
         /// <returns>Extent to be used</returns>
-        public static IUriExtent LoadCsv(this IDatenMeisterScope scope, string uri, string path, CSVSettings settings = null)
+        public static IUriExtent LoadCsv(this IDatenMeisterScope scope, string uri, string path, CsvSettings? settings = null)
         {
-            settings = settings ?? new CSVSettings();
+            settings ??= new CsvSettings();
 
-            var provider = scope.Resolve<CSVLoader>();
+            var provider = scope.Resolve<CsvLoader>();
 
             var memoryProvider = new InMemoryProvider();
             var extent = new MofUriExtent(memoryProvider, uri);
-            
+
             using (var stream = new FileStream(path, FileMode.Open))
             {
                 provider.Load(memoryProvider, stream, settings);
@@ -33,6 +35,5 @@ namespace DatenMeister.Integration
 
             return extent;
         }
-
     }
 }

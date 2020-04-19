@@ -8,9 +8,9 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
         public ReadOnlyUriExtent(IUriExtent extent) : base(extent)
         {
             ActivateObjectConversion(
-                x => new ReadOnlyElement((MofElement) x),
-                x => new ReadOnlyReflectiveSequence(x),
-                x => x.GetProxiedElement());
+                x => x == null ? null : new ReadOnlyElement((MofElement) x),
+                x =>  new ReadOnlyReflectiveSequence(x),
+                x => x?.GetProxiedElement());
         }
     }
 }

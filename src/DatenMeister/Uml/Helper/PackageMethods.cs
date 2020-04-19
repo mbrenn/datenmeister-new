@@ -29,39 +29,88 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
-        /// Gets or creates a package by following the path. 
+        /// Gets a package by following the path.
         /// </summary>
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IElement GetOrCreatePackageStructure(
+        public IElement? GetPackageStructure(
             IReflectiveCollection rootElements,
             string packagePath)
         {
-            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(((IHasExtent)rootElements).Extent, MetaRecursive.Recursively);
+            var extent = ((IHasExtent) rootElements).Extent  ?? throw new InvalidOperationException("extent is not set");
+
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
+            if (uml == null) return null;
+            
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
                 packagePath,
                 _UML._CommonStructure._NamedElement.name,
                 _UML._Packages._Package.packagedElement,
-                uml.Packages.__Package);
+                uml.Packages.__Package,
+                false);
+        }
+        
+
+        /// <summary>
+        /// Gets or creates a package by following the path.
+        /// </summary>
+        /// <param name="rootElements">Collection in which the package shall be created</param>
+        /// <param name="packagePath">Path to the package</param>
+        /// <param name="createIfNotFound">Gets or sets the flag that the package will be automatically created
+        /// in case it is not found</param>
+        /// <returns>Found element</returns>
+        public IElement GetOrCreatePackageStructure(
+            IReflectiveCollection rootElements,
+            string packagePath)
+        {
+            return GetOrCreatePackageStructure(rootElements, packagePath, true)
+                   ?? throw new NotImplementedException("Should not be null");
         }
 
         /// <summary>
-        /// Gets or creates a package by following the path. 
+        /// Gets or creates a package by following the path.
+        /// </summary>
+        /// <param name="rootElements">Collection in which the package shall be created</param>
+        /// <param name="packagePath">Path to the package</param>
+        /// <param name="createIfNotFound">Gets or sets the flag that the package will be automatically created
+        /// in case it is not found</param>
+        /// <returns>Found element</returns>
+        public IElement? GetOrCreatePackageStructure(
+            IReflectiveCollection rootElements,
+            string packagePath,
+            bool createIfNotFound)
+        {
+            var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
+            
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
+            if (uml == null) return null;
+            
+            return GetOrCreatePackageStructure(
+                rootElements,
+                new MofFactory(rootElements),
+                packagePath,
+                _UML._CommonStructure._NamedElement.name,
+                _UML._Packages._Package.packagedElement,
+                uml.Packages.__Package,
+                createIfNotFound);
+        }
+
+        /// <summary>
+        /// Gets or creates a package by following the path.
         /// </summary>
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
         /// <returns>Found element</returns>
-        public IReflectiveCollection GetPackagedObjects(
+        public IReflectiveCollection? GetPackagedObjects(
             IReflectiveCollection rootElements,
             string packagePath)
         {
             var element = GetOrCreatePackageStructure(rootElements, packagePath);
-            return new MofReflectiveSequence(
-                element as MofObject,
-                _UML._Packages._Package.packagedElement);
+
+            return element.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
         }
 
         /// <summary>
@@ -74,29 +123,32 @@ namespace DatenMeister.Uml.Helper
         /// <param name="nameProperty">The name property which contain the name for the element</param>
         /// <param name="childProperty">The child property which contain the subelements</param>
         /// <param name="metaClass">The Metaclass being used to create the child packages</param>
-        public static IElement GetOrCreatePackageStructure(
+        /// <param name="flagCreate">true, if the structure shall be really created.
+        /// If false, null will be returned if the package is not found</param>
+        public static IElement? GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,
             IFactory factory,
             string packagePath,
             string nameProperty,
             string childProperty,
-            IElement metaClass = null)
+            IElement? metaClass = null,
+            bool flagCreate = true)
         {
             if (rootElements == null) throw new ArgumentNullException(nameof(rootElements));
 
             var elementNames = packagePath
-                .Split(new[] { "::" }, StringSplitOptions.RemoveEmptyEntries)
+                .Split(new[] {"::"}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(x => x.Trim()).ToList();
 
             var id = "_package";
 
-            IElement found = null;
+            IElement? found = null;
             foreach (var elementName in elementNames)
             {
                 id += $"_{elementName}";
 
                 // Looks for the element with the given name
-                IElement childElement = null;
+                IElement? childElement = null;
                 foreach (var innerElement in rootElements.OfType<IElement>())
                 {
                     if (!innerElement.isSet(nameProperty))
@@ -104,7 +156,7 @@ namespace DatenMeister.Uml.Helper
                         continue;
                     }
 
-                    if (innerElement.get(nameProperty).ToString() == elementName)
+                    if (innerElement.getOrDefault<string>(nameProperty) == elementName)
                     {
                         childElement = innerElement;
                     }
@@ -113,20 +165,27 @@ namespace DatenMeister.Uml.Helper
                 // Creates the child element
                 if (childElement == null)
                 {
-                    childElement = factory.create(metaClass);
-                    childElement.set(nameProperty, elementName);
-                    
-                    // Set ID, for the new element
-                    if (childElement is ICanSetId cansetId)
+                    if (flagCreate)
                     {
-                        cansetId.Id = id;
-                    }
+                        childElement = factory.create(metaClass);
+                        childElement.set(nameProperty, elementName);
 
-                    rootElements.add(childElement);
+                        // Set ID, for the new element
+                        if (childElement is ICanSetId cansetId)
+                        {
+                            cansetId.Id = id;
+                        }
+
+                        rootElements.add(childElement);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
 
                 // Sets and finds the child property by the given name
-                IReflectiveSequence children = null;
+                IReflectiveSequence? children = null;
                 if (childElement.isSet(childProperty))
                 {
                     children = childElement.get(childProperty) as IReflectiveSequence;
@@ -142,7 +201,7 @@ namespace DatenMeister.Uml.Helper
                 found = childElement;
             }
 
-            return found;
+            return found ?? throw new InvalidOperationException("Something weird happened. Should not be null");
         }
 
         /// <summary>
@@ -152,7 +211,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="element">Element to be added</param>
         public static void AddObjectToPackage(IElement package, object element)
         {
-            var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+            var packagedElements = package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
             packagedElements.add(element);
         }
 
@@ -163,7 +222,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="elements">Elements to be added</param>
         public static void AddObjectsToPackage(IElement package, IEnumerable<object> elements)
         {
-            var packagedElements = package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
+            var packagedElements = package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
             foreach (var item in elements)
             {
                 packagedElements.add(item);
@@ -175,10 +234,8 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="package">Package to be evaluated</param>
         /// <returns>ReflectiveCollection containing the packaged elements</returns>
-        public static IReflectiveCollection GetPackagedObjects(IObject package)
-        {
-            return package.GetAsReflectiveCollection(_UML._Packages._Package.packagedElement);
-        }
+        public static IReflectiveCollection GetPackagedObjects(IObject package) =>
+            package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
 
         /// <summary>
         /// Imports a set of element into the the target package by creating the additional
@@ -191,7 +248,7 @@ namespace DatenMeister.Uml.Helper
         public void ImportPackage(IObject sourcePackage, IReflectiveSequence target, string packagePath)
         {
             var targetPackage = GetOrCreatePackageStructure(target, packagePath);
-
+            
             // We got the package, import the elements
             ImportPackage(sourcePackage, targetPackage);
         }
@@ -203,10 +260,13 @@ namespace DatenMeister.Uml.Helper
         /// <param name="sourcePackage">Source package containing the elements to be imported</param>
         /// <param name="targetPackage">Target package receiving the elements</param>
         /// <param name="copyOptions">Defines the options which shall be used for the importing of the package</param>
-        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption copyOptions = null)
+        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption? copyOptions = null)
         {
-            copyOptions = copyOptions ?? CopyOptions.None;
-            var objectCopier = new ObjectCopier(new MofFactory(targetPackage.GetExtentOf()));
+            copyOptions ??= CopyOptions.None;
+            var objectCopier = new ObjectCopier(new MofFactory(
+                targetPackage.GetExtentOf() ??
+                throw new InvalidOperationException("targetPackage does not belong to an extent")));
+            
             foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
             {
                 var copiedObject = objectCopier.Copy(subElement, copyOptions);
@@ -215,7 +275,7 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
-        /// Imports a package by a manifest resource 
+        /// Imports a package by a manifest resource
         /// </summary>
         /// <param name="manifestType">Type of the assembly containing the
         /// manifest. It eases the life instead of given the assembly</param>
@@ -224,34 +284,58 @@ namespace DatenMeister.Uml.Helper
         /// <param name="targetExtent">Extent to which the extent shall be imported</param>
         /// <param name="targetPackageName">Path within the extent that shall receive
         /// the package</param>
-        public void ImportByManifest(Type manifestType, string manifestName,
+        /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
+        /// in case the loading failed. </param>
+        public IElement? ImportByManifest(Type manifestType, 
+            string manifestName,
             string sourcePackageName,
-            IExtent targetExtent, string targetPackageName)
+            IExtent targetExtent,
+            string targetPackageName,
+            bool loadingRequired = true)
         {
             // Creates the package for "ManagementProvider" containing the views
             var targetPackage = GetOrCreatePackageStructure(
                 targetExtent.elements(), targetPackageName);
 
-            using (var stream = typeof(PackageMethods).GetTypeInfo()
-                .Assembly.GetManifestResourceStream(manifestName))
-            {
-                if (stream == null)
-                {
-                    throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
-                }
-                
-                var document = XDocument.Load(stream);
-                var pseudoProvider = new XmiProvider(document);
-                var pseudoExtent = new MofUriExtent(pseudoProvider)
-                {
-                    Workspace = targetExtent.GetWorkspace()
-                };
+            if (targetPackage == null)
+                throw new InvalidOperationException("targetPackage == null");
 
-                var sourcePackage = GetOrCreatePackageStructure(
-                    pseudoExtent.elements(),
-                    sourcePackageName);
-                PackageMethods.ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
+            using var stream = manifestType.GetTypeInfo()
+                .Assembly.GetManifestResourceStream(manifestName);
+            
+            if (stream == null)
+            {
+                throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
             }
+
+            var document = XDocument.Load(stream);
+            var pseudoProvider = new XmiProvider(document);
+            var pseudoExtent = new MofUriExtent(pseudoProvider)
+            {
+                Workspace = (Workspace?) targetExtent.GetWorkspace()
+            };
+
+            var sourcePackage = GetOrCreatePackageStructure(
+                pseudoExtent.elements(),
+                sourcePackageName,
+                false);
+
+            if (sourcePackage == null)
+            {
+                if (loadingRequired)
+                {
+                    throw new InvalidOperationException(
+                        $"sourcePackage == null. Probably {sourcePackageName} in {manifestName} not found");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+                    
+            ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
+
+            return sourcePackage;
         }
     }
 }

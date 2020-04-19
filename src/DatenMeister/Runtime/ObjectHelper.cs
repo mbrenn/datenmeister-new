@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Uml.Helper;
+// ReSharper disable InconsistentNaming
 
 namespace DatenMeister.Runtime
 {
@@ -20,10 +20,20 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="value">Object to be queried</param>
         /// <param name="property">Property to be queried</param>
+        /// <param name="noReferences">Flag, if no recursion shall occur</param>
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
-        private static object GetAsSingle(this IObject value, string property)
+        private static object? GetAsSingle(this IObject value, string property, bool noReferences = false)
         {
-            var propertyValue = value.get(property);
+            object? propertyValue;
+            if (noReferences && value is MofObject valueAsMofObject)
+            {
+                propertyValue = valueAsMofObject.get(property, true);
+            }
+            else
+            {
+                propertyValue = value.get(property);
+            }
+            
             if (propertyValue is IEnumerable<object> asObjectList)
             {
                 var list = asObjectList.ToList();
@@ -49,73 +59,116 @@ namespace DatenMeister.Runtime
             }
 
             return false;
-
         }
 
+        #nullable disable
+        
         /// <summary>
-        /// Gets the typed value of the property. 
+        /// Gets the typed value of the property.
         /// </summary>
         /// <typeparam name="T">Type of the property</typeparam>
         /// <param name="value">MOF Object being queried</param>
         /// <param name="property">Property being queried in the <c>value</c></param>
-        /// <returns>The content of the element or default(T) if not nknown</returns>
-        public static T get<T>(this IObject value, string property)
+        /// <param name="noReferences">true, if references shall not be </param>
+        /// <returns>The content of the element or default(T) if not known</returns>
+        public static T get<T>(this IObject value, string property, bool noReferences = false)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
+            if (typeof(T) == typeof(object) && value is MofExtent)
+            {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                if (!(value is IHasMofExtentMetaObject metaObject))
+                    throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
+
+                return (T) metaObject.GetMetaObject().get(property, noReferences)!;
+            }
+
+            if (typeof(T) == typeof(object) && value is MofObject mofObject2)
+            {
+                return (T) mofObject2.get(property, noReferences)!;
+            }
+
             if (typeof(T) == typeof(string))
             {
-                return (T)(object)DotNetHelper.AsString(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences)!)!;
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T)(object)DotNetHelper.AsInteger(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!)!;
+            }
+
+            if (typeof(T) == typeof(int?))
+            {
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!)!;
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T)(object)DotNetHelper.AsDouble(value.GetAsSingle(property));
+                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences)!)!;
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return (T)(object)DotNetHelper.AsBoolean(value.GetAsSingle(property));
+                return ((T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences)))!;
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                return (T)(value.GetAsSingle(property) as IObject);
+                var asSingle = (value.GetAsSingle(property, noReferences) as IObject)!;
+                return ((T) asSingle)!;
             }
 
-            if ( typeof(T) == typeof(IElement))
+            if (typeof(T) == typeof(IElement))
             {
-                return (T)(value.GetAsSingle(property) as IElement);
+                var asSingle = (value.GetAsSingle(property, noReferences) as IElement)!;
+                return asSingle is MofObjectShadow ? default : (T) asSingle;
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))
             {
-                return (T) (object) new MofReflectiveSequence((MofObject) value, property);
+                if (!(value is IHasMofExtentMetaObject metaObject))
+                    throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
+                
+                return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+                {
+                    NoReferences = noReferences
+                };
+
             }
 
             if (typeof(T) == typeof(IReflectiveSequence))
             {
-                return (T)(object)new MofReflectiveSequence((MofObject)value, property);
+                if (!(value is IHasMofExtentMetaObject metaObject))
+                    throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
+                
+                return (T) (object) new MofReflectiveSequence(metaObject.GetMetaObject(), property)
+                {
+                    NoReferences = noReferences
+                };
+
             }
 
             if (typeof(T) == typeof(DateTime))
             {
-                if (DateTime.TryParse(value.GetAsSingle(property).ToString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                if (DateTime.TryParse(value.GetAsSingle(property, noReferences).ToString(), CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out var result))
                 {
-                    return (T)(object) result;
+                    return (T) (object) result;
                 }
 
-                return (T)(object) DateTime.MinValue;
+                return (T) (object) DateTime.MinValue;
+            }
+
+            if (typeof(T) == typeof(object))
+            {
+                return ((T) value.GetAsSingle(property, noReferences))!;
             }
 
             if (typeof(T).IsEnum)
             {
-                var valueAsElement = value.GetAsSingle(property);
+                var valueAsElement = value.GetAsSingle(property, noReferences);
                 if (valueAsElement == null)
                 {
                     return default(T);
@@ -147,60 +200,68 @@ namespace DatenMeister.Runtime
 
             throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
         }
+        
+        #nullable enable
 
-        public static T? getOrNull<T>(this IObject value, string property) where T : struct
+        public static T? getOrNull<T>(this IObject value, string property, bool noReferences = false) where T : struct
         {
             if (!value.isSet(property))
             {
                 return null;
             }
 
-            return get<T>(value, property);
+            return get<T>(value, property, noReferences);
         }
 
-        public static T getOrDefault<T>(this IObject value, string property) 
+        #nullable disable
+        
+        public static T getOrDefault<T>(this IObject value, string property, bool noReferences = false)
         {
             if (!value.isSet(property))
             {
                 return default(T);
             }
 
-            return get<T>(value, property);
+            return get<T>(value, property, noReferences);
         }
+        
+        #nullable enable
 
         /// <summary>
-        /// Gets the value of a property if the property is set. 
+        /// Gets the value of a property if the property is set.
         /// If the property is no set, then null will be returned
         /// </summary>
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
+        /// <param name="noReferences">true, if the references shall not resolved</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object GetOrDefault(this IObject value, string property)
+        [Obsolete]
+        public static object? getOrDefault(this IObject value, string property, bool noReferences = false)
         {
             if (value.isSet(property))
             {
-                return value.get(property);
+                return value.get<object>(property, noReferences);
             }
 
             return null;
         }
 
         /// <summary>
-        /// Gets the value of a property if the property is set and is not an enumeration. 
+        /// Gets the value of a property if the property is set and is not an enumeration.
         /// If the property is an enumeration, the first element will be returned
         /// If the property is no set, then null will be returned
         /// </summary>
         /// <param name="value">Object being queried</param>
         /// <param name="property">Property of the object</param>
         /// <returns>The value of the object or null, if not existing</returns>
-        public static object GetFirstOrDefault(this IObject value, string property)
+        public static object? getFirstOrDefault(this IObject value, string property)
         {
             if (value.isSet(property))
             {
                 var result = value.get(property);
                 if (DotNetHelper.IsOfEnumeration(result))
                 {
-                    var resultAsEnumeration = (IEnumerable<object>) result;
+                    var resultAsEnumeration = (IEnumerable<object>) result!;
                     return resultAsEnumeration.FirstOrDefault();
                 }
 
@@ -219,15 +280,31 @@ namespace DatenMeister.Runtime
         /// <param name="toBeAdded"></param>
         public static void AddCollectionItem(this IObject value, string property, object toBeAdded)
         {
-            var reflection = new MofReflectiveSequence(value as MofObject,  property);
+            var reflection = new MofReflectiveSequence((MofObject) value, property);
             reflection.add(toBeAdded);
         }
 
-        public static Dictionary<object, object> AsDictionary(
+        /// <summary>
+        /// Removes a list item to the reflective sequence from the given value.
+        /// If the given property is not already a reflective sequence, it will become to one
+        /// </summary>
+        /// <param name="value">Value to be updated</param>
+        /// <param name="property">Property whose Reflective Collection shall be modified</param>
+        /// <param name="toBeRemoved">Element to be removed</param>
+        /// <returns>true, if removal has been successful</returns>
+        public static bool RemoveCollectionItem(this IObject value, string property, object toBeRemoved)
+        {
+            var reflection = new MofReflectiveSequence((MofObject) value, property);
+            return reflection.remove(toBeRemoved);
+        }
+       
+        public static Dictionary<object, object?> AsDictionary(
             this IObject value,
             IEnumerable<string> properties)
         {
-            var result = new Dictionary<object, object>();
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
+            var result = new Dictionary<object, object?>();
 
             foreach (var property in properties
                 .Where(value.isSet))
@@ -248,7 +325,7 @@ namespace DatenMeister.Runtime
                 .Where(value.isSet))
             {
                 var propertyValue = value.get(property);
-                result[property] = propertyValue == null ? "null" : propertyValue.ToString();
+                result[property] = propertyValue?.ToString() ?? "null";
             }
 
             return result;
@@ -268,51 +345,6 @@ namespace DatenMeister.Runtime
 
             return value;
         }
-
-        /// <summary>
-        /// Gets a certain property value as a reflective collection. 
-        /// If the value is not a reflective collection, an exception is thrown
-        /// </summary>
-        /// <param name="value">Value to be queried</param>
-        /// <param name="property">Property that is access</param>
-        /// <returns>The reflective collection or an exception if the property is not
-        /// a reflective collection</returns>
-        public static IReflectiveCollection GetAsReflectiveCollection(
-            this IObject value,
-            string property)
-        {
-            var result = value.getOrDefault<IReflectiveCollection>(property);
-            result = result ?? CreateReflectiveCollectionObject(value, property);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets a certain property value as a reflective sequence. 
-        /// If the value is not a reflective sequence, an exception is thrown
-        /// </summary>
-        /// <param name="value">Value to be queried</param>
-        /// <param name="property">Property that is access</param>
-        /// <returns>The reflective sequence or an exception if the property is not
-        /// a reflective collection</returns>
-        public static IReflectiveSequence GetAsReflectiveSequence(
-            this IObject value,
-            string property)
-        {
-            var result = value.getOrDefault<IReflectiveSequence>(property);
-            result = result ?? (IReflectiveSequence) CreateReflectiveCollectionObject(value, property);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the reflective collection of a property of the mof object
-        /// </summary>
-        /// <param name="mofObject">Mof Object whose property shall be considered as a reflective collection</param>
-        /// <param name="property">Name of the property</param>
-        /// <returns>The reflective collection containing the property</returns>
-        private static IReflectiveCollection CreateReflectiveCollectionObject(this IObject mofObject, string property)
-            => new MofReflectiveSequence((MofObject)mofObject, property);
 
         /// <summary>
         /// Gets a certain property value as a reflective sequence.
@@ -359,11 +391,11 @@ namespace DatenMeister.Runtime
                 return resultAsEnumerable;
             }
 
-            return result == null ? new object[]{} : new[] {result};
+            return result == null ? new object[] { } : new[] {result};
         }
 
         /// <summary>
-        /// Returns the value as an IObject. 
+        /// Returns the value as an IObject.
         /// If the object is not an IObject, an exception is thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
@@ -380,7 +412,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Returns the value as an IObject. 
+        /// Returns the value as an IObject.
         /// If the object is not an IObject, an exception is thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
@@ -397,13 +429,20 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Gets the extent of the given element
+        /// </summary>
+        /// <param name="hasExtent">The interface being able to request the extent</param>
+        /// <returns>The found extent</returns>
+        public static IExtent? GetExtentOf(this IHasExtent hasExtent) => hasExtent.Extent;
+
+        /// <summary>
         /// Tries to retrieve the extent as given by the implemented interface
         /// IObjectKnowsExtent. If the interface is not implemented by the root element
         /// of the given element, the method will return a failure
         /// </summary>
         /// <param name="value">Value, which is queried</param>
         /// <returns>The found extent</returns>
-        public static IExtent GetExtentOf(this IObject value)
+        public static IExtent? GetExtentOf(this IObject value)
         {
             if (value == null) throw new ArgumentNullException(nameof(value));
 
@@ -413,7 +452,7 @@ namespace DatenMeister.Runtime
                 return asExtent;
             }
 
-            // If the object is contained by another object, query the contained objects 
+            // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
             var parent = asElement?.container();
@@ -432,13 +471,13 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the extent of the given object as IUriExtent interface object. 
-        /// If the uriextent cannot be retrieved due to object incompatibilities, 
+        /// Gets the extent of the given object as IUriExtent interface object.
+        /// If the uriextent cannot be retrieved due to object incompatibilities,
         /// an exception will be thrown
         /// </summary>
         /// <param name="value">Value to be queried</param>
         /// <returns>null or the given extent</returns>
-        public static IUriExtent GetUriExtentOf(this IObject value)
+        public static IUriExtent? GetUriExtentOf(this IObject value)
         {
             var result = GetExtentOf(value);
             if (result == null)
@@ -456,11 +495,11 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Gets the uri of a certain element. 
+        /// Gets the uri of a certain element.
         /// </summary>
         /// <param name="element">Element whose uri is queried</param>
         /// <returns>Uri of the element</returns>
-        public static string GetUri(this IElement element)
+        public static string? GetUri(this IElement element)
         {
             // First, verifies if the element has direct access to the uri of the element
             if (element is IKnowsUri asKnowsUri)
@@ -473,8 +512,8 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Queries the property 'property' of the value and expects a list that can be enumerated. 
-        /// After that, the property 'propertyOfChild' is evaluated and checked against the requested value. 
+        /// Queries the property 'property' of the value and expects a list that can be enumerated.
+        /// After that, the property 'propertyOfChild' is evaluated and checked against the requested value.
         /// If the value of the propertyOfChild is the same as 'requestValue', it will be returned.
         /// </summary>
         /// <param name="value">Value, whose property list shall be queried</param>
@@ -514,31 +553,27 @@ namespace DatenMeister.Runtime
         /// <param name="propertyOfChild">Property that is queried</param>
         /// <param name="requestValue">The value, that is used as a validation against the property</param>
         /// <returns>Enumeration of objects</returns>
-        public  static IEnumerable<IObject> GetByPropertyFromCollection(
-            this IEnumerable<object> asEnumeration, 
-            string propertyOfChild, 
+        public static IEnumerable<IObject> GetByPropertyFromCollection(
+            this IEnumerable<object> asEnumeration,
+            string propertyOfChild,
             object requestValue)
         {
             foreach (var x in asEnumeration)
             {
                 var asElement = x as IObject;
                 var valueOfChild = asElement?.get(propertyOfChild);
-                if (valueOfChild?.Equals(requestValue) == true)
+                if (valueOfChild?.Equals(requestValue) == true && asElement != null)
                 {
                     yield return asElement;
                 }
             }
         }
 
-        public static IUriResolver GetUriResolver(this IObject element)
-        {
-            return (element as MofObject)?.Extent as IUriResolver;
-        }
+        public static IUriResolver? GetUriResolver(this IObject element) =>
+            (element as MofObject)?.Extent as IUriResolver;
 
-        public static IUriResolver GetUriResolver(this IExtent element)
-        {
-            return element as IUriResolver;
-        }
+        public static IUriResolver GetUriResolver(this IExtent element) =>
+            (element as IUriResolver) ?? throw new InvalidOperationException("element is not of type IUriResolver");
 
         /// <summary>
         /// Gets all possible properties of the given element.

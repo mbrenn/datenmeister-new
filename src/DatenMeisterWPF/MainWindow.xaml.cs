@@ -8,14 +8,18 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using Autofac;
+using BurnSystems;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 
@@ -24,7 +28,7 @@ namespace DatenMeisterWPF
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INavigationHost, IHasRibbon
+    public partial class MainWindow : Window, INavigationHost, IHasRibbon, IApplicationWindow
     {
         private readonly RibbonHelper _ribbonHelper;
 
@@ -35,10 +39,17 @@ namespace DatenMeisterWPF
         /// <returns></returns>
         public Ribbon GetRibbon() => MainRibbon;
 
+        /// <summary>
+        /// Initializes a new instance of the MainWindow
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
-            _ribbonHelper = new RibbonHelper(this);
+            _ribbonHelper = new RibbonHelper(
+                this,
+                NavigationScope.Application |
+                NavigationScope.Extent |
+                NavigationScope.Item);
         }
 
         private async void Window_Initialized(object sender, EventArgs e)
@@ -52,14 +63,24 @@ namespace DatenMeisterWPF
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
             _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
 
+            var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
             if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
             {
                 Title += " (READ-ONLY)";
+                var message = extentStorageData.FailedLoadingException == null
+                    ? "No message"
+                    : extentStorageData.FailedLoadingException.ToString();
+
+                var failedExtents = extentStorageData.FailedLoadingExtents
+                    .Select(x=>$"- {x}")
+                    .Join("\r\n");
 
                 if (MessageBox.Show("An exception occured during the loading of the events. \r\n" +
                                     "This will lead to a read-only instance of DatenMeister. All changes will be lost. \r\n" +
                                     "To resolve the issue, verify the log and fix the 'DatenMeister.Extents.xml'.\n\n" +
-                                    "Would you like to open the corresponding folder?",
+                                    "Would you like to open the corresponding folder?\r\n\r\nThe affected extents are:\r\n" +
+                                    failedExtents + "\r\n\r\nThe message that occured lastly:\r\n" +
+                                    message,
                         "Error during start-up of DatenMeister",
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -67,6 +88,13 @@ namespace DatenMeisterWPF
                     var databasePath = GiveMe.Scope.Resolve<IntegrationSettings>().DatabasePath;
                     Process.Start(databasePath);
                 }
+            }
+            
+            // Sets the title of the mainwindow
+            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            if (integrationSettings.WindowTitle != null)
+            {
+                Title = integrationSettings.WindowTitle;
             }
         }
 
@@ -103,102 +131,84 @@ namespace DatenMeisterWPF
             }
 
             throw new InvalidOperationException();
-            // return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
         }
 
         /// <summary>
-        /// Rebuild the complete navigation
+        /// Rebuild the complete navigation by first collecting the view extensions and
+        /// then by putting it into the ribbon helper
         /// </summary>
         public void RebuildNavigation()
         {
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
 
+            // 1) The default properties of the main window
             var viewExtensions = new List<ViewExtension>
             {
-                new RibbonButtonDefinition(
-                    "Home",
+                new ApplicationMenuButtonDefinition(
+                    "Goto Data",
                     () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
                     Icons.FileHome,
-                    NavigationCategories.File + ".Workspaces",
+                    NavigationCategories.DatenMeisterNavigation,
                     10),
-                new RibbonButtonDefinition(
-                    "Workspaces",
+                new ApplicationMenuButtonDefinition(
+                    "Goto Workspaces",
                     () => NavigatorForWorkspaces.NavigateToWorkspaces(this),
                     Icons.WorkspacesShow,
-                    NavigationCategories.File + ".Workspaces",
+                    NavigationCategories.DatenMeisterNavigation,
                     9),
-                new RibbonButtonDefinition(
+                new ApplicationMenuButtonDefinition(
                     "Find by URL",
                     () => NavigatorForDialogs.SearchByUrl(this),
                     null,
-                    NavigationCategories.File + ".Search"),
-                new RibbonButtonDefinition(
+                    NavigationCategories.DatenMeister + ".Database"),
+                new ApplicationMenuButtonDefinition(
                     "Locate",
                     () => NavigatorForDialogs.LocateAndOpen(this),
                     null,
-                    NavigationCategories.File + ".Search"),
-                new RibbonButtonDefinition(
+                    NavigationCategories.DatenMeister + ".Database"),
+                new ApplicationMenuButtonDefinition(
                     "Open Log",
                     OpenLog,
                     null,
-                    NavigationCategories.File + ".Search")
+                    NavigationCategories.DatenMeister + ".Tool"),
+                new ApplicationMenuButtonDefinition(
+                    "Close",
+                    Close,
+                    "file-exit",
+                    NavigationCategories.DatenMeister + ".Tool"),
+                new ApplicationMenuButtonDefinition("About",
+                    () => new AboutDialog
+                    {
+                        Owner = this
+                    }.ShowDialog(),
+                    "file-about",
+                    NavigationCategories.DatenMeister + ".Tool")
             };
 
-            viewExtensions = viewExtensions.Union(_ribbonHelper.GetDefaultNavigation()).ToList();
-            if (MainControl.Content is INavigationGuest guest)
+            // 2) The properties of the guest
+            var guest = MainControl.Content as INavigationGuest;
+            if (guest != null)
             {
                 var guestViewExtensions = guest.GetViewExtensions().ToList();
-                foreach (var viewExtension in guestViewExtensions.OfType<RibbonButtonDefinition>())
-                {
-                    viewExtension.FixTopCategoryIfNotFixed("Extent");
-                }
-
                 viewExtensions = viewExtensions.Union(guestViewExtensions).ToList();
-
-                /*/*
-                 * Gets the plugins for the selected extent
-                 
-                var dataItems = new ViewExtensionTargetInformation
-                {
-                    NavigationGuest = guest
-                };
-
-                foreach (var plugin in viewExtensionPlugins)
-                {
-                    foreach (var extension in plugin.GetViewExtensions(dataItems))
-                    {
-                        if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                        {
-                            ribbonButtonDefinition.FixTopCategoryIfNotFixed("Extent");
-                        }
-
-                        viewExtensions.Add(extension);
-                    }
-                }*/
             }
 
-            /*
-             * Gets the plugins for the MainWindow itself
-             */
-            var data = new ViewExtensionTargetInformation(ViewExtensionContext.Application)
-            {
-                NavigationHost = this
-            };
+            // 3) The plugins
+            var data = new ViewExtensionInfoApplication(this, guest);
 
             foreach (var plugin in viewExtensionPlugins)
             {
-                foreach (var extension in plugin.GetViewExtensions(data))
-                {
-                    if (extension is RibbonButtonDefinition ribbonButtonDefinition)
-                    {
-                     //   ribbonButtonDefinition.FixTopCategoryIfNotFixed("Item");
-                    }
-
-                    viewExtensions.Add(extension);
-                }
+                viewExtensions.AddRange(plugin.GetViewExtensions(data));
             }
 
+            // Now execute them on the ribbon itself
+            _ribbonHelper.Item = MainControl.Content is IItemNavigationGuest itemNavigationGuest ? itemNavigationGuest.Item : null;
+            _ribbonHelper.Collection = MainControl.Content is ICollectionNavigationGuest collectionNavigationGuest ? collectionNavigationGuest.Collection : null;
+            _ribbonHelper.Extent = MainControl.Content is IExtentNavigationGuest extentNavigationGuest ? extentNavigationGuest.Extent : null;
             _ribbonHelper.EvaluateExtensions(viewExtensions);
+
+            // And on the guest
+            guest?.EvaluateViewExtensions(viewExtensions);
 
             void OpenLog()
             {
@@ -206,7 +216,7 @@ namespace DatenMeisterWPF
                 wnd.Show();
             }
         }
-        
+
         /// <summary>
         /// Sets the focus
         /// </summary>
@@ -228,8 +238,9 @@ namespace DatenMeisterWPF
             {
                 canUnregister.Unregister();
             }
-
-            if (MessageBox.Show(
+            
+            // Asks the user, if he was not already asked before
+            if (!DoCloseWithoutAcknowledgement && MessageBox.Show(
                     "Are you sure, that you would like to close Der DatenMeister",
                     "Close DatenMeister?",
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes)
@@ -239,9 +250,11 @@ namespace DatenMeisterWPF
         }
 
         /// <inheritdoc />
-        public Window GetWindow()
-        {
-            return this;
-        }
+        public Window GetWindow() => this;
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        public bool DoCloseWithoutAcknowledgement { get; set; }
     }
 }

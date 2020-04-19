@@ -12,14 +12,15 @@ namespace DatenMeister.Models.Forms
         {
         }
 
-        public DetailForm(string name, params FieldData[] fieldsToBeAdded) : base(name, fieldsToBeAdded)
+        public DetailForm(string name, params FieldData[] fieldsToBeAdded) : this(name)
         {
+            AddFields(fieldsToBeAdded);
         }
 
         /// <summary>
         /// Stores the default button text being by the user to acknowledge the action behind the form
         /// </summary>
-        public string buttonApplyText { get; set; }
+        public string? buttonApplyText { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the detailform allows new properties
@@ -39,6 +40,23 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the tabs
         /// </summary>
-        public List<Form> tab { get; set; }
+        public List<Form>? tab { get; set; }
+
+        /// <summary>
+        /// Stores the fields which shall be shown in the as the first field
+        /// </summary>
+        public IList<FieldData> field { get; set; } = new List<FieldData>();
+        
+        /// <summary>
+        /// Adds the fields to the form
+        /// </summary>
+        /// <param name="fieldsToBeAdded">Fields to be added</param>
+        public void AddFields(params FieldData[] fieldsToBeAdded)
+        {
+            foreach (var fieldToBeAdded in fieldsToBeAdded)
+            {
+                field.Add(fieldToBeAdded);
+            }
+        }
     }
 }

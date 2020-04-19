@@ -1,6 +1,7 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Windows;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Workspaces;
@@ -17,8 +18,8 @@ namespace DatenMeister.WPF.Windows
 
         /// <summary>
         /// Gets or sets the property, whether the window shall be shown as a toolbox
-        /// or as a dialog. 
-        /// If the window is set as a toolbox, it will not close upon request of 
+        /// or as a dialog.
+        /// If the window is set as a toolbox, it will not close upon request of
         /// user and it will automatically create a detail window in case of selection.
         /// </summary>
         public bool AsToolBox
@@ -34,23 +35,40 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
-        public IWorkspaceLogic WorkspaceLogic { get; set; }
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
 
-        public IObject SelectedElement { get; set; }
+        public IObject? SelectedElement { get; set; }
 
 
         public static readonly DependencyProperty MessageTextProperty = DependencyProperty.Register(
             "MessageText", typeof(string), typeof(LocateItemDialog), new PropertyMetadata(default(string), OnMessageTextChanged));
 
+        public static readonly DependencyProperty SelectButtonTextProperty = DependencyProperty.Register(
+            "SelectButtonText", typeof(string), typeof(LocateItemDialog), new PropertyMetadata(default(string), OnSelectButtonTextChanged));
+
         public string MessageText
         {
-            get => (string)GetValue(MessageTextProperty);
+            get => (string) GetValue(MessageTextProperty);
             set => SetValue(MessageTextProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the text of the Selection Button
+        /// </summary>
+        public string SelectButtonText
+        {
+            get => (string) GetValue(SelectButtonTextProperty);
+            set => SetValue(SelectButtonTextProperty, value);
         }
 
         private static void OnMessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((LocateItemDialog)d).txtTitle.Text = (string)e.NewValue;
+            ((LocateItemDialog) d).txtTitle.Text = (string) e.NewValue;
+        }
+
+        private static void OnSelectButtonTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LocateItemDialog) d).SelectionButton.Content = (string) e.NewValue;
         }
 
         public LocateItemDialog()
@@ -63,6 +81,7 @@ namespace DatenMeister.WPF.Windows
             get => LocateElementControl.ShowWorkspaceSelection;
             set => LocateElementControl.ShowWorkspaceSelection = value;
         }
+
         public bool ShowExtentSelection
         {
             get => LocateElementControl.ShowExtentSelection;
@@ -95,44 +114,36 @@ namespace DatenMeister.WPF.Windows
         private void AcceptAndCloseDialog()
         {
             SelectedElement = LocateElementControl.SelectedElement;
-            DialogResult = true;
-            
+            if (_asToolBox)
+            {
+                if (SelectedElement != null)
+                {
+                    OnItemChosen(SelectedElement);
+                }
+            }
+            else
+                DialogResult = true;
+
             // Opens the dialog
             if (!(Owner is INavigationHost navigationHost))
-            {
                 throw new InvalidOperationException("Owner is not set or ist not a navigation host");
-            }
 
+            navigationHost.SetFocus();
             Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
+            if (!_asToolBox)
+                DialogResult = false;
+
             Close();
         }
 
-        private void Items_OnItemChosen(object sender, ItemEventArgs e)
-        {
-            if (e.Item != null)
-            {
-                if (AsToolBox)
-                {
-                    if (!(Owner is INavigationHost navigationHost))
-                    {
-                        throw new InvalidOperationException("Owner is not set or ist not a navigation host");
-                    }
-
-                    NavigatorForItems.NavigateToElementDetailView(
-                        navigationHost,
-                        e.Item);
-                }
-                else
-                {
-                    AcceptAndCloseDialog();
-                }
-            }
-        }
+        /// <summary>
+        /// Defines the event that is called when the user has chosen an item
+        /// </summary>
+        public event EventHandler<ItemEventArgs>? ItemChosen;
 
         public void SelectWorkspace(string workspaceId)
         {
@@ -144,9 +155,19 @@ namespace DatenMeister.WPF.Windows
             LocateElementControl.SelectExtent(extentUri);
         }
 
-        public void SetAsRoot(IReflectiveCollection package)
+        public void SetAsRoot(IObject element)
         {
-            LocateElementControl.SetAsRoot(package);
+            LocateElementControl.SetAsRoot(element);
+        }
+
+        protected virtual void OnItemChosen(IObject chosenElement)
+        {
+            ItemChosen?.Invoke(this, new ItemEventArgs(chosenElement));
+        }
+
+        private void LocateItemDialog_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
         }
     }
 }

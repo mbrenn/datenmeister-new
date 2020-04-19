@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using BurnSystems.Logging;
+using BurnSystems.WPF;
 
 namespace DatenMeister.WPF.Forms
 {
@@ -10,6 +12,7 @@ namespace DatenMeister.WPF.Forms
         public IntroScreen()
         {
             InitializeComponent();
+            TheLog.AddProvider(new TextBlockLogProvider(LoggingText));
         }
     }
 }

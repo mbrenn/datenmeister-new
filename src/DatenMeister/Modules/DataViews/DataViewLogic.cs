@@ -17,7 +17,7 @@ namespace DatenMeister.Modules.DataViews
         private static readonly ILogger Logger = new ClassLogger(typeof(DataViewLogic));
 
         /// <summary>
-        /// Defines the path to the packages of the fast view filters
+        /// Defines the path to the packages of the dataviews
         /// </summary>
         public const string PackagePathTypesDataView = "DatenMeister::DataViews";
 
@@ -30,19 +30,21 @@ namespace DatenMeister.Modules.DataViews
 
         public IEnumerable<IElement> GetDataViewElements()
         {
-            var metaClass = (IElement)_workspaceLogic.GetTypesWorkspace().FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView");
-            var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
-            foreach (var extent in managementWorkspace.extent.OfType<IUriExtent>())
+            var metaClass = (IElement?)
+                (_workspaceLogic.GetTypesWorkspace()
+                    .FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView"));
+            if (metaClass == null)
             {
-                if (extent.contextURI() == WorkspaceNames.ExtentManagementExtentUri)
-                {
-                    continue;
-                }
-
-                foreach (var dataView in extent.elements().GetAllDescendants().WhenMetaClassIs(metaClass).Cast<IElement>())
-                {
-                    yield return dataView;
-                }
+                Logger.Warn("DataView MetaClass was not found");
+                yield break;
+            }
+                 
+            var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
+            foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
+                .Where(extent => extent.contextURI() != WorkspaceNames.ExtentManagementExtentUri)
+                .SelectMany(extent => extent.elements().GetAllDescendants().WhenMetaClassIs(metaClass).Cast<IElement>()))
+            {
+                yield return dataView;
             }
         }
 

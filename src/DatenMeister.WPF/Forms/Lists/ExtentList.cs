@@ -1,14 +1,18 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Autofac;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Modules.ViewFinder;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
+using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Lists
@@ -16,17 +20,13 @@ namespace DatenMeister.WPF.Forms.Lists
     public class ExtentList : ItemExplorerControl
     {
         /// <summary>
-        /// Stores the workspace extent
-        /// </summary>
-        private IUriExtent _workspaceExtent;
-        /// <summary>
         /// Initializes a new instance of the ExtentList class
         /// </summary>
         public ExtentList()
         {
             Loaded += ExtentList_Loaded;
 
-            _workspaceExtent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
         }
 
         private void ExtentList_Loaded(object sender, System.Windows.RoutedEventArgs e)
@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Gets or sets the id to be shown in the workspace
         /// </summary>
-        public string WorkspaceId { get; set; }
+        public string WorkspaceId { get; set; } = string.Empty;
 
         /// <summary>
         /// Shows the workspaces of the DatenMeister
@@ -47,55 +47,74 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             WorkspaceId = workspaceId;
             var workspace =
-                _workspaceExtent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
-
-            var extents = workspace?.get("extents") as IReflectiveSequence;
-            SetItems(extents);
-
-            // Registers upon events
-            var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
-            EventHandle = eventManager.RegisterFor(_workspaceExtent, (x, y) =>
+                Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
+            if (workspace != null)
             {
-                Tabs.FirstOrDefault()?.Control.UpdateContent();
-            });
+                SetRootItem(workspace);
+
+                // Registers upon events
+                var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
+                EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
+                    Dispatcher?.Invoke(() =>
+                        Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView()));
+            }
         }
 
         protected override void OnRecreateViews()
         {
-            if (SelectedItems == null)
-            {
+            if (SelectedItem == null)
                 return;
-            }
 
-            if (IsExtentSelectedInTreeview)
+            var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>()
+                                     ?? throw new InvalidOperationException("_ManagementProvider == null");
+
+            var overridingDefinition = OverridingViewDefinition;
+
+            if (IsExtentSelectedInTreeview ||
+                SelectedPackage is IElement selectedElement &&
+                selectedElement.metaclass?.@equals(managementProvider.__Workspace) == true)
             {
-                var viewDefinition = ListRequests.RequestFormForExtents(_workspaceExtent, WorkspaceId, NavigationHost);
+                var formDefinition = overridingDefinition ??
+                                     WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,
+                                         NavigationHost);
 
                 EvaluateForm(
-                    SelectedItems,
-                    viewDefinition);
+                    SelectedItem,
+                    formDefinition);
             }
-            else
+            else if (SelectedPackage != null)
             {
-                var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, ViewDefinitionMode.Default);
-                var viewDefinition = new ViewDefinition(form);
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default)
+                           ?? throw new InvalidOperationException("form == null");
+                var formDefinition = overridingDefinition ??
+                                     new FormDefinition(form);
 
                 EvaluateForm(
-                    SelectedItems,
-                    viewDefinition);
+                    SelectedItem,
+                    formDefinition);
             }
-
         }
 
         public override void OnMouseDoubleClick(IObject element)
         {
-            var uri = element.get("uri").ToString();
+            var uri = element.getOrDefault<string>("uri") ?? string.Empty;
 
-            NavigatorForItems.NavigateToItemsInExtent(
+            _ = NavigatorForItems.NavigateToItemsInExtent(
                 NavigationHost,
                 WorkspaceId,
                 uri);
+        }
+
+        /// <inheritdoc />
+        public override ViewExtensionInfo GetViewExtensionInfo()
+        {
+            return new ViewExtensionInfoExploreExtents(NavigationHost, this)
+            {
+                WorkspaceId = WorkspaceId,
+                RootElement = RootItem,
+                SelectedElement = SelectedItem
+            };
         }
     }
 }

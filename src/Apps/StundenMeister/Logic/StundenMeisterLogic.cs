@@ -1,15 +1,12 @@
 using System;
 using System.IO;
 using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Plugins;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Plugins;
 using StundenMeister.Model;
 
 namespace StundenMeister.Logic
@@ -32,17 +29,17 @@ namespace StundenMeister.Logic
         }
 
         private readonly LocalTypeSupport _localTypeSupport;
-        
+
         private readonly ExtentManager _extentManager;
-        
+
         /// <summary>
         /// Gets the change event manager
         /// </summary>
         public ChangeEventManager EventManager { get; }
 
         public StundenMeisterLogic(
-            LocalTypeSupport localTypeSupport, 
-            ExtentManager extentManager, 
+            LocalTypeSupport localTypeSupport,
+            ExtentManager extentManager,
             ChangeEventManager changeEventManager)
         {
             _localTypeSupport = localTypeSupport;
@@ -64,9 +61,8 @@ namespace StundenMeister.Logic
                 "StundenMeister");
             var filePath = Path.Combine(directory, "StundenMeister.xmi");
 
-            var storageData = new XmiStorageConfiguration
+            var storageData = new XmiStorageConfiguration("dm:///stundenmeister/")
             {
-                extentUri = "dm:///stundenmeister/",
                 filePath = filePath
             };
 

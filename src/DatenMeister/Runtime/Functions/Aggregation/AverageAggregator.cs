@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
 
         protected override double FinalizeAggregation()
         {
-            return _totalSum/_itemCount;
+            return _totalSum /_itemCount;
         }
     }
 }

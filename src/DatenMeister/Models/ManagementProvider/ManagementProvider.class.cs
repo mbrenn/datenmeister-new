@@ -1,3 +1,4 @@
+#nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Provider.InMemory;
@@ -10,53 +11,79 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         public class _Extent
         {
             public static string @uri = "uri";
-            public IElement _uri = null;
+            public IElement? _uri = null;
 
             public static string @count = "count";
-            public IElement _count = null;
+            public IElement? _count = null;
+
+            public static string @totalCount = "totalCount";
+            public IElement? _totalCount = null;
 
             public static string @type = "type";
-            public IElement _type = null;
+            public IElement? _type = null;
 
             public static string @extentType = "extentType";
-            public IElement _extentType = null;
+            public IElement? _extentType = null;
+
+            public static string @isModified = "isModified";
+            public IElement? _isModified = null;
 
             public static string @alternativeUris = "alternativeUris";
-            public IElement _alternativeUris = null;
+            public IElement? _alternativeUris = null;
 
         }
 
         public _Extent @Extent = new _Extent();
-        public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Extent");
+        public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent");
 
         public class _Workspace
         {
             public static string @id = "id";
-            public IElement _id = null;
+            public IElement? _id = null;
 
             public static string @annotation = "annotation";
-            public IElement _annotation = null;
+            public IElement? _annotation = null;
 
             public static string @extents = "extents";
-            public IElement _extents = null;
+            public IElement? _extents = null;
 
         }
 
         public _Workspace @Workspace = new _Workspace();
-        public IElement @__Workspace = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.Workspace");
+        public IElement @__Workspace = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace");
 
         public class _CreateNewWorkspaceModel
         {
             public static string @id = "id";
-            public IElement _id = null;
+            public IElement? _id = null;
 
             public static string @annotation = "annotation";
-            public IElement _annotation = null;
+            public IElement? _annotation = null;
 
         }
 
         public _CreateNewWorkspaceModel @CreateNewWorkspaceModel = new _CreateNewWorkspaceModel();
-        public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Provider.ManagementProviders.Model.FormViewModels.CreateNewWorkspaceModel");
+        public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
+
+        public class _ExtentTypeSetting
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+        }
+
+        public _ExtentTypeSetting @ExtentTypeSetting = new _ExtentTypeSetting();
+        public IElement @__ExtentTypeSetting = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentTypeSetting");
+
+        public class _ExtentSettings
+        {
+            public static string @extentTypeSettings = "extentTypeSettings";
+            public IElement? _extentTypeSettings = null;
+
+        }
+
+        public _ExtentSettings @ExtentSettings = new _ExtentSettings();
+        public IElement @__ExtentSettings = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentSettings");
 
         public static _ManagementProvider TheOne = new _ManagementProvider();
 

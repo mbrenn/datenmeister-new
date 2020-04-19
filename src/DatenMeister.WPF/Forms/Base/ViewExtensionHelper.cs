@@ -1,7 +1,8 @@
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -21,16 +22,16 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="collection">The collection to which the new element will be created</param>
         /// <returns>The created </returns>
         public static ViewExtension GetCreateButtonForMetaClass(
-            INavigationHost navigationHost, 
-            IElement metaclass, 
+            INavigationHost navigationHost,
+            IElement metaclass,
             IReflectiveCollection collection)
         {
             var typeName = metaclass.get(_UML._CommonStructure._NamedElement.name);
 
             return new GenericButtonDefinition(
-                $"New {typeName}", () =>
+                $"New {typeName}", async () =>
                 {
-                    NavigatorForItems.NavigateToNewItemForCollection(
+                    await NavigatorForItems.NavigateToNewItemForCollection(
                         navigationHost,
                         collection,
                         metaclass);

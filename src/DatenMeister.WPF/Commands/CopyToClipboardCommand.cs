@@ -34,41 +34,52 @@ namespace DatenMeister.WPF.Commands
         AsXmi
     }
 
-    public class CopyToClipboardCommand
+    public static class CopyToClipboardCommand
     {
-        private readonly IObject _selectedItem;
         private static readonly ClassLogger Logger = new ClassLogger(typeof(CopyToClipboardCommand));
 
-        private readonly IHasSelectedItems _listViewControl;
-
-        public CopyToClipboardCommand(IObject selectedItem)
+        /// <summary>
+        ///     Gets the currently selected element and copies it to the clipboard
+        /// </summary>
+        /// <param name="hasSelectedItems">The selected items</param>
+        /// <param name="copyType">The type of the format to be copied to clipboard</param>
+        public static void Execute(IHasSelectedItems hasSelectedItems, CopyType copyType)
         {
-            _selectedItem = selectedItem;
-        }
+            // Checks, whether we can retrieve the selected item directly or if we need to use the IHasSelectedItems interface
+            var selectedItems = 
+                hasSelectedItems.GetSelectedItems();
 
-        public CopyToClipboardCommand(IHasSelectedItems listViewControl)
-        {
-            _listViewControl = listViewControl;
+            if (selectedItems == null)
+            {
+                var selectedItem = hasSelectedItems.GetSelectedItem();
+                if (selectedItem != null)
+                {
+                    selectedItems = new[] {selectedItem};
+                }
+                else
+                {
+                    // No selection, nothing to do
+                    return;
+                }
+            }
+            
+            Execute(selectedItems, copyType);
         }
 
         /// <summary>
         ///     Gets the currently selected element and copies it to the clipboard
         /// </summary>
+        /// <param name="item">The selected item</param>
         /// <param name="copyType">The type of the format to be copied to clipboard</param>
-        public void Execute(CopyType copyType)
+        public static void Execute(IObject item, CopyType copyType)
         {
-            IEnumerable<IObject> selectedItems;
-
             // Checks, whether we can retrieve the selected item directly or if we need to use the IHasSelectedItems interface
-            if (_selectedItem != null)
-            {
-                selectedItems = new[] {_selectedItem};
-            }
-            else
-            {
-                selectedItems = _listViewControl.GetSelectedItems() ?? new[] {_listViewControl.GetSelectedItem()};
-                selectedItems = selectedItems.ToList();
-            }
+            Execute(new[] {item}, copyType);
+        }
+
+        public static void Execute(IEnumerable<IObject> selectedItems, CopyType copyType)
+        {
+            selectedItems = selectedItems.ToList();
 
             var first = true;
             var builder = new StringBuilder();
@@ -86,8 +97,7 @@ namespace DatenMeister.WPF.Commands
 
                 foreach (var property in allProperties.getPropertiesBeingSet())
                 {
-                    var value = DotNetHelper.AsString(
-                        selectedItem.GetOrDefault(property));
+                    var value = selectedItem.getOrDefault<string>(property);
 
                     builder.AppendLine($"{property}: {value}");
                 }
@@ -101,7 +111,7 @@ namespace DatenMeister.WPF.Commands
             if (selectedList.Count == 1)
             {
                 var copier = new ObjectCopier(new MofFactory(tempExtent));
-                var result = copier.Copy(selectedList.First(), new CopyOption{CloneAllReferences = false});
+                var result = copier.Copy(selectedList.First(), new CopyOption {CloneAllReferences = false});
                 xmlResult = ((XmiProviderObject) ((MofObject) result).ProviderObject).XmlNode.ToString();
             }
             else
@@ -110,7 +120,7 @@ namespace DatenMeister.WPF.Commands
                 extentCopier.Copy(selectedList, tempExtent.elements());
                 xmlResult = xmiProvider.Document.ToString();
             }
-            
+
             try
             {
                 switch (copyType)

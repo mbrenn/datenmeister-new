@@ -16,7 +16,6 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
         {
             var asElement = element as IElement;
             return asElement?.getMetaClass()?.equals(_uml.Packages.__Package) == true;
-            
         }
 
         public bool IsClass(IObject element)

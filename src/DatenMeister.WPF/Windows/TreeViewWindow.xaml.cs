@@ -1,9 +1,10 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Windows;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
@@ -13,24 +14,30 @@ namespace DatenMeister.WPF.Windows
     /// </summary>
     public partial class TreeViewWindow : Window, INavigationGuest
     {
+        private INavigationHost? _navigationHost;
+
         /// <summary>
         /// Called, if the user selected and double clicked an item
         /// </summary>
-        public event EventHandler<ItemEventArgs> ItemSelected;
+        public event EventHandler<ItemEventArgs>? ItemSelected;
 
         /// <summary>
         /// Gets or sets the navigation host
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost NavigationHost
+        {
+            get => _navigationHost ?? throw new InvalidOperationException("NavigationHost == null");
+            set => _navigationHost = value;
+        }
 
         public TreeViewWindow()
         {
             InitializeComponent();
         }
 
-        public void SetCollection(IReflectiveCollection collection)
+        public void SetRootItem(IObject value)
         {
-            ObjectTreeView.ItemsSource = collection;
+            ObjectTreeView.ItemsSource = value;
         }
 
         public void AddPropertyForChild(params string[] properties)
@@ -47,8 +54,7 @@ namespace DatenMeister.WPF.Windows
             ObjectTreeView.SetDefaultProperties();
         }
 
-
-        private void OnItemSelected(object item)
+        private void OnItemSelected(object? item)
         {
             if (item is IObject element)
             {
@@ -62,12 +68,32 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Prepares the navigation of the host. The function is called by the navigation 
-        /// host. 
+        /// Prepares the navigation of the host. The function is called by the navigation
+        /// host.
         /// </summary>
         public IEnumerable<ViewExtension> GetViewExtensions()
         {
             return new ViewExtension[] { };
+        }
+
+        /// <summary>
+        /// Evaluates the given view extensions.
+        /// Currently, the TreeViewWindow does not support viewextensions
+        /// </summary>
+        /// <param name="viewExtensions">Viewextensions being evaluated</param>
+        public void EvaluateViewExtensions(ICollection<ViewExtension> viewExtensions)
+        {
+            ObjectTreeView.EvaluateViewExtensions(viewExtensions);
+        }
+
+        public void UpdateView()
+        {
+            ObjectTreeView.UpdateView();
+        }
+
+        private void TreeViewWindow_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
         }
     }
 }

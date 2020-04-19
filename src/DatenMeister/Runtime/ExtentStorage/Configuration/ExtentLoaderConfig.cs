@@ -1,13 +1,25 @@
 ﻿using DatenMeister.Runtime.Workspaces;
 
+// ReSharper disable InconsistentNaming
+
 namespace DatenMeister.Runtime.ExtentStorage.Configuration
 {
     /// <summary>
-    /// Defines the storage configuration, which allows the extent getting loaded and saved. 
+    /// Defines the storage configuration, which allows the extent getting loaded and saved.
     /// The configuration has to be maintained during the runtime for loading and storing
     /// </summary>
     public class ExtentLoaderConfig
     {
+        public ExtentLoaderConfig()
+        {
+            extentUri = string.Empty;
+        }
+        
+        public ExtentLoaderConfig(string extentUri)
+        {
+            this.extentUri = extentUri;
+        }
+
         /// <summary>
         /// Gets or sets the extent uri
         /// </summary>

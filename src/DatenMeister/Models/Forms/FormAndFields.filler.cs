@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
@@ -6,39 +7,40 @@ namespace DatenMeister.Models.Forms
     public class FillTheFormAndFields : DatenMeister.Core.Filler.IFiller<_FormAndFields>
     {
         private static readonly object[] EmptyList = new object[] { };
-        private static string GetNameOfElement(IObject element)
+        private static string GetNameOfElement(IObject? element)
         {
+            if (element == null) throw new System.ArgumentNullException(nameof(element));
             var nameAsObject = element.get("name");
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _FormAndFields tree)
+        public void Fill(IEnumerable<object?> collection, _FormAndFields tree)
         {
             FillTheFormAndFields.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _FormAndFields tree)
+        public static void DoFill(IEnumerable<object?> collection, _FormAndFields tree)
         {
-            string name;
-            IElement value;
+            string? name;
+            IElement? value;
             bool isSet;
             foreach (var item in collection)
             {
-                value = item as IElement;
+                value = item as IElement ?? throw new System.InvalidOperationException("value == null");
                 name = GetNameOfElement(value);
                 if (name == "FormAndFields") // Looking for package
                 {
                     isSet = value.isSet("packagedElement");
-                    collection = isSet ? (value.get("packagedElement") as IEnumerable<object>) : EmptyList;
+                    collection = isSet ? ((value.get("packagedElement") as IEnumerable<object>) ?? EmptyList) : EmptyList;
                     foreach (var item0 in collection)
                     {
-                        value = item0 as IElement;
+                        value = item0 as IElement ?? throw new System.InvalidOperationException("value == null");
                         name = GetNameOfElement(value);
                         if(name == "FieldData") // Looking for class
                         {
                             tree.__FieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -46,10 +48,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.FieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.FieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -73,11 +71,46 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "AnyDataFieldData") // Looking for class
+                        {
+                            tree.__AnyDataFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.AnyDataFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                         if(name == "CheckboxFieldData") // Looking for class
                         {
                             tree.__CheckboxFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -89,10 +122,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.CheckboxFieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.CheckboxFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -120,7 +149,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DateTimeFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -140,10 +169,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.DateTimeFieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.DateTimeFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -167,38 +192,46 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
-                        if(name == "ViewAssociation") // Looking for class
+                        if(name == "FormAssociation") // Looking for class
                         {
-                            tree.__ViewAssociation = value;
+                            tree.__FormAssociation = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "viewType") // Looking for property
+                                if(name == "name") // Looking for property
                                 {
-                                    tree.ViewAssociation._viewType = value;
+                                    tree.FormAssociation._name = value;
+                                }
+                                if(name == "formType") // Looking for property
+                                {
+                                    tree.FormAssociation._formType = value;
                                 }
                                 if(name == "metaClass") // Looking for property
                                 {
-                                    tree.ViewAssociation._metaClass = value;
+                                    tree.FormAssociation._metaClass = value;
                                 }
                                 if(name == "extentType") // Looking for property
                                 {
-                                    tree.ViewAssociation._extentType = value;
+                                    tree.FormAssociation._extentType = value;
+                                }
+                                if(name == "viewModeId") // Looking for property
+                                {
+                                    tree.FormAssociation._viewModeId = value;
                                 }
                                 if(name == "parentMetaClass") // Looking for property
                                 {
-                                    tree.ViewAssociation._parentMetaClass = value;
+                                    tree.FormAssociation._parentMetaClass = value;
                                 }
                                 if(name == "parentProperty") // Looking for property
                                 {
-                                    tree.ViewAssociation._parentProperty = value;
+                                    tree.FormAssociation._parentProperty = value;
                                 }
                                 if(name == "form") // Looking for property
                                 {
-                                    tree.ViewAssociation._form = value;
+                                    tree.FormAssociation._form = value;
                                 }
                             }
                         }
@@ -206,7 +239,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DropDownFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -218,10 +251,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.DropDownFieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.DropDownFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -249,7 +278,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ValuePair = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -268,7 +297,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__MetaClassElementFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -276,10 +305,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.MetaClassElementFieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.MetaClassElementFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -307,7 +332,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ReferenceFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -344,10 +369,6 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ReferenceFieldData._isAttached = value;
                                 }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.ReferenceFieldData._fieldType = value;
-                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ReferenceFieldData._name = value;
@@ -374,7 +395,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__SubElementFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -391,13 +412,13 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.SubElementFieldData._defaultTypesForNewElements = value;
                                 }
+                                if(name == "includeSpecializationsForDefaultTypes") // Looking for property
+                                {
+                                    tree.SubElementFieldData._includeSpecializationsForDefaultTypes = value;
+                                }
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.SubElementFieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.SubElementFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -425,7 +446,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__TextFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -441,10 +462,6 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.TextFieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.TextFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -472,7 +489,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__SeparatorLineFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -487,7 +504,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__FileSelectionFieldData = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -500,13 +517,13 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.FileSelectionFieldData._isSaving = value;
                                 }
+                                if(name == "initialPathToDirectory") // Looking for property
+                                {
+                                    tree.FileSelectionFieldData._initialPathToDirectory = value;
+                                }
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.FileSelectionFieldData._isAttached = value;
-                                }
-                                if(name == "fieldType") // Looking for property
-                                {
-                                    tree.FileSelectionFieldData._fieldType = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
@@ -534,11 +551,15 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DefaultTypeForNewElement = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.DefaultTypeForNewElement._name = value;
+                                }
                                 if(name == "metaClass") // Looking for property
                                 {
                                     tree.DefaultTypeForNewElement._metaClass = value;
@@ -553,7 +574,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__Form = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -566,9 +587,9 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.Form._title = value;
                                 }
-                                if(name == "field") // Looking for property
+                                if(name == "isReadOnly") // Looking for property
                                 {
-                                    tree.Form._field = value;
+                                    tree.Form._isReadOnly = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -580,7 +601,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__DetailForm = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -605,6 +626,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.DetailForm._tab = value;
                                 }
+                                if(name == "field") // Looking for property
+                                {
+                                    tree.DetailForm._field = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.DetailForm._name = value;
@@ -613,9 +638,9 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.DetailForm._title = value;
                                 }
-                                if(name == "field") // Looking for property
+                                if(name == "isReadOnly") // Looking for property
                                 {
-                                    tree.DetailForm._field = value;
+                                    tree.DetailForm._isReadOnly = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -627,7 +652,7 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ListForm = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
@@ -640,9 +665,21 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._metaClass = value;
                                 }
+                                if(name == "includeDescendents") // Looking for property
+                                {
+                                    tree.ListForm._includeDescendents = value;
+                                }
+                                if(name == "noItemsWithMetaClass") // Looking for property
+                                {
+                                    tree.ListForm._noItemsWithMetaClass = value;
+                                }
                                 if(name == "inhibitNewItems") // Looking for property
                                 {
                                     tree.ListForm._inhibitNewItems = value;
+                                }
+                                if(name == "inhibitDeleteItems") // Looking for property
+                                {
+                                    tree.ListForm._inhibitDeleteItems = value;
                                 }
                                 if(name == "defaultTypesForNewElements") // Looking for property
                                 {
@@ -652,6 +689,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._fastViewFilters = value;
                                 }
+                                if(name == "field") // Looking for property
+                                {
+                                    tree.ListForm._field = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ListForm._name = value;
@@ -660,9 +701,9 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._title = value;
                                 }
-                                if(name == "field") // Looking for property
+                                if(name == "isReadOnly") // Looking for property
                                 {
-                                    tree.ListForm._field = value;
+                                    tree.ListForm._isReadOnly = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -674,11 +715,19 @@ namespace DatenMeister.Models.Forms
                         {
                             tree.__ExtentForm = value;
                             isSet = value.isSet("ownedAttribute");
-                            collection = isSet ? (value.get("ownedAttribute") as IEnumerable<object>) : EmptyList;
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "tab") // Looking for property
+                                {
+                                    tree.ExtentForm._tab = value;
+                                }
+                                if(name == "autoTabs") // Looking for property
+                                {
+                                    tree.ExtentForm._autoTabs = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ExtentForm._name = value;
@@ -687,13 +736,36 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ExtentForm._title = value;
                                 }
-                                if(name == "tab") // Looking for property
+                                if(name == "isReadOnly") // Looking for property
                                 {
-                                    tree.ExtentForm._tab = value;
+                                    tree.ExtentForm._isReadOnly = value;
                                 }
-                                if(name == "autoTabs") // Looking for property
+                                if(name == "hideMetaInformation") // Looking for property
                                 {
-                                    tree.ExtentForm._autoTabs = value;
+                                    tree.ExtentForm._hideMetaInformation = value;
+                                }
+                            }
+                        }
+                        if(name == "ViewMode") // Looking for class
+                        {
+                            tree.__ViewMode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ViewMode._name = value;
+                                }
+                                if(name == "id") // Looking for property
+                                {
+                                    tree.ViewMode._id = value;
+                                }
+                                if(name == "defaultExtentType") // Looking for property
+                                {
+                                    tree.ViewMode._defaultExtentType = value;
                                 }
                             }
                         }

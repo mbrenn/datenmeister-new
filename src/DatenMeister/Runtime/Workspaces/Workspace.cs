@@ -8,14 +8,15 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 
+// ReSharper disable InconsistentNaming
+
 namespace DatenMeister.Runtime.Workspaces
 {
     /// <summary>
     /// Defines a workspace according to the Mof specification
     /// MOF Facility Object Lifecycle (MOFFOL)
     /// </summary>
-    /// <typeparam name="T">Type of the extents being handled</typeparam>
-    public class Workspace : IWorkspace, IObject, IUriResolver
+    public class Workspace : IWorkspace, IObject, IUriResolver, IObjectAllProperties
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Workspace));
 
@@ -23,6 +24,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         private readonly List<IExtent> _extent = new List<IExtent>();
 
+        // ReSharper disable once CollectionNeverUpdated.Local
         private readonly List<ITag> _properties = new List<ITag>();
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         /// <summary>
         /// Gets the extents. The source of the extent list is the _extent combined with the
-        /// enumeration of plugins. 
+        /// enumeration of plugins.
         /// </summary>
         public IEnumerable<IExtent> extent
         {
@@ -70,20 +72,16 @@ namespace DatenMeister.Runtime.Workspaces
                     yield return localExtent;
                 }
 
-                foreach (var plugin in ExtentPlugins)
+                foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
                 {
-                    foreach (var pluginExtent in plugin)
-                    {
-                        yield return pluginExtent;
-                    }
+                    yield return pluginExtent;
                 }
-
             }
         }
 
         public IEnumerable<ITag> properties => _properties;
 
-        public Workspace(string id, string annotation = null)
+        public Workspace(string id, string annotation = "")
         {
             this.id = id ?? throw new ArgumentNullException(nameof(id));
             this.annotation = annotation;
@@ -131,7 +129,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="newExtent">The extent to be added</param>
         public void AddExtent(IUriExtent newExtent)
         {
-            var asMofExtent = (MofExtent)newExtent;
+            var asMofExtent = (MofExtent) newExtent;
             if (newExtent == null) throw new ArgumentNullException(nameof(newExtent));
             if (asMofExtent.Workspace != null)
             {
@@ -177,7 +175,7 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         /// <summary>
-        /// Removes the extent from the workspace 
+        /// Removes the extent from the workspace
         /// </summary>
         /// <param name="extentForRemoval">Extent to be removed</param>
         /// <returns>true, if the extent could be removed</returns>
@@ -189,7 +187,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public TFilledType Get<TFilledType>()
+        public TFilledType? Get<TFilledType>()
             where TFilledType : class, new()
         {
             lock (_syncObject)
@@ -213,7 +211,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Class to be looked after</typeparam>
         /// <param name="function"></param>
         /// <returns>Found function</returns>
-        public IElement Get<TFilledType>(Func<TFilledType, IElement> function)
+        public IElement? Get<TFilledType>(Func<TFilledType, IElement> function)
             where TFilledType : class, new()
         {
             var result = Get<TFilledType>();
@@ -232,7 +230,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Class to be looked after</typeparam>
         /// <param name="function"></param>
         /// <returns>Found function</returns>
-        public IElement Create<TFilledType>(Func<TFilledType, IElement> function)
+        public IElement? Create<TFilledType>(Func<TFilledType, IElement> function)
             where TFilledType : class, new()
         {
             var result = Get<TFilledType>();
@@ -249,7 +247,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
-        public TFilledType GetFromMetaWorkspace<TFilledType>(
+        public TFilledType? GetFromMetaWorkspace<TFilledType>(
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
@@ -284,7 +282,7 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
 
-            return null;
+            return default;
         }
 
         public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
@@ -295,19 +293,19 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        public override string ToString()
-        {
-            return !string.IsNullOrEmpty(annotation) 
-                ? $"({id}) {annotation}" 
+        public override string ToString() =>
+            !string.IsNullOrEmpty(annotation)
+                ? $"({id}) {annotation}"
                 : $"({id})";
-        }
 
-        public bool @equals(object other)
+        public IEnumerable<string> getPropertiesBeingSet()
         {
-            throw new NotImplementedException();
+            yield return "id";
         }
 
-        public object get(string property)
+        public bool @equals(object? other) => throw new NotImplementedException();
+
+        public object? get(string property)
         {
             if (property == "id")
             {
@@ -317,24 +315,24 @@ namespace DatenMeister.Runtime.Workspaces
             throw new InvalidOperationException($"Given property {id} is not set.");
         }
 
-        public void set(string property, object value)
+        public void set(string property, object? value)
         {
             throw new NotImplementedException();
         }
 
-        public bool isSet(string property)
-        {
-            return property == "id";
-        }
+        public bool isSet(string property) => property == "id";
 
         public void unset(string property)
         {
             throw new NotImplementedException();
         }
 
-        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing)
+        public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing)
         {
-            var result = _extent.Select(theExtent => (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false)).FirstOrDefault(found => found != null);
+            var result = _extent
+                .Select(theExtent =>
+                    (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
+                .FirstOrDefault(found => found != null);
             if (result == null && traceFailing)
             {
                 Logger.Trace($"URI not resolved: {uri}");
@@ -343,9 +341,9 @@ namespace DatenMeister.Runtime.Workspaces
             return result;
         }
 
-        public IElement ResolveById(string id)
+        public IElement? ResolveById(string elementId)
         {
-            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(id)).FirstOrDefault(found => found != null);
+            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId)).FirstOrDefault(found => found != null);
         }
     }
 }

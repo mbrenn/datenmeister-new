@@ -1,4 +1,5 @@
-﻿/* MIT License
+﻿#nullable disable
+/* MIT License
 
 Copyright (c) 2016 JetBrains http://www.jetbrains.com
 
@@ -30,7 +31,7 @@ using System;
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Excel.Annotations
+namespace DatenMeister.Excel.Properties
 {
   /// <summary>
   /// Indicates that the value of the marked element could be <c>null</c> sometimes,
@@ -231,7 +232,7 @@ namespace DatenMeister.Excel.Annotations
   /// // A method that returns null if the parameter is null,
   /// // and not null if the parameter is not null
   /// [ContractAnnotation("null =&gt; null; notnull =&gt; notnull")]
-  /// public object Transform(object data) 
+  /// public object Transform(object data)
   /// </code></item>
   /// <item><code>
   /// [ContractAnnotation("=&gt; true, result: notnull; =&gt; false, result: null")]
@@ -734,7 +735,7 @@ namespace DatenMeister.Excel.Annotations
 
   /// <summary>
   /// ASP.NET MVC attribute. Indicates that a parameter is an MVC display template.
-  /// Use this attribute for custom wrappers similar to 
+  /// Use this attribute for custom wrappers similar to
   /// <c>System.Web.Mvc.Html.DisplayExtensions.DisplayForModel(HtmlHelper, String)</c>.
   /// </summary>
   [AttributeUsage(AttributeTargets.Parameter)]
@@ -819,7 +820,7 @@ namespace DatenMeister.Excel.Annotations
 
   /// <summary>
   /// Razor attribute. Indicates that a parameter or a method is a Razor section.
-  /// Use this attribute for custom wrappers similar to 
+  /// Use this attribute for custom wrappers similar to
   /// <c>System.Web.WebPages.WebPageBase.RenderSection(String)</c>.
   /// </summary>
   [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method)]
@@ -855,7 +856,7 @@ namespace DatenMeister.Excel.Annotations
 
   /// <summary>
   /// Indicates that the marked method is assertion method, i.e. it halts control flow if
-  /// one of the conditions is satisfied. To set the condition, mark one of the parameters with 
+  /// one of the conditions is satisfied. To set the condition, mark one of the parameters with
   /// <see cref="AssertionConditionAttribute"/> attribute.
   /// </summary>
   [AttributeUsage(AttributeTargets.Method)]
@@ -1047,7 +1048,7 @@ namespace DatenMeister.Excel.Annotations
       [NotNull] public string BaseType { get; private set; }
       [CanBeNull] public string PageName { get; private set; }
   }
-    
+
   [AttributeUsage(AttributeTargets.Method)]
   public sealed class RazorHelperCommonAttribute : Attribute { }
 

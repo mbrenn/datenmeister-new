@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using BurnSystems.Logging;
 
 namespace DatenMeister.Runtime.Workspaces.Data
@@ -20,20 +19,17 @@ namespace DatenMeister.Runtime.Workspaces.Data
 
         public WorkspaceLoader(IWorkspaceLogic workspaceLogic, WorkspaceLoaderConfig config)
         {
-            Debug.Assert(workspaceLogic != null, "workspaceLogic != null");
-            Debug.Assert(config != null, "filepath != null");
-
-            WorkspaceLogic = workspaceLogic;
-            Config = config;
+            WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
+            Config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         /// <summary>
-        /// Loads the workspaces from the given file. 
-        /// If the workspace is already existing, the annotation will be overridden. 
+        /// Loads the workspaces from the given file.
+        /// If the workspace is already existing, the annotation will be overridden.
         /// If not, it will be created.
         /// </summary>
         /// <returns>The loaded workspace</returns>
-        public WorkspaceFileData Load()
+        public WorkspaceFileData? Load()
         {
             try
             {
@@ -44,7 +40,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
                     // Not existing
                     return null;
                 }
-            
+
                 foreach (var workspaceInfo in workspaceData.workspaces)
                 {
                     var foundWorkspace = WorkspaceLogic.GetWorkspace(workspaceInfo.id);
@@ -77,11 +73,8 @@ namespace DatenMeister.Runtime.Workspaces.Data
             var workSpaceData = new WorkspaceFileData();
             foreach (var workSpace in WorkspaceLogic.Workspaces)
             {
-                workSpaceData.workspaces.Add(new WorkspaceInfo
-                {
-                    id = workSpace.id,
-                    annotation = workSpace.annotation
-                });
+                workSpaceData.workspaces.Add(
+                    new WorkspaceInfo(workSpace.id, workSpace.annotation));
             }
 
             Save(Config.filepath, workSpaceData);

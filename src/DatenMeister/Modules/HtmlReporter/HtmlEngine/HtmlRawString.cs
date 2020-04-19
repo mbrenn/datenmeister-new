@@ -6,11 +6,11 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// Gets the content of the string being used as a value for the html
         /// </summary>
         public string Value { get; }
-        
+
         /// <summary>
         /// Gets or sets a flag that spaces are converted to nbsp
         /// </summary>
-        public bool ConvertSpaceToNBSP { get; set; }
+        public bool ConvertSpaceToNbsp { get; set; }
 
         public HtmlRawString(string value)
         {
@@ -25,17 +25,15 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// file</returns>
         public string GetHtmlString()
         {
-            if (ConvertSpaceToNBSP)
+            if (ConvertSpaceToNbsp)
             {
                 return Value.Replace(" ", "&nbsp;");
             }
 
             return Value;
         }
-        
+
         public override string ToString()
-        {
-            return GetHtmlString();
-        }
+            => GetHtmlString();
     }
 }

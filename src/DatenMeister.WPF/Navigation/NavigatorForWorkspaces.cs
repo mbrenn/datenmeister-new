@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -6,14 +7,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
-using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Modules.ViewFinder.Helper;
+using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.View;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms;
+using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
@@ -26,7 +31,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Windows to be used</param>
         /// <returns>The navigation to control the view</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToWorkspaces(INavigationHost window)
+        public static Task<NavigateToElementDetailResult?>? NavigateToWorkspaces(INavigationHost window)
         {
             return window.NavigateTo(
                 () => new WorkspaceList(),
@@ -44,10 +49,10 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="navigationHost"></param>
         /// <returns></returns>
-        public static async Task<NavigateToElementDetailResult> CreateNewWorkspace(INavigationHost navigationHost)
+        public static async Task<NavigateToElementDetailResult?>? CreateNewWorkspace(INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var viewExtent = viewLogic.GetInternalViewExtent();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+            var viewExtent = viewLogic.GetInternalFormExtent();
 
             var formElement = NamedElementMethods.GetByFullName(
                 viewExtent,
@@ -55,21 +60,24 @@ namespace DatenMeister.WPF.Navigation
             if (formElement == null)
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
-                var managementProvider =  GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>();
+                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_ManagementProvider>();
                 formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
             }
 
-            var result = await NavigatorForItems.NavigateToElementDetailViewAsync(
+            var result = await NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
-                new NavigateToItemConfig
+                new NavigateToItemConfig()
                 {
-                    FormDefinition = formElement
+                    Form = new FormDefinition(formElement)
                 });
 
-            if (result.Result == NavigationResult.Saved)
+            if (result != null && result.Result == NavigationResult.Saved)
             {
-                var workspaceId = result.DetailElement.get("id").ToString();
-                var annotation = result.DetailElement.get("annotation").ToString();
+                var detailElement =
+                    result.DetailElement ?? throw new InvalidOperationException("DetailElement == null");
+                
+                var workspaceId = detailElement.getOrDefault<string>("id");
+                var annotation = detailElement.getOrDefault<string>("annotation");
 
                 var workspace = new Workspace(workspaceId, annotation);
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
@@ -80,7 +88,7 @@ namespace DatenMeister.WPF.Navigation
         }
 
         /// <summary>
-        /// Resets the complete DatenMeister application... Will lead to a restart of the application 
+        /// Resets the complete DatenMeister application... Will lead to a restart of the application
         /// </summary>
         /// <param name="navigationHost">Navigation host to be used</param>
         public static void ResetDatenMeister(INavigationHost navigationHost)
@@ -94,8 +102,8 @@ namespace DatenMeister.WPF.Navigation
                 return;
             }
 
-            // Ok... what to do now? 
-            // Collect all files... 
+            // Ok... what to do now?
+            // Collect all files...
             var files = new List<string>();
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
@@ -110,17 +118,22 @@ namespace DatenMeister.WPF.Navigation
                 foreach (var extent in workspaceLogic.GetExtentsForWorkspace(workspace))
                 {
                     var loadConfiguration = extentManager.GetLoadConfigurationFor(extent) as ExtentFileLoaderConfig;
-                    if (loadConfiguration == null)
+                    var extentStoragePath = loadConfiguration?.filePath;
+                    
+                    if (extentStoragePath != null)
                     {
-                        continue;
+                        files.Add(extentStoragePath);
                     }
-
-                    var extentStoragePath = loadConfiguration.filePath;
-                    files.Add(extentStoragePath);
                 }
             }
 
             // Unload DatenMeister
+            if (navigationHost.GetWindow() is IApplicationWindow mainWindow)
+            {
+                mainWindow.DoCloseWithoutAcknowledgement = true;
+            }
+            
+            
             navigationHost.GetWindow().Close();
             if (navigationHost.GetWindow().IsActive)
             {
@@ -129,7 +142,7 @@ namespace DatenMeister.WPF.Navigation
             }
 
             GiveMe.Scope.UnuseDatenMeister();
-            GiveMe.Scope = null;
+            GiveMe.Scope = null!;
 
 
             foreach (var file in files)
@@ -141,10 +154,11 @@ namespace DatenMeister.WPF.Navigation
             File.Delete(Integrator.GetPathToExtents(integrationSettings));
 
             // Restarts the DatenMeister
-            var location = Assembly.GetEntryAssembly().Location;
+            var entryAssembly = Assembly.GetEntryAssembly() ?? throw new InvalidOperationException("Assembly.GetEntryAssembly is null");
+            var location = entryAssembly.Location;
             if (Path.GetExtension(location).EndsWith("exe"))
             {
-                Process.Start(Assembly.GetEntryAssembly().Location);
+                Process.Start(entryAssembly.Location);
             }
             else
             {

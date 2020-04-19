@@ -9,24 +9,19 @@ namespace DatenMeister.Models.Forms
     public class SubElementFieldData : FieldData
     {
         /// <summary>
-        /// States the type of the field
-        /// </summary>
-        public const string FieldType = "subelements";
-
-        /// <summary>
         /// Gets or sets the metaclass that will be created when the user creates a new instance
         /// </summary>
-        public string metaClassUri { get; set; }
+        public string? metaClassUri { get; set; }
 
         /// <summary>
-        /// Gets or sets the fields being shown in the subelements. If null, the fields will be automatically generated. 
+        /// Gets or sets the fields being shown in the subelements. If null, the fields will be automatically generated.
         /// </summary>
-        public Form form { get; set; }
+        public Form? form { get; set; }
 
         /// <summary>
         /// Initializes a new element of the subelement field data and sets the field as an enumeration
         /// </summary>
-        public SubElementFieldData() : base(FieldType)
+        public SubElementFieldData() : base()
         {
             isEnumeration = true;
         }
@@ -36,7 +31,7 @@ namespace DatenMeister.Models.Forms
         /// </summary>
         /// <param name="name">Name of the field</param>
         /// <param name="title">Title of the field</param>
-        public SubElementFieldData(string name, string title) : base(FieldType, name, title)
+        public SubElementFieldData(string name, string title) : base(name, title)
         {
             isEnumeration = true;
         }
@@ -44,6 +39,12 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Stores an enumeration of default types that can be used for creation
         /// </summary>
-        public IList<IElement> defaultTypesForNewElements { get; set; }
+        public IList<IElement>? defaultTypesForNewElements { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether specializations shall also be included
+        /// to the user as option to get directly created
+        /// </summary>
+        public bool includeSpecializationsForDefaultTypes { get; set; }
     }
 }

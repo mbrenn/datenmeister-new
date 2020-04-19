@@ -11,7 +11,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 
         public bool IsHeading { get; set; }
 
-        public HtmlTableCell(HtmlElement content, string cssClass = null)
+        public HtmlTableCell(HtmlElement content, string cssClass = "")
         {
             _content = content;
             _cssClass = cssClass;
@@ -20,7 +20,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         public override string ToString()
         {
             var htmlTab = IsHeading ? "th" : "td";
-            if (string.IsNullOrEmpty(_cssClass))
+            if (_cssClass == null || string.IsNullOrEmpty(_cssClass))
             {
                 return $"<{htmlTab}>{_content}</{htmlTab}>";
             }

@@ -10,69 +10,90 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.ViewFinder;
-using DatenMeister.Modules.ViewFinder.Helper;
-using DatenMeister.Provider.ManagementProviders;
-using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Forms.Lists;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Windows;
+// ReSharper disable IdentifierTypo
 
 namespace DatenMeister.WPF.Navigation
 {
+    /// <summary>
+    /// This is a configuration describing the request for navigation 
+    /// </summary>
     public class NavigateToItemConfig
     {
         /// <summary>
-        /// Gets or sets the detail element that shall be shown
+        /// Initializes a new instance
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public NavigateToItemConfig()
+        {
+            DetailElement = InMemoryObject.CreateEmpty();
+        }
 
         /// <summary>
-        /// Gets or sets the container for the detail element which can be used to
-        /// delete it
+        /// Initializes a new instance of the NavigateToItemConfig
         /// </summary>
-        public IReflectiveCollection DetailElementContainer { get; set; }
+        /// <param name="detailElement">The element to which it will be navigated</param>
+        public NavigateToItemConfig(IObject detailElement)
+        {
+            DetailElement = detailElement;
+        }
 
         /// <summary>
         /// Gets or sets the title for the dialog or window
         /// </summary>
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
+        
+        /// <summary>
+        /// Gets or sets the detail element that shall be shown.
+        /// If this element is created not in a constructor, an empty element is returned
+        /// </summary>
+        public IObject DetailElement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection for the detail element which can be used to
+        /// delete it. 
+        /// </summary>
+        public IReflectiveCollection? ContainerCollection { get; set; }
 
         /// <summary>
         /// Gets or sets the action that shall be performed after the view has been created
         /// </summary>
-        public Action<DetailFormControl> AfterCreatedFunction { get; set; }
+        public Action<DetailFormControl>? AfterCreatedFunction { get; set; }
 
         /// <summary>
         /// If the detail element is empty, then the metaclass can be set, so a new element will be created which is derived
-        /// by the metaclass. 
+        /// by the metaclass.
         /// </summary>
-        public IElement MetaClass { get; set; }
+        public IElement? MetaClass { get; set; }
 
         /// <summary>
         /// If the detail element is empty, then the element will be added upon the given container element by the <c>ContainerProperty</c>.
         /// If ContainerProperty is empty, then the user will be asked which property of the parent shall be used for adding
         /// </summary>
-        public IObject ContainerElement { get; set; }
+        public IObject? ContainerElement { get; set; }
 
         /// <summary>
         /// Gets or sets the property of the containerelement to which the element will be added
         /// </summary>
-        public string ContainerProperty { get; set; }
+        public string ContainerProperty { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the form definition to be used to create the item
         /// </summary>
-        public IElement FormDefinition { get; set; }
+        public FormDefinition? Form { get; set; }
     }
 
-    public class NavigatorForItems
+    /// <summary>
+    /// Contains several helper methods to show existing items or new items
+    /// </summary>
+    public static class NavigatorForItems
     {
         /// <summary>
         /// Navigates to the detail window
@@ -82,21 +103,19 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="afterCreated">This method will be called after the instance of DetailFormControl was created. It can be used to hook upon event in DetailFormControl</param>
         /// <param name="title">Title of the element to be shown</param>
         /// <returns>The navigation being used to control the view</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToElementDetailView(
+        public static async Task<NavigateToElementDetailResult?> NavigateToElementDetailView(
             INavigationHost window,
             IObject element,
-            Action<DetailFormControl> afterCreated = null,
-            string title = null)
-        {
-            return NavigateToElementDetailViewAsync(
-                window,
-                new NavigateToItemConfig
-                {
-                    Title = title,
-                    DetailElement = element,
-                    AfterCreatedFunction = afterCreated
-                });
-        }
+            Action<DetailFormControl>? afterCreated = null,
+            string title = "")
+            =>
+                await NavigateToElementDetailView(
+                    window,
+                    new NavigateToItemConfig(element)
+                    {
+                        Title = title,
+                        AfterCreatedFunction = afterCreated
+                    });
 
 
         /// <summary>
@@ -105,50 +124,12 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="window">Window to be used as navigation host</param>
         /// <param name="navigateToItemConfig">Configuration for navigation</param>
         /// <returns>The task providing the result</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToElementDetailViewAsync(
+        public static async Task<NavigateToElementDetailResult?> NavigateToElementDetailView(
             INavigationHost window,
             NavigateToItemConfig navigateToItemConfig)
-        {
-            return Navigator.CreateDetailWindow(window, navigateToItemConfig);
-        }
+            =>
+                await Navigator.CreateDetailWindow(window, navigateToItemConfig);
 
-        /// <summary>
-        /// Opens the dialog in which the user can create a new xmi extent
-        /// </summary>
-        /// <param name="window">Window being used as an owner</param>
-        /// <param name="workspaceId">Id of the workspace</param>
-        /// <returns></returns>
-        public static async Task<NavigateToElementDetailResult> NavigateToNewXmiExtentDetailView(
-            INavigationHost window,
-            string workspaceId)
-        {
-            var viewLogic = GiveMe.Scope.Resolve<ViewLogic>();
-            var navigateToItemConfig = new NavigateToItemConfig
-            {
-                FormDefinition = 
-                    viewLogic.GetInternalViewExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
-            };
-
-            var result = await NavigateToElementDetailViewAsync(window, navigateToItemConfig);
-            if (result.Result == NavigationResult.Saved)
-            {
-                var configuration = new XmiStorageConfiguration
-                {
-                    extentUri = result.DetailElement.isSet("uri")
-                        ? result.DetailElement.get("uri").ToString()
-                        : string.Empty,
-                    filePath = result.DetailElement.isSet("filepath")
-                        ? result.DetailElement.get("filepath").ToString()
-                        : string.Empty,
-                    workspaceId = workspaceId
-                };
-
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// Navigates to show the items in an extent
@@ -157,12 +138,12 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUrl">Url of the extent to be shown</param>
         /// <returns>The navigation support</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToItemsInExtent(
+        public static async Task<NavigateToElementDetailResult?> NavigateToItemsInExtent(
             INavigationHost window,
             string workspaceId,
             string extentUrl)
         {
-            return window.NavigateTo(() => 
+            return await window.NavigateTo(() =>
                     new ItemsInExtentList {WorkspaceId = workspaceId, ExtentUrl = extentUrl},
                 NavigationMode.List);
         }
@@ -176,32 +157,32 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="collection">Collection of items</param>
         /// <param name="metaClassForForm">Metaclass being used for the form</param>
         /// <returns>The task for navigation support</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToItems(
+        public static async Task<NavigateToElementDetailResult?> NavigateToItems(
             INavigationHost window,
-            IReflectiveCollection collection, 
+            IReflectiveCollection collection,
             IElement metaClassForForm)
         {
-            return window.NavigateTo(() =>
+            return await window.NavigateTo(() =>
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                    var usedForm = formCreator.CreateListForm(metaClassForForm, FormCreator.CreationMode.ByMetaClass);
+                    var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, CreationMode.ByMetaClass);
 
                     var viewExtensions = new List<ViewExtension>();
                     viewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
                         window,
-                        metaClassForForm, 
+                        metaClassForForm,
                         collection));
-                    
+
                     var control = new ItemListViewControl();
-                    control.SetContent(collection, usedForm, 
+                    control.SetContent(collection, usedForm,
                         viewExtensions);
                     return control;
                 },
                 NavigationMode.List);
         }
-        
+
         /// <summary>
-        /// Navigates to a plain item list with all the given items
+        /// Navigates to a plain item list with all the given items. 
         /// in the collection. A meta class is also given to create the appropriate form for these
         /// items.
         /// A simple ListFormWindow will be created
@@ -209,13 +190,13 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="collection">Collection of items</param>
         /// <param name="metaClassForForm">Metaclass being used for the form</param>
         /// <returns>The task for navigation support</returns>
-        public static Task<NavigateToElementDetailResult> NavigateToItems(
-            IReflectiveCollection collection, 
+        public static async Task<NavigateToElementDetailResult?> NavigateToItems(
+            IReflectiveCollection collection,
             IElement metaClassForForm)
         {
             var window = new ListFormWindow();
             window.Show();
-            return NavigateToItems(
+            return await NavigateToItems(
                 window,
                 collection,
                 metaClassForForm);
@@ -229,75 +210,79 @@ namespace DatenMeister.WPF.Navigation
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToNewItemForExtent(
+        public static async Task<IControlNavigationNewObject?> NavigateToNewItemForExtent(
             INavigationHost window,
-            IExtent extent, 
-            IElement metaclass)
+            IExtent extent,
+            IElement? metaclass)
         {
-            var detailResult =
-                NavigateToNewItemForCollection(window, extent.elements(), metaclass);
-
-            return detailResult;
+            return await NavigateToNewItemForCollection(window, extent.elements(), metaclass);
         }
 
         /// <summary>
         /// Creates a new item for the given extent being located in the workspace
         /// </summary>
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="element">The item to which one of the properties will be aded
+        /// <param name="containerElement">The item to which one of the properties will be aded
         /// </param>
-        /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <param name="parentProperty">The property on which the new element will be attached to the parent property</param>
+        /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToNewItemForItem(
+        public static async Task<IControlNavigationNewObject> NavigateToNewItemForItem(
             INavigationHost window,
-            IObject element,
-            IElement metaclass,
-            string parentProperty = null)
-        {
-            return NavigateToNewItemForItem(
-                window,
-                new NavigateToItemConfig
-                {
-                    ContainerElement = element,
-                    MetaClass = metaclass,
-                    ContainerProperty = parentProperty
-                }
-            );
-        }
+            IObject containerElement,
+            string parentProperty,
+            IElement? metaclass)
+            =>
+                await NavigateToNewItemForItem(
+                    window,
+                    new NavigateToItemConfig
+                    {
+                        MetaClass = metaclass,
+                        ContainerProperty = parentProperty,
+                        ContainerElement = containerElement
+                    });
+
         /// <summary>
         /// Creates a new item and adds the item to the given container element.
         /// The property to which the container will be determined is set by the Container Property
         /// If the property is not set, then the user will be asked about which property to be set
         /// </summary>
         /// <param name="window">Navigation Host being used</param>
-        /// <param name="config">Configuration for the user</param>
+        /// <param name="config">Configuration for the detail dialog</param>
         /// <returns>The control element</returns>
-        public static IControlNavigationNewItem NavigateToNewItemForItem(
+        private static async Task<IControlNavigationNewObject> NavigateToNewItemForItem(
             INavigationHost window,
             NavigateToItemConfig config)
-        { 
+        {
+            var containerElement = config.ContainerElement
+                                    ?? throw new InvalidOperationException("containerElement == null");
+            
             var result = new ControlNavigation();
+            
             if (config.MetaClass == null)
             {
                 var createableTypes = new CreatableTypeNavigator();
-                createableTypes.Closed += (x, y) =>
+                
+                var extent = containerElement.GetExtentOf();
+                if (extent != null)
                 {
-                    CreateElementItself(createableTypes.SelectedType);
-                };
-
-                _ = createableTypes.NavigateToSelectCreateableType(window, config.ContainerElement.GetExtentOf());
+                    var navigationResult = await createableTypes.NavigateToSelectCreateableType(window, extent);
+                    if (navigationResult?.Result == NavigationResult.Saved)
+                    {
+                        await CreateElementItself(createableTypes.SelectedType);
+                    }
+                }
             }
             else
             {
-                CreateElementItself(config.MetaClass);
+                await CreateElementItself(config.MetaClass);
             }
 
             // Creates a element by the given metaclass. If parent property is not defined, the parent property
             // may be chosen by the user
-            async void CreateElementItself(IElement selectedMetaclass)
+            async Task CreateElementItself(IElement? selectedMetaclass)
             {
-                var factory = new MofFactory(config.ContainerElement);
+                var factory = new MofFactory(containerElement);
                 var newElement = factory.create(selectedMetaclass);
                 var typeWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
 
@@ -305,16 +290,16 @@ namespace DatenMeister.WPF.Navigation
                 var detailControlView = await NavigateToElementDetailView(
                     window,
                     newElement,
-                    (form) =>
-                    {
+                    form =>
                         form.ViewDefined += (x, y) =>
                         {
                             // Gets the view definition
                             var fields = y.View
-                                    .get<IReflectiveSequence>(_FormAndFields._Form.field);
+                                .get<IReflectiveSequence>(_FormAndFields._DetailForm.field);
                             var formFactory = new MofFactory(fields);
+                            var containerProperty = config.ContainerProperty;
 
-                            if (config.ContainerProperty == null) // ParentProperty is not given, so user gives property
+                            if (containerProperty == null) // ParentProperty is not given, so user gives property
                             {
                                 // Parent property is already given by function call
                                 var dropField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__DropDownFieldData);
@@ -325,7 +310,7 @@ namespace DatenMeister.WPF.Navigation
                                 dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);
 
                                 var list = new List<object>();
-                                var properties = ObjectHelper.GetPropertyNames(config.ContainerElement)
+                                var properties = ObjectHelper.GetPropertyNames(containerElement)
                                     .OrderBy(z => z).Distinct();
                                 foreach (var property in properties)
                                 {
@@ -338,33 +323,39 @@ namespace DatenMeister.WPF.Navigation
                                 dropField.set(_FormAndFields._DropDownFieldData.values, list);
                                 fields.add(0, dropField);
 
-                                // Adds the line to separate it from the other side 
+                                // Adds the line to separate it from the other side
                                 var lineField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__SeparatorLineFieldData);
                                 fields.add(1, lineField);
                             }
-                        };
-                    },
+                        },
                     "New Item");
 
-                if ( detailControlView.Result == NavigationResult.Saved)
+                if (detailControlView != null && detailControlView.Result == NavigationResult.Saved)
                 {
-                    var selectedProperty = config.ContainerProperty != null ? 
-                        config.ContainerProperty : 
-                        detailControlView.AttachedElement.getOrDefault<string>("ParentProperty");
+                    var attachedElement = detailControlView.AttachedElement;
+                    var containerProperty = config.ContainerProperty;
+                    if (attachedElement == null && containerProperty == null)
+                        throw new InvalidOperationException("attachedElement == null");
+                    
+                    var selectedProperty = containerProperty
+                                           ?? attachedElement?.getOrDefault<string>("ParentProperty");
 
-                    if (string.IsNullOrEmpty(selectedProperty))
+                    if (selectedProperty == null || string.IsNullOrEmpty(selectedProperty))
                     {
                         MessageBox.Show("Property to which the new item will be added is not set.");
                         return;
                     }
 
-                    config.ContainerElement.AddCollectionItem(selectedProperty, detailControlView.DetailElement);
+                    var detailElement = detailControlView.DetailElement ??
+                                        throw new InvalidOperationException("DetailElement == null");
+
+                    containerElement.AddCollectionItem(selectedProperty, detailElement);
 
                     // Adds the element to the dialog
                     // collection.add(newElement);
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));
                     result.OnClosed();
-                };
+                }
             }
 
             return result;
@@ -379,40 +370,67 @@ namespace DatenMeister.WPF.Navigation
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToCreateNewItem(
-            INavigationHost window, 
-            IExtent extent, 
-            IElement metaclass)
+        public static async Task<IControlNavigationNewObject?> NavigateToCreateNewItem(
+            INavigationHost window,
+            IExtent extent,
+            IElement? metaclass)
         {
-            var result = new ControlNavigation();
+            
             var factory = new MofFactory(extent);
 
             if (metaclass == null)
             {
                 var createableTypes = new CreatableTypeNavigator();
-                createableTypes.Closed += (x, y) =>
-                {
-                   CreateElementItself(createableTypes.SelectedType);
-                };
 
-                _ = createableTypes.NavigateToSelectCreateableType(window, extent);
+                var windowResult = await createableTypes.NavigateToSelectCreateableType(window, extent);
+                if (windowResult?.Result == NavigationResult.Saved)
+                {
+                    return await CreateElementItself(createableTypes.SelectedType);
+                }
             }
             else
             {
-                CreateElementItself(metaclass);
+                return await CreateElementItself(metaclass);
             }
 
+            return null;
+
             // Defines the class itself that is used to create the elements
-            async void CreateElementItself(IElement selectedMetaClass)
+            async Task<IControlNavigationNewObject> CreateElementItself(IElement? selectedMetaClass)
             {
+                var result = new ControlNavigation();
                 var newElement = factory.create(selectedMetaClass);
                 var detailControlView = await NavigateToElementDetailView(window, newElement, title: "New Item");
 
-                if (detailControlView.Result == NavigationResult.Saved)
+                if (detailControlView != null && detailControlView.Result == NavigationResult.Saved)
                 {
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));
                     result.OnClosed();
+                    result.NewObject = newElement;
+                    result.IsNewObjectCreated = true;
                 }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new item for the given extent being located in the workspace and adds it to the given item
+        /// </summary>
+        /// <param name="window">Navigation extent being used to open up the new dialog</param>
+        /// <param name="extent">Extent which will be used for the factory to create the new item.
+        /// </param>
+        /// <param name="metaclass">Metaclass, whose instance will be created</param>
+        /// <returns>The control element that can be used to receive events from the dialog</returns>
+        public static async Task<IControlNavigationNewObject?> NavigateToCreateNewItemInExtent(
+            INavigationHost window,
+            IExtent extent,
+            IElement metaclass)
+        {
+            var result = await NavigateToCreateNewItem(window, extent, metaclass);
+            if (result?.IsNewObjectCreated == true && result.NewObject != null)
+            {
+                extent.elements().add(result.NewObject);
             }
 
             return result;
@@ -420,19 +438,27 @@ namespace DatenMeister.WPF.Navigation
 
         /// <summary>
         /// Creates a new item for the given extent being located in the workspace and adds it to the given item
+        /// The default classifier hints will be used to add the item
         /// </summary>
         /// <param name="window">Navigation extent being used to open up the new dialog</param>
-        /// <param name="extent">Extent which will be used for the factory to create the new item. 
+        /// <param name="container">Extent which will be used for the factory to create the new item.
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
-        public static IControlNavigationNewItem NavigateToCreateNewItemInExtent(
+        public static async Task<IControlNavigationNewObject?> NavigateToCreateNewItemInExtentOrPackage(
             INavigationHost window,
-            IExtent extent,
+            IObject container,
             IElement metaclass)
         {
-            var result = NavigateToCreateNewItem(window, extent, metaclass);
-            result.NewItemCreated += (x, y) => { extent.elements().add(y.NewItem); };
+            var extent = container.GetExtentOf()
+                         ?? throw new InvalidOperationException("The extent was not found");
+
+            var result = await NavigateToCreateNewItem(window, extent, metaclass);
+            if (result?.IsNewObjectCreated == true && result.NewObject != null)
+            {
+                DefaultClassifierHints.AddToExtentOrElement(container, result.NewObject);
+            }
+
             return result;
         }
 
@@ -445,64 +471,67 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="property">Property to which the result will be added</param>
         /// <param name="metaClass">Metaclass that is created </param>
         /// <returns>The navigation being used for the control</returns>
-        public static IControlNavigationNewItem NavigateToNewItemForPropertyCollection(
+        public static async Task<IControlNavigationNewObject?> NavigateToNewItemForPropertyCollection(
             INavigationHost window,
             IObject host,
             string property,
             IElement metaClass)
         {
             var reflectiveCollection = host.get<IReflectiveCollection>(property);
-            return NavigateToNewItemForCollection(
+            return await NavigateToNewItemForCollection(
                 window,
                 reflectiveCollection,
                 metaClass);
         }
 
         /// <summary>
-        /// Creates a new item for the given extent and reflective collection by metaclass 
+        /// Creates a new item for the given extent and reflective collection by metaclass
         /// </summary>
         /// <param name="window">Navigation extent of window</param>
         /// <param name="collection">Extent to which the item will be added</param>
-        /// <param name="metaClass">Metaclass to be added</param>
+        /// <param name="metaclass">Metaclass to be added</param>
         /// <returns>The navigation being used for control</returns>
-        public static IControlNavigationNewItem NavigateToNewItemForCollection(
-            INavigationHost window, 
+        public static async Task<IControlNavigationNewObject?> NavigateToNewItemForCollection(
+            INavigationHost window,
             IReflectiveCollection collection,
-            IElement metaclass)
+            IElement? metaclass)
         {
-            var result = new ControlNavigation();
             var factory = new MofFactory(collection);
 
             if (metaclass == null)
             {
                 var createableTypes = new CreatableTypeNavigator();
-                createableTypes.Closed += (x, y) =>
-                {
-                    CreateElementItself(createableTypes.SelectedType);
-                };
 
-                _ = createableTypes.NavigateToSelectCreateableType(window, collection.GetAssociatedExtent());
+                var windowResult = await createableTypes.NavigateToSelectCreateableType(window, collection.GetAssociatedExtent());
+                if (windowResult?.Result == NavigationResult.Saved)
+                {
+                    return await CreateElementItself(createableTypes.SelectedType);
+                }
+
             }
             else
             {
-                CreateElementItself(metaclass);
+                return await CreateElementItself(metaclass);
             }
 
-            async void CreateElementItself(IElement selectedMetaClass)
+            return null;
+
+            async Task<IControlNavigationNewObject> CreateElementItself(IElement? selectedMetaClass)
             {
+                var result = new ControlNavigation();
                 var newElement = factory.create(selectedMetaClass);
 
                 var detailControlView = await NavigateToElementDetailView(window, newElement, title: "New Item");
 
-                if ( detailControlView.Result == NavigationResult.Saved)
+                if (detailControlView != null && detailControlView.Result == NavigationResult.Saved)
                 {
                     collection.add(newElement);
                     result.OnNewItemCreated(new NewItemEventArgs(newElement));
                     result.OnClosed();
-                };
-            }
+                }
 
-            return result;
+                return result;
+            }
         }
     }
 }

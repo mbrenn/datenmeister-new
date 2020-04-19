@@ -23,10 +23,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
 
             var result = new PureReflectiveSequence();
             foreach (var element in found)
-            {
                 result.add(element);
-
-            }
 
             return result;
         }
@@ -45,9 +42,7 @@ namespace DatenMeister.Runtime.Functions.Transformation
 
             var result = new PureReflectiveSequence();
             foreach (var element in found)
-            {
                 result.add(element);
-            }
 
             return result;
         }

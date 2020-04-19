@@ -1,0 +1,11 @@
+== How to develop for DatenMeister == 
+
+Get the GitHub Repository: 
+
+- https://github.com/mbrenn/datenmeister-new
+- http://datenmeister.net
+
+Get the GitHub-Repositories including submodules. Open the .sln with Microsoft Visual Studio or Jet Brains Rider. Let it go, let it snow. 
+
+
+include::development_packages.adoc[]

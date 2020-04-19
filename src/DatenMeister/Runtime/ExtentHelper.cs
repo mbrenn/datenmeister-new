@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -18,52 +20,26 @@ namespace DatenMeister.Runtime
         /// </summary>
         public static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentHelper));
 
-        private const string DatenmeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
-
-        private const string ExtentType = "__ExtentType";
-
+        public static ExtentConfiguration GetConfiguration(this IExtent extent)
+            => (extent as MofExtent)?.ExtentConfiguration
+               ?? throw new InvalidOperationException("Configuration is not existing");
+       
         /// <summary>
-        /// Sets the extent type
+        /// Returns the element, representing the .Net class
         /// </summary>
-        /// <param name="extent">Extent, which shall get a type</param>
-        /// <param name="extentType">Type of the extent to be set</param>
-        public static void SetExtentType(this IExtent extent, string extentType)
+        /// <param name="extent">Extent to be used as base</param>
+        /// <param name="type">Type to be resolves</param>
+        /// <returns>The element being resolved</returns>
+        public static IElement? ToResolvedElement(this MofExtent extent, Type type)
         {
-            extent.set(ExtentType, extentType);
+            var element = extent.TypeLookup.ToElement(type);
+            if (element == null || string.IsNullOrEmpty(element))
+                return null;
+
+            return extent.GetUriResolver().Resolve(element, ResolveType.Default);
         }
 
-        /// <summary>
-        /// Gets the extent type
-        /// </summary>
-        /// <param name="extent">Type of the extent to be set</param>
-        public static string GetExtentType(this IExtent extent)
-        {
-            return extent?.GetOrDefault(ExtentType)?.ToString() ?? string.Empty;
-        }
-
-        /// <summary>
-        /// Sets the default type package which is shown, when the user wants 
-        /// to create a new item
-        /// </summary>
-        /// <param name="extent">Extent shall get the default type package</param>
-        /// <param name="defaultTypePackage">The element which shall be considered as the 
-        /// default type package</param>
-        public static void SetDefaultTypePackage(this IExtent extent, IElement defaultTypePackage)
-        {
-            extent.set(DatenmeisterDefaultTypePackage, defaultTypePackage);
-        }
-
-        /// <summary>
-        /// Gets the default type package
-        /// </summary>
-        /// <param name="extent">Extent to be used</param>
-        /// <returns>The found element</returns>
-        public static IElement GetDefaultTypePackage(this IExtent extent)
-        {
-            return extent?.GetOrDefault(DatenmeisterDefaultTypePackage) as IElement;
-        }
-
-        public static IElement Resolve(this IExtent extent, IElement element)
+        public static IElement? Resolve(this IExtent extent, IElement element)
         {
             if (!(extent is MofUriExtent mofUriExtent))
             {
@@ -96,7 +72,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="extent">Extent to be queried</param>
         /// <returns>The workspace correlated to the extent</returns>
-        public static IWorkspace GetWorkspace(this IExtent extent) => (extent as IHasWorkspace)?.Workspace;
+        public static IWorkspace? GetWorkspace(this IExtent extent) => (extent as IHasWorkspace)?.Workspace;
 
         /// <summary>
         ///     Returns an enumeration of all columns that are within the given extent
@@ -111,7 +87,7 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Removes all elements within the reflective collection 
+        /// Removes all elements within the reflective collection
         /// </summary>
         /// <param name="elements">Elements in which all elements shall be removed</param>
         public static void RemoveAll(this IReflectiveCollection elements)
@@ -134,18 +110,15 @@ namespace DatenMeister.Runtime
             var result = new List<object>();
             foreach (var item in elements)
             {
-                if (item is IObjectAllProperties)
+                if (item is IObjectAllProperties itemAsObjectExt)
                 {
-                    var itemAsObjectExt = item as IObjectAllProperties;
                     var properties = itemAsObjectExt.getPropertiesBeingSet();
 
-                    foreach (var property in properties)
+                    foreach (var property in properties
+                        .Where(property => !result.Contains(property)))
                     {
-                        if (!result.Contains(property))
-                        {
-                            result.Add(property);
-                            yield return property;
-                        }
+                        result.Add(property);
+                        yield return property;
                     }
                 }
             }
@@ -157,9 +130,9 @@ namespace DatenMeister.Runtime
         /// <param name="extents">Extents to be parsed</param>
         /// <param name="value">Element to be found</param>
         /// <returns>the extent with the element or none</returns>
-        public static IUriExtent WithElement(this IEnumerable<IUriExtent> extents, IObject value)
+        public static IUriExtent? WithElement(this IEnumerable<IUriExtent> extents, IObject value)
         {
-            // If the object is contained by another object, query the contained objects 
+            // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
             var parent = asElement?.container();
@@ -180,9 +153,9 @@ namespace DatenMeister.Runtime
 
             foreach (var extent in uriExtents)
             {
-                if (extent is IExtentCachesObject)
+                // ReSharper disable once SuspiciousTypeConversion.Global
+                if (extent is IExtentCachesObject extentAsObjectCache)
                 {
-                    var extentAsObjectCache = extent as IExtentCachesObject;
                     if (extentAsObjectCache.HasObject(value))
                     {
                         return extent;
@@ -210,11 +183,41 @@ namespace DatenMeister.Runtime
         /// <param name="extent">Extent to be evaluated</param>
         /// <param name="type">Type converter finding the requested type</param>
         /// <returns>The found element</returns>
-        public static IElement FindInMeta<TFilledType>(this IExtent extent, Func<TFilledType, IElement> type)
+        public static IElement? FindInMeta<TFilledType>(this IExtent extent, Func<TFilledType, IElement> type)
             where TFilledType : class, new()
         {
-            var filledType = ((MofExtent)extent).Workspace.GetFromMetaWorkspace<TFilledType>();
+            var filledType = ((MofExtent) extent).Workspace?.GetFromMetaWorkspace<TFilledType>();
             return filledType == null ? null : type(filledType);
+        }
+
+        /// <summary>
+        /// Checks whether the requested id is still available in the extent.
+        /// If that's the case, the element receives the given id, otherwise, the id will get a unique suffix
+        /// </summary>
+        /// <param name="extent">Extent to which the element is planned to be added</param>
+        /// <param name="element">Element which is planned to be added</param>
+        /// <param name="requestedId">Requested id</param>
+        /// <returns>The actual id being added</returns>
+        public static string SetAvailableId(IUriExtent extent, IElement element, string requestedId)
+        {
+            if (!(element is ICanSetId canSetId)) throw new InvalidOperationException("element is not of type ICanSetId");
+
+            var testedId = requestedId;
+            var currentNr = 0;
+
+            do
+            {
+                var found = extent.element("#" + testedId);
+                if (found == null)
+                {
+                    canSetId.Id = testedId;
+                    return testedId;
+                }
+
+                currentNr++;
+                testedId = requestedId + "-" + currentNr;
+
+            } while (true);
         }
     }
 }

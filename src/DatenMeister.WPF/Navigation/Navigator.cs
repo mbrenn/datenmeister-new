@@ -11,12 +11,12 @@ namespace DatenMeister.WPF.Navigation
     public enum NavigationMode
     {
         /// <summary>
-        /// Shows a list of items 
+        /// Shows a list of items
         /// </summary>
-        List, 
+        List,
 
         /// <summary>
-        /// Shows a detailled view of items
+        /// Shows a detailed view of items
         /// </summary>
         Detail
     }
@@ -29,21 +29,28 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Category for all global and file issues
         /// </summary>
-        public static string File = "File";
+        public const string DatenMeister = "DatenMeister";
 
-        public static string Type = "Types";
+        public const string Type = "TypeManager";
 
-        public static string Views = "Views";
+        public const string Views = "Views";
+
+        public const string Extents = "Extent";
 
         /// <summary>
         /// Defines the order of the ribbon for standard items.
         /// All other ribbons will be stored after that
         /// </summary>
-        public static string[] RibbonOrder = {
-            "File",
+        public static readonly string[] RibbonOrder =
+        {
+            DatenMeister,
             "Extent",
             "Item"
         };
+
+        public const string DatenMeisterNavigation = "DatenMeister" + ".Navigation";
+
+        public const string Form = "Form";
     }
 
     /// <summary>
@@ -51,7 +58,6 @@ namespace DatenMeister.WPF.Navigation
     /// </summary>
     public enum NavigationResult
     {
-
         /// <summary>
         /// User has done nothing, since the navigation type does not offer such kind of userdialog feedback
         /// </summary>
@@ -78,24 +84,24 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Stores the result of the navigation
         /// </summary>
-        public NavigationResult Result { get; set; }
+        public NavigationResult? Result { get; set; }
 
         /// <summary>
         /// Stores the detail element that was shown
         /// </summary>
-        public IObject DetailElement { get; set; }
+        public IObject? DetailElement { get; set; }
 
         /// <summary>
         /// Gets or sets the host for navigation
         /// </summary>
-        public INavigationHost NavigationHost { get; set; }
+        public INavigationHost? NavigationHost { get; set; }
 
         /// <summary>
         /// Gets or sets the guest for navigation
         /// </summary>
-        public INavigationGuest NavigationGuest { get; set; }
+        public INavigationGuest? NavigationGuest { get; set; }
 
-        public IObject AttachedElement { get; set; }
+        public IObject? AttachedElement { get; set; }
     }
 
     /// <summary>
@@ -109,29 +115,30 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="navigationHost"></param>
         /// <param name="navigateToItemConfig"></param>
         /// <returns></returns>
-        public static Task<NavigateToElementDetailResult> CreateDetailWindow(
+        public static async Task<NavigateToElementDetailResult?> CreateDetailWindow(
             INavigationHost navigationHost,
             NavigateToItemConfig navigateToItemConfig)
         {
+            if (navigateToItemConfig == null) 
+                throw new ArgumentNullException(nameof(navigateToItemConfig));
+            
             var task = new TaskCompletionSource<NavigateToElementDetailResult>();
             var result = new NavigateToElementDetailResult();
 
             var detailFormWindow = new DetailFormWindow
             {
-                Owner = navigationHost.GetWindow(),
-                DetailElementContainer = navigateToItemConfig.DetailElementContainer
+                Owner = navigationHost.GetWindow()
             };
 
             detailFormWindow.SetContent(
-                navigateToItemConfig.DetailElement, 
-                new ViewDefinition(navigateToItemConfig.FormDefinition), 
-                navigateToItemConfig.DetailElementContainer);
+                navigateToItemConfig.DetailElement,
+                navigateToItemConfig.Form,
+                navigateToItemConfig.ContainerCollection);
 
             detailFormWindow.Cancelled += (x, y) =>
             {
                 result.Result = NavigationResult.Cancelled;
                 task.SetResult(result);
-                navigationHost.GetWindow();
             };
 
             detailFormWindow.Saved += (x, y) =>
@@ -143,10 +150,13 @@ namespace DatenMeister.WPF.Navigation
 
             detailFormWindow.SwitchToMinimumSize();
 
-            navigateToItemConfig.AfterCreatedFunction?.Invoke(detailFormWindow.MainControl as DetailFormControl);
-            detailFormWindow.Show();
+            if (detailFormWindow.MainControl is DetailFormControl mainControl)
+            {
+                navigateToItemConfig.AfterCreatedFunction?.Invoke(mainControl);
+                detailFormWindow.Show();
+            }
 
-            return task.Task;
+            return await task.Task;
         }
 
         /// <summary>
@@ -156,18 +166,16 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="factoryMethod">Factory method to be used to create the usercontrol</param>
         /// <param name="navigationMode">Mode of the navigation</param>
         /// <returns>Creates a new window which can be used by the user. </returns>
-        public static Task<NavigateToElementDetailResult> NavigateByCreatingAWindow(
-            Window parentWindow, 
-            Func<UserControl> factoryMethod, 
+        public static async Task<NavigateToElementDetailResult?> NavigateByCreatingAWindow(
+            Window parentWindow,
+            Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
-            var task = new TaskCompletionSource<NavigateToElementDetailResult>();
+            var task = new TaskCompletionSource<NavigateToElementDetailResult?>();
             var result = new NavigateToElementDetailResult();
 
             if (parentWindow == null)
-            {
                 throw new InvalidOperationException("No parent window is not allowed");
-            }
 
             var userControl = factoryMethod();
             result.NavigationHost = parentWindow as INavigationHost;
@@ -219,7 +227,7 @@ namespace DatenMeister.WPF.Navigation
                         task.SetResult(result);
                     };
 
-                    asDetailFormControl.UpdateContent();
+                    asDetailFormControl.UpdateView();
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
 
                     detailFormWindow.Show();
@@ -227,7 +235,7 @@ namespace DatenMeister.WPF.Navigation
                 }
             }
 
-            return task.Task;
+            return await task.Task;
         }
 
         /// <summary>

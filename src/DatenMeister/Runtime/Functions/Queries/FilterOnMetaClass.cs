@@ -8,12 +8,12 @@ namespace DatenMeister.Runtime.Functions.Queries
 {
     public class FilterOnMetaClass : ProxyReflectiveCollection
     {
-        private readonly IElement[] _filteredMetaClass;
+        private readonly IElement[]? _filteredMetaClass;
 
-        public FilterOnMetaClass(IReflectiveCollection collection, IElement filteredMetaClass)
+        public FilterOnMetaClass(IReflectiveCollection collection, IElement? filteredMetaClass)
             : base(collection)
         {
-            _filteredMetaClass = new[] {filteredMetaClass};
+            _filteredMetaClass = filteredMetaClass == null ? null : new[] {filteredMetaClass};
         }
 
         public FilterOnMetaClass(IReflectiveCollection collection, IElement[] filteredMetaClass)
@@ -28,7 +28,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 var valueAsObject = value as IElement;
 
-                if (IsInList(valueAsObject))
+                if (valueAsObject != null && IsInList(valueAsObject))
                 {
                     yield return valueAsObject;
                 }
@@ -41,6 +41,9 @@ namespace DatenMeister.Runtime.Functions.Queries
             foreach (var value in Collection)
             {
                 var valueAsObject = value as IElement;
+                if (valueAsObject == null) 
+                    continue;
+                
                 if (IsInList(valueAsObject))
                 {
                     result++;
@@ -60,13 +63,9 @@ namespace DatenMeister.Runtime.Functions.Queries
             var isIn = false;
             var metaClass = valueAsObject?.getMetaClass();
             if (metaClass == null && _filteredMetaClass == null)
-            {
                 isIn = true;
-            }
-            else if (metaClass != null && _filteredMetaClass.Contains(metaClass))
-            {
-                isIn = true;
-            }
+            else if (metaClass != null && _filteredMetaClass?.Any(x => x.@equals(metaClass)) == true) isIn = true;
+
             return isIn;
         }
     }

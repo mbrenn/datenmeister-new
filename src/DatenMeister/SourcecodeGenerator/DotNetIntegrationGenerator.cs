@@ -9,16 +9,16 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class DotNetIntegrationGenerator
     {
-        public StringBuilder Result { get; private set; }
+        public StringBuilder Result { get; private set; } = new StringBuilder();
 
         public void Create(
             string nameSpace,
             string packageName,
             IEnumerable<Type> types)
         {
-            Result = new StringBuilder();
+            Result.Clear();
 
-            WalkPackageClass.CallStack stack = new WalkPackageClass.CallStack(null);
+            var stack = new WalkPackageClass.CallStack(null);
 
             Result.AppendLine($"{stack.Indentation}using DatenMeister;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core;");
@@ -48,9 +48,9 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}/// <param name=\"filledStructure\">The form and fields structure</param>");
             Result.AppendLine($"{stack.Indentation}/// <param name=\"extent\">And finally extent to which the types shall be registered</param>");
             Result.AppendLine(
-                $"{stack.Indentation}public static void Assign(" + 
-                "_UML uml, IFactory factory, IReflectiveCollection collection, " + 
-                $"_{packageName} filledStructure, MofUriExtent extent)");
+                $"{stack.Indentation}public static void Assign(" +
+                "_UML uml, IFactory factory, IReflectiveCollection collection, " +
+                $"_{packageName} filledStructure, MofExtent extent)");
             Result.AppendLine($"{stack.Indentation}{{");
 
             stack = stack.Next;
@@ -61,27 +61,26 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine($"{stack.Indentation}{{"); // Inner scope
 
                 stack = stack.Next;
-                var fullName = type.FullName.Replace('+', '.');
+                var fullName = type.FullName?.Replace('+', '.');
 
                 Result.AppendLine($"{stack.Indentation}var type = typeof({fullName});");
                 Result.AppendLine($"{stack.Indentation}var typeAsElement = generator.CreateTypeFor(type);");
                 Result.AppendLine($"{stack.Indentation}collection.add(typeAsElement);");
                 Result.AppendLine($"{stack.Indentation}filledStructure.__{type.Name} = typeAsElement;");
                 Result.AppendLine($"{stack.Indentation}extent.TypeLookup.Add(typeAsElement, type);");
-                
 
-                stack = stack.Owner;
+
+                stack = stack.Owner!;
                 Result.AppendLine($"{stack.Indentation}}}"); // Inner scope
-
             }
 
-            stack = stack.Owner;
+            stack = stack.Owner!;
             Result.AppendLine($"{stack.Indentation}}}"); // method
 
-            stack = stack.Owner;
+            stack = stack.Owner!;
             Result.AppendLine($"{stack.Indentation}}}"); // class
 
-            stack = stack.Owner;
+            stack = stack.Owner!;
             Result.AppendLine($"{stack.Indentation}}}"); // namespace
         }
     }

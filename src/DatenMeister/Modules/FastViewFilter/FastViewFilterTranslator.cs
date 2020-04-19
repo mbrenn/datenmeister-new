@@ -17,7 +17,6 @@ namespace DatenMeister.Modules.FastViewFilter
 
         public string TranslateType(IObject metaClassType)
         {
-
             if (metaClassType.Equals(_FastViewFilters.TheOne.__PropertyContainsFilter))
             {
                 return "Property contains...";
@@ -40,6 +39,8 @@ namespace DatenMeister.Modules.FastViewFilter
         public string TranslateFilter(IElement fastFilter)
         {
             var metaClass = fastFilter.getMetaClass();
+            if (metaClass == null) return "Unknown";
+            
             if (metaClass.Equals(_FastViewFilters.TheOne.__PropertyComparisonFilter))
             {
                 var property = fastFilter.get<string>(_FastViewFilters._PropertyComparisonFilter.Property);

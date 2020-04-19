@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Algorithm;
 using DatenMeister.Runtime.Functions.Queries;
@@ -19,6 +20,7 @@ namespace DatenMeister.Modules.UserManagement
     public class UserLogic
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
+
         /// <summary>
         /// Defines the default extent for the users
         /// </summary>
@@ -57,15 +59,19 @@ namespace DatenMeister.Modules.UserManagement
                 WorkspaceNames.NameManagement,
                 ExtentUri,
                 ExtentName,
-                null, 
+                "",
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
+            if (extent == null)
+            {
+                throw new InvalidOperationException("Extent could not be created");
+            }
 
-            if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))
+            if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement))
             {
                 // Create new settings
                 var factory = new MofFactory(extent);
                 var element = factory.create(types[1]);
-                element.set(nameof(UserManagementSettings.Salt), RandomFunctions.GetRandomAlphanumericString(16));
+                element.set(nameof(UserManagementSettings.salt), RandomFunctions.GetRandomAlphanumericString(16));
                 extent.elements().add(element);
                 Logger.Info("UserLogic - Created Salt...");
             }
@@ -80,39 +86,44 @@ namespace DatenMeister.Modules.UserManagement
         /// </summary>
         public void ClearDatabase()
         {
-            GetsUserDatabase().elements().clear();
+            GetUserDatabase().elements().clear();
         }
 
         public (string password, string salt) HashPassword(string password)
         {
-            var userDatabase = GetsUserDatabase();
+            var userDatabase = GetUserDatabase();
             var salt = RandomFunctions.GetRandomAlphanumericString(16);
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
-            var settings = userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
 
-            Debug.Assert(settings != null, "settings != null");
-            var globalSalt = settings.get(nameof(UserManagementSettings.Salt)).ToString();
+            if (!(userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))
+            {
+                throw new InvalidOperationException("UserManagementSettings is not found");
+            }
+            
+            var globalSalt = settings.getOrDefault<string>(nameof(UserManagementSettings.salt));
 
             var totalPassword = salt + password + globalSalt;
 
             return (totalPassword, salt);
         }
 
-        private IUriExtent GetsUserDatabase()
+        private IUriExtent GetUserDatabase()
         {
-            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement).FindExtent(ExtentName);
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement)?.FindExtent(ExtentName);
+            if (userDatabase == null)
+            {
+                throw new InvalidOperationException("User Database was not found");
+            }
+            
             return userDatabase;
         }
 
         public void AddUser(string username, string password)
         {
-            
         }
 
-        public bool VerifyUser(string username, string password)
-        {
-            return true;
-        }
+        public bool VerifyUser(string username, string password) =>
+            true;
 
         public void ChangePassword(string username, string password)
         {

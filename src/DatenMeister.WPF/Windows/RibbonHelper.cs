@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,13 +7,15 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
 using DatenMeister.WPF.Modules;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Windows
 {
-    public class RibbonHelper
+    public class RibbonHelper : NavigationExtensionHelper
     {
         /// <summary>
         /// Defines the logger
@@ -24,32 +27,36 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Stores the icon repository
         /// </summary>
-        private static IIconRepository IconRepository { get; set; }
+        private static IIconRepository? IconRepository { get; set; }
 
-        private readonly List<RibbonHelperItem> _buttons =
-            new List<RibbonHelperItem>();
+        private readonly List<RibbonHelperItem> _buttons = new List<RibbonHelperItem>();
 
         private class RibbonHelperItem
         {
-            public RibbonButtonDefinition Definition { get; set; }
+            public NavigationButtonDefinition Definition { get; set; }
 
             public RibbonButton Button { get; set; }
 
-            public RoutedEventHandler ClickEvent { get; set; }
+            public RoutedEventHandler? ClickEvent { get; set; }
 
+
+            public RibbonHelperItem(NavigationButtonDefinition definition, RibbonButton button, RoutedEventHandler clickEvent)
+            {
+                Definition = definition;
+                Button = button;
+                ClickEvent = clickEvent;
+            }
             /// <summary>
             /// Converts the item to a string
             /// </summary>
             /// <returns></returns>
             public override string ToString()
-            {
-                return $"HelperItem: {Definition}";
-            }
+                => $"HelperItem: {Definition}";
         }
 
         /// <summary>
-        /// Loads the icon repository. 
-        /// If DatenMeister.Icons is existing, then the full and cool icons will be used. 
+        /// Loads the icon repository.
+        /// If DatenMeister.Icons is existing, then the full and cool icons will be used.
         /// </summary>
         public void LoadIconRepository()
         {
@@ -71,7 +78,7 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
-        public RibbonHelper(IHasRibbon mainWindow)
+        public RibbonHelper(IHasRibbon mainWindow, NavigationScope navigationScope) : base(navigationScope)
         {
             _mainWindow = mainWindow;
         }
@@ -80,13 +87,21 @@ namespace DatenMeister.WPF.Windows
         /// Adds a navigational element to the ribbons
         /// </summary>
         /// <param name="definition">The definition to be used</param>
-        private void AddNavigationButton(RibbonButtonDefinition definition)
+        private void AddNavigationButton(NavigationButtonDefinition definition)
         {
+            if ( IconRepository == null )
+                throw new InvalidOperationException("IconRepository not loaded");
+            
             // Ok, we have not found it, so create the button
             var name = definition.Name;
             var categoryName = definition.CategoryName;
             var imageName = definition.ImageName;
-            var clickMethod = definition.OnPressed;
+
+            var clickMethod = CreateClickMethod(definition);
+            if (clickMethod == null)
+            {
+                return;
+            }
 
             string tabName, groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');
@@ -145,7 +160,7 @@ namespace DatenMeister.WPF.Windows
                     }
                 }
             }
-            
+
             var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);
             if (@group == null)
             {
@@ -159,25 +174,17 @@ namespace DatenMeister.WPF.Windows
             var button = new RibbonButton
             {
                 Label = name,
-                LargeImageSource = string.IsNullOrEmpty(imageName) ? null : IconRepository.GetIcon(imageName)
+                LargeImageSource = string.IsNullOrEmpty(imageName)
+                    ? null
+                    : IconRepository.GetIcon(imageName!),
+                IsEnabled = definition.IsEnabled
             };
 
-            var item = new RibbonHelperItem
-            {
-                Definition = definition,
-                Button = button,
-                ClickEvent = (x, y) =>
-                {
-                    if (clickMethod == null)
-                    {
-                        Logger.Error("No method defined which is called after a click");
-                    }
-                    else
-                    {
-                        clickMethod();
-                    }
-                }
-            };
+            var item = new RibbonHelperItem(
+                definition,
+                button,
+                (x, y) => { clickMethod(); });
+
             _buttons.Add(item);
             button.Click += item.ClickEvent;
 
@@ -200,43 +207,34 @@ namespace DatenMeister.WPF.Windows
         }
 
         /// <summary>
-        /// Prepares the default navigation
+        /// Evaluates the viewExtensions to create the navigation buttons
         /// </summary>
-        public IEnumerable<ViewExtension> GetDefaultNavigation()
-        {
-            return new[]
-            {
-                new RibbonButtonDefinition(
-                    "Close",
-                    () => (_mainWindow as Window)?.Close(),
-                    "file-exit",
-                    NavigationCategories.File),
-                new RibbonButtonDefinition("About",
-                    () => new AboutDialog
-                    {
-                        Owner = _mainWindow as Window
-                    }.ShowDialog(),
-                    "file-about",
-                    NavigationCategories.File)
-            };
-        }
-
+        /// <param name="viewExtensions">Enumeration of view extensions</param>
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
             var copiedList = _buttons.ToList();
 
-            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Priority))
+            foreach (var viewExtension in viewExtensions.OfType<NavigationButtonDefinition>()
+                .OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
-                var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));
+                var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
                 if (foundTuple != null)
                 {
                     copiedList.Remove(foundTuple);
 
                     // Reorganizes the buttons
                     foundTuple.Button.Click -= foundTuple.ClickEvent;
-                    foundTuple.ClickEvent = (x, y) => viewExtension.OnPressed();
+                    var clickMethod = CreateClickMethod(viewExtension);
+                    if (clickMethod == null)
+                    {
+                        Logger.Error($"No further action defined anymore for item{viewExtension.Name}");
+                        continue;
+                    }
+
+                    foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
+                    foundTuple.Button.IsEnabled = viewExtension.IsEnabled;
                 }
                 else
                 {

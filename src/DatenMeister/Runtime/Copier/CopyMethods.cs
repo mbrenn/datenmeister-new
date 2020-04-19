@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -35,7 +36,7 @@ namespace DatenMeister.Runtime.Copier
         /// <param name="targetPropertyName">Name of the property to which the elements will be added</param>
         /// <param name="copyOptions">Copies the options</param>
         public static void CopyToElementsProperty(
-            IReflectiveCollection collection, 
+            IReflectiveCollection collection,
             IObject targetElement,
             string targetPropertyName,
             CopyOption copyOptions)
@@ -57,7 +58,7 @@ namespace DatenMeister.Runtime.Copier
                         targetCollection.add(copiedElement);
                     }
                 }
-                else
+                else if (setProperty != null)
                 {
                     var newList = new List<object> {setProperty};
                     newList.AddRange(copiedElements);
@@ -83,9 +84,9 @@ namespace DatenMeister.Runtime.Copier
             string targetProperty)
         {
             CopyToTargetWorkspace(
-                sourceExtent.elements(), 
-                sourcePath, 
-                targetExtent.elements(), 
+                sourceExtent.elements(),
+                sourcePath,
+                targetExtent.elements(),
                 targetPath,
                 targetProperty);
         }
@@ -105,9 +106,12 @@ namespace DatenMeister.Runtime.Copier
             string targetPath,
             string targetProperty)
         {
-            var sourceElement = NamedElementMethods.GetByFullName(sourceExtent, sourcePath);
+            var sourceElement = NamedElementMethods.GetByFullName(sourceExtent, sourcePath)
+                                ?? throw new InvalidOperationException("sourcePath does not show to source element");
             var copiedElement = new ObjectCopier(new MofFactory(targetExtent)).Copy(sourceElement);
-            var targetElement = NamedElementMethods.GetByFullName(targetExtent, targetPath);
+            var targetElement = NamedElementMethods.GetByFullName(targetExtent, targetPath)
+                                ?? throw new InvalidOperationException("targetPath does not show to source element");
+
             if (!targetElement.isSet(targetProperty))
             {
                 var newList = new object[] {copiedElement};
@@ -122,7 +126,7 @@ namespace DatenMeister.Runtime.Copier
                 }
                 else
                 {
-                    var newList = new object[] {setProperty, copiedElement};
+                    var newList = new[] {setProperty, copiedElement};
                     targetElement.set(targetProperty, newList);
                 }
             }

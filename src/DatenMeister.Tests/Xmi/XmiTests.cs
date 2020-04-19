@@ -52,7 +52,7 @@ namespace DatenMeister.Tests.Xmi
             var document = XDocument.Load("Xmi/MOF.xmi");
             Assert.That(XmiId.IsValid(document), Is.True);
 
-            // Adds an artificial node, which duplicates an id. 
+            // Adds an artificial node, which duplicates an id.
             document.Root.Add(
                 new XElement ("other", new XAttribute(Namespaces.Xmi + "id", "_MOF-Identifiers-Extent")));
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Tests.Xmi
             var dataLayerLogic = new WorkspaceLogic(data);
 
             var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
-                data.Uml, 
+                data.Uml,
                 BootstrapMode.Mof,
                 new Bootstrapper.FilePaths
                 {
@@ -177,7 +177,7 @@ namespace DatenMeister.Tests.Xmi
             var dataLayerLogic = new WorkspaceLogic(data);
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
-                data.Mof, 
+                data.Mof,
                 BootstrapMode.Mof);
 
             return data.Mof.Get<_UML>();

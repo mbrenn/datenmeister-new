@@ -14,7 +14,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// Stores the stream writer instance being used to write the content of the
         /// html report into a file, network or other stream
         /// </summary>
-        private StreamWriter _streamWriter;
+        private StreamWriter? _streamWriter;
 
         /// <summary>
         /// Flag whether the stream writer is disposed
@@ -30,11 +30,11 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             _streamWriter = new StreamWriter(stream, Encoding.UTF8);
         }
-        
+
         /// <summary>
         /// Gets or sets the css style sheet being used for that report
         /// </summary>
-        public string CssStyleSheet { get; set; }
+        public string? CssStyleSheet { get; set; }
 
         /// <summary>
         /// Creates a new HtmlReport and stores the content of the
@@ -51,6 +51,9 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// </summary>
         public void StartReport(string pageTitle)
         {
+            if (_streamWriter == null)
+                throw new InvalidOperationException("StreamWriter is not set");
+            
             _streamWriter.WriteLine("<!DOCTYPE html>");
             _streamWriter.WriteLine("<html>");
             _streamWriter.WriteLine("  <head>");
@@ -60,9 +63,9 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
             {
                 _streamWriter.WriteLine("  <style>");
                 _streamWriter.WriteLine(CssStyleSheet);
-                _streamWriter.WriteLine("  </style>");    
+                _streamWriter.WriteLine("  </style>");
             }
-            
+
             _streamWriter.WriteLine("  <body>");
         }
 
@@ -73,6 +76,9 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// should be an element within this namespace. </param>
         public void Add(HtmlElement elementToBeAdded)
         {
+            if (_streamWriter == null)
+                throw new InvalidOperationException("StreamWriter is not set");
+            
             _streamWriter.WriteLine(elementToBeAdded.ToString());
         }
 
@@ -82,14 +88,14 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// <exception cref="InvalidOperationException"></exception>
         public void EndReport()
         {
-            if (_isDisposed)
+            if (_isDisposed || _streamWriter == null)
             {
                 throw new InvalidOperationException("The Report is already disposed");
             }
-            
+
             _streamWriter.WriteLine("  </body>");
             _streamWriter.WriteLine("</html>");
-            
+
             Dispose();
         }
 

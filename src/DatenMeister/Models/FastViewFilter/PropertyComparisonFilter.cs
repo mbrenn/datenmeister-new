@@ -14,16 +14,16 @@
         /// <summary>
         /// Gets or sets the property being filtered
         /// </summary>
-        public string Property { get; set; }
+        public string Property { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the comparison type
         /// </summary>
-        public ComparisonType ComparisonType { get; set; }    
+        public ComparisonType ComparisonType { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of the Comparison 
+        /// Gets or sets the value of the Comparison
         /// </summary>
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
     }
 }

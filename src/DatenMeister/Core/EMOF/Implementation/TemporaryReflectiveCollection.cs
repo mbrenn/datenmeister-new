@@ -8,35 +8,30 @@ namespace DatenMeister.Core.EMOF.Implementation
 {
     public class TemporaryReflectiveCollection : IReflectiveCollection
     {
-        protected IEnumerable<object> Values;
+        protected IEnumerable<object?> Values;
 
         /// <summary>
         /// Gets or sets a value whether the temporary collection is read-only and hinders adding new items
         /// </summary>
-        protected  bool IsReadOnly { get; set; }
-
+        public bool IsReadOnly { get; set; }
 
         public TemporaryReflectiveCollection()
         {
-            Values = new List<object>();
+            Values = new List<object?>();
         }
 
-        public TemporaryReflectiveCollection(IEnumerable<object> values)
+        public TemporaryReflectiveCollection(IEnumerable<object?> values)
         {
             Values = values;
         }
 
         /// <inheritdoc />
-        public IEnumerator<object> GetEnumerator()
-        {
-            return Values.GetEnumerator();
-        }
+        public IEnumerator<object?> GetEnumerator()
+            => Values.GetEnumerator();
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Values.GetEnumerator();
-        }
+            => Values.GetEnumerator();
 
         /// <summary>
         /// Checks whether this reflective collection is read-only and throws an exception if yes
@@ -44,9 +39,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         private void CheckForReadOnly()
         {
             if (IsReadOnly)
-            {
                 throw new InvalidOperationException("The temporary reflective collection is read-only");
-            }
         }
 
         /// <inheritdoc />
@@ -61,7 +54,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public virtual bool addAll(IReflectiveSequence value)
         {
             CheckForReadOnly();
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -80,16 +73,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public virtual bool remove(object value)
+        public virtual bool remove(object? value)
         {
             CheckForReadOnly();
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         public virtual int size()
-        {
-            return Values.Count();
-        }
+            => Values.Count();
     }
 }

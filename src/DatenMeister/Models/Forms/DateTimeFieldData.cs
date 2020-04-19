@@ -2,15 +2,11 @@
 {
     public class DateTimeFieldData : FieldData
     {
-        /// <summary>
-        /// Stores the fieldtype
-        /// </summary>
-        public const string FieldType = "datetime";
-        public DateTimeFieldData() : base (FieldType)
+        public DateTimeFieldData() : base ()
         {
         }
 
-        public DateTimeFieldData(string name, string title) : base(FieldType, name, title)
+        public DateTimeFieldData(string name, string title) : base(name, title)
         {
 
         }
@@ -26,8 +22,8 @@
         public bool showTime { get; set; } = true;
 
         /// <summary>
-        /// Stores the value indicating whether the GUI shall 
-        /// show buttons to forward by one day, one week, etc... 
+        /// Stores the value indicating whether the GUI shall
+        /// show buttons to forward by one day, one week, etc...
         /// </summary>
         public bool showOffsetButtons { get; set; } = true;
     }

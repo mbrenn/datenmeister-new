@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.WPF.Navigation
@@ -11,7 +13,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Called, when the user closes the form or has finished the application
         /// </summary>
-        event EventHandler Closed; 
+        event EventHandler Closed;
     }
 
     /// <summary>
@@ -28,12 +30,22 @@ namespace DatenMeister.WPF.Navigation
     /// <summary>
     /// This interface is created for every navigated element
     /// </summary>
-    public interface IControlNavigationNewItem : IControlNavigation
+    public interface IControlNavigationNewObject : IControlNavigation
     {
         /// <summary>
         /// This event will be called, when a new item is created
         /// </summary>
-        event EventHandler<NewItemEventArgs> NewItemCreated;
+        event EventHandler<NewItemEventArgs> NewObjectCreated;
+        
+        /// <summary>
+        /// Gets of sets indicating whether a new item has been created. 
+        /// </summary>
+        bool IsNewObjectCreated { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the item that has been created
+        /// </summary>
+        IObject? NewObject { get; set; }
     }
 
     public class NewItemEventArgs : EventArgs
@@ -54,12 +66,13 @@ namespace DatenMeister.WPF.Navigation
     }
 
     public class ItemEventArgs : EventArgs
-    {        /// <summary>
+    {
+        /// <summary>
         /// Initializes a new instance of the NewItemEventArgs
         /// </summary>
         /// <param name="item"></param>
         /// <param name="attachedItem">The attached item for additional properties</param>
-        public ItemEventArgs(IObject item, IObject attachedItem = null)
+        public ItemEventArgs(IObject item, IObject? attachedItem = null)
         {
             Item = item;
             AttachedItem = attachedItem;
@@ -73,6 +86,6 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         /// Gets or sets the attached item to the dialog
         /// </summary>
-        public IObject AttachedItem { get; set; }
+        public IObject? AttachedItem { get; set; }
     }
 }

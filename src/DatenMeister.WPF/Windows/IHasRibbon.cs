@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls.Ribbon;
+﻿#nullable enable
+
+using System.Windows.Controls.Ribbon;
 
 namespace DatenMeister.WPF.Windows
 {

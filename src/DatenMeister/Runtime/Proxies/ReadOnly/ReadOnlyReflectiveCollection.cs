@@ -14,24 +14,18 @@ namespace DatenMeister.Runtime.Proxies.ReadOnly
                 x => x.GetProxiedElement());
         }
 
-        public override bool add(object value)
-        {
+        public override bool add(object value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
-        }
 
-        public override bool addAll(IReflectiveSequence value)
-        {
+        public override bool addAll(IReflectiveSequence value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
-        }
 
         public override void clear()
         {
             throw new ReadOnlyAccessException("Sequence is read-only.");
         }
 
-        public override bool remove(object value)
-        {
+        public override bool remove(object? value) =>
             throw new ReadOnlyAccessException("Sequence is read-only.");
-        }
     }
 }

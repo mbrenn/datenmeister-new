@@ -13,13 +13,30 @@ namespace DatenMeister.Models.Forms
         {
         }
 
-        public ListForm(string name, params FieldData[] fieldsToBeAdded) : base(name, fieldsToBeAdded)
+        public ListForm(string name, params FieldData[] fieldsToBeAdded) : this(name)
         {
+            AddFields(fieldsToBeAdded);
         }
 
-        public string property { get; set; }
+        /// <summary>
+        /// Defines the property name of the property whose values are retrieved from the given item 
+        /// </summary>
+        public string? property { get; set; }
 
-        public IElement metaClass { get; set; }
+        /// <summary>
+        /// Defines the filter for metaclasses being used
+        /// </summary>
+        public IElement? metaClass { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the descendents shall be included
+        /// </summary>
+        public bool includeDescendents { get; set; }
+
+        /// <summary>
+        /// Indicates a flag whether all items having a metaclass shall not be shown in the fields
+        /// </summary>
+        public bool noItemsWithMetaClass { get; set; }
 
         /// <summary>
         /// Gets or sets a value whether new values shall be allowed
@@ -27,24 +44,35 @@ namespace DatenMeister.Models.Forms
         public bool inhibitNewItems { get; set; }
 
         /// <summary>
+        /// Gets or sets a value whether the delete button shall be shown. 
+        /// </summary>
+        public bool inhibitDeleteItems { get; set; }
+
+        /// <summary>
         ///     Stores an enumeration of default types that can be used for creation
         /// </summary>
-        public IList<DefaultTypeForNewElement> defaultTypesForNewElements { get; set; }
+        public IList<DefaultTypeForNewElement>? defaultTypesForNewElements { get; set; }
 
         /// <summary>
         /// Gets an enumeration of fast view filters
         /// </summary>
-        public IList<IElement> fastViewFilters { get; set; }
-    }
+        public IList<IElement>? fastViewFilters { get; set; }
 
-    /// <summary>
-    /// Gets or sets a structure defining the type of the new element
-    /// but also the property to which the new element is associated
-    /// </summary>
-    public class DefaultTypeForNewElement
-    {
-        public IElement metaClass { get; set; }
+        /// <summary>
+        /// Stores the fields which shall be shown in the form
+        /// </summary>
+        public IList<FieldData> field { get; set; } = new List<FieldData>();
 
-        public string parentProperty { get; set; }
+        /// <summary>
+        /// Adds the fields to the form
+        /// </summary>
+        /// <param name="fieldsToBeAdded">Fields to be added</param>
+        public void AddFields(params FieldData[] fieldsToBeAdded)
+        {
+            foreach (var fieldToBeAdded in fieldsToBeAdded)
+            {
+                field.Add(fieldToBeAdded);
+            }
+        }
     }
 }

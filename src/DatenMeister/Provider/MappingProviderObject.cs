@@ -8,7 +8,7 @@ namespace DatenMeister.Provider
 {
     public class MappingProviderObject<T> : IProviderObject
     {
-        public MappingProviderObject(T value, IProvider provider, string id, string metaclassUri = null)
+        public MappingProviderObject(T value, IProvider provider, string id, string? metaclassUri = null)
         {
             Value = value;
             Provider = provider;
@@ -18,16 +18,16 @@ namespace DatenMeister.Provider
 
         public IProvider Provider { get; }
 
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        public string MetaclassUri { get; set; }
+        public string? MetaclassUri { get; set; }
 
         private T Value { get; }
 
         /// <summary>
         /// Gets or sets the mapping for the container property
         /// </summary>
-        private MappingContainerProperty ContainerMapping { get; set; }
+        private MappingContainerProperty? ContainerMapping { get; set; }
 
         /// <summary>
         /// Stores the mappings
@@ -39,7 +39,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="getFunction">Defines the getter function to retrieve the container</param>
         /// <param name="setFunction">Defines the setter function to set the container</param>
-        public void AddContainerMapping(Func<T, IProviderObject> getFunction, Action<T, IProviderObject> setFunction)
+        public void AddContainerMapping(Func<T, IProviderObject> getFunction, Action<T, IProviderObject?> setFunction)
         {
             ContainerMapping = new MappingContainerProperty(
                 getFunction,
@@ -52,14 +52,14 @@ namespace DatenMeister.Provider
         /// <param name="propertyName">Name of the property to be set</param>
         /// <param name="getFunction">Get function to be used</param>
         /// <param name="setFunction">Set function to be used</param>
-        public void AddMapping(string propertyName, Func<T, object> getFunction, Action<T, object> setFunction)
+        public void AddMapping(string propertyName, Func<T, object?> getFunction, Action<T, object?> setFunction)
         {
-            _mappings[propertyName] = 
+            _mappings[propertyName] =
                 new MappingProperty(
-                    getFunction, 
+                    getFunction,
                     setFunction);
         }
-        
+
         /// <summary>
         /// Gets a value indicating whether the property is set
         /// </summary>
@@ -75,12 +75,12 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="property">Property to be set</param>
         /// <returns>Value to be set</returns>
-        public object GetProperty(string property)
+        public object? GetProperty(string property)
         {   
             _mappings.TryGetValue(property, out var result);
 
             var itemResult = result?.GetFunction(Value);
-            if (DotNetHelper.IsOfEnumeration(itemResult))
+            if (itemResult != null && DotNetHelper.IsOfEnumeration(itemResult))
             {
                 var itemAsEnumerable = (IEnumerable<object>) itemResult;
                 return new TemporaryReflectiveCollection(itemAsEnumerable);
@@ -101,7 +101,7 @@ namespace DatenMeister.Provider
             return exists;
         }
 
-        public void SetProperty(string property, object value)
+        public void SetProperty(string property, object? value)
         {
             _mappings.TryGetValue(property, out var result);
             result?.SetFunction(Value, value);
@@ -131,12 +131,12 @@ namespace DatenMeister.Provider
             return ContainerMapping?.GetFunction(Value) != null;
         }
 
-        public IProviderObject GetContainer()
+        public IProviderObject? GetContainer()
         {
             return ContainerMapping?.GetFunction(Value);
         }
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             ContainerMapping?.SetFunction(Value, value);
         }
@@ -146,14 +146,14 @@ namespace DatenMeister.Provider
         /// </summary>
         private class MappingProperty
         {
-            public MappingProperty(Func<T, object> getFunction, Action<T, object> setFunction)
+            public MappingProperty(Func<T, object?> getFunction, Action<T, object?> setFunction)
             {
                 GetFunction = getFunction;
                 SetFunction = setFunction;
             }
 
-            public Func<T, object> GetFunction { get; }
-            public Action<T, object> SetFunction { get; }
+            public Func<T, object?> GetFunction { get; }
+            public Action<T, object?> SetFunction { get; }
         }
 
         /// <summary>
@@ -161,14 +161,14 @@ namespace DatenMeister.Provider
         /// </summary>
         private class MappingContainerProperty
         {
-            public MappingContainerProperty(Func<T, IProviderObject> getFunction, Action<T, IProviderObject> setFunction)
+            public MappingContainerProperty(Func<T, IProviderObject> getFunction, Action<T, IProviderObject?> setFunction)
             {
                 GetFunction = getFunction;
                 SetFunction = setFunction;
             }
 
             public Func<T, IProviderObject> GetFunction { get; }
-            public Action<T, IProviderObject> SetFunction { get; }
+            public Action<T, IProviderObject?> SetFunction { get; }
         }
     }
 }

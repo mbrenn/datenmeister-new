@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿#nullable enable
+
+using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.XMI.EMOF;
@@ -8,28 +10,28 @@ namespace DatenMeister.Integration
 {
     public static partial class Extensions
     {
-		/// <summary>
-        /// Creates a new xmi extent and adds it to the 
+        /// <summary>
+        /// Creates a new xmi extent and adds it to the
         /// </summary>
         /// <param name="scope">Scope being used</param>
         /// <param name="uri">Uri being used</param>
         /// <returns>The created xmi extent</returns>
         public static IUriExtent CreateXmiExtent(
-			this IDatenMeisterScope scope,
+            this IDatenMeisterScope scope,
             string uri)
-		{
+        {
             var xmlProvider = new XmiProvider();
-		    return new MofUriExtent(xmlProvider, uri);
-		}
+            return new MofUriExtent(xmlProvider, uri);
+        }
 
         /// <summary>
-        /// CReates the 
+        /// CReates the
         /// </summary>
         /// <param name="scope"></param>
         /// <param name="uri"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static IUriExtent CreateAndAddXmiExtent(
+        public static IUriExtent? CreateAndAddXmiExtent(
             this IDatenMeisterScope scope,
             string uri,
             string filename)

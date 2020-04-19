@@ -9,38 +9,37 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
-    /// Implements a reflective sequence as given by the MOF specification. 
+    /// Implements a reflective sequence as given by the MOF specification.
     /// The sequence needs to be correlated to a Mof Object
     /// </summary>
     public class MofReflectiveSequence : IReflectiveSequence, IHasExtent
     {
-        private readonly string _property;
+        /// <summary>
+        /// Gets the name of the property
+        /// </summary>
+        internal string PropertyName { get; }
 
         /// <summary>
-        /// Gets the mof object being assigned to the 
+        /// Gets the mof object being assigned to the
         /// </summary>
-        public MofObject MofObject { get; }
+        internal MofObject MofObject { get; }
+        
+        /// <summary>
+        /// Gets or sets a flag indicating whether references shall be followed or not
+        /// </summary>
+        public bool NoReferences { get; set; }
 
         public MofReflectiveSequence(MofObject mofObject, string property)
         {
             MofObject = mofObject;
-            _property = property;
+            PropertyName = property;
         }
 
         /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         /// <inheritdoc />
-        public IEnumerator<object> GetEnumerator()
-        {
-            foreach (var item in Enumerate())
-            {
-                yield return item;
-            }
-        }
+        public IEnumerator<object> GetEnumerator() => Enumerate().GetEnumerator();
 
         /// <summary>
         /// Performs an enumeration of all members of the collection
@@ -52,7 +51,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = GetPropertyAsEnumerable();
             foreach (var item in result)
             {
-                yield return MofObject.ConvertToMofObject(MofObject, _property, item, noReferences);
+                var convertedObject =
+                    MofObject.ConvertToMofObject(MofObject, PropertyName, item, noReferences || NoReferences);
+                if (convertedObject != null)
+                {
+                    yield return convertedObject;
+                }
             }
         }
 
@@ -62,29 +66,39 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>Enumerable which was retrieved</returns>
         private IEnumerable<object> GetPropertyAsEnumerable()
         {
-            if (MofObject.ProviderObject.IsPropertySet(_property))
+            if (MofObject.ProviderObject.IsPropertySet(PropertyName))
             {
-                var value = (IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property);
-                if (value != null)
+                var value = MofObject.ProviderObject.GetProperty(PropertyName);
+
+                return value switch
                 {
-                    return value;
-                }
+                    IEnumerable<object> asEnumerable => asEnumerable,
+                    
+                    null => new object[] { },
+                    
+                    _ => new[] {value}
+                };
             }
 
             return Array.Empty<object>();
         }
 
         /// <inheritdoc />
-        public bool add(object value)
+        public bool add(object? value)
         {
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            var result = MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded);
+            if (valueToBeAdded != null)
+            {
+                var result = MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded);
 
-            MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
+                MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+                UpdateContent();
 
-            return result;
+                return result;
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
@@ -94,6 +108,9 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             foreach (var element in value)
             {
+                if (element == null)
+                    continue;
+                
                 if (result == null)
                 {
                     result = add(element);
@@ -110,69 +127,76 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void clear()
         {
-            MofObject.ProviderObject.EmptyListForProperty(_property);
-
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            // Performs now the final deletion
+            MofObject.ProviderObject.EmptyListForProperty(PropertyName);
+            UpdateContent();
         }
 
         /// <inheritdoc />
-        public bool remove(object value)
+        public bool remove(object? value)
         {
+            if (value == null) return false;
             bool result;
             if (value is MofObject valueAsMofObject)
             {
                 var asProviderObject = valueAsMofObject.ProviderObject;
-                result = MofObject.ProviderObject.RemoveFromProperty(_property, asProviderObject);
+                result = MofObject.ProviderObject.RemoveFromProperty(PropertyName, asProviderObject);
             }
             else
             {
-                result = MofObject.ProviderObject.RemoveFromProperty(_property, value);
+                result = MofObject.ProviderObject.RemoveFromProperty(PropertyName, value);
             }
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            UpdateContent();
             return result;
         }
 
         /// <inheritdoc />
         public int size()
-        {
-            return GetPropertyAsEnumerable().Count();
-        }
+            => GetPropertyAsEnumerable().Count();
 
         /// <inheritdoc />
         public void add(int index, object value)
         {
+            if (value == null) return; // null will ot be added
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
-            MofObject.ProviderObject.AddToProperty(_property, valueToBeAdded, index);
+            if (valueToBeAdded == null) return;
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded, index);
+
+            UpdateContent();
         }
 
         /// <inheritdoc />
         public object get(int index)
         {
-            var providerObject =  GetPropertyAsEnumerable().ElementAt(index);
-            return MofObject.ConvertToMofObject(MofObject, _property, providerObject);
+            var providerObject = GetPropertyAsEnumerable().ElementAt(index);
+            return MofObject.ConvertToMofObject(MofObject, PropertyName, providerObject) ?? string.Empty;
         }
 
         /// <inheritdoc />
         public void remove(int index)
         {
-            MofObject.ProviderObject.RemoveFromProperty(
-                _property,
-                ((IEnumerable<object>) MofObject.ProviderObject.GetProperty(_property)).ElementAt(index));
+            var value = MofObject.ProviderObject.GetProperty(PropertyName) as IEnumerable<object>;
+            var foundValue = value?.ElementAt(index);
+            if (foundValue != null)
+            {
+                MofObject.ProviderObject.RemoveFromProperty(
+                    PropertyName,
+                    foundValue);
 
-            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+                UpdateContent();
+            }
         }
 
         /// <inheritdoc />
-        public object set(int index, object value)
+        public object? set(int index, object value)
         {
             var valueToBeRemoved = GetPropertyAsEnumerable().ElementAt(index);
-            MofObject.ProviderObject.RemoveFromProperty(_property, valueToBeRemoved);
+            MofObject.ProviderObject.RemoveFromProperty(PropertyName, valueToBeRemoved);
             add(index, value);
 
-            var result = MofObject.ConvertToMofObject(MofObject, _property, valueToBeRemoved);
+            var result = MofObject.ConvertToMofObject(MofObject, PropertyName, valueToBeRemoved);
 
             MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
             return result;
@@ -180,5 +204,14 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public IExtent Extent => MofObject.Extent ?? MofObject.ReferencedExtent;
+
+        /// <summary>
+        /// Updates the content
+        /// </summary>
+        public void UpdateContent()
+        {
+            MofObject.Extent?.ChangeEventManager?.SendChangeEvent(MofObject);
+            MofObject.Extent?.SignalUpdateOfContent();
+        }
     }
 }

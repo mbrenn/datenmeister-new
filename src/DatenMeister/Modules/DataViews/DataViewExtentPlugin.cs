@@ -18,6 +18,7 @@ namespace DatenMeister.Modules.DataViews
         /// Initializes a new instance of the workspace logic
         /// </summary>
         /// <param name="workspaceLogic">Workspace Logic to be added</param>
+        /// <param name="dataViewLogic">The logic for the dataviews</param>
         public DataViewExtentPlugin(IWorkspaceLogic workspaceLogic, DataViewLogic dataViewLogic)
         {
             _workspaceLogic = workspaceLogic;
@@ -32,9 +33,7 @@ namespace DatenMeister.Modules.DataViews
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() =>
+            GetEnumerator();
     }
 }

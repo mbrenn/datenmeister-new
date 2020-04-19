@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
-using DatenMeister.WPF.Forms.Base.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using Menu = System.Windows.Controls.Menu;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace DatenMeister.WPF.Windows
 {
-    public class MenuHelper
+    public class MenuHelper : NavigationExtensionHelper
     {
         /// <summary>
         /// Defines the logger
@@ -17,12 +21,11 @@ namespace DatenMeister.WPF.Windows
 
         private readonly Menu _menu;
 
-        private readonly List<MenuHelperItem> _buttons =
-            new List<MenuHelperItem>();
+        private readonly List<MenuHelperItem> _buttons = new List<MenuHelperItem>();
 
         private class MenuHelperItem
         {
-            public RibbonButtonDefinition Definition { get; set; }
+            public NavigationButtonDefinition Definition { get; set; }
 
             public MenuItem Button { get; set; }
 
@@ -32,13 +35,17 @@ namespace DatenMeister.WPF.Windows
             /// Converts the item to a string
             /// </summary>
             /// <returns></returns>
-            public override string ToString()
+            public override string ToString() => $"HelperItem: {Definition}";
+
+            public MenuHelperItem(NavigationButtonDefinition definition, MenuItem button, RoutedEventHandler clickEvent)
             {
-                return $"HelperItem: {Definition}";
+                Definition = definition;
+                Button = button;
+                ClickEvent = clickEvent;
             }
         }
 
-        public MenuHelper(Menu menu)
+        public MenuHelper(Menu menu, NavigationScope navigationScope) : base(navigationScope)
         {
             _menu = menu;
         }
@@ -47,15 +54,22 @@ namespace DatenMeister.WPF.Windows
         /// Adds a navigational element to the ribbons
         /// </summary>
         /// <param name="definition">The definition to be used</param>
-        private void AddNavigationButton(RibbonButtonDefinition definition)
+        private void AddNavigationButton(NavigationButtonDefinition definition)
         {
             // Ok, we have not found it, so create the button
             var name = definition.Name;
             var categoryName = definition.CategoryName;
             var imageName = definition.ImageName;
-            var clickMethod = definition.OnPressed;
 
-            string tabName, groupName;
+            var clickMethod = CreateClickMethod(definition);
+            if (clickMethod == null)
+            {
+                // The method is not valid => no addition to the menu
+                return;
+            }
+
+            string tabName;
+            string? groupName;
             var indexOfSemicolon = categoryName.IndexOf('.');
             if (indexOfSemicolon == -1)
             {
@@ -67,6 +81,15 @@ namespace DatenMeister.WPF.Windows
                 tabName = categoryName.Substring(0, indexOfSemicolon);
                 groupName = categoryName.Substring(indexOfSemicolon + 1);
             }
+
+            // If the main window is the datenmeister, then skip
+            // this navigational element because the standard menu does not contain
+            // sufficient hierarchical depth
+            /*if (tabName == NavigationCategories.DatenMeister)
+            {
+                tabName = groupName;
+                groupName = null;
+            }*/
 
             var tab = _menu.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header?.ToString() == tabName);
             if (tab == null)
@@ -99,25 +122,14 @@ namespace DatenMeister.WPF.Windows
 
             var button = new MenuItem
             {
-                Header = name
+                Header = name,
+                IsEnabled = definition.IsEnabled
             };
 
-            var item = new MenuHelperItem
-            {
-                Definition = definition,
-                Button = button,
-                ClickEvent = (x, y) =>
-                {
-                    if (clickMethod == null)
-                    {
-                        Logger.Error("No method defined which is called after a click");
-                    }
-                    else
-                    {
-                        clickMethod();
-                    }
-                }
-            };
+            var item = new MenuHelperItem(
+                definition,
+                button, 
+                (x, y) => { clickMethod(); });
             _buttons.Add(item);
             button.Click += item.ClickEvent;
 
@@ -139,21 +151,35 @@ namespace DatenMeister.WPF.Windows
             @group.Items.Add(button);
         }
 
+        private void ClearNavigationButtons()
+        {
+            _menu.Items.Clear();
+            _buttons.Clear();
+        }
+
         public void EvaluateExtensions(IEnumerable<ViewExtension> viewExtensions)
         {
+            ClearNavigationButtons();
             var copiedList = _buttons.ToList();
 
-            foreach (var viewExtension in viewExtensions.OfType<RibbonButtonDefinition>().OrderByDescending(x => x.Priority))
+            foreach (var viewExtension in viewExtensions.OfType<NavigationButtonDefinition>().OrderByDescending(x => x.Priority))
             {
                 // Check, navigation button is already given
-                var foundTuple = _buttons.Find(x => RibbonButtonDefinition.AreEqual(viewExtension, x.Definition));
+                var foundTuple = _buttons.Find(x => NavigationButtonDefinition.AreEqual(viewExtension, x.Definition));
                 if (foundTuple != null)
                 {
                     copiedList.Remove(foundTuple);
 
                     // Reorganizes the buttons
                     foundTuple.Button.Click -= foundTuple.ClickEvent;
-                    foundTuple.ClickEvent = (x, y) => viewExtension.OnPressed();
+                    var clickMethod = CreateClickMethod(viewExtension);
+                    if (clickMethod == null)
+                    {
+                        Logger.Error($"No further action defined anymore for item{viewExtension.Name}");
+                        continue;
+                    }
+
+                    foundTuple.ClickEvent = (x, y) => clickMethod();
                     foundTuple.Button.Click += foundTuple.ClickEvent;
                 }
                 else
@@ -161,26 +187,44 @@ namespace DatenMeister.WPF.Windows
                     AddNavigationButton(viewExtension);
                 }
             }
+        }
 
-            // Now, remove the buttons that are not needed anymore
-            foreach (var obsolete in copiedList)
+        public static MenuItem GetOrCreateMenu(List<MenuItem> menuItems, string category, string text)
+        {
+            if (string.IsNullOrEmpty(category))
             {
-                var group = (RibbonGroup) obsolete.Button.Parent;
-                group.Items.Remove(obsolete.Button);
-                _buttons.Remove(obsolete);
-
-                // Removes the groups and tabs if necessary
-                if (group.Items.Count == 0)
+                var result = new MenuItem
                 {
-                    var tab = (RibbonTab) group.Parent;
-                    tab.Items.Remove(group);
+                    Header = text
+                };
+                
+                menuItems.Add(result);
 
-                    if (tab.Items.Count == 0)
-                    {
-                        ((Ribbon) tab.Parent).Items.Remove(tab);
-                    }
-                }
+                return result;
             }
+
+            var menu = GetOrCreateMenuForCategory(menuItems, category);
+            
+            var innerResult = new MenuItem
+            {
+                Header = text
+            };
+
+            menu.Items.Add(innerResult);
+            return innerResult;
+        }
+
+        public static MenuItem GetOrCreateMenuForCategory(IList<MenuItem> menuItems, string category)
+        {
+            foreach (var menuItem in menuItems
+                .Where(menuItem => menuItem.Header.ToString() == category))
+            {
+                return menuItem;
+            }
+
+            var newMenuItem = new MenuItem {Header = category};
+            menuItems.Add(newMenuItem);
+            return newMenuItem;
         }
     }
 }

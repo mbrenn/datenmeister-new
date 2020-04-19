@@ -2,29 +2,23 @@
 using System.Diagnostics;
 using System.Net;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Example.ZipCode;
+using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Runtime;
-using DatenMeister.UserInteractions;
 
 namespace DatenMeister.Modules.ZipExample
 {
-    public class ZipCodeInteractionHandler :  BaseElementInteractionHandler
+    public class ZipCodeInteractionHandler : BaseElementInteractionHandler
     {
-        public ZipCodeInteractionHandler()
-        {
-                
-        }
-
         public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
         {
             if (IsRelevant(element))
             {
-                var zipCode = element.GetOrDefault(nameof(ZipCode.zip))?.ToString();
-                var name = element.GetOrDefault(nameof(ZipCode.name))?.ToString();
+                var zipCode = element.getOrDefault<string>(nameof(ZipCode.zip));
+                var name = element.getOrDefault<string>(nameof(ZipCode.name));
 
                 if (string.IsNullOrEmpty(zipCode) || string.IsNullOrEmpty(name))
-                {
                     yield break;
-                }
 
                 var query = $"{zipCode} {name}";
                 yield return new DefaultElementInteraction(

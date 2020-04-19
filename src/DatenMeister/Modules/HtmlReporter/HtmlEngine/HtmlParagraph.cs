@@ -7,10 +7,10 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// <summary>
         /// Defines the css class being used for that paragraph
         /// </summary>
-        private string CssClass { get; set; }
+        private string? CssClass { get; set; }
 
         /// <summary>
-        /// Gets or sets the paragraph to be stored 
+        /// Gets or sets the paragraph to be stored
         /// </summary>
         private HtmlElement Paragraph { get; }
 
@@ -21,14 +21,10 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 
         public override string ToString()
         {
-            if (string.IsNullOrEmpty(CssClass))
-            {
+            if (CssClass == null || string.IsNullOrEmpty(CssClass))
                 return $"<p>{Paragraph}</p>";
-            }
-            else
-            {
-                return $"<p class=\"{WebUtility.HtmlEncode(CssClass)}\">{Paragraph}</p>";
-            }
+
+            return $"<p class=\"{WebUtility.HtmlEncode(CssClass)}\">{Paragraph}</p>";
         }
     }
 }

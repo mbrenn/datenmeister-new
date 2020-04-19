@@ -27,7 +27,7 @@ namespace DatenMeister.WPF.Commands
             try
             {
                 // Gets the information by clipboard
-                string dataAsXmi;
+                string? dataAsXmi;
                 var dataObject = Clipboard.GetDataObject();
                 if (dataObject == null)
                 {

@@ -1,4 +1,6 @@
-﻿using Autofac;
+﻿#nullable enable
+
+using Autofac;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces.Data;
@@ -15,12 +17,12 @@ namespace DatenMeister.Integration
             var integration = new Integrator(settings);
             return integration.UseDatenMeister(kernel);
         }
-        
-        /// <summary>  
-        /// Stores all data that needs to be stored persistent on the hard drive  
-        /// This method is typically called at the end of the lifecycle of the application  
-        /// </summary>  
-        /// <param name="scope">Kernel to be used to find the appropriate methods</param>  
+
+        /// <summary>
+        /// Stores all data that needs to be stored persistent on the hard drive
+        /// This method is typically called at the end of the lifecycle of the application
+        /// </summary>
+        /// <param name="scope">Kernel to be used to find the appropriate methods</param>
         public static void UnuseDatenMeister(this ILifetimeScope scope)
         {
             scope.Resolve<WorkspaceLoader>().Store();

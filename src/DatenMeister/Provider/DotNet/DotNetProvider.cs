@@ -1,7 +1,9 @@
-﻿using System;
+﻿#nullable enable 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -16,7 +18,7 @@ namespace DatenMeister.Provider.DotNet
         internal IDotNetTypeLookup TypeLookup { get; }
 
         private readonly object _syncObject = new object();
-        
+
         private readonly List<DotNetProviderObject> _elements = new List<DotNetProviderObject>();
 
         /// <summary>
@@ -29,11 +31,11 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public IProviderObject CreateElement(string metaClassUri)
+        public IProviderObject CreateElement(string? metaClassUri)
         {
             lock (_syncObject)
             {
-                if (string.IsNullOrEmpty(metaClassUri))
+                if (metaClassUri == null || string.IsNullOrEmpty(metaClassUri))
                 {
                     throw new InvalidOperationException(".Net-Provider requires a meta class");
                 }
@@ -50,7 +52,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public void AddElement(IProviderObject valueAsObject, int index = -1)
+        public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
             lock (_syncObject)
             {
@@ -89,7 +91,7 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <inheritdoc />
-        public IProviderObject Get(string id)
+        public IProviderObject? Get(string? id)
         {
             lock (_syncObject)
             {
@@ -110,9 +112,6 @@ namespace DatenMeister.Provider.DotNet
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities()
-        {
-            return 0;
-        }
+        public ProviderCapability GetCapabilities() => ProviderCapability.None;
     }
 }

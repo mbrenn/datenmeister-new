@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable 
+
+using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -16,14 +18,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="traceFailing">True, if a trace event shall be thrown, if
         /// the resolving did not succeed</param>
         /// <returns>The found element or null, if no element was found</returns>
-        IElement Resolve(string uri, ResolveType resolveType, bool traceFailing = true);
+        IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true);
 
         /// <summary>
         /// Resolves a certain element by id
         /// </summary>
         /// <param name="id">Path to be queried</param>
         /// <returns>The found element for the id</returns>
-        IElement ResolveById(string id);
+        IElement? ResolveById(string id);
     }
 
     [Flags]
@@ -33,7 +35,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
         /// If nothing was found, a full search will be started
         /// </summary>
-        Default = 1, 
+        Default = 1,
 
         /// <summary>
         /// Resolving in which the current workspace will not be looked. The type

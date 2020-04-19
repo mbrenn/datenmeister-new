@@ -7,7 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Modules.DataViews;
-using DatenMeister.Modules.DataViews.Model;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -21,63 +20,59 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestCreationOfDataviews()
         {
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
-            {
-                var helper = dm.Resolve<DataViewHelper>();
-                var viewWorkspace = helper.GetViewWorkspace();
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var helper = dm.Resolve<DataViewHelper>();
+            var viewWorkspace = helper.GetViewWorkspace();
 
-                Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(0));
-                helper.CreateDataview("Test", "dm:///view/test");
+            Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(0));
+            helper.CreateDataview("Test", "dm:///view/test");
 
-                Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(1));
-            }
+            Assert.That(viewWorkspace.extent.Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void TestPropertyFilter()
         {
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
-            {
-                var dataExtent = CreateDataForTest(dm);
-                Assert.That(dataExtent.elements().Count(), Is.GreaterThan(1));
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dataExtent = CreateDataForTest(dm);
+            Assert.That(dataExtent.elements().Count(), Is.GreaterThan(1));
 
-                var helper = dm.Resolve<DataViewHelper>();
-                var dataView = helper.CreateDataview("Test", "dm:///view/test");
-                var model = helper.GetModel();
+            var helper = dm.Resolve<DataViewHelper>();
+            var dataView = helper.CreateDataview("Test", "dm:///view/test");
+            var model = helper.GetModel();
 
-                var userViewExtent = helper.GetUserViewExtent();
+            var userViewExtent = helper.GetUserFormExtent();
 
-                var factory = new MofFactory(userViewExtent);
-                var extentSource = factory.create(model.__SourceExtentNode);
-                extentSource.set(_DataViews._SourceExtentNode.extentUri, "dm:///testdata");
-                userViewExtent.elements().add(extentSource);
+            var factory = new MofFactory(userViewExtent);
+            var extentSource = factory.create(model.__SourceExtentNode);
+            extentSource.set(_DataViews._SourceExtentNode.extentUri, "dm:///testdata");
+            userViewExtent.elements().add(extentSource);
 
-                var propertyFilter = factory.create(model.__FilterPropertyNode);
-                userViewExtent.elements().add(propertyFilter);
-                propertyFilter.set(_DataViews._FilterPropertyNode.property, "name");
-                propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
-                propertyFilter.set(_DataViews._FilterPropertyNode.value, "ai");
-                propertyFilter.set(_DataViews._FilterPropertyNode.input, extentSource);
+            var propertyFilter = factory.create(model.__FilterPropertyNode);
+            userViewExtent.elements().add(propertyFilter);
+            propertyFilter.set(_DataViews._FilterPropertyNode.property, "name");
+            propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
+            propertyFilter.set(_DataViews._FilterPropertyNode.value, "ai");
+            propertyFilter.set(_DataViews._FilterPropertyNode.input, extentSource);
 
-                dataView.set(_DataViews._DataView.viewNode, propertyFilter);
+            dataView.set(_DataViews._DataView.viewNode, propertyFilter);
 
-                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-                var extent = workspaceLogic.FindExtent("dm:///view/test");
+            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+            var extent = workspaceLogic.FindExtent("dm:///view/test");
 
-                Assert.That(extent, Is.Not.Null);
+            Assert.That(extent, Is.Not.Null);
 
-                var elements = extent.elements().OfType<IElement>().ToArray();
-                Assert.That(elements.All(x=> x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
-                Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
-                Assert.That(elements.Length, Is.GreaterThan(0));
-                
-                // Go to Non-Contain
-                propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.DoesNotContain);
-                elements = extent.elements().OfType<IElement>().ToArray();
-                Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
-                Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
-                Assert.That(elements.Length, Is.GreaterThan(0));
-            }
+            var elements = extent.elements().OfType<IElement>().ToArray();
+            Assert.That(elements.All(x=> x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+            Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+            Assert.That(elements.Length, Is.GreaterThan(0));
+
+            // Go to Non-Contain
+            propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.DoesNotContain);
+            elements = extent.elements().OfType<IElement>().ToArray();
+            Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
+            Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
+            Assert.That(elements.Length, Is.GreaterThan(0));
         }
 
         private IUriExtent CreateDataForTest(IDatenMeisterScope dm)

@@ -42,7 +42,7 @@ namespace StundenMeister
             {
                 DatabasePath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "StundenMeister"), 
+                    "StundenMeister"),
                 PerformSlimIntegration = true
             };
 
@@ -70,12 +70,12 @@ namespace StundenMeister
 
         /// <summary>
         /// Just a flag indicating whether the form is currently
-        /// in user interaction to avoid multiple queries. 
+        /// in user interaction to avoid multiple queries.
         /// </summary>
         private bool _inUserInteraction;
 
         /// <summary>
-        /// Updates the ui of the complete window. 
+        /// Updates the ui of the complete window.
         /// </summary>
         /// <param name="refreshComplete">true, if the window shall be complete regenerated</param>
         private void UpdateContentByTick(bool refreshComplete)
@@ -272,7 +272,7 @@ namespace StundenMeister
             }
 
             public IElement CostCenter { get; }
-            
+
             public string Title { get; }
 
             public override string ToString()

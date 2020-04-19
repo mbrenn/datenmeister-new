@@ -11,43 +11,32 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
     {
         /// <summary>
         /// Checks whether the value at the given property for the element is the default value.
-        /// This infers that the value does not have to be set within the underlying database. 
+        /// This infers that the value does not have to be set within the underlying database.
         /// </summary>
         /// <param name="element">Element to be queried</param>
         /// <param name="property">Property to which the element would be set</param>
         /// <param name="value">Value to be checked</param>
         /// <returns>true, if the value is a dafault value</returns>
-        public static bool IsDefaultValue(IObject element, string property, object value)
+        public static bool IsDefaultValue(IObject element, string property, object? value)
         {
-            if (value == null)
+            switch (value)
             {
-                return true;
+                case null:
+                case int intValue when intValue == 0:
+                case bool boolValue when boolValue == false:
+                case string stringValue when string.IsNullOrEmpty(stringValue):
+                    return true;
+                default:
+                    return false;
             }
-
-            if (value is int intValue && intValue == 0)
-            {
-                return true;
-            }
-
-            if (value is bool boolValue && boolValue == false)
-            {
-                return true;
-            }
-
-            if ( value is string stringValue && string.IsNullOrEmpty(stringValue))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
-        /// Gets the default value for the given type. 
+        /// Gets the default value for the given type.
         /// </summary>
         /// <param name="type">Type, whose default value is queried</param>
         /// <returns>The default value</returns>
-        public static object GetDefaultValue(Type type)
+        public static object? GetDefaultValue(Type type)
         {
             if (type == null)
             {
@@ -80,7 +69,7 @@ namespace DatenMeister.Core.EMOF.Implementation.Uml
             }
 
             throw new ArgumentException(
-                $"Type of element is not supported {type.FullName}",
+                $@"Type of element is not supported {type.FullName}",
                 nameof(type));
         }
     }

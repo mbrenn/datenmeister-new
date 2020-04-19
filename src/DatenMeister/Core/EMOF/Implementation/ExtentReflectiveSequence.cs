@@ -11,7 +11,7 @@ using DatenMeister.Runtime;
 namespace DatenMeister.Core.EMOF.Implementation
 {
     /// <summary>
-    /// Implements the reflective sequence for 
+    /// Implements the reflective sequence for
     /// </summary>
     public class ExtentReflectiveSequence : IReflectiveSequence, IHasExtent
     {
@@ -42,22 +42,18 @@ namespace DatenMeister.Core.EMOF.Implementation
                     // Sets also the directly associated extent
                     Extent = _extent
                 };
-                
+
                 yield return resultElement;
             }
         }
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+            => GetEnumerator();
 
         /// <inheritdoc />
         public bool add(object value)
-        {
-           return AddInternal(value, -1);
-        }
+            => AddInternal(value, -1);
 
         /// <inheritdoc />
         public bool addAll(IReflectiveSequence value)
@@ -66,6 +62,8 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             foreach (var element in value)
             {
+                if (element == null) continue;
+                
                 if (result == null)
                 {
                     result = add(element);
@@ -87,14 +85,24 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool remove(object value)
+        public bool remove(object? value)
         {
             if (value is MofObject valueAsObject)
             {
-                var result = _extent.Provider.DeleteElement(valueAsObject.ProviderObject.Id);
+                var id = valueAsObject.ProviderObject.Id;
+                if (id != null)
+                {
+                    var result = _extent.Provider.DeleteElement(id);
+                    UpdateContent();
+                    return result;
+                }
+                
+                return false;
+            }
 
-                _extent?.ChangeEventManager?.SendChangeEvent(_extent);
-                return result;
+            if (value is MofObjectShadow shadow)
+            {
+                //_extent.Provider.DeleteElement(shadow);
             }
 
             throw new NotImplementedException("Only the deletion of values are supported");
@@ -102,9 +110,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public int size()
-        {
-            return _extent.Provider.GetRootObjects().Count();
-        }
+            => _extent.Provider.GetRootObjects().Count();
 
         /// <inheritdoc />
         public void add(int index, object value)
@@ -127,8 +133,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                     _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
                     valueAsObject.Extent = _extent;
 
-                    _extent?.ChangeEventManager?.SendChangeEvent(_extent);
                     _extent?.ChangeEventManager?.SendChangeEvent(valueAsObject);
+                    UpdateContent();
                     return true;
                 }
 
@@ -141,23 +147,26 @@ namespace DatenMeister.Core.EMOF.Implementation
                     $"An instance of a primitive type may not be added to the extent root elements: {value}");
             }
 
-            _extent.Provider.AddElement((IProviderObject) _extent.ConvertForSetting(value), index);
+            if (_extent.ConvertForSetting(value) is IProviderObject convertedElement)
+            {
+                _extent?.Provider.AddElement(convertedElement, index);
+            }
+            
 
-            _extent.ChangeEventManager?.SendChangeEvent(_extent);
+            UpdateContent();
+            
             return true;
         }
 
         /// <inheritdoc />
         public object get(int index)
-        {
-            return _extent.Provider.GetRootObjects().ElementAt(index);
-        }
+            => _extent.Provider.GetRootObjects().ElementAt(index);
 
         /// <inheritdoc />
         public void remove(int index)
         {
             remove(_extent.Provider.GetRootObjects().ElementAt(index));
-            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+            UpdateContent();
         }
 
         /// <inheritdoc />
@@ -172,9 +181,19 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = get(index);
             remove(index);
             set(index, value);
-            _extent?.ChangeEventManager?.SendChangeEvent(_extent);
+            
+            UpdateContent();
 
             return result;
+        }
+
+        /// <summary>
+        /// Updates the content
+        /// </summary>
+        protected void UpdateContent()
+        {
+            _extent.ChangeEventManager?.SendChangeEvent(_extent);
+            _extent.SignalUpdateOfContent();
         }
     }
 }

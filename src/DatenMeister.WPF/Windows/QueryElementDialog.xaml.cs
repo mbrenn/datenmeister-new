@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿#nullable enable
+using System;
+using System.Windows;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -23,6 +25,11 @@ namespace DatenMeister.WPF.Windows
         {
             DialogResult = true;
             Close();
+        }
+
+        private void QueryElementDialog_OnClosed(object sender, EventArgs e)
+        {
+            Owner?.Focus();
         }
     }
 }

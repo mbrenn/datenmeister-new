@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
 
         /// <summary>
-        /// Gets the information about the loaded extents, 
+        /// Gets the information about the loaded extents,
         /// and filepath where to look after
         /// </summary>
         private ExtentStorageData ExtentStorageData { get; }
@@ -62,7 +62,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var configType = xmlConfig.Attribute("configType")?.Value ?? throw new InvalidOperationException("configType not found");
 
                 // Gets the type of the configuration in the white list to avoid any unwanted security issue
-                var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName == configType);
+                var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName?.ToLower() == configType.ToLower());
                 if (found == null)
                 {
                     Logger.Fatal($"Unknown Configuration Type: {configType}");
@@ -81,13 +81,13 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             return loaded;
         }
-        
+
         /// <summary>
         /// Stores the configuration of the extents into the given file
         /// </summary>
-        /// <param name="path">Path to be used to loaded the extent configuration</param>
         public void StoreConfiguration()
-        {                // Skip saving, if loading has failed
+        {
+            // Skip saving, if loading has failed
             if (ExtentStorageData.FailedLoading)
             {
                 Logger.Warn(
@@ -105,10 +105,15 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var xmlExtent = new XElement("extent");
 
                 // Stores the configuration
-                var xmlData = SerializeToXElement(extent.Configuration);
+                var xmlData = SerializeToXElement(extent.Configuration ??
+                                                  throw new InvalidOperationException("Configuration is not set"));
+                
                 xmlData.Name = "config";
                 // Stores the .Net datatype to allow restore of the right element
-                xmlData.Add(new XAttribute("configType", extent.Configuration.GetType().FullName));
+                var fullName = extent.Configuration?.GetType().FullName;
+                if (fullName == null) continue;
+                
+                xmlData.Add(new XAttribute("configType",fullName));
                 xmlExtent.Add(xmlData);
 
                 // Stores the metadata
@@ -116,7 +121,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     Name = "metadata"
                 };
-                
+
                 xmlExtent.Add(xmlMetaData);
                 rootNode.Add(xmlExtent);
             }

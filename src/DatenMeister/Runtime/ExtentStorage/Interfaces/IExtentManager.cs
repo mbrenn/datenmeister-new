@@ -1,20 +1,25 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
     public interface IExtentManager
     {
         /// <summary>
+        /// Defines the workspace logic
+        /// </summary>
+        IWorkspaceLogic WorkspaceLogic { get; }
+        
+        /// <summary>
         /// Loads the extent by using the extent storage
         /// </summary>
         /// <param name="configuration">Configuration being used to load</param>
         /// <param name="extentCreationFlags">true, if also empty extents will be created, if the file does not exist</param>
         /// <returns>The loaded extent</returns>
-        IUriExtent LoadExtent(
-            ExtentLoaderConfig configuration, 
+        IUriExtent? LoadExtent(
+            ExtentLoaderConfig configuration,
             ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly);
-
 
         /// <summary>
         /// Imports an extent without adding it into he database.
@@ -22,11 +27,11 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// </summary>
         /// <param name="configuration">Configuration to be loaded</param>
         /// <returns>Resulting uri extent</returns>
-        IUriExtent LoadExtentWithoutAdding(ExtentLoaderConfig configuration);
+        IUriExtent? LoadExtentWithoutAdding(ExtentLoaderConfig configuration);
 
         /// <summary>
-        /// Stores the extent according to the used configuration during loading. 
-        /// If loading was not performed, an exception is thrown. 
+        /// Stores the extent according to the used configuration during loading.
+        /// If loading was not performed, an exception is thrown.
         /// </summary>
         /// <param name="extent"></param>
         void StoreExtent(IExtent extent);
@@ -38,7 +43,7 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         void DetachExtent(IExtent extent);
 
         /// <summary>
-        /// Deletes the extent from the extent manager and also workspace. The extent manager will 
+        /// Deletes the extent from the extent manager and also workspace. The extent manager will
         /// </summary>
         /// <param name="extent">Extent to be deleted</param>
         void DeleteExtent(IExtent extent);
@@ -54,12 +59,12 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         void StoreAllExtents();
 
         /// <summary>
-        /// Gets the loading configuration for the given extent or null, if 
+        /// Gets the loading configuration for the given extent or null, if
         /// the extent does not contain a configuration
         /// </summary>
         /// <param name="extent">The extent whose configuration is retrieved</param>
         /// <returns>The configuration</returns>
-        ExtentLoaderConfig GetLoadConfigurationFor(IUriExtent extent);
+        ExtentLoaderConfig? GetLoadConfigurationFor(IUriExtent extent);
 
         /// <summary>
         /// Creates the storage type definitions as defined within the storage types

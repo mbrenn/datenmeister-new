@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 
 namespace DatenMeister.Provider
 {
@@ -13,27 +14,28 @@ namespace DatenMeister.Provider
         IProvider Provider { get; }
 
         /// <summary>
-        /// Gets or sets the id of the provided object 
+        /// Gets or sets the id of the provided object.
+        /// Might be null, if the id is not set
         /// </summary>
-        string Id { get; set; }
+        string? Id { get; set; }
 
         /// <summary>
         /// Gets the uri of the metaclass or null, if not defined
         /// </summary>
-        string MetaclassUri { get; set; }
+        string? MetaclassUri { get; set; }
 
         bool IsPropertySet(string property);
 
-        object GetProperty(string property);
+        object? GetProperty(string property);
 
         IEnumerable<string> GetProperties();
 
         bool DeleteProperty(string property);
 
-        void SetProperty(string property, object value);
+        void SetProperty(string property, object? value);
 
         /// <summary>
-        /// Empties a list of a property and prepares the property that there is a call for <c>AddProperty</c>. 
+        /// Empties a list of a property and prepares the property that there is a call for <c>AddProperty</c>.
         /// </summary>
         /// <param name="property">Property to be emptied</param>
         void EmptyListForProperty(string property);
@@ -52,12 +54,12 @@ namespace DatenMeister.Provider
         /// Gets the container of the element, if supported by the provider
         /// </summary>
         /// <returns>null, if no container object available, otherwise an IProviderObject instance</returns>
-        IProviderObject GetContainer();
+        IProviderObject? GetContainer();
 
         /// <summary>
         /// Sets the container element for the given object
         /// </summary>
         /// <param name="value">Value to be set</param>
-        void SetContainer(IProviderObject value);
+        void SetContainer(IProviderObject? value);
     }
 }

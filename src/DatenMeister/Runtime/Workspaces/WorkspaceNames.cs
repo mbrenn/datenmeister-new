@@ -20,18 +20,23 @@
         /// <summary>
         /// Defines the uri of the view to the view extents
         /// </summary>
-        public const string UriInternalViewExtent = "datenmeister:///management/views/internal";
+        public const string UriInternalFormExtent = "datenmeister:///management/forms/internal";
 
         /// <summary>
         /// Defines the uri of the user views
         /// </summary>
-        public const string UriUserViewExtent = "datenmeister:///management/views/user";
+        public const string UriUserFormExtent = "datenmeister:///management/forms/user";
 
 
         /// <summary>
         /// Gets the uri of the extent which contains the workspaces
         /// </summary>
         public const string ExtentManagementExtentUri = "datenmeister:///_internal/workspaces/";
+        
+        /// <summary> 
+        /// Gets the uri of the extent which contains the workspaces
+        /// </summary>
+        public const string ManagementSettingExtentUri = "datenmeister:///_internal/settings/";
 
 
         public const string StandardUmlNamespace = "http://www.omg.org/spec/UML/20131001";

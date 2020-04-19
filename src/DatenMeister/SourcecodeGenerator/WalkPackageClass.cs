@@ -27,7 +27,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// Initializates a new instance of the WalkPackageClass instance
         /// </summary>
         /// <param name="parser"></param>
-        public WalkPackageClass(ISourceParser parser)
+        public WalkPackageClass(ISourceParser? parser)
         {
             _parser = parser ?? new XmiSourceParser();
             Result = new StringBuilder();
@@ -36,7 +36,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <summary>
         ///     Gets or sets the namespace
         /// </summary>
-        public string Namespace { get; set; }
+        public string? Namespace { get; set; }
 
         /// <summary>
         ///     Gets or sets the result being delivered back
@@ -54,8 +54,10 @@ namespace DatenMeister.SourcecodeGenerator
             StartNamespace(ref stack);
             foreach (var element in extent.elements())
             {
-                var elementAsObject = element as IObject;
-                Walk(elementAsObject, stack);
+                if (element is IObject elementAsObject)
+                {
+                    Walk(elementAsObject, stack);
+                }
             }
 
             EndNamespace(ref stack);
@@ -123,8 +125,8 @@ namespace DatenMeister.SourcecodeGenerator
             if (!string.IsNullOrEmpty(Namespace))
             {
                 var indentation = stack.Indentation;
-                    Result.AppendLine($"{indentation}namespace {Namespace}");
-                    Result.AppendLine($"{indentation}{{");
+                Result.AppendLine($"{indentation}namespace {Namespace}");
+                Result.AppendLine($"{indentation}{{");
 
                 stack = new CallStack(stack);
                 stack.Level--;
@@ -143,11 +145,9 @@ namespace DatenMeister.SourcecodeGenerator
         private void EndNamespace(ref CallStack stack)
         {
             // Check, if we have namespaces
-            Action preAction = () => { };
-            Action postAction = () => { };
             if (!string.IsNullOrEmpty(Namespace))
             {
-                stack = stack.Owner;
+                stack = stack.Owner ?? throw new InvalidOperationException("Stack underflow");
                 var indentation = stack.Indentation;
                 Result.AppendLine($"{indentation}}}");
 
@@ -162,6 +162,7 @@ namespace DatenMeister.SourcecodeGenerator
         ///     ParseClasses for classes.
         /// </summary>
         /// <param name="element">Element being parsed</param>
+        /// <param name="stack">The callstack containing information about depth and full names</param>
         protected virtual void WalkPackage(IObject element, CallStack stack)
         {
             var innerStack = new CallStack(stack);
@@ -180,19 +181,13 @@ namespace DatenMeister.SourcecodeGenerator
             foreach (var subElement in Helper.GetSubProperties(element))
             {
                 if (_parser.IsPackage(subElement))
-                {
                     WalkPackage(subElement, innerStack);
-                }
 
                 if (_parser.IsClass(subElement) || _parser.IsPrimitiveType(subElement))
-                {
                     WalkClass(subElement, innerStack);
-                }
 
-                if (_parser.IsEnum(subElement) )
-                {
+                if (_parser.IsEnum(subElement))
                     WalkEnum(subElement, innerStack);
-                }
             }
         }
 
@@ -255,7 +250,7 @@ namespace DatenMeister.SourcecodeGenerator
         protected static string GetNameOfElement(IObject element)
         {
             var nameAsObject = element.get("name");
-            var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            var name = nameAsObject?.ToString() ?? string.Empty;
             return name;
         }
 
@@ -269,12 +264,12 @@ namespace DatenMeister.SourcecodeGenerator
             /// </summary>
             /// <param name="ownerStack">The owning callstack. It may be null, if this is the root
             /// call stack</param>
-            public CallStack(CallStack ownerStack)
+            public CallStack(CallStack? ownerStack)
             {
                 Owner = ownerStack;
                 Indentation = ownerStack == null ? string.Empty : $"{ownerStack.NextIndentation}";
                 Level = ownerStack?.Level + 1 ?? 0;
-                Fullname = ownerStack?.Fullname;
+                Fullname = ownerStack?.Fullname ?? string.Empty;
             }
 
             /// <summary>
@@ -295,7 +290,7 @@ namespace DatenMeister.SourcecodeGenerator
             /// <summary>
             ///     Stores the owner stack
             /// </summary>
-            public CallStack Owner { get; set; }
+            public CallStack? Owner { get; set; }
 
             /// <summary>
             /// Gets the string for the next indentation
@@ -324,10 +319,8 @@ namespace DatenMeister.SourcecodeGenerator
             /// Converts the call stack to a string, containing level and full name
             /// </summary>
             /// <returns>The converted stack</returns>
-            public override string ToString()
-            {
-                return $"Level: {Level} ({Fullname})";
-            }
+            public override string ToString() =>
+                $"Level: {Level} ({Fullname})";
         }
     }
 }

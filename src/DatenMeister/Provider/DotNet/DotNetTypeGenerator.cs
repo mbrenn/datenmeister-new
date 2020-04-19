@@ -1,19 +1,34 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Provider.DotNet
 {
     /// <summary>
-    /// Takes a .Net Type and converts it to a UML metaclass which can be used within 
+    /// Defines the options for the DotNet Type Generator
+    /// </summary>
+    public class DotNetTypeGeneratorOptions
+    {
+        /// <summary>
+        /// Gets or sets a value indicating whether the properties
+        /// of the inherited classes shall be integrated into the existing class or
+        /// whether the generalizations shall be used.
+        /// </summary>
+        public bool IntegrateInheritedProperties { get; set; } = true;
+    }
+
+    /// <summary>
+    /// Takes a .Net Type and converts it to a UML metaclass which can be used within
     /// the DatenMeister.
     /// </summary>
     public class DotNetTypeGenerator
@@ -22,9 +37,9 @@ namespace DatenMeister.Provider.DotNet
 
         private readonly _UML _umlHost;
 
-        private readonly IExtent _targetExtent;
+        private readonly IExtent? _targetExtent;
 
-        public IUriResolver UriResolver => _targetExtent as IUriResolver;
+        public IUriResolver? UriResolver => _targetExtent as IUriResolver;
 
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
@@ -33,18 +48,16 @@ namespace DatenMeister.Provider.DotNet
         /// class, properties and other MOF elements</param>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
-        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IExtent targetExtent = null)
+        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IExtent? targetExtent = null)
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
             _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
-            _targetExtent = targetExtent;
+            _targetExtent = targetExtent ?? (factoryForTypes as MofFactory)?.Extent;
         }
 
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
         /// </summary>
-        /// <param name="factoryForTypes">The factory being used to create the instances for
-        /// class, properties and other MOF elements</param>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
         public DotNetTypeGenerator(IExtent targetExtent, _UML umlHost)
@@ -71,9 +84,16 @@ namespace DatenMeister.Provider.DotNet
         /// Creates a meta class for the given .Net Type
         /// </summary>
         /// <param name="type">Type to be converted</param>
+        /// <param name="options">Options being used to generate the type</param>
         /// <returns>The created meta class</returns>
-        public IElement CreateTypeFor(Type type)
+        public IElement CreateTypeFor(Type type, DotNetTypeGeneratorOptions? options = null)
         {
+            options ??= new DotNetTypeGeneratorOptions();
+            if (!(_targetExtent is MofExtent extent))
+            {
+                throw new InvalidOperationException("_targetExtent is not of MofExtent");
+            }
+
             if (type.IsClass)
             {
                 var umlClass = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
@@ -83,20 +103,34 @@ namespace DatenMeister.Provider.DotNet
                 }
 
                 umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
-                
-                // Goes through the generalizations
-                var generalization = type.BaseType;
-                if (generalization != null && generalization != typeof(object))
+
+                // Goes through the generalizations, if configured
+                if (options.IntegrateInheritedProperties)
                 {
-                    var generalizedClass = ((MofExtent) _targetExtent).ToResolvedElement(generalization);
-                    // We got a generalization
-                    ClassifierMethods.AddGeneralization(_umlHost, umlClass, generalizedClass);
+                    var generalization = type.BaseType;
+                    if (generalization != null && generalization != typeof(object))
+                    {
+                        var generalizedClass = extent.ToResolvedElement(generalization);
+
+                        if (generalizedClass == null)
+                        {
+                            throw new InvalidOperationException(
+                                $"Generalization for {type} -> {generalization} was not found");
+                        }
+
+                        // We got a generalization
+                        ClassifierMethods.AddGeneralization(_umlHost, umlClass, generalizedClass);
+                    }
                 }
 
                 // Goes through all the properties
                 var properties = new List<IObject>();
                 foreach (var property in type.GetProperties())
                 {
+                    // If property is inherited, do not include the property, if not configured
+                    if (property.DeclaringType != type && options.IntegrateInheritedProperties)
+                        continue;
+
                     var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
                     if (umlProperty is MofElement propertyAsElement)
                     {
@@ -147,23 +181,28 @@ namespace DatenMeister.Provider.DotNet
                 return enumClass;
             }
 
-            return null;
+            throw new InvalidOperationException("Unknown type to be converted");
         }
 
         /// <summary>
-        /// Sets the type information for the given property, depending on the property information. 
+        /// Sets the type information for the given property, depending on the property information.
         /// </summary>
         /// <param name="property">Property that is evaluated</param>
         /// <param name="umlProperty">Property which will have the property type stored according UML</param>
         private void SetProperty(Type property, IObject umlProperty)
         {
+            if (UriResolver == null)
+            {
+                throw new InvalidOperationException("UriResolver is null");
+            }
+            
             if (property == typeof(string))
             {
                 var stringType = UriResolver.Resolve(CoreTypeNames.StringType,
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, stringType);
             }
-            else if (property == typeof(int) || property == typeof(long) || property== typeof(short))
+            else if (property == typeof(int) || property == typeof(long) || property == typeof(short))
             {
                 var integerType = UriResolver.Resolve(CoreTypeNames.IntegerType,
                     ResolveType.NoMetaWorkspaces);
@@ -171,7 +210,7 @@ namespace DatenMeister.Provider.DotNet
             }
             else if (property == typeof(bool))
             {
-                var booleanType = UriResolver.Resolve(CoreTypeNames.BooleanType, 
+                var booleanType = UriResolver.Resolve(CoreTypeNames.BooleanType,
                     ResolveType.NoMetaWorkspaces);
                 umlProperty.set(_UML._CommonStructure._TypedElement.type, booleanType);
             }
@@ -201,6 +240,11 @@ namespace DatenMeister.Provider.DotNet
                         new MofObjectShadow($"#{property.FullName}"));
                 }
             }
+            else if (property == typeof(IObject) || property == typeof(IElement))
+            {
+                // Element is not defined by the given type, so set null
+                umlProperty.set(_UML._CommonStructure._TypedElement.type, null);                
+            }
             else
             {
                 // Ok... new type
@@ -213,7 +257,12 @@ namespace DatenMeister.Provider.DotNet
                 }
                 else
                 {
-                    var propertyMofType = ((MofExtent) _targetExtent).TypeLookup.ToElement(propertyType);
+                    if (!(_targetExtent is MofExtent mofExtent))
+                    {
+                        throw new InvalidOperationException("_targetExtent is not of MofExtent");
+                    }
+                    
+                    var propertyMofType = mofExtent.TypeLookup.ToElement(propertyType);
 
                     if (propertyMofType != null)
                     {

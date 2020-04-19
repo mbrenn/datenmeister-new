@@ -5,17 +5,15 @@ namespace DatenMeister.Models.Forms
     public class DropDownFieldData : FieldData
     {
         /// <summary>
-        /// Gets the values being used 
+        /// Gets the values being used
         /// </summary>
         public IList<ValuePair> values { get; set; } = new List<ValuePair>();
 
-        public const string FieldType = "dropdown";
-
-        public DropDownFieldData() : base(FieldType)
+        public DropDownFieldData() : base()
         {
         }
 
-        public DropDownFieldData(string name, string title) : base(FieldType, name, title)
+        public DropDownFieldData(string name, string title) : base(name, title)
         {
             
         }

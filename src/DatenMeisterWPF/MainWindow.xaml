@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DatenMeisterWPF"
         mc:Ignorable="d"
-        Title="Der DatenMeister" Height="700" Width="1200" Initialized="Window_Initialized"
+        Title="Der DatenMeister" Height="700" Width="1300" Initialized="Window_Initialized"
         WindowStartupLocation="CenterScreen" Closing="MainWindow_OnClosing">
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5,2,5,2"></Setter>
+        </Style>
+    </Window.Resources>
+
     <DockPanel>
         <Ribbon DockPanel.Dock="Top" x:Name="MainRibbon">
             <Ribbon.ApplicationMenu>

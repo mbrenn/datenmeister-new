@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,13 +27,13 @@ namespace DatenMeister.WPF.Windows
         /// <param name="factoryMethod">Factory method being used</param>
         /// <param name="navigationMode">Navigation mode</param>
         /// <returns></returns>
-        public Task<NavigateToElementDetailResult> NavigateTo(
+        public async Task<NavigateToElementDetailResult?> NavigateTo(
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
         {
             if (navigationMode == NavigationMode.Detail)
             {
-                return Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+                return await Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
             }
             else
             {
@@ -41,14 +43,14 @@ namespace DatenMeister.WPF.Windows
                     navigationGuest.NavigationHost = this;
                 }
 
-                var task = new TaskCompletionSource<NavigateToElementDetailResult>();
-                task.SetResult(new NavigateToElementDetailResult()
+                var task = new TaskCompletionSource<NavigateToElementDetailResult?>();
+                task.SetResult(new NavigateToElementDetailResult
                 {
                     NavigationGuest = MainViewSet as INavigationGuest,
-                    NavigationHost = this, 
+                    NavigationHost = this,
                     Result = NavigationResult.None
                 });
-                return task.Task;
+                return await task.Task;
             }
         }
 
@@ -67,8 +69,11 @@ namespace DatenMeister.WPF.Windows
 
         /// <inheritdoc />
         public Window GetWindow()
+            => this;
+
+        private void ListFormWindow_OnClosed(object sender, EventArgs e)
         {
-            return this;
+            Owner?.Focus();
         }
     }
 }

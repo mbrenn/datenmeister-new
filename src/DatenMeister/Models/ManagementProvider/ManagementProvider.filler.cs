@@ -53,6 +53,10 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 {
                                     tree.Extent._count = value;
                                 }
+                                if(name == "totalCount") // Looking for property
+                                {
+                                    tree.Extent._totalCount = value;
+                                }
                                 if(name == "type") // Looking for property
                                 {
                                     tree.Extent._type = value;

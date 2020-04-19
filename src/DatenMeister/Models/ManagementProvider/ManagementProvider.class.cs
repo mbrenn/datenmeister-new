@@ -16,6 +16,9 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             public static string @count = "count";
             public IElement? _count = null;
 
+            public static string @totalCount = "totalCount";
+            public IElement? _totalCount = null;
+
             public static string @type = "type";
             public IElement? _type = null;
 

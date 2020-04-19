@@ -22,17 +22,17 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         public WorkspaceObject(IProvider provider, Workspace workspace) : base(workspace, provider, workspace.id, MetaclassUriPath)
         {
             AddMapping(
-                "id",
+                _ManagementProvider._Workspace.id,
                 w => w.id,
                 (w, v) => throw new InvalidOperationException("Id cannot be set"));
 
             AddMapping(
-                "annotation",
+                _ManagementProvider._Workspace.annotation,
                 w => w.annotation,
                 (w, v) => w.annotation = v?.ToString() ?? string.Empty);
 
             AddMapping(
-                "extents",
+                _ManagementProvider._Workspace.extents,
                 w => w.extent.Select(x => new ExtentObject(provider, workspace, (IUriExtent) x)),
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }

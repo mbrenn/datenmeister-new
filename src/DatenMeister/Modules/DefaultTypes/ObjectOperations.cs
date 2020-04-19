@@ -26,7 +26,7 @@ namespace DatenMeister.Modules.DefaultTypes
 
             if (container != null || extent != null)
             {
-                _hints.RemoveFromExtentOrElement(container ?? (IObject) extent!, value);
+                DefaultClassifierHints.RemoveFromExtentOrElement(container ?? (IObject) extent!, value);
 
                 if (value is MofObject mofObject)
                 {
@@ -34,7 +34,7 @@ namespace DatenMeister.Modules.DefaultTypes
                 }
             }
             
-            _hints.AddToExtentOrElement(targetContainer, value);    
+            DefaultClassifierHints.AddToExtentOrElement(targetContainer, value);    
         }
         
         /// <summary>
@@ -46,7 +46,7 @@ namespace DatenMeister.Modules.DefaultTypes
         {
             var options = new CopyOption {CloneAllReferences = false};
             var copied = ObjectCopier.Copy(new MofFactory(targetContainer), value, options);
-            _hints.AddToExtentOrElement(targetContainer, copied);
+            DefaultClassifierHints.AddToExtentOrElement(targetContainer, copied);
         }
     }
 }

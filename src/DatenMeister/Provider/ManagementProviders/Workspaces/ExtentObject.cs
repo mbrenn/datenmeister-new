@@ -1,8 +1,10 @@
 ﻿using System;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Queries;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
@@ -19,22 +21,27 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
         {
             AddMapping(
-                "uri",
+                _ManagementProvider._Extent.uri,
                 e => e.contextURI(),
                 (e, v) => throw new InvalidOperationException("uri cannot be set"));
 
             AddMapping(
-                "count",
+                _ManagementProvider._Extent.count,
                 e => e.elements().size(),
                 (e, v) => throw new InvalidOperationException("count cannot be set"));
+            
+            AddMapping(
+                _ManagementProvider._Extent.totalCount,
+                e => e.elements().GetAllCompositesIncludingThemselves().size(),
+                (e, v) => throw new InvalidOperationException("totalCount cannot be set"));
 
             AddMapping(
-                "type",
+                _ManagementProvider._Extent.type,
                 e => (e as MofExtent)?.Provider.GetType().Name,
                 (e, v) => throw new InvalidOperationException("type cannot be set"));
 
             AddMapping(
-                "extentType",
+                _ManagementProvider._Extent.extentType,
                 e => (e as MofExtent)?.GetConfiguration().ExtentType,
                 (e, v) =>
                 {
@@ -45,12 +52,12 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 });
 
         AddMapping(
-                "isModified",
+                _ManagementProvider._Extent.isModified,
                 e => (e as MofExtent)?.IsModified == true,
                 (e, v) => throw new InvalidOperationException("isModified cannot be set"));
 
             AddMapping(
-                "alternativeUris",
+                _ManagementProvider._Extent.alternativeUris,
                 e => (e as MofUriExtent)?.AlternativeUris,
                 (e, v) => throw new InvalidOperationException("alternativeUris cannot be set"));
 

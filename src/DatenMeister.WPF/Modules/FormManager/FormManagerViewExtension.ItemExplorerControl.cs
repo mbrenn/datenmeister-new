@@ -282,7 +282,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         throw new InvalidOperationException();
                 }
                 
-                GiveMe.Scope.Resolve<DefaultClassifierHints>().AddToExtentOrElement(
+                DefaultClassifierHints.AddToExtentOrElement(
                     selectedItem, 
                     createdForm);
 
@@ -325,16 +325,16 @@ namespace DatenMeister.WPF.Modules.FormManager
                 
                 ////////////////////////////////////
                 // Creates the package
-                var packageClassifier = defaultClassifierHints.GetDefaultPackageClassifier(containerExtent);
+                var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(containerExtent);
                 var package = factory.create(packageClassifier);
                 package.set(_UML._CommonStructure._NamedElement.name, className);
-                defaultClassifierHints.AddToExtentOrElement(selectedItem, package);
+                DefaultClassifierHints.AddToExtentOrElement(selectedItem, package);
                 var packageName = "Package-" + fullName;
                 ExtentHelper.SetAvailableId(containerExtent, package, packageName);
 
                 // Creates the detail form
                 var detailForm = formCreator.CreateDetailFormByMetaClass(locatedItem);
-                defaultClassifierHints.AddToExtentOrElement(
+                DefaultClassifierHints.AddToExtentOrElement(
                     package, 
                     detailForm);
                 var name = fullName + "FormDetail";
@@ -342,7 +342,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 
                 // Creates the extent form
                 var extentForm = formCreator.CreateExtentFormByMetaClass(locatedItem);
-                defaultClassifierHints.AddToExtentOrElement(
+                DefaultClassifierHints.AddToExtentOrElement(
                     package, 
                     extentForm);
                 name = fullName + "FormList";
@@ -355,11 +355,11 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var association2 = 
                     formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, FormType.TreeItemDetail);
                 
-                defaultClassifierHints.AddToExtentOrElement(package, association1);
+                DefaultClassifierHints.AddToExtentOrElement(package, association1);
                 name = fullName + "AssociationDetail";
                 ExtentHelper.SetAvailableId(containerExtent, association1, name);
 
-                defaultClassifierHints.AddToExtentOrElement(package, association2);
+                DefaultClassifierHints.AddToExtentOrElement(package, association2);
                 name = fullName + "AssociationList";
                 ExtentHelper.SetAvailableId(containerExtent, association2, name);
             }

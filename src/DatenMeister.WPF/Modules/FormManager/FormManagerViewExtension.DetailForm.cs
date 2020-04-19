@@ -212,11 +212,11 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 var factory = new MofFactory(extent);
                 var container = detailAsElement.container();
-                var isPackage = container != null && defaultTypeClassifierHints.IsPackageLike(container);
+                var isPackage = container != null && DefaultClassifierHints.IsPackageLike(container);
 
                 var formAssociation = factory.create(formAndFields.__FormAssociation);
 
-                defaultTypeClassifierHints.AddToExtentOrElement(
+                DefaultClassifierHints.AddToExtentOrElement(
                     isPackage && container != null ? container : (IObject) extent,
                     formAssociation);
                 

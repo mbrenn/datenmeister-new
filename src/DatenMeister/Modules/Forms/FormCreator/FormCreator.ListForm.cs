@@ -7,6 +7,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
@@ -203,7 +204,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
                     else
                     {
-                        var isSafeProperty = _defaultClassifierHints.IsGenericProperty(element, propertyName);
+                        var isSafeProperty = DefaultClassifierHints.IsGenericProperty(element, propertyName);
                         if (isSafeProperty)
                         {
                             propertyNames.Add(propertyName);
@@ -217,7 +218,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 toBeDeleted.Clear();
                 foreach (var propertyName in propertyNames)
                 {
-                    var isSafeProperty = _defaultClassifierHints.IsGenericProperty(element, propertyName);
+                    var isSafeProperty = DefaultClassifierHints.IsGenericProperty(element, propertyName);
                     if (!propertiesOfElement.Contains(propertyName) && !isSafeProperty)
                     {
                         toBeDeleted.Add(propertyName);

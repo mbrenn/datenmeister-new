@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.Proxies
 {

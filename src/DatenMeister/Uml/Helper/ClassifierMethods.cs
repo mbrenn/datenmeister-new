@@ -75,6 +75,27 @@ namespace DatenMeister.Uml.Helper
         }
 
         /// <summary>
+        /// Gets an enumeration of all properties having a composite
+        /// </summary>
+        /// <param name="classifier">Classifier to be evaluated</param>
+        /// <returns>Enumeration of properties</returns>
+        public static IEnumerable<IElement> GetCompositingProperties(IElement classifier)
+        {
+            var properties = GetPropertiesOfClassifier(classifier);
+            foreach (var property in properties)
+            {
+                if (property.getOrDefault<bool>(_UML._Classification._Property.isComposite) == true)
+                {
+                    yield return property;
+                }
+                else if (property.getOrDefault<string>(_UML._Classification._Property.aggregation) == "composite")
+                {
+                    yield return property;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets all generalizations of the given elements
         /// </summary>
         /// <param name="classifier">Classifier, whose generalizations are requested</param>

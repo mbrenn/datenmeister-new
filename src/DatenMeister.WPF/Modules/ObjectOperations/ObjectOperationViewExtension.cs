@@ -118,7 +118,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
                 if (container != null || extent != null)
                 {
-                    hints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
+                    DefaultClassifierHints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
                 }
 
             }

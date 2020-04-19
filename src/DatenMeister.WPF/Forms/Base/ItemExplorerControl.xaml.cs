@@ -888,7 +888,7 @@ namespace DatenMeister.WPF.Forms.Base
             var managementWorkspace = GiveMe.Scope.WorkspaceLogic.GetManagementWorkspace();
             var form = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>() ??
                        throw new InvalidOperationException("FormAndFields not found");
-            var viewModes = managementWorkspace.GetAllDescendentsOfType(form.__ViewMode);
+            var viewModes = managementWorkspace.GetAllDescendentsOfType(form.__ViewMode, true);
             var contextMenu = new ContextMenu();
 
             var list = new List<MenuItem>();

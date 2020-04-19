@@ -456,7 +456,7 @@ namespace DatenMeister.WPF.Navigation
             var result = await NavigateToCreateNewItem(window, extent, metaclass);
             if (result?.IsNewObjectCreated == true && result.NewObject != null)
             {
-                GiveMe.Scope.Resolve<DefaultClassifierHints>().AddToExtentOrElement(container, result.NewObject);
+                DefaultClassifierHints.AddToExtentOrElement(container, result.NewObject);
             }
 
             return result;

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -28,13 +26,24 @@ namespace DatenMeister.Runtime
             };
         }
 
-        public static IReflectiveCollection GetAllDescendents(this Workspace workspace)
+        public static IReflectiveCollection GetAllDescendents(this Workspace workspace, bool onlyComposite = true)
         {
+            if (onlyComposite)
+            {
+                return GetRootElements(workspace).GetAllCompositesIncludingThemselves();
+            }
+
             return GetRootElements(workspace).GetAllDescendantsIncludingThemselves();
         }
 
-        public static IReflectiveCollection GetAllDescendentsOfType(this Workspace workspace, IElement metaClass)
+        public static IReflectiveCollection GetAllDescendentsOfType(this Workspace workspace, IElement metaClass, bool onlyComposite = true)
         {
+            if (onlyComposite)
+            {
+                return GetRootElements(workspace).GetAllCompositesIncludingThemselves()
+                    .WhenMetaClassIs(metaClass);
+            }
+
             return GetRootElements(workspace).GetAllDescendantsIncludingThemselves()
                 .WhenMetaClassIs(metaClass);
         }

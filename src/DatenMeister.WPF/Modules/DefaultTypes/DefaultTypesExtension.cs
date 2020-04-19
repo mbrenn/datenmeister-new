@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
             // Check, if the selected element is a package or an extent
             // which allows 
             if (itemExplorerView.SelectedItem is IElement selectedElement 
-                && !_defaultClassifierHints.IsPackageLike(selectedElement))
+                && !DefaultClassifierHints.IsPackageLike(selectedElement))
                 return null;
 
             return
@@ -81,7 +81,7 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                         var package = factory.create(type);
                         package.set(_UML._CommonStructure._NamedElement.name, "Unnamed");
                         
-                        _defaultClassifierHints.AddToExtentOrElement(
+                        DefaultClassifierHints.AddToExtentOrElement(
                             clickedItem, 
                             package);
 

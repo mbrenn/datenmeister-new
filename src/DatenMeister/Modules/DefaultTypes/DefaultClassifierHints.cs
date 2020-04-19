@@ -51,7 +51,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         /// <param name="extent">Extent to be used</param>
         /// <returns>The found extent</returns>
-        public IElement? GetDefaultPackageClassifier(IExtent extent)
+        public static IElement? GetDefaultPackageClassifier(IExtent extent)
         {
             // First look into the standard uml meta classes
             var findByUrl = extent.FindInMeta<_UML>(x => x.Packages.__Package);
@@ -79,7 +79,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         /// <param name="packagingElement">Element in which the element will be added</param>
         /// <returns>The name of the property to which the element will be added</returns>
-        public string GetDefaultPackagePropertyName(IObject packagingElement)
+        public static string GetDefaultPackagePropertyName(IObject packagingElement)
         {
             return _UML._Packages._Package.packagedElement;
         }
@@ -91,7 +91,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         /// <param name="container">Container to which the element will be added</param>
         /// <param name="child">Child element which will be added</param>
-        public void AddToExtentOrElement(IObject container, IObject child)
+        public static void AddToExtentOrElement(IObject container, IObject child)
         {
             switch (container)
             {
@@ -109,7 +109,7 @@ namespace DatenMeister.Modules.DefaultTypes
             }
         }
 
-        public void RemoveFromExtentOrElement(IObject container, IObject child)
+        public static void RemoveFromExtentOrElement(IObject container, IObject child)
         {
             if (container is IExtent extent)
             {
@@ -130,7 +130,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         /// <param name="value">Element which shall be checked</param>
         /// <returns>true, if the given element is a package</returns>
-        public bool IsPackageLike(IObject value)
+        public static bool IsPackageLike(IObject value)
         {
             // At the moment, every element is a package
             return true;
@@ -164,7 +164,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <param name="element">Element containing the property</param>
         /// <param name="propertyName">Name of the property</param>
         /// <returns>true, if the field shall be kept</returns>
-        public bool IsGenericProperty(IObject element, string propertyName)
+        public static bool IsGenericProperty(IObject element, string propertyName)
             =>
                 propertyName == _UML._CommonStructure._NamedElement.name
                 || propertyName.ToLower(CultureInfo.InvariantCulture) == "id";

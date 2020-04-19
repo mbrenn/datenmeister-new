@@ -49,8 +49,7 @@ namespace StundenMeister.Logic
 
         public void Start(PluginLoadingPosition position)
         {
-            var types = _localTypeSupport.AddInternalTypes(
-                TypeList.Types);
+            var types = _localTypeSupport.AddInternalTypes(TypeList.Types);
             StundenMeisterData.TheOne.ClassCostCenter =
                 types[Array.IndexOf(TypeList.Types, typeof(CostCenter))];
             StundenMeisterData.TheOne.ClassTimeRecording =

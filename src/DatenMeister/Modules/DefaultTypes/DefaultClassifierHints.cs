@@ -1,16 +1,20 @@
 #nullable enable
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.DefaultTypes;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DefaultTypes
 {
@@ -149,10 +153,46 @@ namespace DatenMeister.Modules.DefaultTypes
             }
             else
             {
+                if (metaClass != null)
+                {
+                    var compositing = ClassifierMethods.GetCompositingProperties(metaClass).ToList();
+                    if (compositing != null && compositing.Count > 0)
+                    {
+                        foreach (var composite in compositing)
+                        {
+                            yield return NamedElementMethods.GetName(composite);
+                        }
+                    }
+                }
+
+                    
                 yield return _UML._Packages._Package.packagedElement;
             }
         }
 
+        public IEnumerable<IElement> GetPackagedElements(IObject item)
+        {
+            var propertyName = GetPackagingPropertyNames(item).ToList();
+            foreach (var property in propertyName)
+            {
+                if (item.isSet(property))
+                {
+                    var value = item.get(property);
+                    if (DotNetHelper.IsOfEnumeration(value))
+                    {
+                        var valueAsEnumerable  = (value as IEnumerable)!;
+                        foreach (var valueItem in valueAsEnumerable)
+                        {
+                            if (valueItem is IElement asElement)
+                            {
+                                yield return asElement;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         /// <summary>
         /// Checks whether the property is so generic, that it shall be kept in the lists.
         /// This method is especially used in the FormCreator.ListForm which tries to minimize

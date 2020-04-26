@@ -95,7 +95,9 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
             using (var report = new HtmlReport(tmpPath))
             {
-                report.StartReport("List");
+                report.SetDefaultCssStyle();
+                
+                report.StartReport("Report for Extent");
                 report.Add(new HtmlHeadline("Items in collection", 1));
                 var itemFormatter = new ItemFormatter(report);
                 itemFormatter.FormatCollectionOfItems(collection, effectiveForm);

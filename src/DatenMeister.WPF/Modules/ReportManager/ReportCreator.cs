@@ -39,6 +39,8 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
             using (var report = new HtmlReport(textWriter))
             {
+                report.SetDefaultCssStyle();
+                
                 var elements = _defaultClassifierHints.GetPackagedElements(rootElement);
                 report.StartReport("Extent: " + NamedElementMethods.GetName(configuration.rootElement));
                 report.Add(new HtmlHeadline("Items in collection", 1));

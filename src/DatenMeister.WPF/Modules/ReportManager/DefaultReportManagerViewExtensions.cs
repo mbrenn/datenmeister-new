@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime.Functions.Queries;
@@ -38,7 +41,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             }
 
             // Check if the the query is about the current view
-            var listViewControl = viewExtensionInfo.GetListViewControl();
+            /*var listViewControl = viewExtensionInfo.GetListViewControl();
             if (listViewControl != null)
             {
                 var effectiveForm = listViewControl.EffectiveForm ??
@@ -51,7 +54,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 {
                     IsTopCategoryFixed = true
                 };
-            }
+            }*/
 
             var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
             if (itemExplorerControl != null)
@@ -67,13 +70,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         {
                             CreateReportForExplorerView(
                                 effectiveForm,
-                                asExtent.elements());
+                                asExtent);
                         }
                         else
                         {
                             CreateReportForExplorerView(
                                 effectiveForm,
-                                new PropertiesAsReflectiveCollection(x));
+                                x);
                         }
                     },
                     null,
@@ -85,24 +88,25 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// Creates the report for the currently selected element
         /// </summary>
         /// <param name="effectiveForm">The form being used for the export</param>
-        /// <param name="collection">Defines the item that is selected</param>
+        /// <param name="rootElement">Defines the item that is selected</param>
         private void CreateReportForExplorerView(
             IObject effectiveForm,
-            IReflectiveCollection collection)
+            IObject rootElement)
         {
+            var reportConfiguration = new ReportConfiguration
+            {
+                form = effectiveForm, 
+                rootElement = rootElement,
+                showDescendents = true,
+                showRootElement = true
+            };
+
             var id = StringManipulation.RandomString(10);
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
+            using var streamWriter = new StreamWriter(tmpPath, false, Encoding.UTF8);
 
-            using (var report = new HtmlReport(tmpPath))
-            {
-                report.SetDefaultCssStyle();
-                
-                report.StartReport("Report for Extent");
-                report.Add(new HtmlHeadline("Items in collection", 1));
-                var itemFormatter = new ItemFormatter(report);
-                itemFormatter.FormatCollectionOfItems(collection, effectiveForm);
-                report.EndReport();
-            }
+            var reportCreator = new ReportCreator(new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic));
+            reportCreator.CreateReport(streamWriter, reportConfiguration);
 
             Process.Start(tmpPath);
         }

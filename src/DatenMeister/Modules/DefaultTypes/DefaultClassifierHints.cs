@@ -172,6 +172,21 @@ namespace DatenMeister.Modules.DefaultTypes
 
         public IEnumerable<IElement> GetPackagedElements(IObject item)
         {
+            // Gets the items as elements
+            if (item is IExtent asExtent)
+            {
+                foreach (var element in asExtent.elements())
+                {
+                    if (element is IElement asElement)
+                    {
+                        yield return asElement;
+                    }
+                }
+
+                yield break;
+            }
+            
+            // Gets the items as properties
             var propertyName = GetPackagingPropertyNames(item).ToList();
             foreach (var property in propertyName)
             {

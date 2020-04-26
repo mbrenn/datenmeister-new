@@ -33,7 +33,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// <summary>
         /// Defines the root element which is used as an anchor to get shown
         /// </summary>
-        public IElement? rootElement { get; set; }
+        public IObject? rootElement { get; set; }
 
         /// <summary>
         /// Gets or sets the properties of the root elements
@@ -44,6 +44,6 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// Gets or sets the extent form being used for the given element.
         /// The type of the extent is the extent form 
         /// </summary>
-        public IElement? form { get; set; }
+        public IObject? form { get; set; }
     }
 }

@@ -1,8 +1,6 @@
-using System.Security.RightsManagement;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.WPF.Modules.ReportManager
+namespace DatenMeister.Modules.Reports
 {
     public enum DescendentMode
     {
@@ -42,7 +40,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         
         /// <summary>
         /// Gets or sets the extent form being used for the given element.
-        /// The type of the extent is the extent form 
+        /// The type of the extent is the extent form.
         /// </summary>
         public IObject? form { get; set; }
     }

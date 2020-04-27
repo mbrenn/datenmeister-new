@@ -11,6 +11,7 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
+using DatenMeister.Modules.Reports;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
@@ -105,7 +106,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
             using var streamWriter = new StreamWriter(tmpPath, false, Encoding.UTF8);
 
-            var reportCreator = new ReportCreator(new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic));
+            var reportCreator = new ReportCreator(GiveMe.Scope.WorkspaceLogic);
             reportCreator.CreateReport(streamWriter, reportConfiguration);
 
             Process.Start(tmpPath);

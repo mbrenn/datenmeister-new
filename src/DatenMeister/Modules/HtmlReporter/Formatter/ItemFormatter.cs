@@ -33,9 +33,8 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// </summary>
         /// <param name="collection">Collection of items to be parsed</param>
         /// <param name="extentForm">The extent form being used to create the tables</param>
-        public void FormatCollectionOfItems(IEnumerable<object?> collection, IObject extentForm)
+        public void FormatCollectionOfItems(IReflectiveCollection collection, IObject extentForm)
         {
-            collection = collection.ToList();
             var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {

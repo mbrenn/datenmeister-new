@@ -38,10 +38,11 @@ namespace DatenMeister.Modules.ZipExample
         /// Adds a zipcode example
         /// </summary>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
-        public IUriExtent AddZipCodeExample(Workspace workspace)
-            => AddZipCodeExample(workspace.id);
+        /// <param name="exampleFilePath">Defines the path to the example file</param>
+        public IUriExtent AddZipCodeExample(Workspace workspace, string? exampleFilePath = null)
+            => AddZipCodeExample(workspace.id, exampleFilePath);
 
-        public IUriExtent AddZipCodeExample(string workspaceId)
+        public IUriExtent AddZipCodeExample(string workspaceId, string? exampleFilePath = null)
         {
             var random = new Random();
 
@@ -70,7 +71,7 @@ namespace DatenMeister.Modules.ZipExample
             } while (File.Exists(filename));
 
             // Copies the example file to a new extent
-            var originalFilename = Path.Combine(appBase, "Examples", "plz.csv");
+            var originalFilename = exampleFilePath ?? Path.Combine(appBase, "Examples", "plz.csv");
             if (!File.Exists(originalFilename))
             {
                 throw new InvalidOperationException(

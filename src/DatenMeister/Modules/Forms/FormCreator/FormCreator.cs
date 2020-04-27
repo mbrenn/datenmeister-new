@@ -64,7 +64,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="formLogic">View logic being used</param>
         /// <param name="defaultClassifierHints">The classifier hints</param>
-        public FormCreator(IWorkspaceLogic? workspaceLogic, FormsPlugin? formLogic, DefaultClassifierHints defaultClassifierHints)
+        public FormCreator(
+            IWorkspaceLogic? workspaceLogic, 
+            FormsPlugin? formLogic,
+            DefaultClassifierHints defaultClassifierHints)
         {
             _formLogic = formLogic;
             _defaultClassifierHints = defaultClassifierHints;

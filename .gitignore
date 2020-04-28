@@ -176,4 +176,4 @@ project.lock.json
 src/.idea/*
 /docs/.compile/*
 /deliverables/*
-scripts/cscript/tmp/*
+/scripts/cscript/tmp/*

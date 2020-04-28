@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.HtmlReporter.Formatter
 {
@@ -87,9 +88,19 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                     {
                         continue;
                     }
-
-                    var value = (HtmlElement) item.getOrDefault<string>(fieldName)
-                                ?? new HtmlRawString("<i>unset</i>");
+                    
+                    HtmlElement value;
+                    if (field.metaclass?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+                    {
+                        value = item is IElement element && element.metaclass != null
+                            ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
+                            : new HtmlRawString("<i>unset</i>");
+                    }
+                    else
+                    {
+                        value = (HtmlElement) item.getOrDefault<string>(fieldName) ??
+                                  new HtmlRawString("<i>unset</i>");
+                    }
 
                     listFields.Add(new HtmlTableCell(value));
                 }
@@ -145,15 +156,27 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
             {
                 var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
                 var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
+                
+                HtmlElement content;
+                if (field.metaclass?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+                {
+                    title = "Metaclass";
+                    content = item is IElement element && element.metaclass != null
+                        ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
+                        : new HtmlRawString("<i>unset</i>");
+                }
+                else
+                {
+                    content = (HtmlElement) item.getOrDefault<string>(fieldName) ??
+                              new HtmlRawString("<i>unset</i>");
+                }
 
                 // Skip titles with null value
                 if (fieldName == null) continue;
 
                 table.AddRow(
                     new HtmlTableCell(title),
-                    new HtmlTableCell(
-                        (HtmlElement) item.getOrDefault<string>(fieldName) ??
-                        new HtmlRawString("<i>unset</i>")));
+                    new HtmlTableCell(content));
             }
         }
     }

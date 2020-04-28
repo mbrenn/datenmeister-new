@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 
 // Work-around helper method to get the source file location.
 private static string GetSourceFile([CallerFilePath] string file = "") => file;
+private static string GetScriptFolder([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
 
 BurnSystems.Logging.TheLog.AddProvider(new ConsoleProvider());
 
@@ -23,18 +24,23 @@ DatenMeister.Integration.GiveMe.DropDatenMeisterStorage(settings);
 using(var dm = DatenMeister.Integration.GiveMe.DatenMeister(settings))
 {
     var zipCodeManager = dm.Resolve<ZipCodeExampleManager>();
-    var testExtent = zipCodeManager.AddZipCodeExample(WorkspaceNames.NameData, "plz.csv");
+    var testExtent = zipCodeManager.AddZipCodeExample(
+        WorkspaceNames.NameData,
+        Path.Combine(GetScriptFolder(), "plz.csv"));
     
     var reportCreator = dm.Resolve<ReportCreator>();
-    using (var writer = ReportCreator.CreateRandomFile(out var fileName, "tmp"))
+
+    using (var writer = ReportCreator.CreateRandomFile(out var fileName, 
+        Path.Combine(GetScriptFolder(), "tmp")))
     {
         var configuration = new ReportConfiguration();
         configuration.rootElement = testExtent;
-        configuration.showDescendents = false;
-        configuration.showRootElement = false;
+        configuration.showDescendents = true;
+        configuration.showRootElement = true;
+        configuration.showMetaClasses = true;
         reportCreator.CreateReport(writer, configuration);
 
-        var absolutePath = Path.Combine(Path.GetDirectoryName(GetSourceFile()), fileName);
+        var absolutePath = Path.Combine(GetScriptFolder(), fileName);
         Console.WriteLine(absolutePath);
 
         var processStartInfo = new System.Diagnostics.ProcessStartInfo

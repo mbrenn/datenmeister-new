@@ -39,6 +39,11 @@ namespace DatenMeister.Modules.Reports
         public bool showRootElement { get; set; }
         
         /// <summary>
+        /// Gets or sets the flag whether metaclass shall be shown in the columns and rows
+        /// </summary>
+        public bool showMetaClasses { get; set; }
+        
+        /// <summary>
         /// Gets or sets the extent form being used for the given element.
         /// The type of the extent is the extent form.
         /// </summary>

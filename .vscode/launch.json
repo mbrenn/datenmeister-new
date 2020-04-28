@@ -23,6 +23,19 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
+        },
+        {
+            "name": ".NET Script Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet",
+            "args": [
+                "exec",
+                "C:/Users/brenn/.dotnet/tools/.store/dotnet-script/0.52.0/dotnet-script/0.52.0/tools/netcoreapp3.1/any/dotnet-script.dll",
+                "${file}"
+            ],
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": true
         }
     ,]
 }

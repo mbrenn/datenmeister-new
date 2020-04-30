@@ -23,8 +23,6 @@ namespace DatenMeister.Modules.Reports
     /// </summary>
     public class ReportCreator
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
-
         /// <summary>
         /// Stores the default classifier hints
         /// </summary>
@@ -38,9 +36,8 @@ namespace DatenMeister.Modules.Reports
         /// <param name="workspaceLogic">Default workspace Logic to be used</param>
         public ReportCreator(IWorkspaceLogic workspaceLogic)
         {
-            _workspaceLogic = workspaceLogic;
             _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
-            _formCreator = new FormCreator(_workspaceLogic, null, _defaultClassifierHints);
+            _formCreator = new FormCreator(workspaceLogic, null, _defaultClassifierHints);
         }
 
         /// <summary>

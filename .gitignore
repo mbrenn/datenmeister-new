@@ -176,4 +176,6 @@ project.lock.json
 src/.idea/*
 /docs/.compile/*
 /deliverables/*
+/src/tests/ScriptTests/tmp/*
+/src/tests/ScriptTests/tmp2/*
 /scripts/cscript/tmp/*

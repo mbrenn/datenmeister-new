@@ -73,7 +73,7 @@ namespace DatenMeister.Modules.TypeSupport
                     CreateInternalTypeExtent();
                     
                     var defaultTypeIntegrator = new DefaultTypeIntegrator(_workspaceLogic, this, _integrationSettings);
-                    defaultTypeIntegrator.CreateDefaultTypes();
+                    defaultTypeIntegrator.CreateDefaultTypesForTypesWorkspace();
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     // Creates the extent for the user types which is permanently stored on disk. The user is capable to create his own types

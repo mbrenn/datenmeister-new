@@ -21,7 +21,7 @@ namespace ScriptTests
         public static void TestReportIssues() => TestReports(true);
         
         public static void TestReportZipCode() => TestReports(false);
-        
+
         public static void TestReports(bool doIssues)
         {
             BurnSystems.Logging.TheLog.AddProvider(new ConsoleProvider());
@@ -31,7 +31,7 @@ namespace ScriptTests
 
             DatenMeister.Integration.GiveMe.DropDatenMeisterStorage(settings);
 
-            using(var dm = DatenMeister.Integration.GiveMe.DatenMeister(settings))
+            using (var dm = DatenMeister.Integration.GiveMe.DatenMeister(settings))
             {
                 DatenMeister.Core.EMOF.Interface.Identifiers.IUriExtent testExtent;
                 if (doIssues)
@@ -43,7 +43,7 @@ namespace ScriptTests
                         filePath = "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi"
                     };
 
-                    testExtent = extentManager.LoadExtentWithoutAdding(loaderConfig);
+                    testExtent = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOnly);
                 }
                 else
                 {
@@ -52,19 +52,22 @@ namespace ScriptTests
                         WorkspaceNames.NameData,
                         Path.Combine(GetScriptFolder(), "plz.csv"));
                 }
-    
+
                 var reportCreator = dm.Resolve<ReportCreator>();
 
                 var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
                 Directory.CreateDirectory(targetPath);
-                
+
                 using (var writer = ReportCreator.CreateRandomFile(out var fileName, targetPath))
                 {
-                    var configuration = new ReportConfiguration();
-                    configuration.rootElement = testExtent;
-                    configuration.showDescendents = true;
-                    configuration.showRootElement = true;
-                    configuration.showMetaClasses = true;
+                    var configuration = new ReportConfiguration
+                    {
+                        rootElement = testExtent,
+                        showDescendents = true,
+                        showRootElement = true,
+                        showMetaClasses = true
+                    };
+                    
                     reportCreator.CreateReport(writer, configuration);
 
                     var absolutePath = Path.Combine(GetScriptFolder(), fileName);
@@ -75,16 +78,12 @@ namespace ScriptTests
                         UseShellExecute = true,
                         FileName = absolutePath
                     };
-        
+
                     System.Diagnostics.Process.Start(processStartInfo);
                 }
 
                 Console.WriteLine(testExtent);
             }
-
-            Console.WriteLine("Hello world!");
-
         }
-        
     }
 }

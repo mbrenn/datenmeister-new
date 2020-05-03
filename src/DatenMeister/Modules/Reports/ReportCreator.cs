@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using BurnSystems;
@@ -101,10 +102,15 @@ namespace DatenMeister.Modules.Reports
                 {
                     elements = elements.GetAllCompositesIncludingThemselves();
                 }
+
+                var first = (elements.FirstOrDefault(x => x is IElement) as IElement)?.metaclass;
+                Debug.WriteLine(first);
                 
                 // Splits them up by metaclasses 
                 var metaClasses =
-                    elements.GroupBy(x => x is IElement element ? element.metaclass : null);
+                    elements.GroupBy(
+                        x => x is IElement element ? element.metaclass : null,
+                    new MofObjectEqualityComparer()).ToList();
                 
                 report.Add(new HtmlHeadline("Items in collection", 1));
                 foreach (var metaClass in metaClasses)

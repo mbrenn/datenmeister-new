@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -368,5 +369,20 @@ namespace DatenMeister.Core.EMOF.Implementation
             _extent?.ChangeEventManager?.SendChangeEvent(this);
             _extent?.SignalUpdateOfContent();
         }
+    }
+}
+
+public class MofObjectEqualityComparer : IEqualityComparer<IObject?>
+{
+    public bool Equals(IObject? x, IObject? y)
+    {
+        var result = MofObject.AreEqual(x, y);
+        Debug.Write(result ? "Y" : "N");
+        return result;
+    }
+
+    public int GetHashCode(IObject? obj)
+    {
+        return obj?.GetHashCode() ?? 0;
     }
 }

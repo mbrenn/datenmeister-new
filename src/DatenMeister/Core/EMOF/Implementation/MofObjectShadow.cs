@@ -47,5 +47,10 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         public override string ToString()
             => $"Shadow: {Uri}";
+
+        public override int GetHashCode()
+        {
+            return Uri.GetHashCode();
+        }
     }
 }

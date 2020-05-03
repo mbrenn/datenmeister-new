@@ -570,6 +570,41 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "FullNameFieldData") // Looking for class
+                        {
+                            tree.__FullNameFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.FullNameFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FullNameFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.FullNameFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.FullNameFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.FullNameFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.FullNameFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                         if(name == "Form") // Looking for class
                         {
                             tree.__Form = value;

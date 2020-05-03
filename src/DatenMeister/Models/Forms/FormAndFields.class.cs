@@ -391,6 +391,31 @@ namespace DatenMeister.Models.Forms
         public _DefaultTypeForNewElement @DefaultTypeForNewElement = new _DefaultTypeForNewElement();
         public IElement @__DefaultTypeForNewElement = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.DefaultTypeForNewElement");
 
+        public class _FullNameFieldData
+        {
+            public static string @isAttached = "isAttached";
+            public IElement? _isAttached = null;
+
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @title = "title";
+            public IElement? _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement? _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement? _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
+
+        }
+
+        public _FullNameFieldData @FullNameFieldData = new _FullNameFieldData();
+        public IElement @__FullNameFieldData = new MofObjectShadow("datenmeister:///DatenMeister/Types/FormAndFields#DatenMeister.Models.Forms.FullNameFieldData");
+
         public class _FormType
         {
             public static string @Detail = "Detail";

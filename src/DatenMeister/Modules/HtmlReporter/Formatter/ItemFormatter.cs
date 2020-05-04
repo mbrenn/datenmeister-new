@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.HtmlReporter.Formatter
@@ -20,13 +22,18 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(ItemFormatter));
 
+        private readonly _FormAndFields _formAndFields;
+
         /// <summary>
         /// Initializes a new instance of the ItemFormatter class
         /// </summary>
         /// <param name="htmlEngine">Html engine to be used</param>
-        public ItemFormatter(HtmlReport htmlEngine)
+        /// <param name="workspaceLogic">Workspace logic to be added</param>
+        public ItemFormatter(HtmlReport htmlEngine, IWorkspaceLogic workspaceLogic)
         {
             _htmlEngine = htmlEngine;
+            _formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>()
+                             ?? throw new InvalidOperationException("FormAndFields not found");
         }
 
         /// <summary>
@@ -90,16 +97,52 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                     }
                     
                     HtmlElement value;
-                    if (field.metaclass?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+                    if (field.metaclass?.@equals(_formAndFields.__MetaClassElementFieldData) == true)
                     {
                         value = item is IElement element && element.metaclass != null
                             ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
                             : new HtmlRawString("<i>unset</i>");
+                    } 
+                    else if (field.metaclass?.@equals(_formAndFields.__FullNameFieldData) == true)
+                    {
+                        var result = NamedElementMethods.GetFullNameWithoutElementId(item);
+                        if (result == null || string.IsNullOrEmpty(result))
+                        {
+                            value = new HtmlRawString("<i>Root</i>");
+                        }
+                        else
+                        {
+                            value = result;
+                        }
                     }
                     else
                     {
-                        value = (HtmlElement) item.getOrDefault<string>(fieldName) ??
-                                  new HtmlRawString("<i>unset</i>");
+                        if (field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration))
+                        {
+                            var result = new StringBuilder();
+                            var asEnumeration = item.getOrDefault<IReflectiveCollection>(fieldName);
+                            var newLine = "";
+                            
+                            foreach (var enumerationValue in asEnumeration)
+                            {
+                                if (enumerationValue is IElement asElement)
+                                {
+                                    var name = NamedElementMethods.GetName(asElement);
+                                    result.Append(newLine);
+                                    result.Append(name);
+
+                                    newLine = "\r\n";
+                                }
+
+                            }
+                            value = result.ToString();
+                        }
+                        else
+                        {
+                            value = (HtmlElement) item.getOrDefault<string>(fieldName) ??
+                                    new HtmlRawString("<i>unset</i>");
+                           
+                        }
                     }
 
                     listFields.Add(new HtmlTableCell(value));

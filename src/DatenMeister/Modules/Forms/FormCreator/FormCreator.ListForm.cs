@@ -22,7 +22,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="creationMode"></param>
         /// <param name="property">Property being used</param>
         public IElement CreateListFormForMetaClass(
-            IElement? metaClass,
+            IObject? metaClass,
             CreationMode creationMode,
             IElement? property = null)
         {
@@ -117,6 +117,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     // Create the metaclass as a field
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                     metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                    metaClassField.set(_FormAndFields._MetaClassElementFieldData.title, "Metaclass");
                     result.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
                 }
 

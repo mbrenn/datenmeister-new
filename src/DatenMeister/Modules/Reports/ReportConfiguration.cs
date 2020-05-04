@@ -44,6 +44,11 @@ namespace DatenMeister.Modules.Reports
         public bool showMetaClasses { get; set; }
         
         /// <summary>
+        /// Gets or sets a flag indicating whether the full name shall be added
+        /// </summary>
+        public bool showFullName { get; set; }
+        
+        /// <summary>
         /// Gets or sets the extent form being used for the given element.
         /// The type of the extent is the extent form.
         /// </summary>

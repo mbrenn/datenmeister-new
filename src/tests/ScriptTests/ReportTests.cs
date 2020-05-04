@@ -65,7 +65,8 @@ namespace ScriptTests
                         rootElement = testExtent,
                         showDescendents = true,
                         showRootElement = true,
-                        showMetaClasses = true
+                        showMetaClasses = true,
+                        showFullName = true
                     };
                     
                     reportCreator.CreateReport(writer, configuration);

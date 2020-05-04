@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -7,12 +6,13 @@ using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
-using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -30,6 +30,7 @@ namespace DatenMeister.Modules.Reports
         private readonly DefaultClassifierHints _defaultClassifierHints;
 
         private readonly FormCreator _formCreator;
+        private IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Initializes a new instance of the ReportCreator class.
@@ -37,6 +38,7 @@ namespace DatenMeister.Modules.Reports
         /// <param name="workspaceLogic">Default workspace Logic to be used</param>
         public ReportCreator(IWorkspaceLogic workspaceLogic)
         {
+            _workspaceLogic = workspaceLogic;
             _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
             _formCreator = new FormCreator(workspaceLogic, null, _defaultClassifierHints);
         }
@@ -86,7 +88,7 @@ namespace DatenMeister.Modules.Reports
                 if (configuration.showRootElement)
                 {
                     report.Add(new HtmlHeadline("Reported Item", 1));
-                    var itemFormatter = new ItemFormatter(report);
+                    var itemFormatter = new ItemFormatter(report, _workspaceLogic);
                     var detailForm =
                         _formCreator.CreateDetailForm(rootElement, creationMode);
                     itemFormatter.FormatItem(rootElement, detailForm);
@@ -120,7 +122,7 @@ namespace DatenMeister.Modules.Reports
                         ? "Unclassified"
                         : "Classifier: " + NamedElementMethods.GetName(metaClass.Key);
                     
-                    var itemFormatter = new ItemFormatter(report);
+                    var itemFormatter = new ItemFormatter(report, _workspaceLogic);
                     
                     report.Add(new HtmlHeadline(metaClassName, 2));
 
@@ -129,9 +131,28 @@ namespace DatenMeister.Modules.Reports
                     var foundForm = form;
                     if (foundForm == null)
                     {
-                        foundForm = _formCreator.CreateListFormForElements(
-                            collection,
-                            creationMode);
+                        if (metaClass.Key == null)
+                        {
+                            foundForm = _formCreator.CreateListFormForElements(
+                                collection,
+                                creationMode);
+                        }
+                        else
+                        {
+                            foundForm = _formCreator.CreateListFormForMetaClass(metaClass.Key, creationMode);
+                        }
+
+                        if (configuration.showFullName)
+                        {
+                            var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>()
+                                                ?? throw new InvalidOperationException("FormAndFields are not found");
+                            
+                            // Create the metaclass as a field
+                            var fullNamefield = MofFactory.Create(foundForm, formAndFields.__FullNameFieldData);
+                            fullNamefield.set(_FormAndFields._MetaClassElementFieldData.name, "Path");
+                            fullNamefield.set(_FormAndFields._MetaClassElementFieldData.title, "Path");
+                            foundForm.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(fullNamefield);
+                        }
                     }
 
                     itemFormatter.FormatCollectionOfItems(collection, foundForm);

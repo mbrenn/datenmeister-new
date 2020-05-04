@@ -65,7 +65,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="formLogic">View logic being used</param>
         /// <param name="defaultClassifierHints">The classifier hints</param>
         public FormCreator(
-            IWorkspaceLogic? workspaceLogic, 
+            IWorkspaceLogic workspaceLogic, 
             FormsPlugin? formLogic,
             DefaultClassifierHints defaultClassifierHints)
         {
@@ -78,8 +78,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
-            _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>()
-                             ?? _FormAndFields.TheOne;
+            _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>() ??
+                             _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
+                             throw new InvalidOperationException("FormAndFields not found");
         }
 
         /// <summary>
@@ -280,7 +281,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="creationMode">Creation Mode to be used</param>
         /// <param name="cache">Cache of creator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddToFormByMetaclass(IObject form, IElement metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
+        private bool AddToFormByMetaclass(IObject form, IObject metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
         {
             cache ??= new FormCreatorCache();
             
@@ -328,6 +329,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             {
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                metaClassField.set(_FormAndFields._MetaClassElementFieldData.title, "Metaclass");
                 form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(metaClassField);
 
                 cache.MetaClassAlreadyAdded = true;
@@ -558,6 +560,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 element.set(_FormAndFields._SubElementFieldData.name, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.title, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
+                element.set(_FormAndFields._SubElementFieldData.isEnumeration, propertyIsEnumeration);
                 return element;
             }
 

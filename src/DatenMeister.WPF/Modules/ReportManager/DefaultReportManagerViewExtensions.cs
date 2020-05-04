@@ -121,7 +121,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             {
                 report.StartReport("Detail: " + selectedItem);
                 report.Add(new HtmlHeadline("Detail Information", 1));
-                var itemFormatter = new ItemFormatter(report);
+                var itemFormatter = new ItemFormatter(report, GiveMe.Scope.WorkspaceLogic);
                 itemFormatter.FormatItem(selectedItem, effectiveForm);
                 report.EndReport();
             }

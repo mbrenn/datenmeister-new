@@ -8,7 +8,7 @@ namespace ScriptTests
         {  
             ReportTests.TestReportIssues();
             
-            //ReportTests.TestReportZipCode();
+            ReportTests.TestReportZipCode();
         }
     }
 }

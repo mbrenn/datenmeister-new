@@ -56,6 +56,41 @@ namespace DatenMeister.Uml.Helper
 
             return GetName(value);
         }
+        
+        public static string GetFullNameWithoutElementId(IObject value, string separator = "::")
+        {
+            var realSeparator = string.Empty;
+            switch (value)
+            {
+                case null:
+                    throw new ArgumentNullException(nameof(value));
+                case IElement valueAsElement:
+                    var current = valueAsElement.container();
+                    var result = string.Empty;
+                    var depth = 0;
+
+                    while (current != null)
+                    {
+                        var currentName = GetName(current);
+                        result = $"{currentName}{realSeparator}{result}";
+
+                        realSeparator = separator;
+
+                        current = current.container();
+                        depth++;
+
+                        if (depth > MaxDepth)
+                        {
+                            throw new InvalidOperationException(
+                                $"The full name of the element {value} could not be retrieved due to an infinite loop. (Threshold is 1000)");
+                        }
+                    }
+
+                    return result;
+            }
+
+            return GetName(value);
+        }
 
         /// <summary>
         /// Gets an element out of the workspace by a fullname

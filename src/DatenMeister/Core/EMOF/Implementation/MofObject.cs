@@ -377,7 +377,6 @@ public class MofObjectEqualityComparer : IEqualityComparer<IObject?>
     public bool Equals(IObject? x, IObject? y)
     {
         var result = MofObject.AreEqual(x, y);
-        Debug.Write(result ? "Y" : "N");
         return result;
     }
 

@@ -56,10 +56,10 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
             }
         }
 
-        private void FormatCollectionByTab(IEnumerable<object?> collection, IObject tab)
+        private void FormatCollectionByTab(IEnumerable<object?> collection, IObject listForm)
         {
             var table = new HtmlTable();
-            var fields = tab.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
 
             if (fields == null)
             {
@@ -119,23 +119,32 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                     {
                         if (field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration))
                         {
-                            var result = new StringBuilder();
                             var asEnumeration = item.getOrDefault<IReflectiveCollection>(fieldName);
-                            var newLine = "";
-                            
-                            foreach (var enumerationValue in asEnumeration)
-                            {
-                                if (enumerationValue is IElement asElement)
-                                {
-                                    var name = NamedElementMethods.GetName(asElement);
-                                    result.Append(newLine);
-                                    result.Append(name);
 
-                                    newLine = "\r\n";
+                            if (asEnumeration != null)
+                            {
+                                var result = new StringBuilder();
+                                var newLine = "";
+
+                                foreach (var enumerationValue in asEnumeration)
+                                {
+                                    if (enumerationValue is IElement asElement)
+                                    {
+                                        var name = NamedElementMethods.GetName(asElement);
+                                        result.Append(newLine);
+                                        result.Append(name);
+
+                                        newLine = "\r\n";
+                                    }
+
                                 }
 
+                                value = result.ToString();
                             }
-                            value = result.ToString();
+                            else
+                            {
+                                value = new HtmlRawString("<i>not set</i>");
+                            }
                         }
                         else
                         {

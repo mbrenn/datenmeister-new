@@ -728,6 +728,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._field = value;
                                 }
+                                if(name == "sortingOrder") // Looking for property
+                                {
+                                    tree.ListForm._sortingOrder = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ListForm._name = value;

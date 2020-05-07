@@ -517,6 +517,9 @@ namespace DatenMeister.Models.Forms
             public static string @field = "field";
             public IElement? _field = null;
 
+            public static string @sortingOrder = "sortingOrder";
+            public IElement? _sortingOrder = null;
+
             public static string @name = "name";
             public IElement? _name = null;
 

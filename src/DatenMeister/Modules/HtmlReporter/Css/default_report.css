@@ -15,6 +15,7 @@ table th
     text-align: left;
     border: 1px solid black;
     padding: 5px 10px 5px 10px;
+    vertical-align: top;
 }
 
 table td
@@ -22,4 +23,5 @@ table td
     text-align: left;
     border: 1px solid black;
     padding: 5px 10px 5px 10px;
+    vertical-align: top;
 }

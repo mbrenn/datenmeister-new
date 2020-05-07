@@ -64,6 +64,11 @@ namespace DatenMeister.Models.Forms
         public IList<FieldData> field { get; set; } = new List<FieldData>();
 
         /// <summary>
+        /// Gets a list of fields to which the table shall be ordered 
+        /// </summary>
+        public IList<FieldData> sortingOrder { get; set; } = new List<FieldData>();
+
+        /// <summary>
         /// Adds the fields to the form
         /// </summary>
         /// <param name="fieldsToBeAdded">Fields to be added</param>

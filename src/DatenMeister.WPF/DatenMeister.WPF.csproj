@@ -122,7 +122,6 @@
     <Compile Include="Modules\ObjectOperations\ObjectOperationPlugin.cs" />
     <Compile Include="Modules\ObjectOperations\ObjectOperationViewExtension.cs" />
     <Compile Include="Modules\ReportManager\ReportManagerPlugin.cs" />
-    <Compile Include="Modules\ReportManager\ReportViewExtensions.cs" />
     <Compile Include="Modules\ReportManager\DefaultReportManagerViewExtensions.cs" />
     <Compile Include="Modules\StandardRepository.cs" />
     <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />

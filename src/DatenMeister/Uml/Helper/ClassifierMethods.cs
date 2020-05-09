@@ -22,7 +22,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
         /// <param name="alreadyIn">Returns the properties that are already in. </param>
-        public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier, HashSet<string>? alreadyIn = null)
+        public static IEnumerable<IElement> GetPropertiesOfClassifier(IObject classifier, HashSet<string>? alreadyIn = null)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
             alreadyIn ??= new HashSet<string>();
@@ -102,7 +102,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="alreadyVisited">Contains the elements that have been visited already
         /// The already visited elements will not be returned again</param>
         /// <returns>Enumeration of elements</returns>
-        public static IEnumerable<IElement> GetGeneralizations(IElement classifier, HashSet<IElement>? alreadyVisited = null)
+        public static IEnumerable<IElement> GetGeneralizations(IObject classifier, HashSet<IElement>? alreadyVisited = null)
         {
             alreadyVisited ??= new HashSet<IElement>();
             var propertyGeneralization = _UML._Classification._Classifier.generalization;

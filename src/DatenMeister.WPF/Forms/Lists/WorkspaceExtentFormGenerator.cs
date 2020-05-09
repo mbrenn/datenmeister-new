@@ -311,7 +311,8 @@ namespace DatenMeister.WPF.Forms.Lists
 
             async void LoadExtent(IObject? item)
             {
-                var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(navigationHost);
+                var extentLoaderConfig = 
+                    await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)
                 {
                     var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
@@ -362,7 +363,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 ShowWorkspaceSelection = false,
                 ShowExtentSelection = false,
                 MessageText = "Select type of extent",
-                Title = "Select type of extent"
+                Title = "Select type of extent",
+                Owner = navigationHost.GetWindow()
             };
 
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();

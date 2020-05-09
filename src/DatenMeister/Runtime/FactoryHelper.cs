@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime
             var metaInfo = GetMetaInformation<TFilledType>(factory);
             if (metaInfo == null)
             {
-                throw new InvalidOperationException("metaInfo is not found");
+                throw new InvalidOperationException($"metaInfo for type {typeof(TFilledType).FullName} is not found");
             }
             
             return factory.create(type(metaInfo));

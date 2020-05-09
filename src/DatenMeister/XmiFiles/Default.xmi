@@ -1,0 +1,8 @@
+<item>
+    <item p1:type="datenmeister:///_internal/xmi/uml#Package" p1:id="_package_Default" name="Default" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+        <packagedElement p1:type="datenmeister:///_internal/xmi/uml#Class" p1:id="DatenMeister.Models.DefaultTypes.Package" name="Package">
+            <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" name="name" type-ref="datenmeister:///_internal/xmi/primitivetypes#String" />
+            <ownedAttribute p1:type="datenmeister:///_internal/xmi/uml#Property" name="packagedElement" upper="*" isComposite="true" />
+        </packagedElement>
+    </item>
+</item>

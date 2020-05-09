@@ -21,6 +21,10 @@
     <Compile Remove="Integration\Modules\**" />
     <EmbeddedResource Remove="Integration\Modules\**" />
     <None Remove="Integration\Modules\**" />
+    <None Remove="Modules\HtmlReporter\Css\default_report.css" />
+    <EmbeddedResource Include="Modules\HtmlReporter\Css\default_report.css" />
+    <None Remove="XmiFiles\Default.xmi" />
+    <EmbeddedResource Include="XmiFiles\Default.xmi" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />

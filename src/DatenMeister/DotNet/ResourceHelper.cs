@@ -7,7 +7,7 @@ using DatenMeister.Provider.XMI.EMOF;
 
 namespace DatenMeister.DotNet
 {
-    public class ResourceHelper
+    public static class ResourceHelper
     {
         public static string LoadStringFromAssembly(Type typeInAssembly, string resourcePath)
         {
@@ -16,7 +16,7 @@ namespace DatenMeister.DotNet
             {
                 using (var reader = new StreamReader(stream ?? throw new InvalidOperationException("Stream is empty")))
                 {
-                    return reader.ToString();
+                    return reader.ReadToEnd();
                 }
             }
         }

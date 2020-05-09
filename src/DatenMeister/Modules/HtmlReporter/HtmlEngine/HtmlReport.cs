@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
 {
@@ -14,7 +15,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// Stores the stream writer instance being used to write the content of the
         /// html report into a file, network or other stream
         /// </summary>
-        private StreamWriter? _streamWriter;
+        private TextWriter? _streamWriter;
 
         /// <summary>
         /// Flag whether the stream writer is disposed
@@ -44,6 +45,25 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         public HtmlReport(string filePath)
         {
             _streamWriter = new StreamWriter(filePath, false, Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the html writer
+        /// </summary>
+        /// <param name="writer">Streamwriter to be used</param>
+        public HtmlReport(TextWriter writer)
+        {
+            _streamWriter = writer;
+        }
+
+        /// <summary>
+        /// Loads and sets the default style
+        /// </summary>
+        public void SetDefaultCssStyle()
+        {
+            CssStyleSheet = DotNet.ResourceHelper.LoadStringFromAssembly(
+                typeof(HtmlReport), 
+                "DatenMeister.Modules.HtmlReporter.Css.default_report.css");
         }
 
         /// <summary>

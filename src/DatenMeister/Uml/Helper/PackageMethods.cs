@@ -59,8 +59,6 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="rootElements">Collection in which the package shall be created</param>
         /// <param name="packagePath">Path to the package</param>
-        /// <param name="createIfNotFound">Gets or sets the flag that the package will be automatically created
-        /// in case it is not found</param>
         /// <returns>Found element</returns>
         public IElement GetOrCreatePackageStructure(
             IReflectiveCollection rootElements,

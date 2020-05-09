@@ -12,6 +12,12 @@ using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.TypeSupport
 {
+    /// <summary>
+    /// The default type integrator performs the following actions:
+    /// a) Copies the primitive types from the uml namespace
+    /// b) Creates a DateTime type instance
+    /// c) Add additional default types likes packages from the Default.xmi
+    /// </summary>
     public class DefaultTypeIntegrator
     {
         private readonly IWorkspaceLogic _workspaceLogic;
@@ -28,9 +34,9 @@ namespace DatenMeister.Modules.TypeSupport
         }
 
         /// <summary>
-        /// Creates the default types
+        /// Creates the default types in the types workspaces
         /// </summary>
-        public void CreateDefaultTypes()
+        public void CreateDefaultTypesForTypesWorkspace()
         {
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
 
@@ -75,7 +81,15 @@ namespace DatenMeister.Modules.TypeSupport
                 PackageMethods.AddObjectToPackage(package, dateTime);
 
                 // Create the class for the default types
-                _localTypeSupport.AddInternalType("Default", typeof(Package));
+                //_localTypeSupport.AddInternalType("Default", typeof(Package));
+                
+                
+                _packageMethods.ImportByManifest(
+                    typeof(DefaultTypeIntegrator),
+                    "DatenMeister.XmiFiles.Default.xmi",
+                    "Default",
+                    internalUserExtent,
+                    "Default");
             }
         }
     }

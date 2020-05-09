@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.HtmlReporter.Formatter
 {
@@ -19,13 +22,18 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(ItemFormatter));
 
+        private readonly _FormAndFields _formAndFields;
+
         /// <summary>
         /// Initializes a new instance of the ItemFormatter class
         /// </summary>
         /// <param name="htmlEngine">Html engine to be used</param>
-        public ItemFormatter(HtmlReport htmlEngine)
+        /// <param name="workspaceLogic">Workspace logic to be added</param>
+        public ItemFormatter(HtmlReport htmlEngine, IWorkspaceLogic workspaceLogic)
         {
             _htmlEngine = htmlEngine;
+            _formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>()
+                             ?? throw new InvalidOperationException("FormAndFields not found");
         }
 
         /// <summary>
@@ -33,9 +41,8 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
         /// </summary>
         /// <param name="collection">Collection of items to be parsed</param>
         /// <param name="extentForm">The extent form being used to create the tables</param>
-        public void FormatCollectionOfItems(IEnumerable<object?> collection, IObject extentForm)
+        public void FormatCollectionOfItems(IReflectiveCollection collection, IObject extentForm)
         {
-            collection = collection.ToList();
             var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
             if (tabs == null)
             {
@@ -49,10 +56,10 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
             }
         }
 
-        private void FormatCollectionByTab(IEnumerable<object?> collection, IObject tab)
+        private void FormatCollectionByTab(IEnumerable<object?> collection, IObject listForm)
         {
             var table = new HtmlTable();
-            var fields = tab.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
 
             if (fields == null)
             {
@@ -88,9 +95,64 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
                     {
                         continue;
                     }
+                    
+                    HtmlElement value;
+                    if (field.metaclass?.@equals(_formAndFields.__MetaClassElementFieldData) == true)
+                    {
+                        value = item is IElement element && element.metaclass != null
+                            ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
+                            : new HtmlRawString("<i>unset</i>");
+                    } 
+                    else if (field.metaclass?.@equals(_formAndFields.__FullNameFieldData) == true)
+                    {
+                        var result = NamedElementMethods.GetFullNameWithoutElementId(item);
+                        if (result == null || string.IsNullOrEmpty(result))
+                        {
+                            value = new HtmlRawString("<i>Root</i>");
+                        }
+                        else
+                        {
+                            value = result;
+                        }
+                    }
+                    else
+                    {
+                        if (field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration))
+                        {
+                            var asEnumeration = item.getOrDefault<IReflectiveCollection>(fieldName);
 
-                    var value = (HtmlElement) item.getOrDefault<string>(fieldName)
-                                ?? new HtmlRawString("<i>unset</i>");
+                            if (asEnumeration != null)
+                            {
+                                var result = new StringBuilder();
+                                var newLine = "";
+
+                                foreach (var enumerationValue in asEnumeration)
+                                {
+                                    if (enumerationValue is IElement asElement)
+                                    {
+                                        var name = NamedElementMethods.GetName(asElement);
+                                        result.Append(newLine);
+                                        result.Append(name);
+
+                                        newLine = "\r\n";
+                                    }
+
+                                }
+
+                                value = result.ToString();
+                            }
+                            else
+                            {
+                                value = new HtmlRawString("<i>not set</i>");
+                            }
+                        }
+                        else
+                        {
+                            value = (HtmlElement) item.getOrDefault<string>(fieldName) ??
+                                    new HtmlRawString("<i>unset</i>");
+                           
+                        }
+                    }
 
                     listFields.Add(new HtmlTableCell(value));
                 }
@@ -146,15 +208,27 @@ namespace DatenMeister.Modules.HtmlReporter.Formatter
             {
                 var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
                 var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
+                
+                HtmlElement content;
+                if (field.metaclass?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+                {
+                    title = "Metaclass";
+                    content = item is IElement element && element.metaclass != null
+                        ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
+                        : new HtmlRawString("<i>unset</i>");
+                }
+                else
+                {
+                    content = (HtmlElement) item.getOrDefault<string>(fieldName) ??
+                              new HtmlRawString("<i>unset</i>");
+                }
 
                 // Skip titles with null value
                 if (fieldName == null) continue;
 
                 table.AddRow(
                     new HtmlTableCell(title),
-                    new HtmlTableCell(
-                        (HtmlElement) item.getOrDefault<string>(fieldName) ??
-                        new HtmlRawString("<i>unset</i>")));
+                    new HtmlTableCell(content));
             }
         }
     }

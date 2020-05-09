@@ -24,6 +24,7 @@ namespace DatenMeister.Models.Forms
                 typeof(SeparatorLineFieldData),
                 typeof(FileSelectionFieldData),
                 typeof(DefaultTypeForNewElement),
+                typeof(FullNameFieldData),
 
                 // Now the forms
                 typeof(FormType),

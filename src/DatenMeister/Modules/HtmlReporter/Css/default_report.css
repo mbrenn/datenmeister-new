@@ -1,0 +1,27 @@
+body
+{
+    font-family: Arial, sans-serif;
+}
+
+table
+{
+    border: 1px solid black;
+    border-collapse: collapse;    
+}
+
+table th
+{
+    background-color: lightblue;
+    text-align: left;
+    border: 1px solid black;
+    padding: 5px 10px 5px 10px;
+    vertical-align: top;
+}
+
+table td
+{
+    text-align: left;
+    border: 1px solid black;
+    padding: 5px 10px 5px 10px;
+    vertical-align: top;
+}

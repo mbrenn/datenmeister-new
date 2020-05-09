@@ -155,8 +155,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             this IReflectiveCollection collection)
         {
             return new TemporaryReflectiveSequence(
-                collection.AsEnumerable().Union(
-                    AllDescendentsQuery.GetCompositeDescendents(collection).Cast<object>().ToList()));
+                AllDescendentsQuery.GetCompositeDescendents(collection).Cast<object>().ToList());
         }
 
         /// <summary>

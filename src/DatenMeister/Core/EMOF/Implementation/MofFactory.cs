@@ -244,5 +244,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             return new MofFactory(extent).create(metaClass);
         }
+
+        /// <summary>
+        /// Just a short call to create a new mof factory instance and call the create method
+        /// </summary>
+        /// <param name="element">Element to be included</param>
+        /// <param name="metaClass">Meta class whose element will be created</param>
+        /// <returns>The created element</returns>
+        public static IElement Create(IObject element, IElement metaClass)
+        {
+            return new MofFactory(element).create(metaClass);
+        }
     }
 }

@@ -14,20 +14,19 @@ namespace ScriptTests
 {
     public static  class ReportTests
     {
-// Work-around helper method to get the source file location.
+        // Work-around helper method to get the source file location.
         private static string GetSourceFile([CallerFilePath] string file = "") => file;
         private static string GetScriptFolder([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
 
-        public static void TestReportIssues() => TestReports(true);
+        public static void TestReportIssues(SimpleReportConfiguration configuration) => TestReports(true, configuration);
         
-        public static void TestReportZipCode() => TestReports(false);
+        public static void TestReportZipCode(SimpleReportConfiguration configuration) => TestReports(false, configuration);
 
-        public static void TestReports(bool doIssues)
+        public static void TestReports(bool doIssues , SimpleReportConfiguration configuration)
         {
             BurnSystems.Logging.TheLog.AddProvider(new ConsoleProvider());
 
-            var settings = new IntegrationSettings();
-            settings.DatabasePath = Path.Combine(GetScriptFolder(), "tmp");
+            var settings = new IntegrationSettings {DatabasePath = Path.Combine(GetScriptFolder(), "tmp")};
 
             DatenMeister.Integration.GiveMe.DropDatenMeisterStorage(settings);
 
@@ -53,23 +52,16 @@ namespace ScriptTests
                         Path.Combine(GetScriptFolder(), "plz.csv"));
                 }
 
-                var reportCreator = dm.Resolve<ReportCreator>();
+                configuration.rootElement = testExtent;
 
                 var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
                 Directory.CreateDirectory(targetPath);
 
+                var reportCreator = new ReportCreator(dm.WorkspaceLogic, configuration);
+
                 using (var writer = ReportCreator.CreateRandomFile(out var fileName, targetPath))
                 {
-                    var configuration = new ReportConfiguration
-                    {
-                        rootElement = testExtent,
-                        showDescendents = true,
-                        showRootElement = true,
-                        showMetaClasses = true,
-                        showFullName = true
-                    };
-                    
-                    reportCreator.CreateReport(writer, configuration);
+                    reportCreator.CreateReport(writer);
 
                     var absolutePath = Path.Combine(GetScriptFolder(), fileName);
                     Console.WriteLine(absolutePath);

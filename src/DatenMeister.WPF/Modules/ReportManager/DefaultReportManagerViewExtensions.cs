@@ -4,21 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using BurnSystems;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
-using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Modules.ReportManager
 {
@@ -60,24 +55,17 @@ namespace DatenMeister.WPF.Modules.ReportManager
             var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
             if (itemExplorerControl != null)
             {
-                var effectiveForm = itemExplorerControl.EffectiveForm ??
-                                    throw new InvalidOperationException("EffectiveForm == null");
-                
                 yield return new ItemMenuButtonDefinition(
                     "Report as Html",
                     x =>
                     {
                         if (x is IExtent asExtent)
                         {
-                            CreateReportForExplorerView(
-                                effectiveForm,
-                                asExtent);
+                            CreateReportForExplorerView(asExtent);
                         }
                         else
                         {
-                            CreateReportForExplorerView(
-                                effectiveForm,
-                                x);
+                            CreateReportForExplorerView(x);
                         }
                     },
                     null,
@@ -88,26 +76,25 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// <summary>
         /// Creates the report for the currently selected element
         /// </summary>
-        /// <param name="effectiveForm">The form being used for the export</param>
         /// <param name="rootElement">Defines the item that is selected</param>
-        private void CreateReportForExplorerView(
-            IObject effectiveForm,
-            IObject rootElement)
+        private void CreateReportForExplorerView(IObject rootElement)
         {
-            var reportConfiguration = new ReportConfiguration
+            var reportConfiguration = new SimpleReportConfiguration
             {
-                form = effectiveForm, 
+                form = null, 
                 rootElement = rootElement,
                 showDescendents = true,
-                showRootElement = true
+                showRootElement = true,
+                showFullName = true
             };
 
             var id = StringManipulation.RandomString(10);
             var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
             using var streamWriter = new StreamWriter(tmpPath, false, Encoding.UTF8);
 
-            var reportCreator = new ReportCreator(GiveMe.Scope.WorkspaceLogic);
-            reportCreator.CreateReport(streamWriter, reportConfiguration);
+            
+            var reportCreator = new ReportCreator(GiveMe.Scope.WorkspaceLogic, reportConfiguration);
+            reportCreator.CreateReport(streamWriter);
 
             Process.Start(tmpPath);
         }

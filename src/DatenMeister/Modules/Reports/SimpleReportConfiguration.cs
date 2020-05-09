@@ -17,11 +17,29 @@ namespace DatenMeister.Modules.Reports
         /// </summary>
         PerPackage
     }
+
+    /// <summary>
+    /// Defines the mode in which the elements shall be shown
+    /// </summary>
+    public enum ReportTableForTypeMode
+    {
+
+        /// <summary>
+        /// A table shall be created per type
+        /// </summary>
+        PerType, 
+
+        /// <summary>
+        /// All types in one huge table
+        /// </summary>
+        AllTypes,
+
+    }
     
     /// <summary>
     /// Defines the configuration
     /// </summary>
-    public class ReportConfiguration
+    public class SimpleReportConfiguration
     {
         /// <summary>
         /// Gets or sets the flags which show also the descendents
@@ -53,5 +71,15 @@ namespace DatenMeister.Modules.Reports
         /// The type of the extent is the extent form.
         /// </summary>
         public IObject? form { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mode how the elements shall be shown in the overview
+        /// </summary>
+        public DescendentMode descendentMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type mode being used
+        /// </summary>
+        public ReportTableForTypeMode typeMode { get; set; }
     }
 }

@@ -371,7 +371,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
             
-            var watch = new StopWatchLogger(Logger, "UpdateView");
+            var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
             var listItems = new ObservableCollection<ExpandoObject>();
 
             var selectedItem = GetSelectedItem();

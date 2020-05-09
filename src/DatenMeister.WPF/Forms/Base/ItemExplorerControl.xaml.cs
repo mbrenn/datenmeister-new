@@ -285,7 +285,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="value"></param>
         public void SetRootItem(IObject value)
         {
-            using var watch = new StopWatchLogger(_logger, "SetRootItem");
+            using var watch = new StopWatchLogger(_logger, "SetRootItem", LogLevel.Trace);
 
             RootItem = value;
             SetDefaultViewMode();
@@ -337,7 +337,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         protected void RecreateForms()
         {
-            using var watch = new StopWatchLogger(_logger, "RecreateViews");
+            using var watch = new StopWatchLogger(_logger, "RecreateViews", LogLevel.Trace);
             
             Tabs.Clear();
             OnRecreateViews();

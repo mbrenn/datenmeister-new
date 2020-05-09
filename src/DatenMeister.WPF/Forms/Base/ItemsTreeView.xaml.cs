@@ -232,7 +232,7 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
-            using var watch = new StopWatchLogger(Logger, "UpdateView");
+            using var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
 
             if (ItemsSource == null)
             {

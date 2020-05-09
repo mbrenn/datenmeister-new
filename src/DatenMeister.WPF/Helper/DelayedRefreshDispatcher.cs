@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -97,10 +98,8 @@ namespace DatenMeister.WPF.Helper
                     _lastRefreshTime = DateTime.Now;
                 }
 
-                // ClassLogger.Trace($"#{_instance}: Dispatch in {MinDispatchTime.TotalMilliseconds} ms");
                 Task.Delay(MinDispatchTime).ContinueWith(t =>
                 {
-                    // ClassLogger.Trace($"#{_instance}: Got Called");
                     CheckForRefresh();
                 });
             }
@@ -113,18 +112,24 @@ namespace DatenMeister.WPF.Helper
         {
             lock (_syncObject)
             {
+
+                _timerRunning = false;
                 var delta = DateTime.Now - _refreshTimeStamp;
+                Debug.WriteLine("Check For Refresh");
 
                 if (delta < MinDispatchTime)
                 {
+                    Debug.WriteLine("Min Dispatch Time");
                     // Dispatch time has not run
                     delta = DateTime.Now - _lastRefreshTime;
                     if (delta < MaxDispatchTime)
                     {
                         var dispatchTime = MinDispatchTime - delta;
-                        // But maximum delay has not occured
-                        // ClassLogger.Trace($"#{_instance}: Retry Dispatch in {dispatchTime.TotalMilliseconds} ms");
 
+                        Debug.WriteLine($"{dispatchTime.Milliseconds} waiting");
+                        // But maximum delay has not occured
+
+                        _timerRunning = true;
                         Task.Delay(dispatchTime).ContinueWith(t => CheckForRefresh());
                         return;
                     }
@@ -132,15 +137,14 @@ namespace DatenMeister.WPF.Helper
 
                 if (_isRefreshed)
                 {
+                    Debug.WriteLine("Is already in refresh");
                     // We already got a refresh, so everything is fine
                     return;
                 }
 
-                // ClassLogger.Trace($"#{_instance}: Dispatched after {delta.TotalMilliseconds} ms");
-
+                Debug.WriteLine("Invoking");
                 _lastRefreshTime = DateTime.MinValue;
                 _refreshTimeStamp = DateTime.MinValue;
-                _timerRunning = false;
                 _isRefreshed = true;
             }
 

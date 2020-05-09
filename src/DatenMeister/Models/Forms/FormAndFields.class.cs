@@ -418,6 +418,9 @@ namespace DatenMeister.Models.Forms
 
         public class _CheckboxListTaggingFieldData
         {
+            public static string @options = "options";
+            public IElement? _options = null;
+
             public static string @separator = "separator";
             public IElement? _separator = null;
 

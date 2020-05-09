@@ -54,6 +54,8 @@ namespace DatenMeister.WPF.Forms.Fields
                 return new MetaClassElementField();
             if (id == typeof(FileSelectionFieldData).FullName)
                 return new FileSelectionField();
+            if (id == typeof(CheckboxListTaggingFieldData).FullName)
+                return new CheckboxListTaggingField();
 
             Logger.Warn("Unknown FieldData type for field creation: " + metaClass);
             

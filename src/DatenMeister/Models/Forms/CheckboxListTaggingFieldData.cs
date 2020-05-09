@@ -10,7 +10,7 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the options 
         /// </summary>
-        public List<ValuePair> options = new List<ValuePair>();
+        public List<ValuePair> options {get; set; } = new List<ValuePair>();
 
         /// <summary>
         /// Stores the separator between the chosen values

@@ -26,7 +26,7 @@ namespace DatenMeister.WPF.Forms.Fields
             FieldParameter fieldFlags)
         {
             var valuePairs =
-                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._CheckboxListTaggingFieldData.options);
+                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._CheckboxListTaggingFieldData.values);
 
             _options = new List<CheckBox>();
             foreach (var pair in valuePairs.OfType<IElement>())

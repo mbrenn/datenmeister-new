@@ -116,7 +116,7 @@ namespace DatenMeister.Integration
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
             
             var extentSettings = new ExtentSettings();
-            kernel.RegisterInstance<ExtentSettings>(extentSettings).As<ExtentSettings>();
+            kernel.RegisterInstance(extentSettings).As<ExtentSettings>();
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();

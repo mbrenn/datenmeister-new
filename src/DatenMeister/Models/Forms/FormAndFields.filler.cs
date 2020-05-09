@@ -605,6 +605,45 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "CheckboxListTaggingFieldData") // Looking for class
+                        {
+                            tree.__CheckboxListTaggingFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "separator") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._separator = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                         if(name == "Form") // Looking for class
                         {
                             tree.__Form = value;

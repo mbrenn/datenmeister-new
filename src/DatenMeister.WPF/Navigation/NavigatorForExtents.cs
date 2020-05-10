@@ -91,21 +91,29 @@ namespace DatenMeister.WPF.Navigation
                 {
                     // Add the options for the extent types
                     var foundExtentType =
-                        resolvedForm.GetByPropertyFromCollection(_FormAndFields._ListForm.field, _FormAndFields._Form.name,
+                        resolvedForm.GetByPropertyFromCollection(
+                            _FormAndFields._ListForm.field, 
+                            _FormAndFields._Form.name,
                             ExtentConfiguration.ExtentTypeProperty).FirstOrDefault();
-
-                    var list = new List<IElement>();
-                    var factory = new MofFactory(foundExtentType);
-                    foreach (var setting in extentSettings.extentTypeSettings)
+                    if (foundExtentType == null)
                     {
-                        var pair = factory.create(formAndFields.__ValuePair);
-                        pair.set(_FormAndFields._ValuePair.name, setting.name);
-                        pair.set(_FormAndFields._ValuePair.value, setting.name);
-
-                        list.Add(pair);
+                        Logger.Error($"Found Form #ExtentPropertyDetailForm did not find the field ${ExtentConfiguration.ExtentTypeProperty}");
                     }
+                    else
+                    {
+                        var list = new List<IElement>();
+                        var factory = new MofFactory(foundExtentType);
+                        foreach (var setting in extentSettings.extentTypeSettings)
+                        {
+                            var pair = factory.create(formAndFields.__ValuePair);
+                            pair.set(_FormAndFields._ValuePair.name, setting.name);
+                            pair.set(_FormAndFields._ValuePair.value, setting.name);
 
-                    foundExtentType.set(_FormAndFields._CheckboxListTaggingFieldData.values, list);
+                            list.Add(pair);
+                        }
+
+                        foundExtentType.set(_FormAndFields._CheckboxListTaggingFieldData.values, list);
+                    }
                 }
                 var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
                 {

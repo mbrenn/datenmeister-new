@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -16,6 +18,13 @@ namespace DatenMeister.WPF.Forms.Fields
     public class CheckboxListTaggingField : IDetailField
     {
         /// <summary>
+        /// Stores the name
+        /// </summary>
+        private string _name = string.Empty;
+
+        private string _separator = " ";
+
+        /// <summary>
         /// Stores the lists of options
         /// </summary>
         private List<CheckBox> _options = new List<CheckBox>();
@@ -25,8 +34,16 @@ namespace DatenMeister.WPF.Forms.Fields
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
+            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            _separator = fieldData.getOrDefault<string>(_FormAndFields._CheckboxListTaggingFieldData.separator) ?? " ";
+
             var valuePairs =
                 fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._CheckboxListTaggingFieldData.values);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+                             || fieldFlags.IsReadOnly;
+
+            var currentValue = value.getOrDefault<string>(_name) ?? string.Empty;
+            var currentList = currentValue.Split(new [] {_separator}, StringSplitOptions.RemoveEmptyEntries);
 
             _options = new List<CheckBox>();
             foreach (var pair in valuePairs.OfType<IElement>())
@@ -37,7 +54,9 @@ namespace DatenMeister.WPF.Forms.Fields
                 var checkbox = new CheckBox
                 {
                     Content = name, 
-                    Tag = valueContent
+                    Tag = valueContent,
+                    IsEnabled = !isReadOnly, 
+                    IsChecked = currentList.Contains(valueContent)
                 };
 
                 _options.Add(checkbox);
@@ -53,8 +72,27 @@ namespace DatenMeister.WPF.Forms.Fields
             return stackPanel;
         }
 
+
+        /// <summary>
+        /// This instance will be called, when the setting shall be performed upon the given element.
+        /// This may be different as the one as specified in CreateElement
+        /// </summary>
+        /// <param name="element"> Element to be set</param>
         public void CallSetAction(IObject element)
         {
+            var result = new StringBuilder();
+            var separator = string.Empty;
+            foreach (var option in _options)
+            {
+                if (option.IsChecked == true)
+                {
+                    result.Append(separator);
+                    result.Append(option.Tag.ToString());
+                    separator = _separator;
+                }
+            }
+
+            element.set(_name, result.ToString());
         }
     }
 }

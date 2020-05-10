@@ -418,8 +418,14 @@ namespace DatenMeister.Models.Forms
 
         public class _CheckboxListTaggingFieldData
         {
+            public static string @values = "values";
+            public IElement? _values = null;
+
             public static string @separator = "separator";
             public IElement? _separator = null;
+
+            public static string @containsFreeText = "containsFreeText";
+            public IElement? _containsFreeText = null;
 
             public static string @isAttached = "isAttached";
             public IElement? _isAttached = null;

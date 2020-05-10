@@ -98,7 +98,6 @@ namespace DatenMeister.Runtime.Functions.Queries
                     value,
                     comparer);
 
-
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively
         /// </summary>

@@ -15,12 +15,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Defines the name of the default type packages
         /// </summary>
-        private const string DatenmeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
+        public const string DatenmeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
 
         /// <summary>
         /// Saves the type of the extent
         /// </summary>
-        private const string ExtentTypeProperty = "__ExtentType";
+        public const string ExtentTypeProperty = "__ExtentType";
+
         /// <summary>
         /// Stores the extent
         /// </summary>

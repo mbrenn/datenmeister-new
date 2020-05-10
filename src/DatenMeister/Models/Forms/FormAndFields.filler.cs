@@ -614,9 +614,17 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
+                                if(name == "values") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._values = value;
+                                }
                                 if(name == "separator") // Looking for property
                                 {
                                     tree.CheckboxListTaggingFieldData._separator = value;
+                                }
+                                if(name == "containsFreeText") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._containsFreeText = value;
                                 }
                                 if(name == "isAttached") // Looking for property
                                 {

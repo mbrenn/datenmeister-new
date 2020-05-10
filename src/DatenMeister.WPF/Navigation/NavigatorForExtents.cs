@@ -1,23 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.ExtentStorage.Validators;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Forms.Lists;
 using MessageBox = System.Windows.MessageBox;
 
@@ -80,6 +83,38 @@ namespace DatenMeister.WPF.Navigation
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var managementWorkspace = workspaceLogic.GetManagementWorkspace();
                 var resolvedForm = managementWorkspace.Resolve("datenmeister:///management/forms/internal#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
+                var extentSettings = GiveMe.Scope.Resolve<ExtentSettings>();
+                var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
+                                    throw new InvalidOperationException("FormAndFields not found");
+
+                if (resolvedForm != null)
+                {
+                    // Add the options for the extent types
+                    var foundExtentType =
+                        resolvedForm.GetByPropertyFromCollection(
+                            _FormAndFields._ListForm.field, 
+                            _FormAndFields._Form.name,
+                            ExtentConfiguration.ExtentTypeProperty).FirstOrDefault();
+                    if (foundExtentType == null)
+                    {
+                        Logger.Error($"Found Form #ExtentPropertyDetailForm did not find the field ${ExtentConfiguration.ExtentTypeProperty}");
+                    }
+                    else
+                    {
+                        var list = new List<IElement>();
+                        var factory = new MofFactory(foundExtentType);
+                        foreach (var setting in extentSettings.extentTypeSettings)
+                        {
+                            var pair = factory.create(formAndFields.__ValuePair);
+                            pair.set(_FormAndFields._ValuePair.name, setting.name);
+                            pair.set(_FormAndFields._ValuePair.value, setting.name);
+
+                            list.Add(pair);
+                        }
+
+                        foundExtentType.set(_FormAndFields._CheckboxListTaggingFieldData.values, list);
+                    }
+                }
                 var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
                 {
                     Form = new FormDefinition(resolvedForm)

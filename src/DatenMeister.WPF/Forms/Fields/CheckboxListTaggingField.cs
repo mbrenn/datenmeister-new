@@ -24,10 +24,14 @@ namespace DatenMeister.WPF.Forms.Fields
 
         private string _separator = " ";
 
+        private bool _containsFreeText;
+
         /// <summary>
         /// Stores the lists of options
         /// </summary>
         private List<CheckBox> _options = new List<CheckBox>();
+
+        private TextBox? _freeTextBox;
 
         public UIElement? CreateElement(IObject value,
             IElement fieldData,
@@ -36,6 +40,7 @@ namespace DatenMeister.WPF.Forms.Fields
         {
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
             _separator = fieldData.getOrDefault<string>(_FormAndFields._CheckboxListTaggingFieldData.separator) ?? " ";
+            _containsFreeText = fieldData.getOrDefault<bool>(_FormAndFields._CheckboxListTaggingFieldData.containsFreeText);
 
             var valuePairs =
                 fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._CheckboxListTaggingFieldData.values);
@@ -43,6 +48,7 @@ namespace DatenMeister.WPF.Forms.Fields
                              || fieldFlags.IsReadOnly;
 
             var currentValue = value.getOrDefault<string>(_name) ?? string.Empty;
+            var copyCurrentValue = currentValue;
             var currentList = currentValue.Split(new [] {_separator}, StringSplitOptions.RemoveEmptyEntries);
 
             _options = new List<CheckBox>();
@@ -59,6 +65,9 @@ namespace DatenMeister.WPF.Forms.Fields
                     IsChecked = currentList.Contains(valueContent)
                 };
 
+                copyCurrentValue = copyCurrentValue.Replace(valueContent + _separator, string.Empty);
+                copyCurrentValue = copyCurrentValue.Replace(valueContent, string.Empty);
+
                 _options.Add(checkbox);
             }
 
@@ -67,6 +76,13 @@ namespace DatenMeister.WPF.Forms.Fields
             foreach (var option in _options)
             {
                 stackPanel.Children.Add(option);
+            }
+
+            // Adds a freestyle text
+            if (_containsFreeText)
+            {
+                _freeTextBox = new TextBox {Text = copyCurrentValue};
+                stackPanel.Children.Add(_freeTextBox);
             }
 
             return stackPanel;
@@ -90,6 +106,14 @@ namespace DatenMeister.WPF.Forms.Fields
                     result.Append(option.Tag.ToString());
                     separator = _separator;
                 }
+            }
+
+            // Free text
+            var freeTextContent = _containsFreeText ? _freeTextBox.Text : string.Empty;
+            if (freeTextContent != null && !string.IsNullOrEmpty(freeTextContent))
+            {
+                result.Append(separator);
+                result.Append(freeTextContent);
             }
 
             element.set(_name, result.ToString());

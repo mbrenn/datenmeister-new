@@ -16,5 +16,10 @@ namespace DatenMeister.Models.Forms
         /// Stores the separator between the chosen values
         /// </summary>
         public string separator { get; set; } = " ";
+
+        /// <summary>
+        /// Gets or sets the value whether the user can include free text
+        /// </summary>
+        public bool containsFreeText { get; set; }
     }
 }

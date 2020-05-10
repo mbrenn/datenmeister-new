@@ -424,6 +424,9 @@ namespace DatenMeister.Models.Forms
             public static string @separator = "separator";
             public IElement? _separator = null;
 
+            public static string @containsFreeText = "containsFreeText";
+            public IElement? _containsFreeText = null;
+
             public static string @isAttached = "isAttached";
             public IElement? _isAttached = null;
 

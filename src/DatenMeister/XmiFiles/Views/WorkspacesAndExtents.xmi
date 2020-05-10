@@ -19,7 +19,7 @@
         <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="ExtentPropertyDetailForm" name="Extent Property Detail Form" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
             <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__uri" title="Extent Uri" />
 
-            <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="__ExtentType" title="Extent Type" />
+            <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData" name="__ExtentType" title="Extent Type" />
             <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="__AutoEnumerateType" title="Auto Enumeration Type">
                 <values p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Guid" name="Guid" />
                 <values p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Ordinal" name="Ordinal" />

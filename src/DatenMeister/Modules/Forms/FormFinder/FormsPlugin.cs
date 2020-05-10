@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -456,10 +457,11 @@ namespace DatenMeister.Modules.Forms.FormFinder
             IElement metaClass,
             FormDefinitionMode formDefinitionMode)
         {
+            IElement foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 var viewFinder = new FormFinder(this);
-                var foundForm = viewFinder.FindFormsFor(
+                foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
@@ -471,18 +473,17 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (foundForm != null)
                 {
                     Logger.Info("GetListFormForExtent: Found form: " + NamedElementMethods.GetFullName(foundForm));
-                    return foundForm;
                 }
             }
 
-            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
+            if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
                 var formCreator = CreateFormCreator();
-                return formCreator.CreateListFormForMetaClass(metaClass, CreationMode.All);
+                foundForm =  formCreator.CreateListFormForMetaClass(metaClass, CreationMode.All);
             }
 
-            return null;
+            return foundForm;
         }
 
         /// <summary>

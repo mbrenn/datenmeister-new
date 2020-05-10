@@ -24,10 +24,6 @@
                 <values p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Guid" name="Guid" />
                 <values p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Ordinal" name="Ordinal" />
             </field>
-            <field p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData" name="__ExtentType2" title="ExtentType2" separator=" ">
-              <values p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="IssueMeister" name="IssueMeister" />
-              <values p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="ZipCodes" name="ZipCodes" />
-            </field>
         </packagedElement>
         <!--
                 <packagedElement p1:type="datenmeister:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm"

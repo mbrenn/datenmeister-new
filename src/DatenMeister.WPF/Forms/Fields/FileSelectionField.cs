@@ -68,6 +68,12 @@ namespace DatenMeister.WPF.Forms.Fields
             // Sets the event handler for the button
             button.Click += (x, y) =>
             {
+                if (isReadOnly)
+                {
+                    // Field is read-only, we don't use it
+                    return;
+                }
+
                 var isSaving = fieldData.getOrDefault<bool>(_FormAndFields._FileSelectionFieldData.isSaving);
                 var defaultExtension =
                     fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.defaultExtension);

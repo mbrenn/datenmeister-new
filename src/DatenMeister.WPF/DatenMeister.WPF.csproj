@@ -278,7 +278,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Forms\Lists\ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

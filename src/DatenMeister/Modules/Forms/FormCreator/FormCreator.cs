@@ -79,7 +79,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
             _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>() ??
-                             _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
+                             _workspaceLogic?.GetTypesWorkspace()?.Get<_FormAndFields>() ??
                              throw new InvalidOperationException("FormAndFields not found");
         }
 

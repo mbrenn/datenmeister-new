@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Forms.Fields
             var metaClass = field?.getMetaClass();
             if (metaClass == null)
             {
-                throw new ArgumentException("value does not have metaclass", nameof(value));
+                throw new ArgumentException("Value does not have metaclass", nameof(value));
             }
 
             var id = (metaClass as IHasId)?.Id;

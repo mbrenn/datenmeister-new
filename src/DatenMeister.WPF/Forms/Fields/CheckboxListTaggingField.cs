@@ -81,7 +81,12 @@ namespace DatenMeister.WPF.Forms.Fields
             // Adds a freestyle text
             if (_containsFreeText)
             {
-                _freeTextBox = new TextBox {Text = copyCurrentValue};
+                _freeTextBox = new TextBox
+                {
+                    Text = copyCurrentValue,
+                    IsReadOnly = isReadOnly
+                };
+
                 stackPanel.Children.Add(_freeTextBox);
             }
 
@@ -109,7 +114,7 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             // Free text
-            var freeTextContent = _containsFreeText ? _freeTextBox.Text : string.Empty;
+            var freeTextContent = (_containsFreeText && _freeTextBox != null) ? _freeTextBox.Text : string.Empty;
             if (freeTextContent != null && !string.IsNullOrEmpty(freeTextContent))
             {
                 result.Append(separator);

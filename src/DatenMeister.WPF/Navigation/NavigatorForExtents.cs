@@ -174,7 +174,7 @@ namespace DatenMeister.WPF.Navigation
                     ? detailElement.getOrDefault<string>("uri")
                     : string.Empty;
                 
-                var configuration = new XmiStorageConfiguration(uri)
+                var configuration = new XmiStorageLoaderConfig(uri)
                 {
                     filePath = detailElement.isSet("filepath")
                         ? detailElement.getOrDefault<string>("filepath")

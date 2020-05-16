@@ -14,15 +14,15 @@ namespace DatenMeister.Provider.Xml
     /// </summary>
     public class XmlToExtentConverter
     {
-        private readonly XmlReferenceSettings _settings;
+        private readonly XmlReferenceLoaderConfig _loaderConfig;
 
         /// <summary>
         /// Initializes a new instance of the XmlToExtentConverter
         /// </summary>
-        /// <param name="settings">Settings to be used</param>
-        public XmlToExtentConverter(XmlReferenceSettings settings)
+        /// <param name="loaderConfig">Settings to be used</param>
+        public XmlToExtentConverter(XmlReferenceLoaderConfig loaderConfig)
         {
-            _settings = settings;
+            _loaderConfig = loaderConfig;
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace DatenMeister.Provider.Xml
         private string GetNameNormalized(XName xname)
         {
             var name = xname.ToString();
-            if (!_settings.keepNamespaces)
+            if (!_loaderConfig.keepNamespaces)
             {
                 name = xname.LocalName;
 

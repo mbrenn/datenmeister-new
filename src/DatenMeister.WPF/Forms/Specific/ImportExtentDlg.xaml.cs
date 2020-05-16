@@ -47,7 +47,7 @@ namespace DatenMeister.WPF.Forms.Specific
                 try
                 {
                     var loader = new XmiStorage();
-                    var provider = loader.LoadProvider(new XmiStorageConfiguration("dm:///dm_temp")
+                    var provider = loader.LoadProvider(new XmiStorageLoaderConfig("dm:///dm_temp")
                         {
                             filePath = sourceFilename.Text
                         },

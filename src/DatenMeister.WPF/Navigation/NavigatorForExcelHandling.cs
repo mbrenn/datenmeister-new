@@ -50,12 +50,12 @@ namespace DatenMeister.WPF.Navigation
                     {
                         case ExcelImportType.AsCopy:
                             var importSettings =
-                                DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(configurationObject);
+                                DotNetConverter.ConvertToDotNetObject<ExcelImportLoaderConfig>(configurationObject);
                             GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(importSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                         case ExcelImportType.AsReference:
                             var referenceSettings =
-                                DotNetConverter.ConvertToDotNetObject<ExcelReferenceSettings>(configurationObject);
+                                DotNetConverter.ConvertToDotNetObject<ExcelReferenceLoaderConfig>(configurationObject);
                             GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(referenceSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                     }

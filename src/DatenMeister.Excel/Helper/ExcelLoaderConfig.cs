@@ -5,7 +5,10 @@ using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Excel.Helper
 {
-    public class ExcelSettings : ExtentLoaderConfig
+    /// <summary>
+    /// Stores the loader configuration
+    /// </summary>
+    public class ExcelLoaderConfig : ExtentLoaderConfig
     {
         public bool fixRowCount { get; set; }
         public bool fixColumnCount { get; set; }
@@ -27,12 +30,12 @@ namespace DatenMeister.Excel.Helper
             return DotNetConverter.ConvertFromDotNetObject(this);
         }
 
-        public ExcelSettings()
+        public ExcelLoaderConfig()
         {
             
         }
 
-        public ExcelSettings(string extentUri) : base(extentUri)
+        public ExcelLoaderConfig(string extentUri) : base(extentUri)
         {
         }
     }

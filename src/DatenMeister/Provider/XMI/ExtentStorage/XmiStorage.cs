@@ -9,14 +9,14 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
-    [ConfiguredBy(typeof(XmiStorageConfiguration))]
+    [ConfiguredBy(typeof(XmiStorageLoaderConfig))]
     public class XmiStorage : IProviderLoader
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiStorage));
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            var xmiConfiguration = (XmiStorageConfiguration) configuration;
+            var xmiConfiguration = (XmiStorageLoaderConfig) configuration;
 
             XDocument xmlDocument;
             if (!File.Exists(xmiConfiguration.filePath) || extentCreationFlags == ExtentCreationFlags.CreateOnly)
@@ -50,12 +50,12 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
         /// <summary>
         /// Creates an empty Xmi document as given by the configuration
         /// </summary>
-        /// <param name="xmiConfiguration">Xmi Configuration being used</param>
+        /// <param name="xmiLoaderConfig">Xmi Configuration being used</param>
         /// <returns>Found XDocument</returns>
-        private static XDocument CreateEmptyXmiDocument(XmiStorageConfiguration xmiConfiguration)
+        private static XDocument CreateEmptyXmiDocument(XmiStorageLoaderConfig xmiLoaderConfig)
         {
             // Creates directory if necessary
-            var directoryPath = Path.GetDirectoryName(xmiConfiguration.filePath)
+            var directoryPath = Path.GetDirectoryName(xmiLoaderConfig.filePath)
                                 ?? throw new InvalidOperationException("directoryPath is null");
 
             if (!Directory.Exists(directoryPath))
@@ -68,13 +68,13 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 new XElement(XmiProvider.DefaultRootNodeName));
 
             // Try to create file, to verify that file access and other activities are given
-            xmlDocument.Save(xmiConfiguration.filePath);
+            xmlDocument.Save(xmiLoaderConfig.filePath);
             return xmlDocument;
         }
 
         public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
         {
-            if (configuration is XmiStorageConfiguration xmiConfiguration)
+            if (configuration is XmiStorageLoaderConfig xmiConfiguration)
             {
                 if (!(extent is XmiProvider xmlExtent))
                     throw new InvalidOperationException("Only XmlUriExtents are supported");

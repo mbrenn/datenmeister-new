@@ -457,7 +457,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             IElement metaClass,
             FormDefinitionMode formDefinitionMode)
         {
-            IElement foundForm = null;
+            IElement? foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 var viewFinder = new FormFinder(this);

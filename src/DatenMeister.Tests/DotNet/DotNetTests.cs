@@ -170,7 +170,7 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestDotNetConversion()
         {
-            var settings = new ExcelImportSettings("dm:///test")
+            var settings = new ExcelImportLoaderConfig("dm:///test")
             {
                 countColumns = 1,
                 countRows = 5,
@@ -185,7 +185,7 @@ namespace DatenMeister.Tests.DotNet
 
             var asMof = DotNetConverter.ConvertFromDotNetObject(settings);
 
-            var copy = DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(asMof);
+            var copy = DotNetConverter.ConvertToDotNetObject<ExcelImportLoaderConfig>(asMof);
 
             Assert.That(copy.countColumns, Is.EqualTo(1));
             Assert.That(copy.countRows, Is.EqualTo(5));
@@ -209,17 +209,17 @@ namespace DatenMeister.Tests.DotNet
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var csvLoaderType = workspaceLogic.FindItem(
-                "datenmeister:///_internal/types/internal#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageConfiguration");
+                "datenmeister:///_internal/types/internal#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig");
 
             Assert.That(csvLoaderType, Is.Not.Null);
             var memoryObject = new MofFactory(extent).create(csvLoaderType);
-            memoryObject.set(nameof(XmiStorageConfiguration.workspaceId), "TEST");
-            memoryObject.set(nameof(XmiStorageConfiguration.filePath), "path");
-            memoryObject.set(nameof(XmiStorageConfiguration.extentUri), "dm:///");
+            memoryObject.set(nameof(XmiStorageLoaderConfig.workspaceId), "TEST");
+            memoryObject.set(nameof(XmiStorageLoaderConfig.filePath), "path");
+            memoryObject.set(nameof(XmiStorageLoaderConfig.extentUri), "dm:///");
 
             var asDotNetType = DotNetConverter.ConvertToDotNetObject(memoryObject);
-            Assert.That(asDotNetType, Is.TypeOf<XmiStorageConfiguration>());
-            var typed = (XmiStorageConfiguration) asDotNetType;
+            Assert.That(asDotNetType, Is.TypeOf<XmiStorageLoaderConfig>());
+            var typed = (XmiStorageLoaderConfig) asDotNetType;
             Assert.That(typed.workspaceId, Is.EqualTo("TEST"));
             Assert.That(typed.filePath, Is.EqualTo("path"));
             Assert.That(typed.extentUri, Is.EqualTo("dm:///"));

@@ -65,9 +65,9 @@
     <Compile Include="EMOF\SheetItem.cs" />
     <Compile Include="Helper\ExcelExtentSettings.cs" />
     <Compile Include="Helper\ExcelImporter.cs" />
-    <Compile Include="Helper\ExcelReferenceSettings.cs" />
-    <Compile Include="Helper\ExcelSettings.cs" />
-    <Compile Include="Helper\ExcelImportSettings.cs" />
+    <Compile Include="Helper\ExcelReferenceLoaderConfig.cs" />
+    <Compile Include="Helper\ExcelLoaderConfig.cs" />
+    <Compile Include="Helper\ExcelImportLoaderConfig.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Integration\ExcelPlugin.cs" />
     <Compile Include="Integration\Integration.Excel.cs" />

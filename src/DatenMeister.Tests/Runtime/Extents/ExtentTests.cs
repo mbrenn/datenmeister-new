@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestMetaDataInExtent()
         {
             var path = "./test.xmi";
-            var loaderConfig = new XmiStorageConfiguration("datenmeister:///data")
+            var loaderConfig = new XmiStorageLoaderConfig("datenmeister:///data")
             {
                 filePath = path,
                 workspaceId = WorkspaceNames.NameData
@@ -132,7 +132,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestAutoEnumerateType()
         {
             var path = "./test.xmi";
-            var loaderConfig = new XmiStorageConfiguration("datenmeister:///data")
+            var loaderConfig = new XmiStorageLoaderConfig("datenmeister:///data")
             {
                 filePath = path,
                 workspaceId = WorkspaceNames.NameData
@@ -227,7 +227,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                     }, ExtentCreationFlags.LoadOrCreate);
 
                 var mofExtent = extentManager.LoadExtent(
-                    new XmiStorageConfiguration(xmiExtentUri)
+                    new XmiStorageLoaderConfig(xmiExtentUri)
                     {
                         filePath = "./test.xmi"
                     }, ExtentCreationFlags.LoadOrCreate);

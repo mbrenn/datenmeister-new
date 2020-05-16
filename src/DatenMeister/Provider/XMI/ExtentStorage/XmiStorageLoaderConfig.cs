@@ -6,14 +6,14 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     /// Loads the given .xmi file and stores it into the extent as direct reference to the datenmeister
     /// 
     /// </summary>
-    public class XmiStorageConfiguration : ExtentFileLoaderConfig
+    public class XmiStorageLoaderConfig : ExtentFileLoaderConfig
     {
-        public XmiStorageConfiguration()
+        public XmiStorageLoaderConfig()
         {
             
         }
         
-        public XmiStorageConfiguration(string extentUri) : base(extentUri)
+        public XmiStorageLoaderConfig(string extentUri) : base(extentUri)
         {
         }
     }

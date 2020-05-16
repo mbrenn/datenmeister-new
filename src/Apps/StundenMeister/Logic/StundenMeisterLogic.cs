@@ -60,7 +60,7 @@ namespace StundenMeister.Logic
                 "StundenMeister");
             var filePath = Path.Combine(directory, "StundenMeister.xmi");
 
-            var storageData = new XmiStorageConfiguration("dm:///stundenmeister/")
+            var storageData = new XmiStorageLoaderConfig("dm:///stundenmeister/")
             {
                 filePath = filePath
             };

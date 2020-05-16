@@ -8,12 +8,12 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Provider.Xml
 {
-    [ConfiguredBy(typeof(XmlReferenceSettings))]
+    [ConfiguredBy(typeof(XmlReferenceLoaderConfig))]
     public class XmlReferenceLoader : IProviderLoader
     {
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            if (!(configuration is XmlReferenceSettings settings))
+            if (!(configuration is XmlReferenceLoaderConfig settings))
             {
                 throw new InvalidOperationException("Given configuration is not of type ExcelReferenceSettings");
             }

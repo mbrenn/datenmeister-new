@@ -19,7 +19,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns></returns>
         public static IUriExtent? CreateAndAddXmiExtent(this IExtentManager extentManager, string uri, string filename)
         {
-            var xmiConfiguration = new XmiStorageConfiguration(uri)
+            var xmiConfiguration = new XmiStorageLoaderConfig(uri)
             {
                 workspaceId = WorkspaceNames.NameData,
                 filePath = filename

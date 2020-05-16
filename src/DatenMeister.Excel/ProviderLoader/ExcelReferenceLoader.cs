@@ -13,12 +13,12 @@ namespace DatenMeister.Excel.ProviderLoader
     /// Implements the loader which creates an InMemoryExtent out of an excel file
     /// If DatenMeister will be rebooted, the excel file will be loaded again
     /// </summary>
-    [ConfiguredBy(typeof(ExcelReferenceSettings))]
+    [ConfiguredBy(typeof(ExcelReferenceLoaderConfig))]
     public class ExcelReferenceLoader : IProviderLoader
     {
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            if (!(configuration is ExcelReferenceSettings settings))
+            if (!(configuration is ExcelReferenceLoaderConfig settings))
             {
                 throw new InvalidOperationException("Given configuration is not of type ExcelReferenceSettings");
             }
@@ -37,22 +37,22 @@ namespace DatenMeister.Excel.ProviderLoader
         /// Imports the excel into the extent
         /// </summary>
         /// <param name="extent"></param>
-        /// <param name="settings"></param>
-        internal static void ImportExcelIntoExtent(MofExtent extent, ExcelSettings settings)
+        /// <param name="loaderConfig"></param>
+        internal static void ImportExcelIntoExtent(MofExtent extent, ExcelLoaderConfig loaderConfig)
         {
             var factory = new MofFactory(extent);
 
-            var excelImporter = new ExcelImporter(settings);
+            var excelImporter = new ExcelImporter(loaderConfig);
             excelImporter.LoadExcel();
 
             var columnNames = excelImporter.GetColumnNames();
-            if (!settings.fixColumnCount) excelImporter.GuessRowCount();
-            if (!settings.fixRowCount) excelImporter.GuessColumnCount();
+            if (!loaderConfig.fixColumnCount) excelImporter.GuessRowCount();
+            if (!loaderConfig.fixRowCount) excelImporter.GuessColumnCount();
 
-            for (var r = 0; r < settings.countRows; r++)
+            for (var r = 0; r < loaderConfig.countRows; r++)
             {
                 var item = factory.create(null);
-                for (var c = 0; c < settings.countColumns; c++)
+                for (var c = 0; c < loaderConfig.countColumns; c++)
                 {
                     var columnName = columnNames[c];
                     if (columnName == null)

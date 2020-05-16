@@ -251,7 +251,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 File.Delete(path);
             }
 
-            var storageConfiguration = new XmiStorageConfiguration("datenmeister:///test")
+            var storageConfiguration = new XmiStorageLoaderConfig("datenmeister:///test")
             {
                 filePath = path,
                 workspaceId = "Data"

@@ -15,7 +15,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// In addition, it will also use the ExtentManager class to load the actual data
     /// of the extents
     /// </summary>
-    public class ExtentConfigurationLoader
+    public partial class ExtentConfigurationLoader
     {
         /// <summary>
         /// Stores the mapper instance being used to find the allowed types
@@ -60,6 +60,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 var xmlConfig = xmlExtent.Element("config") ?? throw new InvalidOperationException("extents::extent::config Xml node not found");
                 var configType = xmlConfig.Attribute("configType")?.Value ?? throw new InvalidOperationException("configType not found");
+                configType = Migration.TranslateLegacyConfigurationType(configType);
 
                 // Gets the type of the configuration in the white list to avoid any unwanted security issue
                 var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName?.ToLower() == configType.ToLower());

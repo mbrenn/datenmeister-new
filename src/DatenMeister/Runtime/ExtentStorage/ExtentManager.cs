@@ -112,7 +112,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Imports an extent without adding it intot he database.
+        /// Imports an extent without adding it into the database.
         /// This is used to perform a temporary loading
         /// </summary>
         /// <param name="configuration">Configuration to be loaded</param>

@@ -55,7 +55,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 Logger.Debug("Creates the extent for the " + name);
 
                 // Creates the extent for user types
-                var storageConfiguration = new XmiStorageConfiguration(uri)
+                var storageConfiguration = new XmiStorageLoaderConfig(uri)
                 {
                     filePath = Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")),
                     workspaceId = workspace

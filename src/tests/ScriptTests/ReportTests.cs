@@ -36,7 +36,7 @@ namespace ScriptTests
                 if (doIssues)
                 {
                     var extentManager = dm.Resolve<ExtentManager>();
-                    var loaderConfig = new XmiStorageConfiguration
+                    var loaderConfig = new XmiStorageLoaderConfig
                     {
                         extentUri = "dm:///",
                         filePath = "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi"

@@ -11,9 +11,9 @@ namespace DatenMeister.Excel.EMOF
         private readonly _ExcelModels _models = new _ExcelModels();
 
         private readonly XSSFWorkbook _workbook;
-        public ExcelExtentSettings Settings { get; }
+        public ExcelExtentLoaderConfig Settings { get; }
 
-        public ExcelProvider(XSSFWorkbook workbook, ExcelExtentSettings settings)
+        public ExcelProvider(XSSFWorkbook workbook, ExcelExtentLoaderConfig settings)
         {
             _workbook = workbook;
             Settings = settings;

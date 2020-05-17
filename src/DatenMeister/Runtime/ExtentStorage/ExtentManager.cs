@@ -337,7 +337,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             lock (_extentStorageData.LoadedExtents)
             {
-
                 // Stores the last the exception
                 Exception? lastException = null;
                 

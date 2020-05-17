@@ -14,7 +14,7 @@
     <ItemGroup>
       <None Update="plz.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      </None> 
     </ItemGroup>
 
 </Project>

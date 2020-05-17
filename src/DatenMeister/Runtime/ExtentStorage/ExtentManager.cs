@@ -252,9 +252,22 @@ namespace DatenMeister.Runtime.ExtentStorage
                     }
                 }
 
-                list = list.AsEnumerable().Reverse().Distinct().ToList();
+                var fullNameSet = new HashSet<string>();
+                var distinctList = new List<Type>();
+                foreach (var item in list.AsEnumerable().Reverse())
+                {
+                    if (fullNameSet.Contains(item.FullName))
+                    {
+                        continue;
+                    }
 
-                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(list, PackagePathTypesExtentLoaderConfig);
+                    distinctList.Add(item);
+                    fullNameSet.Add(item.FullName);
+                }
+
+                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(
+                    distinctList, 
+                    PackagePathTypesExtentLoaderConfig);
             }
         }
 
@@ -337,7 +350,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             lock (_extentStorageData.LoadedExtents)
             {
-
                 // Stores the last the exception
                 Exception? lastException = null;
                 

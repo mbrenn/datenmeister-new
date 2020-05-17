@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{39F63BEF-AF5E-4C02-B35D-534DF6AF3E04}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DatenMeister.Tests</RootNamespace>
+    <AssemblyName>DatenMeister.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.7.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunitlite, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnitLite.3.7.2\lib\net45\nunitlite.dll</HintPath>
+    </Reference>
+    <Reference Include="Scriban, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Scriban.2.1.2\lib\net45\Scriban.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Reflection.TypeExtensions, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.TypeExtensions.4.7.0\lib\net461\System.Reflection.TypeExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CSV\CSVExtentTests.cs" />
+    <Compile Include="DatenMeisterTests.cs" />
+    <Compile Include="DotNet\DotNetExtentTests.cs" />
+    <Compile Include="DotNet\DotNetTests.cs" />
+    <Compile Include="Excel\ExcelTests.cs" />
+    <Compile Include="Modules\ChangeEventManager.cs" />
+    <Compile Include="Modules\DataviewTests.cs" />
+    <Compile Include="Modules\FormatterTests.cs" />
+    <Compile Include="Modules\Form\FormTests.cs" />
+    <Compile Include="Modules\HtmlReportTests.cs" />
+    <Compile Include="Modules\Provider\ManagementProviderTests.cs" />
+    <Compile Include="Modules\PublicIntegrationSettings.cs" />
+    <Compile Include="Modules\TextTemplates\TextTemplateTests.cs" />
+    <Compile Include="Modules\UserManagementTests.cs" />
+    <Compile Include="Modules\UserProperties\UserPropertyTests.cs" />
+    <Compile Include="Modules\ViewLogicTests.cs" />
+    <Compile Include="Mof\Core\MofObjectTests.cs" />
+    <Compile Include="Mof\Queries\TestFilters.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\InMemoryProviderTests.cs" />
+    <Compile Include="Provider\ProviderTestHelper.cs" />
+    <Compile Include="Provider\XmiProviderTests.cs" />
+    <Compile Include="Runtime\CollectionHelperTests.cs" />
+    <Compile Include="Runtime\CopierTests.cs" />
+    <Compile Include="Runtime\ExtentStorageTests.cs" />
+    <Compile Include="Runtime\Extents\ExtentExportTests.cs" />
+    <Compile Include="Runtime\Extents\ExtentManagerTests.cs" />
+    <Compile Include="Runtime\Extents\ExtentTests.cs" />
+    <Compile Include="Runtime\Functions\AggregationTests.cs" />
+    <Compile Include="Runtime\ReadOnlyProxyTests.cs" />
+    <Compile Include="Runtime\WorkspaceTests.cs" />
+    <Compile Include="Uml\TestMofUmlWorkspaceIntegration.cs" />
+    <Compile Include="Uml\UmlDotNetTypeCreatorTests.cs" />
+    <Compile Include="Uml\TestUmlMethods.cs" />
+    <Compile Include="Web\TestAutoColumnCreator.cs" />
+    <Compile Include="WorkspaceTests.cs" />
+    <Compile Include="Xmi\EMOF\DataLayerTests.cs" />
+    <Compile Include="Xmi\EMOF\XmlExtentTests.cs" />
+    <Compile Include="Xmi\Runtime\StorageTests.cs" />
+    <Compile Include="Xmi\XmiMultipleReferencesTests.cs" />
+    <Compile Include="Xmi\XmiTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Examples\plz.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Excel\Quadratzahlen.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Xmi\MOF.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Xmi\PrimitiveTypes.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Xmi\UML.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj">
+      <Project>{1B5763E6-B595-4AA4-8B83-640715CC2FB1}</Project>
+      <Name>BurnSystems</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj">
+      <Project>{9026f9a3-c366-43da-abad-8cc94a3e793f}</Project>
+      <Name>DatenMeister.Excel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
+      <Project>{fea57312-8d46-440e-989a-476b9281eef7}</Project>
+      <Name>DatenMeister</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net462.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net462.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NETFramework.ReferenceAssemblies.net462.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net462.targets'))" />
+  </Target>
+  <Import Project="..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets" Condition="Exists('..\packages\jnm2.ReferenceAssemblies.net35.1.0.1\build\jnm2.ReferenceAssemblies.net35.targets')" />
+  <Import Project="..\packages\Microsoft.NETFramework.ReferenceAssemblies.net462.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net462.targets" Condition="Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net462.1.0.0\build\Microsoft.NETFramework.ReferenceAssemblies.net462.targets')" />
+</Project>

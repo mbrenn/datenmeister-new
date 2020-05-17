@@ -67,7 +67,8 @@ namespace DatenMeister.WPF.Windows
                     var dllPath = Path.Combine(Environment.CurrentDirectory, "DatenMeister.Icons.dll");
                     var assembly = Assembly.LoadFile(dllPath);
 
-                    var type = assembly.GetType("DatenMeister.Icons.NiceIconsRepository");
+                    var type = assembly.GetType("DatenMeister.Icons.NiceIconsRepository")
+                        ?? throw new InvalidOperationException("type == null");
                     IconRepository = Activator.CreateInstance(type) as IIconRepository;
                 }
 

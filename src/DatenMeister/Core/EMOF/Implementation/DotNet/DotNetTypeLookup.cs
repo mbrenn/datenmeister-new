@@ -33,10 +33,14 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="type">Type to be added</param>
         public void Add(string metaclassUri, Type type)
         {
-            if (_elementsToTypes.ContainsKey(metaclassUri)
-                || _typesToElements.ContainsKey(type))
+            if (_elementsToTypes.ContainsKey(metaclassUri))
             {
-                throw new InvalidOperationException("Type or metaclassUri was already associated");
+                throw new InvalidOperationException($"MetaclassUri was already associated: {metaclassUri}");
+            }
+
+            if (_typesToElements.ContainsKey(type))
+            {
+                throw new InvalidOperationException("Type was already associated: {type}");
             }
 
             _elementsToTypes[metaclassUri] = type;

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
 using Autofac.Core.Lifetime;
@@ -29,8 +30,10 @@ namespace DatenMeister.Integration
             _lifetimeScopeImplementation = lifetimeScopeImplementation;
         }
 
-        public object ResolveComponent(IComponentRegistration registration, IEnumerable<Parameter> parameters)
-            => _lifetimeScopeImplementation.ResolveComponent(registration, parameters);
+        public object ResolveComponent(ResolveRequest request)
+        {
+            return _lifetimeScopeImplementation.ResolveComponent(request);
+        }
 
         public IComponentRegistry ComponentRegistry => _lifetimeScopeImplementation.ComponentRegistry;
 
@@ -79,6 +82,11 @@ namespace DatenMeister.Integration
         public ILifetimeScope BeginLifetimeScope(object tag)
         {
             return _lifetimeScopeImplementation.BeginLifetimeScope(tag);
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return _lifetimeScopeImplementation.DisposeAsync();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <LangVersion>8</LangVersion>
     <Nullable>annotations</Nullable>
@@ -14,7 +14,7 @@
       <Version>4.6.1</Version>
     </PackageReference>
     <PackageReference Include="NPOI">
-      <Version>2.3.0</Version>
+      <Version>2.5.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

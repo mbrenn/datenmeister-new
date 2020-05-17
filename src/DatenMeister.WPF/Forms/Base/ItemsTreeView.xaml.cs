@@ -427,6 +427,7 @@ namespace DatenMeister.WPF.Forms.Base
                         // Do not perform a resolving of the items
                         foreach (var childItem in CollectionHelper.EnumerateWithNoResolving(childItems, true))
                         {
+                            if (childItem == null) continue;
                             var childTreeViewItem = CreateTreeViewItem(childItem);
                             if (childTreeViewItem != null)
                             {
@@ -488,6 +489,7 @@ namespace DatenMeister.WPF.Forms.Base
                     // Do not perform a resolving of the items
                     foreach (var childItem in CollectionHelper.EnumerateWithNoResolving(childItems, true))
                     {
+                        if (childItem == null) continue;
                         result.Add(childItem);
                     }
                 }
@@ -514,7 +516,7 @@ namespace DatenMeister.WPF.Forms.Base
             else
             {
                 // Filtering agrees to the item, so it will be added
-                itemHeader = item.ToString();
+                itemHeader = item.ToString() ?? string.Empty;
             }
 
             if (_cacheShowMetaClasses)
@@ -526,7 +528,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            return itemHeader;
+            return itemHeader ?? string.Empty;
         }
 
 

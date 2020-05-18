@@ -14,6 +14,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -259,7 +260,8 @@ namespace DatenMeister.WPF.Forms.Lists
                         ExtentExport.ExportToFile(Extent, filename);
                         MessageBox.Show($"Extent exported with {Extent.elements().Count()} root elements.");
                         // ReSharper disable once AssignNullToNotNullAttribute
-                        Process.Start(Path.GetDirectoryName(filename));
+                        
+                        DotNetHelper.CreateProcess(Path.GetDirectoryName(filename)!);
                     }
                     catch (Exception exc)
                     {
@@ -286,7 +288,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     
                     //Clean up file path so it can be navigated OK
                     filePath = Path.GetFullPath(filePath);
-                    Process.Start("explorer.exe", $"/select,\"{filePath}\"");
+                    DotNetHelper.CreateProcess("explorer.exe", $"/select,\"{filePath}\"");
                 }
                 else
                 {

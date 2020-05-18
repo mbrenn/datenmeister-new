@@ -10,6 +10,7 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Runtime;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -96,7 +97,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             var reportCreator = new ReportCreator(GiveMe.Scope.WorkspaceLogic, reportConfiguration);
             reportCreator.CreateReport(streamWriter);
 
-            Process.Start(tmpPath);
+            DotNetHelper.CreateProcess(tmpPath);
         }
 
         private void CreateReportForDetailElement(IObject effectiveForm, IObject selectedItem)
@@ -113,7 +114,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 report.EndReport();
             }
 
-            Process.Start(tmpPath);
+            DotNetHelper.CreateProcess(tmpPath);
         }
     }
 }

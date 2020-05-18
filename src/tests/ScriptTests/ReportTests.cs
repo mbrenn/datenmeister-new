@@ -7,6 +7,7 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 
@@ -66,13 +67,7 @@ namespace ScriptTests
                     var absolutePath = Path.Combine(GetScriptFolder(), fileName);
                     Console.WriteLine(absolutePath);
 
-                    var processStartInfo = new System.Diagnostics.ProcessStartInfo
-                    {
-                        UseShellExecute = true,
-                        FileName = absolutePath
-                    };
-
-                    System.Diagnostics.Process.Start(processStartInfo);
+                    DotNetHelper.CreateProcess(absolutePath);
                 }
 
                 Console.WriteLine(testExtent);

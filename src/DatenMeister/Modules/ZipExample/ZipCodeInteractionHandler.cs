@@ -23,12 +23,12 @@ namespace DatenMeister.Modules.ZipExample
                 var query = $"{zipCode} {name}";
                 yield return new DefaultElementInteraction(
                     "Open in OpenStreetMap",
-                    () => Process.Start("https://www.openstreetmap.org/search?query="
+                    () => DotNetHelper.CreateProcess("https://www.openstreetmap.org/search?query="
                                         + WebUtility.UrlEncode(query)));
                 yield return new DefaultElementInteraction(
                     "Open in Google Maps",
-                    () => Process.Start("https://www.google.com/maps/search/?api=1&query="
-                                        + WebUtility.UrlEncode(query)));
+                    () => DotNetHelper.CreateProcess("https://www.google.com/maps/search/?api=1&query="
+                                                     + WebUtility.UrlEncode(query)));
             }
         }
     }

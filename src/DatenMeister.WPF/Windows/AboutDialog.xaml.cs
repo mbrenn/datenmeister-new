@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Navigation;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -32,7 +33,7 @@ namespace DatenMeister.WPF.Windows
 
         private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(e.Uri.ToString());
+            DotNetHelper.CreateProcess(e.Uri.ToString());
         }
 
         private void AboutDialog_OnClosed(object sender, EventArgs e)

@@ -10,6 +10,7 @@ using System.Windows.Controls.Ribbon;
 using Autofac;
 using BurnSystems;
 using DatenMeister.Integration;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF;
@@ -86,13 +87,8 @@ namespace DatenMeisterWPF
                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     var databasePath = GiveMe.Scope.Resolve<IntegrationSettings>().DatabasePath;
-                    var startInfo = new ProcessStartInfo()
-                    {
-                        UseShellExecute = true,
-                        FileName = databasePath
-                    };
 
-                    Process.Start(startInfo);
+                    DotNetHelper.CreateProcess(databasePath);
                 }
             }
             

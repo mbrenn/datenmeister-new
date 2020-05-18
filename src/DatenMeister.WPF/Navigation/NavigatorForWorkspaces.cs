@@ -41,7 +41,7 @@ namespace DatenMeister.WPF.Navigation
         public static void OpenFolder(INavigationHost window)
         {
             var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
-            Process.Start(integrationSettings.DatabasePath);
+            DotNetHelper.CreateProcess(integrationSettings.DatabasePath);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace DatenMeister.WPF.Navigation
             var location = entryAssembly.Location;
             if (Path.GetExtension(location).EndsWith("exe"))
             {
-                Process.Start(entryAssembly.Location);
+                DotNetHelper.CreateProcess(entryAssembly.Location);
             }
             else
             {

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.WPF.Navigation;
 using StundenMeister.Logic;
@@ -46,7 +47,7 @@ namespace StundenMeister
         private void OpenStorageFolder_Click(object sender, RoutedEventArgs e)
         {
             var settings = GiveMe.Scope.Resolve<IntegrationSettings>();
-            Process.Start(settings.DatabasePath);
+            DotNetHelper.CreateProcess(settings.DatabasePath);
         }
 
         private void HamburgerMenuItem_Click(object sender, RoutedEventArgs e)

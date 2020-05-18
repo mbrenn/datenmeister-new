@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -435,5 +436,25 @@ namespace DatenMeister.Runtime
         /// <param name="value">Value to be converted</param>
         /// <returns>true, if given type is urireference</returns>
         public static bool IsUriReference(object? value) => value is UriReference;
+
+        /// <summary>
+        /// Creates the process 
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void CreateProcess(string filePath, string? arguments = null)
+        {
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = filePath,
+                UseShellExecute = true
+            };
+
+            if (arguments != null)
+            {
+                startInfo.Arguments = arguments;
+            }
+
+            Process.Start(startInfo);
+        }
     }
 }

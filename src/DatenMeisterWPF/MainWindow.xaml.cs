@@ -86,7 +86,13 @@ namespace DatenMeisterWPF
                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     var databasePath = GiveMe.Scope.Resolve<IntegrationSettings>().DatabasePath;
-                    Process.Start(databasePath);
+                    var startInfo = new ProcessStartInfo()
+                    {
+                        UseShellExecute = true,
+                        FileName = databasePath
+                    };
+
+                    Process.Start(startInfo);
                 }
             }
             

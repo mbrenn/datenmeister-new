@@ -81,6 +81,7 @@ namespace DatenMeister.Runtime.Plugins
                     {
                         try
                         {
+                            //var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(path, file));
                             var assembly = Assembly.LoadFile(Path.Combine(path, file));
                             Logger.Info($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
                         }

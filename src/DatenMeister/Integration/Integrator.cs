@@ -136,12 +136,15 @@ namespace DatenMeister.Integration
             var pluginManager = new PluginManager();
             kernel.RegisterInstance(pluginManager).As<PluginManager>();
 
+            var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
+            pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
+
             Modules.ZipExample.ZipCodePlugin.Into(kernel);
 
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.BeforeBootstrapping);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
 
                 // Load the default extents
                 // Performs the bootstrap
@@ -180,7 +183,7 @@ namespace DatenMeister.Integration
 
                 Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterBootstrapping);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
 
                 // Now goes through all classes and add the configuration support
                 storageMap.LoadAllExtentStorageConfigurationsFromAssembly();
@@ -222,7 +225,7 @@ namespace DatenMeister.Integration
                 SettingsProviderHelper.Initialize(scope, workspaceLogic);
 
                 // Finally loads the plugin
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
                 // Boots up the typical DatenMeister Environment by loading the data
                 if (_settings.EstablishDataEnvironment)
@@ -248,7 +251,7 @@ namespace DatenMeister.Integration
                 }
 
                 // Finally loads the plugin
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterLoadingOfExtents);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
                 // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
                 var extentManager = scope.Resolve<IExtentManager>();

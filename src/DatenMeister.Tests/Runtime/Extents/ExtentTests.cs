@@ -29,8 +29,8 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public void ExtentTest()
         {
-            var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings());
+            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            
             using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.ExtentManagementExtentUri);

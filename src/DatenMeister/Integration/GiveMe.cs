@@ -49,7 +49,6 @@ namespace DatenMeister.Integration
                 EstablishDataEnvironment = true,
                 DatabasePath = DefaultDatabasePath
             };
-            
 
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);

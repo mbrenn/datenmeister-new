@@ -1,4 +1,6 @@
-﻿#nullable enable
+﻿using DatenMeister.Runtime.Plugins;
+
+#nullable enable
 
 namespace DatenMeister.Integration
 {
@@ -42,6 +44,11 @@ namespace DatenMeister.Integration
         /// Gets or sets the title of the mainwindow 
         /// </summary>
         public string? WindowTitle { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the plugin loader to be used for the DatenMeister... If none is specified, the default loader will be used. 
+        /// </summary>
+        public IPluginLoader PluginLoader { get; set; } = new DefaultPluginLoader();
 
         public IntegrationSettings()
         {

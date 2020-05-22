@@ -241,9 +241,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestXmlExtentStorage()
         {
-            var kernel = new ContainerBuilder();
-
-            var builder = kernel.UseDatenMeister(new IntegrationSettings());
+            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            
             using var scope = builder.BeginLifetimeScope();
             var path = PathForTemporaryDataFile;
             if (File.Exists(path))
@@ -286,8 +285,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
         [Test]
         public void TestWithMetaClass()
         {
-            var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings());
+            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            
             using var scope = builder.BeginLifetimeScope();
             var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
             var umlDataLayer = dataLayerLogic.GetUmlWorkspace();

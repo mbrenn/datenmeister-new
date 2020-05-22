@@ -10,6 +10,7 @@ using System.Windows.Controls.Ribbon;
 using Autofac;
 using BurnSystems;
 using DatenMeister.Integration;
+using DatenMeister.NetCore;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -57,7 +58,7 @@ namespace DatenMeisterWPF
         {
             MainControl.Content = new IntroScreen();
             GiveMe.Scope = await Task.Run(
-                () => GiveMe.DatenMeister());
+                () => GiveMeDotNetCore.DatenMeister());
 
             _ribbonHelper.LoadIconRepository();
 

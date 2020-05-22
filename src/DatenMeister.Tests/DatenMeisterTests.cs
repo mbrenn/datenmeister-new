@@ -4,6 +4,8 @@ using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
+using DatenMeister.NetCore;
+using DatenMeister.NetCore.Modules.PluginLoader;
 using DatenMeister.Runtime.Plugins;
 using NUnit.Framework;
 
@@ -43,7 +45,7 @@ namespace DatenMeister.Tests
                 GiveMe.DropDatenMeisterStorage(integrationSettings);
             }
 
-            return GiveMe.DatenMeister(integrationSettings);
+            return GiveMeDotNetCore.DatenMeister(integrationSettings);
         }
 
         /// <summary>
@@ -62,7 +64,8 @@ namespace DatenMeister.Tests
                 EstablishDataEnvironment = true,
                 PerformSlimIntegration = false,
                 AllowNoFailOfLoading = false,
-                InitializeDefaultExtents = dropDatabase
+                InitializeDefaultExtents = dropDatabase,
+                PluginLoader = new DotNetCorePluginLoader()
             };
 
             return integrationSettings;

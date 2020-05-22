@@ -11,8 +11,8 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public void TestUrisOfWorkspaces()
         {
-            var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings());
+            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            
             using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
             var umlWorkspace = workspaceLogic.GetUmlWorkspace();

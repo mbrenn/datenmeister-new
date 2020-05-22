@@ -15,8 +15,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public void TestGeneralizedProperties()
         {
-            var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings());
+            using var builder = DatenMeisterTests.GetDatenMeisterScope();
             using var scope = builder.BeginLifetimeScope();
             var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
@@ -81,8 +80,7 @@ namespace DatenMeister.Tests.Uml
         [Test]
         public void TestFullName()
         {
-            var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings());
+            using var builder = DatenMeisterTests.GetDatenMeisterScope();
             using var scope = builder.BeginLifetimeScope();
             var workspaceCollection = scope.Resolve<IWorkspaceLogic>();
             var dataLayerLogic = scope.Resolve<WorkspaceLogic>();

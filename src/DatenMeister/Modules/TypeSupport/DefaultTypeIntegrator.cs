@@ -43,7 +43,7 @@ namespace DatenMeister.Modules.TypeSupport
             // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
-                WorkspaceNames.UriPrimitiveTypesExtent);
+                WorkspaceNames.UriExtentPrimitiveTypes);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
 

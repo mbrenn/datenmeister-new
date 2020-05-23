@@ -110,7 +110,7 @@ namespace DatenMeister.WPF.Navigation
             var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {
-                if (workspace.id == WorkspaceNames.NameData)
+                if (workspace.id == WorkspaceNames.WorkspaceData)
                 {
                     continue;
                 }

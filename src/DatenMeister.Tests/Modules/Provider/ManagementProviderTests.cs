@@ -19,14 +19,14 @@ namespace DatenMeister.Tests.Modules.Provider
             var workspace = scope.WorkspaceLogic.GetManagementWorkspace();
             Assert.That(workspace, Is.Not.Null);
 
-            var extent = workspace.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
+            var extent = workspace.FindExtent(WorkspaceNames.UriExtentWorkspaces);
             Assert.That(extent, Is.Not.Null);
 
             var workspaceValue = extent.elements().WhenPropertyHasValue(
                 _ManagementProvider._Workspace.id,
-                WorkspaceNames.NameManagement).FirstOrDefault() as IElement;
+                WorkspaceNames.WorkspaceManagement).FirstOrDefault() as IElement;
             Assert.That(workspaceValue, Is.Not.Null);
-            Assert.That(workspaceValue.get(_ManagementProvider._Workspace.id), Is.EqualTo(WorkspaceNames.NameManagement));
+            Assert.That(workspaceValue.get(_ManagementProvider._Workspace.id), Is.EqualTo(WorkspaceNames.WorkspaceManagement));
 
             var extents =
                 workspaceValue.getOrDefault<IReflectiveCollection>(_ManagementProvider._Workspace.extents);

@@ -169,13 +169,13 @@ namespace DatenMeister.Integration
                 Logger.Debug("Bootstrapping MOF and UML...");
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.NameMof) ?? throw new InvalidOperationException("Workspace for MOF is not found"),
+                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceMof) ?? throw new InvalidOperationException("Workspace for MOF is not found"),
                     workspaceLogic,
                     workspaceData.Mof,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
                 Bootstrapper.PerformFullBootstrap(
                     paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.NameUml) ?? throw new InvalidOperationException("Workspace for UML is not found"),
+                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceUml) ?? throw new InvalidOperationException("Workspace for UML is not found"),
                     workspaceLogic,
                     workspaceData.Uml,
                     _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);

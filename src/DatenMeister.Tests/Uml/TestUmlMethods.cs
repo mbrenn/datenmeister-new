@@ -93,7 +93,7 @@ namespace DatenMeister.Tests.Uml
             Assert.That(fullName, Is.Not.Null);
             Assert.That(fullName, Is.EqualTo("UML::Classification::Feature"));
 
-            var umlExtent = workspaceCollection.GetWorkspace(WorkspaceNames.NameUml).FindExtent(WorkspaceNames.UriUmlExtent);
+            var umlExtent = workspaceCollection.GetWorkspace(WorkspaceNames.WorkspaceUml).FindExtent(WorkspaceNames.UriExtentUml);
             // now the other way
             var foundElement = NamedElementMethods.GetByFullName(umlExtent.elements(), fullName);
             Assert.That(foundElement, Is.EqualTo(feature));

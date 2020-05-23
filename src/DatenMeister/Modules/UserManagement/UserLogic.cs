@@ -56,7 +56,7 @@ namespace DatenMeister.Modules.UserManagement
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
 
             var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
-                WorkspaceNames.NameManagement,
+                WorkspaceNames.WorkspaceManagement,
                 ExtentUri,
                 ExtentName,
                 "",
@@ -109,7 +109,7 @@ namespace DatenMeister.Modules.UserManagement
 
         private IUriExtent GetUserDatabase()
         {
-            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement)?.FindExtent(ExtentName);
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)?.FindExtent(ExtentName);
             if (userDatabase == null)
             {
                 throw new InvalidOperationException("User Database was not found");

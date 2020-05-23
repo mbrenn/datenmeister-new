@@ -86,7 +86,7 @@ namespace DatenMeister.Modules.DataViews
             var workspaceName = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.workspace);
             if (string.IsNullOrEmpty(workspaceName))
             {
-                workspaceName = WorkspaceNames.NameData;
+                workspaceName = WorkspaceNames.WorkspaceData;
             }
 
             var extentUri = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.extentUri);

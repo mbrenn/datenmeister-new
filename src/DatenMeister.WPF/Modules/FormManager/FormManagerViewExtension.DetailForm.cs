@@ -100,8 +100,8 @@ namespace DatenMeister.WPF.Modules.FormManager
             {
                 if (!(NavigatorForDialogs.Locate(
                     detailWindow,
-                    WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserFormExtent) is IElement form))
+                    WorkspaceNames.WorkspaceManagement,
+                    WorkspaceNames.UriExtentUserForm) is IElement form))
                 {
                     detailWindow.ClearOverridingForm();
                 }
@@ -187,8 +187,8 @@ namespace DatenMeister.WPF.Modules.FormManager
                 
                 if (await NavigatorForDialogs.Locate(
                     navigationHost,
-                    WorkspaceNames.NameTypes,
-                    WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
+                    WorkspaceNames.WorkspaceTypes,
+                    WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
                     formCreator.AddToFormByUmlElement(

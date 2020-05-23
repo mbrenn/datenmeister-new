@@ -48,7 +48,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "ManagementProvider",
                     Path = "./",
                     Namespace = "DatenMeister.Provider.ManagementProviders.Model",
@@ -59,7 +59,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "FastViewFilters",
                     Path = "./",
                     Namespace = "DatenMeister.Models.FastViewFilter",
@@ -72,7 +72,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "DataViews",
                     Path = "./",
                     Namespace = "DatenMeister.Models.DataViews",
@@ -87,7 +87,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "Reports",
                     Path = "./",
                     Namespace = "DatenMeister.Models.Reports",
@@ -133,9 +133,9 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateSourceForUmlAndMof()
         {
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUmlExtent);
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMofExtent);
-            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof);
+            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes);
 
             var loader = new SimpleLoader();
             loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");

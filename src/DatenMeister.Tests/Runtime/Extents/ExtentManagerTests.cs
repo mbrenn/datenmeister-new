@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             var loaderConfig = new InMemoryLoaderConfig("dm:///test")
             {
-                workspaceId = WorkspaceNames.NameData
+                workspaceId = WorkspaceNames.WorkspaceData
             };
                     
             extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);

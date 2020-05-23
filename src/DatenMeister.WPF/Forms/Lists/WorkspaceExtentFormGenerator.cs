@@ -368,7 +368,7 @@ namespace DatenMeister.WPF.Forms.Lists
             };
 
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+            var extent = workspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
             if (extent == null)
             {
                 Logger.Error("Extent for Types is not found");

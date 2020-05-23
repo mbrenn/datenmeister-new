@@ -33,16 +33,16 @@ namespace DatenMeister.Tests.Runtime.Extents
             
             using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
+            var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.UriExtentWorkspaces);
             Assert.That(workspaceExtent, Is.Not.Null);
             var asData = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameData);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceData);
             var asManagement = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceManagement);
             var asTypes = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameTypes);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceTypes);
             var asMof = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameMof);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceMof);
 
             Assert.That(asData, Is.Not.Null);
             Assert.That(asManagement, Is.Not.Null);
@@ -53,7 +53,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
             Assert.That(extents, Is.Not.Null);
 
-            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri").ToString() == WorkspaceNames.UriMofExtent);
+            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri").ToString() == WorkspaceNames.UriExtentMof);
             Assert.That(mofExtent, Is.Not.Null);
         }
 
@@ -64,7 +64,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var loaderConfig = new XmiStorageLoaderConfig("datenmeister:///data")
             {
                 filePath = path,
-                workspaceId = WorkspaceNames.NameData
+                workspaceId = WorkspaceNames.WorkspaceData
             };
 
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
@@ -135,7 +135,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var loaderConfig = new XmiStorageLoaderConfig("datenmeister:///data")
             {
                 filePath = path,
-                workspaceId = WorkspaceNames.NameData
+                workspaceId = WorkspaceNames.WorkspaceData
             };
 
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())

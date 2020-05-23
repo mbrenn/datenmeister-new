@@ -63,7 +63,7 @@ namespace DatenMeisterWPF
             _ribbonHelper.LoadIconRepository();
 
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
-            _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
+            _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData);
 
             var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
             if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
@@ -149,7 +149,7 @@ namespace DatenMeisterWPF
             {
                 new ApplicationMenuButtonDefinition(
                     "Goto Data",
-                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
+                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData),
                     Icons.FileHome,
                     NavigationCategories.DatenMeisterNavigation,
                     10),

@@ -34,8 +34,8 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 yield return new ApplicationMenuButtonDefinition(
                     "Goto User Types", async () => await NavigatorForItems.NavigateToItemsInExtent(
                         navigationHost,
-                        WorkspaceNames.NameTypes,
-                        WorkspaceNames.UriUserTypesExtent),
+                        WorkspaceNames.WorkspaceTypes,
+                        WorkspaceNames.UriExtentUserTypes),
                     string.Empty,
                     NavigationCategories.DatenMeisterNavigation);
             }

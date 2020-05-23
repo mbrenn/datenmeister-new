@@ -90,8 +90,8 @@ namespace DatenMeister.WPF.Modules.FormManager
                 {
                     var form = NavigatorForDialogs.Locate(
                         itemExplorerControl.NavigationHost,
-                        WorkspaceNames.NameManagement,
-                        WorkspaceNames.UriUserFormExtent) as IElement;
+                        WorkspaceNames.WorkspaceManagement,
+                        WorkspaceNames.UriExtentUserForm) as IElement;
 
                     if (form == null)
                     {
@@ -264,8 +264,8 @@ namespace DatenMeister.WPF.Modules.FormManager
             
             if (await NavigatorForDialogs.Locate(
                 navigationHost,
-                WorkspaceNames.NameTypes,
-                WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
+                WorkspaceNames.WorkspaceTypes,
+                WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
             {
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
 
@@ -310,8 +310,8 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             if (await NavigatorForDialogs.Locate(
                 navigationHost,
-                WorkspaceNames.NameTypes,
-                WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
+                WorkspaceNames.WorkspaceTypes,
+                WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
             {
                 // Prepare the variables and fullname
                 var containerExtent = selectedItem.GetUriExtentOf() ??

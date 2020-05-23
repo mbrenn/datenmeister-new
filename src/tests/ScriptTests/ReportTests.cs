@@ -52,7 +52,7 @@ namespace ScriptTests
                 {
                     var zipCodeManager = dm.Resolve<ZipCodeExampleManager>();
                     testExtent = zipCodeManager.AddZipCodeExample(
-                        WorkspaceNames.NameData,
+                        WorkspaceNames.WorkspaceData,
                         Path.Combine(GetScriptFolder(), "plz.csv"));
                 }
 

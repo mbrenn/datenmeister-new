@@ -57,7 +57,7 @@ namespace DatenMeister.WPF.Navigation
         public static async Task<NavigateToElementDetailResult?> OpenDetailOfExtent(INavigationHost navigationHost, string extentUrl)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var uri = WorkspaceNames.ExtentManagementExtentUri + "#" + WebUtility.UrlEncode(extentUrl);
+            var uri = WorkspaceNames.UriExtentWorkspaces + "#" + WebUtility.UrlEncode(extentUrl);
             var foundItem = workspaceLogic.FindItem(uri);
             if (foundItem == null)
             {
@@ -82,7 +82,8 @@ namespace DatenMeister.WPF.Navigation
             {
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var managementWorkspace = workspaceLogic.GetManagementWorkspace();
-                var resolvedForm = managementWorkspace.Resolve("datenmeister:///management/forms/internal#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
+                var resolvedForm = managementWorkspace.Resolve(
+                    $"{WorkspaceNames.UriExtentInternalForm}#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
                 var extentSettings = GiveMe.Scope.Resolve<ExtentSettings>();
                 var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
                                     throw new InvalidOperationException("FormAndFields not found");

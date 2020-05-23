@@ -294,8 +294,8 @@ namespace DatenMeister.Uml
             // the metaclass of these element depending on the attribute value of Xmi:Type
             // If the current layer is UML, the metaLayer needs to trace to the MOF metalayer
             var extentsOfMetaLayer = _workspaceLogic.GetExtentsForWorkspace(metaLayer).ToList();
-            var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUmlExtent).elements().GetAllDescendants();
-            var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriMofExtent).elements().GetAllDescendants();
+            var umlElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriExtentUml).elements().GetAllDescendants();
+            var mofElements = extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriExtentMof).elements().GetAllDescendants();
             var mofMetaClasses =
                 mofElements
                     .Cast<IElement>()
@@ -363,8 +363,8 @@ namespace DatenMeister.Uml
             }
 
             var metaClassGeneralization =
-                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriUmlExtent)
-                    .element(WorkspaceNames.UriUmlExtent + "#Generalization");
+                extentsOfMetaLayer.First(x => x.contextURI() == WorkspaceNames.UriExtentUml)
+                    .element(WorkspaceNames.UriExtentUml + "#Generalization");
             if (metaClassGeneralization == null)
                 throw new InvalidOperationException("Type for Generalization is not found");
             
@@ -520,12 +520,12 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUmlExtent);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml);
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMofExtent);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof);
             mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
-            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent);
+            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes);
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi");
 

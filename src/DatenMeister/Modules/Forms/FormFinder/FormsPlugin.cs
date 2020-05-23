@@ -79,7 +79,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         public void Start(PluginLoadingPosition position)
         {
-            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement)
+            var mgmtWorkspace = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
                                 ?? throw new InvalidOperationException("Management Workspace is not found");
 
             switch (position)
@@ -87,7 +87,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 case PluginLoadingPosition.AfterBootstrapping:
                     // Creates the internal views for the DatenMeister
                     var dotNetUriExtent =
-                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriInternalFormExtent);
+                        new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentInternalForm);
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
                     _extentSettings.extentTypeSettings.Add(new ExtentTypeSetting(FormExtentType));
@@ -95,8 +95,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
-                        WorkspaceNames.NameManagement,
-                        WorkspaceNames.UriUserFormExtent,
+                        WorkspaceNames.WorkspaceManagement,
+                        WorkspaceNames.UriExtentUserForm,
                         "DatenMeister.Forms_User",
                         FormExtentType,
                         _integrationSettings.InitializeDefaultExtents
@@ -169,7 +169,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns></returns>
         public IUriExtent GetInternalFormExtent()
         {
-            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriInternalFormExtent) is IUriExtent foundExtent))
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is IUriExtent foundExtent))
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
             }
@@ -183,7 +183,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns></returns>
         public IUriExtent GetUserFormExtent()
         {
-            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriUserFormExtent) is IUriExtent foundExtent))
+            if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is IUriExtent foundExtent))
             {
                 throw new InvalidOperationException("The view extent is not found in the management");
             }
@@ -216,7 +216,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns>The found view or null if not found</returns>
         public IObject? GetFormByUrl(string url)
         {
-            if (url.StartsWith(WorkspaceNames.UriInternalFormExtent))
+            if (url.StartsWith(WorkspaceNames.UriExtentInternalForm))
             {
                 return GetUserFormExtent().element(url);
             }

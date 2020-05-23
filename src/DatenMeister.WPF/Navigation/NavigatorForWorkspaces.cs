@@ -132,38 +132,41 @@ namespace DatenMeister.WPF.Navigation
             {
                 mainWindow.DoCloseWithoutAcknowledgement = true;
             }
-            
-            
+
+            Application.Current.Exit += (x, y) =>
+            {
+                if (navigationHost.GetWindow().IsActive)
+                {
+                    MessageBox.Show("DatenMeister was not closed");
+                    return;
+                }
+
+                GiveMe.Scope.UnuseDatenMeister();
+                GiveMe.Scope = null!;
+
+                foreach (var file in files)
+                {
+                    File.Delete(file);
+                }
+
+                File.Delete(Integrator.GetPathToWorkspaces(integrationSettings));
+                File.Delete(Integrator.GetPathToExtents(integrationSettings));
+
+                // Restarts the DatenMeister
+                var entryAssembly = Assembly.GetEntryAssembly() ??
+                                    throw new InvalidOperationException("Assembly.GetEntryAssembly is null");
+                var location = entryAssembly.Location;
+                if (Path.GetExtension(location).EndsWith("exe"))
+                {
+                    DotNetHelper.CreateProcess(entryAssembly.Location);
+                }
+                else
+                {
+                    MessageBox.Show("The DatenMeister was not started by the .exe... So restart is not possible.");
+                }
+            };
+
             navigationHost.GetWindow().Close();
-            if (navigationHost.GetWindow().IsActive)
-            {
-                MessageBox.Show("DatenMeister was not closed");
-                return;
-            }
-
-            GiveMe.Scope.UnuseDatenMeister();
-            GiveMe.Scope = null!;
-
-
-            foreach (var file in files)
-            {
-                File.Delete(file);
-            }
-
-            File.Delete(Integrator.GetPathToWorkspaces(integrationSettings));
-            File.Delete(Integrator.GetPathToExtents(integrationSettings));
-
-            // Restarts the DatenMeister
-            var entryAssembly = Assembly.GetEntryAssembly() ?? throw new InvalidOperationException("Assembly.GetEntryAssembly is null");
-            var location = entryAssembly.Location;
-            if (Path.GetExtension(location).EndsWith("exe"))
-            {
-                DotNetHelper.CreateProcess(entryAssembly.Location);
-            }
-            else
-            {
-                MessageBox.Show("The DatenMeister was not started by the .exe... So restart is not possible.");
-            }
         }
     }
 }

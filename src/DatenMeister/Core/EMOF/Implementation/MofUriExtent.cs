@@ -17,7 +17,7 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the MOF interface for the uriextent
     /// </summary>
-    public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
+    public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
         private class ResolverCache
         {
@@ -86,7 +86,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the resolver cache
         /// </summary>
-        private ResolverCache _resolverCache = new ResolverCache();
+        private readonly ResolverCache _resolverCache = new ResolverCache();
         
         /// <summary>
         /// Defines a possible logger
@@ -197,14 +197,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
+            uri = Migration.MigrateUriForResolver(uri);
+            
             // Check, if we have a cache...
             var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
             if (cachedResult != null)
             {
                 return cachedResult;
             }
-            
-            
+
             // We have to find it
             var result = ResolveInternal(uri, resolveType);
             if (result == null && traceFailing)

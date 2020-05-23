@@ -58,7 +58,7 @@ namespace DatenMeister.Modules.TypeSupport
                 // Copy the primitive type into a new extent for the type workspace
                 CopyMethods.CopyToElementsProperty(
                     (_workspaceLogic.GetUmlWorkspace()
-                        .FindElementByUri("dm:///_internal/xmi/primitivetypes?PrimitiveTypes")
+                        .FindElementByUri(WorkspaceNames.UriExtentPrimitiveTypes + "#_0")
                         ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection)
                     ?? throw new InvalidOperationException("PrimitiveTypes is not found"),
                     foundPackage,

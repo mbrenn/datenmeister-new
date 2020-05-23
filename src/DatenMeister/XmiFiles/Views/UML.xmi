@@ -18,8 +18,12 @@
           <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="bfe507a9-9615-46ea-970b-567353d0f3d3" name="null" />
         </tab>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationDetail" formType="Detail" form-ref="#UML.Packages.PackageFormDetail" metaClass-ref="dm:///_internal/xmi/uml#Package" name="Association for Package - Detail" />
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationList" formType="TreeItemDetail" form-ref="#UML.Packages.PackageFormList" metaClass-ref="dm:///_internal/xmi/uml#Package" name="Association for Package - List" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationDetail" formType="Detail" form-ref="#UML.Packages.PackageFormDetail" metaClass-ref="dm:///_internal/model/uml#Package" name="Association for Package - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationList" formType="TreeItemDetail" form-ref="#UML.Packages.PackageFormList" metaClass-ref="dm:///_internal/model/uml#Package" name="Association for Package - List" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationDetail" 
+                       formType="Detail" form-ref="#UML.Packages.PackageFormDetail" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Association for Package - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationList"
+                       formType="TreeItemDetail" form-ref="#UML.Packages.PackageFormList" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Association for Package - List" />
     </packagedElement>
 
 
@@ -49,8 +53,8 @@
           <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="e7e6dddd-eac9-4926-bf83-83926fa559db" name="null" />
         </tab>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.StructuredClassifiers.ClassAssociationDetail" formType="Detail" form-ref="#UML.StructuredClassifiers.ClassFormDetail" metaClass-ref="dm:///_internal/xmi/uml#Class" name="Association for Class - Detail" />
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.StructuredClassifiers.ClassAssociationList" formType="TreeItemDetail" form-ref="#UML.StructuredClassifiers.ClassFormList" metaClass-ref="dm:///_internal/xmi/uml#Class" name="Association for Class - List" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.StructuredClassifiers.ClassAssociationDetail" formType="Detail" form-ref="#UML.StructuredClassifiers.ClassFormDetail" metaClass-ref="dm:///_internal/model/uml#Class" name="Association for Class - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.StructuredClassifiers.ClassAssociationList" formType="TreeItemDetail" form-ref="#UML.StructuredClassifiers.ClassFormList" metaClass-ref="dm:///_internal/model/uml#Class" name="Association for Class - List" />
     </packagedElement>
 
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.Classification.Property" name="Property" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -74,8 +78,8 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="34e66a92-32ab-471d-9e7e-cc204c7e3e38" name="Metaclass" />
         </tab>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Classification.PropertyAssociationDetail" formType="Detail" form-ref="#UML.Classification.PropertyFormDetail" metaClass-ref="dm:///_internal/xmi/uml#Property" name="Association for Property - Detail" />
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Classification.PropertyAssociationList" formType="TreeItemDetail" form-ref="#UML.Classification.PropertyFormList" metaClass-ref="dm:///_internal/xmi/uml#Property" name="Association for Property - List" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Classification.PropertyAssociationDetail" formType="Detail" form-ref="#UML.Classification.PropertyFormDetail" metaClass-ref="dm:///_internal/model/uml#Property" name="Association for Property - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Classification.PropertyAssociationList" formType="TreeItemDetail" form-ref="#UML.Classification.PropertyFormList" metaClass-ref="dm:///_internal/model/uml#Property" name="Association for Property - List" />
     </packagedElement>
   </item>
 </item>

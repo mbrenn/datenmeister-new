@@ -70,7 +70,7 @@ namespace DatenMeister.Tests.Xmi
             const string xmi1 =
                 "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"test\" value=\"23\" /></package>";
             const string xmi2 =
-                "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\"><sub href=\"datenmeister:///xmi1/#test\" /></element></package>";
+                "<package xmlns:xmi=\"http://www.omg.org/spec/XMI/20131001\"><element xmi:id=\"other\" value=\"23\"><sub href=\"dm:///xmi1/#test\" /></element></package>";
 
             (var extent1, var extent2) = LoadExtents(xmi1, xmi2);
 
@@ -81,8 +81,8 @@ namespace DatenMeister.Tests.Xmi
         {
             var provider1 = new XmiProvider();
             var provider2 = new XmiProvider();
-            var extent1 = new MofUriExtent(provider1, "datenmeister:///xmi1/");
-            var extent2 = new MofUriExtent(provider2, "datenmeister:///xmi2/");
+            var extent1 = new MofUriExtent(provider1, "dm:///xmi1/");
+            var extent2 = new MofUriExtent(provider2, "dm:///xmi2/");
 
             var workspace = new Workspace("data");
             var loader = new SimpleLoader(workspace);

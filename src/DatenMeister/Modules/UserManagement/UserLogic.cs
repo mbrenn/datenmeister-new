@@ -24,7 +24,7 @@ namespace DatenMeister.Modules.UserManagement
         /// <summary>
         /// Defines the default extent for the users
         /// </summary>
-        public const string ExtentUri = "datenmeister:///users";
+        public const string ExtentUri = "dm:///users";
 
         private const string ExtentName = "DatenMeister.Users";
 

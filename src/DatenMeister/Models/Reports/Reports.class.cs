@@ -22,7 +22,7 @@ namespace DatenMeister.Models.Reports
         }
 
         public _ReportDefinition @ReportDefinition = new _ReportDefinition();
-        public IElement @__ReportDefinition = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition");
+        public IElement @__ReportDefinition = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition");
 
         public class _ReportElement
         {
@@ -32,7 +32,7 @@ namespace DatenMeister.Models.Reports
         }
 
         public _ReportElement @ReportElement = new _ReportElement();
-        public IElement @__ReportElement = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement");
+        public IElement @__ReportElement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement");
 
         public class _ReportHeadline
         {
@@ -45,7 +45,7 @@ namespace DatenMeister.Models.Reports
         }
 
         public _ReportHeadline @ReportHeadline = new _ReportHeadline();
-        public IElement @__ReportHeadline = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline");
+        public IElement @__ReportHeadline = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline");
 
         public class _ReportParagraph
         {
@@ -58,7 +58,7 @@ namespace DatenMeister.Models.Reports
         }
 
         public _ReportParagraph @ReportParagraph = new _ReportParagraph();
-        public IElement @__ReportParagraph = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph");
+        public IElement @__ReportParagraph = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph");
 
         public static _Reports TheOne = new _Reports();
 

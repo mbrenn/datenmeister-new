@@ -34,7 +34,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _Extent @Extent = new _Extent();
-        public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent");
+        public IElement @__Extent = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent");
 
         public class _Workspace
         {
@@ -50,7 +50,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _Workspace @Workspace = new _Workspace();
-        public IElement @__Workspace = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace");
+        public IElement @__Workspace = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace");
 
         public class _CreateNewWorkspaceModel
         {
@@ -63,7 +63,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _CreateNewWorkspaceModel @CreateNewWorkspaceModel = new _CreateNewWorkspaceModel();
-        public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
+        public IElement @__CreateNewWorkspaceModel = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel");
 
         public class _ExtentTypeSetting
         {
@@ -73,7 +73,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _ExtentTypeSetting @ExtentTypeSetting = new _ExtentTypeSetting();
-        public IElement @__ExtentTypeSetting = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentTypeSetting");
+        public IElement @__ExtentTypeSetting = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentTypeSetting");
 
         public class _ExtentSettings
         {
@@ -83,7 +83,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _ExtentSettings @ExtentSettings = new _ExtentSettings();
-        public IElement @__ExtentSettings = new MofObjectShadow("datenmeister:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentSettings");
+        public IElement @__ExtentSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentSettings");
 
         public static _ManagementProvider TheOne = new _ManagementProvider();
 

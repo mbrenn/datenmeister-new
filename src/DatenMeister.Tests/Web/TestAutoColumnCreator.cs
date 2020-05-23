@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Web
         {
             var property1 = "zip";
             var property2 = "location";
-            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
             var factory = new MofFactory(extent);
             var mofObject = factory.create(null);
             mofObject.set(property1, "55130");
@@ -64,7 +64,7 @@ namespace DatenMeister.Tests.Web
             var property2 = "location";
             var property3 = "other";
 
-            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
             var factory = new MofFactory(extent);
             var mofObject = factory.create(null);
             mofObject.set(property1, "55130");

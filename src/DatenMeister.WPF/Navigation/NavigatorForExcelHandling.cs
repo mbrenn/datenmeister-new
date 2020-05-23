@@ -38,7 +38,7 @@ namespace DatenMeister.WPF.Navigation
                     dlg.ExcelSettings ?? throw new InvalidOperationException("dlg.ExcelSettings == null");
 
                 excelSettings.workspaceId = workspaceId;
-                excelSettings.extentUri = "datenmeister:///excelimport_" + newGuid;
+                excelSettings.extentUri = "dm:///excelimport_" + newGuid;
                 excelSettings.extentPath = newGuid + ".xmi";
 
                 dlg.Owner = host as Window;

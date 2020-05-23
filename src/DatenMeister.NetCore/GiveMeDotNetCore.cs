@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.NetCore.Modules.PluginLoader;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.NetCore
 {
@@ -29,6 +30,11 @@ namespace DatenMeister.NetCore
                 DatabasePath = GiveMe.DefaultDatabasePath,
                 PluginLoader = new DotNetCorePluginLoader()
             };
+
+            if (settings.PluginLoader is DefaultPluginLoader || settings.PluginLoader == null)
+            {
+                settings.PluginLoader = new DotNetCorePluginLoader();
+            }
 
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);

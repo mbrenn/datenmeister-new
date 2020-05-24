@@ -331,7 +331,13 @@ namespace DatenMeister.WPF.Forms.Base
             if (_changeEventHandle != null)
             {
                 _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
-                GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
+                var tryScope = GiveMe.TryGetScope();
+
+                if (tryScope != null)
+                {
+                    tryScope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
+                }
+
                 _changeEventHandle = null;
             }
         }

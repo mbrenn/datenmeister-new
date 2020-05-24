@@ -11,10 +11,10 @@ namespace DatenMeister.Core.EMOF.Implementation
             /// <returns>The migrated uri</returns>
             public static string MigrateUriForResolver(string uri)
             {
-                var prefix = "datenmeister:///";
+                var prefix = "datenmeister:///_internal";
                 if (uri.StartsWith(prefix))
                 {
-                    return "dm:///" + uri.Substring(prefix.Length);
+                    return "dm:///_internal" + uri.Substring(prefix.Length);
                 }
 
                 return uri;

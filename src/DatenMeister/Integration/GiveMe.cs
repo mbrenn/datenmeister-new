@@ -24,15 +24,6 @@ namespace DatenMeister.Integration
         }
 
         /// <summary>
-        /// Gets the scope and returns null, if currently no scope is available.
-        /// </summary>
-        /// <returns></returns>
-        public static IDatenMeisterScope? TryToGetScope()
-        {
-            return _scope;
-        }
-
-        /// <summary>
         /// Gets the scope, even if it is null
         /// </summary>
         /// <returns>The created scope</returns>

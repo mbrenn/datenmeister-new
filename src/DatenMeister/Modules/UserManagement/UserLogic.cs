@@ -26,13 +26,14 @@ namespace DatenMeister.Modules.UserManagement
         /// </summary>
         public const string ExtentUri = "dm:///_internal/users";
 
-        private const string ExtentName = "DatenMeister.Users";
+        private const string ExtentTypeName = "DatenMeister.Users";
 
         private readonly LocalTypeSupport _localTypeSupport;
 
         private readonly ExtentCreator _extentCreator;
 
         private readonly IWorkspaceLogic _workspaceLogic;
+        
         private readonly IntegrationSettings _integrationSettings;
 
         public UserLogic(LocalTypeSupport localTypeSupport, ExtentCreator extentCreator, IWorkspaceLogic workspaceLogic, IntegrationSettings integrationSettings)
@@ -58,7 +59,7 @@ namespace DatenMeister.Modules.UserManagement
             var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                 WorkspaceNames.WorkspaceManagement,
                 ExtentUri,
-                ExtentName,
+                ExtentTypeName,
                 "",
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
             if (extent == null)
@@ -109,7 +110,7 @@ namespace DatenMeister.Modules.UserManagement
 
         private IUriExtent GetUserDatabase()
         {
-            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)?.FindExtent(ExtentName);
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)?.FindExtent(ExtentTypeName);
             if (userDatabase == null)
             {
                 throw new InvalidOperationException("User Database was not found");

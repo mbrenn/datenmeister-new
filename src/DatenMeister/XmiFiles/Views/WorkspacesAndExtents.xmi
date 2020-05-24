@@ -6,8 +6,8 @@
 
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm"
                          name="Detail - New Xmi Extent" allowNewProperties="False" hideMetaInformation="True"
-                         defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi" title="Create Xmi Extent"
-                         xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="WorkspacesAndExtents.Xmi.New">
+                         defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi" title="Create Xmi Extent" 
+                         p1:id="WorkspacesAndExtents.Xmi.New">
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
                    lineHeight="0" width="0" isAttached="False" fieldType="text" name="uri" title="URI"
                    isEnumeration="False" defaultValue="dm:///" isReadOnly="False"/>
@@ -24,6 +24,12 @@
                 <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Guid" name="Guid" />
                 <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Ordinal" name="Ordinal" />
             </field>
+        </packagedElement>
+
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="OpenExtentAsFile" title="Open Extent As File"
+                         p1:id="OpenExtentAsFile">
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData" defaultExtension="*.*" name="filePath" title="Path to file" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="extentUri" title="Uri of Extent" />
         </packagedElement>
         <!--
                 <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm"

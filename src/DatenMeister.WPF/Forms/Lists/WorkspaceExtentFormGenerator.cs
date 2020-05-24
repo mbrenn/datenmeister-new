@@ -16,6 +16,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.ZipExample;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.ManagementProviders.View;
@@ -275,13 +276,25 @@ namespace DatenMeister.WPF.Forms.Lists
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
             }
 
-            void ImportFromXmi(IObject item)
+            async void ImportFromXmi(IObject item)
             {
-                var dlg = new ImportExtentDlg
+                var userResult = InMemoryObject.CreateEmpty();
+                var foundForm = viewExtent.element("#OpenExtentAsFile")
+                                ?? throw new InvalidOperationException("#OpenExtentasFile not found");
+                var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig()
                 {
-                    Owner = navigationHost.GetWindow(),
-                    Workspace = workspaceId
-                };
+                    Title = "Load File",
+                    DetailElement = userResult,
+                    Form = new FormDefinition(foundForm)
+                });
+
+                if (navigationResult?.Result == NavigationResult.Saved)
+                {
+                    // Load
+                    MessageBox.Show("LOAD");
+                }
+                
+                /*             
 
                 dlg.Closed += (x, y) =>
                 {
@@ -290,9 +303,7 @@ namespace DatenMeister.WPF.Forms.Lists
                         var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
                         extentImport.ImportExtent(dlg.ImportCommand);
                     }
-                };
-
-                dlg.Show();
+                };*/
             }
 
             return viewDefinition;

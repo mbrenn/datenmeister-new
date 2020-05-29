@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -207,23 +208,16 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="package">Package to which the elements shall be added</param>
         /// <param name="element">Element to be added</param>
-        public static void AddObjectToPackage(IElement package, object element)
+        public static void AddObjectToPackage(IObject package, object element)
         {
-            var packagedElements = package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
-            packagedElements.add(element);
-        }
-
-        /// <summary>
-        /// Adds the element of the elements to the package
-        /// </summary>
-        /// <param name="package">Package to be set</param>
-        /// <param name="elements">Elements to be added</param>
-        public static void AddObjectsToPackage(IElement package, IEnumerable<object> elements)
-        {
-            var packagedElements = package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
-            foreach (var item in elements)
+            if (element is IObject elementAsObject)
             {
-                packagedElements.add(item);
+                DefaultClassifierHints.AddToExtentOrElement(package, elementAsObject);
+            }
+            else
+            {
+                var packagedElements = package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+                packagedElements.add(element);
             }
         }
 
@@ -258,7 +252,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="sourcePackage">Source package containing the elements to be imported</param>
         /// <param name="targetPackage">Target package receiving the elements</param>
         /// <param name="copyOptions">Defines the options which shall be used for the importing of the package</param>
-        public static void ImportPackage(IObject sourcePackage, IElement targetPackage, CopyOption? copyOptions = null)
+        public static void ImportPackage(IObject sourcePackage, IObject targetPackage, CopyOption? copyOptions = null)
         {
             copyOptions ??= CopyOptions.None;
             var objectCopier = new ObjectCopier(new MofFactory(
@@ -291,13 +285,6 @@ namespace DatenMeister.Uml.Helper
             string targetPackageName,
             bool loadingRequired = true)
         {
-            // Creates the package for "ManagementProvider" containing the views
-            var targetPackage = GetOrCreatePackageStructure(
-                targetExtent.elements(), targetPackageName);
-
-            if (targetPackage == null)
-                throw new InvalidOperationException("targetPackage == null");
-
             using var stream = manifestType.GetTypeInfo()
                 .Assembly.GetManifestResourceStream(manifestName);
             
@@ -330,8 +317,23 @@ namespace DatenMeister.Uml.Helper
                     return null;
                 }
             }
-                    
-            ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
+
+            if (string.IsNullOrEmpty(targetPackageName))
+            {
+                // TODO: Add the elements to the target package
+                ImportPackage(sourcePackage, targetExtent, CopyOptions.CopyId);
+            }
+            else
+            {
+                // Creates the package for "ManagementProvider" containing the views
+                var targetPackage = GetOrCreatePackageStructure(
+                    targetExtent.elements(), targetPackageName);
+
+                if (targetPackage == null)
+                    throw new InvalidOperationException("targetPackage == null");
+
+                ImportPackage(sourcePackage, targetPackage, CopyOptions.CopyId);
+            }
 
             return sourcePackage;
         }

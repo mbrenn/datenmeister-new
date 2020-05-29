@@ -193,6 +193,14 @@ namespace DatenMeister.Integration
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
                 var packageMethods = scope.Resolve<PackageMethods>();
+                var internalUserExtent = localTypeSupport.InternalTypes;
+                
+                packageMethods.ImportByManifest(
+                    typeof(DefaultTypeIntegrator),
+                    "DatenMeister.XmiFiles.Internal.xmi",
+                    "Internal",
+                    internalUserExtent,
+                    string.Empty);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();

@@ -84,12 +84,12 @@ namespace DatenMeister.Modules.TypeSupport
                 //_localTypeSupport.AddInternalType("Default", typeof(Package));
                 
                 
-                _packageMethods.ImportByManifest(
+/*                _packageMethods.ImportByManifest(
                     typeof(DefaultTypeIntegrator),
                     "DatenMeister.XmiFiles.Default.xmi",
                     "Default",
                     internalUserExtent,
-                    "Default");
+                    "Default");*/
             }
         }
     }

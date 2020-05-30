@@ -15,6 +15,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders;
@@ -278,9 +279,13 @@ namespace DatenMeister.WPF.Forms.Lists
 
             async void ImportFromXmi(IObject item)
             {
-                var userResult = InMemoryObject.CreateEmpty();
+                var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
+                var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.FormSupport.LoadFileFromXmi")
+                    ?? throw new InvalidOperationException("LoadFileFromXmi is not found");
+                
+                var userResult = InMemoryObject.CreateEmpty(foundType);
                 var foundForm = viewExtent.element("#OpenExtentAsFile")
-                                ?? throw new InvalidOperationException("#OpenExtentasFile not found");
+                                ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
                 var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig()
                 {
                     Title = "Load File",

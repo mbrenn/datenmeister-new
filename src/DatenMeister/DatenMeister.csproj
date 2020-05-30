@@ -25,6 +25,8 @@
     <EmbeddedResource Include="Modules\HtmlReporter\Css\default_report.css" />
     <None Remove="XmiFiles\Default.xmi" />
     <EmbeddedResource Include="XmiFiles\Default.xmi" />
+    <None Remove="XmiFiles\Internal.xmi" />
+    <EmbeddedResource Include="XmiFiles\Internal.xmi" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />

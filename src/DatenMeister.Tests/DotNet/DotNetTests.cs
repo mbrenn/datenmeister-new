@@ -201,7 +201,7 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestDotNetConversionWithoutExplicitType()
         {
-            var datenMeister = GiveMe.DatenMeister();
+            using var datenMeister  = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();

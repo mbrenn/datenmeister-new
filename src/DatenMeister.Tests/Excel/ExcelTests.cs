@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public void LoadExcel()
         {
-            using var dm = GiveMe.DatenMeister();
+            var dm = DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"));
 

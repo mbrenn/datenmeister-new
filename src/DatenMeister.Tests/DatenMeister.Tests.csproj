@@ -15,9 +15,6 @@
     <None Update="Xmi\PrimitiveTypes.xmi">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Xmi\UML.xmi">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
@@ -65,5 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Xmi\UML.xmi" />
+    <EmbeddedResource Include="Xmi\UML.xmi">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Xmi\PackageTest.xmi" />
+    <EmbeddedResource Include="Xmi\PackageTest.xmi" />
   </ItemGroup>
 </Project>

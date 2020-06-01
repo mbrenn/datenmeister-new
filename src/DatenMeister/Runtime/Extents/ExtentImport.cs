@@ -17,23 +17,22 @@ namespace DatenMeister.Runtime.Extents
             _extentManager = extentManager;
         }
 
+        /// <summary>
+        /// Imports the file for according the given settings.
+        /// The settings are of type "DatenMeister.FormSupport.LoadFileFromXmi"
+        /// </summary>
+        /// <param name="mofImportSettings">Import settings being used</param>
+        /// <returns>The created uri extent</returns>
         public IUriExtent ImportExtent(IObject mofImportSettings)
         {
-            var importSettings = DotNetConverter.ConvertToDotNetObject<ImportSettings>(mofImportSettings)
-                                 ?? throw new InvalidOperationException("mofImportSettings == null");
-            var extentUri = importSettings.newExtentUri;
-            if (extentUri == null)
-                throw new InvalidOperationException("extentUri == null");
-
-            if (importSettings.fileToBeImported != importSettings.fileToBeExported)
-            {
-                File.Copy(importSettings.fileToBeImported, importSettings.fileToBeExported);
-            }
-
+            var extentUri = mofImportSettings.getOrDefault<string>("extentUri");
+            var workspaceId = mofImportSettings.getOrDefault<string>("workspace");
+            var filePath = mofImportSettings.getOrDefault<string>("filePath");
+            
             var resultingExtent = _extentManager.LoadExtent(new XmiStorageLoaderConfig(extentUri)
             {
-                filePath = importSettings.fileToBeExported,
-                workspaceId = importSettings.Workspace
+                filePath = filePath,
+                workspaceId = workspaceId
             });
             
             if ( resultingExtent == null )

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -18,7 +17,6 @@ using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
@@ -29,7 +27,6 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Specific;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -288,27 +285,16 @@ namespace DatenMeister.WPF.Forms.Lists
                                 ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
                 var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig()
                 {
-                    Title = "Load File",
                     DetailElement = userResult,
                     Form = new FormDefinition(foundForm)
                 });
 
-                if (navigationResult?.Result == NavigationResult.Saved)
+                if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
                 {
-                    // Load
-                    MessageBox.Show("LOAD");
+                    // Load from extent import class
+                    var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
+                    extentImport.ImportExtent(navigationResult.DetailElement);
                 }
-                
-                /*             
-
-                dlg.Closed += (x, y) =>
-                {
-                    if (dlg.ImportCommand != null)
-                    {
-                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
-                        extentImport.ImportExtent(dlg.ImportCommand);
-                    }
-                };*/
             }
 
             return viewDefinition;

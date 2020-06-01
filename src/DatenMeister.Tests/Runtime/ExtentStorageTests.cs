@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Runtime
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig("datenmeister:///local/")
+            var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
                 Settings =
@@ -66,7 +66,7 @@ namespace DatenMeister.Tests.Runtime
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig("datenmeister:///local/")
+            var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
                 Settings =
@@ -86,7 +86,7 @@ namespace DatenMeister.Tests.Runtime
             foundConfiguration = logic.GetLoadConfigurationFor(null);
             Assert.That(foundConfiguration, Is.Null);
 
-            foundConfiguration = logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "datenmeister:///temp"));
+            foundConfiguration = logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "dm:///temp"));
             Assert.That(foundConfiguration, Is.Null);
         }
     }

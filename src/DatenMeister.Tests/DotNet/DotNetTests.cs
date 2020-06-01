@@ -26,7 +26,7 @@ namespace DatenMeister.Tests.DotNet
 
             var typeExtent = DotNetExtentTests.Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             extent.AddMetaExtent(typeExtent);
             var strapper = XmiTests.CreateUmlAndMofInstance(out mof, out uml);
             extent.AddMetaExtent(strapper.UmlInfrastructure);
@@ -98,7 +98,7 @@ namespace DatenMeister.Tests.DotNet
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var factory = new MofFactory(extent);
@@ -123,7 +123,7 @@ namespace DatenMeister.Tests.DotNet
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var factory = new MofFactory(extent);
@@ -149,7 +149,7 @@ namespace DatenMeister.Tests.DotNet
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var factory = new MofFactory(extent);
@@ -201,15 +201,15 @@ namespace DatenMeister.Tests.DotNet
         [Test]
         public void TestDotNetConversionWithoutExplicitType()
         {
-            var datenMeister = GiveMe.DatenMeister();
+            using var datenMeister  = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
 
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var csvLoaderType = workspaceLogic.FindItem(
-                "datenmeister:///_internal/types/internal#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig");
+                WorkspaceNames.UriExtentInternalTypes + "#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig");
 
             Assert.That(csvLoaderType, Is.Not.Null);
             var memoryObject = new MofFactory(extent).create(csvLoaderType);

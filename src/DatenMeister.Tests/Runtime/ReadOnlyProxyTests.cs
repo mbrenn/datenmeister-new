@@ -52,7 +52,7 @@ namespace DatenMeister.Tests.Runtime
 
             var data = new ExtentStorageData();
             var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig("datenmeister:///local/")
+            var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
                 Settings =

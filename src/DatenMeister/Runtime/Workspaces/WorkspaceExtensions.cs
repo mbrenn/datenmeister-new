@@ -330,31 +330,31 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameManagement)
+            logic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
             ?? throw new InvalidOperationException("Management is not found");
 
         public static Workspace GetDataWorkspace(this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameData)
+            logic.GetWorkspace(WorkspaceNames.WorkspaceData)
             ?? throw new InvalidOperationException("Data is not found");
 
         public static Workspace GetTypesWorkspace(this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameTypes)
+            logic.GetWorkspace(WorkspaceNames.WorkspaceTypes)
             ?? throw new InvalidOperationException("Types is not found");
 
         public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameViews)
+            logic.GetWorkspace(WorkspaceNames.WorkspaceViews)
             ?? throw new InvalidOperationException("Views is not found");
 
         public static IUriExtent GetUserFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriUserFormExtent);
+            return mgmt.FindExtent(WorkspaceNames.UriExtentUserForm);
         }
 
         public static IUriExtent GetInternalFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriInternalFormExtent);
+            return mgmt.FindExtent(WorkspaceNames.UriExtentInternalForm);
         }
 
         /// <summary>
@@ -391,11 +391,11 @@ namespace DatenMeister.Runtime.Workspaces
         }
 
         public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameUml) ??
+            logic.GetWorkspace(WorkspaceNames.WorkspaceUml) ??
             throw new InvalidOperationException("Uml Workspace not foudn");
 
         public static Workspace GetMofWorkspace(this IWorkspaceLogic logic) =>
-            logic.GetWorkspace(WorkspaceNames.NameMof) ??
+            logic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
             throw new InvalidOperationException("Mof Workspace not foudn");
     }
 }

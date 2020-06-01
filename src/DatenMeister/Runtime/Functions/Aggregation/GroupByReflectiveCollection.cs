@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Functions.Aggregation
         /// <summary>
         /// Stores the extent being used to provide the information
         /// </summary>
-        private readonly MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///temp");
+        private readonly MofUriExtent _extent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
 
         private readonly MofFactory _mofFactory;
 

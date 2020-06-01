@@ -25,7 +25,8 @@ namespace DatenMeister.Excel.ProviderLoader
         {
             if (!(configuration is ExcelImportLoaderConfig settings))
             {
-                throw new InvalidOperationException("Given configuration is not of type ExcelReferenceSettings");
+                throw new InvalidOperationException(
+                    $"Given configuration is not of type {typeof(ExcelImportLoaderConfig)}, is of {configuration.GetType().FullName}");
             }
 
             // Creates the XMI being used as a target

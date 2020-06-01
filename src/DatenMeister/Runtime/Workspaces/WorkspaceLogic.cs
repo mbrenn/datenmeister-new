@@ -177,7 +177,7 @@ namespace DatenMeister.Runtime.Workspaces
                 _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
             }
 
-            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(WorkspaceNames.ExtentManagementExtentUri));
+            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(WorkspaceNames.UriExtentWorkspaces));
         }
 
         /// <summary>
@@ -253,11 +253,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>The data containing the workspaces</returns>
         public static WorkspaceData InitDefault()
         {
-            var workspaceData = new Workspace(WorkspaceNames.NameData, "All the data workspaces");
-            var workspaceTypes = new Workspace(WorkspaceNames.NameTypes, "All the types belonging to us. ");
-            var workspaceUml = new Workspace(WorkspaceNames.NameUml, "The extents belonging to UML are stored here.");
-            var workspaceMof = new Workspace(WorkspaceNames.NameMof, "The extents belonging to MOF are stored here.");
-            var workspaceMgmt = new Workspace(WorkspaceNames.NameManagement, "Management data for DatenMeister");
+            var workspaceData = new Workspace(WorkspaceNames.WorkspaceData, "All the data workspaces");
+            var workspaceTypes = new Workspace(WorkspaceNames.WorkspaceTypes, "All the types belonging to us. ");
+            var workspaceUml = new Workspace(WorkspaceNames.WorkspaceUml, "The extents belonging to UML are stored here.");
+            var workspaceMof = new Workspace(WorkspaceNames.WorkspaceMof, "The extents belonging to MOF are stored here.");
+            var workspaceMgmt = new Workspace(WorkspaceNames.WorkspaceManagement, "Management data for DatenMeister");
 
             var workspace = new WorkspaceData {Default = workspaceData};
 

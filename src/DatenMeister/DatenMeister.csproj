@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -25,6 +25,8 @@
     <EmbeddedResource Include="Modules\HtmlReporter\Css\default_report.css" />
     <None Remove="XmiFiles\Default.xmi" />
     <EmbeddedResource Include="XmiFiles\Default.xmi" />
+    <None Remove="XmiFiles\Internal.xmi" />
+    <EmbeddedResource Include="XmiFiles\Internal.xmi" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />

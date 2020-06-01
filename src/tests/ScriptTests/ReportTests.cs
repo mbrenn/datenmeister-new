@@ -6,6 +6,7 @@ using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.ZipExample;
+using DatenMeister.NetCore;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -17,6 +18,7 @@ namespace ScriptTests
     {
         // Work-around helper method to get the source file location.
         private static string GetSourceFile([CallerFilePath] string file = "") => file;
+        
         private static string GetScriptFolder([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
 
         public static void TestReportIssues(SimpleReportConfiguration configuration) => TestReports(true, configuration);
@@ -25,13 +27,14 @@ namespace ScriptTests
 
         public static void TestReports(bool doIssues , SimpleReportConfiguration configuration)
         {
+            BurnSystems.Logging.TheLog.ClearProviders();
             BurnSystems.Logging.TheLog.AddProvider(new ConsoleProvider());
 
             var settings = new IntegrationSettings {DatabasePath = Path.Combine(GetScriptFolder(), "tmp")};
 
-            DatenMeister.Integration.GiveMe.DropDatenMeisterStorage(settings);
+            GiveMe.DropDatenMeisterStorage(settings);
 
-            using (var dm = DatenMeister.Integration.GiveMe.DatenMeister(settings))
+            using (var dm = GiveMeDotNetCore.DatenMeister(settings))
             {
                 DatenMeister.Core.EMOF.Interface.Identifiers.IUriExtent testExtent;
                 if (doIssues)
@@ -49,7 +52,7 @@ namespace ScriptTests
                 {
                     var zipCodeManager = dm.Resolve<ZipCodeExampleManager>();
                     testExtent = zipCodeManager.AddZipCodeExample(
-                        WorkspaceNames.NameData,
+                        WorkspaceNames.WorkspaceData,
                         Path.Combine(GetScriptFolder(), "plz.csv"));
                 }
 

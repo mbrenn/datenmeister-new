@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj" />
     <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
+    <ProjectReference Include="..\DatenMeister.NetCore\DatenMeister.NetCore.csproj" />
     <ProjectReference Include="..\DatenMeister.WPF\DatenMeister.WPF.csproj" />
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>

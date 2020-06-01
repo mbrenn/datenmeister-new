@@ -43,7 +43,7 @@ namespace DatenMeister.Modules.TypeSupport
             // Copies the Primitive Types to the internal types, so it is available for everybody, we will create a new extent for this
             var primitiveTypes = new MofUriExtent(
                 new InMemoryProvider(),
-                WorkspaceNames.UriPrimitiveTypesExtent);
+                WorkspaceNames.UriExtentPrimitiveTypes);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespace);
             primitiveTypes.AddAlternativeUri(WorkspaceNames.StandardPrimitiveTypeNamespaceAlternative);
 
@@ -58,7 +58,7 @@ namespace DatenMeister.Modules.TypeSupport
                 // Copy the primitive type into a new extent for the type workspace
                 CopyMethods.CopyToElementsProperty(
                     (_workspaceLogic.GetUmlWorkspace()
-                        .FindElementByUri("datenmeister:///_internal/xmi/primitivetypes?PrimitiveTypes")
+                        .FindElementByUri(WorkspaceNames.UriExtentPrimitiveTypes + "#_0")
                         ?.get(_UML._Packages._Package.packagedElement) as IReflectiveCollection)
                     ?? throw new InvalidOperationException("PrimitiveTypes is not found"),
                     foundPackage,
@@ -84,12 +84,12 @@ namespace DatenMeister.Modules.TypeSupport
                 //_localTypeSupport.AddInternalType("Default", typeof(Package));
                 
                 
-                _packageMethods.ImportByManifest(
+/*                _packageMethods.ImportByManifest(
                     typeof(DefaultTypeIntegrator),
                     "DatenMeister.XmiFiles.Default.xmi",
                     "Default",
                     internalUserExtent,
-                    "Default");
+                    "Default");*/
             }
         }
     }

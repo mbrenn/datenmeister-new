@@ -21,7 +21,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             var xmiConfiguration = new XmiStorageLoaderConfig(uri)
             {
-                workspaceId = WorkspaceNames.NameData,
+                workspaceId = WorkspaceNames.WorkspaceData,
                 filePath = filename
             };
 

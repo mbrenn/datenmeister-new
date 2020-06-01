@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
+    <ProjectReference Include="..\DatenMeister.NetCore\DatenMeister.NetCore.csproj" />
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>
   <ItemGroup>

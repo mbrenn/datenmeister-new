@@ -49,7 +49,7 @@ namespace DatenMeister.WPF.Navigation
                 if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
                 {
                     metaWorkspace = workspaceLogic.GetTypesWorkspace();
-                    metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
+                    metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriExtentUserTypes);
                 }
                 else
                 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +9,7 @@ using System.Windows.Controls.Ribbon;
 using Autofac;
 using BurnSystems;
 using DatenMeister.Integration;
+using DatenMeister.NetCore;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -57,12 +57,12 @@ namespace DatenMeisterWPF
         {
             MainControl.Content = new IntroScreen();
             GiveMe.Scope = await Task.Run(
-                () => GiveMe.DatenMeister());
+                () => GiveMeDotNetCore.DatenMeister());
 
             _ribbonHelper.LoadIconRepository();
 
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
-            _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
+            _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData);
 
             var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
             if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
@@ -148,7 +148,7 @@ namespace DatenMeisterWPF
             {
                 new ApplicationMenuButtonDefinition(
                     "Goto Data",
-                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
+                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData),
                     Icons.FileHome,
                     NavigationCategories.DatenMeisterNavigation,
                     10),

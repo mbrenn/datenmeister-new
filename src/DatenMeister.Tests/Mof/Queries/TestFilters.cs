@@ -47,7 +47,7 @@ namespace DatenMeister.Tests.Mof.Queries
         [Test]
         public void TestMultiplePropertyFilter()
         {
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), "dm:///");
             var properties = new[] { property1, property2 };
             var factory = new MofFactory(mofExtent);
 

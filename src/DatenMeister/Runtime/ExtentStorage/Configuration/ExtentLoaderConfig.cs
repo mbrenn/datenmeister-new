@@ -28,6 +28,6 @@ namespace DatenMeister.Runtime.ExtentStorage.Configuration
         /// <summary>
         /// Gets ors sets the workspace in which the data will be loaded
         /// </summary>
-        public string workspaceId { get; set; } = WorkspaceNames.NameData;
+        public string workspaceId { get; set; } = WorkspaceNames.WorkspaceData;
     }
 }

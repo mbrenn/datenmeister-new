@@ -64,7 +64,7 @@ namespace DatenMeister.Modules.DefaultTypes
                 // If not found, check for the default package model in the types workspace
                 findByUrl = extent.GetUriResolver()
                     .Resolve(
-                        WorkspaceNames.UriInternalTypesExtent + "#" + typeof(Package).FullName, 
+                        WorkspaceNames.UriExtentInternalTypes + "#" + typeof(Package).FullName, 
                         ResolveType.OnlyMetaClasses);
             }
 

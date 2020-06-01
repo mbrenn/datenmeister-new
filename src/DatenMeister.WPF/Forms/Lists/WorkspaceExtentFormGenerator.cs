@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -15,8 +15,9 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
-using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
@@ -27,7 +28,6 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Specific;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -275,24 +275,35 @@ namespace DatenMeister.WPF.Forms.Lists
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
             }
 
-            void ImportFromXmi(IObject item)
+            async void ImportFromXmi(IObject item)
             {
-                var dlg = new ImportExtentDlg
+                try
                 {
-                    Owner = navigationHost.GetWindow(),
-                    Workspace = workspaceId
-                };
+                    var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
+                    var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.ExtentManager.ImportSettings")
+                                    ?? throw new InvalidOperationException(
+                                        "DatenMeister.ExtentManager.ImportSettings is not found");
 
-                dlg.Closed += (x, y) =>
-                {
-                    if (dlg.ImportCommand != null)
+                    var userResult = InMemoryObject.CreateEmpty(foundType);
+                    var foundForm = viewExtent.element("#OpenExtentAsFile")
+                                    ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
+                    var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig()
                     {
-                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
-                        extentImport.ImportExtent(dlg.ImportCommand);
-                    }
-                };
+                        DetailElement = userResult,
+                        Form = new FormDefinition(foundForm)
+                    });
 
-                dlg.Show();
+                    if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
+                    {
+                        // Load from extent import class
+                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
+                        extentImport.ImportExtent(navigationResult.DetailElement);
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                }
             }
 
             return viewDefinition;
@@ -368,7 +379,7 @@ namespace DatenMeister.WPF.Forms.Lists
             };
 
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+            var extent = workspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
             if (extent == null)
             {
                 Logger.Error("Extent for Types is not found");

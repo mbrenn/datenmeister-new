@@ -81,7 +81,7 @@ namespace DatenMeister.Modules.ZipExample
             File.Copy(originalFilename, filename);
 
             // Creates the configuration
-            var defaultConfiguration = new CsvExtentLoaderConfig($"datenmeister:///zipcodes/{randomNumber}")
+            var defaultConfiguration = new CsvExtentLoaderConfig($"dm:///zipcodes/{randomNumber}")
             {
                 filePath = filename,
                 workspaceId = workspaceId,
@@ -108,13 +108,13 @@ namespace DatenMeister.Modules.ZipExample
             loadedExtent.GetConfiguration().ExtentType = ZipCodePlugin.ExtentType;
 
             if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
-                "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
+                "dm:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
             {
                 loadedExtent.GetConfiguration().SetDefaultTypePackages(new[] {zipCodeTypePackage});
             }
             else
             {
-                Logger.Warn("datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath + "not found");
+                Logger.Warn("dm:///_internal/types/internal?" + ZipCodeModel.PackagePath + "not found");
             }
 
             return loadedExtent;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Autofac;
@@ -19,89 +18,10 @@ namespace DatenMeister.Runtime.Plugins
         /// </summary>
         public bool NoExceptionDuringLoading { get; set; }
 
-        public static void LoadAllAssembliesFromCurrentDirectory()
-        {
-            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            LoadAssembliesFromFolder(directoryName);
-        }
-
-        /// <summary>
-        /// Loads all referenced assemblies
-        /// </summary>
-        public static void LoadAllReferencedAssemblies()
-        {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => !IsDotNetLibrary(x.GetName())))
-            {
-                LoadReferencedAssembly(assembly);
-            }
-        }
-
-        /// <summary>
-        /// Loads all referenced assembly of the given assembly and all subassemblies
-        /// </summary>
-        /// <param name="assembly"></param>
-        private static void LoadReferencedAssembly(Assembly assembly)
-        {
-            // All assemblies, which do not start with Microsoft or System.
-            // We will not find any extent or something like that within these assemblies.
-            foreach (var name in assembly.GetReferencedAssemblies()
-                .Where(x => !IsDotNetLibrary(x))
-                .Where(x => AppDomain.CurrentDomain.GetAssemblies().All(a =>
-                    !string.Equals(a.GetName().Name, x.Name, StringComparison.CurrentCultureIgnoreCase))))
-            {
-                var innerAssembly = Assembly.Load(name);
-                Logger.Info($"Loaded (2): {innerAssembly}");
-                LoadReferencedAssembly(innerAssembly);
-            }
-        }
-
-        public static void LoadAssembliesFromFolder(string path)
-        {
-            if (!Path.IsPathRooted(path))
-            {
-                path = Path.Combine(Environment.CurrentDirectory, path);
-            }
-
-            if (Directory.Exists(path))
-            {
-                var files = Directory.GetFiles(path)
-                    .Where(x => Path.GetExtension(x).ToLower() == ".dll");
-                foreach (var file in files)
-                {
-                    var filenameWithoutExtension = Path.GetFileNameWithoutExtension(file).ToLower();
-                    if (IsDotNetLibrary(filenameWithoutExtension))
-                    {
-                        // Skip .Net Library
-                        continue;
-                    }
-
-                    if (AppDomain.CurrentDomain.GetAssemblies().All(
-                        x => x.GetName().Name.ToLower() != filenameWithoutExtension))
-                    {
-                        try
-                        {
-                            var assembly = Assembly.LoadFile(Path.Combine(path, file));
-                            Logger.Info($"Loaded (1): {assembly.GetName().Name}, {assembly.GetName().Version}");
-                        }
-                        catch (Exception e)
-                        {
-                            Logger.Error($"Loading of assembly {file} failed: {e}");
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Logger.Warn($"Directory does not exist: {path}");
-            }
-        }
-
         /// <summary>
         /// Gets all types of the loaded assemblies, having a certain attribute type
         /// </summary>
-        /// <param name="attributeType">Attribute Type being queried</param>
-        /// <returns>Enumeration of Types containing the attribute</returns>
+        /// <returns>Enumeration of key value pairs in which the type is associated with the assembly</returns>
         public static IEnumerable<KeyValuePair<Type, T>> GetTypesOfAssemblies<T>() where T : Attribute
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -136,33 +56,18 @@ namespace DatenMeister.Runtime.Plugins
         /// Starts the plugins in all loaded assemblies by calling each class which has the implementation
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>
-        /// <param name="kernel">Dependency Kernel to be used</param>
+        /// <param name="pluginLoader">The plugin loader being used</param>
         /// <param name="loadingPosition">Defines the plugin position currently used</param>
         /// <returns>true, if all plugins have been started without exception</returns>
-        public bool StartPlugins(ILifetimeScope kernel, PluginLoadingPosition loadingPosition)
+        public bool StartPlugins(ILifetimeScope kernel, IPluginLoader pluginLoader, PluginLoadingPosition loadingPosition)
         {
-            var pluginList = new List<IDatenMeisterPlugin>();
-
+            var pluginAllList = pluginLoader.GetPluginTypes();
+            var pluginList = pluginAllList
+                .Where(type => GetPluginEntry(type).HasFlag(loadingPosition))
+                .Select(type => (IDatenMeisterPlugin) kernel.Resolve(type))
+                .ToList();
+            
             NoExceptionDuringLoading = true;
-
-            LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                try
-                {
-                    // Go through all types and check, if the type has implemented the interface for the pluging
-                    pluginList.AddRange(
-                        assembly.GetTypes()
-                            .Where(type => type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin)))
-                            .Where(type => GetPluginEntry(type).HasFlag(loadingPosition))
-                            .Select(type => (IDatenMeisterPlugin) kernel.Resolve(type)));
-                }
-                catch (ReflectionTypeLoadException e)
-                {
-                    Logger.Error($"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
-                }
-            }
 
             var lastCount = pluginList.Count;
             while (pluginList.Count != 0)
@@ -270,27 +175,5 @@ namespace DatenMeister.Runtime.Plugins
             var attribute = GetPluginLoadingAttribute(plugin);
             return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterLoadingOfExtents;
         }
-
-        /// <summary>
-        /// Gets true, if the given library is a dotnet library which
-        /// starts with System, Microsoft or mscorlib.
-        /// </summary>
-        /// <param name="assemblyName">Name of the assembly</param>
-        /// <returns></returns>
-        private static bool IsDotNetLibrary(AssemblyName assemblyName) =>
-            assemblyName.FullName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.FullName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.FullName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
-
-        /// <summary>
-        /// Gets true, if the given library is a dotnet library which
-        /// starts with System, Microsoft or mscorlib.
-        /// </summary>
-        /// <param name="assemblyName">Name of the assembly</param>
-        /// <returns>true, if the given library is a .Net Library</returns>
-        private static bool IsDotNetLibrary(string assemblyName) =>
-            assemblyName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
-            assemblyName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase);
     }
 }

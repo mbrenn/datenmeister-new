@@ -298,7 +298,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void ShowAsTree()
             {
-                if (Extent != null)
+                if (Extent != null && navigationHost != null)
                 {
                     var window = new TreeViewWindow {Owner = navigationHost.GetWindow()};
                     window.SetDefaultProperties();

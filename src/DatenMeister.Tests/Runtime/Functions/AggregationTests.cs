@@ -100,7 +100,7 @@ namespace DatenMeister.Tests.Runtime.Functions
         private IReflectiveCollection CreateReflectiveSequence()
         {
             var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             var element = new MofObject(new InMemoryObject(provider), extent);
             var factory = new MofFactory(extent);
 

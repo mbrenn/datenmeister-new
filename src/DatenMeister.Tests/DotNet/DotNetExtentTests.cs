@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             var value = new DotNetTests.TestClass();
             var dotNetElement = extent.CreateDotNetMofElement(value);
 
@@ -38,7 +38,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var extent = Initialize();
             var provider = new DotNetProvider(extent.TypeLookup);
-            var dotNetExtent = new MofUriExtent(provider, "datenmeister:///");
+            var dotNetExtent = new MofUriExtent(provider, "dm:///");
             var value = new DotNetTests.TestClassWithList();
             var dotNetElement = dotNetExtent.CreateDotNetMofElement(value);
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var typeExtent = DotNetExtentTests.Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             extent.AddMetaExtent(typeExtent);
             var value = new DotNetTests.TestClassWithList();
             var dotNetElement = extent.CreateDotNetMofElement(value);
@@ -106,7 +106,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             extent.AddMetaExtent(typeExtent);
             Assert.That(extent.elements(), Is.Not.Null);
             extent.elements().add(new DotNetTests.Person());
@@ -119,7 +119,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
             var factory = new MofFactory(extent);
 
             var metaClass = typeExtent.TypeLookup.ToElement(typeof(DotNetTests.TestClass));
@@ -140,7 +140,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
 
             var parent = new DotNetTests.PersonWithParent
             {
@@ -176,7 +176,7 @@ namespace DatenMeister.Tests.DotNet
         {
             var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
-            var extent = new MofUriExtent(provider, "datenmeister:///test");
+            var extent = new MofUriExtent(provider, "dm:///test");
 
             var parent = new DotNetTests.TestClassWithList
             {
@@ -219,7 +219,7 @@ namespace DatenMeister.Tests.DotNet
         internal static MofUriExtent Initialize()
         {
             var uml = new _UML();
-            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
 
             extent.CreateTypeSpecification(uml, typeof(DotNetTests.TestClass));
             extent.CreateTypeSpecification(uml, typeof(DotNetTests.Person));

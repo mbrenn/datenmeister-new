@@ -32,7 +32,7 @@ namespace DatenMeister.Modules.DataViews
         {
             var metaClass = (IElement?)
                 (_workspaceLogic.GetTypesWorkspace()
-                    .FindElementByUri("datenmeister:///_internal/types/internal?DatenMeister::DataViews::DataView"));
+                    .FindElementByUri("dm:///_internal/types/internal?DatenMeister::DataViews::DataView"));
             if (metaClass == null)
             {
                 Logger.Warn("DataView MetaClass was not found");
@@ -41,7 +41,7 @@ namespace DatenMeister.Modules.DataViews
                  
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
             foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
-                .Where(extent => extent.contextURI() != WorkspaceNames.ExtentManagementExtentUri)
+                .Where(extent => extent.contextURI() != WorkspaceNames.UriExtentWorkspaces)
                 .SelectMany(extent => extent.elements().GetAllDescendants().WhenMetaClassIs(metaClass).Cast<IElement>()))
             {
                 yield return dataView;

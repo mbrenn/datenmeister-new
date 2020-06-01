@@ -29,20 +29,20 @@ namespace DatenMeister.Tests.Runtime.Extents
         [Test]
         public void ExtentTest()
         {
-            var kernel = new ContainerBuilder();
-            var builder = kernel.UseDatenMeister(new IntegrationSettings());
+            using var builder = DatenMeisterTests.GetDatenMeisterScope();
+            
             using var scope = builder.BeginLifetimeScope();
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.ExtentManagementExtentUri);
+            var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.UriExtentWorkspaces);
             Assert.That(workspaceExtent, Is.Not.Null);
             var asData = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameData);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceData);
             var asManagement = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameManagement);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceManagement);
             var asTypes = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameTypes);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceTypes);
             var asMof = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.NameMof);
+                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceMof);
 
             Assert.That(asData, Is.Not.Null);
             Assert.That(asManagement, Is.Not.Null);
@@ -53,7 +53,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
             Assert.That(extents, Is.Not.Null);
 
-            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri").ToString() == WorkspaceNames.UriMofExtent);
+            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri").ToString() == WorkspaceNames.UriExtentMof);
             Assert.That(mofExtent, Is.Not.Null);
         }
 
@@ -61,10 +61,10 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestMetaDataInExtent()
         {
             var path = "./test.xmi";
-            var loaderConfig = new XmiStorageLoaderConfig("datenmeister:///data")
+            var loaderConfig = new XmiStorageLoaderConfig("dm:///data")
             {
                 filePath = path,
-                workspaceId = WorkspaceNames.NameData
+                workspaceId = WorkspaceNames.WorkspaceData
             };
 
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
@@ -86,7 +86,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
             {
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-                var foundExtent = workspaceLogic.FindExtent("datenmeister:///data");
+                var foundExtent = workspaceLogic.FindExtent("dm:///data");
                 Assert.That(foundExtent, Is.Not.Null);
 
                 Assert.That(foundExtent.get("test"), Is.EqualTo("this is a test"));
@@ -104,7 +104,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
             var zipCodeModel =
-                typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
+                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?" +
                                                 ZipCodeModel.PackagePath);
 
             var dataWorkspace = workspaceLogic.GetDataWorkspace();
@@ -132,10 +132,10 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestAutoEnumerateType()
         {
             var path = "./test.xmi";
-            var loaderConfig = new XmiStorageLoaderConfig("datenmeister:///data")
+            var loaderConfig = new XmiStorageLoaderConfig("dm:///data")
             {
                 filePath = path,
-                workspaceId = WorkspaceNames.NameData
+                workspaceId = WorkspaceNames.WorkspaceData
             };
 
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
@@ -156,7 +156,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(dropDatabase: false))
             {
                 var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-                var foundExtent = workspaceLogic.FindExtent("datenmeister:///data");
+                var foundExtent = workspaceLogic.FindExtent("dm:///data");
                 Assert.That(foundExtent, Is.Not.Null);
                 Assert.That(foundExtent.GetConfiguration().AutoEnumerateType, Is.EqualTo(AutoEnumerateType.Ordinal));
                 
@@ -176,7 +176,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
             var zipCodeModel =
-                typesWorkspace.FindElementByUri("datenmeister:///_internal/types/internal?" +
+                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?" +
                                                 ZipCodeModel.PackagePath) as IElement;
             Assert.That(zipCodeModel, Is.Not.Null);
 

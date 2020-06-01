@@ -15,14 +15,14 @@ namespace DatenMeister.Core
             }
 
             public _URIExtent @URIExtent = new _URIExtent();
-            public IElement @__URIExtent = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Identifiers-URIExtent");
+            public IElement @__URIExtent = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Identifiers-URIExtent");
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Identifiers-Extent");
+            public IElement @__Extent = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Identifiers-Extent");
 
         }
 
@@ -44,7 +44,7 @@ namespace DatenMeister.Core
             }
 
             public _Tag @Tag = new _Tag();
-            public IElement @__Tag = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-CMOFExtension-Tag");
+            public IElement @__Tag = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-CMOFExtension-Tag");
 
         }
 
@@ -66,7 +66,7 @@ namespace DatenMeister.Core
             }
 
             public _Tag @Tag = new _Tag();
-            public IElement @__Tag = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Extension-Tag");
+            public IElement @__Tag = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Extension-Tag");
 
         }
 
@@ -79,14 +79,14 @@ namespace DatenMeister.Core
             }
 
             public _ReflectiveSequence @ReflectiveSequence = new _ReflectiveSequence();
-            public IElement @__ReflectiveSequence = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Common-ReflectiveSequence");
+            public IElement @__ReflectiveSequence = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Common-ReflectiveSequence");
 
             public class _ReflectiveCollection
             {
             }
 
             public _ReflectiveCollection @ReflectiveCollection = new _ReflectiveCollection();
-            public IElement @__ReflectiveCollection = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Common-ReflectiveCollection");
+            public IElement @__ReflectiveCollection = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Common-ReflectiveCollection");
 
         }
 
@@ -105,14 +105,14 @@ namespace DatenMeister.Core
             }
 
             public _Factory @Factory = new _Factory();
-            public IElement @__Factory = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-CMOFReflection-Factory");
+            public IElement @__Factory = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-CMOFReflection-Factory");
 
             public class _Element
             {
             }
 
             public _Element @Element = new _Element();
-            public IElement @__Element = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-CMOFReflection-Element");
+            public IElement @__Element = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-CMOFReflection-Element");
 
             public class _Argument
             {
@@ -125,14 +125,14 @@ namespace DatenMeister.Core
             }
 
             public _Argument @Argument = new _Argument();
-            public IElement @__Argument = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-CMOFReflection-Argument");
+            public IElement @__Argument = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-CMOFReflection-Argument");
 
             public class _Extent
             {
             }
 
             public _Extent @Extent = new _Extent();
-            public IElement @__Extent = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-CMOFReflection-Extent");
+            public IElement @__Extent = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-CMOFReflection-Extent");
 
             public class _Link
             {
@@ -148,7 +148,7 @@ namespace DatenMeister.Core
             }
 
             public _Link @Link = new _Link();
-            public IElement @__Link = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-CMOFReflection-Link");
+            public IElement @__Link = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-CMOFReflection-Link");
 
             public class _Exception
             {
@@ -164,7 +164,7 @@ namespace DatenMeister.Core
             }
 
             public _Exception @Exception = new _Exception();
-            public IElement @__Exception = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-CMOFReflection-Exception");
+            public IElement @__Exception = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-CMOFReflection-Exception");
 
         }
 
@@ -180,21 +180,21 @@ namespace DatenMeister.Core
             }
 
             public _Factory @Factory = new _Factory();
-            public IElement @__Factory = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Reflection-Factory");
+            public IElement @__Factory = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Reflection-Factory");
 
             public class _Type
             {
             }
 
             public _Type @Type = new _Type();
-            public IElement @__Type = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Reflection-Type");
+            public IElement @__Type = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Reflection-Type");
 
             public class _Object
             {
             }
 
             public _Object @Object = new _Object();
-            public IElement @__Object = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Reflection-Object");
+            public IElement @__Object = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Reflection-Object");
 
             public class _Element
             {
@@ -204,7 +204,7 @@ namespace DatenMeister.Core
             }
 
             public _Element @Element = new _Element();
-            public IElement @__Element = new MofObjectShadow("datenmeister:///_internal/xmi/mof#_MOF-Reflection-Element");
+            public IElement @__Element = new MofObjectShadow("dm:///_internal/xmi/mof#_MOF-Reflection-Element");
 
         }
 

@@ -10,6 +10,7 @@ using BurnSystems.WPF;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Formatter;
+using DatenMeister.NetCore;
 using DatenMeister.Runtime;
 using StundenMeister.Logic;
 using StundenMeister.Model;
@@ -46,7 +47,7 @@ namespace StundenMeister
                 PerformSlimIntegration = false
             };
 
-            GiveMe.Scope = await GiveMe.DatenMeisterAsync(settings);
+            GiveMe.Scope = await GiveMeDotNetCore.DatenMeisterAsync(settings);
 
             LoadingText.Visibility = Visibility.Collapsed;
             LoadedAsset.Visibility = Visibility.Visible;

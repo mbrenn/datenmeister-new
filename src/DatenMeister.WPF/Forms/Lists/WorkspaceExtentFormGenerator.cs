@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -276,24 +277,32 @@ namespace DatenMeister.WPF.Forms.Lists
 
             async void ImportFromXmi(IObject item)
             {
-                var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
-                var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.FormSupport.LoadFileFromXmi")
-                    ?? throw new InvalidOperationException("LoadFileFromXmi is not found");
-                
-                var userResult = InMemoryObject.CreateEmpty(foundType);
-                var foundForm = viewExtent.element("#OpenExtentAsFile")
-                                ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
-                var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig()
+                try
                 {
-                    DetailElement = userResult,
-                    Form = new FormDefinition(foundForm)
-                });
+                    var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
+                    var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.ExtentManager.ImportSettings")
+                                    ?? throw new InvalidOperationException(
+                                        "DatenMeister.ExtentManager.ImportSettings is not found");
 
-                if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
+                    var userResult = InMemoryObject.CreateEmpty(foundType);
+                    var foundForm = viewExtent.element("#OpenExtentAsFile")
+                                    ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
+                    var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig()
+                    {
+                        DetailElement = userResult,
+                        Form = new FormDefinition(foundForm)
+                    });
+
+                    if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
+                    {
+                        // Load from extent import class
+                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
+                        extentImport.ImportExtent(navigationResult.DetailElement);
+                    }
+                }
+                catch (Exception exc)
                 {
-                    // Load from extent import class
-                    var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
-                    extentImport.ImportExtent(navigationResult.DetailElement);
+                    MessageBox.Show(exc.ToString());
                 }
             }
 

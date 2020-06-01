@@ -11,6 +11,7 @@ using DatenMeister.Integration;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Exceptions;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
@@ -364,6 +365,23 @@ namespace DatenMeister.Modules.TypeSupport
             var factory = new MofFactory(internalTypeExtent);
 
             parseMethods(uml, factory, rootElements, type, internalTypeExtent);
+        }
+        
+        /// <summary>
+        /// Creates a new instance of the metaclass by looking through the internal extent
+        /// </summary>
+        /// <param name="metaClassId">Id of the metaclass item that is describing the created instance</param>
+        /// <param name="factory">The factory that is used to create the item</param>
+        /// <returns>The created internal type</returns>
+        public IObject CreateInternalType(string metaClassId, IFactory? factory = null)
+        {
+            var foundMetaClass = InternalTypes.element(metaClassId);
+            if (foundMetaClass == null)
+            {
+                throw new DatenMeisterRawException($"Element of type {metaClassId} was not found");
+            }
+
+            return (factory ?? InMemoryObject.TemporaryFactory).create(foundMetaClass);
         }
     }
 }

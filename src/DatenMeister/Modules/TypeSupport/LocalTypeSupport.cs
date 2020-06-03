@@ -332,7 +332,7 @@ namespace DatenMeister.Modules.TypeSupport
         }
 
         /// <summary>
-        /// Gets the extent containing the
+        /// Gets the extent containing the internal Extent
         /// </summary>
         /// <param name="workspace"></param>
         /// <returns></returns>

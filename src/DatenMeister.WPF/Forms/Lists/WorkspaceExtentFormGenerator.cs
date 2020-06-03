@@ -186,13 +186,8 @@ namespace DatenMeister.WPF.Forms.Lists
             };
 
             viewDefinition.ViewExtensions.Add(
-                new TreeViewItemCommandDefinition(
-                    "New Extent",
-                    LoadExtent));
-
-            viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
-                    "New Xmi Extent",
+                    "Create Xmi Extent",
                     NewXmiExtent,
                     null,
                     NavigationCategories.DatenMeister + ".Extent"));
@@ -213,14 +208,14 @@ namespace DatenMeister.WPF.Forms.Lists
 
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
-                    "Import from XMI",
+                    "Load Extent",
                     ImportFromXmi,
                     Icons.ImportExcel,
-                    NavigationCategories.DatenMeister + ".Import"));
+                    NavigationCategories.DatenMeister + ".Extent"));
 
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
-                    "Load Extent",
+                    "Create Extent",
                     LoadExtent,
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));

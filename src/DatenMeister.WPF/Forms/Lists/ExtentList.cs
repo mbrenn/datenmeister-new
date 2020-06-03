@@ -84,7 +84,10 @@ namespace DatenMeister.WPF.Forms.Lists
             else if (SelectedPackage != null)
             {
                 var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
-                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default)
+                var form = viewLogic.GetItemTreeFormForObject(
+                               SelectedPackage, 
+                               FormDefinitionMode.Default, 
+                               CurrentViewModeId)
                            ?? throw new InvalidOperationException("form == null");
                 var formDefinition = overridingDefinition ??
                                      new FormDefinition(form);

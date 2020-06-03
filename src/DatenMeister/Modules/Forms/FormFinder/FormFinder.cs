@@ -6,6 +6,7 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
@@ -81,6 +82,12 @@ namespace DatenMeister.Modules.Forms.FormFinder
             foreach (var element in formAssociations)
             {
                 InternalDebug("-");
+                if (element is IHasId hasId)
+                {
+                    InternalDebug(
+                        $"- Handling: ID = {hasId.Id ?? "none"}, Name = {NamedElementMethods.GetFullName(element)}");
+                }
+
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
@@ -99,6 +106,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                                                   && associationParentProperty == null
                                                   && associationViewModeId == null)
                 {
+                    InternalDebug("- - This item is too unspecific");
                     // Skip item because it is too unspecific
                     continue;
                 }
@@ -117,7 +125,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (!string.IsNullOrEmpty(associationExtentType))
                 {
                     if (!string.IsNullOrEmpty(query.extentType)
-                        && query.extentType.Equals(associationExtentType))
+                        && query.extentType.Contains(associationExtentType))
                     {
                         InternalDebug("-- MATCH: ExtentType: " + query.extentType + ", FormAssociation ExtentType: " +
                                       associationExtentType);
@@ -136,16 +144,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (!string.IsNullOrEmpty(associationViewModeId))
                 {
                     if (!string.IsNullOrEmpty(query.viewModeId)
-                        && query.extentType.Equals(associationViewModeId))
+                        && query.viewModeId.Equals(associationViewModeId))
                     {
-                        InternalDebug("-- MATCH: ViewMode: " + query.viewModeId + ", FormAssociation ExtentType: " +
+                        InternalDebug("-- MATCH: ViewMode: " + query.viewModeId + ", FormAssociation ViewModeId: " +
                                       associationViewModeId);
                         points++;
                     }
                     else
                     {
-                        InternalDebug("-- NO MATCH: ExtentType: " + query.viewModeId +
-                                      ", FormAssociation ExtentType: " +
+                        InternalDebug("-- NO MATCH: ViewMode: " + query.viewModeId +
+                                      ", FormAssociation ViewMode: " +
                                       associationViewModeId);
                         isMatching = false;
                     }

@@ -60,6 +60,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IElement? CurrentViewMode { get; private set; }
 
+        /// <summary>
+        /// Gets the id of the current view mode. 
+        /// </summary>
+        public string CurrentViewModeId => CurrentViewMode?.getOrDefault<string>(_FormAndFields._ViewMode.id) ?? "";
+
         public ItemExplorerControl()
         {
             InitializeComponent();
@@ -899,7 +904,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var viewMode = mode;
                 var item = new MenuItem
                 {
-                    Header = viewMode.getOrDefault<string>(_FormAndFields._ViewMode.name), 
+                    Header = viewMode.getOrDefault<string>(_FormAndFields._ViewMode.id), 
                     Tag = viewMode
                 };
 

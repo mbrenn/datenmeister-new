@@ -166,7 +166,8 @@ namespace DatenMeister.WPF.Forms.Lists
                     // User has selected a sub element and its children shall be shown
                     form = formPlugin.GetItemTreeFormForObject(
                         SelectedItem,
-                        overridingMode);
+                        overridingMode, 
+                        CurrentViewModeId);
                 }
             }
 

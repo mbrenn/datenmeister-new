@@ -163,6 +163,12 @@ namespace DatenMeister.Modules.Forms
             return null;
         }
 
+        /// <summary>
+        /// Gets the default view mode for a certain object by querying the view mode instances as
+        /// given in the in the management workspace
+        /// </summary>
+        /// <param name="extent">Extent whose view mode is requested</param>
+        /// <returns>Found element or null if not found</returns>
         public IElement GetDefaultViewMode(IExtent? extent)
         {
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();

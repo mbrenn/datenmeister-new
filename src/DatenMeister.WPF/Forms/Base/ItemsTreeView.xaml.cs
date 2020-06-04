@@ -65,7 +65,7 @@ namespace DatenMeister.WPF.Forms.Base
                 throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
             }
             
-            itemsTreeView.UpdateView();
+            itemsTreeView.UpdateForm();
             itemsTreeView._cacheShowMetaClasses = (bool) e.NewValue;
         }
 
@@ -91,7 +91,7 @@ namespace DatenMeister.WPF.Forms.Base
             set
             {
                 SetValue(ShowRootProperty, value);
-                UpdateView();
+                UpdateForm();
             }
         }
 
@@ -106,7 +106,7 @@ namespace DatenMeister.WPF.Forms.Base
                 if (ShowAllChildren != value)
                 {
                     SetValue(ShowAllChildrenProperty, value);
-                    UpdateView();
+                    UpdateForm();
                 }
             }
         }
@@ -125,7 +125,7 @@ namespace DatenMeister.WPF.Forms.Base
             set
             {
                 _filterMetaClasses = value;
-                UpdateView();
+                UpdateForm();
             }
         }
 
@@ -176,7 +176,7 @@ namespace DatenMeister.WPF.Forms.Base
             set
             {
                 _itemsSource = value;
-                UpdateView();
+                UpdateForm();
             }
         }
 
@@ -209,7 +209,7 @@ namespace DatenMeister.WPF.Forms.Base
                 _propertiesForChildren.Add(property);
             }
 
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Updates the complete view of the item tree
         /// </summary>
-        public void UpdateView()
+        public void UpdateForm()
         {
             if (!IsInitialized)
             {
@@ -534,7 +534,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void ItemsTreeView_OnInitialized(object sender, EventArgs e)
         {
-            UpdateView();
+            UpdateForm();
         }
 
         private void OnItemChosen(object? item)

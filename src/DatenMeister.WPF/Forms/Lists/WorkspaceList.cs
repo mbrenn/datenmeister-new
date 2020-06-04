@@ -38,13 +38,13 @@ namespace DatenMeister.WPF.Forms.Lists
             var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(Extent,
                 (x,y) =>
-                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView());
+                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm());
         }
 
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
-        protected override void OnRecreateViews()
+        protected override void OnRecreateForms()
         {
             FormDefinition? form = null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();

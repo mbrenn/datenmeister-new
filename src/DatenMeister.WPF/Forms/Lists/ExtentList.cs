@@ -55,11 +55,11 @@ namespace DatenMeister.WPF.Forms.Lists
                 var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
                 EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
                     Dispatcher?.Invoke(() =>
-                        Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView()));
+                        Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm()));
             }
         }
 
-        protected override void OnRecreateViews()
+        protected override void OnRecreateForms()
         {
             if (SelectedItem == null)
                 return;

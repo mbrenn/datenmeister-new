@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -53,6 +54,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             get => _extent.getOrDefault<string>(ExtentTypeProperty) ?? string.Empty;
             set => _extent.set(ExtentTypeProperty, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the extent types
+        /// </summary>
+        public IEnumerable<string> ExtentTypes
+        {
+            get => ExtentType.Split(' ');
+            set => ExtentType = value.Aggregate((x, y) => $"{x} {y}");
+
         }
 
         /// <summary>

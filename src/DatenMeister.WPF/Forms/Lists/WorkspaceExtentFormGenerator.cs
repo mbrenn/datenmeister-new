@@ -356,7 +356,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     extentManager.StoreExtent(storeExtent);
 
                     MessageBox.Show("Extent saved");
-                    navigationGuest.UpdateView();
+                    navigationGuest.UpdateForm();
                 }
             }
         }

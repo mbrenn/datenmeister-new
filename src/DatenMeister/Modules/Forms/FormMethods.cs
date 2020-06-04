@@ -175,17 +175,20 @@ namespace DatenMeister.Modules.Forms
             var formAndFields = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>()
                                 ?? throw new InvalidOperationException("_FormAndFields are empty");
             
-            var extentType = extent?.GetConfiguration()?.ExtentType;
-            if (!string.IsNullOrEmpty(extentType))
+            var extentTypes = extent?.GetConfiguration()?.ExtentTypes;
+            if (extentTypes != null)
             {
-                var result = managementWorkspace
-                    .GetAllDescendentsOfType(formAndFields.__ViewMode)
-                    .WhenPropertyHasValue(_FormAndFields._ViewMode.defaultExtentType, extentType)
-                    .OfType<IElement>()
-                    .FirstOrDefault();
-                if (result != null)
+                foreach (var extentType in extentTypes)
                 {
-                    return result;
+                    var result = managementWorkspace
+                        .GetAllDescendentsOfType(formAndFields.__ViewMode)
+                        .WhenPropertyHasValue(_FormAndFields._ViewMode.defaultExtentType, extentType)
+                        .OfType<IElement>()
+                        .FirstOrDefault();
+                    if (result != null)
+                    {
+                        return result;
+                    }
                 }
             }
 

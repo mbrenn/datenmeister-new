@@ -86,9 +86,9 @@ namespace DatenMeister.WPF.Windows
             ObjectTreeView.EvaluateViewExtensions(viewExtensions);
         }
 
-        public void UpdateView()
+        public void UpdateForm()
         {
-            ObjectTreeView.UpdateView();
+            ObjectTreeView.UpdateForm();
         }
 
         private void TreeViewWindow_OnClosed(object sender, EventArgs e)

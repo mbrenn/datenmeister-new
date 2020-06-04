@@ -153,6 +153,7 @@ namespace DatenMeister.Modules.DefaultTypes
             }
             else
             {
+                var hadPackagedElement = false;
                 if (metaClass != null)
                 {
                     var compositing = ClassifierMethods.GetCompositingProperties(metaClass).ToList();
@@ -160,13 +161,22 @@ namespace DatenMeister.Modules.DefaultTypes
                     {
                         foreach (var composite in compositing)
                         {
-                            yield return NamedElementMethods.GetName(composite);
+                            var name = NamedElementMethods.GetName(composite);
+                            if (name == _UML._Packages._Package.packagedElement)
+                            {
+                                hadPackagedElement = true;
+                            }
+
+                            yield return name;
                         }
                     }
                 }
-
-                    
-                yield return _UML._Packages._Package.packagedElement;
+                
+                // If we know nothing, then add the packaged element
+                if (!hadPackagedElement)
+                {
+                    yield return _UML._Packages._Package.packagedElement;
+                }
             }
         }
 

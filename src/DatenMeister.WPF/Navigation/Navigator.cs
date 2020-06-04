@@ -227,7 +227,7 @@ namespace DatenMeister.WPF.Navigation
                         task.SetResult(result);
                     };
 
-                    asDetailFormControl.UpdateView();
+                    asDetailFormControl.UpdateForm();
                     SetPosition(detailFormWindow, parentWindow, navigationMode);
 
                     detailFormWindow.Show();

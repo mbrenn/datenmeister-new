@@ -96,7 +96,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         public ItemListViewControl()
         {
-            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateForm);
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
             _formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             InitializeComponent();
@@ -320,7 +320,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             EffectiveForm = formDefinition;
             ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
@@ -373,7 +373,7 @@ namespace DatenMeister.WPF.Forms.Base
         ///     This method is called, when the used clicks on the left side or
         ///     an additional item was created/edited or removed.
         /// </summary>
-        public void UpdateView()
+        public void UpdateForm()
         {
             if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
             
@@ -758,7 +758,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             _searchText = SearchField.Text;
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
@@ -893,7 +893,7 @@ namespace DatenMeister.WPF.Forms.Base
                                 ?? throw new InvalidOperationException("EffectiveForm == null");
             effectiveForm.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
             UpdateFastFilterTexts();
-            UpdateView();
+            UpdateForm();
         }
 
         private void UpdateFastFilterTexts()
@@ -919,7 +919,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     fastFilters.remove(filter);
                     UpdateFastFilterTexts();
-                    UpdateView();
+                    UpdateForm();
                 };
 
                 FastViewFilterPanel.Children.Add(text);

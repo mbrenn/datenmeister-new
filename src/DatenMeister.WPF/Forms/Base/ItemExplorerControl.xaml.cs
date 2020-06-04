@@ -60,6 +60,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public IElement? CurrentViewMode { get; private set; }
 
+        /// <summary>
+        /// Gets the id of the current view mode. 
+        /// </summary>
+        public string CurrentViewModeId => CurrentViewMode?.getOrDefault<string>(_FormAndFields._ViewMode.id) ?? "";
+
         public ItemExplorerControl()
         {
             InitializeComponent();
@@ -326,10 +331,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Updates all views without recreating the items.
         /// </summary>
-        public virtual void UpdateView()
+        public virtual void UpdateForm()
         {
             UpdateTreeContent();
-            foreach (var tab in Tabs) tab.ControlAsNavigationGuest.UpdateView();
+            foreach (var tab in Tabs) tab.ControlAsNavigationGuest.UpdateForm();
         }
 
         /// <summary>
@@ -340,15 +345,15 @@ namespace DatenMeister.WPF.Forms.Base
             using var watch = new StopWatchLogger(_logger, "RecreateViews", LogLevel.Trace);
             
             Tabs.Clear();
-            OnRecreateViews();
+            OnRecreateForms();
             NavigationHost?.RebuildNavigation();
         }
 
         /// <summary>
-        ///     This method will be called when the user has selected an item and the views need to be recreated.
+        ///     This method will be called when the user has selected an item and the forms need to be recreated.
         ///     This method must be overridden by the subclasses
         /// </summary>
-        protected virtual void OnRecreateViews()
+        protected virtual void OnRecreateForms()
         {
         }
 
@@ -899,7 +904,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var viewMode = mode;
                 var item = new MenuItem
                 {
-                    Header = viewMode.getOrDefault<string>(_FormAndFields._ViewMode.name), 
+                    Header = viewMode.getOrDefault<string>(_FormAndFields._ViewMode.id), 
                     Tag = viewMode
                 };
 
@@ -915,7 +920,7 @@ namespace DatenMeister.WPF.Forms.Base
                         GuiObjectCollection.TheOne.UserProperties.AddViewModeSelection(uri, viewMode);
                     }
 
-                    UpdateView();
+                    RecreateForms();
                 };
                 
                 list.Add(item);

@@ -212,6 +212,35 @@ namespace DatenMeister.Tests.Runtime.Extents
         }
 
         [Test]
+        public void TestExtentTypes()
+        {
+            var extent = new MofUriExtent(new InMemoryProvider());
+            var configuration = new ExtentConfiguration(extent);
+
+            configuration.ExtentType = "abc";
+            
+            var list = configuration.ExtentTypes.ToList();
+            Assert.That(list, Is.Not.Null);
+            Assert.That(list.Count, Is.EqualTo(1));
+            Assert.That(list[0], Is.EqualTo("abc"));
+            
+            configuration.ExtentType = "abc def";
+            list = configuration.ExtentTypes.ToList();
+            Assert.That(list, Is.Not.Null);
+            Assert.That(list.Count, Is.EqualTo(2));
+            Assert.That(list[0], Is.EqualTo("abc"));
+            Assert.That(list[1], Is.EqualTo("def"));
+
+            configuration.ExtentTypes = new[] {"abc", "def"};
+            Assert.That(configuration.ExtentType, Is.EqualTo("abc def"));
+            list = configuration.ExtentTypes.ToList();
+            Assert.That(list, Is.Not.Null);
+            Assert.That(list.Count, Is.EqualTo(2));
+            Assert.That(list[0], Is.EqualTo("abc"));
+            Assert.That(list[1], Is.EqualTo("def"));
+        }
+
+        [Test]
         public void TestStoringOfExtentTypes()
         {
             const string csvExtentUri = "dm:///csvtest";

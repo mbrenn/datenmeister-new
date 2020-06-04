@@ -295,7 +295,7 @@ namespace DatenMeister.WPF.Forms.Base
                     
                     var factory = new MofFactory(EffectiveForm);
                     EffectiveForm = dlg.GetCurrentContentAsMof(factory);
-                    UpdateView();
+                    UpdateForm();
                     
                     dlg.Close();
                 };
@@ -323,7 +323,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var pasteContent = new PasteToClipboardCommand(element);
                 pasteContent.Execute();
-                UpdateView();
+                UpdateForm();
             }
 
             void ShowAsXmi(IObject element)
@@ -383,19 +383,19 @@ namespace DatenMeister.WPF.Forms.Base
             EffectiveForm = detailForm;
             DetailElementContainer = collection;
             FormParameter = formParameter;
-            UpdateView();
+            UpdateForm();
         }
 
         public void SetForm(IObject detailForm)
         {
             EffectiveForm = detailForm;
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
         ///     Updates the content
         /// </summary>
-        public void UpdateView()
+        public void UpdateForm()
         {
             var stopWatch = Stopwatch.StartNew();
             

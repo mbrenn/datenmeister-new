@@ -544,8 +544,9 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <param name="element">Element for which the list view will be created</param>
         /// <param name="formDefinitionMode">Defines the method how to retrieve the form</param>
+        /// <param name="viewModeId">Defines the id of the view mode in which the user currently is</param>
         /// <returns>Found extent form</returns>
-        public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode)
+        public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode, string viewModeId)
         {
             var extent = (element as IHasExtent)?.Extent;
             if (extent == null)
@@ -560,7 +561,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 {
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = (element as IElement)?.getMetaClass(),
-                    FormType = FormType.TreeItemDetail
+                    FormType = FormType.TreeItemDetail,
+                    viewModeId = viewModeId
                 }).FirstOrDefault();
 
                 if (foundForm != null)

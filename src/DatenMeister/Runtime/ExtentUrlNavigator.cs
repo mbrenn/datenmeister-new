@@ -128,7 +128,7 @@ namespace DatenMeister.Runtime
                     return null;
                 }
 
-                Logger.Fatal("No hash and no question mark");
+                Logger.Error("No hash and no question mark");
                 throw new NotImplementedException("No hash and no question mark");
             }
             catch (UriFormatException exc)

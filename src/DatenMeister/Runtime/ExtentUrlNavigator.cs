@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -51,7 +52,8 @@ namespace DatenMeister.Runtime
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
             var extentUri = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
 
-            // Verifies that the extent is working
+            // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 
+            // extent
             if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0)
             {
                 return null;
@@ -68,6 +70,7 @@ namespace DatenMeister.Runtime
             // Ok, not found, try to find it
             try
             {
+                // Querying by hash
                 if (posHash != -1)
                 {
                     // Gets the fragment
@@ -98,14 +101,28 @@ namespace DatenMeister.Runtime
                     return null;
                 }
 
+                // Querying by query
                 if (posQuestion != -1)
                 {
-                    var fullName = uri.Substring(posQuestion + 1);
-                    var found = NamedElementMethods.GetByFullName(_extent, fullName);
-                    if (found != null)
+                    var query = uri.Substring(posQuestion + 1);
+                    if (query.IndexOf('=') == -1)
                     {
-                        _cacheIds[uri] = (IHasId) found;
-                        return found as T;
+                        // If there is no real query string, create one with full name
+                        Logger.Info("Legacy query without fullname: " + uri);
+                        
+                        query = "fn=" + query;
+                    }
+                    
+                    var parsedValue = HttpUtility.ParseQueryString(query);
+                    var fullName = parsedValue.Get("fn");
+                    if (fullName != null)
+                    {
+                        var found = NamedElementMethods.GetByFullName(_extent, fullName);
+                        if (found != null)
+                        {
+                            _cacheIds[uri] = (IHasId) found;
+                            return found as T;
+                        }
                     }
 
                     return null;

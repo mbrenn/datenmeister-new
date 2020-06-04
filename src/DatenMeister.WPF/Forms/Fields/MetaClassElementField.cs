@@ -21,7 +21,7 @@ namespace DatenMeister.WPF.Forms.Fields
             detailForm.CreateRowForField("Extent:", uriExtentText, true);
             detailForm.CreateRowForField("Full Name:", fullName, true);
             detailForm.CreateRowForField("Url w/ ID:", (value as IElement)?.GetUri() ?? string.Empty, true);
-            detailForm.CreateRowForField("Url w/Fullname:", $"{uriExtentText}?{fullName}", true);
+            detailForm.CreateRowForField("Url w/Fullname:", $"{uriExtentText}?fn={fullName}", true);
 
             var metaClass = (value as IElement)?.getMetaClass();
 

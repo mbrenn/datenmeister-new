@@ -706,8 +706,7 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var validator in ElementValidators)
             {
                 ValidatorResult? result = validator.ValidateElement(inMemory);
-
-
+                
                 while (result != null)
                 {
                     switch (result.State)

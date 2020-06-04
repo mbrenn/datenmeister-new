@@ -105,7 +105,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
             var zipCodeModel =
-                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?" +
+                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?fn=" +
                                                 ZipCodeModel.PackagePath);
 
             var dataWorkspace = workspaceLogic.GetDataWorkspace();
@@ -177,7 +177,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var zipCodeExample = dm.Resolve<ZipCodeExampleManager>();
             var typesWorkspace = workspaceLogic.GetTypesWorkspace();
             var zipCodeModel =
-                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?" +
+                typesWorkspace.FindElementByUri("dm:///_internal/types/internal?fn=" +
                                                 ZipCodeModel.PackagePath) as IElement;
             Assert.That(zipCodeModel, Is.Not.Null);
 
@@ -443,13 +443,12 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestQueryItemByFullname()
         {
             var uriExtent = CreateLittleExtent();
-            var package1 = uriExtent.element("dm:///test#fn=package1");
+            var package1 = uriExtent.element("dm:///test?fn=package1");
             Assert.That(package1, Is.Not.Null);
             Assert.That(package1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
                 Is.EqualTo("package1"));
             
-            
-            var element1 = uriExtent.element("dm:///test#fn=package1::element1");
+            var element1 = uriExtent.element("dm:///test?fn=package1::element1");
             Assert.That(element1, Is.Not.Null);
             Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
                 Is.EqualTo("element1"));
@@ -466,21 +465,21 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             var package1 = factory.create(null);
             var package2 = factory.create(null);
-            var package3 = factory.create(null);
+            var element1 = factory.create(null);
 
             (package1 as ICanSetId)!.Id = "p1";
             (package2 as ICanSetId)!.Id = "p2";
-            (package3 as ICanSetId)!.Id = "e1";
+            (element1 as ICanSetId)!.Id = "e1";
             
             package1.set(_UML._CommonStructure._NamedElement.name, "package1");
             package2.set(_UML._CommonStructure._NamedElement.name, "package2");
-            package3.set(_UML._CommonStructure._NamedElement.name, "element1");
+            element1.set(_UML._CommonStructure._NamedElement.name, "element1");
             
-            package1.set(_UML._Packages._Package.packagedElement, new[] {package2});
+            package1.set(_UML._Packages._Package.packagedElement, new[] {element1});
 
             uriExtent.elements().add(package1);
             uriExtent.elements().add(package2);
-            uriExtent.elements().add(package3);
+            uriExtent.elements().add(element1);
 
             return uriExtent;
         }

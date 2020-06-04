@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.DataViews
         /// <summary>
         /// Adds the dynamic sources
         /// </summary>
-        public readonly Dictionary<string, IReflectiveSequence> _dynamicSources =
+        private readonly Dictionary<string, IReflectiveSequence> _dynamicSources =
             new Dictionary<string, IReflectiveSequence>();
 
         public DataViewEvaluation(IWorkspaceLogic workspaceLogic)
@@ -88,7 +88,7 @@ namespace DatenMeister.Modules.DataViews
             }
 
             if (metaClass.equals(dataview.__DynamicSourceNode))
-                return GetElementsForDynamic(viewNode);
+                return GetElementsForDynamicSource(viewNode);
             
             if (metaClass.equals(dataview.__SourceExtentNode))
                 return GetElementsForSourceExtent(viewNode);
@@ -115,7 +115,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="viewNode">The view node of type 'DynamicNode'</param>
         /// <returns>The reflecting sequence representing the viewnode</returns>
-        private IReflectiveSequence GetElementsForDynamic(IElement viewNode)
+        private IReflectiveSequence GetElementsForDynamicSource(IElement viewNode)
         {
             var name = viewNode.getOrDefault<string>(_DataViews._DynamicSourceNode.name);
             if (name == null)
@@ -124,7 +124,7 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            if (!_dynamicSources.TryGetValue(name, out var collection))
+            if (_dynamicSources.TryGetValue(name, out var collection))
             {
                 return collection;
             }
@@ -168,7 +168,7 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            var input = GetElementsForViewNode(inputNode);
+            var input = GetElementsForViewNodeInternal(inputNode);
 
             var pathNode = viewNode.getOrDefault<string>(_DataViews._SelectPathNode.path);
             if (pathNode == null)
@@ -196,7 +196,7 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            return GetElementsForViewNode(inputNode).GetAllDescendants();
+            return GetElementsForViewNodeInternal(inputNode).GetAllDescendants();
         }
 
         private IReflectiveSequence GetElementsForFilterTypeNode(IElement viewNode)
@@ -208,7 +208,7 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            var input = GetElementsForViewNode(inputNode);
+            var input = GetElementsForViewNodeInternal(inputNode);
 
             var type = viewNode.getOrDefault<IElement>(_DataViews._FilterTypeNode.type);
             if (type == null)
@@ -230,7 +230,7 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            var input = GetElementsForViewNode(inputNode);
+            var input = GetElementsForViewNodeInternal(inputNode);
 
             var property = viewNode.getOrDefault<string>(_DataViews._FilterPropertyNode.property);
             if (property == null)

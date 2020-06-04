@@ -1,7 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <item>
   <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="666a0ed7-d1d9-4784-9946-4243f1c78814" name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-Issue" name="Issue">
+
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="DataView">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter Open">
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="filter" 
+          input-ref="#IssueMeister.FilterOpen.Node1" property="state" value="Open" comparisonMode="Equal" />
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterOpen.Node1"/>        
+      </packagedElement>
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-Issue" name="Forms">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="IssueFormDetail" name="Issue - Detail" hideMetaInformation="True">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" width="10" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />

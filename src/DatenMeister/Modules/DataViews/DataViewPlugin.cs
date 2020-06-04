@@ -28,7 +28,8 @@ namespace DatenMeister.Modules.DataViews
                 typeof(FilterPropertyNode),
                 typeof(FilterTypeNode),
                 typeof(ComparisonMode),
-                typeof(SelectPathNode)
+                typeof(SelectPathNode),
+                typeof(DynamicSourceNode)
             };
         }
 

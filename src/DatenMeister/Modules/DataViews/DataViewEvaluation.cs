@@ -27,9 +27,25 @@ namespace DatenMeister.Modules.DataViews
 
         private const int MaximumReferenceCount = 1000;
 
+        /// <summary>
+        /// Adds the dynamic sources
+        /// </summary>
+        public readonly Dictionary<string, IReflectiveSequence> _dynamicSources =
+            new Dictionary<string, IReflectiveSequence>();
+
         public DataViewEvaluation(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
+        }
+
+        /// <summary>
+        /// Adds a dynamic source for the collection
+        /// </summary>
+        /// <param name="name">Name of the </param>
+        /// <param name="collection"></param>
+        public void AddDynamicSource(string name, IReflectiveSequence collection)
+        {
+            _dynamicSources[name] = collection;
         }
 
         /// <summary>
@@ -38,6 +54,17 @@ namespace DatenMeister.Modules.DataViews
         /// <param name="viewNode">View Node to be parsed</param>
         /// <returns>The reflective Sequence</returns>
         public IReflectiveSequence GetElementsForViewNode(IElement viewNode)
+        {
+            _referenceCount = 0;
+            return GetElementsForViewNodeInternal(viewNode);
+        }
+
+        /// <summary>
+        /// Parses the given view node and return the values of the viewnode as a reflective sequence
+        /// </summary>
+        /// <param name="viewNode">View Node to be parsed</param>
+        /// <returns>The reflective Sequence</returns>
+        private IReflectiveSequence GetElementsForViewNodeInternal(IElement viewNode)
         {
             if (viewNode == null)
             {
@@ -52,7 +79,6 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-
             var dataview = _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews, _DataViews>();
             var metaClass = viewNode.getMetaClass();
             if (metaClass == null)
@@ -61,6 +87,9 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
+            if (metaClass.equals(dataview.__DynamicSourceNode))
+                return GetElementsForDynamic(viewNode);
+            
             if (metaClass.equals(dataview.__SourceExtentNode))
                 return GetElementsForSourceExtent(viewNode);
 
@@ -78,6 +107,29 @@ namespace DatenMeister.Modules.DataViews
 
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
 
+            return new PureReflectiveSequence();
+        }
+        
+        /// <summary>
+        /// Gets elements from the dynamic extent
+        /// </summary>
+        /// <param name="viewNode">The view node of type 'DynamicNode'</param>
+        /// <returns>The reflecting sequence representing the viewnode</returns>
+        private IReflectiveSequence GetElementsForDynamic(IElement viewNode)
+        {
+            var name = viewNode.getOrDefault<string>(_DataViews._DynamicSourceNode.name);
+            if (name == null)
+            {
+                Logger.Warn($"Input node not found");
+                return new PureReflectiveSequence();
+            }
+
+            if (!_dynamicSources.TryGetValue(name, out var collection))
+            {
+                return collection;
+            }
+            
+            Logger.Warn($"Input node {name} not set");
             return new PureReflectiveSequence();
         }
 

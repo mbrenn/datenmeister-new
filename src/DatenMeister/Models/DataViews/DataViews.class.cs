@@ -147,6 +147,16 @@ namespace DatenMeister.Models.DataViews
         public _SelectPathNode @SelectPathNode = new _SelectPathNode();
         public IElement @__SelectPathNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectPathNode");
 
+        public class _DynamicSourceNode
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+        }
+
+        public _DynamicSourceNode @DynamicSourceNode = new _DynamicSourceNode();
+        public IElement @__DynamicSourceNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
+
         public static _DataViews TheOne = new _DataViews();
 
     }

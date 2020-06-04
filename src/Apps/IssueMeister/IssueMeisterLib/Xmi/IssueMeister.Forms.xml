@@ -2,13 +2,16 @@
 <item>
   <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="666a0ed7-d1d9-4784-9946-4243f1c78814" name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
 
+    <!-- The filter -->
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="DataView">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Filter Open">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="filter" 
-          input-ref="#IssueMeister.FilterOpen.Node1" property="state" value="Open" comparisonMode="Equal" />
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode" name="Open Issues" 
+          input-ref="#IssueMeister.FilterOpen.Node1" property="state" value="Open" comparisonMode="Equal" p1:id="IssueMeister.OpenIssuesViews"/>
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="input" p1:id="IssueMeister.FilterOpen.Node1"/>        
       </packagedElement>
     </packagedElement>
+    
+    <!-- The forms -->
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-Issue" name="Forms">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="IssueFormDetail" name="Issue - Detail" hideMetaInformation="True">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" width="10" />
@@ -35,7 +38,18 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
         </tab>
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" name="Open Issues"
+             metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement"
+             viewNode-ref="#IssueMeister.OpenIssuesViews">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id" title="id" isReadOnly="True" width="10" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state" title="state" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="description" title="description" lineHeight="8" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        </tab>
       </packagedElement>
+      
+      <!-- The Form Associations -->
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="IssueAssociationDetail" formType="Detail" 
                        form-ref="#IssueFormDetail" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" name="Issue - Detail" />
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="IssueAssociationList" formType="TreeItemDetail" 

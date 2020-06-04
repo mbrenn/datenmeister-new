@@ -554,6 +554,9 @@ namespace DatenMeister.Models.Forms
             public static string @sortingOrder = "sortingOrder";
             public IElement? _sortingOrder = null;
 
+            public static string @viewNode = "viewNode";
+            public IElement? _viewNode = null;
+
             public static string @name = "name";
             public IElement? _name = null;
 

@@ -54,7 +54,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="viewNode">View Node to be parsed</param>
         /// <returns>The reflective Sequence</returns>
-        public IReflectiveSequence GetElementsForViewNode(IElement viewNode)
+        public IReflectiveCollection GetElementsForViewNode(IElement viewNode)
         {
             var evaluation = new DataViewEvaluation(_workspaceLogic);
             return evaluation.GetElementsForViewNode(viewNode);

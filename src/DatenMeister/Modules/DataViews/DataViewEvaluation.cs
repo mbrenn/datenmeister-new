@@ -30,8 +30,8 @@ namespace DatenMeister.Modules.DataViews
         /// <summary>
         /// Adds the dynamic sources
         /// </summary>
-        private readonly Dictionary<string, IReflectiveSequence> _dynamicSources =
-            new Dictionary<string, IReflectiveSequence>();
+        private readonly Dictionary<string, IReflectiveCollection> _dynamicSources =
+            new Dictionary<string, IReflectiveCollection>();
 
         public DataViewEvaluation(IWorkspaceLogic workspaceLogic)
         {
@@ -43,7 +43,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="name">Name of the </param>
         /// <param name="collection"></param>
-        public void AddDynamicSource(string name, IReflectiveSequence collection)
+        public void AddDynamicSource(string name, IReflectiveCollection collection)
         {
             _dynamicSources[name] = collection;
         }
@@ -53,7 +53,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="viewNode">View Node to be parsed</param>
         /// <returns>The reflective Sequence</returns>
-        public IReflectiveSequence GetElementsForViewNode(IElement viewNode)
+        public IReflectiveCollection GetElementsForViewNode(IElement viewNode)
         {
             _referenceCount = 0;
             return GetElementsForViewNodeInternal(viewNode);
@@ -64,7 +64,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="viewNode">View Node to be parsed</param>
         /// <returns>The reflective Sequence</returns>
-        private IReflectiveSequence GetElementsForViewNodeInternal(IElement viewNode)
+        private IReflectiveCollection GetElementsForViewNodeInternal(IElement viewNode)
         {
             if (viewNode == null)
             {
@@ -115,7 +115,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="viewNode">The view node of type 'DynamicNode'</param>
         /// <returns>The reflecting sequence representing the viewnode</returns>
-        private IReflectiveSequence GetElementsForDynamicSource(IElement viewNode)
+        private IReflectiveCollection GetElementsForDynamicSource(IElement viewNode)
         {
             var name = viewNode.getOrDefault<string>(_DataViews._DynamicSourceNode.name);
             if (name == null)
@@ -265,7 +265,7 @@ namespace DatenMeister.Modules.DataViews
         /// <param name="propertyValue">Value of the property that will be used as filtering value</param>
         /// <param name="comparisonMode">The type of the comparison</param>
         /// <returns>Enumeration of elements being in the filter</returns>
-        private IEnumerable<object> FilterElementsForPropertyNode(IReflectiveSequence input, string property, string propertyValue, ComparisonMode comparisonMode)
+        private IEnumerable<object> FilterElementsForPropertyNode(IReflectiveCollection input, string property, string propertyValue, ComparisonMode comparisonMode)
         {
             foreach (var element in input.OfType<IObject>())
             {

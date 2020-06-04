@@ -5,6 +5,7 @@ using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -36,13 +37,13 @@ namespace DatenMeister.Tests.Runtime.Extents
             var workspaceExtent = workspaceLogic.FindExtent(WorkspaceNames.UriExtentWorkspaces);
             Assert.That(workspaceExtent, Is.Not.Null);
             var asData = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceData);
+                .First(x => x.get("id")?.ToString() == WorkspaceNames.WorkspaceData);
             var asManagement = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceManagement);
+                .First(x => x.get("id")?.ToString() == WorkspaceNames.WorkspaceManagement);
             var asTypes = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceTypes);
+                .First(x => x.get("id")?.ToString() == WorkspaceNames.WorkspaceTypes);
             var asMof = workspaceExtent.elements().Cast<IElement>()
-                .First(x => x.get("id").ToString() == WorkspaceNames.WorkspaceMof);
+                .First(x => x.get("id")?.ToString() == WorkspaceNames.WorkspaceMof);
 
             Assert.That(asData, Is.Not.Null);
             Assert.That(asManagement, Is.Not.Null);
@@ -53,7 +54,7 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extents = (asMof.get("extents") as IEnumerable<object>)?.ToList();
             Assert.That(extents, Is.Not.Null);
 
-            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri").ToString() == WorkspaceNames.UriExtentMof);
+            var mofExtent = extents.Cast<IElement>().First(x => x.get("uri")?.ToString() == WorkspaceNames.UriExtentMof);
             Assert.That(mofExtent, Is.Not.Null);
         }
 
@@ -420,6 +421,68 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             userTypes.elements().add(type);
             return extent;
+        }
+
+        [Test]
+        public void TestQueryItemById()
+        {
+            var uriExtent = CreateLittleExtent();
+            var package1 = uriExtent.element("dm:///test#p1");
+            Assert.That(package1, Is.Not.Null);
+            Assert.That(package1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
+                Is.EqualTo("package1"));
+            
+            
+            var element1 = uriExtent.element("dm:///test#e1");
+            Assert.That(element1, Is.Not.Null);
+            Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
+                Is.EqualTo("element1"));
+        }
+
+        [Test]
+        public void TestQueryItemByFullname()
+        {
+            var uriExtent = CreateLittleExtent();
+            var package1 = uriExtent.element("dm:///test#fn=package1");
+            Assert.That(package1, Is.Not.Null);
+            Assert.That(package1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
+                Is.EqualTo("package1"));
+            
+            
+            var element1 = uriExtent.element("dm:///test#fn=package1::element1");
+            Assert.That(element1, Is.Not.Null);
+            Assert.That(element1.getOrDefault<string>(_UML._CommonStructure._NamedElement.name),
+                Is.EqualTo("element1"));
+        }
+
+        /// <summary>
+        /// Creates a little uriextent for testing
+        /// </summary>
+        /// <returns>Uri extent to be tested</returns>
+        public IUriExtent CreateLittleExtent()
+        {
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
+            var factory = new MofFactory(uriExtent);
+
+            var package1 = factory.create(null);
+            var package2 = factory.create(null);
+            var package3 = factory.create(null);
+
+            (package1 as ICanSetId)!.Id = "p1";
+            (package2 as ICanSetId)!.Id = "p2";
+            (package3 as ICanSetId)!.Id = "e1";
+            
+            package1.set(_UML._CommonStructure._NamedElement.name, "package1");
+            package2.set(_UML._CommonStructure._NamedElement.name, "package2");
+            package3.set(_UML._CommonStructure._NamedElement.name, "element1");
+            
+            package1.set(_UML._Packages._Package.packagedElement, new[] {package2});
+
+            uriExtent.elements().add(package1);
+            uriExtent.elements().add(package2);
+            uriExtent.elements().add(package3);
+
+            return uriExtent;
         }
     }
 }

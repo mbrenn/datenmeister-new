@@ -69,12 +69,14 @@ namespace DatenMeister.WPF.Forms.Fields
 
             if (elementValue != null && DotNetHelper.IsOfPrimitiveType(elementValue))
             {
-                _textRadioButton.IsChecked = !isReadOnly;
+                _textRadioButton.IsChecked = true;
+                _textRadioButton.IsEnabled = !isReadOnly;
                 _textBoxForString.Text = elementValue.ToString();
             }
             else
             {
-                _referenceRadioButton.IsChecked = !isReadOnly;
+                _referenceRadioButton.IsChecked = true;
+                _referenceRadioButton.IsEnabled = !isReadOnly;
                 _referenceField.SetSelectedValue(elementValue);
                 _textBoxForString.IsEnabled = false;
             }

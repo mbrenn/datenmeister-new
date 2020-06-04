@@ -58,7 +58,7 @@ namespace DatenMeister.Modules.PublicSettings
                 }
             }
 
-            Logger.Info($"No Xmi-File found in: {path}");
+            Logger.Info($"No Xmi-File for external configuration found in: {path}");
             Logger.Info($"No Configuration file found in {directoryPath}");
             return null;
         }

@@ -35,9 +35,9 @@ $switches = "-nologo"
 
 cd ..
 
-cd src\DatenMeister.SourceGeneration.Console\bin\Release
+cd src\DatenMeister.SourceGeneration.Console\bin\Release\netcoreapp3.0
 
 ./DatenMeister.SourceGeneration.Console.exe
 
-cd ..\..\..\..
+cd ..\..\..\..\..
 cd scripts

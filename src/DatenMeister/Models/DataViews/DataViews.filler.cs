@@ -201,6 +201,21 @@ namespace DatenMeister.Models.DataViews
                                 }
                             }
                         }
+                        if(name == "DynamicSourceNode") // Looking for class
+                        {
+                            tree.__DynamicSourceNode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.DynamicSourceNode._name = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

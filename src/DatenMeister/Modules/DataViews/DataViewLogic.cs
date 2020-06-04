@@ -32,7 +32,8 @@ namespace DatenMeister.Modules.DataViews
         {
             var metaClass = (IElement?)
                 (_workspaceLogic.GetTypesWorkspace()
-                    .FindElementByUri("dm:///_internal/types/internal?fn=DatenMeister::DataViews::DataView"));
+                    .FindElementByUri("dm:///_internal/types/internal?fn=" + PackagePathTypesDataView + "::DataView"));
+            
             if (metaClass == null)
             {
                 Logger.Warn("DataView MetaClass was not found");
@@ -53,7 +54,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="viewNode">View Node to be parsed</param>
         /// <returns>The reflective Sequence</returns>
-        public IReflectiveSequence GetElementsForViewNode(IElement viewNode)
+        public IReflectiveCollection GetElementsForViewNode(IElement viewNode)
         {
             var evaluation = new DataViewEvaluation(_workspaceLogic);
             return evaluation.GetElementsForViewNode(viewNode);

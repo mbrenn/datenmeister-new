@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -57,7 +58,7 @@ namespace DatenMeister.Modules.DataViews
             }
             else
             {
-                return _dataViewLogic.GetElementsForViewNode(viewNode);
+                return new TemporaryReflectiveSequence(_dataViewLogic.GetElementsForViewNode(viewNode));
             }
         }
 

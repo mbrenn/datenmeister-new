@@ -67,6 +67,11 @@ namespace DatenMeister.Models.Forms
         /// Gets a list of fields to which the table shall be ordered 
         /// </summary>
         public IList<FieldData> sortingOrder { get; set; } = new List<FieldData>();
+        
+        /// <summary>
+        /// Gets or sets the view node for the list view
+        /// </summary>
+        public IElement? viewNode { get; set; }
 
         /// <summary>
         /// Adds the fields to the form

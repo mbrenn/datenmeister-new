@@ -134,6 +134,8 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 VerticalAlignment = VerticalAlignment.Center
             };
+            
+            _inputTextBox.MouseDown += TextBlockOnMouseDown;
 
             UpdateTextOfTextBlock(SelectedValue);
 
@@ -292,7 +294,6 @@ namespace DatenMeister.WPF.Forms.Fields
             _inputTextBox.Text = value.ToString();
             _inputTextBox.TextDecorations = TextDecorations.Underline;
             _inputTextBox.Cursor = Cursors.Hand;
-            _inputTextBox.MouseDown += TextBlockOnMouseDown;
         }
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)

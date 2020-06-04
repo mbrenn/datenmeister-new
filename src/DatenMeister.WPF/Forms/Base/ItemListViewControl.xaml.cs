@@ -19,6 +19,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -434,6 +435,16 @@ namespace DatenMeister.WPF.Forms.Base
                         }
 
                         items = items.WhenFiltered(x => converter.IsFiltered(x));
+                    }
+                    
+                    // Checks, if we have a view node
+                    var viewNode = _effectiveForm.getOrDefault<IElement>(_FormAndFields._ListForm.viewNode); 
+                    if (viewNode != null)
+                    {
+                        var dataviewHandler = new DataViewEvaluation(GiveMe.Scope.WorkspaceLogic);
+                        dataviewHandler.AddDynamicSource("input", items);
+
+                        items = dataviewHandler.GetElementsForViewNode(viewNode);
                     }
 
                     // Go through the items and build up the list of elements

@@ -4,7 +4,7 @@
     <packagedElement p1:type="dm:///_internal/xmi/uml#Class" p1:id="IssueMeister.Issue" name="Issue">
       <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="id" isID="True" type-ref="dm:///_internal/xmi/primitivetypes#Integer" />
       <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="name" type-ref="dm:///_internal/xmi/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="state" type-ref="dm:///_internal/xmi/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="state" type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="Open" />
       <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="description" type-ref="dm:///_internal/xmi/primitivetypes#String" />
     </packagedElement>
   </package>

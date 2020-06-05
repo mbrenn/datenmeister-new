@@ -248,6 +248,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.DropDownFieldData._values = value;
                                 }
+                                if(name == "valuesByEnumeration") // Looking for property
+                                {
+                                    tree.DropDownFieldData._valuesByEnumeration = value;
+                                }
                                 if(name == "isAttached") // Looking for property
                                 {
                                     tree.DropDownFieldData._isAttached = value;

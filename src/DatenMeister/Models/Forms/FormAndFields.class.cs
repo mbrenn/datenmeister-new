@@ -156,6 +156,9 @@ namespace DatenMeister.Models.Forms
             public static string @values = "values";
             public IElement? _values = null;
 
+            public static string @valuesByEnumeration = "valuesByEnumeration";
+            public IElement? _valuesByEnumeration = null;
+
             public static string @isAttached = "isAttached";
             public IElement? _isAttached = null;
 

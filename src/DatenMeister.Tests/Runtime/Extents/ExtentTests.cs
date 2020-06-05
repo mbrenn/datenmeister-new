@@ -319,6 +319,20 @@ namespace DatenMeister.Tests.Runtime.Extents
         }
 
         [Test]
+        public static void TestDefaultValue()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            
+            var extent = CreateType(dm, out var type);
+
+            var extentFactory = new MofFactory(extent);
+            
+            var createdType = extentFactory.create(type);
+            Assert.That(createdType, Is.Not.Null);
+            Assert.That(createdType.getOrDefault<int>("age"), Is.EqualTo(18));
+        }
+
+        [Test]
         public static void TestAutoEnumerateGuidProperty()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
@@ -346,7 +360,6 @@ namespace DatenMeister.Tests.Runtime.Extents
             var setId= (createdType2 as IHasId)?.Id;
             Assert.That(setId, Is.EqualTo(id2));
         }
-
 
         [Test]
         public static void TestAutoEnumerateOrdinalProperty()
@@ -415,8 +428,13 @@ namespace DatenMeister.Tests.Runtime.Extents
             
             var property2 = factory.create(uml.Classification.__Property);
             property2.set(_UML._CommonStructure._NamedElement.name, "name");
+            
+            var property3 = factory.create(uml.Classification.__Property);
+            property3.set(_UML._CommonStructure._NamedElement.name, "age");
+            property3.set(_UML._Classification._Property.defaultValue, 18);
 
-            type.set(_UML._StructuredClassifiers._StructuredClassifier.ownedAttribute, new[] {property1, property2});
+            type.set(_UML._StructuredClassifiers._StructuredClassifier.ownedAttribute,
+                new[] {property1, property2, property3});
             type.set(_UML._CommonStructure._NamedElement.name, "your");
 
             userTypes.elements().add(type);

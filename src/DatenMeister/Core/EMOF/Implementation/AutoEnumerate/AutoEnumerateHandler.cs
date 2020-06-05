@@ -9,8 +9,6 @@ namespace DatenMeister.Core.EMOF.Implementation.AutoEnumerate
 {
     public static class AutoEnumerateHandler
     {
-
-
         /// <summary>
         /// Saves the type of the extent
         /// </summary>

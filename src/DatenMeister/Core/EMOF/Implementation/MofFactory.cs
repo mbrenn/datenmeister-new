@@ -2,6 +2,7 @@
 
 using System;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
+using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -154,6 +155,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             var created = new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
             AutoEnumerateHandler.HandleNewItem(Extent, created);
+            DefaultValueHandler.HandleNewItem(Extent, created);
 
             return created;
         }

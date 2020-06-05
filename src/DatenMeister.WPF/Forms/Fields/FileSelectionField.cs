@@ -64,6 +64,8 @@ namespace DatenMeister.WPF.Forms.Fields
             dockPanel.Children.Add(textField);
 
             _textField = textField;
+            dockPanel.Focusable = true;
+            dockPanel.GotFocus += (x, y) => { _textField.Focus(); };
 
             // Sets the event handler for the button
             button.Click += (x, y) =>
@@ -120,6 +122,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
                 }
             };
+            
+            fieldFlags.CanBeFocused = true;
 
             return dockPanel;
         }

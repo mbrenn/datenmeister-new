@@ -155,7 +155,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             var created = new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
             AutoEnumerateHandler.HandleNewItem(Extent, created);
-            DefaultValueHandler.HandleNewItem(Extent, created);
+            DefaultValueHandler.HandleNewItem(created);
 
             return created;
         }

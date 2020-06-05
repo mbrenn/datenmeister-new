@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.ManagementProviders.Model;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
@@ -15,9 +12,8 @@ namespace DatenMeister.Core.EMOF.Implementation.DefaultValue
         /// <summary>
         /// Handles the new item 
         /// </summary>
-        /// <param name="parentExtent">Extent in which the item is created</param>
         /// <param name="element">Element which is recently created</param>
-        public static void HandleNewItem(IExtent parentExtent, IElement element)
+        public static void HandleNewItem(IElement element)
         {
             // Gets the type and the associated properties
             var type = element.getMetaClass();

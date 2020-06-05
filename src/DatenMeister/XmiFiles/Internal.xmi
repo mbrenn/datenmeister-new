@@ -10,7 +10,7 @@
             <packagedElement p1:type="dm:///_internal/xmi/uml#Package" p1:id="_package_Default" name="ExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
                 <packagedElement p1:type="dm:///_internal/xmi/uml#Class" p1:id="DatenMeister.ExtentManager.ImportSettings" name="LoadFileFromXmi">
                     <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="filePath" type-ref="dm:///_internal/xmi/primitivetypes#String" />
-                    <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="extentUri" type-ref="dm:///_internal/xmi/primitivetypes#String"  />
+                    <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="extentUri" type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="dm:///" />
                     <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="workspace" type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="Data"  />
                 </packagedElement>
                 <packagedElement p1:type="dm:///_internal/xmi/uml#Class" p1:id="DatenMeister.ExtentManager.ImportException" name="LoadFileFromXmi">

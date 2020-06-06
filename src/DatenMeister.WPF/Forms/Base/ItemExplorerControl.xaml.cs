@@ -534,7 +534,9 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             var createdUserControl = control;
-
+            
+            var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+            
             // Sets the content for the tabs
             if (value is IExtent extent)
             {
@@ -546,11 +548,19 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // Filter MofObject Shadows out, they are not useable anyway.
                 defaultTypesForNewItems = defaultTypesForNewItems.Where(x => !(x is MofObjectShadow)).ToList();
+            
+                // Goes through the view extensions indicating that an extent is shown
+                var extentData = new ViewExtensionExtentInformation(NavigationHost, control, extent);
 
+                foreach (var plugin in viewExtensionPlugins)
+                {
+                    usedViewExtensions.AddRange(plugin.GetViewExtensions(extentData));
+                }
+
+                // Creates the buttons for the new items
                 var inhibitNewButtons = tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
                 if (!inhibitNewButtons)
                 {
-                    // 
                     // Creates the menu and buttons for the default types. 
                     CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, null);
                 }
@@ -563,16 +573,13 @@ namespace DatenMeister.WPF.Forms.Base
             else
             {
                 // Query all the plugins whether a filter is available
-                var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
                 var propertyName = tabForm.getOrDefault<string>(nameof(ListForm.property));
 
+                // Goes through the properties
                 if (!string.IsNullOrEmpty(propertyName))
                 {
-                    var extentData = new ViewExtensionItemPropertiesInformation(NavigationHost, control)
-                    {
-                        Value = value,
-                        Property = propertyName
-                    };
+                    var extentData =
+                        new ViewExtensionItemPropertiesInformation(NavigationHost, control, value, propertyName);
 
                     foreach (var plugin in viewExtensionPlugins)
                     {

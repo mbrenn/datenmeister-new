@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
@@ -160,19 +162,23 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
         /// <returns>true, if that is the case</returns>
         public static bool IsExtentInListViewControl(this ViewExtensionInfo info, string? extentType = null)
         {
-            if (info is ViewExtensionExtentInformation extentInformation)
+            if (info is ViewExtensionInfoTab extensionTab
+                && extensionTab.NavigationGuest is ItemExplorerControl explorerControl)
             {
-                if (extentType != null)
+                var selectedItem = explorerControl.SelectedItem;
+                if ((selectedItem ?? explorerControl.RootItem) is IExtent asExtent)
                 {
-                    return extentInformation.Extent.GetConfiguration().ContainsExtentType(extentType);
+                    if (extentType != null && !asExtent.GetConfiguration().ContainsExtentType(extentType))
+                    {
+                        return false;
+                    }
+                    
+                    return true;
                 }
-                
-                return true;
             }
 
             return false;
         }
-
 
         /// <summary>
         /// Gets the information whether the view extension reflects a listview control and an extent is checked
@@ -185,33 +191,37 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
         public static bool IsItemOfExtentTypeInListViewControl(this ViewExtensionInfo info, string propertyName,
             IEnumerable<IElement>? metaClasses = null, string? extentType = null)
         {
-            if (info is ViewExtensionItemPropertiesInformation extentInformation)
+            if (info is ViewExtensionInfoTab extensionTab
+                && extensionTab.NavigationGuest is ItemExplorerControl explorerControl)
             {
+                var formPropertyName = extensionTab.TabFormDefinition.getOrDefault<string>(_FormAndFields._ListForm.property);
+                var selectedItem = (explorerControl.SelectedItem ?? explorerControl.RootItem) as IElement; 
+                if (selectedItem == null) return false; // Nothing selected, should not occur
+                
+                // Checks the extent type
+                var extentConfiguration = selectedItem.GetExtentOf()?.GetConfiguration();
+                
                 if (extentType != null)
                 {
-                    var extent = extentInformation.Value.GetExtentOf();
-                    if (extent == null || !extent.GetConfiguration().ContainsExtentType(extentType))
+                    if (extentConfiguration == null || !extentConfiguration.ContainsExtentType(extentType))
                     {
                         return false;
                     }
                 }
                 
-                if (extentInformation.Property != propertyName)
+                // Checks for property name
+                if (formPropertyName != propertyName)
                 {
                     return false;
                 }
 
-                if (metaClasses == null)
-                {
-                    return true;
-                }
-
-                if (!(extentInformation.Value is IElement element))
+                // Checks the metaclasses
+                if (metaClasses != null && !metaClasses.Contains(selectedItem.getMetaClass()))
                 {
                     return false;
                 }
 
-                return metaClasses.Contains(element.getMetaClass());
+                return true;
             }
 
             return false;

@@ -53,7 +53,6 @@
                              name="Association for Package - List"/>
         </packagedElement>
 
-
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"
                          p1:id="Package-UML.StructuredClassifiers.Class" name="Class"
                          xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -157,20 +156,21 @@
         </packagedElement>
 
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"
-                         p1:id="Package-UML.StructuredClassifier.Enumeration" name="Enumeration"
+                         p1:id="Package-UML.SimpleClassifiers.Enumeration" name="Enumeration"
                          xmlns:p1="http://www.omg.org/spec/XMI/20131001">
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm"
-                             p1:id="UML.StructuredClassifiers.EnumerationFormDetail" name="Enumeration - Detail"
+                             p1:id="UML.SimpleClassifiers.EnumerationFormDetail" name="Enumeration - Detail"
                              hideMetaInformation="True">
                 <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
                        title="name"/>
                 <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData"
-                       name="ownedAttribute" title="ownedLiteral"/>
+                       name="ownedAttribute" title="ownedLiteral">
+                </field>
                 <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
                        name="Metaclass"/>
             </packagedElement>
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm"
-                             p1:id="UML.StructuredClassifiers.EnumerationFormList" name="Enumeration - List">
+                             p1:id="UML.SimpleClassifiers.EnumerationFormList" name="Enumeration - List">
                 <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail">
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
                            title="name" isReadOnly="True"/>
@@ -184,20 +184,20 @@
                 </tab>
             </packagedElement>
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
-                             p1:id="UML.StructuredClassifiers.EnumerationAssociationDetail" formType="Detail"
-                             form-ref="#UML.StructuredClassifiers.EnumerationFormDetail"
+                             p1:id="UML.SimpleClassifiers.EnumerationAssociationDetail" formType="Detail"
+                             form-ref="#UML.SimpleClassifiers.EnumerationFormDetail"
                              metaClass-ref="dm:///_internal/model/uml#Enumeration" name="Association for Enumeration - Detail"/>
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
-                             p1:id="UML.StructuredClassifiers.EnumerationAssociationList" formType="TreeItemDetail"
-                             form-ref="#UML.StructuredClassifiers.EnumerationFormList"
+                             p1:id="UML.SimpleClassifiers.EnumerationAssociationList" formType="TreeItemDetail"
+                             form-ref="#UML.SimpleClassifiers.EnumerationFormList"
                              metaClass-ref="dm:///_internal/model/uml#Enumeration" name="Association for Enumeration - List"/>
         </packagedElement>
 
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"
-                       p1:id="Package-UML.StructuredClassifier.EnumerationLiteral" name="EnumerationLiteral"
+                       p1:id="Package-UML.SimpleClassifiers.EnumerationLiteral" name="EnumerationLiteral"
                        xmlns:p1="http://www.omg.org/spec/XMI/20131001">
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm"
-                         p1:id="UML.StructuredClassifiers.EnumerationFormLiteralDetail" name="EnumerationLiteral - Detail"
+                         p1:id="UML.SimpleClassifiers.EnumerationFormLiteralDetail" name="EnumerationLiteral - Detail"
                          hideMetaInformation="True">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
                  title="name"/>
@@ -205,7 +205,7 @@
                  name="Metaclass"/>
         </packagedElement>
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm"
-                         p1:id="UML.StructuredClassifiers.EnumerationLiteralFormList" name="EnumerationLiteral - List">
+                         p1:id="UML.SimpleClassifiers.EnumerationLiteralFormList" name="EnumerationLiteral - List">
           <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail">
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
                    title="name" isReadOnly="True"/>
@@ -214,12 +214,12 @@
           </tab>
         </packagedElement>
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
-                         p1:id="UML.StructuredClassifiers.EnumerationLiteralAssociationDetail" formType="Detail"
-                         form-ref="#UML.StructuredClassifiers.EnumerationFormLiteralDetail"
+                         p1:id="UML.SimpleClassifiers.EnumerationLiteralAssociationDetail" formType="Detail"
+                         form-ref="#UML.SimpleClassifiers.EnumerationFormLiteralDetail"
                          metaClass-ref="dm:///_internal/model/uml#EnumerationLiteral" name="Association for EnumerationLiteral - Detail"/>
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
-                         p1:id="UML.StructuredClassifiers.EnumerationLiteralAssociationList" formType="TreeItemDetail"
-                         form-ref="#UML.StructuredClassifiers.EnumerationLiteralFormList"
+                         p1:id="UML.SimpleClassifiers.EnumerationLiteralAssociationList" formType="TreeItemDetail"
+                         form-ref="#UML.SimpleClassifiers.EnumerationLiteralFormList"
                          metaClass-ref="dm:///_internal/model/uml#EnumerationLiteral" name="Association for EnumerationLiteral - List"/>
       </packagedElement>
     </item>

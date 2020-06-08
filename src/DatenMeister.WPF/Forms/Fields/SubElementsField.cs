@@ -116,6 +116,8 @@ namespace DatenMeister.WPF.Forms.Fields
                        throw new InvalidOperationException("Form could not be created");
             }
 
+            IncludePropertiesTypeIntoDefaultTypes(form);
+
             var viewExtensions =
                 isReadOnly
                     ? new List<ViewExtension>()
@@ -139,11 +141,48 @@ namespace DatenMeister.WPF.Forms.Fields
             if (!isReadOnly)
             {
                 // CreateNewItemButton();
-
                 CreateManipulationButtons(valueOfElement);
             }
             
             _panel.Children.Add(_listViewControl);
+        }
+
+        /// <summary>
+        /// Tries to figure out the default type of the property within the element
+        /// </summary>
+        /// <param name="form">Form to be evaluated</param>
+        private void IncludePropertiesTypeIntoDefaultTypes(IObject form)
+        {
+            var metaClass = (_element as IElement)?.getMetaClass();
+            if (metaClass == null)
+            {
+                // The metaclass is not found
+                return;
+            }
+
+            var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, _propertyName);
+            if (property == null)
+            {
+                // The property is not found
+                return;
+            }
+
+            var propertyType = PropertyMethods.GetPropertyType(property);
+            if (propertyType == null)
+            {
+                // The property type is not found
+                return;
+            }
+
+            var defaultTypes =
+                form.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+            if (defaultTypes == null || defaultTypes.Any(x => x != null && x.Equals(propertyType)))
+            {
+                // Already included
+                return;
+            }
+
+            defaultTypes.add(propertyType);
         }
 
         /// <summary>

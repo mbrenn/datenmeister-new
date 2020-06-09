@@ -53,7 +53,7 @@ namespace DatenMeister.Provider.XMI
                 LoadFromStream(factory, extent, stream);
             }
         }
-
+        
         public void LoadFromFile(IFactory factory, IUriExtent extent, string filePath)
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));

@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -521,13 +525,34 @@ namespace DatenMeister.Uml
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml);
+            string xmlPrimitiveTypes;
+            string xmlMof;
+            string xmlUml;
+            
+            if (paths?.LoadFromEmbeddedResources != false)
+            {
+                xmlPrimitiveTypes = ResourceHelper.LoadStringFromAssembly(typeof(WorkspaceNames),
+                    "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
+                xmlUml = ResourceHelper.LoadStringFromAssembly(typeof(WorkspaceNames),
+                    "DatenMeister.XmiFiles.UML.xmi");
+                xmlMof = ResourceHelper.LoadStringFromAssembly(typeof(WorkspaceNames),
+                    "DatenMeister.XmiFiles.MOF.xmi");
+            }
+            else
+            {
+                xmlPrimitiveTypes = File.ReadAllText(paths.PathPrimitive);
+                xmlUml = File.ReadAllText(paths.PathUml);
+                xmlMof = File.ReadAllText(paths.PathMof);
+            }
+            
+            
+            var umlExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlUml)), WorkspaceNames.UriExtentUml);
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
             umlExtent.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof);
+            var mofExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlMof)), WorkspaceNames.UriExtentMof);
             mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
-            var primitiveExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes);
+            var primitiveExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlPrimitiveTypes)), WorkspaceNames.UriExtentPrimitiveTypes);
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi");
 
@@ -539,81 +564,17 @@ namespace DatenMeister.Uml
                 workspaceLogic.AddExtent(dataLayer, mofExtent);
             }
 
-            if (!isSlim)
-            {
-                var loader = new SimpleLoader(dataLayer);
-                if (paths?.LoadFromEmbeddedResources != false)
-                {
-                    loader.LoadFromEmbeddedResource(new MofFactory(primitiveExtent), primitiveExtent, "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
-                    loader.LoadFromEmbeddedResource(new MofFactory(umlExtent), umlExtent, "DatenMeister.XmiFiles.UML.xmi");
-
-                    if (mode == BootstrapMode.Mof)
-                        loader.LoadFromEmbeddedResource(new MofFactory(mofExtent), mofExtent, "DatenMeister.XmiFiles.MOF.xmi");
-                }
-                else
-                {
-                    loader.LoadFromFile(
-                        new MofFactory(primitiveExtent),
-                        primitiveExtent,
-                        paths.PathPrimitive ?? throw new InvalidOperationException("PathPrimitive == null"));
-                    loader.LoadFromFile(
-                        new MofFactory(umlExtent),
-                        umlExtent,
-                        paths.PathUml ?? throw new InvalidOperationException("PathUml == null"));
-                    if (mode == BootstrapMode.Mof)
-                    {
-                        loader.LoadFromFile(
-                            new MofFactory(mofExtent),
-                            mofExtent,
-                            paths.PathMof ?? throw new InvalidOperationException("PathMof == null"));
-                    }
-                }
-            }
-
             var bootStrapper = new Bootstrapper(workspaceLogic);
+            bootStrapper.UmlInfrastructure = umlExtent;
+            bootStrapper.MofInfrastructure = mofExtent;
+            bootStrapper.PrimitiveTypesInfrastructure = primitiveExtent;
             if (isSlim)
             {
-                // Now do the bootstrap
-                if (mode == BootstrapMode.SlimMof)
-                {
-                    bootStrapper.StrapMofSlim(
-                        primitiveInfrastructure: primitiveExtent,
-                        umlInfrastructure: umlExtent,
-                        mofInfrastructure: mofExtent);
-                }
-                else if (mode == BootstrapMode.SlimUml)
-                {
-                    bootStrapper.StrapUmlSlim(
-                        primitiveInfrastructure: primitiveExtent,
-                        umlInfrastructure: umlExtent);
-                }
-
                 dataLayer.Set(new _UML());
                 dataLayer.Set(new _PrimitiveTypes());
-
-                if (mode == BootstrapMode.SlimMof)
-                {
-                    dataLayer.Set(new _MOF());
-                }
             }
             else
             {
-                // Now do the bootstrap
-                if (mode == BootstrapMode.Mof)
-                {
-                    bootStrapper.StrapMof(
-                        primitiveInfrastructure: primitiveExtent,
-                        umlInfrastructure: umlExtent,
-                        mofInfrastructure: mofExtent);
-                }
-                else if (mode == BootstrapMode.Uml)
-                {
-                    bootStrapper.StrapUml(
-                        primitiveInfrastructure: primitiveExtent,
-                        umlInfrastructure: umlExtent,
-                        mofDataLayer: dataLayer.MetaWorkspaces.FirstOrDefault());
-                }
-
                 dataLayer.Create<FillTheUML, _UML>();
                 dataLayer.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
 

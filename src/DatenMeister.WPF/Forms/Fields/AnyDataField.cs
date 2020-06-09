@@ -46,9 +46,11 @@ namespace DatenMeister.WPF.Forms.Fields
                 }
             }
 
+            // When element is known to be an element, try to read it as an element
+            // if it does not return a value, then try to read it in as an object
             var elementValue = isPrimitive 
                 ? value.getOrDefault<object>(_name)
-                : value.getOrDefault<IElement>(_name);
+                : value.getOrDefault<IElement>(_name) ?? value.getOrDefault<object>(_name);
 
             _textRadioButton = new RadioButton
             {

@@ -31,7 +31,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public object GetProperty(string property)
+        public object? GetProperty(string property, ObjectType objectType)
         {
             int column;
             if (SheetItem.Columns.TryGetValue(property, out column))
@@ -179,7 +179,9 @@ namespace DatenMeister.Excel.EMOF
                 }
                 else
                 {
-                    secondPart = GetProperty(SheetItem.ExcelProvider.Settings.idColumnName).ToString();
+                    secondPart =
+                        GetProperty(SheetItem.ExcelProvider.Settings.idColumnName, ObjectType.String)?.ToString() ??
+                        string.Empty;
                 }
 
                 return $"{firstPart}.{secondPart}";

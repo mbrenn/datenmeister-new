@@ -106,8 +106,9 @@ namespace DatenMeister.Provider.InMemory
         /// Gets the property of the element or returns an exception, if the property could not be found
         /// </summary>
         /// <param name="property"></param>
+        /// <param name="objectType"></param>
         /// <returns></returns>
-        public object? GetProperty(string property)
+        public object? GetProperty(string property, ObjectType objectType = ObjectType.None)
         {
             if (_values.TryGetValue(property, out var result))
             {

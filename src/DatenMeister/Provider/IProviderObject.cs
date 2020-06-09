@@ -26,7 +26,13 @@ namespace DatenMeister.Provider
 
         bool IsPropertySet(string property);
 
-        object? GetProperty(string property);
+        /// <summary>
+        /// Gets the property from the database
+        /// </summary>
+        /// <param name="property">Property to be queried</param>
+        /// <param name="objectType">The proposed objecttype to retrieve from the database. </param>
+        /// <returns></returns>
+        object? GetProperty(string property, ObjectType objectType = ObjectType.None);
 
         IEnumerable<string> GetProperties();
 

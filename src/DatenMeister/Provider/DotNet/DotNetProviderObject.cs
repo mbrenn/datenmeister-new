@@ -64,7 +64,7 @@ namespace DatenMeister.Provider.DotNet
             _type.GetProperty(property) != null;
 
         /// <inheritdoc />
-        public object? GetProperty(string property)
+        public object? GetProperty(string property, ObjectType objectType)
         {
             var result = GetValueOfProperty(property);
             return Provider.CreateDotNetElementIfNecessary(result);

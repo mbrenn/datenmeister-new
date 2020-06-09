@@ -221,7 +221,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public object GetProperty(string property)
+        public object GetProperty(string property, ObjectType objectType)
         {
             var normalizePropertyName = NormalizePropertyName(property);
 

@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -179,10 +180,10 @@ namespace DatenMeister.Uml.Helper
 
                 // Property exists
                 object? propertyValue;
-                if (value is MofObject valueConverted && noReferences)
+                if (value is MofObject valueConverted)
                 {
                     // If no references is set and the given object supports the query via 'noReferences' 
-                    propertyValue = valueConverted.get(property, true);
+                    propertyValue = valueConverted.get(property, noReferences, ObjectType.ReflectiveSequence);
                 }
                 else
                 {

@@ -241,6 +241,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     {
                         if (!element.HasAttributes && !element.HasElements)
                         {
+                            // Element is a string, so add it
                             list.Add(element.Value);
                         }
                         else
@@ -257,6 +258,13 @@ namespace DatenMeister.Provider.XMI.EMOF
             var attribute = XmlNode.Attribute(normalizePropertyName);
             if (attribute != null)
             {
+                if (objectType == ObjectType.Element)
+                {
+                    // User requests an element, so return a Uri reference
+                    return new UriReference($"#{attribute.Value}");
+                }
+
+                // User requests normal types
                 return attribute.Value;
             }
 

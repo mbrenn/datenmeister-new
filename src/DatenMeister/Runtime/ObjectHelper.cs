@@ -22,6 +22,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object to be queried</param>
         /// <param name="property">Property to be queried</param>
         /// <param name="noReferences">Flag, if no recursion shall occur</param>
+        /// <param name="objectType">Defines the object type</param>
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
         private static object? GetAsSingle(
             this IObject value, 
@@ -30,9 +31,9 @@ namespace DatenMeister.Runtime
             ObjectType objectType = ObjectType.None)
         {
             object? propertyValue;
-            if (noReferences && value is MofObject valueAsMofObject)
+            if (value is MofObject valueAsMofObject)
             {
-                propertyValue = valueAsMofObject.get(property, true);
+                propertyValue = valueAsMofObject.get(property, noReferences, objectType);
             }
             else
             {
@@ -86,12 +87,12 @@ namespace DatenMeister.Runtime
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
 
-                return (T) metaObject.GetMetaObject().get(property, noReferences)!;
+                return (T) metaObject.GetMetaObject().get(property, noReferences, ObjectType.None)!;
             }
 
             if (typeof(T) == typeof(object) && value is MofObject mofObject2)
             {
-                return (T) mofObject2.get(property, noReferences)!;
+                return (T) mofObject2.get(property, noReferences, ObjectType.None)!;
             }
 
             if (typeof(T) == typeof(string))

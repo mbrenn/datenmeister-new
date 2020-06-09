@@ -287,5 +287,15 @@ namespace DatenMeister.Uml.Helper
 
             return newGeneralization;
         }
+
+        /// <summary>
+        /// Checks whether the element is of a primitive type
+        /// </summary>
+        /// <param name="element">Element to be checked</param>
+        /// <returns>true, if primitive type, otherwise false, if probably of class or something else</returns>
+        public static bool IsOfPrimitiveType(IElement element)
+        {
+            return (element.getMetaClass() as IHasId)?.Id == "PrimitiveType";
+        }
     }
 }

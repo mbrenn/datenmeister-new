@@ -97,5 +97,17 @@ namespace DatenMeister.Tests.Uml
                 uml.Classification.__Classifier);
             Assert.That(isSpecialized, Is.False);
         }
+
+        [Test]
+        public void TestIsOfPrimitiveType()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
+            var uml = workspaceLogic.GetUmlData();
+            var primitiveTypes = workspaceLogic.GetPrimitiveData();
+
+            Assert.That(ClassifierMethods.IsOfPrimitiveType(uml.Activities.__Activity), Is.False);
+            Assert.That(ClassifierMethods.IsOfPrimitiveType(primitiveTypes.__Integer), Is.True);
+        }
     }
 }

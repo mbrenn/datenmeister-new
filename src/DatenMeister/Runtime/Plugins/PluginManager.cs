@@ -12,6 +12,7 @@ namespace DatenMeister.Runtime.Plugins
     public class PluginManager
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(PluginManager));
+        private List<Type>? _pluginTypes;
 
         /// <summary>
         /// Gets or sets va value indicating whtether at least one exception occured during the loading.
@@ -61,8 +62,8 @@ namespace DatenMeister.Runtime.Plugins
         /// <returns>true, if all plugins have been started without exception</returns>
         public bool StartPlugins(ILifetimeScope kernel, IPluginLoader pluginLoader, PluginLoadingPosition loadingPosition)
         {
-            var pluginAllList = pluginLoader.GetPluginTypes();
-            var pluginList = pluginAllList
+            _pluginTypes ??= pluginLoader.GetPluginTypes();
+            var pluginList = _pluginTypes
                 .Where(type => GetPluginEntry(type).HasFlag(loadingPosition))
                 .Select(type => (IDatenMeisterPlugin) kernel.Resolve(type))
                 .ToList();

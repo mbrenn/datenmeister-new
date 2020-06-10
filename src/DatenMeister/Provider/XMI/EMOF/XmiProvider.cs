@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
@@ -163,13 +162,38 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <summary>
+        /// Defines the cache
+        /// </summary>
+        private readonly Dictionary<string, XElement> _cache = new Dictionary<string, XElement>();
+        
+        /// <summary>
         /// Finds a certain Xml Element by its id
         /// </summary>
         /// <param name="id">Id to be queried</param>
         /// <returns>The found element</returns>
-        private XElement FindById(string id)
+        private XElement? FindById(string id)
         {
-            return _rootNode.Descendants().FirstOrDefault(x => XmiId.Get(x) == id);
+            lock (_cache)
+            {
+                if (_cache.TryGetValue(id, out var element))
+                {
+                    if (XmiId.Get(element) == id)
+                    {
+                        return element;
+                    }
+
+                    _cache.Remove(id);
+                }
+
+                foreach (var x in _rootNode.Descendants())
+                {
+                    var foundId = XmiId.Get(x);
+                    if (foundId != null)
+                        _cache[foundId] = x;
+                }
+
+                return _cache.TryGetValue(id, out var element2) ? element2 : null;
+            }
         }
 
         /// <inheritdoc />

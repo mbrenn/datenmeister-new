@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
@@ -10,7 +11,7 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// <summary>
     /// Defines the provider for xml manipulation
     /// </summary>
-    public class XmiProvider : IProvider, IHasUriResolver
+    public class XmiProvider : IProvider, IHasUriResolver, IProviderSupportFunctions
     {
         /// <summary>
         /// Defines the name of the element
@@ -45,6 +46,8 @@ namespace DatenMeister.Provider.XMI.EMOF
             _rootNode = new XElement(rootNodeName);
             _document.Add(_rootNode);
             /*_rootNode.SetAttributeValue(_urlPropertyName, uri);*/
+
+            CreateProviderSupportFunctions();
         }
 
         public XmiProvider(XDocument document /*, string rootNodeName = DefaultRootNodeName*/)
@@ -58,6 +61,22 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 throw new InvalidOperationException($"The given document does not have a root node called {rootNodeName}.");
             }
+            
+            CreateProviderSupportFunctions();
+        }
+
+        private void CreateProviderSupportFunctions()
+        {
+            _supportFunctions = new ProviderSupportFunctions
+            {
+                QueryById = (id) =>
+                {
+                    var result = FindById(id);
+                    if (result == null) return null;
+
+                    return new XmiProviderObject(result, this);
+                }
+            };
         }
 
         /// <summary>
@@ -173,5 +192,17 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns></returns>
         public ProviderCapability GetCapabilities() =>
             ProviderCapability.StoreMetaDataInExtent;
+
+        /// <summary>
+        /// Defines the interface
+        /// </summary>
+        private ProviderSupportFunctions? _supportFunctions;
+
+        /// <summary>
+        /// Gets the support functions
+        /// </summary>
+        public ProviderSupportFunctions ProviderSupportFunctions => _supportFunctions
+                                                                    ?? throw new NotSupportedException(
+                                                                        "Should not happen");
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using BurnSystems.Logging;
@@ -166,19 +167,26 @@ namespace DatenMeister.Integration
 
                 var umlWatch = new Stopwatch();
                 umlWatch.Start();
+                
                 Logger.Debug("Bootstrapping MOF and UML...");
-                Bootstrapper.PerformFullBootstrap(
-                    paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceMof) ?? throw new InvalidOperationException("Workspace for MOF is not found"),
-                    workspaceLogic,
-                    workspaceData.Mof,
-                    _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
-                Bootstrapper.PerformFullBootstrap(
-                    paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceUml) ?? throw new InvalidOperationException("Workspace for UML is not found"),
-                    workspaceLogic,
-                    workspaceData.Uml,
-                    _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
+                var mofTask = Task.Run(() =>
+                    Bootstrapper.PerformFullBootstrap(
+                        paths,
+                        workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
+                        throw new InvalidOperationException("Workspace for MOF is not found"),
+                        workspaceLogic,
+                        workspaceData.Mof,
+                        _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof));
+                var umlTask = Task.Run(() =>
+                    Bootstrapper.PerformFullBootstrap(
+                        paths,
+                        workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceUml) ??
+                        throw new InvalidOperationException("Workspace for UML is not found"),
+                        workspaceLogic,
+                        workspaceData.Uml,
+                        _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml));
+                Task.WaitAll(mofTask, umlTask);
+                
                 umlWatch.Stop();
 
                 Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
@@ -186,7 +194,7 @@ namespace DatenMeister.Integration
                 pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
 
                 // Now goes through all classes and add the configuration support
-                storageMap.LoadAllExtentStorageConfigurationsFromAssembly();
+                var loadConfigurationTask = Task.Run(() => storageMap.LoadAllExtentStorageConfigurationsFromAssembly());
 
                 // Creates the workspace and extent for the types layer which are belonging to the types
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
@@ -231,7 +239,8 @@ namespace DatenMeister.Integration
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
                 SettingsProviderHelper.Initialize(scope, workspaceLogic);
-
+                loadConfigurationTask.Wait();
+                
                 // Finally loads the plugin
                 pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 

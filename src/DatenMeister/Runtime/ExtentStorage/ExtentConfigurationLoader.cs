@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -54,30 +55,40 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             var path = ExtentStorageData.FilePath;
             var loaded = new List<Tuple<ExtentLoaderConfig, XElement>>();
-            var document = XDocument.Load(path);
-
-            foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
+            if (!File.Exists(path))
             {
-                var xmlConfig = xmlExtent.Element("config") ?? throw new InvalidOperationException("extents::extent::config Xml node not found");
-                var configType = xmlConfig.Attribute("configType")?.Value ?? throw new InvalidOperationException("configType not found");
-                configType = Migration.TranslateLegacyConfigurationType(configType);
+                Logger.Info($"File for Extent not found: {path}");
+            }
+            else
+            {
+                var document = XDocument.Load(path);
 
-                // Gets the type of the configuration in the white list to avoid any unwanted security issue
-                var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName?.ToLower() == configType.ToLower());
-                if (found == null)
+                foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
                 {
-                    Logger.Fatal($"Unknown Configuration Type: {configType}");
-                    ExtentStorageData.FailedLoading = true;
-                    throw new InvalidOperationException($"Unknown Configuration Type: {configType}");
+                    var xmlConfig = xmlExtent.Element("config") ??
+                                    throw new InvalidOperationException("extents::extent::config Xml node not found");
+                    var configType = xmlConfig.Attribute("configType")?.Value ??
+                                     throw new InvalidOperationException("configType not found");
+                    configType = Migration.TranslateLegacyConfigurationType(configType);
+
+                    // Gets the type of the configuration in the white list to avoid any unwanted security issue
+                    var found = _mapper.ConfigurationTypes.FirstOrDefault(x =>
+                        x.FullName?.ToLower() == configType.ToLower());
+                    if (found == null)
+                    {
+                        Logger.Fatal($"Unknown Configuration Type: {configType}");
+                        ExtentStorageData.FailedLoading = true;
+                        throw new InvalidOperationException($"Unknown Configuration Type: {configType}");
+                    }
+
+                    xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
+                    var serializer = new XmlSerializer(found);
+                    var config = serializer.Deserialize(xmlConfig.CreateReader());
+
+                    var xmlMeta = xmlExtent.Element("metadata");
+
+                    loaded.Add(new Tuple<ExtentLoaderConfig, XElement>((ExtentLoaderConfig) config, xmlMeta));
                 }
-
-                xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
-                var serializer = new XmlSerializer(found);
-                var config = serializer.Deserialize(xmlConfig.CreateReader());
-
-                var xmlMeta = xmlExtent.Element("metadata");
-
-                loaded.Add(new Tuple<ExtentLoaderConfig, XElement>((ExtentLoaderConfig) config, xmlMeta));
             }
 
             return loaded;

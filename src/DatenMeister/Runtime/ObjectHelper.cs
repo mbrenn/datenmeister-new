@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Uml.Helper;
 // ReSharper disable InconsistentNaming
 
@@ -21,19 +22,24 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object to be queried</param>
         /// <param name="property">Property to be queried</param>
         /// <param name="noReferences">Flag, if no recursion shall occur</param>
+        /// <param name="objectType">Defines the object type</param>
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
-        private static object? GetAsSingle(this IObject value, string property, bool noReferences = false)
+        private static object? GetAsSingle(
+            this IObject value, 
+            string property,
+            bool noReferences = false,
+            ObjectType objectType = ObjectType.None)
         {
             object? propertyValue;
-            if (noReferences && value is MofObject valueAsMofObject)
+            if (value is MofObject valueAsMofObject)
             {
-                propertyValue = valueAsMofObject.get(property, true);
+                propertyValue = valueAsMofObject.get(property, noReferences, objectType);
             }
             else
             {
                 propertyValue = value.get(property);
             }
-            
+
             if (propertyValue is IEnumerable<object> asObjectList)
             {
                 var list = asObjectList.ToList();
@@ -81,48 +87,48 @@ namespace DatenMeister.Runtime
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
 
-                return (T) metaObject.GetMetaObject().get(property, noReferences)!;
+                return (T) metaObject.GetMetaObject().get(property, noReferences, ObjectType.None)!;
             }
 
             if (typeof(T) == typeof(object) && value is MofObject mofObject2)
             {
-                return (T) mofObject2.get(property, noReferences)!;
+                return (T) mofObject2.get(property, noReferences, ObjectType.None)!;
             }
 
             if (typeof(T) == typeof(string))
             {
-                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences)!)!;
+                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences, ObjectType.String)!)!;
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!)!;
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences, ObjectType.Integer)!)!;
             }
 
             if (typeof(T) == typeof(int?))
             {
-                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences)!)!;
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences, ObjectType.Integer)!)!;
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences)!)!;
+                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences, ObjectType.Double)!)!;
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return ((T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences)))!;
+                return ((T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences, ObjectType.Boolean)))!;
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                var asSingle = (value.GetAsSingle(property, noReferences) as IObject)!;
+                var asSingle = (value.GetAsSingle(property, noReferences, ObjectType.Element) as IObject)!;
                 return ((T) asSingle)!;
             }
 
             if (typeof(T) == typeof(IElement))
             {
-                var asSingle = (value.GetAsSingle(property, noReferences) as IElement)!;
+                var asSingle = (value.GetAsSingle(property, noReferences, ObjectType.Element) as IElement)!;
                 return asSingle is MofObjectShadow ? default : (T) asSingle;
             }
 
@@ -152,8 +158,12 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(DateTime))
             {
-                if (DateTime.TryParse(value.GetAsSingle(property, noReferences).ToString(), CultureInfo.InvariantCulture,
-                    DateTimeStyles.None, out var result))
+                if (DateTime.TryParse(
+                    value.GetAsSingle(property, noReferences, ObjectType.DateTime)?.ToString() 
+                        ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out var result))
                 {
                     return (T) (object) result;
                 }
@@ -163,12 +173,12 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(object))
             {
-                return ((T) value.GetAsSingle(property, noReferences))!;
+                return ((T) value.GetAsSingle(property, noReferences, ObjectType.None))!;
             }
 
             if (typeof(T).IsEnum)
             {
-                var valueAsElement = value.GetAsSingle(property, noReferences);
+                var valueAsElement = value.GetAsSingle(property, noReferences, ObjectType.Enum);
                 if (valueAsElement == null)
                 {
                     return default(T);

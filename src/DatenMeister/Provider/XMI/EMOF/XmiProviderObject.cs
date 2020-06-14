@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.XPath;
 using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime;
 
@@ -203,8 +204,34 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public string? MetaclassUri
         {
-            get => XmlNode.Attribute(TypeAttribute)?.Value;
+            get => GetMetaClassUri();
             set => XmlNode.SetAttributeValue(TypeAttribute, value);
+        }
+
+        private string? GetMetaClassUri()
+        {
+            var result = XmlNode.Attribute(TypeAttribute)?.Value;
+            if (result == null) return null;
+
+            var posColon = result.IndexOf(':');
+            if (posColon == -1)
+            {
+                return result;
+            }
+
+            var xmlNamespace = result.Substring(0, posColon);
+            var type = result.Substring(posColon + 1);
+
+            var navigator = XmlNode.CreateNavigator();
+            navigator.MoveToFollowing(XPathNodeType.Element);
+            var foundNamespace = navigator.GetNamespace(xmlNamespace);
+            if (foundNamespace != null && !string.IsNullOrEmpty(foundNamespace))
+            {
+                // We have found something, let's combine the url
+                return foundNamespace + "#" + type;
+            }
+
+            return result;
         }
 
         /// <inheritdoc />
@@ -221,7 +248,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
-        public object GetProperty(string property)
+        public object GetProperty(string property, ObjectType objectType)
         {
             var normalizePropertyName = NormalizePropertyName(property);
 
@@ -241,6 +268,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     {
                         if (!element.HasAttributes && !element.HasElements)
                         {
+                            // Element is a string, so add it
                             list.Add(element.Value);
                         }
                         else
@@ -257,6 +285,13 @@ namespace DatenMeister.Provider.XMI.EMOF
             var attribute = XmlNode.Attribute(normalizePropertyName);
             if (attribute != null)
             {
+                if (objectType == ObjectType.Element)
+                {
+                    // User requests an element, so return a Uri reference
+                    return new UriReference($"#{attribute.Value}");
+                }
+
+                // User requests normal types
                 return attribute.Value;
             }
 

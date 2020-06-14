@@ -39,6 +39,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the provider for the given extent
         /// </summary>
         public IProvider Provider { get; }
+        
+        /// <summary>
+        /// Gets a value whether the extent will support the full Uml capabilities regarding auto enumeration
+        /// and default value of properties. For certain extents, especially 'just getting loaded' extents,
+        /// the slim evaluation might bring shorter execution times 
+        /// </summary>
+        public bool SlimUmlEvaluation { get; set; }
 
         /// <summary>
         /// Gets or sets the workspace to which the extent is allocated

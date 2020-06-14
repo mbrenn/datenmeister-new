@@ -4,6 +4,7 @@ using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
@@ -34,7 +35,22 @@ namespace DatenMeister.WPF.Forms.Fields
                 };
             }
 
-            var elementValue = value.getOrDefault<object>(_name);
+            var isPrimitive = true;
+            var metaClass = (value as IElement)?.getMetaClass();
+            if (metaClass != null)
+            {
+                var propertyType = ClassifierMethods.GetPropertyOfClassifier(metaClass, _name);
+                if (propertyType != null)
+                {
+                    isPrimitive = ClassifierMethods.IsOfPrimitiveType(propertyType);
+                }
+            }
+
+            // When element is known to be an element, try to read it as an element
+            // if it does not return a value, then try to read it in as an object
+            var elementValue = isPrimitive 
+                ? value.getOrDefault<object>(_name)
+                : value.getOrDefault<IElement>(_name) ?? value.getOrDefault<object>(_name);
 
             _textRadioButton = new RadioButton
             {

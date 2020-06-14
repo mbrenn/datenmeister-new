@@ -5,6 +5,7 @@ using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
 
@@ -16,7 +17,7 @@ namespace DatenMeister.Runtime
     /// Caches the ids to improve navigation
     /// </summary>
     /// <typeparam name="T">Type of the elements that are abstracted</typeparam>
-    public class ExtentUrlNavigator<T> where T : class, IElement, IHasId
+    public class ExtentUrlNavigator<T> where T : MofElement, IHasId
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentUrlNavigator<T>));
 
@@ -85,6 +86,22 @@ namespace DatenMeister.Runtime
 
                     // Queries the object
                     var queryObjectId = WebUtility.UrlDecode(fragment);
+
+                    if (_extent.Provider is IProviderSupportFunctions supportFunctions &&
+                        supportFunctions.ProviderSupportFunctions.QueryById != null)
+                    {
+                        var resultingObject = supportFunctions.ProviderSupportFunctions.QueryById(queryObjectId);
+                        if (resultingObject != null)
+                        {
+#if DEBUG
+                            if (_extent == null) throw new InvalidOperationException("_extent is null");                   
+#endif
+                            var resultElement = new MofElement(resultingObject, _extent)
+                                {Extent = _extent};
+                            _cacheIds[uri] = resultElement;
+                            return (T) resultElement;
+                        }
+                    }
 
                     // Now go through the list
                     foreach (var element in AllDescendentsQuery.GetDescendents(_extent))

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Models.Forms
 {
@@ -8,6 +9,11 @@ namespace DatenMeister.Models.Forms
         /// Gets the values being used
         /// </summary>
         public IList<ValuePair> values { get; set; } = new List<ValuePair>();
+        
+        /// <summary>
+        /// If set, the values will be set from the enumeration type. 
+        /// </summary>
+        public IElement? valuesByEnumeration { get; set; }
 
         public DropDownFieldData() : base()
         {

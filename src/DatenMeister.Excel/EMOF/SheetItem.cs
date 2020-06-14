@@ -79,7 +79,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public object GetProperty(string property)
+        public object GetProperty(string property, ObjectType objectType)
         {
             switch (property)
             {

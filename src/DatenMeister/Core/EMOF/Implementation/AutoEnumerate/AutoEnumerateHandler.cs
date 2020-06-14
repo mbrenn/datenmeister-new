@@ -30,7 +30,12 @@ namespace DatenMeister.Core.EMOF.Implementation.AutoEnumerate
             var autoEnumerateType = parentExtent.GetConfiguration().AutoEnumerateType;
             if (autoEnumerateType != AutoEnumerateType.Guid && autoEnumerateType != AutoEnumerateType.Ordinal)
             {
-                autoEnumerateType = AutoEnumerateType.Guid;
+                autoEnumerateType = AutoEnumerateType.None;
+            }
+
+            if (autoEnumerateType == AutoEnumerateType.None)
+            {
+                return;
             }
 
             // Gets the type and the associated properties

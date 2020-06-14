@@ -22,7 +22,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
         /// <param name="alreadyIn">Returns the properties that are already in. </param>
-        public static IEnumerable<IElement> GetPropertiesOfClassifier(IObject classifier, HashSet<string>? alreadyIn = null)
+        public static IEnumerable<IElement> GetPropertiesOfClassifier(IObject classifier, HashSet<string>? alreadyIn = null, bool followGeneralizations = true)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
             alreadyIn ??= new HashSet<string>();
@@ -50,12 +50,15 @@ namespace DatenMeister.Uml.Helper
                 }
             }
 
-            // Check for generalizations
-            foreach (var general in GetGeneralizations(classifier))
+            if (followGeneralizations)
             {
-                foreach (var found in GetPropertiesOfClassifier(general, alreadyIn))
+                // Check for generalizations
+                foreach (var general in GetGeneralizations(classifier))
                 {
-                    yield return found;
+                    foreach (var found in GetPropertiesOfClassifier(general, alreadyIn, false))
+                    {
+                        yield return found;
+                    }
                 }
             }
         }
@@ -286,6 +289,16 @@ namespace DatenMeister.Uml.Helper
                 specializedClassifier);*/
 
             return newGeneralization;
+        }
+
+        /// <summary>
+        /// Checks whether the element is of a primitive type
+        /// </summary>
+        /// <param name="element">Element to be checked</param>
+        /// <returns>true, if primitive type, otherwise false, if probably of class or something else</returns>
+        public static bool IsOfPrimitiveType(IElement element)
+        {
+            return (element.getMetaClass() as IHasId)?.Id == "PrimitiveType";
         }
     }
 }

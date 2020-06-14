@@ -74,8 +74,9 @@ namespace DatenMeister.Provider
         /// Gets the property
         /// </summary>
         /// <param name="property">Property to be set</param>
+        /// <param name="objectType">Object types to be set</param>
         /// <returns>Value to be set</returns>
-        public object? GetProperty(string property)
+        public object? GetProperty(string property, ObjectType objectType)
         {   
             _mappings.TryGetValue(property, out var result);
 
@@ -109,20 +110,20 @@ namespace DatenMeister.Provider
 
         public void EmptyListForProperty(string property)
         {
-            var result = GetProperty(property) as ICollection<object>;
+            var result = GetProperty(property, ObjectType.ReflectiveSequence) as ICollection<object>;
             result?.Clear();
         }
 
         public bool AddToProperty(string property, object value, int index = -1)
         {
-            var result = GetProperty(property) as ICollection<object>;
+            var result = GetProperty(property, ObjectType.ReflectiveSequence) as ICollection<object>;
             result?.Add(value);
             return true;
         }
 
         public bool RemoveFromProperty(string property, object value)
         {
-            var result = GetProperty(property) as ICollection<object>;
+            var result = GetProperty(property, ObjectType.ReflectiveSequence) as ICollection<object>;
             return result?.Remove(value) == true;
         }
 

@@ -161,12 +161,12 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public object? get(string property)
-            => get(property, false);
+            => get(property, false, ObjectType.None);
 
         // ReSharper disable once InconsistentNaming
-        public object? get(string property, bool noReferences)
+        public object? get(string property, bool noReferences, ObjectType objectType)
         {
-            var result = ProviderObject.GetProperty(property);
+            var result = ProviderObject.GetProperty(property, objectType);
             return ConvertToMofObject(this, property, result, noReferences);
         }
 

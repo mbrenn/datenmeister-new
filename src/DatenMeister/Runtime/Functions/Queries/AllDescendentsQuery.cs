@@ -5,6 +5,7 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime.Functions.Queries
@@ -102,7 +103,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                     continue;
                 }
                 
-                var value = asMofObject.get(property, noReferences: true);
+                var value = asMofObject.get(property, noReferences: true, ObjectType.None);
 
                 if (value is IObject valueAsObject)
                 {

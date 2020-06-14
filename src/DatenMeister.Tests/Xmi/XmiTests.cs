@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.Standards;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
@@ -137,7 +138,7 @@ namespace DatenMeister.Tests.Xmi
 
             var firstElement = generalizedElements.ElementAtOrDefault(0) as IElement;
             Assert.That(firstElement,Is.Not.Null);
-            var generalContent = firstElement.get(generalProperty);
+            var generalContent = firstElement.getOrDefault<IElement>(generalProperty);
             Assert.That(generalContent,Is.InstanceOf<IElement>());
             Assert.That(generalContent,Is.EqualTo(uml.CommonStructure.__PackageableElement));
         }

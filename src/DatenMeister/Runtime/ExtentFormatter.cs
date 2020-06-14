@@ -93,7 +93,7 @@ namespace DatenMeister.Runtime
             IncreaseIndentation();
             foreach (var property in asProperties.getPropertiesBeingSet())
             {
-                var value = mofObject.get(property, true);
+                var value = mofObject.get(property, true, ObjectType.None);
 
                 if (DotNetHelper.IsOfPrimitiveType(value))
                 {

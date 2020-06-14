@@ -5,6 +5,9 @@ namespace DatenMeister.Core.EMOF.Implementation.AutoEnumerate
     /// </summary>
     public enum AutoEnumerateType
     {
+        // No auto enumeration
+        None, 
+        
         /// <summary>
         /// IDs will retrieve a GUID
         /// </summary>

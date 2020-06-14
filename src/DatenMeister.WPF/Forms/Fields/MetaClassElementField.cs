@@ -35,9 +35,16 @@ namespace DatenMeister.WPF.Forms.Fields
                 textField.TextDecorations = TextDecorations.Underline;
                 textField.MouseDown += (sender, args) =>
                 {
-                    _ = NavigatorForItems.NavigateToElementDetailView(
-                        detailForm.NavigationHost,
-                        metaClass);
+                    if (metaClass == null)
+                    {
+                        MessageBox.Show("The 'metaClass' is not found.");
+                    }
+                    else
+                    {
+                        _ = NavigatorForItems.NavigateToElementDetailView(
+                            detailForm.NavigationHost,
+                            metaClass);
+                    }
                 };
                 
                 textField.Foreground = SystemColors.HotTrackBrush;

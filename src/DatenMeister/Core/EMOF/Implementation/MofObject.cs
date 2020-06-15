@@ -166,8 +166,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         // ReSharper disable once InconsistentNaming
         public object? get(string property, bool noReferences, ObjectType objectType)
         {
+            // Checks, if we have a dynamic property
+            var (isValid, resultValue) = GetDynamicProperty(property);
+            if (isValid)
+            {
+                return ConvertToMofObject(this, property, resultValue, noReferences);
+            }
+            
+            // If not, return the item from the database
             var result = ProviderObject.GetProperty(property, objectType);
             return ConvertToMofObject(this, property, result, noReferences);
+        }
+
+        protected virtual (bool, object?) GetDynamicProperty(string property)
+        {
+            return (false, null);
         }
 
         /// <summary>
@@ -333,7 +346,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool isSet(string property)
+        public virtual bool isSet(string property)
             => ProviderObject.IsPropertySet(property);
 
         /// <inheritdoc />

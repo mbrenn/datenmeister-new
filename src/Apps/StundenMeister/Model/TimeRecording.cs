@@ -37,12 +37,12 @@ namespace StundenMeister.Model
         /// </summary>
         /// <param name="timeRecording">Time recording to be evaluated</param>
         /// <returns>Number of seconds</returns>
-        public static int GetTimeSpanHours(IObject timeRecording)
+        public static double GetTimeSpanHours(IObject timeRecording)
         {
             var start = timeRecording.getOrDefault<DateTime>(nameof(startDate));
             var end = timeRecording.getOrDefault<DateTime>(nameof(endDate));
             
-            return (int) Math.Ceiling((end - start).TotalHours);
+            return (end - start).TotalHours;
         }
     }
 }

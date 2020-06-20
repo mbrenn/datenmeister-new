@@ -56,7 +56,14 @@ namespace StundenMeister.Logic
             StundenMeisterData.TheOne.ClassTimeRecording =
                 types[Array.IndexOf(TypeList.Types, typeof(TimeRecording))];
             
-            _localTypeSupport.InternalTypes.GetWorkspace().
+            _localTypeSupport.InternalTypes.GetWorkspace().DynamicFunctionManager.AddDerviceProperty(
+                StundenMeisterData.TheOne.ClassTimeRecording, 
+                nameof(TimeRecording.timeSpanSeconds),  
+                x=> TimeRecording.GetTimeSpanSeconds(x));
+            _localTypeSupport.InternalTypes.GetWorkspace().DynamicFunctionManager.AddDerviceProperty(
+                StundenMeisterData.TheOne.ClassTimeRecording, 
+                nameof(TimeRecording.timeSpanHours),  
+                x=> TimeRecording.GetTimeSpanHours(x));
 
             var directory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

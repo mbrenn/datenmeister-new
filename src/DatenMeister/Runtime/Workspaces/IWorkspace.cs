@@ -1,6 +1,8 @@
 ﻿using DatenMeister.Core.Filler;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Runtime.DynamicFunctions;
+
 // ReSharper disable InconsistentNaming
 
 namespace DatenMeister.Runtime.Workspaces
@@ -56,5 +58,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
         TFilledType? GetFromMetaWorkspace<TFilledType>(MetaRecursive metaRecursive = MetaRecursive.JustOne) where TFilledType : class, new();
+        
+        /// <summary>
+        /// Gets the dynamic function manager
+        /// </summary>
+        DynamicFunctionManager DynamicFunctionManager { get; }
     }
 }

@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Runtime.DynamicFunctions;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -193,6 +194,13 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        public DynamicFunctionManager GetDynamicFunctionManager(string workspaceId)
+        {
+                return (GetWorkspace(workspaceId) 
+                        ?? throw new InvalidOperationException($"Workspace not found {workspaceId}"))
+                    .DynamicFunctionManager;
+        }
+
         /// <summary>
         /// Gets an enumeration of all workspaces
         /// </summary>
@@ -242,6 +250,14 @@ namespace DatenMeister.Runtime.Workspaces
                 && mofExtent.ChangeEventManager != _changeEventManager)
             {
                 mofExtent.ChangeEventManager = _changeEventManager;
+            }
+
+            if (newExtent is MofUriExtent mofUriExtent)
+            {
+                lock (_fileData)
+                {
+                    mofUriExtent.DynamicFunctionManager = workspace.DynamicFunctionManager;
+                }
             }
 
             SendEventForWorkspaceChange(workspace);

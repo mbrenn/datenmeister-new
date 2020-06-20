@@ -31,6 +31,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         private static readonly XNamespace XDatenMeisterNamespace = "http://datenmeister.net/";
 
         private static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
+        
+        internal object LockObject  = new object(); 
 
         /// <summary>
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information
@@ -109,56 +111,69 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
-            if (valueAsObject is XmiProviderObject providerObject)
+            lock (LockObject)
             {
-                _rootNode.Add(providerObject.XmlNode);
+                if (valueAsObject is XmiProviderObject providerObject)
+                {
+                    _rootNode.Add(providerObject.XmlNode);
+                }
             }
         }
 
         /// <inheritdoc />
         public bool DeleteElement(string id)
         {
-            var found = FindById(id);
-            if (found != null)
+            lock (LockObject)
             {
-                found.Remove();
-                return true;
-            }
+                var found = FindById(id);
+                if (found != null)
+                {
+                    found.Remove();
+                    return true;
+                }
 
-            return false;
+                return false;
+            }
         }
 
         /// <inheritdoc />
         public void DeleteAllElements()
         {
-            var found = new List<XElement>();
-
-            foreach (var node in _rootNode.Elements())
+            lock (LockObject)
             {
-                if (node.Name.Namespace == XDatenMeisterNamespace)
+                var found = new List<XElement>();
+
+                foreach (var node in _rootNode.Elements())
                 {
-                    continue;
+                    if (node.Name.Namespace == XDatenMeisterNamespace)
+                    {
+                        continue;
+                    }
+
+                    found.Add(node);
                 }
 
-                found.Add(node);
-            }
-
-            foreach (var node in found)
-            {
-                node.Remove();
+                foreach (var node in found)
+                {
+                    node.Remove();
+                }
             }
         }
 
         /// <inheritdoc />
         public IProviderObject? Get(string? id)
         {
-            if (id == null)
+            lock (LockObject)
+            {
+                if (id == null)
             {
                 return new XmiProviderObject(GetMetaNode(), this);
             }
 
             var result = FindById(id);
             return result == null ? null : new XmiProviderObject(result, this);
+            
+            }
         }
 
         /// <summary>
@@ -185,11 +200,14 @@ namespace DatenMeister.Provider.XMI.EMOF
                     _cache.Remove(id);
                 }
 
-                foreach (var x in _rootNode.Descendants())
+                lock (LockObject)
                 {
-                    var foundId = XmiId.Get(x);
-                    if (foundId != null)
-                        _cache[foundId] = x;
+                    foreach (var x in _rootNode.Descendants())
+                    {
+                        var foundId = XmiId.Get(x);
+                        if (foundId != null)
+                            _cache[foundId] = x;
+                    }
                 }
 
                 return _cache.TryGetValue(id, out var element2) ? element2 : null;
@@ -199,7 +217,13 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <inheritdoc />
         public IEnumerable<IProviderObject> GetRootObjects()
         {
-            foreach (var element in _rootNode.Elements())
+            List<XElement> rootObjects;
+            lock (LockObject)
+            {
+                rootObjects = _rootNode.Elements().ToList();
+            }
+
+            foreach (var element in rootObjects)
             {
                 if (element.Name.Namespace == XDatenMeisterNamespace)
                 {

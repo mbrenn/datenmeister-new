@@ -14,6 +14,7 @@ using DatenMeister.Provider;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.DynamicFunctions;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
@@ -48,12 +49,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool SlimUmlEvaluation { get; set; }
 
         /// <summary>
-        /// Gets or sets the workspace to which the extent is allocated
+        /// Gets or sets the Dynamic Function Manager which is used to retrieve the properties
+        /// </summary>
+        public DynamicFunctionManager? DynamicFunctionManager
+        {
+            get => _dynamicFunctionManager ?? (DynamicFunctionManager = Workspace?.DynamicFunctionManager);
+            set => _dynamicFunctionManager  = value;
+        }
+
+        /// <summary>
+        /// Gets the workspace to which the extent is allocated
         /// </summary>
         public Workspace? Workspace
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -77,6 +87,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool IsModified { get; private set; }
 
         private int _itemCountCached;
+        private DynamicFunctionManager? _dynamicFunctionManager ;
 
         public int ItemCount
         {

@@ -4,6 +4,7 @@ using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -59,6 +60,49 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Stores the cached metaclass to speed-up lookup
         /// </summary>
         private IElement? _cachedMetaClass;
+
+        private bool IsSlimEvaluation =>
+            !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
+
+        public override bool isSet(string property)
+        {
+            if (!IsSlimEvaluation)
+            {
+                // Checks whether we have a derived property 
+                var metaClass = getMetaClass();
+
+                if (metaclass?.GetExtentOf() is MofExtent extent
+                    && metaClass != null
+                    && extent.DynamicFunctionManager?.HasDerivedProperty(metaClass, property) == true)
+                {
+                    return true;
+                }
+            }
+            
+            return base.isSet(property);
+        }
+
+        protected override (bool, object?) GetDynamicProperty(string property)
+        {
+            if (!IsSlimEvaluation)
+            {
+                var metaClass = getMetaClass();
+                var extent = metaclass?.GetExtentOf() as MofExtent;
+                if (extent == null)
+                {
+                    return (false, null);
+                }
+
+                if (metaClass != null && extent?.DynamicFunctionManager != null)
+                {
+                    return extent.DynamicFunctionManager.GetDerivedPropertyValue(this, metaClass, property);
+                }
+
+                return (false, null);
+            }
+
+            return (false, null);
+        }
 
         /// <inheritdoc />
         public IElement? getMetaClass()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Web;
@@ -21,7 +22,7 @@ namespace DatenMeister.Runtime
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentUrlNavigator<T>));
 
-        private readonly Dictionary<string, IHasId> _cacheIds = new Dictionary<string, IHasId>();
+        private readonly ConcurrentDictionary<string, IHasId> _cacheIds = new ConcurrentDictionary<string, IHasId>();
 
         private readonly MofUriExtent _extent;
 
@@ -94,7 +95,7 @@ namespace DatenMeister.Runtime
                         if (resultingObject != null)
                         {
 #if DEBUG
-                            if (_extent == null) throw new InvalidOperationException("_extent is null");                   
+                            if (_extent == null) throw new InvalidOperationException("_extent is null");
 #endif
                             var resultElement = new MofElement(resultingObject, _extent)
                                 {Extent = _extent};
@@ -106,7 +107,8 @@ namespace DatenMeister.Runtime
                     // Now go through the list
                     foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
                     {
-                        var elementAsMofObject = element as IHasId ?? throw new ArgumentException("elementAsMofObject");
+                        var elementAsMofObject =
+                            element as IHasId ?? throw new ArgumentException("elementAsMofObject");
                         if (elementAsMofObject.Id == queryObjectId)
                         {
                             _cacheIds[uri] = elementAsMofObject;
@@ -126,10 +128,10 @@ namespace DatenMeister.Runtime
                     {
                         // If there is no real query string, create one with full name
                         Logger.Info("Legacy query without fullname: " + uri);
-                        
+
                         query = "fn=" + query;
                     }
-                    
+
                     var parsedValue = HttpUtility.ParseQueryString(query);
                     var fullName = parsedValue.Get("fn");
                     if (fullName != null)

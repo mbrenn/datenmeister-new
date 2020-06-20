@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Runtime.DynamicFunctions;
 
 // ReSharper disable InconsistentNaming
 
@@ -37,6 +38,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// Adds plugins which allow additional extents to an extent
         /// </summary>
         public List<IEnumerable<IExtent>> ExtentPlugins = new List<IEnumerable<IExtent>>();
+        
+        /// <summary>
+        /// Stores the dynamic function managers
+        /// </summary>
+        public DynamicFunctionManager DynamicFunctionManager { get; } = new DynamicFunctionManager();
 
         /// <summary>
         /// Adds a meta workspace

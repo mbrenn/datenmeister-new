@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,12 +16,12 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.Reports
+namespace DatenMeister.Modules.Reports.Simple
 {
     /// <summary>
     /// Defines the engine for simple reporting
     /// </summary>
-    public class ReportCreator
+    public class SimpleReportCreator
     {
         /// <summary>
         /// Stores the default classifier hints
@@ -46,7 +45,7 @@ namespace DatenMeister.Modules.Reports
         /// </summary>
         /// <param name="workspaceLogic">Default workspace Logic to be used</param>
         /// <param name="reportConfiguration">The report configuration to be used</param>
-        public ReportCreator(IWorkspaceLogic workspaceLogic, SimpleReportConfiguration reportConfiguration)
+        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, SimpleReportConfiguration reportConfiguration)
         {
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = reportConfiguration;

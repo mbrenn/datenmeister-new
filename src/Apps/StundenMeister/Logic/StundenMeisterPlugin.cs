@@ -5,13 +5,14 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 using StundenMeister.Model;
 
 namespace StundenMeister.Logic
 {
-    public class StundenMeisterLogic : IDatenMeisterPlugin
+    public class StundenMeisterPlugin : IDatenMeisterPlugin
     {
         /// <summary>
         /// Defines the configuration of the StundenMeister
@@ -23,9 +24,9 @@ namespace StundenMeister.Logic
         /// Gets the StundenMeisterLogic for the application
         /// </summary>
         /// <returns></returns>
-        public static StundenMeisterLogic Get()
+        public static StundenMeisterPlugin Get()
         {
-            return GiveMe.Scope.Resolve<StundenMeisterLogic>();
+            return GiveMe.Scope.Resolve<StundenMeisterPlugin>();
         }
 
         private readonly LocalTypeSupport _localTypeSupport;
@@ -37,7 +38,7 @@ namespace StundenMeister.Logic
         /// </summary>
         public ChangeEventManager EventManager { get; }
 
-        public StundenMeisterLogic(
+        public StundenMeisterPlugin(
             LocalTypeSupport localTypeSupport,
             ExtentManager extentManager,
             ChangeEventManager changeEventManager)
@@ -54,6 +55,8 @@ namespace StundenMeister.Logic
                 types[Array.IndexOf(TypeList.Types, typeof(CostCenter))];
             StundenMeisterData.TheOne.ClassTimeRecording =
                 types[Array.IndexOf(TypeList.Types, typeof(TimeRecording))];
+            
+            _localTypeSupport.InternalTypes.GetWorkspace().
 
             var directory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

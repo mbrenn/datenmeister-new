@@ -63,7 +63,7 @@ namespace StundenMeister
             UpdateContentByTick(true);
             UpdateCostCenters();
 
-            new CostCenterLogic(StundenMeisterLogic.Get()).NotifyForCostCenterChange(
+            new CostCenterLogic(StundenMeisterPlugin.Get()).NotifyForCostCenterChange(
                 (x, y) => { UpdateCostCenters(); });
         }
 
@@ -83,7 +83,7 @@ namespace StundenMeister
         {
             _ticksOccured++;
 
-            var logic = new TimeRecordingLogic(StundenMeisterLogic.Get());
+            var logic = new TimeRecordingLogic(StundenMeisterPlugin.Get());
             logic.UpdateCurrentRecording();
 
             var timeRecordingSets = logic.GetTimeRecordingSets();
@@ -126,7 +126,7 @@ namespace StundenMeister
                 }
             }
 
-            var costCenter = StundenMeisterLogic.Get().Data.CurrentTimeRecording
+            var costCenter = StundenMeisterPlugin.Get().Data.CurrentTimeRecording
                 ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
             var text = costCenter != null ? new StringFormatter().Format(costCenter, "{{id}} - {{name}}") : "Running";
 
@@ -135,11 +135,11 @@ namespace StundenMeister
             if (_ticksOccured > 60 * 5)
             {
                 _ticksOccured = 0;
-                StundenMeisterLogic.Get().StoreExtent();
+                StundenMeisterPlugin.Get().StoreExtent();
             }
 
             // Checks, if hibernation is currently active, if yes, ask the user
-            if (StundenMeisterLogic.Get().Data.HibernationDetected && !_inUserInteraction)
+            if (StundenMeisterPlugin.Get().Data.HibernationDetected && !_inUserInteraction)
             {
                 _inUserInteraction = true;
                 var result = MessageBox.Show("Hibernation was detected\r\n" +
@@ -220,8 +220,8 @@ namespace StundenMeister
                 ?.CostCenter;
 
             var costCenterLogic = new CostCenterLogic(
-                StundenMeisterLogic.Get());
-            var currentTimeRecording = StundenMeisterLogic.Get().Data.CurrentTimeRecording;
+                StundenMeisterPlugin.Get());
+            var currentTimeRecording = StundenMeisterPlugin.Get().Data.CurrentTimeRecording;
             var currentCostCenter = currentTimeRecording?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
 
             var costCenters = costCenterLogic.GetCostCenters();

@@ -16,7 +16,7 @@ namespace StundenMeister
         private void Start_OnClick(object sender, RoutedEventArgs e)
         {
             var logic = new TimeRecordingLogic(
-                StundenMeisterLogic.Get());
+                StundenMeisterPlugin.Get());
             logic.StartNewRecording(GetSelectedCostCenter());
             UpdateContentByTick(true);
         }
@@ -24,7 +24,7 @@ namespace StundenMeister
         private void End_OnClick(object sender, RoutedEventArgs e)
         {
             var logic = new TimeRecordingLogic(
-                StundenMeisterLogic.Get());
+                StundenMeisterPlugin.Get());
             logic.EndRecording();
             UpdateContentByTick(false);
         }
@@ -32,7 +32,7 @@ namespace StundenMeister
         private void CboCostCenters_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedCostCenter = GetSelectedCostCenter();
-            var logic = StundenMeisterLogic.Get();
+            var logic = StundenMeisterPlugin.Get();
             var recordingLogic = new TimeRecordingLogic(logic);
             
             recordingLogic.ChangeCostCenter(selectedCostCenter);
@@ -73,9 +73,9 @@ namespace StundenMeister
 
         private void ManageCostCenters_Click(object sender, RoutedEventArgs e)
         {
-            var metaclass = StundenMeisterLogic.Get().Data.ClassCostCenter;
+            var metaclass = StundenMeisterPlugin.Get().Data.ClassCostCenter;
             NavigatorForItems.NavigateToItems(
-                StundenMeisterLogic.Get().Data
+                StundenMeisterPlugin.Get().Data
                     .Extent
                     .elements()
                     .WhenMetaClassIs(metaclass),
@@ -84,9 +84,9 @@ namespace StundenMeister
 
         private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)
         {
-            var metaclass = StundenMeisterLogic.Get().Data.ClassTimeRecording;
+            var metaclass = StundenMeisterPlugin.Get().Data.ClassTimeRecording;
             NavigatorForItems.NavigateToItems(
-                StundenMeisterLogic.Get().Data
+                StundenMeisterPlugin.Get().Data
                     .Extent
                     .elements()
                     .WhenMetaClassIs(metaclass),
@@ -95,7 +95,7 @@ namespace StundenMeister
 
         private void StoreNow_Click(object sender, RoutedEventArgs e)
         {
-            StundenMeisterLogic.Get().StoreExtent();
+            StundenMeisterPlugin.Get().StoreExtent();
         }
     }
 }

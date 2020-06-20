@@ -50,4 +50,8 @@
   <ItemGroup>
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Xmi\Elements.xml" />
+    <EmbeddedResource Include="Xmi\Elements.xml" />
+  </ItemGroup>
 </Project>

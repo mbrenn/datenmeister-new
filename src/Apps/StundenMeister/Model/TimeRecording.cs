@@ -1,7 +1,6 @@
 using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
-using ICSharpCode.SharpZipLib.Core;
 
 namespace StundenMeister.Model
 {

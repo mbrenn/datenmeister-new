@@ -82,6 +82,11 @@ namespace StundenMeister
                 metaclass);
         }
 
+        private void CreateReport_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("X");
+        }
+
         private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)
         {
             var metaclass = StundenMeisterPlugin.Get().Data.ClassTimeRecording;

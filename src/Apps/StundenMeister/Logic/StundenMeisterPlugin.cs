@@ -1,13 +1,17 @@
 using System;
 using System.IO;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
+using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using StundenMeister.Model;
 
 namespace StundenMeister.Logic
@@ -32,6 +36,8 @@ namespace StundenMeister.Logic
         private readonly LocalTypeSupport _localTypeSupport;
 
         private readonly ExtentManager _extentManager;
+        private readonly PackageMethods _packageMethods;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         /// <summary>
         /// Gets the change event manager
@@ -41,10 +47,14 @@ namespace StundenMeister.Logic
         public StundenMeisterPlugin(
             LocalTypeSupport localTypeSupport,
             ExtentManager extentManager,
-            ChangeEventManager changeEventManager)
+            ChangeEventManager changeEventManager,
+            PackageMethods packageMethods,
+            IWorkspaceLogic workspaceLogic)
         {
             _localTypeSupport = localTypeSupport;
             _extentManager = extentManager;
+            _packageMethods = packageMethods;
+            _workspaceLogic = workspaceLogic;
             EventManager = changeEventManager;
         }
 
@@ -65,6 +75,16 @@ namespace StundenMeister.Logic
                 nameof(TimeRecording.timeSpanHours),  
                 x=> TimeRecording.GetTimeSpanHours(x));
 
+            var internElements = new MofUriExtent(new InMemoryProvider());
+            _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), internElements);
+
+            _packageMethods.ImportByManifest(
+                typeof(StundenMeisterPlugin),
+                "StundenMeister.Xmi.Elements.xml",
+                "StundenMeister",
+                internElements,
+                string.Empty);
+            
             var directory = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "StundenMeister");

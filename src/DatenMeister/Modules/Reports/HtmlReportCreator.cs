@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.Reports
             _sources[id] = collection;
         }
 
-        public void GenerateReport(IElement reportDefinition, Stream report)
+        public void GenerateReport(IElement reportDefinition, TextWriter report)
         {
             _htmlReporter = new HtmlReport(report);
             

@@ -4,10 +4,12 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Modules.Reports;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Navigation;
+using Org.BouncyCastle.Security;
 using StundenMeister.Logic;
 
 namespace StundenMeister
@@ -87,8 +89,23 @@ namespace StundenMeister
         {
             var dataWorkspace = GiveMe.Scope.WorkspaceLogic.GetDataWorkspace();
             var hourReport = dataWorkspace.ResolveById("hourReport");
+            var stundenMeisterLogic = StundenMeisterPlugin.Get();
+
+            var htmlReportCreator = GiveMe.Scope.Resolve<HtmlReportCreator>();
+            htmlReportCreator.AddSource(
+                "timeRecordings", 
+                stundenMeisterLogic.Data.Extent.elements()
+                    .WhenMetaClassIs(stundenMeisterLogic.Data.ClassTimeRecording));
+            if (hourReport == null)
+            {
+                MessageBox.Show("Hour Report cannot be found. Internal failure");
+                return;
+            }
+
+            using var stream = ReportHelper.CreateRandomFile(out var filePath);
+            htmlReportCreator.GenerateReport(hourReport, stream);
             
-            MessageBox.Show(hourReport?.ToString() ?? "Null");
+            DotNetHelper.CreateProcess(filePath);
         }
 
         private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)

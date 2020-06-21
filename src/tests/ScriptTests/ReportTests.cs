@@ -64,7 +64,7 @@ namespace ScriptTests
 
                 var reportCreator = new SimpleReportCreator(dm.WorkspaceLogic, configuration);
 
-                using (var writer = SimpleReportCreator.CreateRandomFile(out var fileName, targetPath))
+                using (var writer = ReportHelper.CreateRandomFile(out var fileName, targetPath))
                 {
                     reportCreator.CreateReport(writer);
 

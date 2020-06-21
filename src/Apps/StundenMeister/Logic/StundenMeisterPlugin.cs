@@ -75,7 +75,7 @@ namespace StundenMeister.Logic
                 nameof(TimeRecording.timeSpanHours),  
                 x=> TimeRecording.GetTimeSpanHours(x));
 
-            var internElements = new MofUriExtent(new InMemoryProvider());
+            var internElements = new MofUriExtent(new InMemoryProvider(), "dm:///_internal/stundenmeister");
             _workspaceLogic.AddExtent(_workspaceLogic.GetDataWorkspace(), internElements);
 
             _packageMethods.ImportByManifest(

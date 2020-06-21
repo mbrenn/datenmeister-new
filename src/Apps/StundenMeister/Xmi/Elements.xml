@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <item p1:type="dm:///_internal/xmi/uml#Package" p1:id="_package_Default" name="StundenMeister">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition">
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition" p1:id="hourReport">
             
         </packagedElement>
     </item>

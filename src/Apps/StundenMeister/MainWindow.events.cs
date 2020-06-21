@@ -6,6 +6,7 @@ using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Navigation;
 using StundenMeister.Logic;
 
@@ -84,7 +85,10 @@ namespace StundenMeister
 
         private void CreateReport_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("X");
+            var dataWorkspace = GiveMe.Scope.WorkspaceLogic.GetDataWorkspace();
+            var hourReport = dataWorkspace.ResolveById("hourReport");
+            
+            MessageBox.Show(hourReport?.ToString() ?? "Null");
         }
 
         private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)

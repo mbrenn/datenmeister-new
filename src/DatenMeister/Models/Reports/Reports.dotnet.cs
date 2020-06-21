@@ -51,6 +51,13 @@ namespace DatenMeister.Models.Reports
                 filledStructure.__ReportParagraph = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
+            {
+                var type = typeof(DatenMeister.Models.Reports.ReportTable);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ReportTable = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
         }
     }
 }

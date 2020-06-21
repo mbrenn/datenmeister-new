@@ -112,6 +112,29 @@ namespace DatenMeister.Models.Reports
                                 }
                             }
                         }
+                        if(name == "ReportTable") // Looking for class
+                        {
+                            tree.__ReportTable = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "viewNode") // Looking for property
+                                {
+                                    tree.ReportTable._viewNode = value;
+                                }
+                                if(name == "form") // Looking for property
+                                {
+                                    tree.ReportTable._form = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ReportTable._name = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -66,11 +66,11 @@ namespace StundenMeister.Logic
             StundenMeisterData.TheOne.ClassTimeRecording =
                 types[Array.IndexOf(TypeList.Types, typeof(TimeRecording))];
             
-            _localTypeSupport.InternalTypes.GetWorkspace().DynamicFunctionManager.AddDerviceProperty(
+            _localTypeSupport.InternalTypes.GetWorkspace().DynamicFunctionManager.AddDerivedProperty(
                 StundenMeisterData.TheOne.ClassTimeRecording, 
                 nameof(TimeRecording.timeSpanSeconds),  
                 x=> TimeRecording.GetTimeSpanSeconds(x));
-            _localTypeSupport.InternalTypes.GetWorkspace().DynamicFunctionManager.AddDerviceProperty(
+            _localTypeSupport.InternalTypes.GetWorkspace().DynamicFunctionManager.AddDerivedProperty(
                 StundenMeisterData.TheOne.ClassTimeRecording, 
                 nameof(TimeRecording.timeSpanHours),  
                 x=> TimeRecording.GetTimeSpanHours(x));

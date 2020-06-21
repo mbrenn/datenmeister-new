@@ -3,6 +3,8 @@
     <item p1:type="dm:///_internal/xmi/uml#Package" p1:id="_package_Default" name="StundenMeister">
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition" p1:id="hourReport"
             title="StundenMeister - Report">
+            <elements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline"
+                      title="Time Recordings" />
             <elements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph"
                 paragraph="The reports contains the complete timerecordings including the duration of each one." />
             <elements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable">

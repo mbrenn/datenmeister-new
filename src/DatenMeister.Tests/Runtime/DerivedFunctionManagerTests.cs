@@ -34,7 +34,7 @@ namespace DatenMeister.Tests.Runtime
             typeWorkspace.AddExtent(typeExtent);
             
             // Create the derived method
-            typeWorkspace.DynamicFunctionManager.AddDerviceProperty(
+            typeWorkspace.DynamicFunctionManager.AddDerivedProperty(
                 classMethod,
                 "doubleage", o => o.getOrDefault<int>("age") * 2);
             
@@ -49,6 +49,8 @@ namespace DatenMeister.Tests.Runtime
             var metaClass = itemFound.metaclass!;
             Assert.That(metaClass, Is.Not.Null);
             Assert.That(metaClass.Equals(classMethod));
+            Assert.That(itemFound.isSet("age"), Is.True);
+            Assert.That(itemFound.isSet("doubleage"), Is.True);
 
             Assert.That(itemFound.getOrDefault<int>("age"), Is.EqualTo(18));
             Assert.That(itemFound.getOrDefault<int>("doubleage"), Is.EqualTo(36));

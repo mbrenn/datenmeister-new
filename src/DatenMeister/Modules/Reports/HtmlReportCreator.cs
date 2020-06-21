@@ -50,6 +50,7 @@ namespace DatenMeister.Modules.Reports
             _htmlReporter = new HtmlReport(report);
             
             var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
+            _htmlReporter.SetDefaultCssStyle();
             _htmlReporter.StartReport(title);
 
             var elements = reportDefinition.getOrDefault<IReflectiveCollection>(_Reports._ReportDefinition.elements);
@@ -142,6 +143,10 @@ namespace DatenMeister.Modules.Reports
                     if (listElement.isSet(property))
                     {
                         cells.Add(new HtmlTableCell(listElement.getOrDefault<string>(property)));
+                    }
+                    else
+                    {
+                        cells.Add(new HtmlTableCell(new HtmlRawString("<i>Null</i>")));
                     }
                 }
 

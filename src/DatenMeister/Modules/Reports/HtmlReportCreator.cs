@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -100,6 +101,7 @@ namespace DatenMeister.Modules.Reports
             var viewNode = element.getOrDefault<IElement>(_Reports._ReportTable.viewNode);
             var form = element.getOrDefault<IElement>(_Reports._ReportTable.form);
             
+            // Gets the elements for the table
             var dataviewEvaluation = new DataViewEvaluation(_workspaceLogic);
             foreach (var source in _sources)
             {
@@ -131,29 +133,104 @@ namespace DatenMeister.Modules.Reports
                         IsHeading = true
                     });
             }
-            
-            table.AddRow( new HtmlTableRow(cells));
+
+            table.AddRow(new HtmlTableRow(cells));
             
             foreach (var listElement in elements.OfType<IElement>())
             {
                 cells.Clear();
                 foreach (var field in fields.OfType<IElement>())
                 {
-                    var property = field.getOrDefault<string>(_FormAndFields._FieldData.name);
-                    if (listElement.isSet(property))
-                    {
-                        cells.Add(new HtmlTableCell(listElement.getOrDefault<string>(property)));
-                    }
-                    else
-                    {
-                        cells.Add(new HtmlTableCell(new HtmlRawString("<i>Null</i>")));
-                    }
+                    var cell = CreateCellForField(listElement, field);
+                    cells.Add(cell);
                 }
 
                 table.AddRow(new HtmlTableRow(cells));   
             }
             
             _htmlReporter.Add(table);
+        }
+
+        /// <summary>
+        /// Creates the cell for a specific element and field
+        /// </summary>
+        /// <param name="listElement">Element to be shown</param>
+        /// <param name="field">Field definition for the element</param>
+        /// <returns>The created Html Table Cell</returns>
+        private HtmlTableCell CreateCellForField(IObject listElement, IElement field)
+        {
+            var property = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+            var metaClass = field.getMetaClass();
+            var isPropertySet = listElement.isSet(property);
+            if (metaClass?.@equals((_FormAndFields.TheOne.__DateTimeFieldData)) == true)
+            {
+                if (isPropertySet)
+                {
+                    var hasDate = field?.getOrDefault<bool>(_FormAndFields._DateTimeFieldData.hideDate) != true;
+                    var hasTime = field?.getOrDefault<bool>(_FormAndFields._DateTimeFieldData.hideTime) != true;
+                    var date = listElement.getOrDefault<DateTime>(property);
+
+                    var result = string.Empty;
+                    if (hasDate && hasTime)
+                    {
+                        result = date.ToString(CultureInfo.CurrentCulture);
+                    }
+                    else if (hasDate)
+                    {
+                        result = date.ToShortDateString();
+                    }
+                    else if (hasTime)
+                    {
+                        result = date.ToShortTimeString();
+                    }
+
+                    return new HtmlTableCell(result);
+                }
+
+                return new HtmlTableCell("-");
+            }
+
+            if (metaClass?.equals(_FormAndFields.TheOne.__CheckboxFieldData) == true)
+            {
+                if (isPropertySet)
+                {
+                    var value = listElement.getOrDefault<bool>(property);
+                    return new HtmlTableCell(value ? "X" : "-");
+                }
+
+                return new HtmlTableCell("-");
+            }
+
+            if (metaClass?.@equals(_FormAndFields.TheOne.__NumberFieldData) == true)
+            {
+                var format = field.getOrDefault<string>(_FormAndFields._NumberFieldData.format) ?? "";
+                var isInteger = field.getOrDefault<bool>(_FormAndFields._NumberFieldData.isInteger);
+                
+                if (isPropertySet)
+                {
+                    if (isInteger)
+                    {
+                        var value = listElement.getOrDefault<int>(property);
+                        return new HtmlTableCell(value.ToString(format, CultureInfo.CurrentCulture));
+                    }
+                    else
+                    {
+                        var value = listElement.getOrDefault<double>(property);
+                        return new HtmlTableCell(value.ToString(format, CultureInfo.CurrentCulture));
+                        
+                    }
+                }
+
+                return new HtmlTableCell("0");
+            }
+
+            if (isPropertySet)
+            {
+                return new HtmlTableCell(listElement.getOrDefault<string>(property));
+            }
+
+            return new HtmlTableCell(new HtmlRawString("<i>Null</i>"));
+
         }
     }
 }

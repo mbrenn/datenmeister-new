@@ -154,13 +154,13 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "showDate") // Looking for property
+                                if(name == "hideDate") // Looking for property
                                 {
-                                    tree.DateTimeFieldData._showDate = value;
+                                    tree.DateTimeFieldData._hideDate = value;
                                 }
-                                if(name == "showTime") // Looking for property
+                                if(name == "hideTime") // Looking for property
                                 {
-                                    tree.DateTimeFieldData._showTime = value;
+                                    tree.DateTimeFieldData._hideTime = value;
                                 }
                                 if(name == "showOffsetButtons") // Looking for property
                                 {
@@ -653,6 +653,49 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isReadOnly") // Looking for property
                                 {
                                     tree.CheckboxListTaggingFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "NumberFieldData") // Looking for class
+                        {
+                            tree.__NumberFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "format") // Looking for property
+                                {
+                                    tree.NumberFieldData._format = value;
+                                }
+                                if(name == "isInteger") // Looking for property
+                                {
+                                    tree.NumberFieldData._isInteger = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.NumberFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.NumberFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.NumberFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.NumberFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.NumberFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.NumberFieldData._isReadOnly = value;
                                 }
                             }
                         }

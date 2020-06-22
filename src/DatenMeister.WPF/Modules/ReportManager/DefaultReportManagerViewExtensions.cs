@@ -10,6 +10,7 @@ using DatenMeister.Integration;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -94,7 +95,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             using var streamWriter = new StreamWriter(tmpPath, false, Encoding.UTF8);
 
             
-            var reportCreator = new ReportCreator(GiveMe.Scope.WorkspaceLogic, reportConfiguration);
+            var reportCreator = new SimpleReportCreator(GiveMe.Scope.WorkspaceLogic, reportConfiguration);
             reportCreator.CreateReport(streamWriter);
 
             DotNetHelper.CreateProcess(tmpPath);

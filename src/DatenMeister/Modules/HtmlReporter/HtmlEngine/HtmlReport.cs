@@ -33,6 +33,16 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         }
 
         /// <summary>
+        /// Initializes a new instance of the HtmlReport class
+        /// </summary>
+        /// <param name="stream">Stream to be used</param>
+        public HtmlReport(StreamWriter stream)
+        {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+            _streamWriter = stream;
+        }
+
+        /// <summary>
         /// Gets or sets the css style sheet being used for that report
         /// </summary>
         public string? CssStyleSheet { get; set; }

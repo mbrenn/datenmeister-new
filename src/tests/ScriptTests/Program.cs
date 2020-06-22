@@ -1,5 +1,6 @@
 ﻿using System;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Simple;
 
 namespace ScriptTests
 {

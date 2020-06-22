@@ -1,6 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.Reports
+namespace DatenMeister.Modules.Reports.Simple
 {
     public enum DescendentMode
     {

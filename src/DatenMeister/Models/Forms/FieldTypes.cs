@@ -26,6 +26,7 @@ namespace DatenMeister.Models.Forms
                 typeof(DefaultTypeForNewElement),
                 typeof(FullNameFieldData),
                 typeof(CheckboxListTaggingFieldData),
+                typeof(NumberFieldData),
 
                 // Now the forms
                 typeof(FormType),

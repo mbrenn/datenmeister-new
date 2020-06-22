@@ -63,6 +63,7 @@
                             <MenuItem Header="Store Now" Click="StoreNow_Click" />
                             <MenuItem Header="Manage Cost Centers" Click="ManageCostCenters_Click" />
                             <MenuItem Header="Manage Time Recordings" Click="ManageTimeRecordings_Click" />
+                            <MenuItem Header="Create Report" Click="CreateReport_Click" />
                             <MenuItem Header="Open Storage Folder" Click="OpenStorageFolder_Click" />
                             <MenuItem Header="Exit" Click="Exit_OnClick" />
                         </ContextMenu>

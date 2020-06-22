@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,12 +16,12 @@ using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.Reports
+namespace DatenMeister.Modules.Reports.Simple
 {
     /// <summary>
     /// Defines the engine for simple reporting
     /// </summary>
-    public class ReportCreator
+    public class SimpleReportCreator
     {
         /// <summary>
         /// Stores the default classifier hints
@@ -46,33 +45,12 @@ namespace DatenMeister.Modules.Reports
         /// </summary>
         /// <param name="workspaceLogic">Default workspace Logic to be used</param>
         /// <param name="reportConfiguration">The report configuration to be used</param>
-        public ReportCreator(IWorkspaceLogic workspaceLogic, SimpleReportConfiguration reportConfiguration)
+        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, SimpleReportConfiguration reportConfiguration)
         {
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = reportConfiguration;
             _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
             _formCreator = new FormCreator(workspaceLogic, null, _defaultClassifierHints);
-        }
-
-        /// <summary>
-        /// Creates a random file and returns the stream writing instance
-        /// to the file.
-        /// </summary>
-        /// <param name="directoryPath">Sets the directory path</param>
-        /// <param name="path">The path to the created file</param>
-        /// <returns>The streamwriter for the file</returns>
-        public static TextWriter CreateRandomFile(out string path, string? directoryPath = null)
-        {
-            if (directoryPath == null)
-            {
-                path = StringManipulation.RandomString(10) + ".html";
-            }
-            else
-            {
-                path = Path.Combine(directoryPath, StringManipulation.RandomString(10) + ".html");
-            }
-
-            return new StreamWriter(path);
         }
 
         /// <summary>

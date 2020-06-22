@@ -52,7 +52,7 @@ namespace DatenMeister.Runtime.DynamicFunctions
         /// <param name="type">Type to which the property function will be added</param>
         /// <param name="property">Property name to be used</param>
         /// <param name="propertyFunction">The function which concerts the element's property to a value</param>
-        public void AddDerviceProperty(IElement type, string property, Func<IObject, object> propertyFunction)
+        public void AddDerivedProperty(IElement type, string property, Func<IObject, object> propertyFunction)
         {
             _derivedProperties[new DerivedPropertyKey(type, property)] =
                 new DerivedProperty(propertyFunction);

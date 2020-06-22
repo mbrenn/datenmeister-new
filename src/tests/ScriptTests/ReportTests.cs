@@ -5,6 +5,7 @@ using Autofac;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.NetCore;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -61,9 +62,9 @@ namespace ScriptTests
                 var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
                 Directory.CreateDirectory(targetPath);
 
-                var reportCreator = new ReportCreator(dm.WorkspaceLogic, configuration);
+                var reportCreator = new SimpleReportCreator(dm.WorkspaceLogic, configuration);
 
-                using (var writer = ReportCreator.CreateRandomFile(out var fileName, targetPath))
+                using (var writer = ReportHelper.CreateRandomFile(out var fileName, targetPath))
                 {
                     reportCreator.CreateReport(writer);
 

@@ -17,7 +17,7 @@ namespace StundenMeister.Tests
         {
             using (var dm = CreateDatenMeisterEnvironment())
             {
-                var logic = dm.Resolve<StundenMeisterLogic>();
+                var logic = dm.Resolve<StundenMeisterPlugin>();
                 Assert.That(logic, Is.Not.Null);
 
                 Assert.That(StundenMeisterData.TheOne, Is.Not.Null);
@@ -45,7 +45,7 @@ namespace StundenMeister.Tests
             GiveMe.DropDatenMeisterStorage(settings);
 
             var datenMeister = GiveMe.DatenMeister(settings);
-            var logic = datenMeister.Resolve<StundenMeisterLogic>();
+            var logic = datenMeister.Resolve<StundenMeisterPlugin>();
             logic.Data.Extent.elements().clear();
             return datenMeister;
         }

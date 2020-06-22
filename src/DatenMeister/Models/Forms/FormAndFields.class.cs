@@ -88,11 +88,11 @@ namespace DatenMeister.Models.Forms
 
         public class _DateTimeFieldData
         {
-            public static string @showDate = "showDate";
-            public IElement? _showDate = null;
+            public static string @hideDate = "hideDate";
+            public IElement? _hideDate = null;
 
-            public static string @showTime = "showTime";
-            public IElement? _showTime = null;
+            public static string @hideTime = "hideTime";
+            public IElement? _hideTime = null;
 
             public static string @showOffsetButtons = "showOffsetButtons";
             public IElement? _showOffsetButtons = null;
@@ -452,6 +452,37 @@ namespace DatenMeister.Models.Forms
 
         public _CheckboxListTaggingFieldData @CheckboxListTaggingFieldData = new _CheckboxListTaggingFieldData();
         public IElement @__CheckboxListTaggingFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData");
+
+        public class _NumberFieldData
+        {
+            public static string @format = "format";
+            public IElement? _format = null;
+
+            public static string @isInteger = "isInteger";
+            public IElement? _isInteger = null;
+
+            public static string @isAttached = "isAttached";
+            public IElement? _isAttached = null;
+
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @title = "title";
+            public IElement? _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement? _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement? _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
+
+        }
+
+        public _NumberFieldData @NumberFieldData = new _NumberFieldData();
+        public IElement @__NumberFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData");
 
         public class _FormType
         {

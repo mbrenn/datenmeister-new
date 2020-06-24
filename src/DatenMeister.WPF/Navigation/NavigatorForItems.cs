@@ -153,28 +153,34 @@ namespace DatenMeister.WPF.Navigation
         /// in the collection. A meta class is also given to create the appropriate form for these
         /// items
         /// </summary>
-        /// <param name="window">Window to be used</param>
+        /// <param name="navigationHost">Window to be used</param>
         /// <param name="collection">Collection of items</param>
         /// <param name="metaClassForForm">Metaclass being used for the form</param>
         /// <returns>The task for navigation support</returns>
         public static async Task<NavigateToElementDetailResult?> NavigateToItems(
-            INavigationHost window,
+            INavigationHost navigationHost,
             IReflectiveCollection collection,
             IElement metaClassForForm)
         {
-            return await window.NavigateTo(() =>
+            return await navigationHost.NavigateTo(() =>
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
                     var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, CreationMode.ByMetaClass);
 
                     var viewExtensions = new List<ViewExtension>();
                     viewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
-                        window,
+                        navigationHost,
                         metaClassForForm,
                         collection));
 
-                    var control = new ItemListViewControl();
-                    control.SetContent(collection, usedForm,
+                    var control = new ItemListViewControl
+                    {
+                        NavigationHost = navigationHost
+                    };
+                    viewExtensions.AddRange(control.GetViewExtensions());
+                    control.SetContent(
+                        collection,
+                        usedForm,
                         viewExtensions);
                     return control;
                 },

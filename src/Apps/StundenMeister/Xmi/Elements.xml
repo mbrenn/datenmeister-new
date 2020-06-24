@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <item p1:type="dm:///_internal/xmi/uml#Package" p1:id="_package_Default" name="StundenMeister">
+        <!-- Report Definition -->
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition" p1:id="hourReport"
             title="StundenMeister - Report">
             <elements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline"
@@ -20,6 +21,15 @@
                            name="timeSpanHours" title="Working Hours" format="F2"/>
                 </form>
             </elements>
+        </packagedElement>
+        
+        <!-- Forms -->
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="formListTimeRecordings" title="TimeRecording" name="List" property="null">
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="startDate" title="startDate" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="endDate" title="endDate" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="isActive" title="isActive" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="costCenter" title="costCenter" />
+            <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" metaClass-ref="dm:///_internal/types/internal#StundenMeister.Model.TimeRecording" name="TimeRecording" />
         </packagedElement>
     </item>
 </item>

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Autofac;
 using BurnSystems.Logging;
@@ -39,7 +39,15 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using Microsoft.Win32;
+using Binding = System.Windows.Data.Binding;
+using Button = System.Windows.Controls.Button;
+using Clipboard = System.Windows.Clipboard;
+using ContextMenu = System.Windows.Controls.ContextMenu;
+using DataGridCell = System.Windows.Controls.DataGridCell;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -318,7 +326,6 @@ namespace DatenMeister.WPF.Forms.Base
 
             // If form defines constraints upon metaclass, then the filtering will occur here
             Items = items;
-
             EffectiveForm = formDefinition;
             ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
             UpdateForm();
@@ -616,7 +623,23 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Creates the row button
-            foreach (var definition in ViewExtensions)
+            var effectiveViewExtensions = new List<ViewExtension>(ViewExtensions);
+            
+            // Go through the form and create the creation button
+            var defaultTypes =
+                EffectiveForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+            if (Items != null)
+            {
+                foreach (var defaultType in defaultTypes.OfType<IElement>())
+                {
+                    effectiveViewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
+                        NavigationHost,
+                        defaultType,
+                        Items));
+                }
+            }
+
+            foreach (var definition in effectiveViewExtensions)
                 switch (definition)
                 {
                     case RowItemButtonDefinition rowButtonDefinition:

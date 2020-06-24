@@ -77,7 +77,7 @@ namespace StundenMeister
         private void ManageCostCenters_Click(object sender, RoutedEventArgs e)
         {
             var metaclass = StundenMeisterPlugin.Get().Data.ClassCostCenter;
-            NavigatorForItems.NavigateToItems(
+            NavigatorForItems.NavigateToItemsWithAutomaticForm(
                 StundenMeisterPlugin.Get().Data
                     .Extent
                     .elements()
@@ -111,12 +111,16 @@ namespace StundenMeister
         private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)
         {
             var metaclass = StundenMeisterPlugin.Get().Data.ClassTimeRecording;
+            var dataWorkspace = GiveMe.Scope.WorkspaceLogic.GetDataWorkspace();
+            var formTimeRecordings = dataWorkspace.ResolveById("formListTimeRecordings")
+                ?? throw new InvalidOperationException("formListTimeRecordings not found");
+            
             NavigatorForItems.NavigateToItems(
                 StundenMeisterPlugin.Get().Data
                     .Extent
                     .elements()
                     .WhenMetaClassIs(metaclass),
-                metaclass);
+                formTimeRecordings);
         }
 
         private void StoreNow_Click(object sender, RoutedEventArgs e)

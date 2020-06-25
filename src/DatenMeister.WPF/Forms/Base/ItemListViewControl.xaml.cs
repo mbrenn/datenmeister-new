@@ -632,9 +632,11 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 foreach (var defaultType in defaultTypes.OfType<IElement>())
                 {
+                    var defaultTypeMetaClass =
+                        defaultType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
                     effectiveViewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
                         NavigationHost,
-                        defaultType,
+                        defaultTypeMetaClass,
                         Items));
                 }
             }

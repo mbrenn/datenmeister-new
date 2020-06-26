@@ -168,10 +168,6 @@ namespace DatenMeister.WPF.Navigation
                     var usedForm = formCreator.CreateListFormForMetaClass(metaClassForForm, CreationMode.ByMetaClass);
 
                     var viewExtensions = new List<ViewExtension>();
-                    viewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
-                        navigationHost,
-                        metaClassForForm,
-                        collection));
 
                     var control = new ItemListViewControl
                     {

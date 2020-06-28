@@ -248,6 +248,25 @@ namespace DatenMeister.WPF.Forms.Base
                     "Edit",
                     NavigateToElement,
                     ButtonPosition.Before);
+            
+            yield return
+                new RowItemButtonDefinition(
+                    "Delete",
+                    (guest, item) =>
+                    {
+                        if (Items != null)
+                        {               var name = NamedElementMethods.GetName(item);
+                            if (MessageBox.Show(
+                                    $"Are you sure to delete the item '{name}'?",
+                                    "Confirmation",
+                                    MessageBoxButton.YesNo) ==
+                                MessageBoxResult.Yes)
+                            {
+                                Items?.remove(item);
+                            }
+                        }
+                    },
+                    ButtonPosition.After);
 
             yield return
                 new CollectionMenuButtonDefinition(

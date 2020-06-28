@@ -135,6 +135,49 @@ namespace DatenMeister.Models.Reports
                                 }
                             }
                         }
+                        if(name == "SimpleReportConfiguration") // Looking for class
+                        {
+                            tree.__SimpleReportConfiguration = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "showDescendents") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showDescendents = value;
+                                }
+                                if(name == "rootElement") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._rootElement = value;
+                                }
+                                if(name == "showRootElement") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showRootElement = value;
+                                }
+                                if(name == "showMetaClasses") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showMetaClasses = value;
+                                }
+                                if(name == "showFullName") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showFullName = value;
+                                }
+                                if(name == "form") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._form = value;
+                                }
+                                if(name == "descendentMode") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._descendentMode = value;
+                                }
+                                if(name == "typeMode") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._typeMode = value;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -70,6 +70,6 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities() => ProviderCapability.None;
+        public ProviderCapability GetCapabilities() => ProviderCapabilities.None;
     }
 }

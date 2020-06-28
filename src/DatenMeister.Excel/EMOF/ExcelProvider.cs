@@ -65,7 +65,7 @@ namespace DatenMeister.Excel.EMOF
         /// <returns></returns>
         public ProviderCapability GetCapabilities()
         {
-            return 0;
+            return ProviderCapabilities.None;
         }
     }
 }

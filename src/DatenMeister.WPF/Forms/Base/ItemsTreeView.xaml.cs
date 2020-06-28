@@ -508,7 +508,12 @@ namespace DatenMeister.WPF.Forms.Base
             if (item is IExtent extent)
             {
                 itemHeader = "Root";
-                if (ExtentManager.IsExtentModified(extent))
+                
+                if (ExtentManager.GetProviderCapabilities(extent).IsTemporaryStorage)
+                {
+                    itemHeader += " [Non-Permanent]";
+                }
+                else if (ExtentManager.IsExtentModified(extent))
                 {
                     itemHeader += "*";
                 }

@@ -109,9 +109,18 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
-        /// Gets the capabilities of the provider
+        /// Stores the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities() => ProviderCapabilities.None;
+        private readonly ProviderCapability _providerCapability = new ProviderCapability()
+        {
+            IsTemporaryStorage = true
+        };
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns>Capabilities of the provider</returns>
+        public ProviderCapability GetCapabilities() => _providerCapability;
     }
 }

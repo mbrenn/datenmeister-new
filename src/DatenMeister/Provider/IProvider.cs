@@ -16,8 +16,16 @@ namespace DatenMeister.Provider
         /// uri extent loading file
         /// </summary>
         public bool StoreMetaDataInExtent { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the value whether the provider allows permanent storage
+        /// </summary>
+        public bool IsTemporaryStorage { get; set; }
     }
 
+    /// <summary>
+    /// Stores some pre-defined capabilities
+    /// </summary>
     public class ProviderCapabilities
     {
         public static ProviderCapability None => new ProviderCapability();

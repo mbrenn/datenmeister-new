@@ -35,7 +35,6 @@ namespace DatenMeister.Provider.CSV.Runtime
                 throw new InvalidOperationException("FilePath is empty");    
             }
             
-            
             var doesFileExist = File.Exists(filePath);
             if (doesFileExist)
             {

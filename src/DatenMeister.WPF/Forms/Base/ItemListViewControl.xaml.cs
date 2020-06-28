@@ -627,7 +627,7 @@ namespace DatenMeister.WPF.Forms.Base
             
             // Go through the form and create the creation button
             var defaultTypes =
-                EffectiveForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+                EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
             if (Items != null)
             {
                 foreach (var defaultType in defaultTypes.OfType<IElement>())

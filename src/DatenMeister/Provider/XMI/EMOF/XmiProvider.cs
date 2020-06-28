@@ -239,7 +239,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         /// <returns></returns>
         public ProviderCapability GetCapabilities() =>
-            ProviderCapability.StoreMetaDataInExtent;
+            ProviderCapabilities.StoreMetaDataInExtent;
 
         /// <summary>
         /// Defines the interface

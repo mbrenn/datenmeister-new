@@ -109,8 +109,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The returned value representing the meta object</returns>
         public MofObject GetMetaObject()
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -171,8 +170,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object? get(string property)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -189,8 +187,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void set(string property, object? value)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -226,8 +223,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool isSet(string property)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -243,8 +239,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void unset(string property)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -585,8 +580,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IEnumerable<string> getPropertiesBeingSet()
         {
             
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(

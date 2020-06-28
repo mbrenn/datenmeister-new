@@ -101,9 +101,18 @@ namespace DatenMeister.Provider.InMemory
         }
 
         /// <summary>
+        /// Stores the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        private readonly ProviderCapability _providerCapability = new ProviderCapability()
+        {
+            IsTemporaryStorage = true
+        };
+        
+        /// <summary>
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities() => ProviderCapability.None;
+        public ProviderCapability GetCapabilities() => _providerCapability;
     }
 }

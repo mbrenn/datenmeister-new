@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Provider;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -573,6 +574,17 @@ namespace DatenMeister.Runtime.ExtentStorage
             public string Workspace { get; set; }
             
             public string ExtentUri { get; set; }
+        }
+        
+        /// <summary>
+        /// Gets the provider capabilities of the provider behind the given extent
+        /// </summary>
+        /// <param name="extent">Extent to be evaluated</param>
+        public static ProviderCapability GetProviderCapabilities(IExtent extent)
+        {
+            var asExtent = extent as MofExtent;
+            return asExtent?.Provider.GetCapabilities() ??
+                ProviderCapabilities.None;
         }
     }
 }

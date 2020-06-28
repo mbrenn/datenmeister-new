@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;
 using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -35,7 +36,10 @@ namespace DatenMeister.WPF.Forms.Base
                         navigationHost,
                         collection,
                         metaclass);
-                });
+                })
+            {
+                Tag = new TagCreateMetaClass(metaclass)
+            };
         }
     }
 }

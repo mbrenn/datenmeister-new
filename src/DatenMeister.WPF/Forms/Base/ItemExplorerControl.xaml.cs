@@ -28,6 +28,7 @@ using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
@@ -690,7 +691,10 @@ namespace DatenMeister.WPF.Forms.Base
 
                     usedViewExtensions.Add(new GenericButtonDefinition(
                         $"New {typeName}", 
-                        async () => await CreateNewElementByUser(newType, innerParentProperty)));
+                        async () => await CreateNewElementByUser(newType, innerParentProperty))
+                    {
+                        Tag = new TagCreateMetaClass(newType)
+                    });
 
                     foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
                     {

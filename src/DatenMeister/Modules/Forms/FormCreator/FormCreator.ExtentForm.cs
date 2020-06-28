@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -97,7 +98,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                 AddTextFieldForNameIfNoFieldAvailable(form);
                 
-                SetDefaultTypes(form);
+                SetDefaultTypesByPackages(form);
 
                 tabs.Add(form);
             }
@@ -146,7 +147,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                 form.set(_FormAndFields._ListForm.metaClass, group.Key);
 
-                SetDefaultTypes(form);
+                SetDefaultTypesByPackages(form);
 
                 tabs.Add(form);
             }
@@ -154,12 +155,36 @@ namespace DatenMeister.Modules.Forms.FormCreator
             result.set(_FormAndFields._ExtentForm.tab, tabs);
             return result;
 
-            void SetDefaultTypes(IElement form)
+            void SetDefaultTypesByPackages(IObject form)
             {
+                if(_uml == null) throw new InvalidOperationException("_uml is null");
+                
                 var extent = elements.GetAssociatedExtent();
                 var defaultTypePackages = extent?.GetConfiguration().GetDefaultTypePackages();
                 if (defaultTypePackages != null)
-                    form.set(_FormAndFields._ListForm.defaultTypesForNewElements, defaultTypePackages);
+                {
+                    var currentDefaultPackages =
+                        form.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+                    
+                    // Now go through the packages and pick the classifier and add them to the list
+                    foreach (var package in defaultTypePackages)
+                    {
+                        var childItems =
+                            package.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+                        if (childItems == null) continue;
+
+                        foreach (var type in childItems.OfType<IElement>())
+                        {
+                            if (type.@equals(_uml.StructuredClassifiers.__Class))
+                            {
+                                var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
+                                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, package);
+                                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(package));
+                                currentDefaultPackages.add(defaultType);
+                            }
+                        }
+                    }
+                }
             }
         }
 

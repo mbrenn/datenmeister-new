@@ -65,7 +65,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="formLogic">View logic being used</param>
         /// <param name="defaultClassifierHints">The classifier hints</param>
         public FormCreator(
-            IWorkspaceLogic workspaceLogic, 
+            IWorkspaceLogic workspaceLogic,
             FormsPlugin? formLogic,
             DefaultClassifierHints defaultClassifierHints)
         {
@@ -73,15 +73,19 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _defaultClassifierHints = defaultClassifierHints;
 
             _workspaceLogic = workspaceLogic;
-            
+
             var userExtent = _formLogic?.GetUserFormExtent();
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
             _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>() ??
                              _workspaceLogic?.GetTypesWorkspace()?.Get<_FormAndFields>() ??
-                             _FormAndFields.TheOne ?? 
+                             _FormAndFields.TheOne ??
                              throw new InvalidOperationException("FormAndFields not found");
+
+            _uml = _workspaceLogic?.GetUmlData() ??
+                   _UML.TheOne ??
+                   throw new InvalidOperationException("UML not found");
         }
 
         /// <summary>

@@ -13,7 +13,11 @@ namespace DatenMeister.Models.Reports
                 typeof(ReportElement),
                 typeof(ReportHeadline),
                 typeof(ReportParagraph),
-                typeof(ReportTable)
+                typeof(ReportTable),
+                
+                typeof(Simple.DescendentMode),
+                typeof(Simple.ReportTableForTypeMode),
+                typeof(Simple.SimpleReportConfiguration)
             };
         }
     }

@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Autofac;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
+using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipExample;

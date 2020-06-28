@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlReporter.Formatter;

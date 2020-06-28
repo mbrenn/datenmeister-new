@@ -1,6 +1,6 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.Reports.Simple
+namespace DatenMeister.Models.Reports.Simple
 {
     public enum DescendentMode
     {
@@ -32,8 +32,7 @@ namespace DatenMeister.Modules.Reports.Simple
         /// <summary>
         /// All types in one huge table
         /// </summary>
-        AllTypes,
-
+        AllTypes
     }
     
     /// <summary>

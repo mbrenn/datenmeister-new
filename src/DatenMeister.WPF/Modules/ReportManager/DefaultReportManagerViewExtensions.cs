@@ -7,6 +7,7 @@ using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Modules.Reports;

@@ -1,4 +1,5 @@
 ﻿using System;
+using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 

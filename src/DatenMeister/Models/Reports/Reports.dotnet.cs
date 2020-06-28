@@ -58,6 +58,27 @@ namespace DatenMeister.Models.Reports
                 filledStructure.__ReportTable = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
+            {
+                var type = typeof(DatenMeister.Models.Reports.Simple.DescendentMode);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DescendentMode = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Reports.Simple.ReportTableForTypeMode);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ReportTableForTypeMode = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Reports.Simple.SimpleReportConfiguration);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__SimpleReportConfiguration = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
         }
     }
 }

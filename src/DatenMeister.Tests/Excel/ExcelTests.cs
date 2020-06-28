@@ -123,8 +123,7 @@ namespace DatenMeister.Tests.Excel
 
                 dm.UnuseDatenMeister();
             }
-
-
+            
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();

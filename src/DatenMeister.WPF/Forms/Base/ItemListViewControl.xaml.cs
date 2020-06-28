@@ -527,7 +527,6 @@ namespace DatenMeister.WPF.Forms.Base
                         _itemMapping[itemObject] = item;
                         listItems.Add(itemObject);
                         
-                        
                         if (item.Equals(selectedItem))
                         {
                             selectedExpandoObject = itemObject;
@@ -649,16 +648,19 @@ namespace DatenMeister.WPF.Forms.Base
                 EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
             if (Items != null)
             {
-                foreach (var defaultType in defaultTypes.OfType<IElement>())
+                foreach (var defaultType in defaultTypes.OfType<IElement>().Distinct())
                 {
                     var defaultTypeMetaClass =
                         defaultType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
-                    effectiveViewExtensions.Add(ViewExtensionHelper.GetCreateButtonForMetaClass(
-                        NavigationHost,
-                        defaultTypeMetaClass,
-                        Items));
+                    effectiveViewExtensions.Add(
+                        ViewExtensionHelper.GetCreateButtonForMetaClass(
+                            NavigationHost,
+                            defaultTypeMetaClass,
+                            Items));
                 }
             }
+            
+            var hashSet = new HashSet<object>();
 
             foreach (var definition in effectiveViewExtensions)
                 switch (definition)
@@ -679,6 +681,15 @@ namespace DatenMeister.WPF.Forms.Base
 
                         break;
                     case GenericButtonDefinition genericButtonDefinition:
+                        if (genericButtonDefinition.Tag != null)
+                        {
+                            // Skip the duplicates
+                            if (hashSet.Contains(genericButtonDefinition.Tag))
+                                continue;
+
+                            hashSet.Add(genericButtonDefinition.Tag);
+                        }
+                        
                         AddGenericButton(genericButtonDefinition.Name, genericButtonDefinition.OnPressed);
                         break;
                     case ItemButtonDefinition itemButtonDefinition:

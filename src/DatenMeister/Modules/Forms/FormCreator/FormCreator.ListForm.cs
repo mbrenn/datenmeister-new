@@ -43,6 +43,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             result.set(_FormAndFields._ListForm.title, title);
             result.set(_FormAndFields._ListForm.name, propertyName);
             result.set(_FormAndFields._ListForm.property, realPropertyName);
+            
             if (metaClass != null)
             {
                 AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);

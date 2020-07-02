@@ -13,6 +13,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -182,7 +183,10 @@ namespace DatenMeister.WPF.Forms.Fields
                 return;
             }
 
-            defaultTypes.add(propertyType);
+            var defaultType = MofFactory.CreateElementFor<_FormAndFields>(form, x=>x.__DefaultTypeForNewElement);
+            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, propertyType);
+            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
+            defaultTypes.add(defaultType);
         }
 
         /// <summary>

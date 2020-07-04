@@ -2,7 +2,7 @@
 <item>
     <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Forms"
           xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Item" hideMetaInformation="True" allowNewProperties="True" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Show" hideMetaInformation="True" allowNewProperties="True" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showDescendents" title="showDescendents" />
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" name="rootElement" title="rootElement" />
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showRootElement" title="showRootElement" />

@@ -127,7 +127,8 @@ namespace DatenMeister.WPF.Navigation
 
             var detailFormWindow = new DetailFormWindow
             {
-                Owner = navigationHost.GetWindow()
+                Owner = navigationHost.GetWindow(),
+                Title = navigateToItemConfig.Title.ToString() ?? string.Empty
             };
 
             detailFormWindow.SetContent(

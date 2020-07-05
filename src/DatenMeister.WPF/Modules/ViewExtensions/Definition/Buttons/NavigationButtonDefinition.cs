@@ -39,7 +39,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
         /// Gets or sets the index of the ribbon definition which is used to order the items.
         /// The higher the number, the higher the priority
         /// </summary>
-        public int Priority { get; }
+        public int Priority { get; set; }
 
         /// <summary>
         /// Gets the name of the ribbon

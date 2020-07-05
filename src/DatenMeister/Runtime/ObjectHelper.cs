@@ -181,7 +181,7 @@ namespace DatenMeister.Runtime
                 var valueAsElement = value.GetAsSingle(property, noReferences, ObjectType.Enum);
                 if (valueAsElement == null)
                 {
-                    return default(T);
+                    return default;
                 }
 
                 if (typeof(T) == valueAsElement.GetType())
@@ -191,7 +191,14 @@ namespace DatenMeister.Runtime
 
                 if (valueAsElement is string propertyValueAsString)
                 {
-                    return (T) Enum.Parse(typeof(T), propertyValueAsString);
+                    try
+                    {
+                        return (T) Enum.Parse(typeof(T), propertyValueAsString);
+                    }
+                    catch
+                    {
+                        return default;
+                    }
                 }
 
                 if (valueAsElement is IElement propertyObject && value is MofObject mofObject)
@@ -200,7 +207,7 @@ namespace DatenMeister.Runtime
                     var resolvedElement = mofObject.ReferencedExtent.Resolve(propertyObject);
                     if (resolvedElement == null)
                     {
-                        return default(T);
+                        return default;
                     }
 
                     var name = NamedElementMethods.GetName(resolvedElement);
@@ -229,7 +236,7 @@ namespace DatenMeister.Runtime
         {
             if (!value.isSet(property))
             {
-                return default(T);
+                return default;
             }
 
             return get<T>(value, property, noReferences);
@@ -462,6 +469,12 @@ namespace DatenMeister.Runtime
                 return asExtent;
             }
 
+            // If the object knows the extent to which it belongs to, it will return it
+            if (value is IHasExtent objectKnowsExtent)
+            {
+                return objectKnowsExtent.Extent as IUriExtent;
+            }
+
             // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
@@ -469,12 +482,6 @@ namespace DatenMeister.Runtime
             if (parent != null)
             {
                 return GetExtentOf(parent);
-            }
-
-            // If the object knows the extent to which it belongs to, it will return it
-            if (value is IHasExtent objectKnowsExtent)
-            {
-                return objectKnowsExtent.Extent as IUriExtent;
             }
 
             return null;

@@ -88,6 +88,7 @@ namespace DatenMeister.Runtime
                     // Queries the object
                     var queryObjectId = WebUtility.UrlDecode(fragment);
 
+                    // Check if the extent type already supports the direct querying of objects
                     if (_extent.Provider is IProviderSupportFunctions supportFunctions &&
                         supportFunctions.ProviderSupportFunctions.QueryById != null)
                     {
@@ -103,16 +104,18 @@ namespace DatenMeister.Runtime
                             return (T) resultElement;
                         }
                     }
-
-                    // Now go through the list
-                    foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
+                    else
                     {
-                        var elementAsMofObject =
-                            element as IHasId ?? throw new ArgumentException("elementAsMofObject");
-                        if (elementAsMofObject.Id == queryObjectId)
+                        // Now go through the list
+                        foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
                         {
-                            _cacheIds[uri] = elementAsMofObject;
-                            return elementAsMofObject as T;
+                            var elementAsMofObject =
+                                element as IHasId ?? throw new ArgumentException("elementAsMofObject");
+                            if (elementAsMofObject.Id == queryObjectId)
+                            {
+                                _cacheIds[uri] = elementAsMofObject;
+                                return elementAsMofObject as T;
+                            }
                         }
                     }
 

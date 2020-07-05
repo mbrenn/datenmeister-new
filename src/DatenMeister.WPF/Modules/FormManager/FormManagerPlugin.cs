@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Views.Formmanager.xmi",
+                "DatenMeister.XmiFiles.Forms.Formmanager.xmi",
                 PackageName,
                 _formsPlugin.GetInternalFormExtent(),
                 PackageName);

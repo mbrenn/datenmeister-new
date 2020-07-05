@@ -91,8 +91,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void AddDefaultTypePackages(IEnumerable<IElement> defaultTypePackages)
         {
             var found = GetDefaultTypePackages()?.ToList() ?? new List<IElement>();
-            foreach (var newPackage in defaultTypePackages.Where(newPackage => !found.Contains(newPackage)))
+            foreach (var newPackage in defaultTypePackages)
             {
+                if (found.Any(x => MofObject.AreEqual(x, newPackage)))
+                {
+                    continue;
+                }
+                
                 found.Add(newPackage);
             }
 

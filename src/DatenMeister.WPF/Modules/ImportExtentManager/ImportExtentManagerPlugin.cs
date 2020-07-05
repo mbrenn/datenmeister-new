@@ -28,7 +28,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new ImportExtentViewExtensions(this));
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Views.ImportExtentManager.xmi",
+                "DatenMeister.XmiFiles.Forms.ImportExtentManager.xmi",
                 PackageName,
                 _formsPlugin.GetInternalFormExtent(),
                 PackageName);

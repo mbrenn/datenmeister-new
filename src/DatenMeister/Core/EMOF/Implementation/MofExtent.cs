@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -87,18 +88,41 @@ namespace DatenMeister.Core.EMOF.Implementation
         public bool IsModified { get; private set; }
 
         private int _itemCountCached;
-        private DynamicFunctionManager? _dynamicFunctionManager ;
+
+        /// <summary>
+        /// STores the object for synchronization issues
+        /// </summary>
+        private object _syncObject = new object();
+
+        /// <summary>
+        /// Stores the information whether the evaluation about the item count is currently
+        /// running in the background. 
+        /// </summary>
+        private bool _isItemCountRunning = false;
+
+        private DynamicFunctionManager? _dynamicFunctionManager;
 
         public int ItemCount
         {
             get
             {
-                if (_itemCountCached == -1)
+                lock (_syncObject)
                 {
-                    _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
-                }
+                    if (_itemCountCached == -1)
+                    {
+                        if (!_isItemCountRunning)
+                        {
+                            _isItemCountRunning = true;
+                            Task.Run(() =>
+                            {
+                                _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
+                                ChangeEventManager?.SendChangeEvent(this);
+                            });
+                        }
+                    }
 
-                return _itemCountCached;
+                    return _itemCountCached;
+                }
             }
         }
 

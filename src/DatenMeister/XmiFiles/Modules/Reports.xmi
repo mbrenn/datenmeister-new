@@ -22,14 +22,14 @@
                         name="Inline" value="Inline" />
                 <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" 
                         name="PerPackage" value="PerPackage" />
-            </field>
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" 
-                   name="typeMode" title="typeMode">
-                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair"
-                        name="PerType" value="PerType" />
-                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" 
-                        name="AllTypes" value="AllTypes" />
             </field>-->
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" 
+                   name="typeMode" title="One table per type">
+                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair"
+                        name="Yes" value="PerType" />
+                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" 
+                        name="No" value="AllTypes" />
+            </field>
         </packagedElement>
 
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" 

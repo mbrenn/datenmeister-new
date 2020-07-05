@@ -29,6 +29,7 @@
     <EmbeddedResource Include="XmiFiles\Internal.xmi" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="XmiFiles\Modules\Reports.xmi" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
@@ -36,7 +37,6 @@
     <EmbeddedResource Include="XmiFiles\Forms\Formmanager.xmi" />
     <EmbeddedResource Include="XmiFiles\Forms\WorkspacesAndExtents.xmi" />
     <EmbeddedResource Include="XmiFiles\Forms\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\Reports.xmi" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />

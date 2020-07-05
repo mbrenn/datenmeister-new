@@ -2,24 +2,40 @@
 <item>
     <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Forms"
           xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Show" hideMetaInformation="True" allowNewProperties="True" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showDescendents" title="showDescendents" />
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" name="rootElement" title="rootElement" />
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showRootElement" title="showRootElement" />
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showMetaClasses" title="showMetaClasses" />
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showFullName" title="showFullName" />
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" name="form" title="form" />
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="descendentMode" title="descendentMode">
-                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" name="None" value="None" />
-                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" name="Inline" value="Inline" />
-                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" name="PerPackage" value="PerPackage" />
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Form SimpleConfiguration"
+                         hideMetaInformation="True" allowNewProperties="True" p1:id="Form.Report.SimpleConfiguration">
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" 
+                   name="showDescendents" title="Show all Descendents" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" 
+                   name="showRootElement" title="Show Root Element" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" 
+                   name="showMetaClasses" title="Include Metaclasses" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" 
+                   name="showFullName" title="Include Full Names" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" 
+                   name="form" title="Form" />
+            <!--<field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData"
+                   name="descendentMode" title="descendentMode">
+                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" 
+                        name="None" value="None" />
+                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair"
+                        name="Inline" value="Inline" />
+                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" 
+                        name="PerPackage" value="PerPackage" />
             </field>
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="typeMode" title="typeMode">
-                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" name="PerType" value="PerType" />
-                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" name="AllTypes" value="AllTypes" />
-            </field>
-            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" title="Metaclass" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" 
+                   name="typeMode" title="typeMode">
+                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair"
+                        name="PerType" value="PerType" />
+                <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" 
+                        name="AllTypes" value="AllTypes" />
+            </field>-->
         </packagedElement>
+
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" 
+                         name="Detail - SimpleConfiguration" formType="Detail" 
+                         metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration" 
+                         form-ref="#Form.Report.SimpleConfiguration" />
         
     </item>
 </item>

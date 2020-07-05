@@ -133,7 +133,6 @@ namespace DatenMeister.Modules.TypeSupport
                 new MofFactory(internalTypeExtent),
                 packageName,
                 "name",
-                _UML._Packages._Package.packagedElement,
                 _workspaceLogic.GetUmlData().Packages.__Package);
             if (package == null)
                 throw new InvalidOperationException("package == null");

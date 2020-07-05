@@ -44,13 +44,16 @@ namespace DatenMeister.Uml.Helper
             var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
             if (uml == null) return null;
             
+            var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
+                (rootElements as IHasExtent)?.GetExtentOf() ??
+                throw new InvalidOperationException("No Extent connected"));
+            
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
                 packagePath,
                 _UML._CommonStructure._NamedElement.name,
-                _UML._Packages._Package.packagedElement,
-                uml.Packages.__Package,
+                packageClassifier,
                 false);
         }
         
@@ -86,14 +89,17 @@ namespace DatenMeister.Uml.Helper
             
             var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
             if (uml == null) return null;
+
+            var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
+                (rootElements as IHasExtent)?.GetExtentOf() ??
+                throw new InvalidOperationException("No Extent connected"));
             
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
                 packagePath,
                 _UML._CommonStructure._NamedElement.name,
-                _UML._Packages._Package.packagedElement,
-                uml.Packages.__Package,
+                packageClassifier,
                 createIfNotFound);
         }
 
@@ -129,7 +135,6 @@ namespace DatenMeister.Uml.Helper
             IFactory factory,
             string packagePath,
             string nameProperty,
-            string childProperty,
             IElement? metaClass = null,
             bool flagCreate = true)
         {
@@ -185,6 +190,7 @@ namespace DatenMeister.Uml.Helper
 
                 // Sets and finds the child property by the given name
                 IReflectiveSequence? children = null;
+                var childProperty = DefaultClassifierHints.GetDefaultPackagePropertyName(childElement);
                 if (childElement.isSet(childProperty))
                 {
                     children = childElement.get(childProperty) as IReflectiveSequence;

@@ -65,7 +65,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             if (itemExplorerControl != null)
             {
                 yield return new ItemMenuButtonDefinition(
-                    "Report as Html",
+                    "Report as Html (Default)",
                     x =>
                     {
                         if (x is IExtent asExtent)
@@ -78,11 +78,11 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         }
                     },
                     null,
-                    "Export");
-                
-                
+                    "Export") {Priority = 2};
+
+
                 yield return new ItemMenuButtonDefinition(
-                    "Configure Report asHtml",
+                    "Report as Html",
                     async x =>
                     {
                         var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
@@ -95,25 +95,27 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         var simpleConfiguration = InMemoryObject.TemporaryFactory.create(simpleConfigurationType);
                         var result = await NavigatorForItems.NavigateToElementDetailView(
                             viewExtensionInfo.NavigationHost,
-                            simpleConfiguration);
+                            simpleConfiguration,null, "Configure simple Report");
                         if (result?.Result == NavigationResult.Saved)
                         {
                             if (x is IExtent asExtent)
                             {
                                 CreateReportForExplorerView(
-                                    asExtent, 
-                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(simpleConfiguration));
+                                    asExtent,
+                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(
+                                        simpleConfiguration));
                             }
                             else
                             {
                                 CreateReportForExplorerView(
-                                    x, 
-                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(simpleConfiguration));
+                                    x,
+                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(
+                                        simpleConfiguration));
                             }
                         }
                     },
                     null,
-                    "Export");
+                    "Export") {Priority = 1};
             }
         }
 

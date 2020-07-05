@@ -232,6 +232,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element">Element to be shown</param>
         public void SetMainContent(UIElement element)
         {
+            var hasTitle = Title != string.Empty;
             MainContent.Content = element;
             if (element is DetailFormControl control)
             {
@@ -246,12 +247,15 @@ namespace DatenMeister.WPF.Windows
                     }
                 }
 
-                var name = NamedElementMethods.GetName(control.DetailElement);
-                if (!string.IsNullOrEmpty(name))
-                    Title = $"Edit element: {name}";
+                if (!hasTitle)
+                {
+                    var name = NamedElementMethods.GetName(control.DetailElement);
+                    if (!string.IsNullOrEmpty(name))
+                        Title = $"Edit element: {name}";
+                }
             }
 
-            if (element is IHasTitle title)
+            if (!hasTitle && element is IHasTitle title)
                 Title = title.Title;
         }
 

@@ -13,6 +13,7 @@ namespace IssueMeisterLib
         /// Stores the name of the package
         /// </summary>
         public const string PackageName = "IssueMeister";
+        public const string TargetPackageName = "Apps::IssueMeister";
         public const string ExtentTypeName = "IssueMeister";
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly PackageMethods _packageMethods;
@@ -45,7 +46,7 @@ namespace IssueMeisterLib
                 "IssueMeisterLib.Xmi.IssueMeister.Forms.xml",
                 PackageName,
                 _formsPlugin.GetInternalFormExtent(),
-                PackageName);
+                TargetPackageName);
             
             // Import 
             _packageMethods.ImportByManifest(
@@ -53,7 +54,7 @@ namespace IssueMeisterLib
                 "IssueMeisterLib.Xmi.IssueMeister.Types.xml",
                 PackageName,
                 _localTypeSupport.InternalTypes,
-                PackageName);
+                TargetPackageName);
             
             _extentSettings.extentTypeSettings.Add(
                 new ExtentTypeSetting(ExtentTypeName));

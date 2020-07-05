@@ -513,7 +513,8 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     itemHeader += " [Non-Permanent]";
                 }
-                else if (ExtentManager.IsExtentModified(extent))
+                
+                if (ExtentManager.IsExtentModified(extent))
                 {
                     itemHeader += "*";
                 }

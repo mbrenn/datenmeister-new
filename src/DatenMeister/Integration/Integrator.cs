@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
@@ -273,12 +274,34 @@ namespace DatenMeister.Integration
                 // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
                 var extentManager = scope.Resolve<IExtentManager>();
                 extentManager.CreateStorageTypeDefinitions();
+                
+                ResetUpdateFlagsOfExtent(workspaceLogic);
             }
 
             watch.Stop();
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 
             return builder;
+        }
+
+        /// <summary>
+        /// Goes through each extent and resets the update flag for all extents with providers
+        /// indicating that they are just a temporary extent
+        /// </summary>
+        /// <param name="workspaceLogic"></param>
+        private static void ResetUpdateFlagsOfExtent(IWorkspaceLogic workspaceLogic)
+        {
+            // After the complete bootstrapping is done, the Update flags for the TemporaryExtents will be removed
+            foreach (var workspace in workspaceLogic.Workspaces)
+            {
+                foreach (var extent in workspace.extent.OfType<MofExtent>())
+                {
+                    if (extent.Provider.GetCapabilities()?.IsTemporaryStorage == true)
+                    {
+                        extent.SignalUpdateOfContent(false);
+                    }
+                }
+            }
         }
 
         /// <summary>

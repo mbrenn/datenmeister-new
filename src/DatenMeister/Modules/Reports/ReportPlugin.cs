@@ -33,7 +33,7 @@ namespace DatenMeister.Modules.Reports
             
             _packageMethods.ImportByManifest(
                 typeof(ReportPlugin),
-                "DatenMeister.XmiFiles.Forms.Reports.xmi",
+                "DatenMeister.XmiFiles.Modules.Reports.xmi",
                 "Forms",
                 _formsPlugin.GetInternalFormExtent(),
                 "Reports");

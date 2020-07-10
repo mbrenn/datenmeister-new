@@ -401,7 +401,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             return formCreator.CreateDetailForm(element);
         }
 
-        public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode)
+        public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
         {
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
@@ -410,7 +410,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
-                        FormType = FormType.TreeItemExtent
+                        FormType = FormType.TreeItemExtent,
+                        viewModeId = viewModeId
                     }).FirstOrDefault();
 
                 if (foundForm != null)

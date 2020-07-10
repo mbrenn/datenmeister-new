@@ -121,7 +121,7 @@ namespace DatenMeister.Provider.DotNet
             if (DotNetHelper.IsOfMofObject(result))
             {
                 // Returns the given element itself, if it is an MofElement or MofObject
-                return result;
+                return (result as MofObject)?.ProviderObject;
             }
 
             var dotNetResult = provider.CreateDotNetProviderObject(result);

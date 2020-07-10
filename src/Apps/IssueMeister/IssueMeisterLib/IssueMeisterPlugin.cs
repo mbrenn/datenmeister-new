@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
@@ -55,9 +56,12 @@ namespace IssueMeisterLib
                 PackageName,
                 _localTypeSupport.InternalTypes,
                 TargetPackageName);
-            
-            _extentSettings.extentTypeSettings.Add(
-                new ExtentTypeSetting(ExtentTypeName));
+
+            var extentSetting =
+                new ExtentTypeSetting(ExtentTypeName);
+            extentSetting.RootElementMetaClasses.Add(
+                _localTypeSupport.InternalTypes.element("#IssueMeister.Issue"));
+            _extentSettings.extentTypeSettings.Add(extentSetting);
         }
     }
 }

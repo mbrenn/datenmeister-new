@@ -522,7 +522,8 @@ namespace DatenMeister.WPF.Forms.Base
             if (value is IExtent extent)
             {
                 // Gets the default types by the View Extensions
-                foreach (var extension in usedViewExtensions.OfType<NewInstanceViewDefinition>())
+                foreach (var extension in 
+                    usedViewExtensions.OfType<NewInstanceViewDefinition>())
                 {
                     defaultTypesForNewItems.Add(extension.MetaClass);
                 }

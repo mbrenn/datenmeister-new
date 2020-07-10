@@ -33,14 +33,6 @@ namespace DatenMeister.Uml.Plugin
 
         public void Start(PluginLoadingPosition position)
         {
-            AddToViewDefinition();
-        }
-
-        /// <summary>
-        /// Adds the views to the view logic.
-        /// </summary>
-        public void AddToViewDefinition()
-        {
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Forms.UML.xmi",

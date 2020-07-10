@@ -8,6 +8,8 @@ namespace DatenMeister.Runtime.Extents.Configuration
     /// </summary>
     public class ExtentSettings
     {
+        public string name = "Extent Settings";
+        
         /// <summary>
         /// Stores the extent type setting
         /// </summary>

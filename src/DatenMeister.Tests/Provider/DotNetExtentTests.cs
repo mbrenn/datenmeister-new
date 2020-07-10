@@ -10,6 +10,7 @@ using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider
@@ -288,6 +289,9 @@ namespace DatenMeister.Tests.Provider
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test");
             var otherExtent = new MofUriExtent(new InMemoryProvider(), "dm:///otherextent");
+            var workspace = new Workspace("Data");
+            workspace.AddExtent(otherExtent);
+            workspace.AddExtent(extent);
             
             // Creates the spouse and the children and adds them to the extent
             var spouse = new DotNetTests.Person
@@ -333,6 +337,7 @@ namespace DatenMeister.Tests.Provider
             };
 
             extent.elements().add(extent.CreateDotNetMofElement(nonSpouse));
+            
 
             var nonSpouseElement = extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
             Assert.That(nonSpouseElement, Is.Not.Null);
@@ -344,6 +349,16 @@ namespace DatenMeister.Tests.Provider
             Assert.That(children, Is.Not.Null);
             Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child1"));
             Assert.That((children.ElementAt(1) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child2"));
+            
+            // Now the challange... change the content in the other extent and it should be reflected here. 
+            spouseElement.set("Name", "New Spouse");
+            child1Element.set("Name", "New Child");
+            
+            Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
+                Is.EqualTo("New Spouse"));
+
+            children = nonSpouseElement.getOrDefault<IReflectiveCollection>("Children");
+            Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("New Child"));
         }
 
         internal static MofUriExtent Initialize()

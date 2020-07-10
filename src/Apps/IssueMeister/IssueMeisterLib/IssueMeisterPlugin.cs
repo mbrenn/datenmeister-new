@@ -29,6 +29,7 @@ namespace IssueMeisterLib
         /// <param name="packageMethods"></param>
         /// <param name="formsPlugin">Sets the form logic</param>
         /// <param name="localTypeSupport">Sets the local type support</param>
+        /// <param name="extentSettings">The settings for the extent</param>
         public IssueMeisterPlugin(IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, FormsPlugin formsPlugin,
             LocalTypeSupport localTypeSupport, ExtentSettings extentSettings)
         {

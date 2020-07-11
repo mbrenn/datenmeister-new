@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -46,15 +47,43 @@ namespace DatenMeister.Modules.Forms.FormCreator
             tabs.add(newTab);
             return newTab;
         }
-        
+
+        /// <summary>
+        /// Creates an extent form containing the subforms
+        /// </summary>    
+        /// <returns>The created extent</returns>
+        public IElement CreateExtentForm(params IElement[] subForms)
+        {
+            var result = _factory.create(_formAndFields.__ExtentForm);
+            result.set(_FormAndFields._ExtentForm.tab, subForms);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates an extent form for the given extent by parsing through each element
+        /// and creating the form out of the max elements
+        /// </summary>
+        /// <param name="extent">Extent to be parsed</param>
+        /// <param name="creationMode">The creation mode being used</param>
+        /// <returns>The created element</returns>
+        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
+        {
+            var extentFormConfiguration = new ExtentFormConfiguration();
+            var extentTypes = extent.GetConfiguration().ExtentTypes;
+            extentFormConfiguration.ExtentTypes.AddRange(extentTypes);
+            
+            return CreateExtentForm(extent.elements(), creationMode, extentFormConfiguration);
+        }
+
         /// <summary>
         /// Creates the extent by parsing through all the elements and creation of fields.
         /// </summary>
         /// <param name="elements">Elements which are parsed to create the form</param>
         /// <param name="creationMode">The creation mode defining whether metaclass are used or not</param>
         /// <returns></returns>
-        public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
+        public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode, ExtentFormConfiguration? extentFormConfiguration)
         {
+            extentFormConfiguration ??= new ExtentFormConfiguration();
             var cache = new FormCreatorCache();
 
             if (elements == null)
@@ -85,6 +114,16 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 .Where(x => x.Key != null)
                 .ToList();
 
+            // Goes through all the extent types and adds the default metaclasses into the list of tables
+            var metaClasses = elementsWithMetaClass.Select(x => x.Key).ToList();
+            foreach (var extentType in extentFormConfiguration.ExtentTypes)
+            {
+                var extentTypeSetting = _extentSettings.GetExtentTypeSetting(extentType);
+                if (extentTypeSetting == null) continue;
+
+                metaClasses.AddRange(extentTypeSetting.rootElementMetaClasses);
+            }
+
             if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
             {
                 // If there are elements without a metaclass or if there are no elements at all within the extent
@@ -104,10 +143,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             // Go through all the meta classes. 
-            foreach (var group in elementsWithMetaClass)
+            foreach (var groupedMetaclass in metaClasses)
             {
+                var group =
+                    elementsWithMetaClass.FirstOrDefault(y => y.Key == groupedMetaclass)?.ToList() ??
+                            new List<IElement>();
+                
                 // Now try to figure out the metaclass
-                var groupedMetaclass = group.Key;
                 if (groupedMetaclass == null)
                 {
                     // Should not happen, but we need to handle this
@@ -145,7 +187,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     form = CreateListFormForMetaClass(groupedMetaclass, creationMode);
                 }
 
-                form.set(_FormAndFields._ListForm.metaClass, group.Key);
+                form.set(_FormAndFields._ListForm.metaClass, groupedMetaclass);
 
                 SetDefaultTypesByPackages(form);
 
@@ -535,5 +577,18 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 form.AddCollectionItem(_FormAndFields._ListForm.field, textFieldData);
             }
         }
+    }
+    
+    
+
+    /// <summary>
+    /// A configuration helper class to create the extent form
+    /// </summary>
+    public class ExtentFormConfiguration
+    {
+        /// <summary>
+        /// Gets or sets the extent type to be used
+        /// </summary>
+        public List<string> ExtentTypes { get; set; } = new List<string>();
     }
 }

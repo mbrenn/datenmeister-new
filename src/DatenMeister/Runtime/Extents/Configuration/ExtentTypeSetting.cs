@@ -23,6 +23,6 @@ namespace DatenMeister.Runtime.Extents.Configuration
         /// to the extent. Other metaclasses are also possible, but these one are actively offered
         /// by the tool
         /// </summary>
-        public List<IElement> RootElementMetaClasses { get; } = new List<IElement>(); 
+        public List<IElement> rootElementMetaClasses { get; } = new List<IElement>(); 
     }
 }

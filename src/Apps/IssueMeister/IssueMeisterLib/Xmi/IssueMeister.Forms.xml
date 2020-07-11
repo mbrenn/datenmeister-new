@@ -64,7 +64,10 @@
                            name="description" title="description" lineHeight="8"/>
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
                            name="Metaclass"/>
-                    <defaultTypesForNewElements />
+                    <defaultTypesForNewElements name="Issue"
+                                                metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue"
+                                                parentProperty="packagedElement"
+                                                p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement"/>
                 </tab>
                 <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" name="Open Issues"
                      metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement"
@@ -87,6 +90,7 @@
                              p1:id="IssueAssociationDetail" formType="Detail"
                              form-ref="#IssueFormDetail"
                              metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" name="Issue - Detail"/>
+
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
                              p1:id="IssueAssociationList" formType="TreeItemDetail"
                              form-ref="#IssueFormList" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue"
@@ -98,17 +102,18 @@
                              metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"
                              name="Packages in IssueMeister"
                              viewModeId="IssueMeister"/>
+
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
                              p1:id="IssueExtentAssociationList" formType="TreeItemExtent"
                              form-ref="#IssuePackageList"
                              extentType="IssueMeister"
                              name="Packages in IssueMeister"
-                             viewModeId="IssueMeister" />
+                             viewModeId="IssueMeister"/>
 
+            <!-- Declares the view mode -->
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode"
                              name="ViewMode for IssueMeister"
-                             id="IssueMeister" defaultExtentType="IssueMeister"
-                             xmlns:p1="http://www.omg.org/spec/XMI/20131001"/>
+                             id="IssueMeister" defaultExtentType="IssueMeister"/>
         </packagedElement>
     </item>
 </item>

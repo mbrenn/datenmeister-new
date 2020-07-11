@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 
 namespace DatenMeister.Runtime.Functions.Queries
 {
@@ -20,7 +23,9 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// Defines the names of the properties to be parsed
         /// </summary>
         private readonly ICollection<string> _propertyNames;
-
+        
+        private List<Tuple<string, object>> _propertyValues = new List<Tuple<string, object>>();
+        
         public PropertiesAsReflectiveCollection(IObject value)
         {
             _value = value;
@@ -47,27 +52,42 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         public IEnumerator<object> GetEnumerator()
         {
-            if (_value is IObjectAllProperties objectWithProperties)
+            var result = new List<object>();
+            
+            lock (_propertyValues)
             {
-                var propertyNames = _propertyNames ?? objectWithProperties.getPropertiesBeingSet();
-
-                foreach (var property in propertyNames
-                    .Where(property => _value.isSet(property)))
+                _propertyValues.Clear();
+                if (_value is IObjectAllProperties objectWithProperties)
                 {
-                    if (!(_value.get(property)
-                        is IReflectiveCollection valueAsCollection))
+                    var propertyNames = _propertyNames;
+                    if (propertyNames == null || propertyNames.Count == 0)
                     {
-                        continue;
+                        propertyNames = objectWithProperties.getPropertiesBeingSet().ToList();
                     }
 
-                    foreach (var child in valueAsCollection)
+                    foreach (var property in propertyNames
+                        .Where(property => _value.isSet(property)))
                     {
-                        if (child == null) continue;
-                        
-                        yield return child;
+                        if (!(_value.get(property)
+                            is IReflectiveCollection valueAsCollection))
+                        {
+                            continue;
+                        }
+
+                        foreach (var child in valueAsCollection)
+                        {
+                            if (child == null) continue;
+
+                            result.Add(child);
+                            
+                            _propertyValues.Add(
+                                new Tuple<string, object>(property, child));
+                        }
                     }
                 }
             }
+            
+            return result.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -81,7 +101,20 @@ namespace DatenMeister.Runtime.Functions.Queries
             throw new System.NotImplementedException();
         }
 
-        public bool remove(object? value) => throw new System.NotImplementedException();
+        public bool remove(object? value)
+        {
+            lock (_propertyValues)
+            {
+                var foundTuple = _propertyValues.FirstOrDefault(x => x.Item2.Equals(value));
+                if (foundTuple == null)
+                {
+                    return false;
+                }
+
+                _value.getOrDefault<IReflectiveCollection>(foundTuple.Item1).remove(foundTuple.Item2);
+                return true;
+            }
+        }
 
         public int size() => this.Count();
 

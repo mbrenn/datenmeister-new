@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Net;
 using System.Web;
 using BurnSystems.Logging;
@@ -68,10 +70,37 @@ namespace DatenMeister.Runtime
             {
                 return null;
             }
+            
+            // Parse the QueryString
+            NameValueCollection parsedValue;
+            if (posQuestion != -1)
+            {
+                var query = uri.Substring(posQuestion + 1);
+                if (query.IndexOf('=') == -1)
+                {
+                    // If there is no real query string, create one with full name
+                    Logger.Info("Legacy query without fullname: " + uri);
 
+                    query = "fn=" + query;
+                }
+
+                parsedValue = HttpUtility.ParseQueryString(query);
+            }
+            else
+            {
+                parsedValue = new NameValueCollection();
+            }
+
+            T? foundItem = null;
             // Ok, not found, try to find it
             try
             {
+                if (posHash == -1 && posQuestion == -1)
+                {
+                    Logger.Error("No hash and no question mark");
+                    throw new NotImplementedException("No hash and no question mark");
+                }
+                
                 // Querying by hash
                 if (posHash != -1)
                 {
@@ -81,77 +110,23 @@ namespace DatenMeister.Runtime
                     {
                         Logger.Info(
                             $"Uri does not contain a URI-Fragment defining the object being looked for. {nameof(uri)}");
-
-                        return null;
-                    }
-
-                    // Queries the object
-                    var queryObjectId = WebUtility.UrlDecode(fragment);
-
-                    // Check if the extent type already supports the direct querying of objects
-                    if (_extent.Provider is IProviderSupportFunctions supportFunctions &&
-                        supportFunctions.ProviderSupportFunctions.QueryById != null)
-                    {
-                        var resultingObject = supportFunctions.ProviderSupportFunctions.QueryById(queryObjectId);
-                        if (resultingObject != null)
-                        {
-#if DEBUG
-                            if (_extent == null) throw new InvalidOperationException("_extent is null");
-#endif
-                            var resultElement = new MofElement(resultingObject, _extent)
-                                {Extent = _extent};
-                            _cacheIds[uri] = resultElement;
-                            return (T) resultElement;
-                        }
                     }
                     else
                     {
-                        // Now go through the list
-                        foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
-                        {
-                            var elementAsMofObject =
-                                element as IHasId ?? throw new ArgumentException("elementAsMofObject");
-                            if (elementAsMofObject.Id == queryObjectId)
-                            {
-                                _cacheIds[uri] = elementAsMofObject;
-                                return elementAsMofObject as T;
-                            }
-                        }
+                        foundItem = ResolveByFragment(fragment);
                     }
-
-                    // According to MOF Specification, return null, if not found
-                    return null;
                 }
 
                 // Querying by query
                 if (posQuestion != -1)
                 {
-                    var query = uri.Substring(posQuestion + 1);
-                    if (query.IndexOf('=') == -1)
-                    {
-                        // If there is no real query string, create one with full name
-                        Logger.Info("Legacy query without fullname: " + uri);
-
-                        query = "fn=" + query;
-                    }
-
-                    var parsedValue = HttpUtility.ParseQueryString(query);
                     var fullName = parsedValue.Get("fn");
+
                     if (fullName != null)
                     {
-                        var found = NamedElementMethods.GetByFullName(_extent, fullName);
-                        if (found != null)
-                        {
-                            _cacheIds[uri] = (IHasId) found;
-                            return found as T;
-                        }
+                        foundItem = NamedElementMethods.GetByFullName(_extent, fullName) as T;
                     }
-
-                    return null;
                 }
-
-                Logger.Error("No hash and no question mark");
-                throw new NotImplementedException("No hash and no question mark");
             }
             catch (UriFormatException exc)
             {
@@ -160,6 +135,57 @@ namespace DatenMeister.Runtime
 
                 return null;
             }
+
+            if (foundItem != null)
+            {
+                _cacheIds[uri] = foundItem;
+            }
+
+            return foundItem;
+        }
+
+        /// <summary>
+        /// Resolves the item by using the fragment (#)
+        /// </summary>
+        /// <param name="fragment">Fragment being required for the query</param>
+        /// <returns>The found element</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        private T? ResolveByFragment(string fragment)
+        {
+            // Queries the object
+            var queryObjectId = WebUtility.UrlDecode(fragment);
+
+            // Check if the extent type already supports the direct querying of objects
+            if (_extent.Provider is IProviderSupportFunctions supportFunctions &&
+                supportFunctions.ProviderSupportFunctions.QueryById != null)
+            {
+                var resultingObject = supportFunctions.ProviderSupportFunctions.QueryById(queryObjectId);
+                if (resultingObject != null)
+                {
+#if DEBUG
+                    if (_extent == null) throw new InvalidOperationException("_extent is null");
+#endif
+                    var resultElement = new MofElement(resultingObject, _extent)
+                        {Extent = _extent};
+                    return (T) resultElement;
+                }
+            }
+            else
+            {
+                // Now go through the list
+                foreach (var element in AllDescendentsQuery.GetDescendents(_extent))
+                {
+                    var elementAsMofObject =
+                        element as IHasId ?? throw new ArgumentException("elementAsMofObject");
+                    if (elementAsMofObject.Id == queryObjectId)
+                    {
+                        return elementAsMofObject as T;
+                    }
+                }
+            }
+
+            // According to MOF Specification, return null, if not found
+            return null;
         }
 
         public virtual string uri(IElement element)

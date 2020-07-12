@@ -25,7 +25,6 @@ namespace DatenMeister.Modules.PublicSettings
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(PublicSettingHandler));
 
-
         /// <summary>
         /// Loads the public settings for the DatenMeister
         /// </summary>

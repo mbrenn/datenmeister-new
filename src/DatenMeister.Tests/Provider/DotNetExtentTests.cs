@@ -128,7 +128,7 @@ namespace DatenMeister.Tests.Provider
             var factory = new MofFactory(extent);
 
             var metaClass = typeExtent.TypeLookup.ToElement(typeof(DotNetTests.TestClass));
-            var created = factory.create(typeExtent.Resolve(metaClass, ResolveType.Default));
+            var created = factory.create(typeExtent.ResolveElement(metaClass, ResolveType.Default));
             Assert.That(created, Is.TypeOf<MofElement>());
             created.set("Title", "Test");
             var metaClassObject = created.getMetaClass();

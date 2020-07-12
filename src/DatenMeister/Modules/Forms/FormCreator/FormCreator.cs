@@ -477,7 +477,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _integerType ??= _primitiveTypes?.__Integer;
             _booleanType ??= _primitiveTypes?.__Boolean;
             _realType ??= _primitiveTypes?.__Real;
-            _dateTimeType ??= _uriResolver?.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+            _dateTimeType ??= _uriResolver?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
             var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)

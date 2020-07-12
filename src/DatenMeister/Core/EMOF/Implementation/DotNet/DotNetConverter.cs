@@ -79,7 +79,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
 
             // Gets the uri of the lookup up type
             var metaClassUri = _extent?.GetMetaClassUri(value.GetType());
-            var metaClass = metaClassUri == null ? null : _extent?.Resolve(metaClassUri, ResolveType.OnlyMetaClasses);
+            var metaClass = metaClassUri == null ? null : _extent?.ResolveElement(metaClassUri, ResolveType.OnlyMetaClasses);
 
             return ConvertToMofObject(value, metaClass, requestedId);
         }

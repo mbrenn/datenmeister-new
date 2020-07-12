@@ -36,7 +36,7 @@ namespace DatenMeister.Runtime
             if (element == null || string.IsNullOrEmpty(element))
                 return null;
 
-            return extent.GetUriResolver().Resolve(element, ResolveType.Default);
+            return extent.GetUriResolver().ResolveElement(element, ResolveType.Default);
         }
 
         public static IElement? Resolve(this IExtent extent, IElement element)
@@ -54,7 +54,7 @@ namespace DatenMeister.Runtime
 
             if (element is MofObjectShadow shadow)
             {
-                return mofUriExtent.Resolve(shadow.Uri, ResolveType.Default);
+                return mofUriExtent.ResolveElement(shadow.Uri, ResolveType.Default);
             }
 
             Logger.Error($"Given element is not of type MofElement or MofObjectShadow: {element?.ToString() ?? "'null'"}");

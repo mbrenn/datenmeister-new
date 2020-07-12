@@ -1,14 +1,19 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.DotNet
+namespace DatenMeister.Tests.Provider
 {
     [TestFixture]
     public class DotNetExtentTests
@@ -216,6 +221,146 @@ namespace DatenMeister.Tests.DotNet
             Assert.That(asKnowsExtent.Extent, Is.EqualTo(extent));
         }
 
+        [Test]
+        public void TestWithElementsWithinSameExtent()
+        {
+            var typeExtent = Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test");
+            
+            // Creates the spouse and the children and adds them to the extent
+            var spouse = new DotNetTests.Person
+            {
+                Name = "Spouse",
+                Prename = "Maierwoman"
+            };
+
+            var child1 = new DotNetTests.Person
+            {
+                Name = "Child1",
+                Prename = "Maierson"
+            };
+            
+            var child2 = new DotNetTests.Person
+            {
+                Name = "Child2",
+                Prename = "Maierdaughter"
+            };
+
+            extent.elements().add(extent.CreateDotNetMofElement(spouse));
+            extent.elements().add(extent.CreateDotNetMofElement(child1));
+            extent.elements().add(extent.CreateDotNetMofElement(child2));
+
+            // Checks that children and spouse are properly added
+            var spouseElement = extent.elements().WhenPropertyHasValue("Name", "Spouse").FirstOrDefault() as IElement;
+            var child1Element = extent.elements().WhenPropertyHasValue("Name", "Child1").FirstOrDefault() as IElement;
+            var child2Element = extent.elements().WhenPropertyHasValue("Name", "Child2").FirstOrDefault() as IElement;
+
+            Assert.That(spouseElement, Is.Not.Null);
+            Assert.That(child1Element, Is.Not.Null);
+            Assert.That(spouseElement, Is.Not.Null);
+            
+            // Now creates the element referencing spouse and children via IElement
+            var nonSpouse = new DotNetTests.PersonWithAnotherPersonPerElement
+            {
+                Name = "Husband",
+                Spouse = spouseElement,
+                Children = new List<IElement> {child1Element, child2Element}
+            };
+
+            extent.elements().add(extent.CreateDotNetMofElement(nonSpouse));
+
+            var nonSpouseElement = extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
+            Assert.That(nonSpouseElement, Is.Not.Null);
+            Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse"), Is.Not.Null);
+            Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
+                Is.EqualTo("Spouse"));
+
+            var children = nonSpouseElement.getOrDefault<IReflectiveCollection>("Children");
+            Assert.That(children, Is.Not.Null);
+            Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child1"));
+            Assert.That((children.ElementAt(1) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child2"));
+        }
+
+        [Test]
+        public void TestWithElementsInOtherExtent()
+        {
+            var typeExtent = Initialize();
+            var provider = new DotNetProvider(typeExtent.TypeLookup);
+            var extent = new MofUriExtent(provider, "dm:///test");
+            var otherExtent = new MofUriExtent(new InMemoryProvider(), "dm:///otherextent");
+            var workspace = new Workspace("Data");
+            workspace.AddExtent(otherExtent);
+            workspace.AddExtent(extent);
+            
+            // Creates the spouse and the children and adds them to the extent
+            var spouse = new DotNetTests.Person
+            {
+                Name = "Spouse",
+                Prename = "Maierwoman"
+            };
+
+            var child1 = new DotNetTests.Person
+            {
+                Name = "Child1",
+                Prename = "Maierson"
+            };
+            
+            var child2 = new DotNetTests.Person
+            {
+                Name = "Child2",
+                Prename = "Maierdaughter"
+            };
+
+            otherExtent.elements().add(DotNetConverter.ConvertToMofObject(otherExtent, spouse) ??
+                                       throw new InvalidOperationException("Should not be null"));
+            otherExtent.elements().add(DotNetConverter.ConvertToMofObject(otherExtent, child1) ??
+                                       throw new InvalidOperationException("Should not be null"));
+            otherExtent.elements().add(DotNetConverter.ConvertToMofObject(otherExtent, child2) ??
+                                       throw new InvalidOperationException("Should not be null"));
+
+            // Checks that children and spouse are properly added
+            var spouseElement = otherExtent.elements().WhenPropertyHasValue("Name", "Spouse").FirstOrDefault() as IElement;
+            var child1Element = otherExtent.elements().WhenPropertyHasValue("Name", "Child1").FirstOrDefault() as IElement;
+            var child2Element = otherExtent.elements().WhenPropertyHasValue("Name", "Child2").FirstOrDefault() as IElement;
+
+            Assert.That(spouseElement, Is.Not.Null);
+            Assert.That(child1Element, Is.Not.Null);
+            Assert.That(spouseElement, Is.Not.Null);
+            
+            // Now creates the element referencing spouse and children via IElement
+            var nonSpouse = new DotNetTests.PersonWithAnotherPersonPerElement
+            {
+                Name = "Husband",
+                Spouse = spouseElement,
+                Children = new List<IElement> {child1Element, child2Element}
+            };
+
+            extent.elements().add(extent.CreateDotNetMofElement(nonSpouse));
+            
+
+            var nonSpouseElement = extent.elements().WhenPropertyHasValue("Name", "Husband").FirstOrDefault() as IElement;
+            Assert.That(nonSpouseElement, Is.Not.Null);
+            Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse"), Is.Not.Null);
+            Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
+                Is.EqualTo("Spouse"));
+
+            var children = nonSpouseElement.getOrDefault<IReflectiveCollection>("Children");
+            Assert.That(children, Is.Not.Null);
+            Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child1"));
+            Assert.That((children.ElementAt(1) as IElement).getOrDefault<string>("Name"), Is.EqualTo("Child2"));
+            
+            // Now the challange... change the content in the other extent and it should be reflected here. 
+            spouseElement.set("Name", "New Spouse");
+            child1Element.set("Name", "New Child");
+            
+            Assert.That(nonSpouseElement.getOrDefault<IElement>("Spouse").getOrDefault<string>("Name"),
+                Is.EqualTo("New Spouse"));
+
+            children = nonSpouseElement.getOrDefault<IReflectiveCollection>("Children");
+            Assert.That((children.ElementAt(0) as IElement).getOrDefault<string>("Name"), Is.EqualTo("New Child"));
+        }
+
         internal static MofUriExtent Initialize()
         {
             var uml = new _UML();
@@ -225,6 +370,7 @@ namespace DatenMeister.Tests.DotNet
             extent.CreateTypeSpecification(uml, typeof(DotNetTests.Person));
             extent.CreateTypeSpecification(uml, typeof(DotNetTests.PersonWithParent));
             extent.CreateTypeSpecification(uml, typeof(DotNetTests.TestClassWithList));
+            extent.CreateTypeSpecification(uml, typeof(DotNetTests.PersonWithAnotherPersonPerElement));
             return extent;
         }
 

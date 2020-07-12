@@ -60,6 +60,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>enumeration of extents within the datalayer</returns>
         IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer);
 
+        /// <summary>
+        /// Gets the default workspace
+        /// </summary>
+        /// <returns>The default workspace or null, if not found. </returns>
         Workspace? GetDefaultWorkspace();
 
         /// <summary>

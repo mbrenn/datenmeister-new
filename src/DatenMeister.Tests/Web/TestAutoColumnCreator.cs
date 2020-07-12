@@ -32,7 +32,7 @@ namespace DatenMeister.Tests.Web
             
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            var creator = new FormCreator(null, null, null);
+            var creator = new FormCreator(null, null);
             var result = creator.CreateExtentForm(extent, CreationMode.All);
             Assert.That(result, Is.Not.Null);
             var tab = result.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab).Select(x=> x as IElement).FirstOrDefault();
@@ -81,7 +81,7 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject2);
 
             // Execute the stuff
-            var creator = new FormCreator(null, null, null);
+            var creator = new FormCreator(null, null);
             var result = creator.CreateExtentForm(extent, CreationMode.All);
             Assert.That(result, Is.Not.Null);
 

@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core;
@@ -11,7 +10,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -401,7 +399,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             return formCreator.CreateDetailForm(element);
         }
 
-        public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode)
+        public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
         {
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
@@ -410,7 +408,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
-                        FormType = FormType.TreeItemExtent
+                        FormType = FormType.TreeItemExtent,
+                        viewModeId = viewModeId
                     }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -536,7 +535,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             }
 
             var formCreator = CreateFormCreator();
-            return formCreator.CreateExtentForm(collection, CreationMode.All);
+            return formCreator.CreateExtentForm(collection, CreationMode.All, new ExtentFormConfiguration());
         }
 
         /// <summary>
@@ -631,6 +630,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <returns>The created instance of the form creator</returns>
         public FormCreator.FormCreator CreateFormCreator()
-            => new FormCreator.FormCreator(WorkspaceLogic, this, new DefaultClassifierHints(_workspaceLogic));
+            => new FormCreator.FormCreator(WorkspaceLogic, this, _extentSettings);
     }
 }

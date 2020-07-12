@@ -70,6 +70,9 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             public static string @name = "name";
             public IElement? _name = null;
 
+            public static string @RootElementMetaClasses = "RootElementMetaClasses";
+            public IElement? _RootElementMetaClasses = null;
+
         }
 
         public _ExtentTypeSetting @ExtentTypeSetting = new _ExtentTypeSetting();

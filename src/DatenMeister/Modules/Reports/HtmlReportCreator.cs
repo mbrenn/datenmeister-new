@@ -8,7 +8,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime;
@@ -116,8 +115,7 @@ namespace DatenMeister.Modules.Reports
                 // Create form
                 var formCreator = new FormCreator(
                     _workspaceLogic, 
-                    null,
-                    new DefaultClassifierHints(_workspaceLogic));
+                    null);
                 form = formCreator.CreateListFormForElements(elements, CreationMode.All);
             }
             

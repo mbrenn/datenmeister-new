@@ -11,10 +11,10 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
@@ -32,8 +32,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         private readonly FormsPlugin? _formLogic;
 
-        private readonly DefaultClassifierHints _defaultClassifierHints;
-
         /// <summary>
         /// Stores the associated workspace logic
         /// </summary>
@@ -49,6 +47,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         private readonly _FormAndFields _formAndFields;
 
+        private readonly ExtentSettings _extentSettings;
+
         private IElement? _stringType;
         private IElement? _integerType;
         private IElement? _booleanType;
@@ -63,14 +63,14 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="formLogic">View logic being used</param>
-        /// <param name="defaultClassifierHints">The classifier hints</param>
+        /// <param name="extentSettings">Stores the extent settings</param>
         public FormCreator(
             IWorkspaceLogic workspaceLogic,
-            FormsPlugin? formLogic,
-            DefaultClassifierHints defaultClassifierHints)
+            FormsPlugin? formLogic, 
+            ExtentSettings? extentSettings = null)
         {
             _formLogic = formLogic;
-            _defaultClassifierHints = defaultClassifierHints;
+            _extentSettings = extentSettings ?? new ExtentSettings();
 
             _workspaceLogic = workspaceLogic;
 
@@ -87,27 +87,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
                    _UML.TheOne ??
                    throw new InvalidOperationException("UML not found");
         }
-
-        /// <summary>
-        /// Creates an extent form containing the subforms
-        /// </summary>    
-        /// <returns>The created extent</returns>
-        public IElement CreateExtentForm(params IElement[] subForms)
-        {
-            var result = _factory.create(_formAndFields.__ExtentForm);
-            result.set(_FormAndFields._ExtentForm.tab, subForms);
-            return result;
-        }
-
-        /// <summary>
-        /// Creates an extent form for the given extent by parsing through each element
-        /// and creating the form out of the max elements
-        /// </summary>
-        /// <param name="extent">Extent to be parsed</param>
-        /// <param name="creationMode">The creation mode being used</param>
-        /// <returns>The created element</returns>
-        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
-            => CreateExtentForm(extent.elements(), creationMode);
 
         /// <summary>
         /// Creates the fields of the form by evaluation of the given object.
@@ -357,7 +336,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="form">Form that will be enriched</param>
         /// <param name="umlElement">The uml element, property, class or type that will be added</param>
         /// <param name="creationMode">The creation mode</param>
-        /// <returns>true, if an alement was created</returns>
+        /// <returns>true, if an element was created</returns>
         public bool AddToFormByUmlElement(IElement form, IElement umlElement, CreationMode creationMode)
         {
             if (form == null) throw new ArgumentNullException(nameof(form));

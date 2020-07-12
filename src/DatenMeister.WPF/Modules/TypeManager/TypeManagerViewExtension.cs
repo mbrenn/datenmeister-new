@@ -69,18 +69,18 @@ namespace DatenMeister.WPF.Modules.TypeManager
 
                 if (isInPackage || isExtentInListView)
                 {
-                    yield return new NewInstanceViewDefinition(classMetaClass);
-                    yield return new NewInstanceViewDefinition(enumerationMetaClass);
+                    yield return new NewInstanceViewExtension(classMetaClass);
+                    yield return new NewInstanceViewExtension(enumerationMetaClass);
                 }
 
                 if (isInClass)
                 {
-                    yield return new NewInstanceViewDefinition(propertyMetaClass);
+                    yield return new NewInstanceViewExtension(propertyMetaClass);
                 }
 
                 if (isInEnumeration)
                 {
-                    yield return new NewInstanceViewDefinition(enumerationLiteralMetaClass);
+                    yield return new NewInstanceViewExtension(enumerationLiteralMetaClass);
                 }
             }
         }

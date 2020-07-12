@@ -87,7 +87,7 @@ namespace DatenMeister.Integration
                                throw new InvalidOperationException("Entry assembly is null");
 
                 var assemblyDirectoryName = Path.GetDirectoryName(assembly.Location) ??
-                                            throw new InvalidOperationException("Assembly Directory NAme is null");
+                                            throw new InvalidOperationException("Assembly Directory Name is null");
 
                 _settings.DatabasePath = Path.Combine(assemblyDirectoryName, _settings.DatabasePath);
             }

@@ -19,7 +19,6 @@ namespace DatenMeister.Tests.Modules
                 File.Delete(filename);
             }
 
-
             var settings = PublicSettingHandler.LoadSettings(directory);
 
             Assert.That(settings, Is.Null);
@@ -43,6 +42,26 @@ namespace DatenMeister.Tests.Modules
 
             Assert.That(settings, Is.Not.Null);
             Assert.That(settings.databasePath, Is.EqualTo("test"));
+        }
+
+        [Test]
+        public void TestReadingXmiFileWithEnvironment()
+        {
+            var directory = Path.GetTempPath();
+            var filename = Path.Combine(directory, PublicSettingHandler.XmiFileName);
+
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+
+            File.WriteAllText(filename,
+                @"<xmi><settings databasePath=""%USERNAME%\test""></settings></xmi>");
+
+            var settings = PublicSettingHandler.LoadSettings(directory);
+
+            Assert.That(settings, Is.Not.Null);
+            Assert.That(settings.databasePath, Is.EqualTo($"{Environment.UserName}\\test"));
         }
     }
 }

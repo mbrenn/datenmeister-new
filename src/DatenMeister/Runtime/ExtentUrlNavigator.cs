@@ -40,17 +40,8 @@ namespace DatenMeister.Runtime
         /// <returns></returns>
         public virtual T? element(string uri)
         {
-            // Check, if the element is in the cache and if yes, return it
-            if (_cacheIds.TryGetValue(uri, out var result))
-            {
-                var resultAsMof = result as T;
-                if (this.uri(resultAsMof!) == uri)
-                {
-                    return resultAsMof;
-                }
-            }
-
-            // Checks, if hash or question
+            // Checks, if hash or question. Unfortunately, we can't use the Uri since it 
+            // Fragment only is accepted in relative Uris
             var posQuestion = uri.IndexOf('?');
             var posHash = uri.IndexOf('#');
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
@@ -58,90 +49,118 @@ namespace DatenMeister.Runtime
 
             // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 
             // extent
-            if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0)
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0) return null;
 
-            // Verifies whether the context can be found in context uri or alternative Uris
+            // Verifies whether the context can be found in context uri or alternative Uris if extent uri is set
             if (!string.IsNullOrEmpty(extentUri) &&
                 extentUri != _extent.contextURI() &&
                 !_extent.AlternativeUris.Contains(extentUri))
             {
                 return null;
             }
-            
-            // Parse the QueryString
-            NameValueCollection parsedValue;
-            if (posQuestion != -1)
-            {
-                var query = uri.Substring(posQuestion + 1);
-                if (query.IndexOf('=') == -1)
-                {
-                    // If there is no real query string, create one with full name
-                    Logger.Info("Legacy query without fullname: " + uri);
 
-                    query = "fn=" + query;
-                }
-
-                parsedValue = HttpUtility.ParseQueryString(query);
-            }
-            else
-            {
-                parsedValue = new NameValueCollection();
-            }
+            var queryString = ParseQueryString(uri, posQuestion);
 
             T? foundItem = null;
             // Ok, not found, try to find it
-            try
+            if (posHash == -1 && posQuestion == -1)
             {
-                if (posHash == -1 && posQuestion == -1)
+                Logger.Error("No hash and no question mark");
+                throw new NotImplementedException("No hash and no question mark");
+            }
+
+            // Querying by hash
+            if (posHash != -1)
+            {
+                // Gets the fragment
+                var fragment = uri.Substring(posHash + 1);
+                if (string.IsNullOrEmpty(fragment))
                 {
-                    Logger.Error("No hash and no question mark");
-                    throw new NotImplementedException("No hash and no question mark");
+                    Logger.Info(
+                        $"Uri does not contain a URI-Fragment defining the object being looked for. {nameof(uri)}");
                 }
-                
-                // Querying by hash
-                if (posHash != -1)
+                else
                 {
-                    // Gets the fragment
-                    var fragment = uri.Substring(posHash + 1);
-                    if (string.IsNullOrEmpty(fragment))
+                    var fragmentUri = 
+                        extentUri 
+                        + "#" + fragment;
+                    
+                    // Check, if the element is in the cache and if yes, return it
+                    if (_cacheIds.TryGetValue(fragmentUri, out var result))
                     {
-                        Logger.Info(
-                            $"Uri does not contain a URI-Fragment defining the object being looked for. {nameof(uri)}");
+                        var resultAsMof = result as T;
+                        var comparedUri =
+                            (string.IsNullOrEmpty(extentUri)
+                                ? ""
+                                : (resultAsMof!.GetUriExtentOf()?.contextURI() ?? string.Empty))
+                            + ("#" + resultAsMof!.Id ?? string.Empty);
+                        if (comparedUri == uri)
+                        {
+                            foundItem = resultAsMof;
+                        }
                     }
-                    else
+
+                    if (foundItem == null)
                     {
                         foundItem = ResolveByFragment(fragment);
+
+                        // Adds the found item to the cache
+                        if (foundItem != null)
+                        {
+                            // Caching is only useful for fragments since the cache lookup 
+                            // Tries to find an item by the element
+                            _cacheIds[fragmentUri] = foundItem;
+                        }
                     }
                 }
+            }
 
-                // Querying by query
+            // Querying by query
+            if (posQuestion != -1)
+            {
+                var fullName = queryString.Get("fn");
+
+                if (fullName != null)
+                {
+                    foundItem = NamedElementMethods.GetByFullName(_extent, fullName) as T;
+                }
+            }
+
+            return foundItem;
+        }
+
+        private static NameValueCollection ParseQueryString(string uri, int posQuestion)
+        {
+            try
+            {
+                // Parse the QueryString
+                NameValueCollection parsedValue;
                 if (posQuestion != -1)
                 {
-                    var fullName = parsedValue.Get("fn");
-
-                    if (fullName != null)
+                    var query = uri.Substring(posQuestion + 1);
+                    if (query.IndexOf('=') == -1)
                     {
-                        foundItem = NamedElementMethods.GetByFullName(_extent, fullName) as T;
+                        // If there is no real query string, create one with full name
+                        Logger.Info("Legacy query without fullname: " + uri);
+
+                        query = "fn=" + query;
                     }
+
+                    parsedValue = HttpUtility.ParseQueryString(query);
                 }
+                else
+                {
+                    parsedValue = new NameValueCollection();
+                }
+
+                return parsedValue;
             }
             catch (UriFormatException exc)
             {
                 Logger.Error(
                     $"Exception while parsing URI {nameof(uri)}: {exc.Message}");
-
-                return null;
+                return new NameValueCollection();
             }
-
-            if (foundItem != null)
-            {
-                _cacheIds[uri] = foundItem;
-            }
-
-            return foundItem;
         }
 
         /// <summary>

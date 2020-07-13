@@ -14,10 +14,26 @@ namespace DatenMeister.Tests.Runtime
     public class ResolverTests
     {
         [Test]
+        public void TestExtentUrlNavigator()
+        {
+            var extent = GetTestExtent();
+            var uriExtentNavigator = new ExtentUrlNavigator<MofElement>(extent);
+            var firstChild = uriExtentNavigator.element(testUri + "#child1");
+            var firstChildCached = uriExtentNavigator.element(testUri + "#child1");
+            
+            Assert.That(firstChild, Is.Not.Null);
+            Assert.That(firstChildCached, Is.Not.Null);
+            Assert.That(firstChild.getOrDefault<string>("name"), Is.EqualTo("child1"));
+            Assert.That(firstChildCached.getOrDefault<string>("name"), Is.EqualTo("child1"));
+        }
+        
+        [Test]
         public void TestById()
         {
             var extent = GetTestExtent();
             var firstChild = extent.GetUriResolver().Resolve(testUri + "#child1", ResolveType.Default)
+                as IElement;
+            var firstChildCached = extent.GetUriResolver().Resolve(testUri + "#child1", ResolveType.Default)
                 as IElement;
             var noChild = extent.GetUriResolver().Resolve(testUri + "#none", ResolveType.Default)
                 as IElement;
@@ -29,11 +45,13 @@ namespace DatenMeister.Tests.Runtime
                 as IElement;
 
             Assert.That(firstChild, Is.Not.Null);
+            Assert.That(firstChildCached, Is.Not.Null);
             Assert.That(item1, Is.Not.Null);
             Assert.That(item1_2, Is.Not.Null);
             Assert.That(noChild, Is.Null);
             Assert.That(child2Child1, Is.Not.Null);
             Assert.That(firstChild.getOrDefault<string>("name"), Is.EqualTo("child1"));
+            Assert.That(firstChildCached.getOrDefault<string>("name"), Is.EqualTo("child1"));
             Assert.That(item1.getOrDefault<string>("name"), Is.EqualTo("item1"));
             Assert.That(item1_2.getOrDefault<string>("name"), Is.EqualTo("item1"));
             Assert.That(child2Child1.getOrDefault<string>("name"), Is.EqualTo("child2child1"));
@@ -89,7 +107,7 @@ namespace DatenMeister.Tests.Runtime
         /// Gets the test extent
         /// </summary>
         /// <returns>The extent being used for test extent</returns>
-        public IUriExtent GetTestExtent()
+        private static MofUriExtent GetTestExtent()
         {
             var document = @"
 <item xmlns:p1=""http://www.omg.org/spec/XMI/20131001"">

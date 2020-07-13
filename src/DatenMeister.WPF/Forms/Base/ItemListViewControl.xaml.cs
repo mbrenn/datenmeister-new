@@ -472,6 +472,18 @@ namespace DatenMeister.WPF.Forms.Base
 
                         items = dataviewHandler.GetElementsForViewNode(viewNode);
                     }
+                    
+                    // Now performs the sorting
+                    var sortingOrder = _effectiveForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.sortingOrder);
+                    if (sortingOrder != null)
+                    {
+                        var sortingColumnNames =
+                            sortingOrder
+                                .OfType<IElement>()
+                                .Select(x => x.getOrDefault<string>(_FormAndFields._ListForm.name))
+                                .Where(x => !string.IsNullOrEmpty(x));
+                        items = items.OrderElementsBy(sortingColumnNames);
+                    }
 
                     // Go through the items and build up the list of elements
                     foreach (var item in items.OfType<IObject>())

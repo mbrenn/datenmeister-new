@@ -49,6 +49,8 @@ namespace DatenMeister.Runtime.Functions.Queries
                 {
                     yield return _parent;
                 }
+
+                yield break;
             }
 
             // Build up the Query
@@ -56,7 +58,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             var current =
                 firstColumn.StartsWith("!")
                     ? _parent
-                        .OrderByDescending(x => (x as IObject)?.getOrDefault<string>(firstColumn))
+                        .OrderByDescending(x => (x as IObject)?.getOrDefault<string>(firstColumn.Substring(1)))
                     : _parent
                         .OrderBy(x => (x as IObject)?.getOrDefault<string>(firstColumn));
 
@@ -67,7 +69,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                 {
                     currentColumn = currentColumn.Substring(1);
                     current = current
-                        .ThenByDescending(x => (x as IObject)?.getOrDefault<string>(currentColumn));
+                        .ThenByDescending(x => (x as IObject)?.getOrDefault<string>(currentColumn.Substring(1)));
                 }
                 else
                 {

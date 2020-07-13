@@ -33,6 +33,19 @@ namespace DatenMeister.Models.Forms
         public _FieldData @FieldData = new _FieldData();
         public IElement @__FieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FieldData");
 
+        public class _SortingOrder
+        {
+            public static string @field = "field";
+            public IElement? _field = null;
+
+            public static string @isDescending = "isDescending";
+            public IElement? _isDescending = null;
+
+        }
+
+        public _SortingOrder @SortingOrder = new _SortingOrder();
+        public IElement @__SortingOrder = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.SortingOrder");
+
         public class _AnyDataFieldData
         {
             public static string @isAttached = "isAttached";

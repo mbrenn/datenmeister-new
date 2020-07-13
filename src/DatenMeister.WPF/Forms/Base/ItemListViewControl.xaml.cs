@@ -480,8 +480,13 @@ namespace DatenMeister.WPF.Forms.Base
                         var sortingColumnNames =
                             sortingOrder
                                 .OfType<IElement>()
-                                .Select(x => x.getOrDefault<string>(_FormAndFields._ListForm.name))
-                                .Where(x => !string.IsNullOrEmpty(x));
+                                .Select(x =>
+                                    (x.getOrDefault<bool>(_FormAndFields._SortingOrder.isDescending)
+                                        ? "!"
+                                        : "") +
+                                    x.getOrDefault<IElement>(_FormAndFields._SortingOrder.field)
+                                        ?.getOrDefault<string>(_FormAndFields._FieldData.name))
+                                .Where(x => !string.IsNullOrEmpty(x) && x != "!");
                         items = items.OrderElementsBy(sortingColumnNames);
                     }
 

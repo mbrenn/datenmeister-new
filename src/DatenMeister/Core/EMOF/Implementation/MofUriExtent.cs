@@ -174,7 +174,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public override string ToString()
-            => $"UriExent: {contextURI()}";
+            => $"UriExtent: {contextURI()}";
 
         /// <summary>
         /// Gets the id of the element as defined in the uri.

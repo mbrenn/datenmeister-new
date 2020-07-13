@@ -42,7 +42,10 @@ namespace DatenMeister.NetCore
             GiveMe.Scope = new DatenMeisterScope(container.BeginLifetimeScope());
 
             GiveMe.Scope.BeforeDisposing += (x, y) =>
+            {
                 GiveMe.Scope.UnuseDatenMeister();
+                GiveMe.ClearScope();
+            };
 
             return GiveMe.Scope;
         }

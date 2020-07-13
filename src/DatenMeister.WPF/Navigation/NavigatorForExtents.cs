@@ -82,7 +82,7 @@ namespace DatenMeister.WPF.Navigation
             {
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var managementWorkspace = workspaceLogic.GetManagementWorkspace();
-                var resolvedForm = managementWorkspace.Resolve(
+                var resolvedForm = managementWorkspace.ResolveElement(
                     $"{WorkspaceNames.UriExtentInternalForm}#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
                 var extentSettings = GiveMe.Scope.Resolve<ExtentSettings>();
                 var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??

@@ -156,7 +156,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Extent is currently selected
                     // Finds the view by the extent type
-                    form = formPlugin.GetExtentForm((IUriExtent) RootItem, overridingMode);
+                    form = formPlugin.GetExtentForm((IUriExtent) RootItem, overridingMode, CurrentViewModeId);
                 }
                 else
                 {

@@ -21,8 +21,8 @@ namespace DatenMeister.Core.EMOF.Implementation
     {
         private class ResolverCache
         {
-            private readonly Dictionary<ResolverKey, IElement> _cache
-             = new Dictionary<ResolverKey, IElement>();
+            private readonly Dictionary<ResolverKey, object> _cache
+             = new Dictionary<ResolverKey, object>();
 
             public void Clear()
             {
@@ -32,7 +32,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            public IElement? GetElementFor(string uri, ResolveType resolveType)
+            public object? GetElementFor(string uri, ResolveType resolveType)
             {
                 lock (_cache)
                 {
@@ -40,7 +40,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            public void AddElementFor(string uri, ResolveType resolveType, IElement foundElement)
+            public void AddElementFor(string uri, ResolveType resolveType, object foundElement)
             {
                 lock (_cache)
                 {
@@ -105,7 +105,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the navigator
         /// </summary>
-        private readonly ExtentUrlNavigator<MofElement> _navigator;
+        private readonly ExtentUrlNavigator _navigator;
 
         /// <summary>
         /// Gets or sets the uri of the extent
@@ -130,7 +130,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public MofUriExtent(IProvider provider, ChangeEventManager? changeEventManager = null) :
             base(provider, changeEventManager)
         {
-            _navigator = new ExtentUrlNavigator<MofElement>(this);
+            _navigator = new ExtentUrlNavigator(this);
 
             if (provider is IHasUriResolver hasUriResolver)
             {
@@ -170,11 +170,11 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public IElement? element(string uri)
-            => _navigator.element(uri);
+            => _navigator.element(uri) as IElement;
 
         /// <inheritdoc />
         public override string ToString()
-            => $"UriExent: {contextURI()}";
+            => $"UriExtent: {contextURI()}";
 
         /// <summary>
         /// Gets the id of the element as defined in the uri.
@@ -195,7 +195,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
             uri = Migration.MigrateUriForResolver(uri);
             
@@ -221,11 +221,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             return result;
         }
 
-        private IElement? ResolveInternal(string uri, ResolveType resolveType)
+        private object? ResolveInternal(string uri, ResolveType resolveType)
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
             {
-                var result = element(uri);
+                var result = _navigator.element(uri);
                 if (result != null)
                 {
                     return result;
@@ -262,7 +262,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // If still not found, do a full search in every extent in every workspace
-            if (resolveType == ResolveType.Default && GiveMe.Scope?.WorkspaceLogic != null)
+            if (resolveType == ResolveType.Default && GiveMe.TryGetScope()?.WorkspaceLogic != null)
             {
                 foreach (var workspace in GiveMe.Scope.WorkspaceLogic.Workspaces)
                 {

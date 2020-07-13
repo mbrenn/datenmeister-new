@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
@@ -13,6 +14,7 @@ namespace IssueMeisterLib
         /// Stores the name of the package
         /// </summary>
         public const string PackageName = "IssueMeister";
+        public const string TargetPackageName = "Apps::IssueMeister";
         public const string ExtentTypeName = "IssueMeister";
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly PackageMethods _packageMethods;
@@ -27,6 +29,7 @@ namespace IssueMeisterLib
         /// <param name="packageMethods"></param>
         /// <param name="formsPlugin">Sets the form logic</param>
         /// <param name="localTypeSupport">Sets the local type support</param>
+        /// <param name="extentSettings">The settings for the extent</param>
         public IssueMeisterPlugin(IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, FormsPlugin formsPlugin,
             LocalTypeSupport localTypeSupport, ExtentSettings extentSettings)
         {
@@ -45,7 +48,7 @@ namespace IssueMeisterLib
                 "IssueMeisterLib.Xmi.IssueMeister.Forms.xml",
                 PackageName,
                 _formsPlugin.GetInternalFormExtent(),
-                PackageName);
+                TargetPackageName);
             
             // Import 
             _packageMethods.ImportByManifest(
@@ -53,10 +56,13 @@ namespace IssueMeisterLib
                 "IssueMeisterLib.Xmi.IssueMeister.Types.xml",
                 PackageName,
                 _localTypeSupport.InternalTypes,
-                PackageName);
-            
-            _extentSettings.extentTypeSettings.Add(
-                new ExtentTypeSetting(ExtentTypeName));
+                TargetPackageName);
+
+            var extentSetting =
+                new ExtentTypeSetting(ExtentTypeName);
+            extentSetting.rootElementMetaClasses.Add(
+                _localTypeSupport.InternalTypes.element("#IssueMeister.Issue"));
+            _extentSettings.extentTypeSettings.Add(extentSetting);
         }
     }
 }

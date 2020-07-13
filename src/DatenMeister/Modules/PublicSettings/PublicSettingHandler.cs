@@ -25,7 +25,6 @@ namespace DatenMeister.Modules.PublicSettings
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(PublicSettingHandler));
 
-
         /// <summary>
         /// Loads the public settings for the DatenMeister
         /// </summary>
@@ -42,15 +41,16 @@ namespace DatenMeister.Modules.PublicSettings
                     Logger.Info($"Loading public integration from {path}");
                     var provider = new XmiProvider(XDocument.Load(path));
                     var extent = new MofExtent(provider);
-                    var element = extent.elements().FirstOrDefault() as IObject;
-                    if (element == null)
+                    if (!(extent.elements().FirstOrDefault() is IObject element))
                     {
                         var message = "The given extent does not contain an element being usable for conversion";
                         Logger.Warn(message);
                         throw new InvalidOperationException(message);
                     }
 
-                    return DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+                    var settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+                    settings.databasePath = Environment.ExpandEnvironmentVariables(settings.databasePath);
+                    return settings;
                 }
                 catch (Exception exc)
                 {

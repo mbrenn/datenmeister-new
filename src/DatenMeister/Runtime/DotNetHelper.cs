@@ -365,7 +365,7 @@ namespace DatenMeister.Runtime
 
             if (typeUri != null && !string.IsNullOrEmpty(typeUri))
             {
-                valueType = extent.Resolve(typeUri, ResolveType.OnlyMetaClasses);
+                valueType = extent.ResolveElement(typeUri, ResolveType.OnlyMetaClasses);
             }
 
             var instanceValue = factory.create(valueType);

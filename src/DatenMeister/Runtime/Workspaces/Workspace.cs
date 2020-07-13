@@ -333,7 +333,7 @@ namespace DatenMeister.Runtime.Workspaces
             throw new NotImplementedException();
         }
 
-        public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing)
         {
             var result = _extent
                 .Select(theExtent =>

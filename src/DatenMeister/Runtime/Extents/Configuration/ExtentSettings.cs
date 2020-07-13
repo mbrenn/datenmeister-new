@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DatenMeister.Runtime.Extents.Configuration
 {
@@ -8,9 +9,16 @@ namespace DatenMeister.Runtime.Extents.Configuration
     /// </summary>
     public class ExtentSettings
     {
+        public string name = "Extent Settings";
+        
         /// <summary>
         /// Stores the extent type setting
         /// </summary>
         public List<ExtentTypeSetting> extentTypeSettings { get; } = new List<ExtentTypeSetting>();
+
+        public ExtentTypeSetting? GetExtentTypeSetting(string extentType)
+        {
+            return extentTypeSettings.FirstOrDefault(x => x.name == extentType);
+        }
     }
 }

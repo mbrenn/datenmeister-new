@@ -30,6 +30,14 @@ namespace DatenMeister.Integration
         public static IDatenMeisterScope? TryGetScope() => _scope;
 
         /// <summary>
+        /// Clears the scope
+        /// </summary>
+        public static void ClearScope()
+        {
+            _scope = null;
+        }
+
+        /// <summary>
         /// Return the DatenMeisterScope asynchronisously as a task.
         /// </summary>
         /// <param name="settings">Settings to be used</param>
@@ -56,7 +64,10 @@ namespace DatenMeister.Integration
             Scope = new DatenMeisterScope(container.BeginLifetimeScope());
 
             Scope.BeforeDisposing += (x, y) =>
+            {
                 Scope.UnuseDatenMeister();
+                _scope = null; // Set to null to avoid wrong use of scope
+            };
 
             return Scope;
         }

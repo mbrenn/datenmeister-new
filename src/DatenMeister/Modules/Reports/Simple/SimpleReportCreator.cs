@@ -51,7 +51,7 @@ namespace DatenMeister.Modules.Reports.Simple
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = reportConfiguration;
             _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
-            _formCreator = new FormCreator(workspaceLogic, null, _defaultClassifierHints);
+            _formCreator = new FormCreator(workspaceLogic, null);
         }
 
         /// <summary>
@@ -104,7 +104,6 @@ namespace DatenMeister.Modules.Reports.Simple
                 var foundForm = _reportConfiguration.form;
                 if (_reportConfiguration.typeMode == ReportTableForTypeMode.PerType)
                 {
-
                     // Splits them up by metaclasses 
                     var metaClasses =
                         elements.GroupBy(
@@ -122,21 +121,18 @@ namespace DatenMeister.Modules.Reports.Simple
 
                         var collection = new TemporaryReflectiveCollection(metaClass);
 
-                        if (foundForm == null)
+                        if (metaClass.Key == null)
                         {
-                            if (metaClass.Key == null)
-                            {
-                                foundForm = _formCreator.CreateListFormForElements(
-                                    collection,
-                                    creationMode);
-                            }
-                            else
-                            {
-                                foundForm = _formCreator.CreateListFormForMetaClass(metaClass.Key, creationMode);
-                            }
-
-                            AddFullNameColumnIfNecessary(foundForm);
+                            foundForm = _formCreator.CreateListFormForElements(
+                                collection,
+                                creationMode);
                         }
+                        else
+                        {
+                            foundForm = _formCreator.CreateListFormForMetaClass(metaClass.Key, creationMode);
+                        }
+
+                        AddFullNameColumnIfNecessary(foundForm);
 
                         ReportItemCollection(collection, foundForm, itemFormatter);
                     }

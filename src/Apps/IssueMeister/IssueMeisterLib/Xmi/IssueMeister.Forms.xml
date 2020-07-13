@@ -55,11 +55,11 @@
                 <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" name="Issues"
                      metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement">
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id"
-                           title="id" isReadOnly="True" width="10"/>
+                           title="id" isReadOnly="True" width="10" p1:id="IssuePackageList.Issues.id"/>
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
                            title="name" isReadOnly="True"/>
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state"
-                           title="state" isReadOnly="True"/>
+                           title="state" isReadOnly="True" p1:id="IssuePackageList.Issues.state"/>
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
                            name="description" title="description" lineHeight="8"/>
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
@@ -68,6 +68,10 @@
                                                 metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue"
                                                 parentProperty="packagedElement"
                                                 p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement"/>
+                    <sortingOrder
+                            field-ref="#IssuePackageList.Issues.state" isDescending="true" />
+                    <sortingOrder
+                            field-ref="#IssuePackageList.Issues.id" />
                 </tab>
                 <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" name="Open Issues"
                      metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement"
@@ -82,6 +86,10 @@
                            name="description" title="description" lineHeight="8"/>
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
                            name="Metaclass"/>
+                    <defaultTypesForNewElements name="Issue"
+                                                metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue"
+                                                parentProperty="packagedElement"
+                                                p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement"/>
                 </tab>
             </packagedElement>
 
@@ -89,12 +97,12 @@
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
                              p1:id="IssueAssociationDetail" formType="Detail"
                              form-ref="#IssueFormDetail"
-                             metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" name="Issue - Detail"/>
+                             metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" name="Issue - Detail - Association"/>
 
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
                              p1:id="IssueAssociationList" formType="TreeItemDetail"
                              form-ref="#IssueFormList" metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue"
-                             name="Issue - Tree"/>
+                             name="Issue - Tree - Association"/>
 
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
                              p1:id="IssuePackageAssociationList" formType="TreeItemDetail"

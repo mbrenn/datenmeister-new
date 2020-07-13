@@ -130,9 +130,9 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 {
                                     tree.ExtentTypeSetting._name = value;
                                 }
-                                if(name == "RootElementMetaClasses") // Looking for property
+                                if(name == "rootElementMetaClasses") // Looking for property
                                 {
-                                    tree.ExtentTypeSetting._RootElementMetaClasses = value;
+                                    tree.ExtentTypeSetting._rootElementMetaClasses = value;
                                 }
                             }
                         }

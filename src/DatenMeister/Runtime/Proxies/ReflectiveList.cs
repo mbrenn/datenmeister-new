@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Proxies
     {
         private readonly IReflectiveCollection _collection;
 
-        private readonly IReflectiveSequence _sequence;
+        private readonly IReflectiveSequence? _sequence;
 
         /// <summary>
         /// Stores the function that is used to convert an object to the given type
@@ -30,8 +30,7 @@ namespace DatenMeister.Runtime.Proxies
         public ReflectiveList(IReflectiveCollection collection)
         {
             _collection = collection;
-            _sequence = _collection as IReflectiveSequence ??
-                        throw new InvalidOperationException("Collection is not IReflectiveSequence");
+            _sequence = _collection as IReflectiveSequence;
 
             _wrapFunc = x => ((T) x!)!;
             _unwrapFunc = x => x;
@@ -40,8 +39,7 @@ namespace DatenMeister.Runtime.Proxies
         public ReflectiveList(IReflectiveCollection collection, Func<object?, T> wrapFunc, Func<T, object?> unwrapFunc)
         {
             _collection = collection;
-            _sequence = _collection as IReflectiveSequence??
-                        throw new InvalidOperationException("Collection is not IReflectiveSequence");
+            _sequence = _collection as IReflectiveSequence;
             
             _wrapFunc = wrapFunc;
             _unwrapFunc = unwrapFunc;

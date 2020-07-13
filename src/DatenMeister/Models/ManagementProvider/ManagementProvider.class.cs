@@ -70,8 +70,8 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             public static string @name = "name";
             public IElement? _name = null;
 
-            public static string @RootElementMetaClasses = "RootElementMetaClasses";
-            public IElement? _RootElementMetaClasses = null;
+            public static string @rootElementMetaClasses = "rootElementMetaClasses";
+            public IElement? _rootElementMetaClasses = null;
 
         }
 

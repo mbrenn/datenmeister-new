@@ -71,6 +71,25 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "SortingOrder") // Looking for class
+                        {
+                            tree.__SortingOrder = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "field") // Looking for property
+                                {
+                                    tree.SortingOrder._field = value;
+                                }
+                                if(name == "isDescending") // Looking for property
+                                {
+                                    tree.SortingOrder._isDescending = value;
+                                }
+                            }
+                        }
                         if(name == "AnyDataFieldData") // Looking for class
                         {
                             tree.__AnyDataFieldData = value;

@@ -211,11 +211,23 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="collection">Collection to be ordered</param>
         /// <param name="property">Property being used as key</param>
         /// <returns>Ordered reflective collection</returns>
-        public static IReflectiveCollection OrderBy(
+        public static IReflectiveCollection OrderElementsBy(
             this IReflectiveCollection collection,
             string property)
             =>
                 new OrderByProperty(collection, property);
+
+        /// <summary>
+        /// Orders the reflective section by the given property
+        /// </summary>
+        /// <param name="collection">Collection to be ordered</param>
+        /// <param name="properties">Properties being used as key</param>
+        /// <returns>Ordered reflective collection</returns>
+        public static IReflectiveCollection OrderElementsBy(
+            this IReflectiveCollection collection,
+            IEnumerable<string> properties)
+            =>
+                new OrderByProperties(collection, properties);
 
         public static IReflectiveCollection FilterDistinct(
             this IReflectiveCollection collection,

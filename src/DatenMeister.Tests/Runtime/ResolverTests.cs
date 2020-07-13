@@ -2,7 +2,6 @@
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
@@ -97,6 +96,27 @@ namespace DatenMeister.Tests.Runtime
                 asList.OfType<IElement>().Any(x => x.getOrDefault<string>("name") == "child1"),
                 Is.True);
         }
+        
+        [Test]
+        public void TestByDataView()
+        {
+            var extent = GetTestExtent();
+            var firstChild = extent.GetUriResolver().Resolve(
+                    testUri + "?fn=item2&prop=packagedElement&dataview=#child1Filter",
+                    ResolveType.Default)
+                as IReflectiveSequence;
+
+            Assert.That(firstChild, Is.Not.Null);
+            var asList = firstChild.ToList<object>();
+
+            Assert.That(asList.Count, Is.EqualTo(1));
+            Assert.That(
+                asList.OfType<IElement>().All(x => x.getOrDefault<string>("name") != "child2"),
+                Is.True);
+            Assert.That(
+                asList.OfType<IElement>().Any(x => x.getOrDefault<string>("name") == "child1"),
+                Is.True);
+        }
 
         /// <summary>
         /// Defines the test uri
@@ -120,6 +140,16 @@ namespace DatenMeister.Tests.Runtime
         <packagedElement p1:id=""child3"" name=""child3"" />
     </item>
     <item p1:id=""item3"" name=""item3"" /> 
+    
+    <item p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"" name=""Filter Open"">
+        <packagedElement p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode""
+            name=""Open Issues""
+            input-ref=""#filterNode1"" property=""name"" value=""child1"" comparisonMode=""Equal""
+                p1:id=""child1Filter"" />
+        <packagedElement
+            p1:type=""dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode""
+            name=""input"" p1:id=""filterNode1""/>
+    </item>
 </item>";
 
             var provider = new XmiProvider(XDocument.Parse(document));

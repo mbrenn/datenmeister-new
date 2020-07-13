@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.DataViews;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Proxies;
@@ -21,7 +22,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(DataViewEvaluation));
 
-        private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IWorkspaceLogic? _workspaceLogic;
 
         private int _referenceCount;
 
@@ -33,6 +34,10 @@ namespace DatenMeister.Modules.DataViews
         private readonly Dictionary<string, IReflectiveCollection> _dynamicSources =
             new Dictionary<string, IReflectiveCollection>();
 
+        public DataViewEvaluation()
+        {
+        }
+        
         public DataViewEvaluation(IWorkspaceLogic workspaceLogic)
         {
             _workspaceLogic = workspaceLogic;
@@ -79,7 +84,6 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            var dataview = _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews, _DataViews>();
             var metaClass = viewNode.getMetaClass();
             if (metaClass == null)
             {
@@ -87,22 +91,22 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            if (metaClass.equals(dataview.__DynamicSourceNode))
+            if (metaClass.equals(_DataViews.TheOne.__DynamicSourceNode))
                 return GetElementsForDynamicSource(viewNode);
             
-            if (metaClass.equals(dataview.__SourceExtentNode))
+            if (metaClass.equals(_DataViews.TheOne.__SourceExtentNode))
                 return GetElementsForSourceExtent(viewNode);
 
-            if (metaClass.equals(dataview.__SelectPathNode))
+            if (metaClass.equals(_DataViews.TheOne.__SelectPathNode))
                 return GetElementsForPathNode(viewNode);
 
-            if (metaClass.equals(dataview.__FlattenNode))
+            if (metaClass.equals(_DataViews.TheOne.__FlattenNode))
                 return GetElementsForFlattenNode(viewNode);
 
-            if (metaClass.equals(dataview.__FilterTypeNode))
+            if (metaClass.equals(_DataViews.TheOne.__FilterTypeNode))
                 return GetElementsForFilterTypeNode(viewNode);
 
-            if (metaClass.equals(dataview.__FilterPropertyNode))
+            if (metaClass.equals(_DataViews.TheOne.__FilterPropertyNode))
                 return GetElementsForFilterPropertyNode(viewNode);
 
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
@@ -135,6 +139,14 @@ namespace DatenMeister.Modules.DataViews
 
         private IReflectiveSequence GetElementsForSourceExtent(IElement viewNode)
         {
+            if (_workspaceLogic == null)
+            {
+                // No workspace logic is set but source extent queries for an extent and so is dependent upon 
+                // the workspacelogic
+                Logger.Error("SourceExtent specified but no workspace Logic given");
+                return new PureReflectiveSequence();
+            }
+            
             var workspaceName = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.workspace);
             if (string.IsNullOrEmpty(workspaceName))
             {

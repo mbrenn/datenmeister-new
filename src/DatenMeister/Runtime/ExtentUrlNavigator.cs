@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Net;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Provider;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Helper;
@@ -123,12 +122,30 @@ namespace DatenMeister.Runtime
                 foundItem = NamedElementMethods.GetByFullName(_extent, fullName);
             }
 
+            // Checks whether we have a property
             var property = queryString.Get("prop");
             if (property != null && foundItem is MofElement mofElement)
             {
                 foundItem = mofElement.getOrDefault<IReflectiveCollection>(property);
             }
-
+            
+            // Now check whether we have a dataview
+            var dataview = queryString.Get("dataview");
+            if (dataview != null && foundItem is IReflectiveCollection reflectiveCollection)
+            {
+                var dataviewElement = _extent.ResolveElement(dataview, ResolveType.Default);
+                if (dataviewElement == null)
+                {
+                    Logger.Warn($"Dataview was not found: {dataview}");
+                }
+                else
+                {
+                    var dataViewEvaluation= new DataViewEvaluation();
+                    dataViewEvaluation.AddDynamicSource("input", reflectiveCollection);
+                    foundItem = dataViewEvaluation.GetElementsForViewNode(dataviewElement);
+                }
+            }
+            
             return foundItem;
         }
 

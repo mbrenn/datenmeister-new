@@ -105,7 +105,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the navigator
         /// </summary>
-        private readonly ExtentUrlNavigator<MofElement> _navigator;
+        private readonly ExtentUrlNavigator _navigator;
 
         /// <summary>
         /// Gets or sets the uri of the extent
@@ -130,7 +130,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public MofUriExtent(IProvider provider, ChangeEventManager? changeEventManager = null) :
             base(provider, changeEventManager)
         {
-            _navigator = new ExtentUrlNavigator<MofElement>(this);
+            _navigator = new ExtentUrlNavigator(this);
 
             if (provider is IHasUriResolver hasUriResolver)
             {
@@ -170,7 +170,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public IElement? element(string uri)
-            => _navigator.element(uri);
+            => _navigator.element(uri) as IElement;
 
         /// <inheritdoc />
         public override string ToString()
@@ -225,7 +225,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
             {
-                var result = element(uri);
+                var result = _navigator.element(uri);
                 if (result != null)
                 {
                     return result;

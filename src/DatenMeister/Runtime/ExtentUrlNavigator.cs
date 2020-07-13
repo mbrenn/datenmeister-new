@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Runtime.Functions.Queries;
@@ -20,9 +21,9 @@ namespace DatenMeister.Runtime
     /// Caches the ids to improve navigation
     /// </summary>
     /// <typeparam name="T">Type of the elements that are abstracted</typeparam>
-    public class ExtentUrlNavigator<T> where T : MofElement, IHasId
+    public class ExtentUrlNavigator
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentUrlNavigator<T>));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentUrlNavigator));
 
         private readonly ConcurrentDictionary<string, IHasId> _cacheIds = new ConcurrentDictionary<string, IHasId>();
 
@@ -38,7 +39,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        public virtual T? element(string uri)
+        public virtual object? element(string uri)
         {
             // Checks, if hash or question. Unfortunately, we can't use the Uri since it 
             // Fragment only is accepted in relative Uris
@@ -61,7 +62,7 @@ namespace DatenMeister.Runtime
 
             var queryString = ParseQueryString(uri, posQuestion);
 
-            T? foundItem = null;
+            object? foundItem = null;
             // Ok, not found, try to find it
             if (posHash == -1 && posQuestion == -1)
             {
@@ -88,7 +89,7 @@ namespace DatenMeister.Runtime
                     // Check, if the element is in the cache and if yes, return it
                     if (_cacheIds.TryGetValue(fragmentUri, out var result))
                     {
-                        var resultAsMof = result as T;
+                        var resultAsMof = result as MofElement;
                         var comparedUri =
                             (string.IsNullOrEmpty(extentUri)
                                 ? ""
@@ -109,21 +110,23 @@ namespace DatenMeister.Runtime
                         {
                             // Caching is only useful for fragments since the cache lookup 
                             // Tries to find an item by the element
-                            _cacheIds[fragmentUri] = foundItem;
+                            _cacheIds[fragmentUri] = (MofElement) foundItem;
                         }
                     }
                 }
             }
 
             // Querying by query
-            if (posQuestion != -1)
+            var fullName = queryString.Get("fn");
+            if (fullName != null)
             {
-                var fullName = queryString.Get("fn");
+                foundItem = NamedElementMethods.GetByFullName(_extent, fullName);
+            }
 
-                if (fullName != null)
-                {
-                    foundItem = NamedElementMethods.GetByFullName(_extent, fullName) as T;
-                }
+            var property = queryString.Get("prop");
+            if (property != null && foundItem is MofElement mofElement)
+            {
+                foundItem = mofElement.getOrDefault<IReflectiveCollection>(property);
             }
 
             return foundItem;
@@ -169,7 +172,7 @@ namespace DatenMeister.Runtime
         /// <param name="fragment">Fragment being required for the query</param>
         /// <returns>The found element</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private T? ResolveByFragment(string fragment)
+        private MofElement? ResolveByFragment(string fragment)
         {
             // Queries the object
             var queryObjectId = WebUtility.UrlDecode(fragment);
@@ -186,7 +189,7 @@ namespace DatenMeister.Runtime
 #endif
                     var resultElement = new MofElement(resultingObject, _extent)
                         {Extent = _extent};
-                    return (T) resultElement;
+                    return (MofElement) resultElement;
                 }
             }
             else
@@ -198,7 +201,7 @@ namespace DatenMeister.Runtime
                         element as IHasId ?? throw new ArgumentException("elementAsMofObject");
                     if (elementAsMofObject.Id == queryObjectId)
                     {
-                        return elementAsMofObject as T;
+                        return elementAsMofObject as MofElement;
                     }
                 }
             }

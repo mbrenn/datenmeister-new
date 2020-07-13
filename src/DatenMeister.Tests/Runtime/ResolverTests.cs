@@ -17,9 +17,9 @@ namespace DatenMeister.Tests.Runtime
         public void TestExtentUrlNavigator()
         {
             var extent = GetTestExtent();
-            var uriExtentNavigator = new ExtentUrlNavigator<MofElement>(extent);
-            var firstChild = uriExtentNavigator.element(testUri + "#child1");
-            var firstChildCached = uriExtentNavigator.element(testUri + "#child1");
+            var uriExtentNavigator = new ExtentUrlNavigator(extent);
+            var firstChild = uriExtentNavigator.element(testUri + "#child1") as IElement;
+            var firstChildCached = uriExtentNavigator.element(testUri + "#child1") as IElement;
             
             Assert.That(firstChild, Is.Not.Null);
             Assert.That(firstChildCached, Is.Not.Null);
@@ -83,13 +83,13 @@ namespace DatenMeister.Tests.Runtime
         public void TestByProperty()
         {
             var extent = GetTestExtent();
-            var firstChild = extent.GetUriResolver().Resolve(testUri + "fn=item2&prop=packagedElement", ResolveType.Default)
+            var firstChild = extent.GetUriResolver().Resolve(testUri + "?fn=item2&prop=packagedElement", ResolveType.Default)
                 as IReflectiveSequence;
 
             Assert.That(firstChild, Is.Not.Null);
             var asList = firstChild.ToList<object>();
 
-            Assert.That(asList.Count, Is.EqualTo(2));
+            Assert.That(asList.Count, Is.EqualTo(3));
             Assert.That(
                 asList.OfType<IElement>().Any(x => x.getOrDefault<string>("name") == "child2"),
                 Is.True);

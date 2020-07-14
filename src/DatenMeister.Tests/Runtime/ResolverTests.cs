@@ -3,7 +3,6 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using NUnit.Framework;

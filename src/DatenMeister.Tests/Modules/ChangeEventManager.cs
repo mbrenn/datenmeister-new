@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;

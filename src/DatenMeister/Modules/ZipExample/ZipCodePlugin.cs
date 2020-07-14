@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Autofac;
 using DatenMeister.Models.Example.ZipCode;
+using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserInteractions;
-using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.ZipExample

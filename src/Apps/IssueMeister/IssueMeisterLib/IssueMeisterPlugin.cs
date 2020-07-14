@@ -1,7 +1,7 @@
-﻿using DatenMeister.Modules.Forms.FormFinder;
+﻿using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;

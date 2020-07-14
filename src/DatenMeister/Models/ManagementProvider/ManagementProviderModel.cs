@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using DatenMeister.Models.ManagementProvider.FormViewModels;
-using DatenMeister.Runtime.Extents.Configuration;
 
 namespace DatenMeister.Models.ManagementProvider
 {
@@ -19,6 +18,7 @@ namespace DatenMeister.Models.ManagementProvider
             typeof(Workspace),
             typeof(CreateNewWorkspaceModel),
             typeof(ExtentTypeSetting),
+            typeof(ExtentPropertyDefinition),
             typeof(ExtentSettings)
         };
     }

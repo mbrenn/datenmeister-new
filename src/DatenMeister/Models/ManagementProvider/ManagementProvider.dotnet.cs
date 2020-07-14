@@ -45,14 +45,21 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Runtime.Extents.Configuration.ExtentTypeSetting);
+                var type = typeof(DatenMeister.Models.ManagementProvider.ExtentTypeSetting);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ExtentTypeSetting = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Runtime.Extents.Configuration.ExtentSettings);
+                var type = typeof(DatenMeister.Models.ManagementProvider.ExtentPropertyDefinition);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentPropertyDefinition = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.ManagementProvider.ExtentSettings);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ExtentSettings = typeAsElement;

@@ -1,8 +1,8 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
+using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Provider.DotNet;
-using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders.Settings

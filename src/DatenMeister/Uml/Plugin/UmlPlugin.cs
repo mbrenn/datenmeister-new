@@ -1,5 +1,5 @@
-﻿using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Runtime.Extents.Configuration;
+﻿using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 

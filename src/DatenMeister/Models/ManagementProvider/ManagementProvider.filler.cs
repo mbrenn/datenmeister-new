@@ -136,6 +136,29 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 }
                             }
                         }
+                        if(name == "ExtentPropertyDefinition") // Looking for class
+                        {
+                            tree.__ExtentPropertyDefinition = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ExtentPropertyDefinition._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.ExtentPropertyDefinition._title = value;
+                                }
+                                if(name == "metaClass") // Looking for property
+                                {
+                                    tree.ExtentPropertyDefinition._metaClass = value;
+                                }
+                            }
+                        }
                         if(name == "ExtentSettings") // Looking for class
                         {
                             tree.__ExtentSettings = value;
@@ -148,6 +171,10 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 if(name == "extentTypeSettings") // Looking for property
                                 {
                                     tree.ExtentSettings._extentTypeSettings = value;
+                                }
+                                if(name == "propertyDefinitions") // Looking for property
+                                {
+                                    tree.ExtentSettings._propertyDefinitions = value;
                                 }
                             }
                         }

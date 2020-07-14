@@ -76,17 +76,36 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         }
 
         public _ExtentTypeSetting @ExtentTypeSetting = new _ExtentTypeSetting();
-        public IElement @__ExtentTypeSetting = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentTypeSetting");
+        public IElement @__ExtentTypeSetting = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.ExtentTypeSetting");
+
+        public class _ExtentPropertyDefinition
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @title = "title";
+            public IElement? _title = null;
+
+            public static string @metaClass = "metaClass";
+            public IElement? _metaClass = null;
+
+        }
+
+        public _ExtentPropertyDefinition @ExtentPropertyDefinition = new _ExtentPropertyDefinition();
+        public IElement @__ExtentPropertyDefinition = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.ExtentPropertyDefinition");
 
         public class _ExtentSettings
         {
             public static string @extentTypeSettings = "extentTypeSettings";
             public IElement? _extentTypeSettings = null;
 
+            public static string @propertyDefinitions = "propertyDefinitions";
+            public IElement? _propertyDefinitions = null;
+
         }
 
         public _ExtentSettings @ExtentSettings = new _ExtentSettings();
-        public IElement @__ExtentSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.Extents.Configuration.ExtentSettings");
+        public IElement @__ExtentSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.ExtentSettings");
 
         public static _ManagementProvider TheOne = new _ManagementProvider();
 

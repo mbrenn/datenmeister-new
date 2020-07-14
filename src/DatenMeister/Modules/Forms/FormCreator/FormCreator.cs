@@ -11,12 +11,13 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {

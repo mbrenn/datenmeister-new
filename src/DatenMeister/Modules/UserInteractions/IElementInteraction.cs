@@ -16,7 +16,7 @@ namespace DatenMeister.Modules.UserInteractions
         /// DEfines the action that will be performed, if the user wants to activate the action
         /// </summary>
         /// <param name="element">Element on which the action shall be performed</param>
-        /// <param name="parameters">Parameters of the action. Null, if there are now parameter</param>
+        /// <param name="parameters">Parameters of the action. Null, if there are no parameter</param>
         void Execute(IObject element, IObject? parameters);
     }
 }

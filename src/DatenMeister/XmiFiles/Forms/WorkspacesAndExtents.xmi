@@ -24,6 +24,7 @@
                 <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Guid" name="Guid" />
                 <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" value="Ordinal" name="Ordinal" />
             </field>
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData" />
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True"
                    name="count" title="# Root Objects" isAttached="True" />
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True"

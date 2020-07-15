@@ -75,7 +75,7 @@ namespace DatenMeister.Modules.Forms
                 var isAttached = field.getOrDefault<bool>(_FormAndFields._FieldData.isAttached);
                 var name = isAttached ? randomGuid  + preName : preName;
                 
-                if (set.Contains(name))
+                if (set.Contains(name) && !string.IsNullOrEmpty(name))
                 {
                     Logger.Warn($"Field '{name}' is included twice. Validation of form failed");
                     return false;

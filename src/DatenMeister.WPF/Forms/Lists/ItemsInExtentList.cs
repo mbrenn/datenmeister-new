@@ -194,11 +194,6 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigationCategories.DatenMeister + ".Navigation");
 
             yield return new ExtentMenuButtonDefinition(
-                "Extent Info", async (x) => await NavigatorForExtents.OpenDetailOfExtent(navigationHost, ExtentUrl),
-                null,
-                NavigationCategories.Extents + ".Info");
-
-            yield return new ExtentMenuButtonDefinition(
                 "Extent Properties", async (x) => await NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
                 null,
                 NavigationCategories.Extents + ".Info");

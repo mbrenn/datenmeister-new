@@ -136,6 +136,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 hasUriResolver.UriResolver = this;
             }
+            
+            MetaXmiElement?.Extent?.AddMetaExtent(this);
         }
 
 

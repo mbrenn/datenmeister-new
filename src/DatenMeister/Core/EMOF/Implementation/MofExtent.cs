@@ -108,17 +108,14 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 lock (_syncObject)
                 {
-                    if (_itemCountCached == -1)
+                    if (_itemCountCached == -1 && !_isItemCountRunning)
                     {
-                        if (!_isItemCountRunning)
+                        _isItemCountRunning = true;
+                        Task.Run(() =>
                         {
-                            _isItemCountRunning = true;
-                            Task.Run(() =>
-                            {
-                                _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
-                                ChangeEventManager?.SendChangeEvent(this);
-                            });
-                        }
+                            _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
+                            ChangeEventManager?.SendChangeEvent(this);
+                        });
                     }
 
                     return _itemCountCached;
@@ -161,6 +158,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode = value;
         }
 
+        private static readonly MofExtent? XmlMetaExtent = new MofUriExtent(new XmiProvider()); 
+
         /// <summary>
         /// Initializes a new instance of the Extent
         /// </summary>
@@ -174,9 +173,23 @@ namespace DatenMeister.Core.EMOF.Implementation
             var rootProvider = new XmiProvider();
             Provider = provider;
             TypeLookup = new DotNetTypeLookup();
-            MetaXmiElement = new MofObject(
-                new XmiProviderObject(new XElement("meta"), rootProvider),
-                this);
+            
+            // Defines the Meta Element. 
+            // The pseudo extent is used to allow the factory to create the correct instance of Xml
+            // instead of the specific type. 
+            if (XmlMetaExtent != null)
+            {
+                MetaXmiElement = new MofObject(
+                    new XmiProviderObject(new XElement("meta"), rootProvider),
+                    XmlMetaExtent);
+            }
+            else
+            {
+                MetaXmiElement = new MofObject(
+                    new XmiProviderObject(new XElement("meta"), rootProvider),
+                    this);
+            }
+
             ExtentConfiguration = new ExtentConfiguration(this);
         }
 
@@ -509,19 +522,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
 
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
-                    /*if (container is IElement containerAsElement)
-                    {
-                        // Setting a container shall not be done by the copying itself.
-                        // Setting the container will be done during the SetProperty
-                        // result.Container = containerAsElement;
-                    }*/
-
                     return result.ProviderObject;
                 }
 
-                
                 // It is a reference
-                var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type MofElement");
+                var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type IElement");
                 return new UriReference(((MofUriExtent) asMofObject.Extent).uri(asElement));
             }
 

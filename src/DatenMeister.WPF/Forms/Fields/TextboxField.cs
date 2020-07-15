@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Fields
             _valueText = string.Empty;
             if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
             {
-                if (isEnumeration)
+                if (isEnumeration && isReadOnly)
                 {
                     _valueText = value.getOrDefault<IReflectiveSequence>(_name)
                         .ToList()

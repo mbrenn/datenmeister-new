@@ -88,6 +88,8 @@ namespace DatenMeister.WPF.Navigation
         /// Gets or sets the form definition to be used to create the item
         /// </summary>
         public FormDefinition? Form { get; set; }
+        
+        public IElement? AttachedElement { get; set; }
     }
 
     /// <summary>

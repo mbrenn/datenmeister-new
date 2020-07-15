@@ -13,6 +13,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.View;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
@@ -88,6 +89,7 @@ namespace DatenMeister.WPF.Navigation
                 var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
                                     throw new InvalidOperationException("FormAndFields not found");
 
+                // Look for the checkbox item list for the possible extent types
                 if (resolvedForm != null)
                 {
                     // Add the options for the extent types
@@ -116,9 +118,18 @@ namespace DatenMeister.WPF.Navigation
                         foundExtentType.set(_FormAndFields._CheckboxListTaggingFieldData.values, list);
                     }
                 }
+
+
+                // Gets the properties of the extent themselves
+                var uri = 
+                    WorkspaceNames.UriExtentWorkspaces + "#" +
+                    WebUtility.UrlEncode(((IUriExtent) mofExtent).contextURI());
+                var foundItem = workspaceLogic.FindItem(uri);
+                
                 var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
                 {
-                    Form = new FormDefinition(resolvedForm)
+                    Form = new FormDefinition(resolvedForm),
+                    AttachedElement = foundItem
                 };
                 
                 return await NavigatorForItems.NavigateToElementDetailView(

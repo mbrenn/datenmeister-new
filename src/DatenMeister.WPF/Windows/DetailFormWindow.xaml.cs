@@ -63,6 +63,8 @@ namespace DatenMeister.WPF.Windows
         private MenuHelper MenuHelper { get; }
         
         public IObject? DetailElement { get; set; }
+
+        public IElement? AttachedElement { get; set; }
         
         /// <summary>
         /// Stores the collection being used as a container
@@ -338,9 +340,14 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element"></param>
         /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject? element, FormDefinition? formDefinition, IReflectiveCollection? container = null)
+        public void SetContent(
+            IObject? element, 
+            FormDefinition? formDefinition,
+            IReflectiveCollection? container = null,
+            IElement? attachedElement = null)
         {
             element ??= InMemoryObject.CreateEmpty();
+            AttachedElement = attachedElement;
             CreateDetailForm(element, formDefinition, container);
         }
 
@@ -358,7 +365,10 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(IObject detailElement, FormDefinition? formDefinition, IReflectiveCollection? container = null)
+        private void CreateDetailForm(
+            IObject detailElement,
+            FormDefinition? formDefinition,
+            IReflectiveCollection? container = null)
         {
             DetailElement = detailElement;
             ContainerCollection = container;
@@ -419,7 +429,12 @@ namespace DatenMeister.WPF.Windows
 
             if (effectiveForm != null)
             {
-                var control = new DetailFormControl {NavigationHost = this};
+                var control = new DetailFormControl
+                {
+                    NavigationHost = this,
+                    AttachedElement = AttachedElement
+                };
+                
                 control.SetContent(DetailElement, effectiveForm, ContainerCollection);
                 if (formDefinition != null)
                 {

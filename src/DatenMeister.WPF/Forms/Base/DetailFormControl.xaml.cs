@@ -440,9 +440,17 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var field in fields.Cast<IElement>())
             {
                 var flags = new FieldParameter {IsReadOnly = isFormReadOnly};
+                var isAttached = field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true;
 
+                var usedElement = isAttached ? AttachedElement : DetailElement;
+                if (usedElement == null) continue;
+                
                 var (detailElement, contentBlock) =
-                    FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
+                    FieldFactory.GetUIElementFor(
+                        usedElement,
+                        field, 
+                        this,
+                        flags);
 
                 if (contentBlock != null)
                 {

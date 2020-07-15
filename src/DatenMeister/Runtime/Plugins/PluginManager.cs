@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using BurnSystems.Logging;
-using DatenMeister.Integration;
 
 namespace DatenMeister.Runtime.Plugins
 {

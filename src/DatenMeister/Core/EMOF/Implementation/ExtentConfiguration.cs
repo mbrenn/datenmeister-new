@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;

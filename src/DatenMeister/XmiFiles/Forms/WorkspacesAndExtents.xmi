@@ -31,7 +31,7 @@
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True"
                    name="type" title="Provider" isAttached="True" />
             <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True"
-                   name="alternativeUris" title="alternativeUris" isAttached="True" />
+                   name="alternativeUris" title="alternativeUris" isAttached="True" isEnumeration="True"/>
 
         </packagedElement>
 

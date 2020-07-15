@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using BurnSystems;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -29,11 +32,23 @@ namespace DatenMeister.WPF.Forms.Fields
                 || fieldFlags.IsReadOnly;
             var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
             var height = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.lineHeight);
+            var isEnumeration = fieldData.getOrDefault<bool>(_FormAndFields._TextFieldData.isEnumeration);
 
             _valueText = string.Empty;
             if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
             {
-                _valueText = value.getOrDefault<string>(_name) ?? string.Empty;
+                if (isEnumeration)
+                {
+                    _valueText = value.getOrDefault<IReflectiveSequence>(_name)
+                        .ToList()
+                        .Select(x=> x?.ToString() ?? string.Empty)
+                        .Where (x=> !string.IsNullOrEmpty(x))
+                        .Join("\r\n");
+                }
+                else
+                {
+                    _valueText = value.getOrDefault<string>(_name) ?? string.Empty;
+                }
             }
             else
             {

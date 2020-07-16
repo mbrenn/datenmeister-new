@@ -162,7 +162,7 @@ namespace DatenMeister.WPF.Navigation
                 GiveMe.Scope.WorkspaceLogic,
                 workspaceId));
             
-            var navigateToItemConfig = new NavigateToItemConfig()
+            var navigateToItemConfig = new NavigateToItemConfig
             {
                 Form = formDefinition
             };

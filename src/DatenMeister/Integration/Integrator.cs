@@ -75,8 +75,12 @@ namespace DatenMeister.Integration
         public IContainer UseDatenMeister(ContainerBuilder kernel)
         {
             PrepareSettings();
+            
+            var scopeStorage = new ScopeStorage();
+            kernel.RegisterInstance(scopeStorage).As<IScopeStorage>();
 
-            kernel.RegisterInstance(_settings).As<IntegrationSettings>();
+            scopeStorage.Add(_settings);
+
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             // Creates the database path for the DatenMeister.

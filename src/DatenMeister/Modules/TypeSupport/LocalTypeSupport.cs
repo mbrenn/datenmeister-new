@@ -37,6 +37,7 @@ namespace DatenMeister.Modules.TypeSupport
 
         private readonly ExtentCreator _extentCreator;
         private readonly PackageMethods _packageMethods;
+        private readonly IScopeStorage _scopeStorage;
         private readonly IntegrationSettings _integrationSettings;
 
         public IUriExtent InternalTypes => GetInternalTypeExtent();
@@ -49,17 +50,18 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="workspaceLogic">Workspace logic which is required to find the given local type support storage</param>
         /// <param name="extentCreator">The creator for the extents</param>
         /// <param name="packageMethods">The methods for the packages</param>
-        /// <param name="integrationSettings">The Integration settings</param>
+        /// <param name="scopeStorage">The Integration settings</param>
         public LocalTypeSupport(
             IWorkspaceLogic workspaceLogic,
             ExtentCreator extentCreator,
             PackageMethods packageMethods,
-            IntegrationSettings integrationSettings)
+            IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
             _packageMethods = packageMethods;
-            _integrationSettings = integrationSettings;
+            _scopeStorage = scopeStorage;
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 
         /// <summary>
@@ -73,7 +75,7 @@ namespace DatenMeister.Modules.TypeSupport
                 case PluginLoadingPosition.AfterBootstrapping:
                     CreateInternalTypeExtent();
                     
-                    var defaultTypeIntegrator = new DefaultTypeIntegrator(_workspaceLogic, this, _integrationSettings);
+                    var defaultTypeIntegrator = new DefaultTypeIntegrator(_workspaceLogic, this, _scopeStorage);
                     defaultTypeIntegrator.CreateDefaultTypesForTypesWorkspace();
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:

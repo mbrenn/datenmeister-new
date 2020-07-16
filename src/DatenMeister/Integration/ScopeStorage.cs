@@ -14,7 +14,7 @@ namespace DatenMeister.Integration
         /// </summary>
         private Dictionary<Type, object> _storage = new Dictionary<Type, object>();
 
-        public void AddStorageItem<T>(T item)
+        public void Add<T>(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             
@@ -24,7 +24,7 @@ namespace DatenMeister.Integration
             }
         }
 
-        public T GetStorageItem<T>()
+        public T Get<T>()
         {
             lock (_storage)
             {

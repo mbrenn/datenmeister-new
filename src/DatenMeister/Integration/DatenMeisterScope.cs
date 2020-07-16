@@ -17,6 +17,11 @@ namespace DatenMeister.Integration
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic => this.Resolve<IWorkspaceLogic>();
 
+        /// <summary>
+        /// Gets the scope storage being used to store data throughout the running application. 
+        /// </summary>
+        public IScopeStorage ScopeStorage { get; set; }
+
         private readonly ILifetimeScope _lifetimeScopeImplementation;
 
         /// <summary>

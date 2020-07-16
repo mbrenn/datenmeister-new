@@ -40,7 +40,7 @@ namespace DatenMeister.WPF.Navigation
 
         public static void OpenFolder(INavigationHost window)
         {
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             DotNetHelper.CreateProcess(integrationSettings.DatabasePath);
         }
 
@@ -66,7 +66,7 @@ namespace DatenMeister.WPF.Navigation
 
             var result = await NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
-                new NavigateToItemConfig()
+                new NavigateToItemConfig
                 {
                     Form = new FormDefinition(formElement)
                 });
@@ -107,7 +107,7 @@ namespace DatenMeister.WPF.Navigation
             var files = new List<string>();
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {
                 if (workspace.id == WorkspaceNames.WorkspaceData)

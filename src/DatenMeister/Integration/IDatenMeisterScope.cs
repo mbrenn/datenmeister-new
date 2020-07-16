@@ -14,6 +14,11 @@ namespace DatenMeister.Integration
         IWorkspaceLogic WorkspaceLogic { get; }
         
         /// <summary>
+        /// Gets the scope storage
+        /// </summary>
+        IScopeStorage ScopeStorage { get; }
+        
+        /// <summary>
         /// This event is called before the element is being disposed
         /// </summary>
         event EventHandler BeforeDisposing;

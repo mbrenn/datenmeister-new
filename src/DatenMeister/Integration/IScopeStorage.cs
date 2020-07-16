@@ -8,7 +8,7 @@
         /// </summary>
         /// <param name="item">Item to be added</param>
         /// <typeparam name="T">Type of the item to be added</typeparam>
-        void AddStorageItem<T>(T item);
+        void Add<T>(T item);
 
         /// <summary>
         /// Gets the storage item which was added via AddStorage Item.
@@ -16,6 +16,6 @@
         /// </summary>
         /// <typeparam name="T">Type to be retrieved</typeparam>
         /// <returns>The found storage item</returns>
-        T GetStorageItem<T>();
+        T Get<T>();
     }
 }

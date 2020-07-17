@@ -63,13 +63,12 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <param name="extentSettings">Added the extent settings</param>
         public FormsPlugin(IWorkspaceLogic workspaceLogic, 
             ExtentCreator extentCreator,
-            IScopeStorage scopeStorage,
-            ExtentSettings extentSettings)
+            IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
-            _extentSettings = extentSettings;
+            _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
         /// <summary>

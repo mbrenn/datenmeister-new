@@ -1,6 +1,7 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
+using DatenMeister.Integration;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Runtime.Workspaces;
@@ -24,7 +25,8 @@ namespace DatenMeister.Provider.ManagementProviders.Settings
             // Adds the extent containing the settings
             workspaceLogic.GetManagementWorkspace().AddExtent(settingsExtent);
 
-            var settings = scope.Resolve<ExtentSettings>();
+            var scopeStorage = scope.Resolve<IScopeStorage>();
+            var settings = scopeStorage.Get<ExtentSettings>();
             var settingsObject = new DotNetProviderObject(dotNetProvider, settings);
             settingsExtent.elements().add(settingsObject);
         }

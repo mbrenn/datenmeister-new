@@ -7,8 +7,8 @@ namespace DatenMeister.Modules.ExtentPropertyElementHandler
     public class ExtentPropertyUserInteraction : IElementInteractionsHandler
     {
         public IEnumerable<IElementInteraction> GetInteractions(IObject element)
-        {
-            throw new System.NotImplementedException();
+        {   
+            yield break;
         }
     }
 }

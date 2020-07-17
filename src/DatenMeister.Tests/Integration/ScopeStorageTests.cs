@@ -33,6 +33,7 @@ namespace DatenMeister.Tests.Integration
             Assert.That(result, Is.SameAs(settings));
 
             Assert.Throws<InvalidOperationException>(() => scopeStorage.Get<IntegrationSettings>());
+            Assert.That(scopeStorage.TryGet<IntegrationSettings>(), Is.Null);
         }
     }
 }

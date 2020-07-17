@@ -36,5 +36,23 @@ namespace DatenMeister.Integration
                 throw new InvalidOperationException($"Instance of {typeof(T)} is not found in storage");
             }
         }
+
+        /// <summary>
+        /// Tries to get a value and returns null, if value is not found
+        /// </summary>
+        /// <typeparam name="T">Type to be retrieved</typeparam>
+        /// <returns>The found storage item or null, if not found</returns>
+        public T TryGet<T>()
+        {
+            lock (_storage)
+            {
+                if (_storage.TryGetValue(typeof(T), out var result))
+                {
+                    return (T) result;
+                }
+            }
+
+            return default!;
+        }
     }
 }

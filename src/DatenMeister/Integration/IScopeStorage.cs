@@ -17,5 +17,12 @@
         /// <typeparam name="T">Type to be retrieved</typeparam>
         /// <returns>The found storage item</returns>
         T Get<T>();
+
+        /// <summary>
+        /// Tries to get a value and returns null, if value is not found
+        /// </summary>
+        /// <typeparam name="T">Type to be retrieved</typeparam>
+        /// <returns>The found storage item or null, if not found</returns>
+        T TryGet<T>();
     }
 }

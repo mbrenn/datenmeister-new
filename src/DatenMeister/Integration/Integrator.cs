@@ -122,7 +122,7 @@ namespace DatenMeister.Integration
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
             
             var extentSettings = new ExtentSettings();
-            kernel.RegisterInstance(extentSettings).As<ExtentSettings>();
+            scopeStorage.Add(extentSettings);
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
@@ -144,8 +144,6 @@ namespace DatenMeister.Integration
 
             var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
-
-            Modules.ZipExample.ZipCodePlugin.Into(kernel);
 
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())

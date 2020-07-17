@@ -4,6 +4,7 @@ using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 
 namespace DatenMeister.Modules.AttachedExtent
 {
@@ -13,10 +14,10 @@ namespace DatenMeister.Modules.AttachedExtent
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly ExtentSettings _extentSettings;
 
-        public AttachedExtentPlugin(LocalTypeSupport localTypeSupport, ExtentSettings extentSettings)
+        public AttachedExtentPlugin(LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
         {
             _localTypeSupport = localTypeSupport;
-            _extentSettings = extentSettings;
+            _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
         public void Start(PluginLoadingPosition position)

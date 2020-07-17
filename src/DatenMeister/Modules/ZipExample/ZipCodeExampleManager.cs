@@ -4,6 +4,7 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
@@ -27,7 +28,17 @@ namespace DatenMeister.Modules.ZipExample
         public ZipCodeExampleManager(
             IWorkspaceLogic workspaceLogic,
             IExtentManager extentManager,
+            IScopeStorage scopeStorage)
+            : this(workspaceLogic, extentManager, scopeStorage.Get<ZipCodeModel>())
+        {
+
+        }
+
+        private ZipCodeExampleManager(
+            IWorkspaceLogic workspaceLogic,
+            IExtentManager extentManager,
             ZipCodeModel zipCodeModel)
+
         {
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;

@@ -63,6 +63,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="formLogic">View logic being used</param>
+        /// <param name="scopeStorage">Stores the extent settings</param>
+        public FormCreator(
+            IWorkspaceLogic workspaceLogic,
+            FormsPlugin? formLogic,
+            IScopeStorage scopeStorage)
+             : this (workspaceLogic, formLogic, scopeStorage.TryGet<ExtentSettings>())
+        {
+
+        }
+        /// <summary>
+        /// Initializes a new instance of the FormCreator class
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="formLogic">View logic being used</param>
         /// <param name="extentSettings">Stores the extent settings</param>
         public FormCreator(
             IWorkspaceLogic workspaceLogic,

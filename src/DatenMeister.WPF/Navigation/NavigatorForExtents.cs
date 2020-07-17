@@ -84,7 +84,7 @@ namespace DatenMeister.WPF.Navigation
                 var managementWorkspace = workspaceLogic.GetManagementWorkspace();
                 var resolvedForm = managementWorkspace.ResolveElement(
                     $"{WorkspaceNames.UriExtentInternalForm}#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
-                var extentSettings = GiveMe.Scope.Resolve<ExtentSettings>();
+                var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
                 var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
                                     throw new InvalidOperationException("FormAndFields not found");
 

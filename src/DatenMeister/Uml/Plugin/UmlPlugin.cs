@@ -1,4 +1,5 @@
-﻿using DatenMeister.Models.ManagementProvider;
+﻿using DatenMeister.Integration;
+using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
@@ -22,10 +23,11 @@ namespace DatenMeister.Uml.Plugin
         /// </summary>
         public const string ExtentType = "Uml.Classes";
 
-        public UmlPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods, ExtentSettings extentSettings)
+        public UmlPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods, IScopeStorage scopeStorage)
         {
             _formsPlugin = formsPlugin;
             _packageMethods = packageMethods;
+            var extentSettings = scopeStorage.Get<ExtentSettings>();
             extentSettings.extentTypeSettings.Add(
                 new ExtentTypeSetting(ExtentType));
             

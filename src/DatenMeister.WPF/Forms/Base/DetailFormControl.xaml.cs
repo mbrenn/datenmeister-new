@@ -518,8 +518,9 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Creates additional rows for buttons with additional actions
+            var scope = GiveMe.Scope;
             var interactionHandlers = 
-                GiveMe.Scope.ScopeStorage.Get<UserInteractionState>().ElementInteractionHandler;
+                scope.ScopeStorage.Get<UserInteractionState>().ElementInteractionHandler;
             foreach (var handler in interactionHandlers
                 .SelectMany(x => x.GetInteractions(DetailElement)))
             {

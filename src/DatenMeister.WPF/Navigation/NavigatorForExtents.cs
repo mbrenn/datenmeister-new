@@ -13,7 +13,6 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.View;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;

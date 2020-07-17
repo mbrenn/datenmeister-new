@@ -3,13 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.XPath;
-using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;

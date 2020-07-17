@@ -20,9 +20,14 @@ namespace DatenMeister.Integration
         /// <summary>
         /// Gets the scope storage being used to store data throughout the running application. 
         /// </summary>
-        public IScopeStorage ScopeStorage { get; set; }
+        public IScopeStorage ScopeStorage
+        {
+            get => _scopeStorage ?? throw new InvalidOperationException("ScopeStorage is null");
+            set => _scopeStorage  = value;
+        }
 
         private readonly ILifetimeScope _lifetimeScopeImplementation;
+        private IScopeStorage? _scopeStorage ;
 
         /// <summary>
         /// This event will be called before the items are actually disposed

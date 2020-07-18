@@ -5,6 +5,7 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Runtime;
 
 namespace DatenMeister.Modules.AttachedExtent
 {

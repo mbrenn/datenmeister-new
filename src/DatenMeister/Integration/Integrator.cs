@@ -13,6 +13,7 @@ using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.PublicSettings;
@@ -241,7 +242,6 @@ namespace DatenMeister.Integration
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
-                SettingsProviderHelper.Initialize(scope, workspaceLogic);
                 loadConfigurationTask.Wait();
                 
                 // Finally loads the plugin

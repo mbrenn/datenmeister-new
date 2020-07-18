@@ -2,31 +2,36 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Integration;
-using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders.Settings
 {
-    public class SettingsProviderHelper
+    public class SettingsProviderHelper : IDatenMeisterPlugin
     {
-        /// <summary>
-        /// Initializes the ExtentHelper and creates the extent for the workspaces
-        /// </summary>
-        /// <param name="scope">Scope of the datenmeister to be added</param>
-        /// <param name="workspaceLogic">The workspace logic to be used</param>
-        public static void Initialize(ILifetimeScope scope, IWorkspaceLogic workspaceLogic)
+        private readonly IScopeStorage _scopeStorage;
+
+        private readonly IWorkspaceLogic _workspaceLogic;
+
+        public SettingsProviderHelper(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
-            var typesWorkspace = workspaceLogic.GetTypesWorkspace();
+            _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
+        }
+
+        public void Start(PluginLoadingPosition position)
+        {
+            var typesWorkspace = _workspaceLogic.GetTypesWorkspace();
             var dotNetProvider = new ManagementSettingsProvider(new WorkspaceDotNetTypeLookup(typesWorkspace));
             var settingsExtent =
                 new MofUriExtent(dotNetProvider, WorkspaceNames.UriExtentSettings);
             
             // Adds the extent containing the settings
-            workspaceLogic.GetManagementWorkspace().AddExtent(settingsExtent);
+            _workspaceLogic.GetManagementWorkspace().AddExtent(settingsExtent);
 
-            var scopeStorage = scope.Resolve<IScopeStorage>();
-            var settings = scopeStorage.Get<ExtentSettings>();
+            var settings = _scopeStorage.Get<ExtentSettings>();
             var settingsObject = new DotNetProviderObject(dotNetProvider, settings);
             settingsExtent.elements().add(settingsObject);
         }

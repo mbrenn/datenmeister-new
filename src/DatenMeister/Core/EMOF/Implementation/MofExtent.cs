@@ -12,6 +12,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -136,7 +137,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
 
-                return new MofObject(nullObject, this);
+                var result = new MofElement(nullObject, this);
+                result.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
+                return result;
             }
 
             return MetaXmiElement;
@@ -145,7 +148,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the meta element for xmi data
         /// </summary>
-        public MofObject MetaXmiElement { get; set; }
+        public MofElement MetaXmiElement { get; set; }
 
         /// <summary>
         /// Gets or sets the xml Node of the meta element.
@@ -179,17 +182,18 @@ namespace DatenMeister.Core.EMOF.Implementation
             // instead of the specific type. 
             if (XmlMetaExtent != null)
             {
-                MetaXmiElement = new MofObject(
+                MetaXmiElement = new MofElement(
                     new XmiProviderObject(new XElement("meta"), rootProvider),
                     XmlMetaExtent);
             }
             else
             {
-                MetaXmiElement = new MofObject(
+                MetaXmiElement = new MofElement(
                     new XmiProviderObject(new XElement("meta"), rootProvider),
                     this);
             }
-
+            
+            MetaXmiElement.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
             ExtentConfiguration = new ExtentConfiguration(this);
         }
 

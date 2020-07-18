@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Models.ManagementProvider
+namespace DatenMeister.Models.Runtime
 {
     /// <summary>
     /// Stores the setting of the extent

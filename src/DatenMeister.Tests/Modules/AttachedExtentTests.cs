@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.AttachedExtent;
 using DatenMeister.Modules.AttachedExtent;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -87,11 +88,43 @@ namespace DatenMeister.Tests.Modules
             Assert.That(attachedExtents.Any(x => x.contextURI() == setup.AttachedExtent.contextURI()));
             Assert.That(attachedExtents.Any(x => x.contextURI() == setup.AttachedExtent2.contextURI()));
         }
+
+        [Test]
+        public void TestAttachedItems()
+        {
+            var setup = CreateTestSetup();
+            var originalItem1 = MofFactory.Create(setup.OriginalExtent, null);
+            var originalItem2 = MofFactory.Create(setup.OriginalExtent, null);
+
+            setup.OriginalExtent.elements().add(originalItem1);
+            setup.OriginalExtent.elements().add(originalItem2);
+
+            var attached1 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem1, setup.AttachedExtent);
+            var attached2 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem2, setup.AttachedExtent);
+
+            Assert.That(attached1, Is.Not.Null);
+            Assert.That(attached2, Is.Not.Null);
+            Assert.That(attached1.metaclass, Is.EqualTo(setup.ReferenceType));
+            
+            attached1.set("name", "Attached 1");
+            attached2.set("name", "Attached 2");
+            
+            var attached3 = setup.AttachedExtentHandler.GetOrCreateAttachedItem(originalItem1, setup.AttachedExtent);
+            Assert.That(attached3, Is.Not.Null);
+            Assert.That(attached3.getOrDefault<string>("name"), Is.EqualTo("Attached 1"));
+        }
         
         public class TestSetup
         {
             public AttachedExtentHandler AttachedExtentHandler { get; set; }
+            
+            public AttachedExtentConfiguration AttachedExtentConfiguration { get; set; }
+            
             public IWorkspaceLogic WorkspaceLogic { get; set; }
+            
+            public IUriExtent TypeExtent { get; set; }
+            
+            public IElement ReferenceType { get; set; }
             
             public IUriExtent OriginalExtent { get; set; }
             
@@ -107,11 +140,17 @@ namespace DatenMeister.Tests.Modules
             var testSetup = new TestSetup
             {
                 WorkspaceLogic = new WorkspaceLogic(new WorkspaceData()),
+                TypeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types"),
                 OriginalExtent = new MofUriExtent(new InMemoryProvider(), "dm:///originalExtent"),
                 AttachedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///attachedExtent"),
                 AttachedExtent2 = new MofUriExtent(new InMemoryProvider(), "dm:///attachedExtent2"),
                 NonConnectedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///nonconnectedExtent")
             };
+
+            var type = MofFactory.Create(testSetup.TypeExtent, null);
+            testSetup.TypeExtent.elements().add(type);
+            type.set("name", "ReferenceType");
+            testSetup.ReferenceType = type;
             
             var attachedHandler =
                 testSetup.AttachedExtentHandler = new AttachedExtentHandler(testSetup.WorkspaceLogic);
@@ -122,12 +161,15 @@ namespace DatenMeister.Tests.Modules
             testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.AttachedExtent);
             testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.AttachedExtent2);
             testSetup.WorkspaceLogic.AddExtent(dataWorkspace, testSetup.NonConnectedExtent);
-            
-            var config = new AttachedExtentConfiguration();
-            config.referencedExtent = "dm:///originalExtent";
-            config.referencedWorkspace = "Data";
-            config.referenceProperty = "reference";
-            
+
+            var config = testSetup.AttachedExtentConfiguration = new AttachedExtentConfiguration
+            {
+                referencedExtent = "dm:///originalExtent",
+                referencedWorkspace = "Data",
+                referenceProperty = "reference",
+                referenceType = type
+            };
+
             attachedHandler.SetConfiguration(testSetup.AttachedExtent, config);
             attachedHandler.SetConfiguration(testSetup.AttachedExtent2, config);
             return testSetup;

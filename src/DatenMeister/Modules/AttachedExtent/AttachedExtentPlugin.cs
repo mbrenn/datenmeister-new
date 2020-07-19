@@ -36,7 +36,7 @@ namespace DatenMeister.Modules.AttachedExtent
                 _extentSettings.propertyDefinitions.Add(
                     new ExtentPropertyDefinition
                     {
-                        name = "DatenMeister.AttachedProperty",
+                        name = AttachedExtentHandler.AttachedExtentProperty,
                         title = "Attached Extent",
                         metaClass =
                             (from x in createdTypes

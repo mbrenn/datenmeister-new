@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;

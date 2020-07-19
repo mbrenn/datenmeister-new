@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.AttachedExtent;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.AttachedExtent
@@ -94,6 +97,38 @@ namespace DatenMeister.Modules.AttachedExtent
             {
                 yield return foundExtent;
             }
+        }
+
+        /// <summary>
+        /// Gets or creates the attached item.
+        /// If the attached item does not exist, a new item is generated in the attached extent
+        /// Otherwise the existing item is returned. 
+        /// </summary>
+        /// <param name="originalItem">Original item to be evaluated</param>
+        /// <param name="attachedExtent">Attached extent to be added</param>
+        /// <returns>Gets or created the attached item </returns>
+        public IElement GetOrCreateAttachedItem(IElement originalItem, IUriExtent attachedExtent)
+        {
+            var configuration = GetConfiguration(attachedExtent);
+            if (configuration == null || configuration.referenceProperty == null)
+            {
+                throw new InvalidOperationException(
+                    "Attached item cannot ba retrieved since the attached extent does not have a configuration");
+            }
+
+            // Now go through the attached extent and look for the attached item
+            var foundItem = attachedExtent.elements()
+                .GetAllDescendantsIncludingThemselves()
+                .WhenPropertyHasValue(configuration.referenceProperty, originalItem)
+                .OfType<IElement>()
+                .FirstOrDefault();
+
+            if (foundItem != null) return foundItem;
+            
+            var newItem = MofFactory.Create(attachedExtent, configuration.referenceType);
+            newItem.set(configuration.referenceProperty, originalItem);
+            attachedExtent.elements().add(newItem);
+            return newItem;
         }
     }
 }

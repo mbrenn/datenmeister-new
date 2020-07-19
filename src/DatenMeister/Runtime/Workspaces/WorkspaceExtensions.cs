@@ -159,18 +159,14 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="model">Model to be queried</param>
         /// <param name="foundWorkspace">The found workspace</param>
         /// <param name="foundExtent">The found extent</param>
-        public static void RetrieveWorkspaceAndExtent(
+        public static (Workspace foundWorkspace, IUriExtent foundExtent) RetrieveWorkspaceAndExtent(
             this IWorkspaceLogic workspaceLogic,
-            WorkspaceExtentAndItemReference model,
-            out Workspace foundWorkspace,
-            out IUriExtent foundExtent)
+            WorkspaceExtentAndItemReference model)
         {
-            RetrieveWorkspaceAndExtent(
+            return RetrieveWorkspaceAndExtent(
                 workspaceLogic,
                 model.ws,
-                model.extent,
-                out foundWorkspace,
-                out foundExtent);
+                model.extent);
         }
 
         /// <summary>
@@ -198,25 +194,25 @@ namespace DatenMeister.Runtime.Workspaces
             return (foundWorkspace, foundExtent);
         }
 
-        public static void RetrieveWorkspaceAndExtent(
+        public static (Workspace workspace, IUriExtent extent) RetrieveWorkspaceAndExtent(
             this IWorkspaceLogic workspaceLogic,
             string ws,
-            string extent,
-            out Workspace foundWorkspace,
-            out IUriExtent foundExtent)
+            string extent)
         {
-            foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
+            var foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
 
             if (foundWorkspace == null)
             {
                 throw new InvalidOperationException("Workspace_NotFound");
             }
 
-            foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
+            var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
             if (foundExtent == null)
             {
                 throw new InvalidOperationException("Extent_NotFound");
             }
+
+            return (foundWorkspace, foundExtent);
         }
 
         /// <summary>
@@ -321,20 +317,19 @@ namespace DatenMeister.Runtime.Workspaces
                 .FirstOrDefault(x => x != null);
         }
 
-        public static void FindItem(
+        public static (Workspace worksspace, IUriExtent extent, IElement element) FindItem(
             this IWorkspaceLogic collection,
-            WorkspaceExtentAndItemReference model,
-            out Workspace? foundWorkspace,
-            out IUriExtent? foundExtent,
-            out IElement? foundItem)
+            WorkspaceExtentAndItemReference model)
         {
-            RetrieveWorkspaceAndExtent(collection, model, out foundWorkspace, out foundExtent);
+            var (foundWorkspace, foundExtent) = RetrieveWorkspaceAndExtent(collection, model);
 
-            foundItem = foundExtent.element(model.item);
+            var foundItem = foundExtent.element(model.item);
             if (foundItem == null)
             {
                 throw new InvalidOperationException();
             }
+
+            return (foundWorkspace, foundExtent, foundItem);
         }
 
         /// <summary>

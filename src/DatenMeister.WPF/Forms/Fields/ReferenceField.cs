@@ -231,11 +231,9 @@ namespace DatenMeister.WPF.Forms.Fields
                 if (!string.IsNullOrEmpty(_workspace) && !string.IsNullOrEmpty(_extent))
                 {
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                    workspaceLogic.RetrieveWorkspaceAndExtent(
+                    var (foundWorkspace, foundExtent) = workspaceLogic.RetrieveWorkspaceAndExtent(
                         _workspace,
-                        _extent,
-                        out var foundWorkspace,
-                        out var foundExtent);
+                        _extent);
                     if (foundWorkspace != null && foundExtent != null)
                     {
                         _control.Select(foundWorkspace, foundExtent);

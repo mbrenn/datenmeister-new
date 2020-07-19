@@ -169,7 +169,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         {
             if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is IUriExtent foundExtent))
             {
-                throw new InvalidOperationException("The view extent is not found in the management");
+                throw new InvalidOperationException("The form extent is not found in the management");
             }
 
             return foundExtent;

@@ -129,7 +129,8 @@ namespace DatenMeister.WPF.Navigation
                 var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
                 {
                     Form = new FormDefinition(resolvedForm),
-                    AttachedElement = foundItem
+                    AttachedElement = foundItem,
+                    Title = "Edit Extent Properties"
                 };
                 
                 return await NavigatorForItems.NavigateToElementDetailView(

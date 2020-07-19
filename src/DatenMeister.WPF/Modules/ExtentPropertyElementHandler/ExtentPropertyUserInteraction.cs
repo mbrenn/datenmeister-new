@@ -37,16 +37,21 @@ namespace DatenMeister.Modules.ExtentPropertyElementHandler
             foreach (var property in extentSettings.propertyDefinitions)
             {
                 var newData = new DefaultElementInteraction(
-                    $"Create {property.title}",
-                    () =>
+                    $"Edit {property.title}",
+                    async (x,y) =>
                     {
                         var foundElement = element.getOrDefault<IElement>(property.name);
                         if (foundElement == null)
                         {
                             var factory = new MofFactory(element);
                             foundElement = factory.create(property.metaClass);
+                            element.set(property.name, foundElement);
                         }
 
+                        await NavigatorForItems.NavigateToElementDetailView(
+                            x.NavigationHost,
+                            foundElement,
+                            title: $"Edit {property.title}");
                     });
 
                 yield return newData;

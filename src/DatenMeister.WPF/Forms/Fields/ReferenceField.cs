@@ -65,6 +65,8 @@ namespace DatenMeister.WPF.Forms.Fields
         private Button? _removeButton;
         
         private Button? _selectButton;
+        private string? _workspace;
+        private string? _extent;
 
         public bool IsEnabled
         {
@@ -98,6 +100,9 @@ namespace DatenMeister.WPF.Forms.Fields
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
             _detailFormControl = detailForm;
             _element = element;
+            
+            _workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
+            _extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
 
             if (_name == null)
             {
@@ -147,11 +152,17 @@ namespace DatenMeister.WPF.Forms.Fields
 
             _selectButton.Click += async (sender, args) =>
             {
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+
+                var (foundWorkspace, foundExtent ) = workspaceLogic.TryGetWorkspaceAndExtent(
+                    _workspace,
+                    _extent);
+                
                 // TODO: Select the one, of the currently referenced field
                 var selectedItem = await NavigatorForDialogs.Locate(
                     navigationHost,
-                    null /* workspace */,
-                    (value as IHasExtent)?.Extent);
+                    foundWorkspace,
+                    foundExtent);
 
                 if (selectedItem != null)
                 {
@@ -217,15 +228,12 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                var workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
-                var extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
-
-                if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
+                if (!string.IsNullOrEmpty(_workspace) && !string.IsNullOrEmpty(_extent))
                 {
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                     workspaceLogic.RetrieveWorkspaceAndExtent(
-                        workspace,
-                        extent,
+                        _workspace,
+                        _extent,
                         out var foundWorkspace,
                         out var foundExtent);
                     if (foundWorkspace != null && foundExtent != null)
@@ -233,10 +241,10 @@ namespace DatenMeister.WPF.Forms.Fields
                         _control.Select(foundWorkspace, foundExtent);
                     }
                 }
-                else if (!string.IsNullOrEmpty(workspace))
+                else if (!string.IsNullOrEmpty(_workspace))
                 {
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                    var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
+                    var foundWorkspace = workspaceLogic.GetWorkspace(_workspace);
                     if (foundWorkspace != null)
                     {
                         _control.Select((IWorkspace) foundWorkspace);

@@ -525,7 +525,8 @@ namespace DatenMeister.WPF.Forms.Base
                 .SelectMany(x => x.GetInteractions(DetailElement)))
             {
                 var button = new Button {Content = handler.Name};
-                button.Click += (x, y) => handler.Execute(DetailElement, null);
+                button.Click += (x, y) 
+                    => handler.Execute(this, DetailElement, null);
                 buttons.Add(button);
             }
 

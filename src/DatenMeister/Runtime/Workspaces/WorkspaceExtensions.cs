@@ -155,32 +155,57 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Returns the given workspace and extents out of the urls
         /// </summary>
-        /// <param name="workspaceCollection">Workspace collection to be used</param>
+        /// <param name="workspaceLogic">Workspace collection to be used</param>
         /// <param name="model">Model to be queried</param>
         /// <param name="foundWorkspace">The found workspace</param>
         /// <param name="foundExtent">The found extent</param>
         public static void RetrieveWorkspaceAndExtent(
-            this IWorkspaceLogic workspaceCollection,
+            this IWorkspaceLogic workspaceLogic,
             WorkspaceExtentAndItemReference model,
             out Workspace foundWorkspace,
             out IUriExtent foundExtent)
         {
             RetrieveWorkspaceAndExtent(
-                workspaceCollection,
+                workspaceLogic,
                 model.ws,
                 model.extent,
                 out foundWorkspace,
                 out foundExtent);
         }
 
+        /// <summary>
+        /// Tries to find the workspace and extent by the name 
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="ws">Workspace to be found</param>
+        /// <param name="extent">Extent to be found</param>
+        /// <returns>Tuple returning the workspace and extent</returns>
+        public static (IWorkspace? workspace, IUriExtent? extent) TryGetWorkspaceAndExtent(
+            this IWorkspaceLogic workspaceLogic, string? ws, string? extent)
+        {
+            if (ws == null) return (null, null);
+            
+            var foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
+            if (foundWorkspace == null) return (null, null);
+            if (extent == null) return (foundWorkspace, null);
+            
+            var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
+            if (foundExtent == null)
+            {
+                return (foundWorkspace, null);
+            }
+
+            return (foundWorkspace, foundExtent);
+        }
+
         public static void RetrieveWorkspaceAndExtent(
-            this IWorkspaceLogic workspaceCollection,
+            this IWorkspaceLogic workspaceLogic,
             string ws,
             string extent,
             out Workspace foundWorkspace,
             out IUriExtent foundExtent)
         {
-            foundWorkspace = workspaceCollection.Workspaces.FirstOrDefault(x => x.id == ws);
+            foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
 
             if (foundWorkspace == null)
             {

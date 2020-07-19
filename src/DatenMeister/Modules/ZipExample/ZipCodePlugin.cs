@@ -2,10 +2,8 @@
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Models.Example.ZipCode;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.ZipExample
@@ -53,12 +51,6 @@ namespace DatenMeister.Modules.ZipExample
                         new[] {typeof(ZipCode), typeof(ZipCodeWithState)});
                     zipCodeModel.ZipCode = types.ElementAt(0);
                     zipCodeModel.ZipCodeWithState = types.ElementAt(1);
-
-                    _scopeStorage
-                        .Get<UserInteractionState>()
-                        .ElementInteractionHandler
-                        .Add(
-                            new ZipCodeInteractionHandler());
                     
                     break;
                 }

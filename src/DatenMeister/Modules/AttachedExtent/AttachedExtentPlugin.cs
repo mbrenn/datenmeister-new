@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.AttachedExtent
                     new ExtentPropertyDefinition
                     {
                         name = "DatenMeister.AttachedProperty",
-                        title = "Attached Property",
+                        title = "Attached Extent",
                         metaClass =
                             (from x in createdTypes
                                 let hasId = (IHasId) x

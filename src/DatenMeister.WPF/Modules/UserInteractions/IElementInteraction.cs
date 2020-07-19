@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.UserInteractions
+namespace DatenMeister.WPF.Modules.UserInteractions
 {
     /// <summary>
     /// Defines a specific element interaction

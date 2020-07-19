@@ -1,7 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.UserInteractions
+namespace DatenMeister.WPF.Modules.UserInteractions
 {
     public class DefaultElementInteraction : IElementInteraction
     {

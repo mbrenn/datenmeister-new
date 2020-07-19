@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.UserInteractions
+namespace DatenMeister.WPF.Modules.UserInteractions
 {
     /// <summary>
     /// Defines some helper methods depending on the given element

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DatenMeister.Modules.UserInteractions
+namespace DatenMeister.WPF.Modules.UserInteractions
 {
     /// <summary>
     /// Stores the information of the userinteraction module

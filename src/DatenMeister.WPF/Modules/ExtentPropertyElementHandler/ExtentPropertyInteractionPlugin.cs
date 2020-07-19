@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Integration;
-using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Runtime.Plugins;
+using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.Modules.ExtentPropertyElementHandler
 {

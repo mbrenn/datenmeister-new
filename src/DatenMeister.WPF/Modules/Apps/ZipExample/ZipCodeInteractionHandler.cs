@@ -2,10 +2,10 @@
 using System.Net;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Example.ZipCode;
-using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Runtime;
+using DatenMeister.WPF.Modules.UserInteractions;
 
-namespace DatenMeister.Modules.ZipExample
+namespace DatenMeister.WPF.Modules.Apps.ZipExample
 {
     public class ZipCodeInteractionHandler : BaseElementInteractionHandler
     {

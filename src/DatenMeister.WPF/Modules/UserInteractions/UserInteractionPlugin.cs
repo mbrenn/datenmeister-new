@@ -1,8 +1,7 @@
-﻿using System;
-using DatenMeister.Integration;
+﻿using DatenMeister.Integration;
 using DatenMeister.Runtime.Plugins;
 
-namespace DatenMeister.Modules.UserInteractions
+namespace DatenMeister.WPF.Modules.UserInteractions
 {
     [PluginLoading(PluginLoadingPosition.AfterInitialization)]
     public class UserInteractionPlugin : IDatenMeisterPlugin

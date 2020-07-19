@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Provider.XMI.ExtentStorage;
@@ -84,10 +85,11 @@ namespace DatenMeister.WPF.Navigation
                 var managementWorkspace = workspaceLogic.GetManagementWorkspace();
                 var resolvedForm = managementWorkspace.ResolveElement(
                     $"{WorkspaceNames.UriExtentInternalForm}#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
-                var extentSettings = GiveMe.Scope.Resolve<ExtentSettings>();
+                var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
                 var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
                                     throw new InvalidOperationException("FormAndFields not found");
 
+                // Look for the checkbox item list for the possible extent types
                 if (resolvedForm != null)
                 {
                     // Add the options for the extent types
@@ -116,9 +118,19 @@ namespace DatenMeister.WPF.Navigation
                         foundExtentType.set(_FormAndFields._CheckboxListTaggingFieldData.values, list);
                     }
                 }
+
+
+                // Gets the properties of the extent themselves
+                var uri = 
+                    WorkspaceNames.UriExtentWorkspaces + "#" +
+                    WebUtility.UrlEncode(((IUriExtent) mofExtent).contextURI());
+                var foundItem = workspaceLogic.FindItem(uri);
+
                 var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
                 {
-                    Form = new FormDefinition(resolvedForm)
+                    Form = new FormDefinition(resolvedForm),
+                    AttachedElement = foundItem,
+                    Title = "Edit Extent Properties"
                 };
                 
                 return await NavigatorForItems.NavigateToElementDetailView(
@@ -151,7 +163,7 @@ namespace DatenMeister.WPF.Navigation
                 GiveMe.Scope.WorkspaceLogic,
                 workspaceId));
             
-            var navigateToItemConfig = new NavigateToItemConfig()
+            var navigateToItemConfig = new NavigateToItemConfig
             {
                 Form = formDefinition
             };

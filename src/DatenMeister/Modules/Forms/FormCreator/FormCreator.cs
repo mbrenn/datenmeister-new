@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -58,6 +59,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
         private _PrimitiveTypes? _primitiveTypes;
         private Workspace? _uriResolver;
 
+        /// <summary>
+        /// Initializes a new instance of the FormCreator class
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="formLogic">View logic being used</param>
+        /// <param name="scopeStorage">Stores the extent settings</param>
+        public FormCreator(
+            IWorkspaceLogic workspaceLogic,
+            FormsPlugin? formLogic,
+            IScopeStorage scopeStorage)
+             : this (workspaceLogic, formLogic, scopeStorage.TryGet<ExtentSettings>())
+        {
+
+        }
         /// <summary>
         /// Initializes a new instance of the FormCreator class
         /// </summary>

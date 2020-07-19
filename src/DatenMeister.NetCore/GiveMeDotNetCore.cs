@@ -8,7 +8,6 @@ namespace DatenMeister.NetCore
 {
     public class GiveMeDotNetCore
     {
-
         /// <summary>
         /// Return the DatenMeisterScope asynchronisously as a task.
         /// </summary>
@@ -39,7 +38,11 @@ namespace DatenMeister.NetCore
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);
 
-            GiveMe.Scope = new DatenMeisterScope(container.BeginLifetimeScope());
+            var scope = new DatenMeisterScope(container.BeginLifetimeScope());
+            scope.ScopeStorage = scope.Resolve<IScopeStorage>();
+
+            GiveMe.Scope = scope;
+            
 
             GiveMe.Scope.BeforeDisposing += (x, y) =>
             {

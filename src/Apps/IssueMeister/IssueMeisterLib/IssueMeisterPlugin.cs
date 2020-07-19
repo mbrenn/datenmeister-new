@@ -1,4 +1,6 @@
-﻿using DatenMeister.Models.ManagementProvider;
+﻿using DatenMeister.Integration;
+using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime;
@@ -31,13 +33,13 @@ namespace IssueMeisterLib
         /// <param name="localTypeSupport">Sets the local type support</param>
         /// <param name="extentSettings">The settings for the extent</param>
         public IssueMeisterPlugin(IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, FormsPlugin formsPlugin,
-            LocalTypeSupport localTypeSupport, ExtentSettings extentSettings)
+            LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _packageMethods = packageMethods;
             _formsPlugin = formsPlugin;
             _localTypeSupport = localTypeSupport;
-            _extentSettings = extentSettings;
+            _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
         public void Start(PluginLoadingPosition position)

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using BurnSystems;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
 {
@@ -32,7 +33,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
             ImageName = imageName;
             CategoryName = categoryName;
             Priority = Math.Min(priority, 65535) * 65536 +
-                    name.GetHashCode() % 65535;
+                       name.GetDeterministicHashCode() % 65535;
         }
 
         /// <summary>

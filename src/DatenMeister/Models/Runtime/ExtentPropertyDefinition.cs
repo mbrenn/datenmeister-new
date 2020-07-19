@@ -1,9 +1,11 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Models.ManagementProvider
+namespace DatenMeister.Models.Runtime
 {
     /// <summary>
-    /// Defines the extent 
+    /// Defines an additional property of the extent.
+    /// This extent property will be set via name to the extent itself.
+    /// A new instance of the metaclass will be created
     /// </summary>
     public class ExtentPropertyDefinition
     {

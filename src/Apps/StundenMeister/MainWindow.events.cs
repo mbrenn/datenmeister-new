@@ -49,7 +49,7 @@ namespace StundenMeister
 
         private void OpenStorageFolder_Click(object sender, RoutedEventArgs e)
         {
-            var settings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            var settings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             DotNetHelper.CreateProcess(settings.DatabasePath);
         }
 

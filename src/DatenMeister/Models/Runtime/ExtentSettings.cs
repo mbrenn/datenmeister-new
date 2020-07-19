@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Models.ManagementProvider;
 
-namespace DatenMeister.Models.ManagementProvider
+namespace DatenMeister.Models.Runtime
 {
     /// <summary>
     /// Stores the configurations for the extents themselves.

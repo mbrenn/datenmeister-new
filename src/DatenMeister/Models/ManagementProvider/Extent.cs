@@ -2,6 +2,9 @@
 
 namespace DatenMeister.Models.ManagementProvider
 {
+    /// <summary>
+    /// Defines the values of the extent as returned by the management provider
+    /// </summary>
     public class Extent
     {
         public string? uri { get; set; }

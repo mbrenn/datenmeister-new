@@ -71,11 +71,12 @@ namespace DatenMeister.Runtime.ExtentStorage
             IConfigurationToExtentStorageMapper map,
             ILifetimeScope diScope,
             IWorkspaceLogic workspaceLogic,
-            IntegrationSettings integrationSettings)
+            IScopeStorage scopeStorage)
         {
             _extentStorageData = data ?? throw new ArgumentNullException(nameof(data));
             _map = map ?? throw new ArgumentNullException(nameof(map));
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
+            var integrationSettings = scopeStorage.Get<IntegrationSettings>();
             _integrationSettings = integrationSettings ?? throw new ArgumentNullException(nameof(integrationSettings));
             _diScope = diScope;
         }

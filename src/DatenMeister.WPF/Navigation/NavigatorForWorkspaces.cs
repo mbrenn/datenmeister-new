@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
@@ -40,7 +38,7 @@ namespace DatenMeister.WPF.Navigation
 
         public static void OpenFolder(INavigationHost window)
         {
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             DotNetHelper.CreateProcess(integrationSettings.DatabasePath);
         }
 
@@ -66,7 +64,7 @@ namespace DatenMeister.WPF.Navigation
 
             var result = await NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
-                new NavigateToItemConfig()
+                new NavigateToItemConfig
                 {
                     Form = new FormDefinition(formElement)
                 });
@@ -107,7 +105,7 @@ namespace DatenMeister.WPF.Navigation
             var files = new List<string>();
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
             var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {
                 if (workspace.id == WorkspaceNames.WorkspaceData)

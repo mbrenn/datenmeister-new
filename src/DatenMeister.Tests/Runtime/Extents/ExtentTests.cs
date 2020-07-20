@@ -8,6 +8,8 @@ using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
@@ -15,7 +17,6 @@ using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -123,7 +124,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestExtentSettingsExtentType()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var extentSettings = dm.Resolve<ExtentSettings>();
+            var extentSettings = dm.ScopeStorage.Get<ExtentSettings>();
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == UmlPlugin.ExtentType), Is.True);
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == FormsPlugin.FormExtentType), Is.True);
             Assert.That(extentSettings.extentTypeSettings.Any(x => x.name == ZipCodePlugin.ExtentType), Is.True);

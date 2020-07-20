@@ -6,7 +6,6 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 

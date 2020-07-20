@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -16,7 +15,6 @@ using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -192,11 +190,6 @@ namespace DatenMeister.WPF.Forms.Lists
                 () => NavigatorForExtents.NavigateToExtentList(navigationHost, WorkspaceId),
                 Icons.ExtentsShow,
                 NavigationCategories.DatenMeister + ".Navigation");
-
-            yield return new ExtentMenuButtonDefinition(
-                "Extent Info", async (x) => await NavigatorForExtents.OpenDetailOfExtent(navigationHost, ExtentUrl),
-                null,
-                NavigationCategories.Extents + ".Info");
 
             yield return new ExtentMenuButtonDefinition(
                 "Extent Properties", async (x) => await NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),

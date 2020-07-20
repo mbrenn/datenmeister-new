@@ -155,43 +155,64 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Returns the given workspace and extents out of the urls
         /// </summary>
-        /// <param name="workspaceCollection">Workspace collection to be used</param>
+        /// <param name="workspaceLogic">Workspace collection to be used</param>
         /// <param name="model">Model to be queried</param>
         /// <param name="foundWorkspace">The found workspace</param>
         /// <param name="foundExtent">The found extent</param>
-        public static void RetrieveWorkspaceAndExtent(
-            this IWorkspaceLogic workspaceCollection,
-            WorkspaceExtentAndItemReference model,
-            out Workspace foundWorkspace,
-            out IUriExtent foundExtent)
+        public static (Workspace foundWorkspace, IUriExtent foundExtent) RetrieveWorkspaceAndExtent(
+            this IWorkspaceLogic workspaceLogic,
+            WorkspaceExtentAndItemReference model)
         {
-            RetrieveWorkspaceAndExtent(
-                workspaceCollection,
+            return RetrieveWorkspaceAndExtent(
+                workspaceLogic,
                 model.ws,
-                model.extent,
-                out foundWorkspace,
-                out foundExtent);
+                model.extent);
         }
 
-        public static void RetrieveWorkspaceAndExtent(
-            this IWorkspaceLogic workspaceCollection,
-            string ws,
-            string extent,
-            out Workspace foundWorkspace,
-            out IUriExtent foundExtent)
+        /// <summary>
+        /// Tries to find the workspace and extent by the name 
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="ws">Workspace to be found</param>
+        /// <param name="extent">Extent to be found</param>
+        /// <returns>Tuple returning the workspace and extent</returns>
+        public static (IWorkspace? workspace, IUriExtent? extent) TryGetWorkspaceAndExtent(
+            this IWorkspaceLogic workspaceLogic, string? ws, string? extent)
         {
-            foundWorkspace = workspaceCollection.Workspaces.FirstOrDefault(x => x.id == ws);
+            if (ws == null) return (null, null);
+            
+            var foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
+            if (foundWorkspace == null) return (null, null);
+            if (extent == null) return (foundWorkspace, null);
+            
+            var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
+            if (foundExtent == null)
+            {
+                return (foundWorkspace, null);
+            }
+
+            return (foundWorkspace, foundExtent);
+        }
+
+        public static (Workspace workspace, IUriExtent extent) RetrieveWorkspaceAndExtent(
+            this IWorkspaceLogic workspaceLogic,
+            string ws,
+            string extent)
+        {
+            var foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
 
             if (foundWorkspace == null)
             {
                 throw new InvalidOperationException("Workspace_NotFound");
             }
 
-            foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
+            var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
             if (foundExtent == null)
             {
                 throw new InvalidOperationException("Extent_NotFound");
             }
+
+            return (foundWorkspace, foundExtent);
         }
 
         /// <summary>
@@ -296,20 +317,19 @@ namespace DatenMeister.Runtime.Workspaces
                 .FirstOrDefault(x => x != null);
         }
 
-        public static void FindItem(
+        public static (Workspace worksspace, IUriExtent extent, IElement element) FindItem(
             this IWorkspaceLogic collection,
-            WorkspaceExtentAndItemReference model,
-            out Workspace? foundWorkspace,
-            out IUriExtent? foundExtent,
-            out IElement? foundItem)
+            WorkspaceExtentAndItemReference model)
         {
-            RetrieveWorkspaceAndExtent(collection, model, out foundWorkspace, out foundExtent);
+            var (foundWorkspace, foundExtent) = RetrieveWorkspaceAndExtent(collection, model);
 
-            foundItem = foundExtent.element(model.item);
+            var foundItem = foundExtent.element(model.item);
             if (foundItem == null)
             {
                 throw new InvalidOperationException();
             }
+
+            return (foundWorkspace, foundExtent, foundItem);
         }
 
         /// <summary>

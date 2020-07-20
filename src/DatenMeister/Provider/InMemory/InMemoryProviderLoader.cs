@@ -25,11 +25,6 @@ namespace DatenMeister.Provider.InMemory
         /// <exception cref="NotImplementedException"></exception>
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            if (extentCreationFlags == ExtentCreationFlags.LoadOnly)
-            {
-                throw new NotImplementedException("Loading the extent via ExtentCreationFlags.LoadOnly is not possible");
-            }
-            
             Logger.Info("InMemoryProvider is created");
             
             var provider = new InMemoryProvider();

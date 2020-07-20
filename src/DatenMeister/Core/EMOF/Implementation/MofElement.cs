@@ -151,14 +151,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void SetMetaClass(IElement metaClass)
         {
             _cachedMetaClass = metaClass;
-            var mofElement = (MofElement) metaClass;
-            if (mofElement.Extent == null)
+            if (metaClass is MofElement mofElement)
             {
-                throw new InvalidOperationException("The given metaclass is not connected to an element");
+                if (mofElement.Extent == null)
+                {
+                    throw new InvalidOperationException("The given metaclass is not connected to an element");
+                }
+
+                ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(mofElement);
+
             }
-
-            ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(metaClass);
-
+            else
+            {
+                ProviderObject.MetaclassUri = metaClass.GetUri();
+            }
+            
             UpdateContent();
         }
 

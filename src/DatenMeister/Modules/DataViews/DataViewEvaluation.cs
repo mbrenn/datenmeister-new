@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.DataViews;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Proxies;

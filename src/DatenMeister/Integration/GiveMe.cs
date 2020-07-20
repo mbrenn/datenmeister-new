@@ -61,7 +61,10 @@ namespace DatenMeister.Integration
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);
 
-            Scope = new DatenMeisterScope(container.BeginLifetimeScope());
+            var scope = new DatenMeisterScope(container.BeginLifetimeScope());
+            scope.ScopeStorage = scope.Resolve<ScopeStorage>();
+
+            Scope = scope;
 
             Scope.BeforeDisposing += (x, y) =>
             {

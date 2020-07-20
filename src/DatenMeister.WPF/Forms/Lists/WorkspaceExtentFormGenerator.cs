@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,7 +31,6 @@ using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using MessageBox = System.Windows.MessageBox;
@@ -282,7 +280,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     var userResult = InMemoryObject.CreateEmpty(foundType);
                     var foundForm = viewExtent.element("#OpenExtentAsFile")
                                     ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
-                    var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig()
+                    var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig
                     {
                         DetailElement = userResult,
                         Form = new FormDefinition(foundForm)

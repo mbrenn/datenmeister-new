@@ -171,48 +171,49 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <param name="value">Value to be converted</param>
         /// <returns>The XmlNode reflecting the given element</returns>
         private XElement ConvertValueAsXmlObject(string property, object value)
-        {lock (_xmiProvider.LockObject)
+        {
+            lock (_xmiProvider.LockObject)
             {
-            if (value is XmiProviderObject valueAsXmlObject)
-            {
-                if (valueAsXmlObject.XmlNode.Parent != null)
+                if (value is XmiProviderObject valueAsXmlObject)
                 {
-                    valueAsXmlObject = new XmiProviderObject(
-                        new XElement(valueAsXmlObject.XmlNode),
-                        (XmiProvider) Provider);
+                    if (valueAsXmlObject.XmlNode.Parent != null)
+                    {
+                        valueAsXmlObject = new XmiProviderObject(
+                            new XElement(valueAsXmlObject.XmlNode),
+                            (XmiProvider) Provider);
+                    }
+
+                    valueAsXmlObject.XmlNode.Name = property;
+
+                    // Creates an id, of the node does not have currently an ID
+                    if (XmiId.Get(valueAsXmlObject.XmlNode) == null)
+                    {
+                        XmiId.Set(valueAsXmlObject.XmlNode, XmiId.CreateNew());
+                    }
+
+
+                    return valueAsXmlObject.XmlNode;
                 }
 
-                valueAsXmlObject.XmlNode.Name = property;
-                
-                // Creates an id, of the node does not have currently an ID
-                if (XmiId.Get(valueAsXmlObject.XmlNode) == null)
+                /*var valueAsElement = value as IElement;
+                if (valueAsElement != null)
                 {
-                    XmiId.Set(valueAsXmlObject.XmlNode, XmiId.CreateNew());
+                    var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
+                    return ((XmlElement) copier.Copy(valueAsElement)).XmlNode;
+                }*/
+
+                if (DotNetHelper.IsOfPrimitiveType(value))
+                {
+                    return new XElement(property, DotNetHelper.AsString(value));
                 }
-                
 
-                return valueAsXmlObject.XmlNode;
-            }
-
-            /*var valueAsElement = value as IElement;
-            if (valueAsElement != null)
-            {
-                var copier = new ObjectCopier(new XmlFactory { Owner = _extent, ElementName = _propertyName });
-                return ((XmlElement) copier.Copy(valueAsElement)).XmlNode;
-            }*/
-
-            if (DotNetHelper.IsOfPrimitiveType(value))
-            {
-                return new XElement(property, DotNetHelper.AsString(value));
-            }
-
-            // A uri reference creates an href element
-            if (value is UriReference uriReference)
-            {
-                return new XElement(
-                    property,
-                    new XAttribute("href", uriReference.Uri));
-            }
+                // A uri reference creates an href element
+                if (value is UriReference uriReference)
+                {
+                    return new XElement(
+                        property,
+                        new XAttribute("href", uriReference.Uri));
+                }
             }
 
             throw new InvalidOperationException("Value is not an XmlObject or an IElement: " + (value ?? "'null'"));

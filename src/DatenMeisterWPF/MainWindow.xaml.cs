@@ -64,6 +64,8 @@ namespace DatenMeisterWPF
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
             _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData);
 
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
+            
             var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
             if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
             {
@@ -86,14 +88,13 @@ namespace DatenMeisterWPF
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    var databasePath = GiveMe.Scope.Resolve<IntegrationSettings>().DatabasePath;
+                    var databasePath = integrationSettings.DatabasePath;
 
                     DotNetHelper.CreateProcess(databasePath);
                 }
             }
             
             // Sets the title of the mainwindow
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
             if (integrationSettings.WindowTitle != null)
             {
                 Title = integrationSettings.WindowTitle;
@@ -241,7 +242,7 @@ namespace DatenMeisterWPF
                 canUnregister.Unregister();
             }
             
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
             
             // Asks the user, if he was not already asked before

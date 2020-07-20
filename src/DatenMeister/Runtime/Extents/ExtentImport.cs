@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using DatenMeister.Core.EMOF.Implementation.DotNet;
+﻿using System.IO;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.TypeSupport;

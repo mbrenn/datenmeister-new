@@ -261,6 +261,11 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsBoolean(propertyValue));
                     }
+                    else if (reflectedProperty.PropertyType == typeof(IObject) ||
+                             reflectedProperty.PropertyType == typeof(IElement))
+                    {
+                        reflectedProperty.SetValue(result, propertyValue as IObject);
+                    }
                     else if (reflectedProperty.PropertyType.IsEnum)
                     {
                         var propertyValueType = propertyValue?.GetType();

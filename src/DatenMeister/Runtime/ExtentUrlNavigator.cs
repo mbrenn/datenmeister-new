@@ -133,6 +133,11 @@ namespace DatenMeister.Runtime
             var dataview = queryString.Get("dataview");
             if (dataview != null && foundItem is IReflectiveCollection reflectiveCollection)
             {
+                if (_extent.ScopeStorage == null)
+                {
+                    Logger.Error("Dataview queried but extent does not have Scope Storage set");
+                    throw new InvalidOperationException("Dataview queried but extent does not have Scope Storage set");
+                }
                 var dataviewElement = _extent.ResolveElement(dataview, ResolveType.Default);
                 if (dataviewElement == null)
                 {
@@ -140,7 +145,7 @@ namespace DatenMeister.Runtime
                 }
                 else
                 {
-                    var dataViewEvaluation= new DataViewEvaluation();
+                    var dataViewEvaluation = new DataViewEvaluation(_extent.ScopeStorage.Get<DataViewNodeFactories>()); 
                     dataViewEvaluation.AddDynamicSource("input", reflectiveCollection);
                     foundItem = dataViewEvaluation.GetElementsForViewNode(dataviewElement);
                 }

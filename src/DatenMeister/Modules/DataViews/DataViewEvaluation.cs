@@ -5,6 +5,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -33,13 +34,23 @@ namespace DatenMeister.Modules.DataViews
         private readonly Dictionary<string, IReflectiveCollection> _dynamicSources =
             new Dictionary<string, IReflectiveCollection>();
 
-        public DataViewEvaluation()
+        private DataViewNodeFactories _dataViewFactories;
+
+        public DataViewEvaluation(DataViewNodeFactories dataViewFactories)
         {
+            _dataViewFactories = dataViewFactories;
         }
         
-        public DataViewEvaluation(IWorkspaceLogic workspaceLogic)
+        public DataViewEvaluation(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _dataViewFactories = scopeStorage.Get<DataViewNodeFactories>();
+        }
+        
+        public DataViewEvaluation(IWorkspaceLogic workspaceLogic, DataViewNodeFactories dataViewFactories)
+        {
+            _workspaceLogic = workspaceLogic;
+            _dataViewFactories = dataViewFactories;
         }
 
         /// <summary>
@@ -82,6 +93,7 @@ namespace DatenMeister.Modules.DataViews
                 Logger.Warn("Maximum number of references are evaluated in dataview evaluation");
                 return new PureReflectiveSequence();
             }
+            
 
             var metaClass = viewNode.getMetaClass();
             if (metaClass == null)
@@ -89,7 +101,7 @@ namespace DatenMeister.Modules.DataViews
                 Logger.Warn($"Unknown type of viewnode: null");
                 return new PureReflectiveSequence();
             }
-
+            
             if (metaClass.equals(_DataViews.TheOne.__DynamicSourceNode))
                 return GetElementsForDynamicSource(viewNode);
             

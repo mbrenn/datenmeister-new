@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
@@ -21,6 +22,7 @@ namespace DatenMeister.Modules.Reports
     public class HtmlReportCreator
     {
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IScopeStorage _scopeStorage;
 
         /// <summary>
         /// Stores the possible source of the report
@@ -30,9 +32,10 @@ namespace DatenMeister.Modules.Reports
         
         private  HtmlReport? _htmlReporter;
         
-        public HtmlReportCreator(IWorkspaceLogic workspaceLogic)
+        public HtmlReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
         }
         
         /// <summary>
@@ -101,7 +104,7 @@ namespace DatenMeister.Modules.Reports
             var form = element.getOrDefault<IElement>(_Reports._ReportTable.form);
             
             // Gets the elements for the table
-            var dataviewEvaluation = new DataViewEvaluation(_workspaceLogic);
+            var dataviewEvaluation = new DataViewEvaluation(_workspaceLogic, _scopeStorage);
             foreach (var source in _sources)
             {
                 dataviewEvaluation.AddDynamicSource(source.Key, source.Value);

@@ -52,7 +52,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 SetRootItem(workspace);
 
                 // Registers upon events
-                var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
+                var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
                 EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
                     Dispatcher?.Invoke(() =>
                         Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm()));

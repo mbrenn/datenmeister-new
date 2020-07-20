@@ -5,6 +5,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Runtime.DynamicFunctions;
 
@@ -26,10 +27,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="fileData"></param>
         /// <param name="changeEventManager">Change Event Manager being used to propagate changes of extents
         /// and workspaces</param>
-        public WorkspaceLogic(WorkspaceData fileData, ChangeEventManager? changeEventManager = null)
+        public WorkspaceLogic(WorkspaceData fileData, IScopeStorage? scopeStorage = null)
         {
             _fileData = fileData;
-            _changeEventManager = changeEventManager;
+            _changeEventManager = scopeStorage?.Get<ChangeEventManager>();
         }
 
         /// <summary>

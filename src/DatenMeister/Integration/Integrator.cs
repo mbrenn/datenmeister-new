@@ -127,7 +127,7 @@ namespace DatenMeister.Integration
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
-            kernel.RegisterInstance(changeEventManager).As<ChangeEventManager>();
+            scopeStorage.Add(changeEventManager);
 
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig(PathWorkspaces);

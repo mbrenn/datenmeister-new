@@ -74,7 +74,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             Extent = extent;
             
-            EventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+            EventHandle = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>().RegisterFor(
                 Extent,
                 (x, y) => _delayedDispatcher.RequestRefresh());
 

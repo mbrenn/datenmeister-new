@@ -8,12 +8,12 @@ namespace DatenMeister.Modules.DataViews
     /// </summary>
     public class DataViewNodeFactories
     {
-        private readonly List<IDataViewNodeFactory> _factories = new List<IDataViewNodeFactory>();
+        private readonly List<IDataViewNodeEvaluation> _factories = new List<IDataViewNodeEvaluation>();
 
         /// <summary>
         /// Stores the view node factory
         /// </summary>
-        public List<IDataViewNodeFactory> Factories
+        public List<IDataViewNodeEvaluation> Evaluations
         {
             get
             {
@@ -27,12 +27,12 @@ namespace DatenMeister.Modules.DataViews
         /// <summary>
         /// Adds a new factory to the instance
         /// </summary>
-        /// <param name="factory"></param>
-        public void Add(IDataViewNodeFactory factory)
+        /// <param name="evaluation"></param>
+        public void Add(IDataViewNodeEvaluation evaluation)
         {
             lock (_factories)
             {
-                _factories.Add(factory);
+                _factories.Add(evaluation);
             }
         }
     }

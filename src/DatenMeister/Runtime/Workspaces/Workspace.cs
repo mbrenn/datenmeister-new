@@ -73,15 +73,21 @@ namespace DatenMeister.Runtime.Workspaces
         {
             get
             {
-                foreach (var localExtent in _extent)
+                var result = new List<IExtent>();
+                lock (_extent)
                 {
-                    yield return localExtent;
+                    foreach (var localExtent in _extent)
+                    {
+                        result.Add(localExtent);
+                    }
+
+                    foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
+                    {
+                        result.Add(pluginExtent);
+                    }
                 }
 
-                foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
-                {
-                    yield return pluginExtent;
-                }
+                return result;
             }
         }
 

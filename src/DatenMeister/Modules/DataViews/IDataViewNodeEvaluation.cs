@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Modules.DataViews
 {
-    public interface IDataViewNodeFactory
+    public interface IDataViewNodeEvaluation
     {
         /// <summary>
         /// Checks whether the given node is responsible for the dataview node factory

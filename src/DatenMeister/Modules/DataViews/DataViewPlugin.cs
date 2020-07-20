@@ -1,6 +1,7 @@
 ﻿using System;
 using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
+using DatenMeister.Modules.DataViews.Evaluation;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
@@ -64,7 +65,7 @@ namespace DatenMeister.Modules.DataViews
                         IntegrateDataViews.Assign
                     );
                     
-                    var factories = new DataViewNodeFactories();
+                    var factories = GetDefaultViewNodeFactories();
                     _scopeStorage.Add(factories);
                     
                     break;
@@ -78,6 +79,12 @@ namespace DatenMeister.Modules.DataViews
         public static DataViewNodeFactories GetDefaultViewNodeFactories()
         {
             var result = new DataViewNodeFactories();
+            result.Add(new DynamicSourceNodeEvaluation());
+            result.Add(new FilterPropertyNodeEvaluation());
+            result.Add(new FilterTypeNodeEvaluation());
+            result.Add(new FlattenNodeEvaluation());
+            result.Add(new SelectPathNodeEvaluation());
+            result.Add(new SourceExtentNodeEvaluation());
 
             return result;
         }

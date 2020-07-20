@@ -12,7 +12,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -20,7 +19,6 @@ using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders.Model;
-using DatenMeister.Provider.ManagementProviders.Settings;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
@@ -29,7 +27,6 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
 namespace DatenMeister.Integration
 {
@@ -119,7 +116,7 @@ namespace DatenMeister.Integration
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
-            kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
+            scopeStorage.Add(workspaceData);
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
             
             var extentSettings = new ExtentSettings();

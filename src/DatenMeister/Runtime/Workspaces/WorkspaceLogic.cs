@@ -18,19 +18,31 @@ namespace DatenMeister.Runtime.Workspaces
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(WorkspaceLogic));
 
-        private readonly WorkspaceData _fileData;
+        private readonly WorkspaceData _workspaceData;
+        
         private readonly ChangeEventManager? _changeEventManager;
 
+        private WorkspaceLogic(WorkspaceData workspaceData, IScopeStorage? scopeStorage)
+        {
+            _workspaceData = workspaceData;
+            _changeEventManager = scopeStorage?.Get<ChangeEventManager>();
+        }
+        
         /// <summary>
         /// Initializes a new instance of the WorkspaceLogic
         /// </summary>
-        /// <param name="fileData"></param>
-        /// <param name="changeEventManager">Change Event Manager being used to propagate changes of extents
-        /// and workspaces</param>
-        public WorkspaceLogic(WorkspaceData fileData, IScopeStorage? scopeStorage = null)
+        /// <param name="workspaceData"></param>
+        /// <param name="scopeStorage">The scope storage</param>
+        public static WorkspaceLogic Create(WorkspaceData workspaceData, IScopeStorage? scopeStorage = null)
         {
-            _fileData = fileData;
-            _changeEventManager = scopeStorage?.Get<ChangeEventManager>();
+            return new WorkspaceLogic(workspaceData, scopeStorage);
+        }
+
+        public WorkspaceLogic(IScopeStorage scopeStorage)
+        {
+            _workspaceData = scopeStorage.Get<WorkspaceData>();
+            _changeEventManager = scopeStorage.Get<ChangeEventManager>();
+            
         }
 
         /// <summary>
@@ -39,20 +51,20 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="layer"></param>
         public void SetDefaultWorkspace(Workspace layer)
         {
-            lock (_fileData)
+            lock (_workspaceData)
             {
-                _fileData.Default = layer;
+                _workspaceData.Default = layer;
             }
         }
 
         public Workspace? GetWorkspaceOfExtent(IExtent? extent)
         {
-            lock (_fileData)
+            lock (_workspaceData)
             {
-                if (extent == null) return _fileData.Default;
+                if (extent == null) return _workspaceData.Default;
                 
-                var result = _fileData.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
-                return result ?? _fileData.Default;
+                var result = _workspaceData.Workspaces.FirstOrDefault(x => x.extent.Contains(extent));
+                return result ?? _workspaceData.Default;
             }
         }
 
@@ -80,16 +92,16 @@ namespace DatenMeister.Runtime.Workspaces
                 result = GetWorkspaceOfExtent(found);
             }
 
-            lock (_fileData)
+            lock (_workspaceData)
             {
                 // Otherwise check it by the data extent
                 if (result != null)
                 {
-                    result = _fileData.Workspaces.FirstOrDefault(x =>
+                    result = _workspaceData.Workspaces.FirstOrDefault(x =>
                         x.extent.Cast<IUriExtent>().WithElement(value) != null);
                 }
 
-                return result ?? _fileData.Default;
+                return result ?? _workspaceData.Default;
             }
         }
 
@@ -97,7 +109,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
 
-            lock (_fileData)
+            lock (_workspaceData)
             {
                 return dataLayer.extent
                     .Select(x => x as IUriExtent)
@@ -114,9 +126,9 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>Found datalayer or null</returns>
         public Workspace GetById(string id)
         {
-            lock (_fileData)
+            lock (_workspaceData)
             {
-                return _fileData.Workspaces.FirstOrDefault(x => x.id == id);
+                return _workspaceData.Workspaces.FirstOrDefault(x => x.id == id);
             }
         }
 
@@ -126,9 +138,9 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>The default workspace</returns>
         public Workspace? GetDefaultWorkspace()
         {
-            lock (_fileData)
+            lock (_workspaceData)
             {
-                return _fileData.Default;
+                return _workspaceData.Default;
             }
         }
 
@@ -141,19 +153,19 @@ namespace DatenMeister.Runtime.Workspaces
         {
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
 
-            lock (_fileData)
+            lock (_workspaceData)
             {
                 // Check, if id of workspace is already known
-                if (_fileData.Workspaces.Any(x => x.id == workspace.id))
+                if (_workspaceData.Workspaces.Any(x => x.id == workspace.id))
                 {
                     throw new InvalidOperationException("id is already known");
                 }
 
                 Logger.Debug($"Adding workspace {workspace.id}");
-                _fileData.Workspaces.Add(workspace);
+                _workspaceData.Workspaces.Add(workspace);
 
                 // If no metaworkspace is given, define the one from the default one
-                var metaWorkspaces = _fileData.Default?.MetaWorkspaces;
+                var metaWorkspaces = _workspaceData.Default?.MetaWorkspaces;
                 if (workspace.MetaWorkspaces.Count == 0 && metaWorkspaces != null)
                 {
                     foreach (var innerWorkspace in metaWorkspaces)
@@ -189,9 +201,9 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>Found the workspace</returns>
         public Workspace? GetWorkspace(string id)
         {
-            lock (_fileData)
+            lock (_workspaceData)
             {
-                return _fileData.Workspaces.FirstOrDefault(x => x.id == id);
+                return _workspaceData.Workspaces.FirstOrDefault(x => x.id == id);
             }
         }
 
@@ -209,9 +221,9 @@ namespace DatenMeister.Runtime.Workspaces
         {
             get
             {
-                lock (_fileData)
+                lock (_workspaceData)
                 {
-                    return _fileData.Workspaces.ToList();
+                    return _workspaceData.Workspaces.ToList();
                 }
             }
         }
@@ -223,13 +235,13 @@ namespace DatenMeister.Runtime.Workspaces
         public void RemoveWorkspace(string id)
         {
             Workspace? workspaceToBeDeleted;
-            lock (_fileData)
+            lock (_workspaceData)
             {
                 workspaceToBeDeleted = GetWorkspace(id);
 
                 if (workspaceToBeDeleted != null)
                 {
-                    _fileData.Workspaces.Remove(workspaceToBeDeleted);
+                    _workspaceData.Workspaces.Remove(workspaceToBeDeleted);
                 }
             }
 
@@ -255,7 +267,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             if (newExtent is MofUriExtent mofUriExtent)
             {
-                lock (_fileData)
+                lock (_workspaceData)
                 {
                     mofUriExtent.DynamicFunctionManager = workspace.DynamicFunctionManager;
                 }
@@ -278,7 +290,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             var workspace = new WorkspaceData {Default = workspaceData};
 
-            var logic = new WorkspaceLogic(workspace);
+            var logic = WorkspaceLogic.Create(workspace);
             logic.AddWorkspace(workspaceData);
             logic.AddWorkspace(workspaceTypes);
             logic.AddWorkspace(workspaceUml);
@@ -295,8 +307,8 @@ namespace DatenMeister.Runtime.Workspaces
             return workspace;
         }
 
-        public static IWorkspaceLogic GetDefaultLogic() => new WorkspaceLogic(InitDefault());
+        public static IWorkspaceLogic GetDefaultLogic() => Create(InitDefault());
 
-        public static IWorkspaceLogic GetEmptyLogic() => new WorkspaceLogic(new WorkspaceData());
+        public static IWorkspaceLogic GetEmptyLogic() => Create(new WorkspaceData());
     }
 }

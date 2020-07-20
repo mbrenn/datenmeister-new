@@ -29,7 +29,7 @@ namespace DatenMeister.Tests.Runtime
             var data = new ExtentStorageData();
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), scopeStorage);
+            var logic = new ExtentManager(data, mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
@@ -69,7 +69,7 @@ namespace DatenMeister.Tests.Runtime
             var data = new ExtentStorageData();
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), scopeStorage);
+            var logic = new ExtentManager(data, mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,

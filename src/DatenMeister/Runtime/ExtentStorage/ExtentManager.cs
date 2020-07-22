@@ -149,7 +149,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             // Ok, now we have the provider. If the provider also supports the locking, check whether it can be locked
             if (extentLoader is IProviderLocking providerLocking)
             {
-                if (providerLocking.IsLocked(configuration))
+                if (providerLocking.IsLocked(configuration) && _integrationSettings.IsLockingActivated)
                 {
                     throw new InvalidOperationException("The provider is locked");
                 }
@@ -342,7 +342,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             VerifyDatabaseContent();
         }
 
-        private void UnlockProvider(ExtentLoaderConfig configuration)
+        public void UnlockProvider(ExtentLoaderConfig configuration)
         {
             var providerLoader = CreateProviderLoader(configuration);
             if (providerLoader is IProviderLocking providerLocking)

@@ -42,11 +42,9 @@ namespace DatenMeister.NetCore
             scope.ScopeStorage = scope.Resolve<IScopeStorage>();
 
             GiveMe.Scope = scope;
-            
-
-            GiveMe.Scope.BeforeDisposing += (x, y) =>
+            scope.BeforeDisposing += (x, y) =>
             {
-                GiveMe.Scope.UnuseDatenMeister();
+                scope.UnuseDatenMeister();
                 GiveMe.ClearScope();
             };
 

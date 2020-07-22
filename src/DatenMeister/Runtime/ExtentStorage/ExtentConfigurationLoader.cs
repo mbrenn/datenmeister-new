@@ -34,11 +34,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets the extent manager being used to actual load an extent
         /// </summary>
-        private IExtentManager ExtentManager { get; }
+        private ExtentManager ExtentManager { get; }
 
         public ExtentConfigurationLoader(
             ExtentStorageData extentStorageData,
-            IExtentManager extentManager,
+            ExtentManager extentManager,
             IConfigurationToExtentStorageMapper mapper)
         {
             _mapper = mapper;

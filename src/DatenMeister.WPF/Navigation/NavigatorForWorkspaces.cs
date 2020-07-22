@@ -11,6 +11,7 @@ using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -104,7 +105,7 @@ namespace DatenMeister.WPF.Navigation
             // Collect all files...
             var files = new List<string>();
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+            var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
             var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {

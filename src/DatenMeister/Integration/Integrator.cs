@@ -112,7 +112,7 @@ namespace DatenMeister.Integration
                 FilePath = PathExtents
             };
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
-            kernel.RegisterType<ExtentManager>().As<IExtentManager>();
+            kernel.RegisterType<ExtentManager>().As<ExtentManager>();
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
@@ -245,6 +245,7 @@ namespace DatenMeister.Integration
                 pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
                 // Boots up the typical DatenMeister Environment by loading the data
+                var extentManager = scope.Resolve<ExtentManager>();
                 if (_settings.EstablishDataEnvironment)
                 {
                     var workspaceLoader = scope.Resolve<WorkspaceLoader>();
@@ -253,7 +254,7 @@ namespace DatenMeister.Integration
                     // Loads all extents after all plugins were started
                     try
                     {
-                        scope.Resolve<IExtentManager>().LoadAllExtents();
+                        extentManager.LoadAllExtents();
                     }
                     catch (LoadingExtentsFailedException)
                     {
@@ -271,7 +272,6 @@ namespace DatenMeister.Integration
                 pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
                 // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
-                var extentManager = scope.Resolve<IExtentManager>();
                 extentManager.CreateStorageTypeDefinitions();
                 
                 ResetUpdateFlagsOfExtent(workspaceLogic);

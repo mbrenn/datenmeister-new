@@ -194,7 +194,7 @@ namespace DatenMeister.WPF.Navigation
                     workspaceId = workspaceId
                 };
 
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 try
                 {
                     extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);

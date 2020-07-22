@@ -256,7 +256,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             };
 
             // Creates the extent
-            var loader = scope.Resolve<IExtentManager>();
+            var loader = scope.Resolve<ExtentManager>();
             var loadedExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
 
             // Includes some data

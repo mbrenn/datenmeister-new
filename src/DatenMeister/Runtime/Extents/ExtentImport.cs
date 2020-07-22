@@ -4,20 +4,21 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Exceptions;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.Extents
 {
     public class ExtentImport
     {
-        private readonly IExtentManager _extentManager;
+        private readonly ExtentManager _extentManager;
 
         /// <summary>
         /// Stores the local type support
         /// </summary>
         private readonly LocalTypeSupport _localTypeSupport;
 
-        public ExtentImport(IExtentManager extentManager, LocalTypeSupport localTypeSupport)
+        public ExtentImport(ExtentManager extentManager, LocalTypeSupport localTypeSupport)
         {
             _extentManager = extentManager;
             _localTypeSupport = localTypeSupport;

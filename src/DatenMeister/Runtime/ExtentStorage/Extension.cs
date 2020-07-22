@@ -17,7 +17,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="uri"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static IUriExtent? CreateAndAddXmiExtent(this IExtentManager extentManager, string uri, string filename)
+        public static IUriExtent? CreateAndAddXmiExtent(this ExtentManager extentManager, string uri, string filename)
         {
             var xmiConfiguration = new XmiStorageLoaderConfig(uri)
             {
@@ -38,7 +38,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="flags">The extent creation flags being used to load the extent</param>
         /// <returns>The found or loaded extent</returns>
         public static IUriExtent? LoadExtentIfNotAlreadyLoaded(
-            this IExtentManager extentManager,
+            this ExtentManager extentManager,
             ExtentLoaderConfig loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)
         {
@@ -60,7 +60,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUri">Uri of the extent</param>
         /// <returns>true, if successfully deleted</returns>
-        public static bool DeleteExtent(this IExtentManager manager, string workspaceId, string extentUri)
+        public static bool DeleteExtent(this ExtentManager manager, string workspaceId, string extentUri)
         {
             var found = manager.WorkspaceLogic.FindExtent(workspaceId, extentUri);
             if (found != null)

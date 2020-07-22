@@ -23,7 +23,7 @@ namespace DatenMeister.Provider.XMI
 
         public void Start(PluginLoadingPosition position)
         {
-            _storageMapper.MapExtentLoaderType(typeof(XmiStorage));
+            _storageMapper.MapExtentLoaderType(typeof(XmiProviderLoader));
         }
     }
 }

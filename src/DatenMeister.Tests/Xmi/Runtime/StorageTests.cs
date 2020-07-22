@@ -39,7 +39,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
                 filePath = DatenMeisterTests.GetPathForTemporaryStorage("data.xml")
             };
 
-            var xmiStorage = new XmiStorage();
+            var xmiStorage = new XmiProviderLoader();
             xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
 
             var otherExtent = new MofUriExtent(xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly).Provider, "dm:///tests/");

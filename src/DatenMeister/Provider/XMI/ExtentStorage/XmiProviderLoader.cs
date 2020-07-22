@@ -10,9 +10,9 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageLoaderConfig))]
-    public class XmiStorage : IProviderLoader
+    public class XmiProviderLoader : IProviderLoader
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiStorage));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {

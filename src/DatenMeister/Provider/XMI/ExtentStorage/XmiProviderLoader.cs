@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Integration;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -13,8 +16,21 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     [ConfiguredBy(typeof(XmiStorageLoaderConfig))]
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
+        private readonly ExtentStorageData _extentStorageData;
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
 
+        public XmiProviderLoader(IScopeStorage scopeStorage)
+        {
+            _extentStorageData = scopeStorage.Get<ExtentStorageData>();
+        }
+        
+        private XmiProviderLoader(ExtentStorageData extentStorageData)
+        {
+            _extentStorageData = extentStorageData;
+        }
+        
+        public XmiProviderLoader Create(ExtentStorageData data) => new XmiProviderLoader(data);
+        
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             var xmiConfiguration = (XmiStorageLoaderConfig) configuration;
@@ -146,13 +162,27 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 return;
             }
             
+            UpdateLockFile(xmiConfiguration);
+            
+            Logger.Info("Locking: " + configuration.extentUri);
+        }
+
+        private void UpdateLockFile(XmiStorageLoaderConfig xmiConfiguration)
+        {
             CreateDirectoryIfNecessary(xmiConfiguration);
             var path = GetLockFilePath(xmiConfiguration);
 
             var dateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             File.WriteAllText(path, dateTime);
-            
-            Logger.Info("Locking: " + configuration.extentUri);
+            Logger.Info("Updated Lockfile: " + xmiConfiguration.extentUri);
+
+            Task.Delay(4000).ContinueWith((task) =>
+            {
+                if (_extentStorageData?.LoadedExtents.Any(x => x.Configuration == xmiConfiguration) == true)
+                {
+                    UpdateLockFile(xmiConfiguration);
+                }
+            });
         }
 
         public void Unlock(ExtentLoaderConfig configuration)

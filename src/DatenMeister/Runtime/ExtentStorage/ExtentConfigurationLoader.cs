@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -21,7 +20,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the mapper instance being used to find the allowed types
         /// </summary>
-        private readonly IConfigurationToExtentStorageMapper _mapper;
+        private readonly ConfigurationToExtentStorageMapper _mapper;
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
 
@@ -39,7 +38,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         public ExtentConfigurationLoader(
             ExtentStorageData extentStorageData,
             ExtentManager extentManager,
-            IConfigurationToExtentStorageMapper mapper)
+            ConfigurationToExtentStorageMapper mapper)
         {
             _mapper = mapper;
             ExtentManager = extentManager;

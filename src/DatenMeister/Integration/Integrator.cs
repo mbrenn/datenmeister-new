@@ -21,7 +21,6 @@ using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
@@ -104,7 +103,7 @@ namespace DatenMeister.Integration
 
             // Finds the loader for a certain extent type
             var storageMap = new ConfigurationToExtentStorageMapper();
-            kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
+            kernel.RegisterInstance(storageMap).As<ConfigurationToExtentStorageMapper>();
 
             // Defines the extent storage data
             var extentStorageData = new ExtentStorageData
@@ -112,6 +111,7 @@ namespace DatenMeister.Integration
                 FilePath = PathExtents
             };
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
+            scopeStorage.Add(extentStorageData);
             kernel.RegisterType<ExtentManager>().As<ExtentManager>();
 
             // Workspaces

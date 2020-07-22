@@ -112,7 +112,6 @@ namespace DatenMeister.WPF.Helper
         {
             lock (_syncObject)
             {
-
                 _timerRunning = false;
                 var delta = DateTime.Now - _refreshTimeStamp;
                 Debug.WriteLine("Check For Refresh");
@@ -121,14 +120,13 @@ namespace DatenMeister.WPF.Helper
                 {
                     Debug.WriteLine("Min Dispatch Time");
                     // Dispatch time has not run
-                    delta = DateTime.Now - _lastRefreshTime;
                     if (delta < MaxDispatchTime)
                     {
                         var dispatchTime = MinDispatchTime - delta;
 
                         Debug.WriteLine($"{dispatchTime.Milliseconds} waiting");
+                        
                         // But maximum delay has not occured
-
                         _timerRunning = true;
                         Task.Delay(dispatchTime).ContinueWith(t => CheckForRefresh());
                         return;

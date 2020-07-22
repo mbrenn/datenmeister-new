@@ -55,7 +55,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the mapping between configuration types and storage provider
         /// </summary>
-        private readonly IConfigurationToExtentStorageMapper _map;
+        private readonly ConfigurationToExtentStorageMapper _map;
 
         private readonly ILifetimeScope _diScope;
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         public ExtentManager(
             ExtentStorageData data,
-            IConfigurationToExtentStorageMapper map,
+            ConfigurationToExtentStorageMapper map,
             ILifetimeScope diScope,
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage)
@@ -321,6 +321,19 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
+        /// Unlocks the defined extent
+        /// </summary>
+        /// <param name="configuration">Configuration to be evaluated</param>
+        public void UnlockProvider(ExtentLoaderConfig configuration)
+        {
+            var providerLoader = CreateProviderLoader(configuration);
+            if (providerLoader is IProviderLocking providerLocking)
+            {
+                providerLocking.Unlock(configuration);
+            }
+        }
+
+        /// <summary>
         /// Detaches the extent by removing it from the database of loaded extents
         /// </summary>
         /// <param name="extent"></param>
@@ -340,15 +353,6 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             VerifyDatabaseContent();
-        }
-
-        public void UnlockProvider(ExtentLoaderConfig configuration)
-        {
-            var providerLoader = CreateProviderLoader(configuration);
-            if (providerLoader is IProviderLocking providerLocking)
-            {
-                providerLocking.Unlock(configuration);
-            }
         }
 
         /// <summary>

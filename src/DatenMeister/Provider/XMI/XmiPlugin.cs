@@ -1,6 +1,5 @@
 ﻿using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Provider.XMI
@@ -14,9 +13,9 @@ namespace DatenMeister.Provider.XMI
     // ReSharper disable once UnusedMember.Global
     public class XmiPlugin : IDatenMeisterPlugin
     {
-        private readonly IConfigurationToExtentStorageMapper _storageMapper;
+        private readonly ConfigurationToExtentStorageMapper _storageMapper;
 
-        public XmiPlugin(IConfigurationToExtentStorageMapper storageMapper)
+        public XmiPlugin(ConfigurationToExtentStorageMapper storageMapper)
         {
             _storageMapper = storageMapper;
         }

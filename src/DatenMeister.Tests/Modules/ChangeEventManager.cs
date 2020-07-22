@@ -26,7 +26,7 @@ namespace DatenMeister.Tests.Modules
         public void TestCallsOfEvents()
         {
             using var datenMeister  = DatenMeisterTests.GetDatenMeisterScope();
-            var manager = datenMeister.Resolve<ChangeEventManager>();
+            var manager = datenMeister.ScopeStorage.Get<ChangeEventManager>();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
             var data = workspaceLogic.GetDataWorkspace();
 

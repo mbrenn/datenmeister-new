@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
@@ -19,6 +20,7 @@ namespace DatenMeister.Modules.DataViews
         /// </summary>
         /// <param name="workspaceLogic">Workspace Logic to be added</param>
         /// <param name="dataViewLogic">The logic for the dataviews</param>
+        /// <param name="scopeStorage">The scope storage being used</param>
         public DataViewExtentPlugin(IWorkspaceLogic workspaceLogic, DataViewLogic dataViewLogic)
         {
             _workspaceLogic = workspaceLogic;

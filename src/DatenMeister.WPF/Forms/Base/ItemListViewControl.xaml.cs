@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using Autofac;
 using BurnSystems.Logging;
@@ -331,7 +330,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var extent = asExtent.Extent;
                 if (extent != null)
                 {
-                    _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
+                    _changeEventManager ??= GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
                     if (_changeEventHandle != null)
                     {
                         _changeEventManager.Unregister(_changeEventHandle);
@@ -357,12 +356,12 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (_changeEventHandle != null)
             {
-                _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
+                _changeEventManager ??= GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
                 var tryScope = GiveMe.TryGetScope();
 
                 if (tryScope != null)
                 {
-                    tryScope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
+                    tryScope.ScopeStorage.Get<ChangeEventManager>().Unregister(_changeEventHandle);
                 }
 
                 _changeEventHandle = null;
@@ -467,7 +466,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var viewNode = _effectiveForm.getOrDefault<IElement>(_FormAndFields._ListForm.viewNode); 
                     if (viewNode != null)
                     {
-                        var dataviewHandler = new DataViewEvaluation(GiveMe.Scope.WorkspaceLogic);
+                        var dataviewHandler = new DataViewEvaluation(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
                         dataviewHandler.AddDynamicSource("input", items);
 
                         items = dataviewHandler.GetElementsForViewNode(viewNode);

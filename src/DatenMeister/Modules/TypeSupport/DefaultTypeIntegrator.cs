@@ -4,7 +4,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.DefaultTypes;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -25,11 +24,11 @@ namespace DatenMeister.Modules.TypeSupport
         private readonly IntegrationSettings _integrationSettings;
         private readonly PackageMethods _packageMethods;
 
-        public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, LocalTypeSupport localTypeSupport, IntegrationSettings integrationSettings)
+        public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _localTypeSupport = localTypeSupport;
-            _integrationSettings = integrationSettings;
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
             _packageMethods = new PackageMethods(_workspaceLogic);
         }
 

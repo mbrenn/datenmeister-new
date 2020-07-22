@@ -27,8 +27,12 @@
     <EmbeddedResource Include="XmiFiles\Default.xmi" />
     <None Remove="XmiFiles\Internal.xmi" />
     <EmbeddedResource Include="XmiFiles\Internal.xmi" />
+    <Compile Remove="Runtime\Extents\Configuration\**" />
+    <EmbeddedResource Remove="Runtime\Extents\Configuration\**" />
+    <None Remove="Runtime\Extents\Configuration\**" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="XmiFiles\Modules\AttachedExtent.xmi" />
     <EmbeddedResource Include="XmiFiles\Modules\Reports.xmi" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />

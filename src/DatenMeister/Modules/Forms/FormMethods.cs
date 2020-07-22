@@ -67,11 +67,15 @@ namespace DatenMeister.Modules.Forms
         /// <returns>true, if there are no duplications</returns>
         private static bool ValidateFields(IEnumerable fields)
         {
+            var randomGuid = Guid.NewGuid();
             var set = new HashSet<string>();
             foreach (var field in fields.OfType<IObject>())
             {
-                var name = field.getOrDefault<string>(_FormAndFields._FieldData.name);
-                if (set.Contains(name))
+                var preName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+                var isAttached = field.getOrDefault<bool>(_FormAndFields._FieldData.isAttached);
+                var name = isAttached ? randomGuid  + preName : preName;
+                
+                if (set.Contains(name) && !string.IsNullOrEmpty(name))
                 {
                     Logger.Warn($"Field '{name}' is included twice. Validation of form failed");
                     return false;

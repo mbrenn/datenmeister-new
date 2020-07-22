@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.UserInteractions
+namespace DatenMeister.WPF.Modules.UserInteractions
 {
     /// <summary>
     /// Defines an interface collecting user interactions for a specific element

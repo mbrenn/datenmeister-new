@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;

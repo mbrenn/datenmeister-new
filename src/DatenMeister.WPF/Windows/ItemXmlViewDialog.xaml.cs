@@ -2,7 +2,6 @@
 
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;

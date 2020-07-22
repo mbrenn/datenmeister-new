@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using BurnSystems.Logging;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Plugin;
-using DatenMeister.WPF.Forms;
-using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;

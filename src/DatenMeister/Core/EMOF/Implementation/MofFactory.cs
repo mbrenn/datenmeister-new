@@ -244,9 +244,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <param name="extent">Extent for which the element will be created. The element will not be included
         /// into the extent</param>
-        /// <param name="metaClass">Meta class whose element will be created</param>
+        /// <param name="metaClass">Meta class whose element will be created. Ot may also be null,
+        /// if it is type-less</param>
         /// <returns>The created element</returns>
-        public static IElement Create(IExtent extent, IElement metaClass)
+        public static IElement Create(IExtent extent, IElement? metaClass)
         {
             return new MofFactory(extent).create(metaClass);
         }

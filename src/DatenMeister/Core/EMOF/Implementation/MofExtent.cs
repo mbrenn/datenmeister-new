@@ -10,8 +10,10 @@ using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
@@ -41,6 +43,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the provider for the given extent
         /// </summary>
         public IProvider Provider { get; }
+        
+        /// <summary>
+        /// Defines the scope storage in which the extent is working
+        /// </summary>
+        public IScopeStorage? ScopeStorage { get; private set; }
         
         /// <summary>
         /// Gets a value whether the extent will support the full Uml capabilities regarding auto enumeration
@@ -108,17 +115,14 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 lock (_syncObject)
                 {
-                    if (_itemCountCached == -1)
+                    if (_itemCountCached == -1 && !_isItemCountRunning)
                     {
-                        if (!_isItemCountRunning)
+                        _isItemCountRunning = true;
+                        Task.Run(() =>
                         {
-                            _isItemCountRunning = true;
-                            Task.Run(() =>
-                            {
-                                _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
-                                ChangeEventManager?.SendChangeEvent(this);
-                            });
-                        }
+                            _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
+                            ChangeEventManager?.SendChangeEvent(this);
+                        });
                     }
 
                     return _itemCountCached;
@@ -139,7 +143,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
 
-                return new MofObject(nullObject, this);
+                var result = new MofElement(nullObject, this);
+                result.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
+                return result;
             }
 
             return MetaXmiElement;
@@ -148,7 +154,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the meta element for xmi data
         /// </summary>
-        public MofObject MetaXmiElement { get; set; }
+        public MofElement MetaXmiElement { get; set; }
 
         /// <summary>
         /// Gets or sets the xml Node of the meta element.
@@ -161,22 +167,39 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode = value;
         }
 
+        private static readonly MofExtent? XmlMetaExtent = new MofUriExtent(new XmiProvider()); 
+
         /// <summary>
         /// Initializes a new instance of the Extent
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
-        /// <param name="changeEventManager">The change event manager being used
-        /// to notify the system about changes in the event</param>
-        public MofExtent(IProvider provider, ChangeEventManager? changeEventManager = null)
+        /// <param name="scopeStorage">Scope storage to be used to find Change Event Manager</param>
+        public MofExtent(IProvider provider, IScopeStorage? scopeStorage = null)
         {
-            ChangeEventManager = changeEventManager;
+            ChangeEventManager = scopeStorage?.TryGet<ChangeEventManager>();
+            ScopeStorage = scopeStorage;
 
             var rootProvider = new XmiProvider();
             Provider = provider;
             TypeLookup = new DotNetTypeLookup();
-            MetaXmiElement = new MofObject(
-                new XmiProviderObject(new XElement("meta"), rootProvider),
-                this);
+            
+            // Defines the Meta Element. 
+            // The pseudo extent is used to allow the factory to create the correct instance of Xml
+            // instead of the specific type. 
+            if (XmlMetaExtent != null)
+            {
+                MetaXmiElement = new MofElement(
+                    new XmiProviderObject(new XElement("meta"), rootProvider),
+                    XmlMetaExtent);
+            }
+            else
+            {
+                MetaXmiElement = new MofElement(
+                    new XmiProviderObject(new XElement("meta"), rootProvider),
+                    this);
+            }
+            
+            MetaXmiElement.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
             ExtentConfiguration = new ExtentConfiguration(this);
         }
 
@@ -509,19 +532,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
 
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
-                    /*if (container is IElement containerAsElement)
-                    {
-                        // Setting a container shall not be done by the copying itself.
-                        // Setting the container will be done during the SetProperty
-                        // result.Container = containerAsElement;
-                    }*/
-
                     return result.ProviderObject;
                 }
 
-                
                 // It is a reference
-                var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type MofElement");
+                var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type IElement");
                 return new UriReference(((MofUriExtent) asMofObject.Extent).uri(asElement));
             }
 

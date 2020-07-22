@@ -47,15 +47,15 @@ namespace StundenMeister.Logic
         public StundenMeisterPlugin(
             LocalTypeSupport localTypeSupport,
             ExtentManager extentManager,
-            ChangeEventManager changeEventManager,
             PackageMethods packageMethods,
-            IWorkspaceLogic workspaceLogic)
+            IWorkspaceLogic workspaceLogic,
+            IScopeStorage scopeStorage)
         {
             _localTypeSupport = localTypeSupport;
             _extentManager = extentManager;
             _packageMethods = packageMethods;
             _workspaceLogic = workspaceLogic;
-            EventManager = changeEventManager;
+            EventManager = scopeStorage.Get<ChangeEventManager>();
         }
 
         public void Start(PluginLoadingPosition position)

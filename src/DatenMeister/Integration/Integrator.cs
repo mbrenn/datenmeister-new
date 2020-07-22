@@ -12,15 +12,14 @@ using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders.Model;
-using DatenMeister.Provider.ManagementProviders.Settings;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
-using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
@@ -28,7 +27,6 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
 namespace DatenMeister.Integration
 {
@@ -75,8 +73,12 @@ namespace DatenMeister.Integration
         public IContainer UseDatenMeister(ContainerBuilder kernel)
         {
             PrepareSettings();
+            
+            var scopeStorage = new ScopeStorage();
+            kernel.RegisterInstance(scopeStorage).As<IScopeStorage>();
 
-            kernel.RegisterInstance(_settings).As<IntegrationSettings>();
+            scopeStorage.Add(_settings);
+
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             // Creates the database path for the DatenMeister.
@@ -114,15 +116,15 @@ namespace DatenMeister.Integration
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
-            kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
+            scopeStorage.Add(workspaceData);
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
             
             var extentSettings = new ExtentSettings();
-            kernel.RegisterInstance(extentSettings).As<ExtentSettings>();
+            scopeStorage.Add(extentSettings);
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
-            kernel.RegisterInstance(changeEventManager).As<ChangeEventManager>();
+            scopeStorage.Add(changeEventManager);
 
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig(PathWorkspaces);
@@ -140,8 +142,6 @@ namespace DatenMeister.Integration
 
             var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
-
-            Modules.ZipExample.ZipCodePlugin.Into(kernel);
 
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
@@ -239,7 +239,6 @@ namespace DatenMeister.Integration
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
-                SettingsProviderHelper.Initialize(scope, workspaceLogic);
                 loadConfigurationTask.Wait();
                 
                 // Finally loads the plugin

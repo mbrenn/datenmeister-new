@@ -36,12 +36,16 @@ namespace DatenMeister.Modules.UserManagement
         
         private readonly IntegrationSettings _integrationSettings;
 
-        public UserLogic(LocalTypeSupport localTypeSupport, ExtentCreator extentCreator, IWorkspaceLogic workspaceLogic, IntegrationSettings integrationSettings)
+        public UserLogic(
+            LocalTypeSupport localTypeSupport,
+            ExtentCreator extentCreator,
+            IWorkspaceLogic workspaceLogic,
+            IScopeStorage scopeStorage)
         {
             _localTypeSupport = localTypeSupport;
             _extentCreator = extentCreator;
             _workspaceLogic = workspaceLogic;
-            _integrationSettings = integrationSettings;
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 
         /// <summary>

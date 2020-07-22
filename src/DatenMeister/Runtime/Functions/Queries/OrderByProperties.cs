@@ -69,7 +69,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                 {
                     currentColumn = currentColumn.Substring(1);
                     current = current
-                        .ThenByDescending(x => (x as IObject)?.getOrDefault<string>(currentColumn.Substring(1)));
+                        .ThenByDescending(x => (x as IObject)?.getOrDefault<string>(currentColumn));
                 }
                 else
                 {

@@ -3,6 +3,8 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using NUnit.Framework;
@@ -152,8 +154,10 @@ namespace DatenMeister.Tests.Runtime
     </item>
 </item>";
 
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
             var provider = new XmiProvider(XDocument.Parse(document));
-            return new MofUriExtent(provider, testUri);
+            return new MofUriExtent(provider, testUri, scopeStorage);
         }
     }
 }

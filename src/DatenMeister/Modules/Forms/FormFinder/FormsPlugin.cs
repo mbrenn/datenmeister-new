@@ -10,10 +10,11 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Models.ManagementProvider;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Plugins;
@@ -59,17 +60,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <param name="workspaceLogic">The workspace being used</param>
         /// <param name="extentCreator">The support class to create extents</param>
-        /// <param name="integrationSettings">The settings that had been used for integration</param>
+        /// <param name="scopeStorage">The settings that had been used for integration</param>
         /// <param name="extentSettings">Added the extent settings</param>
         public FormsPlugin(IWorkspaceLogic workspaceLogic, 
             ExtentCreator extentCreator,
-            IntegrationSettings integrationSettings,
-            ExtentSettings extentSettings)
+            IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _extentCreator = extentCreator;
-            _integrationSettings = integrationSettings;
-            _extentSettings = extentSettings;
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
+            _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         {
             if (!(_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is IUriExtent foundExtent))
             {
-                throw new InvalidOperationException("The view extent is not found in the management");
+                throw new InvalidOperationException("The form extent is not found in the management");
             }
 
             return foundExtent;

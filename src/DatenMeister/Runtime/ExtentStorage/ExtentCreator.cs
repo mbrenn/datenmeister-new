@@ -18,11 +18,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly ExtentManager _extentManager;
         private readonly IntegrationSettings _integrationSettings;
 
-        public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, IntegrationSettings integrationSettings)
+        public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;
-            _integrationSettings = integrationSettings;
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 
         /// <summary>

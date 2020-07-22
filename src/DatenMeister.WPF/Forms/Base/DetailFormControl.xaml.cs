@@ -18,7 +18,6 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Modules.Validators;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -26,6 +25,7 @@ using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Fields;
+using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
@@ -440,9 +440,17 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var field in fields.Cast<IElement>())
             {
                 var flags = new FieldParameter {IsReadOnly = isFormReadOnly};
+                var isAttached = field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true;
 
+                var usedElement = isAttached ? AttachedElement : DetailElement;
+                if (usedElement == null) continue;
+                
                 var (detailElement, contentBlock) =
-                    FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
+                    FieldFactory.GetUIElementFor(
+                        usedElement,
+                        field, 
+                        this,
+                        flags);
 
                 if (contentBlock != null)
                 {
@@ -510,12 +518,15 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Creates additional rows for buttons with additional actions
-            var interactionHandlers = GiveMe.Scope.Resolve<IEnumerable<IElementInteractionsHandler>>();
+            var scope = GiveMe.Scope;
+            var interactionHandlers = 
+                scope.ScopeStorage.Get<UserInteractionState>().ElementInteractionHandler;
             foreach (var handler in interactionHandlers
                 .SelectMany(x => x.GetInteractions(DetailElement)))
             {
                 var button = new Button {Content = handler.Name};
-                button.Click += (x, y) => handler.Execute(DetailElement, null);
+                button.Click += (x, y) 
+                    => handler.Execute(this, DetailElement, null);
                 buttons.Add(button);
             }
 

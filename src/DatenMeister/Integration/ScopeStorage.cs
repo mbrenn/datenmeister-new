@@ -14,7 +14,7 @@ namespace DatenMeister.Integration
         /// </summary>
         private Dictionary<Type, object> _storage = new Dictionary<Type, object>();
 
-        public void Add<T>(T item)
+        public IScopeStorage Add<T>(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             
@@ -22,6 +22,8 @@ namespace DatenMeister.Integration
             {
                 _storage[typeof(T)] = item;
             }
+
+            return this;
         }
 
         public T Get<T>()

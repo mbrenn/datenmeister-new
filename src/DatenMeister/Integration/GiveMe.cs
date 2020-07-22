@@ -55,7 +55,8 @@ namespace DatenMeister.Integration
             settings ??= new IntegrationSettings
             {
                 EstablishDataEnvironment = true,
-                DatabasePath = DefaultDatabasePath
+                DatabasePath = DefaultDatabasePath,
+                IsLockingActivated = true
             };
 
             var kernel = new ContainerBuilder();

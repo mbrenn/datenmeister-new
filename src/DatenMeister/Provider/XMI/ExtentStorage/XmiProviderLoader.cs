@@ -129,7 +129,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
         /// <summary>
         /// Defines the timespan for the locking
         /// </summary>
-        private readonly TimeSpan _lockingTimeSpan = TimeSpan.FromSeconds(5);
+        private readonly TimeSpan _lockingTimeSpan = TimeSpan.FromSeconds(30);
 
         public bool IsLocked(ExtentLoaderConfig configuration)
         {
@@ -176,7 +176,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             File.WriteAllText(path, dateTime);
             Logger.Info("Updated Lockfile: " + xmiConfiguration.extentUri);
 
-            Task.Delay(4000).ContinueWith((task) =>
+            Task.Delay((int) _lockingTimeSpan.TotalMilliseconds - 1000).ContinueWith((task) =>
             {
                 if (_extentStorageData?.LoadedExtents.Any(x => x.Configuration == xmiConfiguration) == true)
                 {

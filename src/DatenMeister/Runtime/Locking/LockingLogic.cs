@@ -22,7 +22,7 @@ namespace DatenMeister.Runtime.Locking
             _lockingState = lockingState;
         }
 
-        public LockingLogic Create(LockingState lockingState)
+        public static LockingLogic Create(LockingState lockingState)
         {
             return new LockingLogic(lockingState);
         }
@@ -31,8 +31,24 @@ namespace DatenMeister.Runtime.Locking
         {
             if (File.Exists(filePath))
             {
-                var lastUpdateText = File.ReadAllText(filePath);
-                if (DateTime.TryParse(lastUpdateText, CultureInfo.InvariantCulture, DateTimeStyles.None,
+                string lastUpdateText;
+                lock (_lockingState)
+                {
+                    try
+                    {
+                        _lockingState.GlobalMutex.WaitOne();
+                        lastUpdateText = File.ReadAllText(filePath);
+                    }
+                    finally
+                    {
+                        _lockingState.GlobalMutex.ReleaseMutex();
+                    }
+                }
+
+                if (DateTime.TryParse(
+                    lastUpdateText,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
                     out var lastUpdate))
                 {
                     lock (_lockingState)
@@ -52,26 +68,21 @@ namespace DatenMeister.Runtime.Locking
         {
             lock (_lockingState)
             {
+                if (IsLocked(filePath))
+                {
+                    throw new InvalidOperationException($"File {filePath} is already locked");
+                }
+
+                UpdateLockFile(_lockingState, filePath);
                 _lockingState.LockFilePaths.Add(filePath);
 
                 if (_lockingState.LockingTask == null)
                 {
-                    _lockingState.LockingTask = Task.Run(TickLoop);
+                    _lockingState.LockingTask = Task.Run(() => TickLoop(_lockingState));
                 }
             }
 
-            UpdateLockFile(filePath);
-            
             Logger.Info("Locking: " + filePath);
-        }
-
-        private void UpdateLockFile(string filePath)
-        {
-            CreateDirectoryIfNecessary(filePath);
-
-            var dateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            File.WriteAllText(filePath, dateTime);
-            Logger.Info("Updated Lockfile: " + filePath);
         }
 
         public void Unlock(string filePath)
@@ -79,47 +90,77 @@ namespace DatenMeister.Runtime.Locking
             lock (_lockingState)
             {
                 _lockingState.LockFilePaths.Remove(filePath);
+                
+                try
+                {
+                    _lockingState.GlobalMutex.WaitOne();
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+                finally
+                {
+                    _lockingState.GlobalMutex.ReleaseMutex();
+                }
             }
-            
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-            
+
             Logger.Info("Unlocking: " + filePath);
         }
 
-        public void Tick()
+        private static void UpdateLockFile(LockingState lockingState, string filePath)
         {
-            lock (_lockingState)
+            CreateDirectoryIfNecessary(filePath);
+
+            var dateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            lock (lockingState)
             {
-                foreach (var filePath in _lockingState.LockFilePaths)
+                try
                 {
-                    UpdateLockFile(filePath);
+                    lockingState.GlobalMutex.WaitOne();
+                    File.WriteAllText(filePath, dateTime);
                 }
+                finally
+                {
+                    lockingState.GlobalMutex.ReleaseMutex();
+                }
+
+                Logger.Info("Updated Lockfile: " + filePath);
+            }
+        }
+
+        /// <summary>
+        /// Performs a tick
+        /// </summary>
+        /// <param name="lockingState">The locking state</param>
+        public static void Tick(LockingState lockingState)
+        {
+            foreach (var filePath in lockingState.LockFilePaths)
+            {
+                UpdateLockFile(lockingState, filePath);
             }
         }
 
         /// <summary>
         /// Performs the ticks
         /// </summary>
-        public async void TickLoop()
+        public static async void TickLoop(LockingState lockingState)
         {
             while (true)
             {
                 TimeSpan lockingTimeSpan;
+                lockingTimeSpan = lockingState.LockingTimeSpan;
+                await Task.Delay((int) (lockingTimeSpan.TotalMilliseconds * 9 / 10));
 
-                lock (_lockingState)
+                lock (lockingState)
                 {
-                    lockingTimeSpan = _lockingState.LockingTimeSpan;
-                    if (_lockingState.LockingTask == null)
+                    if (lockingState.LockingTask == null)
                     {
                         return;
                     }
-                }
 
-                Tick();
-                await Task.Delay((int) (lockingTimeSpan.TotalMilliseconds * 9 / 10));
+                    Tick(lockingState);
+                }
             }
         }
         
@@ -134,6 +175,5 @@ namespace DatenMeister.Runtime.Locking
                 Directory.CreateDirectory(directoryPath);
             }
         }
-        
     }
 }

@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using NUnit.Common;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml
@@ -107,7 +109,9 @@ namespace DatenMeister.Tests.Uml
             var primitiveTypes = workspaceLogic.GetPrimitiveData();
 
             Assert.That(ClassifierMethods.IsOfPrimitiveType(uml.Activities.__Activity), Is.False);
-            Assert.That(ClassifierMethods.IsOfPrimitiveType(primitiveTypes.__Integer), Is.True);
+
+            Assert.That(ClassifierMethods.IsOfPrimitiveType(primitiveTypes.__Integer), Is.True,
+                primitiveTypes.__Integer + ": " + (primitiveTypes.__Integer.metaclass?.ToString() ?? "NONE"));
         }
     }
 }

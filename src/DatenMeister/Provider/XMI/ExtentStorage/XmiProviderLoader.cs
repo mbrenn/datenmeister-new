@@ -27,12 +27,14 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             _extentStorageData = scopeStorage.Get<ExtentStorageData>();
         }
         
-        private XmiProviderLoader(ExtentStorageData extentStorageData)
+        private XmiProviderLoader(ExtentStorageData extentStorageData, LockingLogic lockingLogic)
         {
             _extentStorageData = extentStorageData;
+            _lockingLogic = lockingLogic;
         }
-        
-        public XmiProviderLoader Create(ExtentStorageData data) => new XmiProviderLoader(data);
+
+        public XmiProviderLoader Create(ExtentStorageData data, LockingLogic lockingLogic) =>
+            new XmiProviderLoader(data, lockingLogic);
         
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {

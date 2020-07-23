@@ -70,7 +70,7 @@ namespace DatenMeister.Runtime.Locking
             {
                 if (IsLocked(filePath))
                 {
-                    throw new InvalidOperationException($"File {filePath} is already locked");
+                    throw new IsLockedException($"File {filePath} is already locked", filePath);
                 }
 
                 UpdateLockFile(_lockingState, filePath);

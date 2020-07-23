@@ -12,6 +12,7 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Locking;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -151,7 +152,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 if (providerLocking.IsLocked(configuration))
                 {
-                    throw new InvalidOperationException("The provider is locked");
+                    var asFilePath = configuration as ExtentFileLoaderConfig;
+                    throw new IsLockedException("The provider is locked", asFilePath?.filePath ?? string.Empty);
                 }
 
                 providerLocking.Lock(configuration);

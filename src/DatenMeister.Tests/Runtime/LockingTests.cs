@@ -49,7 +49,7 @@ namespace DatenMeister.Tests.Runtime
             Assert.That(lockingLogic2.IsLocked(file1), Is.True);
             Assert.That(lockingLogic2.IsLocked(file2), Is.True);
 
-            Assert.Throws<InvalidOperationException>(() => lockingLogic.Lock(file1));
+            Assert.Throws<IsLockedException>(() => lockingLogic.Lock(file1));
             
             lockingLogic.Unlock(file1);
             Assert.That(lockingLogic.IsLocked(file1), Is.False);

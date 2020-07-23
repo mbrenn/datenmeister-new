@@ -4,6 +4,7 @@ using System.Reflection;
 using Autofac;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Locking;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents
@@ -44,7 +45,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                     Assert.That(provider1, Is.Not.Null);
                     
                     var extentManager2 = dm2.Resolve<ExtentManager>();
-                    Assert.Throws<InvalidOperationException>(() =>
+                    Assert.Throws<IsLockedException>(() =>
                     {
                         extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
                     });

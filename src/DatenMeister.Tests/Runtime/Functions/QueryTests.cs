@@ -71,6 +71,21 @@ namespace DatenMeister.Tests.Runtime.Functions
             Assert.That(ordered[3].getOrDefault<int>("iq"), Is.EqualTo(110));
             Assert.That(ordered[4].getOrDefault<int>("iq"), Is.EqualTo(120));
         }
+        
+        [Test]
+        public void TestOrderByOrdinal()
+        {
+            var extent = CreateQueryTestExtent(true);
+            var ordered = extent.elements().OrderElementsBy("iq").ToList<IElement>();
+            
+            ordered = extent.elements().OrderElementsBy("iq").ToList<IElement>();
+            Assert.That(ordered.Count, Is.EqualTo(5));
+            Assert.That(ordered[0].getOrDefault<int>("iq"), Is.EqualTo(95));
+            Assert.That(ordered[1].getOrDefault<int>("iq"), Is.EqualTo(100));
+            Assert.That(ordered[2].getOrDefault<int>("iq"), Is.EqualTo(109));
+            Assert.That(ordered[3].getOrDefault<int>("iq"), Is.EqualTo(110));
+            Assert.That(ordered[4].getOrDefault<int>("iq"), Is.EqualTo(120));
+        }
 
         [Test]
         public void TestOrderByProperties()
@@ -110,7 +125,7 @@ namespace DatenMeister.Tests.Runtime.Functions
             Assert.That(ordered[4].getOrDefault<int>("iq"), Is.EqualTo(100));
         }
 
-        private static IUriExtent CreateQueryTestExtent()
+        private static IUriExtent CreateQueryTestExtent(bool ordinal = false)
         {
             var memoryProvider = new InMemoryProvider();
             var extent = new MofUriExtent(memoryProvider, "dm:///test");
@@ -124,7 +139,7 @@ namespace DatenMeister.Tests.Runtime.Functions
                     .SetProperties(new Dictionary<string, object> {["name"] = "person2", ["age"] = 15, ["iq"] = 120}));
             extent.elements().add(
                 factory.create(null)
-                    .SetProperties(new Dictionary<string, object> {["name"] = "person3", ["age"] = 20, ["iq"] = 105}));
+                    .SetProperties(new Dictionary<string, object> {["name"] = "person3", ["age"] = 20, ["iq"] = ordinal ? 95 : 105}));
             extent.elements().add(
                 factory.create(null)
                     .SetProperties(new Dictionary<string, object> {["name"] = "person4", ["age"] = 20, ["iq"] = 100}));

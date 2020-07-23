@@ -16,7 +16,6 @@ namespace DatenMeister.Modules.DataViews.Evaluation
         private static readonly ILogger Logger = new ClassLogger(typeof(FilterPropertyNodeEvaluation));
         public bool IsResponsible(IElement node)
         {
-            
             var metaClass = node.getMetaClass();
             return metaClass != null &&
                    metaClass.@equals(_DataViews.TheOne.__FilterPropertyNode);

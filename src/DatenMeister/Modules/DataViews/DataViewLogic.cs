@@ -4,6 +4,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
@@ -22,10 +23,12 @@ namespace DatenMeister.Modules.DataViews
         public const string PackagePathTypesDataView = "DatenMeister::DataViews";
 
         private readonly IWorkspaceLogic _workspaceLogic;
+        private readonly IScopeStorage _scopeStorage;
 
-        public DataViewLogic(IWorkspaceLogic workspaceLogic)
+        public DataViewLogic(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
         }
 
         public IEnumerable<IElement> GetDataViewElements()
@@ -56,7 +59,7 @@ namespace DatenMeister.Modules.DataViews
         /// <returns>The reflective Sequence</returns>
         public IReflectiveCollection GetElementsForViewNode(IElement viewNode)
         {
-            var evaluation = new DataViewEvaluation(_workspaceLogic);
+            var evaluation = new DataViewEvaluation(_workspaceLogic, _scopeStorage);
             return evaluation.GetElementsForViewNode(viewNode);
         }
     }

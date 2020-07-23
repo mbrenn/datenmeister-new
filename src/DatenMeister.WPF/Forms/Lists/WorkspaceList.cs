@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Forms.Lists
             Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
             SetRootItem(Extent);
 
-            var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
+            var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(Extent,
                 (x,y) =>
                     Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm());

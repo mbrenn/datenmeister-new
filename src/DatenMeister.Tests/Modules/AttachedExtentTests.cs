@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Modules
         public void TestRetrievalOfConfiguration()
         {
             // Prepare some stuff
-            var workspaceLogic = new WorkspaceLogic(new WorkspaceData());
+            var workspaceLogic = WorkspaceLogic.Create(new WorkspaceData());
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
             var factory = new MofFactory(extent);
             var type = factory.create(_UML.TheOne.StructuredClassifiers.__Class);
@@ -139,7 +139,7 @@ namespace DatenMeister.Tests.Modules
         {
             var testSetup = new TestSetup
             {
-                WorkspaceLogic = new WorkspaceLogic(new WorkspaceData()),
+                WorkspaceLogic = WorkspaceLogic.Create(new WorkspaceData()),
                 TypeExtent = new MofUriExtent(new InMemoryProvider(), "dm:///types"),
                 OriginalExtent = new MofUriExtent(new InMemoryProvider(), "dm:///originalExtent"),
                 AttachedExtent = new MofUriExtent(new InMemoryProvider(), "dm:///attachedExtent"),

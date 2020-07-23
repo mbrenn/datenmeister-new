@@ -8,7 +8,7 @@
         /// </summary>
         /// <param name="item">Item to be added</param>
         /// <typeparam name="T">Type of the item to be added</typeparam>
-        void Add<T>(T item);
+        IScopeStorage Add<T>(T item);
 
         /// <summary>
         /// Gets the storage item which was added via AddStorage Item.
@@ -16,7 +16,7 @@
         /// </summary>
         /// <typeparam name="T">Type to be retrieved</typeparam>
         /// <returns>The found storage item</returns>
-        T Get<T>();
+        T Get<T>() where T : new();
 
         /// <summary>
         /// Tries to get a value and returns null, if value is not found

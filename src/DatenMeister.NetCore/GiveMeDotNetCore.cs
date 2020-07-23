@@ -23,12 +23,7 @@ namespace DatenMeister.NetCore
         /// <returns>The initialized DatenMeister that can be used</returns>
         public static IDatenMeisterScope DatenMeister(IntegrationSettings? settings = null)
         {
-            settings ??= new IntegrationSettings
-            {
-                EstablishDataEnvironment = true,
-                DatabasePath = GiveMe.DefaultDatabasePath,
-                PluginLoader = new DotNetCorePluginLoader()
-            };
+            settings ??= GetDefaultIntegrationSettings();
 
             if (settings.PluginLoader is DefaultPluginLoader || settings.PluginLoader == null)
             {
@@ -42,15 +37,23 @@ namespace DatenMeister.NetCore
             scope.ScopeStorage = scope.Resolve<IScopeStorage>();
 
             GiveMe.Scope = scope;
-            
-
-            GiveMe.Scope.BeforeDisposing += (x, y) =>
+            scope.BeforeDisposing += (x, y) =>
             {
-                GiveMe.Scope.UnuseDatenMeister();
+                scope.UnuseDatenMeister();
                 GiveMe.ClearScope();
             };
 
             return GiveMe.Scope;
+        }
+
+        public static IntegrationSettings GetDefaultIntegrationSettings()
+        {
+            return new IntegrationSettings
+            {
+                EstablishDataEnvironment = true,
+                DatabasePath = GiveMe.DefaultDatabasePath,
+                PluginLoader = new DotNetCorePluginLoader()
+            };
         }
     }
 }

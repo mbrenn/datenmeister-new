@@ -56,8 +56,19 @@ namespace DatenMeisterWPF
         private async void Window_Initialized(object sender, EventArgs e)
         {
             MainControl.Content = new IntroScreen();
-            GiveMe.Scope = await Task.Run(
-                () => GiveMeDotNetCore.DatenMeister());
+            var defaultSettings = GiveMeDotNetCore.GetDefaultIntegrationSettings();
+            defaultSettings.IsLockingActivated = true;
+
+            try
+            {
+                GiveMe.Scope = await Task.Run(
+                    () => GiveMeDotNetCore.DatenMeister(defaultSettings));
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+                throw;
+            }
 
             _ribbonHelper.LoadIconRepository();
 

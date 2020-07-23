@@ -31,9 +31,15 @@ namespace DatenMeister.Tests.Integration
             var result = scopeStorage.Get<CsvSettings>();
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.SameAs(settings));
-
-            Assert.Throws<InvalidOperationException>(() => scopeStorage.Get<IntegrationSettings>());
+            
             Assert.That(scopeStorage.TryGet<IntegrationSettings>(), Is.Null);
+            var integrationSettings = scopeStorage.Get<IntegrationSettings>();
+            Assert.That(integrationSettings, Is.Not.Null);
+            integrationSettings.DatabasePath = "TEST";
+            
+            integrationSettings = scopeStorage.Get<IntegrationSettings>();
+            Assert.That(integrationSettings, Is.Not.Null);
+            Assert.That(integrationSettings.DatabasePath, Is.EqualTo("TEST"));
         }
     }
 }

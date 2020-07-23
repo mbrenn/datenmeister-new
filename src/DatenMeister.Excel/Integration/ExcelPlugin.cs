@@ -1,4 +1,4 @@
-﻿using DatenMeister.Runtime.ExtentStorage.Interfaces;
+﻿using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Excel.Integration
@@ -6,9 +6,9 @@ namespace DatenMeister.Excel.Integration
 
     public class ExcelPlugin : IDatenMeisterPlugin
     {
-        private readonly IExtentManager _extentManager;
+        private readonly ExtentManager _extentManager;
 
-        public ExcelPlugin(IExtentManager extentManager)
+        public ExcelPlugin(ExtentManager extentManager)
         {
             _extentManager = extentManager;
         }

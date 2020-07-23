@@ -14,9 +14,9 @@ namespace DatenMeister.Excel.ProviderLoader
     [ConfiguredBy(typeof(ExcelImportLoaderConfig))]
     public class ExcelImportLoader : IProviderLoader
     {
-        private readonly IExtentManager _extentManager;
+        private readonly ExtentManager _extentManager;
 
-        public ExcelImportLoader(IExtentManager extentManager)
+        public ExcelImportLoader(ExtentManager extentManager)
         {
             _extentManager = extentManager;
         }

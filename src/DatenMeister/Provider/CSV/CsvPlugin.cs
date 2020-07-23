@@ -1,6 +1,5 @@
 ﻿using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Provider.CSV
@@ -13,9 +12,9 @@ namespace DatenMeister.Provider.CSV
     [PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
     public class CsvPlugin : IDatenMeisterPlugin
     {
-        private readonly IConfigurationToExtentStorageMapper _configurationToExtentStorageMapper;
+        private readonly ConfigurationToExtentStorageMapper _configurationToExtentStorageMapper;
 
-        public CsvPlugin(IConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
+        public CsvPlugin(ConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
         {
             _configurationToExtentStorageMapper = configurationToExtentStorageMapper;
         }

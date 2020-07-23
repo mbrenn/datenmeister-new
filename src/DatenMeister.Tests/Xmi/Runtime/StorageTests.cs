@@ -2,11 +2,13 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Locking;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
@@ -27,7 +29,9 @@ namespace DatenMeister.Tests.Xmi.Runtime
             mofObject1.set("name", "Martin");
             mofObject2.set("name", "Martina");
             mofObject3.set("name", "Martini");
-            
+            var lockingState = new LockingState();
+            var lockingLogic = LockingLogic.Create(lockingState);
+
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
             extent.elements().add(mofObject1);
@@ -39,10 +43,16 @@ namespace DatenMeister.Tests.Xmi.Runtime
                 filePath = DatenMeisterTests.GetPathForTemporaryStorage("data.xml")
             };
 
-            var xmiStorage = new XmiStorage();
+            var xmiStorage = new XmiProviderLoader(
+                new ScopeStorage().Add(new ExtentStorageData()), 
+                lockingLogic);
+
             xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
 
-            var otherExtent = new MofUriExtent(xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly).Provider, "dm:///tests/");
+            var otherExtent =
+                new MofUriExtent(
+                    xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly).Provider,
+                    "dm:///tests/");
             Assert.That(otherExtent.elements().size(), Is.EqualTo(3));
             Assert.That(otherExtent.contextURI(), Is.EqualTo("dm:///tests/"));
             Assert.That((otherExtent.elements().ElementAt(0) as IObject)?.get("name"), Is.EqualTo("Martin"));

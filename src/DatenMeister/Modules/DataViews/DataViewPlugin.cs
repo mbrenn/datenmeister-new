@@ -1,5 +1,7 @@
 ﻿using System;
+using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
+using DatenMeister.Modules.DataViews.Evaluation;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
@@ -12,6 +14,7 @@ namespace DatenMeister.Modules.DataViews
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly DataViewLogic _dataViewLogic;
+        private readonly IScopeStorage _scopeStorage;
 
         /// <summary>
         /// Gets a list of types which need to be transferred as a MofType
@@ -33,11 +36,13 @@ namespace DatenMeister.Modules.DataViews
             };
         }
 
-        public DataViewPlugin(LocalTypeSupport localTypeSupport, IWorkspaceLogic workspaceLogic, DataViewLogic dataViewLogic)
+        public DataViewPlugin(LocalTypeSupport localTypeSupport, IWorkspaceLogic workspaceLogic,
+            DataViewLogic dataViewLogic, IScopeStorage scopeStorage)
         {
             _localTypeSupport = localTypeSupport;
             _workspaceLogic = workspaceLogic;
             _dataViewLogic = dataViewLogic;
+            _scopeStorage = scopeStorage;
         }
 
         /// <summary>
@@ -59,8 +64,29 @@ namespace DatenMeister.Modules.DataViews
                         _DataViews.TheOne,
                         IntegrateDataViews.Assign
                     );
+                    
+                    var factories = GetDefaultViewNodeFactories();
+                    _scopeStorage.Add(factories);
+                    
                     break;
             }
+        }
+
+        /// <summary>
+        /// Gets the default view node factories
+        /// </summary>
+        /// <returns>The found view node factories</returns>
+        public static DataViewNodeFactories GetDefaultViewNodeFactories()
+        {
+            var result = new DataViewNodeFactories();
+            result.Add(new DynamicSourceNodeEvaluation());
+            result.Add(new FilterPropertyNodeEvaluation());
+            result.Add(new FilterTypeNodeEvaluation());
+            result.Add(new FlattenNodeEvaluation());
+            result.Add(new SelectPathNodeEvaluation());
+            result.Add(new SourceExtentNodeEvaluation());
+
+            return result;
         }
     }
 }

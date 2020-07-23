@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
 using DatenMeister.Provider.ManagementProviders.Model;
@@ -42,6 +43,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the provider for the given extent
         /// </summary>
         public IProvider Provider { get; }
+        
+        /// <summary>
+        /// Defines the scope storage in which the extent is working
+        /// </summary>
+        public IScopeStorage? ScopeStorage { get; private set; }
         
         /// <summary>
         /// Gets a value whether the extent will support the full Uml capabilities regarding auto enumeration
@@ -167,11 +173,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Initializes a new instance of the Extent
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
-        /// <param name="changeEventManager">The change event manager being used
-        /// to notify the system about changes in the event</param>
-        public MofExtent(IProvider provider, ChangeEventManager? changeEventManager = null)
+        /// <param name="scopeStorage">Scope storage to be used to find Change Event Manager</param>
+        public MofExtent(IProvider provider, IScopeStorage? scopeStorage = null)
         {
-            ChangeEventManager = changeEventManager;
+            ChangeEventManager = scopeStorage?.TryGet<ChangeEventManager>();
+            ScopeStorage = scopeStorage;
 
             var rootProvider = new XmiProvider();
             Provider = provider;

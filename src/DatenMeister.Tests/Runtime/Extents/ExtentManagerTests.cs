@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestLoadAndUnloading()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var extentManager = dm.Resolve<IExtentManager>();
+            var extentManager = dm.Resolve<ExtentManager>();
 
             var loaderConfig = new InMemoryLoaderConfig("dm:///test")
             {

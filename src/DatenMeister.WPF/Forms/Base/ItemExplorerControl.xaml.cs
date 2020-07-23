@@ -181,7 +181,7 @@ namespace DatenMeister.WPF.Forms.Base
             get => _eventHandle;
             set
             {
-                if (_eventHandle != null) GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                if (_eventHandle != null) GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>().Unregister(_eventHandle);
 
                 _eventHandle = value;
             }
@@ -191,7 +191,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (_eventHandle != null)
             {
-                GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_eventHandle);
+                GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>().Unregister(_eventHandle);
                 _eventHandle = null;
             }
         }

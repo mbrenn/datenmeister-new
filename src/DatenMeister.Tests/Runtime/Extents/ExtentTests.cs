@@ -76,7 +76,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                     File.Delete(path);
                 }
 
-                var extentLoader = dm.Resolve<IExtentManager>();
+                var extentLoader = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
                 loadedExtent.set("test", "this is a test");
                 loadedExtent.GetConfiguration().ExtentType = "Happy Extent";
@@ -147,7 +147,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                     File.Delete(path);
                 }
 
-                var extentLoader = dm.Resolve<IExtentManager>();
+                var extentLoader = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
                 loadedExtent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
                 extentLoader.StoreExtent(loadedExtent);
@@ -250,7 +250,7 @@ namespace DatenMeister.Tests.Runtime.Extents
 
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
-                var extentManager = dm.Resolve<IExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
                 var csvExtent = extentManager.LoadExtent(
                     new CsvExtentLoaderConfig(csvExtentUri)
                     {

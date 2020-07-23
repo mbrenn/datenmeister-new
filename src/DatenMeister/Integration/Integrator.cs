@@ -12,7 +12,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -20,16 +19,13 @@ using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders.Model;
-using DatenMeister.Provider.ManagementProviders.Settings;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
 
 namespace DatenMeister.Integration
 {
@@ -107,7 +103,7 @@ namespace DatenMeister.Integration
 
             // Finds the loader for a certain extent type
             var storageMap = new ConfigurationToExtentStorageMapper();
-            kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
+            kernel.RegisterInstance(storageMap).As<ConfigurationToExtentStorageMapper>();
 
             // Defines the extent storage data
             var extentStorageData = new ExtentStorageData
@@ -115,11 +111,12 @@ namespace DatenMeister.Integration
                 FilePath = PathExtents
             };
             kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
-            kernel.RegisterType<ExtentManager>().As<IExtentManager>();
+            scopeStorage.Add(extentStorageData);
+            kernel.RegisterType<ExtentManager>().As<ExtentManager>();
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
-            kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
+            scopeStorage.Add(workspaceData);
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
             
             var extentSettings = new ExtentSettings();
@@ -127,7 +124,7 @@ namespace DatenMeister.Integration
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
-            kernel.RegisterInstance(changeEventManager).As<ChangeEventManager>();
+            scopeStorage.Add(changeEventManager);
 
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig(PathWorkspaces);
@@ -248,6 +245,7 @@ namespace DatenMeister.Integration
                 pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
                 // Boots up the typical DatenMeister Environment by loading the data
+                var extentManager = scope.Resolve<ExtentManager>();
                 if (_settings.EstablishDataEnvironment)
                 {
                     var workspaceLoader = scope.Resolve<WorkspaceLoader>();
@@ -256,7 +254,7 @@ namespace DatenMeister.Integration
                     // Loads all extents after all plugins were started
                     try
                     {
-                        scope.Resolve<IExtentManager>().LoadAllExtents();
+                        extentManager.LoadAllExtents();
                     }
                     catch (LoadingExtentsFailedException)
                     {
@@ -274,7 +272,6 @@ namespace DatenMeister.Integration
                 pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
                 // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
-                var extentManager = scope.Resolve<IExtentManager>();
                 extentManager.CreateStorageTypeDefinitions();
                 
                 ResetUpdateFlagsOfExtent(workspaceLogic);

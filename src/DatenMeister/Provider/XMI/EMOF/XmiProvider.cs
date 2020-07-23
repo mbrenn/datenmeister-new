@@ -166,13 +166,13 @@ namespace DatenMeister.Provider.XMI.EMOF
             lock (LockObject)
             {
                 if (id == null)
-            {
-                return new XmiProviderObject(GetMetaNode(), this);
-            }
+                {
+                    return new XmiProviderObject(GetMetaNode(), this);
+                }
 
-            var result = FindById(id);
-            return result == null ? null : new XmiProviderObject(result, this);
-            
+                var result = FindById(id);
+                return result == null ? null : new XmiProviderObject(result, this);
+
             }
         }
 

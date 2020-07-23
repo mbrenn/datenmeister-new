@@ -97,7 +97,7 @@ namespace DatenMeister.Tests.Modules
             propertyFilter.set(_DataViews._FilterPropertyNode.input, extentSource);
             
             // Gets the elements
-            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic);
+            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
             dataViewEvaluator.AddDynamicSource("input",  dataExtent.elements());
 
             var elements = dataViewEvaluator.GetElementsForViewNode(propertyFilter)

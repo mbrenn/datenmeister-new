@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DataViews;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DataViews
 {
@@ -33,14 +29,31 @@ namespace DatenMeister.Modules.DataViews
         private readonly Dictionary<string, IReflectiveCollection> _dynamicSources =
             new Dictionary<string, IReflectiveCollection>();
 
-        public DataViewEvaluation()
+        private DataViewNodeFactories _dataViewFactories;
+
+        public DataViewEvaluation(DataViewNodeFactories dataViewFactories)
         {
+            _dataViewFactories = dataViewFactories;
         }
         
-        public DataViewEvaluation(IWorkspaceLogic workspaceLogic)
+        public DataViewEvaluation(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
+            _dataViewFactories = scopeStorage.Get<DataViewNodeFactories>();
         }
+        
+        public DataViewEvaluation(IWorkspaceLogic workspaceLogic, DataViewNodeFactories dataViewFactories)
+        {
+            _workspaceLogic = workspaceLogic;
+            _dataViewFactories = dataViewFactories;
+        }
+
+        /// <summary>
+        /// Adds the dynamic sources
+        /// </summary>
+        public Dictionary<string, IReflectiveCollection> DynamicSources => _dynamicSources;
+
+        public IWorkspaceLogic? WorkspaceLogic => _workspaceLogic;
 
         /// <summary>
         /// Adds a dynamic source for the collection
@@ -59,8 +72,17 @@ namespace DatenMeister.Modules.DataViews
         /// <returns>The reflective Sequence</returns>
         public IReflectiveCollection GetElementsForViewNode(IElement viewNode)
         {
-            _referenceCount = 0;
-            return GetElementsForViewNodeInternal(viewNode);
+            _referenceCount++;
+            if (_referenceCount > MaximumReferenceCount)
+            {
+                Logger.Warn("Maximum number of references are evaluated in dataview evaluation");
+                return new PureReflectiveSequence();
+            }
+            
+            var result = GetElementsForViewNodeInternal(viewNode);
+            _referenceCount--;
+
+            return result;
         }
 
         /// <summary>
@@ -76,11 +98,13 @@ namespace DatenMeister.Modules.DataViews
             }
 
             // Check, if viewnode has been visited
-            _referenceCount++;
-            if (_referenceCount > MaximumReferenceCount)
+
+            foreach (var evaluation in
+                from x in _dataViewFactories.Evaluations
+                where x.IsResponsible(viewNode)
+                select x)
             {
-                Logger.Warn("Maximum number of references are evaluated in dataview evaluation");
-                return new PureReflectiveSequence();
+                return evaluation.Evaluate(this, viewNode);
             }
 
             var metaClass = viewNode.getMetaClass();
@@ -90,240 +114,8 @@ namespace DatenMeister.Modules.DataViews
                 return new PureReflectiveSequence();
             }
 
-            if (metaClass.equals(_DataViews.TheOne.__DynamicSourceNode))
-                return GetElementsForDynamicSource(viewNode);
-            
-            if (metaClass.equals(_DataViews.TheOne.__SourceExtentNode))
-                return GetElementsForSourceExtent(viewNode);
-
-            if (metaClass.equals(_DataViews.TheOne.__SelectPathNode))
-                return GetElementsForPathNode(viewNode);
-
-            if (metaClass.equals(_DataViews.TheOne.__FlattenNode))
-                return GetElementsForFlattenNode(viewNode);
-
-            if (metaClass.equals(_DataViews.TheOne.__FilterTypeNode))
-                return GetElementsForFilterTypeNode(viewNode);
-
-            if (metaClass.equals(_DataViews.TheOne.__FilterPropertyNode))
-                return GetElementsForFilterPropertyNode(viewNode);
-
             Logger.Warn($"Unknown type of viewnode: {viewNode.getMetaClass()}");
-
             return new PureReflectiveSequence();
-        }
-        
-        /// <summary>
-        /// Gets elements from the dynamic extent
-        /// </summary>
-        /// <param name="viewNode">The view node of type 'DynamicNode'</param>
-        /// <returns>The reflecting sequence representing the viewnode</returns>
-        private IReflectiveCollection GetElementsForDynamicSource(IElement viewNode)
-        {
-            var name = viewNode.getOrDefault<string>(_DataViews._DynamicSourceNode.name);
-            if (name == null)
-            {
-                Logger.Warn($"Input node not found");
-                return new PureReflectiveSequence();
-            }
-
-            if (_dynamicSources.TryGetValue(name, out var collection))
-            {
-                return collection;
-            }
-            
-            Logger.Warn($"Input node {name} not set");
-            return new PureReflectiveSequence();
-        }
-
-        private IReflectiveSequence GetElementsForSourceExtent(IElement viewNode)
-        {
-            if (_workspaceLogic == null)
-            {
-                // No workspace logic is set but source extent queries for an extent and so is dependent upon 
-                // the workspacelogic
-                Logger.Error("SourceExtent specified but no workspace Logic given");
-                return new PureReflectiveSequence();
-            }
-            
-            var workspaceName = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.workspace);
-            if (string.IsNullOrEmpty(workspaceName))
-            {
-                workspaceName = WorkspaceNames.WorkspaceData;
-            }
-
-            var extentUri = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.extentUri);
-            var workspace = _workspaceLogic.GetWorkspace(workspaceName);
-            if (workspace == null)
-            {
-                Logger.Warn($"Workspace is not found: {workspaceName}");
-                return new PureReflectiveSequence();
-            }
-
-            var extent = workspace.FindExtent(extentUri);
-            if (extent == null)
-            {
-                Logger.Warn($"Extent is not found: {extentUri}");
-                return new PureReflectiveSequence();
-            }
-
-            return extent.elements();
-        }
-
-        private IReflectiveSequence GetElementsForPathNode(IElement viewNode)
-        {
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._SelectPathNode.input);
-            if (inputNode == null)
-            {
-                Logger.Warn($"Input node not found");
-                return new PureReflectiveSequence();
-            }
-
-            var input = GetElementsForViewNodeInternal(inputNode);
-
-            var pathNode = viewNode.getOrDefault<string>(_DataViews._SelectPathNode.path);
-            if (pathNode == null)
-            {
-                Logger.Warn($"Path is not set");
-                return new PureReflectiveSequence();
-            }
-
-            var targetElement = NamedElementMethods.GetByFullName(input, pathNode);
-            if (targetElement == null)
-            {
-                // Path is not found
-                return new PureReflectiveSequence();
-            }
-            
-            return new TemporaryReflectiveSequence(NamedElementMethods.GetAllPropertyValues(targetElement));
-        }
-
-        private IReflectiveSequence GetElementsForFlattenNode(IElement viewNode)
-        {
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
-            if (inputNode == null)
-            {
-                Logger.Warn($"Input node not found");
-                return new PureReflectiveSequence();
-            }
-
-            return GetElementsForViewNodeInternal(inputNode).GetAllDescendants();
-        }
-
-        private IReflectiveSequence GetElementsForFilterTypeNode(IElement viewNode)
-        {
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FilterTypeNode.input);
-            if (inputNode == null)
-            {
-                Logger.Warn($"Input node not found");
-                return new PureReflectiveSequence();
-            }
-
-            var input = GetElementsForViewNodeInternal(inputNode);
-
-            var type = viewNode.getOrDefault<IElement>(_DataViews._FilterTypeNode.type);
-            if (type == null)
-            {
-                Logger.Warn("Type is not given");
-                return new PureReflectiveSequence();
-            }
-
-            return new TemporaryReflectiveSequence(
-                input.WhenMetaClassIs(type));
-        }
-
-        private IReflectiveSequence GetElementsForFilterPropertyNode(IElement viewNode)
-        {
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
-            if (inputNode == null)
-            {
-                Logger.Warn($"Input node not found");
-                return new PureReflectiveSequence();
-            }
-
-            var input = GetElementsForViewNodeInternal(inputNode);
-
-            var property = viewNode.getOrDefault<string>(_DataViews._FilterPropertyNode.property);
-            if (property == null)
-            {
-                Logger.Warn("Property not found");
-                return new PureReflectiveSequence();
-            }
-
-            var propertyValue = viewNode.getOrDefault<string>(_DataViews._FilterPropertyNode.value);
-            if (propertyValue == null)
-            {
-                Logger.Warn("Property Value not found");
-                return new PureReflectiveSequence();
-            }
-
-            var comparisonMode = viewNode.getOrNull<ComparisonMode>(_DataViews._FilterPropertyNode.comparisonMode);
-            if (comparisonMode == null)
-            {
-                Logger.Warn("Comparison not found");
-                return new PureReflectiveSequence();
-            }
-
-            return new TemporaryReflectiveSequence(FilterElementsForPropertyNode(input, property, propertyValue,
-                comparisonMode.Value));
-        }
-
-        /// <summary>
-        /// Filters the elements of the reflective sequence according the rules
-        /// </summary>
-        /// <param name="input">Elements to be filtered</param>
-        /// <param name="property">Property upon which the filtering shall be done</param>
-        /// <param name="propertyValue">Value of the property that will be used as filtering value</param>
-        /// <param name="comparisonMode">The type of the comparison</param>
-        /// <returns>Enumeration of elements being in the filter</returns>
-        private IEnumerable<object> FilterElementsForPropertyNode(IReflectiveCollection input, string property, string propertyValue, ComparisonMode comparisonMode)
-        {
-            foreach (var element in input.OfType<IObject>())
-            {
-                if (!element.isSet(property))
-                {
-                    // Element is not set
-                    continue;
-                }
-
-                var elementValue = element.getOrDefault<string>(property);
-
-                bool isIn;
-                switch (comparisonMode)
-                {
-                    case ComparisonMode.Equal:
-                        isIn = elementValue == propertyValue;
-                        break;
-                    case ComparisonMode.NotEqual:
-                        isIn = elementValue != propertyValue;
-                        break;
-                    case ComparisonMode.Contains:
-                        isIn = elementValue.Contains(propertyValue);
-                        break;
-                    case ComparisonMode.DoesNotContain:
-                        isIn = !elementValue.Contains(propertyValue);
-                        break;
-                    case ComparisonMode.GreaterThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) > 0;
-                        break;
-                    case ComparisonMode.GreaterOrEqualThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) >= 0;
-                        break;
-                    case ComparisonMode.LighterThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) < 0;
-                        break;
-                    case ComparisonMode.LighterOrEqualThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) <= 0;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, null);
-                }
-
-                if (isIn)
-                {
-                    yield return element;
-                }
-            }
         }
     }
 }

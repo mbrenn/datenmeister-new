@@ -44,7 +44,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// and storing it afterwards at the same location
     /// </summary>
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class ExtentManager : IExtentManager
+    public class ExtentManager
     {
         public const string PackagePathTypesExtentLoaderConfig = "DatenMeister::ExtentLoaderConfig";
 
@@ -55,7 +55,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the mapping between configuration types and storage provider
         /// </summary>
-        private readonly IConfigurationToExtentStorageMapper _map;
+        private readonly ConfigurationToExtentStorageMapper _map;
 
         private readonly ILifetimeScope _diScope;
 
@@ -68,7 +68,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         public ExtentManager(
             ExtentStorageData data,
-            IConfigurationToExtentStorageMapper map,
+            ConfigurationToExtentStorageMapper map,
             ILifetimeScope diScope,
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage)
@@ -132,7 +132,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     fileConfiguration.filePath = Path.Combine(_integrationSettings.DatabasePath, fileConfiguration.filePath);
                 }
 
-                if (Directory.Exists((fileConfiguration.filePath)))
+                if (Directory.Exists(fileConfiguration.filePath))
                 {
                     throw new InvalidOperationException("Given file is a directory name. ");
                 }
@@ -144,8 +144,18 @@ namespace DatenMeister.Runtime.ExtentStorage
                 throw new InvalidOperationException($"Uri of Extent is not well-formed: {configuration.extentUri}");
             }
 
-            // Creates the extent loader, being capable to load or store an extent
-            var extentLoader = _map.CreateFor(_diScope, configuration);
+            var extentLoader = CreateProviderLoader(configuration);
+
+            // Ok, now we have the provider. If the provider also supports the locking, check whether it can be locked
+            if (extentLoader is IProviderLocking providerLocking)
+            {
+                if (providerLocking.IsLocked(configuration) && _integrationSettings.IsLockingActivated)
+                {
+                    throw new InvalidOperationException("The provider is locked");
+                }
+
+                providerLocking.Lock(configuration);
+            }
 
             // Loads the extent
             var loadedProviderInfo = extentLoader.LoadProvider(configuration, extentCreationFlags);
@@ -188,6 +198,13 @@ namespace DatenMeister.Runtime.ExtentStorage
             VerifyDatabaseContent();
             
             return (extent, false);
+        }
+
+        private IProviderLoader CreateProviderLoader(ExtentLoaderConfig configuration)
+        {
+            // Creates the extent loader, being capable to load or store an extent
+            var extentLoader = _map.CreateFor(_diScope, configuration);
+            return extentLoader;
         }
 
         /// <summary>
@@ -304,6 +321,19 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
+        /// Unlocks the defined extent
+        /// </summary>
+        /// <param name="configuration">Configuration to be evaluated</param>
+        public void UnlockProvider(ExtentLoaderConfig configuration)
+        {
+            var providerLoader = CreateProviderLoader(configuration);
+            if (providerLoader is IProviderLocking providerLocking)
+            {
+                providerLocking.Unlock(configuration);
+            }
+        }
+
+        /// <summary>
         /// Detaches the extent by removing it from the database of loaded extents
         /// </summary>
         /// <param name="extent"></param>
@@ -316,6 +346,9 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     _extentStorageData.LoadedExtents.Remove(information);
                     Logger.Info($"Detaching extent: {information.Configuration}");
+
+                    var configuration = information.Configuration;
+                    UnlockProvider(configuration);
                 }
             }
 
@@ -498,7 +531,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores all extents
         /// </summary>
-        public void StoreAllExtents()
+        /// <param name="unlock">true, if the extents shall also be removed from the internal list of loaded
+        /// extents which also means that the providers are unlocked</param>
+        public void StoreAllExtents(bool unlock)
         {
             VerifyDatabaseContent();
                 
@@ -521,6 +556,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                 try
                 {
                     StoreExtent(info.Extent);
+                    if (unlock)
+                    {
+                        UnlockProvider(info.Configuration);
+                    }
                 }
                 catch (Exception exc)
                 {

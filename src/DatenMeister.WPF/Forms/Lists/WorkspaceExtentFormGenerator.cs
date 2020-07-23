@@ -319,7 +319,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)
                 {
-                    var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
 
                     try
                     {
@@ -348,7 +348,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var uri = item.getOrDefault<string>(nameof(Extent.uri));
                 var storeExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, uri);
 
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 if (storeExtent != null)
                 {
                     extentManager.StoreExtent(storeExtent);

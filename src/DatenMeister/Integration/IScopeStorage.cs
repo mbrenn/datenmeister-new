@@ -8,7 +8,7 @@
         /// </summary>
         /// <param name="item">Item to be added</param>
         /// <typeparam name="T">Type of the item to be added</typeparam>
-        void Add<T>(T item);
+        IScopeStorage Add<T>(T item);
 
         /// <summary>
         /// Gets the storage item which was added via AddStorage Item.

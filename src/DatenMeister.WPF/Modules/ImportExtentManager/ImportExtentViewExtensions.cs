@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
@@ -137,7 +138,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 if (result != null)
                 {
                     // Now, we got the item extent...
-                    var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                     var loadedExtent = extentManager.LoadExtentWithoutAdding(result);
                     if (loadedExtent != null)
                     {

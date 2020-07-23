@@ -63,7 +63,7 @@ namespace DatenMeister.Tests.Excel
                     sheetName = "Tabelle1"
                 };
 
-                var extentManager = dm.Resolve<IExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
@@ -109,7 +109,7 @@ namespace DatenMeister.Tests.Excel
                     sheetName = "Tabelle1"
                 };
 
-                var extentManager = dm.Resolve<IExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 

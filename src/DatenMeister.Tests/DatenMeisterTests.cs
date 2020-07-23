@@ -53,7 +53,7 @@ namespace DatenMeister.Tests
         /// </summary>
         /// <param name="dropDatabase">true, if the database shall be dropped</param>
         /// <returns>The created integration settings</returns>
-        private static IntegrationSettings GetIntegrationSettings(bool dropDatabase = true)
+        public static IntegrationSettings GetIntegrationSettings(bool dropDatabase = true)
         {
             var path = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),

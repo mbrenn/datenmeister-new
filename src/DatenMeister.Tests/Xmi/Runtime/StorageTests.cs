@@ -2,6 +2,7 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
@@ -39,7 +40,8 @@ namespace DatenMeister.Tests.Xmi.Runtime
                 filePath = DatenMeisterTests.GetPathForTemporaryStorage("data.xml")
             };
 
-            var xmiStorage = new XmiStorage();
+            var xmiStorage = new XmiProviderLoader(new ScopeStorage().Add(new ExtentStorageData()));
+            
             xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
 
             var otherExtent = new MofUriExtent(xmiStorage.LoadProvider(xmiStorageConfiguration, ExtentCreationFlags.LoadOnly).Provider, "dm:///tests/");

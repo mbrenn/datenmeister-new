@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Runtime
 
             // Changes content, store it and check, if stored
             ((IObject) csvExtent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
-            logic.StoreAllExtents();
+            logic.StoreAllExtents(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);

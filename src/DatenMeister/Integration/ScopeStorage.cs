@@ -12,7 +12,7 @@ namespace DatenMeister.Integration
         /// <summary>
         /// Stores the items and is also used to be thread safe
         /// </summary>
-        private Dictionary<Type, object> _storage = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> _storage = new Dictionary<Type, object>();
 
         public void Add<T>(T item)
         {
@@ -24,7 +24,7 @@ namespace DatenMeister.Integration
             }
         }
 
-        public T Get<T>()
+        public T Get<T>() where T : new()
         {
             lock (_storage)
             {
@@ -32,8 +32,10 @@ namespace DatenMeister.Integration
                 {
                     return (T) result;
                 }
-                
-                throw new InvalidOperationException($"Instance of {typeof(T)} is not found in storage");
+
+                var newResult = new T();
+                Add(newResult);
+                return newResult;
             }
         }
 

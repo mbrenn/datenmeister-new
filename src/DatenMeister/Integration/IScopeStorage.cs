@@ -16,7 +16,7 @@
         /// </summary>
         /// <typeparam name="T">Type to be retrieved</typeparam>
         /// <returns>The found storage item</returns>
-        T Get<T>();
+        T Get<T>() where T : new();
 
         /// <summary>
         /// Tries to get a value and returns null, if value is not found

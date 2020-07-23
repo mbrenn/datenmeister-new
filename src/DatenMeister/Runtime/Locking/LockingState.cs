@@ -11,9 +11,8 @@ namespace DatenMeister.Runtime.Locking
         
         internal HashSet<string> LockFilePaths { get; } = new HashSet<string>();
 
-        internal Mutex GlobalMutex { get; } = new Mutex(false, "DatenMeister.LockingState");
+        internal Mutex GlobalMutex { get; } = new Mutex(false, "Global\\DatenMeister.LockingState");
         
-
         /// <summary>
         /// Defines the timespan for the locking
         /// </summary>

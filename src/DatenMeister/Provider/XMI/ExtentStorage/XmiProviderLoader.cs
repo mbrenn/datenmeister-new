@@ -10,17 +10,20 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Locking;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageLoaderConfig))]
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
+        private readonly LockingLogic _lockingLogic;
         private readonly ExtentStorageData _extentStorageData;
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
 
-        public XmiProviderLoader(IScopeStorage scopeStorage)
+        public XmiProviderLoader(IScopeStorage scopeStorage, LockingLogic lockingLogic)
         {
+            _lockingLogic = lockingLogic;
             _extentStorageData = scopeStorage.Get<ExtentStorageData>();
         }
         
@@ -126,11 +129,6 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             return config.filePath + ".lock";
         }
 
-        /// <summary>
-        /// Defines the timespan for the locking
-        /// </summary>
-        private readonly TimeSpan _lockingTimeSpan = TimeSpan.FromSeconds(30);
-
         public bool IsLocked(ExtentLoaderConfig configuration)
         {
             if (!(configuration is XmiStorageLoaderConfig xmiConfiguration))
@@ -139,20 +137,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             }
 
             var path = GetLockFilePath(xmiConfiguration);
-            if (File.Exists(path))
-            {
-                var lastUpdateText = File.ReadAllText(path);
-                if (DateTime.TryParse(lastUpdateText, CultureInfo.InvariantCulture, DateTimeStyles.None,
-                    out var lastUpdate))
-                {
-                    if (Math.Abs((DateTime.Now - lastUpdate).Seconds) < _lockingTimeSpan.Seconds)
-                    {
-                        return true;
-                    }
-                };
-            }
-
-            return false;
+            return _lockingLogic.IsLocked(path);
         }
 
         public void Lock(ExtentLoaderConfig configuration)
@@ -162,27 +147,8 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 return;
             }
             
-            UpdateLockFile(xmiConfiguration);
-            
-            Logger.Info("Locking: " + configuration.extentUri);
-        }
-
-        private void UpdateLockFile(XmiStorageLoaderConfig xmiConfiguration)
-        {
-            CreateDirectoryIfNecessary(xmiConfiguration);
             var path = GetLockFilePath(xmiConfiguration);
-
-            var dateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            File.WriteAllText(path, dateTime);
-            Logger.Info("Updated Lockfile: " + xmiConfiguration.extentUri);
-
-            Task.Delay((int) _lockingTimeSpan.TotalMilliseconds - 1000).ContinueWith((task) =>
-            {
-                if (_extentStorageData?.LoadedExtents.Any(x => x.Configuration == xmiConfiguration) == true)
-                {
-                    UpdateLockFile(xmiConfiguration);
-                }
-            });
+            _lockingLogic.Lock(path);
         }
 
         public void Unlock(ExtentLoaderConfig configuration)
@@ -193,12 +159,7 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             }
             
             var path = GetLockFilePath(xmiConfiguration);
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-            
-            Logger.Info("Unlocking: " + configuration.extentUri);
+            _lockingLogic.Unlock(path);
         }
     }
 }

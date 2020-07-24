@@ -35,7 +35,7 @@ namespace DatenMeister.Modules.ExtentPropertyElementHandler
             foreach (var property in extentSettings.propertyDefinitions)
             {
                 var newData = new DefaultElementInteraction(
-                    $"Edit {property.title}",
+                    $"Configure {property.title}",
                     async (x,y) =>
                     {
                         var foundElement = element.getOrDefault<IElement>(property.name);

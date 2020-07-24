@@ -298,7 +298,16 @@ namespace DatenMeister.WPF.Forms.Lists
                     window.SetDefaultProperties();
                     window.SetRootItem(Extent);
                     window.ItemSelected += async (x, y) =>
-                        await NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                    {
+                        if (y.Item is IExtent asExtent)
+                        {
+                            await NavigatorForExtents.OpenPropertiesOfExtent(NavigationHost, asExtent);
+                        }
+                        else
+                        {
+                            await NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                        }
+                    };
                     window.Show();
                 }
             }

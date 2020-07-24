@@ -826,7 +826,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="selectedObject">Selected element</param>
         private void NavigateToElement(IObject selectedObject)
         {
-            _ = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedObject);
+            if (selectedObject is IExtent asExtent)
+            {
+                _ = NavigatorForExtents.OpenPropertiesOfExtent(NavigationHost, asExtent);
+            }
+            else
+            {
+                _ = NavigatorForItems.NavigateToElementDetailView(NavigationHost, selectedObject);
+            }
         }
 
 

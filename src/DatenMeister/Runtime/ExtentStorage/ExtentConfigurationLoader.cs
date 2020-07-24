@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -36,13 +37,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         private ExtentManager ExtentManager { get; }
 
         public ExtentConfigurationLoader(
-            ExtentStorageData extentStorageData,
+            IScopeStorage scopeStorage,
             ExtentManager extentManager,
             ConfigurationToExtentStorageMapper mapper)
         {
             _mapper = mapper;
             ExtentManager = extentManager;
-            ExtentStorageData = extentStorageData;
+            ExtentStorageData = scopeStorage.Get<ExtentStorageData>();
         }
 
         /// <summary>

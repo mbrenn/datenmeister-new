@@ -298,7 +298,7 @@ namespace DatenMeister.Uml.Helper
         /// <returns>true, if primitive type, otherwise false, if probably of class or something else</returns>
         public static bool IsOfPrimitiveType(IElement element)
         {
-            return (element.getMetaClass() as IHasId)?.Id == "PrimitiveType";
+            return (element.getMetaClass() as IHasId)?.Id?.EndsWith("PrimitiveType") == true;
         }
     }
 }

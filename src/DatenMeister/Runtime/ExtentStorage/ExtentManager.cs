@@ -58,7 +58,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly ConfigurationToExtentStorageMapper _map;
 
-        private readonly ILifetimeScope _diScope;
+        private readonly ILifetimeScope? _diScope;
+        private readonly IScopeStorage _scopeStorage;
 
         /// <summary>
         /// Gets the workspace logic for the extent manager
@@ -68,13 +69,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly IntegrationSettings _integrationSettings;
 
         public ExtentManager(
-            ExtentStorageData data,
             ConfigurationToExtentStorageMapper map,
-            ILifetimeScope diScope,
+            ILifetimeScope? diScope,
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage)
         {
-            _extentStorageData = data ?? throw new ArgumentNullException(nameof(data));
+            _scopeStorage = scopeStorage ?? throw new ArgumentNullException(nameof(scopeStorage));
+            _extentStorageData = scopeStorage?.Get<ExtentStorageData>() ?? throw new InvalidOperationException("Extent Storage Data not found");
             _map = map ?? throw new ArgumentNullException(nameof(map));
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             var integrationSettings = scopeStorage.Get<IntegrationSettings>();
@@ -153,7 +154,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (providerLocking.IsLocked(configuration))
                 {
                     var asFilePath = configuration as ExtentFileLoaderConfig;
-                    throw new IsLockedException("The provider is locked", asFilePath?.filePath ?? string.Empty);
+                    var filePath = asFilePath?.filePath ?? string.Empty;
+                    throw new IsLockedException($"The provider is locked: {filePath}", asFilePath?.filePath ?? string.Empty);
                 }
 
                 providerLocking.Lock(configuration);
@@ -390,7 +392,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 // Stores the last the exception
                 Exception? lastException = null;
                 
-                var configurationLoader = new ExtentConfigurationLoader(_extentStorageData, this, _map);
+                var configurationLoader = new ExtentConfigurationLoader(_scopeStorage, this, _map);
                 List<Tuple<ExtentLoaderConfig, XElement>>? loaded = null;
                 try
                 {

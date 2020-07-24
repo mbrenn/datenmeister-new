@@ -12,6 +12,7 @@ using DatenMeister.Integration;
 using DatenMeister.NetCore;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Locking;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF;
 using DatenMeister.WPF.Forms;
@@ -64,6 +65,14 @@ namespace DatenMeisterWPF
                 GiveMe.Scope = await Task.Run(
                     () => GiveMeDotNetCore.DatenMeister(defaultSettings));
             }
+            catch (IsLockedException exception)
+            {
+                MessageBox.Show($"The following file is currently locked:\r\n\r\n{exception.FilePath}\r\n\r\n" +
+                                $"The Application will be closed. Please check whether another application is running.");
+                DoCloseWithoutAcknowledgement = true;
+                Close();
+                return;
+            }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.ToString());
@@ -76,9 +85,8 @@ namespace DatenMeisterWPF
             _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData);
 
             var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
-            
-            var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
-            if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
+            var extentStorageData = GiveMe.Scope.ScopeStorage.Get<ExtentStorageData>();
+            if (extentStorageData.FailedLoading)
             {
                 Title += " (READ-ONLY)";
                 var message = extentStorageData.FailedLoadingException == null
@@ -253,16 +261,20 @@ namespace DatenMeisterWPF
                 canUnregister.Unregister();
             }
             
-            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
-            var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
             
             // Asks the user, if he was not already asked before
-            if (!DoCloseWithoutAcknowledgement && MessageBox.Show(
+
+            if (!DoCloseWithoutAcknowledgement)
+            {
+                var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
+                var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
+                if (MessageBox.Show(
                     $"Are you sure, that you would like to close '{windowTitle}'",
                     $"Close {windowTitle}?",
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-            {
-                e.Cancel = true;
+                {
+                    e.Cancel = true;
+                }
             }
         }
 

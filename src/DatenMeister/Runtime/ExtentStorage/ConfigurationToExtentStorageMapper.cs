@@ -22,14 +22,14 @@ namespace DatenMeister.Runtime.ExtentStorage
             /// <summary>
             /// The function to create the provider loader
             /// </summary>
-            public Func<ILifetimeScope, IProviderLoader?> Function { get; set; }
+            public Func<ILifetimeScope?, IProviderLoader?> Function { get; set; }
 
             /// <summary>
             /// The connected type
             /// </summary>
             public Type ConnectedType { get; set; }
 
-            public ConfigurationInfo(Func<ILifetimeScope, IProviderLoader?> function, Type connectedType)
+            public ConfigurationInfo(Func<ILifetimeScope?, IProviderLoader?> function, Type connectedType)
             {
                 Function = function;
                 ConnectedType = connectedType;
@@ -69,12 +69,16 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var fullName = typeConfiguration.FullName;
                 if (fullName == null) return;
                 _mapping[fullName] =
-                    new ConfigurationInfo(scope => scope.Resolve(typeExtentStorage) as IProviderLoader,
+                    new ConfigurationInfo(scope =>
+                        {
+                            if (scope == null) throw new ArgumentException(nameof(scope));
+                            return scope.Resolve(typeExtentStorage) as IProviderLoader;
+                        },
                         typeConfiguration);
             }
         }
 
-        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope, IProviderLoader?> factoryExtentStorage)
+        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope?, IProviderLoader?> factoryExtentStorage)
         {
             lock (_mapping)
             {
@@ -85,7 +89,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
-        public IProviderLoader CreateFor(ILifetimeScope scope, ExtentLoaderConfig configuration)
+        public IProviderLoader CreateFor(ILifetimeScope? scope, ExtentLoaderConfig configuration)
         {
             lock (_mapping)
             {

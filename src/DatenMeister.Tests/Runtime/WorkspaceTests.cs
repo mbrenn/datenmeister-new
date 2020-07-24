@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using NUnit.Framework;
@@ -19,10 +20,11 @@ namespace DatenMeister.Tests.Runtime
             var newWorkSpaceCollection = WorkspaceLogic.GetEmptyLogic();
             workspaceLoader = new WorkspaceLoader(
                 workSpaceCollection,
-                new WorkspaceLoaderConfig
-                (
-                    DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
-                ));
+                new ScopeStorage().Add(
+                    new WorkspaceLoaderConfig
+                    (
+                        DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
+                    )));
             workspaceLoader.Load();
 
             Assert.That(newWorkSpaceCollection.Workspaces.Count(), Is.EqualTo(0));
@@ -108,8 +110,9 @@ namespace DatenMeister.Tests.Runtime
         {
             var workspaceLoader = new WorkspaceLoader(
                 workSpaceCollection,
-                new WorkspaceLoaderConfig(DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
-                ));
+                new ScopeStorage().Add(
+                    new WorkspaceLoaderConfig(DatenMeisterTests.GetPathForTemporaryStorage("workspaces.xml")
+                    )));
             return workspaceLoader;
         }
 

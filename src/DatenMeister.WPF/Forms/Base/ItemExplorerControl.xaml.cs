@@ -100,7 +100,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
-        public IObject Item => SelectedPackage ?? Extent;
+        public IObject Item => SelectedItem ?? Extent;
 
         /// <summary>
         ///     Gets the definition of the current form
@@ -122,11 +122,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// selected
         /// </summary>
         public IObject? SelectedItem { get; protected set; }
-
-        /// <summary>
-        ///     Defines the item that the user currently has selected on the object tree. 
-        /// </summary>
-        public IObject? SelectedPackage { get; protected set; }
 
         /// <summary>
         ///     Gets a value indicating whether the user has selected an extent within the
@@ -366,7 +361,6 @@ namespace DatenMeister.WPF.Forms.Base
         {
             NavigationTreeView.SetDefaultProperties();
             NavigationTreeView.ItemsSource = RootItem;
-            SelectedPackage = null;
             IsExtentSelectedInTreeview = true;
             SelectedItem = RootItem;
         }
@@ -722,12 +716,12 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     if (innerParentProperty == null)
                         throw new InvalidOperationException("parentProperty == null");
-                    if (SelectedPackage == null)
+                    if (SelectedItem == null)
                         throw new InvalidOperationException("SelectedPackage == null");
 
                     await NavigatorForItems.NavigateToNewItemForItem(
                         NavigationHost,
-                        SelectedPackage,
+                        SelectedItem,
                         innerParentProperty, type);
                 }
             }
@@ -809,11 +803,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void NavigationTreeView_OnItemSelected(object sender, ItemEventArgs e)
         {
-            SelectedPackage = e.Item;
-            
             // Only, if the selected package is null (indicating the root) and
             // if the selected package is not the root package, then assume that a child is selected
-            if (e.Item != null && SelectedPackage?.equals(RootItem) != true)
+            if (e.Item != null && e.Item?.equals(RootItem) != true)
             {
                 SelectedItem = e.Item;
                 IsExtentSelectedInTreeview = false;

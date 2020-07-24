@@ -70,7 +70,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var overridingDefinition = OverridingViewDefinition;
 
             if (IsExtentSelectedInTreeview ||
-                SelectedPackage is IElement selectedElement &&
+                SelectedItem is IElement selectedElement &&
                 selectedElement.metaclass?.@equals(managementProvider.__Workspace) == true)
             {
                 var formDefinition = overridingDefinition ??
@@ -81,11 +81,11 @@ namespace DatenMeister.WPF.Forms.Lists
                     SelectedItem,
                     formDefinition);
             }
-            else if (SelectedPackage != null)
+            else if (SelectedItem != null)
             {
                 var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 var form = viewLogic.GetItemTreeFormForObject(
-                               SelectedPackage, 
+                               SelectedItem, 
                                FormDefinitionMode.Default, 
                                CurrentViewModeId)
                            ?? throw new InvalidOperationException("form == null");

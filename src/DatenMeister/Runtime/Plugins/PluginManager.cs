@@ -14,7 +14,7 @@ namespace DatenMeister.Runtime.Plugins
         private List<Type>? _pluginTypes;
 
         /// <summary>
-        /// Gets or sets va value indicating whtether at least one exception occured during the loading.
+        /// Gets or sets va value indicating whether at least one exception occured during the loading.
         /// </summary>
         public bool NoExceptionDuringLoading { get; set; }
 

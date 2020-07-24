@@ -127,8 +127,7 @@ namespace DatenMeister.Integration
 
             // Loading and storing the workspaces
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig(PathWorkspaces);
-
-            kernel.RegisterInstance(workspaceLoadingConfiguration).As<WorkspaceLoaderConfig>();
+            scopeStorage.Add(workspaceLoadingConfiguration);
             kernel.RegisterType<WorkspaceLoader>().As<WorkspaceLoader>();
 
             kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
@@ -137,8 +136,8 @@ namespace DatenMeister.Integration
             kernel.RegisterType<FormFinder>().As<FormFinder>();
 
             var pluginManager = new PluginManager();
-            kernel.RegisterInstance(pluginManager).As<PluginManager>();
-
+            scopeStorage.Add(pluginManager);
+            
             var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
 

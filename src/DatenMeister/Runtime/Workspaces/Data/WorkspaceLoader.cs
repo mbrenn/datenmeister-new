@@ -1,5 +1,6 @@
 ﻿using System;
 using BurnSystems.Logging;
+using DatenMeister.Integration;
 
 namespace DatenMeister.Runtime.Workspaces.Data
 {
@@ -17,10 +18,10 @@ namespace DatenMeister.Runtime.Workspaces.Data
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic { get; set; }
 
-        public WorkspaceLoader(IWorkspaceLogic workspaceLogic, WorkspaceLoaderConfig config)
+        public WorkspaceLoader(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
-            Config = config ?? throw new ArgumentNullException(nameof(config));
+            Config = scopeStorage.Get<WorkspaceLoaderConfig>();
         }
 
         /// <summary>

@@ -9,7 +9,6 @@ using DatenMeister.Integration;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;

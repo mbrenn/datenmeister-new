@@ -17,7 +17,6 @@ using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.ExtentStorage.Validators;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;

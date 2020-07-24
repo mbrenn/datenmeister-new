@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
@@ -65,12 +64,12 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (form == null)
             {
-                var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
+                var selectedItemMetaClass = (SelectedItem as IElement)?.getMetaClass();
                 var extent = Extent ?? throw new InvalidOperationException("Extent == null");
-                if (selectedItemMetaClass != null && SelectedPackage != null
+                if (selectedItemMetaClass != null && SelectedItem != null
                     && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
                 {
-                    var workspaceId = SelectedPackage.getOrDefault<string>("id");
+                    var workspaceId = SelectedItem.getOrDefault<string>("id");
                     form = WorkspaceExtentFormGenerator.RequestFormForExtents(extent, workspaceId, NavigationHost);
                 }
                 else

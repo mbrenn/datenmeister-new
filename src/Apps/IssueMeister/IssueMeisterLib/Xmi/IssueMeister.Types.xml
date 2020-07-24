@@ -2,10 +2,15 @@
 <item>
   <package name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/xmi/uml#Class" p1:id="IssueMeister.Issue" name="Issue">
-      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="id" isID="True" type-ref="dm:///_internal/xmi/primitivetypes#Integer" />
-      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="name" type-ref="dm:///_internal/xmi/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="state" type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="Open" />
-      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="description" type-ref="dm:///_internal/xmi/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="id" isID="True" type-ref="dm:///_internal/model/primitivetypes#Integer" />
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="state" type-ref="#IssueMeister.IssueState" defaultValue="Open" />
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="description" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" name="IssueState" p1:id="IssueMeister.IssueState" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="Open" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="InWork" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="Closed" />
     </packagedElement>
   </package>
 </item>

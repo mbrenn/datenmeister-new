@@ -17,6 +17,17 @@
                         p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode"
                         name="input" p1:id="IssueMeister.FilterOpen.Node1"/>
             </packagedElement>
+            <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"
+                             name="Filter In Work">
+                <packagedElement
+                        p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.FilterPropertyNode"
+                        name="In Work Issues"
+                        input-ref="#IssueMeister.FilterInWork.Node1" property="state" value="InWork" comparisonMode="Equal"
+                        p1:id="IssueMeister.InWorkIssuesViews"/>
+                <packagedElement
+                        p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode"
+                        name="input" p1:id="IssueMeister.FilterInWork.Node1"/>
+            </packagedElement>
         </packagedElement>
 
         <!-- The forms -->
@@ -28,8 +39,8 @@
                        title="id" width="10"/>
                 <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
                        title="name"/>
-                <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state"
-                       title="state"/>
+                <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="state"
+                       title="state" valuesByEnumeration-ref="dm:///_internal/types/internal#IssueMeister.IssueState"/>
                 <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
                        name="description" title="description" lineHeight="8"/>
                 <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
@@ -76,6 +87,24 @@
                 <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" name="Open Issues"
                      metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement"
                      viewNode-ref="#IssueMeister.OpenIssuesViews">
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id"
+                           title="id" isReadOnly="True" width="10"/>
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
+                           title="name" isReadOnly="True"/>
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="state"
+                           title="state" isReadOnly="True"/>
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                           name="description" title="description" lineHeight="8"/>
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData"
+                           name="Metaclass"/>
+                    <defaultTypesForNewElements name="Issue"
+                                                metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue"
+                                                parentProperty="packagedElement"
+                                                p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement"/>
+                </tab>
+                <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" name="In Work Issues"
+                     metaClass-ref="dm:///_internal/types/internal#IssueMeister.Issue" property="packagedElement"
+                     viewNode-ref="#IssueMeister.InWorkIssuesViews">
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="id"
                            title="id" isReadOnly="True" width="10"/>
                     <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"

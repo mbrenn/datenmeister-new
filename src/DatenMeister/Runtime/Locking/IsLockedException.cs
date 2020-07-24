@@ -2,6 +2,9 @@
 
 namespace DatenMeister.Runtime.Locking
 {
+    /// <summary>
+    /// Defines the exception, that a an extent could not be loaded
+    /// </summary>
     public class IsLockedException : InvalidOperationException
     {
         public IsLockedException(string filePath)

@@ -153,7 +153,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (providerLocking.IsLocked(configuration))
                 {
                     var asFilePath = configuration as ExtentFileLoaderConfig;
-                    throw new IsLockedException("The provider is locked", asFilePath?.filePath ?? string.Empty);
+                    var filePath = asFilePath?.filePath ?? string.Empty;
+                    throw new IsLockedException($"The provider is locked: {filePath}", asFilePath?.filePath ?? string.Empty);
                 }
 
                 providerLocking.Lock(configuration);

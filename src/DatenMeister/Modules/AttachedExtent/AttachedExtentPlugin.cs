@@ -53,7 +53,7 @@ namespace DatenMeister.Modules.AttachedExtent
                     "DatenMeister.XmiFiles.Modules.AttachedExtent.xmi",
                     "Forms",
                     _formsPlugin.GetInternalFormExtent(),
-                    "Reports");
+                    "DatenMeister::AttachedExtent");
             }
         }
     }

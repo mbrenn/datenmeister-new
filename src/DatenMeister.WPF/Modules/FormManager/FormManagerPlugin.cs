@@ -34,7 +34,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 "DatenMeister.XmiFiles.Forms.Formmanager.xmi",
                 PackageName,
                 _formsPlugin.GetInternalFormExtent(),
-                PackageName);
+                $"DatenMeister::{PackageName}");
         }
     }
 }

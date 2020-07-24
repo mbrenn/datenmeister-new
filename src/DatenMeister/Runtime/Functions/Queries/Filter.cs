@@ -215,7 +215,7 @@ namespace DatenMeister.Runtime.Functions.Queries
             this IReflectiveCollection collection,
             string property)
             =>
-                new OrderByProperty(collection, property);
+                new OrderByProperties(collection, new[] {property});
 
         /// <summary>
         /// Orders the reflective section by the given property

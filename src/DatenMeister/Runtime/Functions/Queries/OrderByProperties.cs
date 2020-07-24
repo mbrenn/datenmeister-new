@@ -19,13 +19,8 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 throw new ArgumentNullException(nameof(properties));
             }
-            
-            if (parent == null)
-            {
-                throw new ArgumentNullException(nameof(parent));
-            }
-            
-            _parent = parent;
+
+            _parent = parent ?? throw new ArgumentNullException(nameof(parent));
             _orderByProperty = properties.ToList();
         }
 
@@ -55,12 +50,17 @@ namespace DatenMeister.Runtime.Functions.Queries
 
             // Build up the Query
             var firstColumn = _orderByProperty[0];
+            if (firstColumn.StartsWith("!"))
+            {
+                firstColumn = firstColumn.Substring(1);
+            }
+            
             var current =
                 firstColumn.StartsWith("!")
                     ? _parent
-                        .OrderByDescending(x => (x as IObject)?.getOrDefault<string>(firstColumn.Substring(1)))
+                        .OrderByDescending(x => SelectObject(x, firstColumn))
                     : _parent
-                        .OrderBy(x => (x as IObject)?.getOrDefault<string>(firstColumn));
+                        .OrderBy(x => SelectObject(x, firstColumn));
 
             for (var n = 1; n < _orderByProperty.Count; n++)
             {
@@ -69,12 +69,12 @@ namespace DatenMeister.Runtime.Functions.Queries
                 {
                     currentColumn = currentColumn.Substring(1);
                     current = current
-                        .ThenByDescending(x => (x as IObject)?.getOrDefault<string>(currentColumn));
+                        .ThenByDescending(x => SelectObject(x, currentColumn));
                 }
                 else
                 {
                     current = current
-                        .ThenBy(x => (x as IObject)?.getOrDefault<string>(currentColumn));
+                        .ThenBy(x => SelectObject(x, currentColumn));
                 }
             }
             
@@ -83,6 +83,22 @@ namespace DatenMeister.Runtime.Functions.Queries
                 if (item == null) continue;
                 
                 yield return item;
+            }
+
+            object? SelectObject(object? x, string column)
+            {
+                if (x is IObject asObject)
+                {
+                    var value = asObject.getOrDefault<object>(column);
+                    if (value is int || value is double)
+                    {
+                        return value;
+                    }
+
+                    return value.ToString();
+                }
+
+                return null;
             }
         }
 

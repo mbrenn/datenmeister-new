@@ -85,9 +85,8 @@ namespace DatenMeisterWPF
             _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData);
 
             var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
-            
-            var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
-            if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
+            var extentStorageData = GiveMe.Scope.ScopeStorage.Get<ExtentStorageData>();
+            if (extentStorageData.FailedLoading)
             {
                 Title += " (READ-ONLY)";
                 var message = extentStorageData.FailedLoadingException == null

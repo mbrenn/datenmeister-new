@@ -37,7 +37,11 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (customAttribute is ConfiguredByAttribute configuredByAttribute)
                 {
                     map.AddMapping(configuredByAttribute.ConfigurationType,
-                        scope => (IProviderLoader) scope.Resolve(type));
+                        scope =>
+                        {
+                            if (scope == null) throw new ArgumentException(nameof(scope));
+                            return (IProviderLoader) scope.Resolve(type);
+                        });
 
                     Logger.Trace(
                         $"Extent loader '{configuredByAttribute.ConfigurationType.Name}' configures '{type.Name}'");

@@ -110,7 +110,6 @@ namespace DatenMeister.Integration
             {
                 FilePath = PathExtents
             };
-            kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
             scopeStorage.Add(extentStorageData);
             kernel.RegisterType<ExtentManager>().As<ExtentManager>();
 

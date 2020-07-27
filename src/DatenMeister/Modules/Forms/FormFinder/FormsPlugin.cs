@@ -115,7 +115,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     var packageMethods = new PackageMethods(_workspaceLogic);
                     var internalFormExtent = GetInternalFormExtent();
                     var package =
-                        packageMethods.GetOrCreatePackageStructure(internalFormExtent.elements(), "ViewModes");
+                        packageMethods.GetOrCreatePackageStructure(
+                            internalFormExtent.elements(), "DatenMeister::ViewModes");
                     var created = MofFactory.Create(internalFormExtent,
                         GetFormAndFieldInstance(internalFormExtent).__ViewMode);
                     created.set(_FormAndFields._ViewMode.id, "Default");

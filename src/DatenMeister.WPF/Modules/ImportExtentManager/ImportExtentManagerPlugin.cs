@@ -31,7 +31,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 "DatenMeister.XmiFiles.Forms.ImportExtentManager.xmi",
                 PackageName,
                 _formsPlugin.GetInternalFormExtent(),
-                PackageName);
+                $"DatenMeister::{PackageName}");
         }
 
         public void PerformImport(IExtent sourceExtent, IReflectiveCollection items)

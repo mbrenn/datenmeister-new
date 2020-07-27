@@ -31,7 +31,6 @@ namespace DatenMeister.Uml.Plugin
             var extentSettings = scopeStorage.Get<ExtentSettings>();
             extentSettings.extentTypeSettings.Add(
                 new ExtentTypeSetting(ExtentType));
-            
         }
 
         public void Start(PluginLoadingPosition position)
@@ -41,7 +40,7 @@ namespace DatenMeister.Uml.Plugin
                 "DatenMeister.XmiFiles.Forms.UML.xmi",
                 PackageName,
                 _formsPlugin.GetInternalFormExtent(),
-                PackageName);
+                $"DatenMeister::{PackageName}");
         }
     }
 }

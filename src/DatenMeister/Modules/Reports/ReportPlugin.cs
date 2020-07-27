@@ -41,7 +41,7 @@ namespace DatenMeister.Modules.Reports
                 "DatenMeister.XmiFiles.Modules.Reports.xmi",
                 "Forms",
                 _formsPlugin.GetInternalFormExtent(),
-                "Reports");
+                "DatenMeister::Reports");
             
             _scopeStorage.Add(CreateEvaluators());
         }

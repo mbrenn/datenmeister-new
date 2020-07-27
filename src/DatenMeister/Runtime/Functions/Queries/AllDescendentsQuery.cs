@@ -129,6 +129,11 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         private IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable, ICollection<string>? byFollowingProperties, bool onlyComposites = false)
         {
+            if (valueAsEnumerable == null)
+            {
+                yield break;
+            }
+            
             if (valueAsEnumerable is MofReflectiveSequence reflectiveSequence)
             {
                 foreach (var element in reflectiveSequence.Enumerate(true))

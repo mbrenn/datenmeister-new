@@ -57,22 +57,39 @@ namespace DatenMeister.Modules.DefaultTypes
         public static IElement? GetDefaultPackageClassifier(IExtent extent)
         {
             // First look into the standard uml meta classes
-            var findByUrl = extent.FindInMeta<_UML>(x => x.Packages.__Package);
-            if (findByUrl == null)
-            {
-                // If not found, check for the default package model in the types workspace
-                findByUrl = extent.GetUriResolver()
-                    .ResolveElement(
-                        WorkspaceNames.UriExtentInternalTypes + "#" + typeof(Package).FullName, 
-                        ResolveType.OnlyMetaClasses);
-            }
-
+            var findByUrl = GetDefaultPackageClassifiers(extent).FirstOrDefault();
             if (findByUrl == null)
             {
                 Logger.Warn("No default package was found in the given extent");
             }
 
             return findByUrl;
+        }
+
+        /// <summary>
+        /// Gets the default classifiers defining packaging elements
+        /// </summary>
+        /// <param name="extent">Extent whose packages are evaluated</param>
+        /// <returns>The defined packages</returns>
+        public static IEnumerable<IElement> GetDefaultPackageClassifiers(IExtent extent)
+        {
+            // First look into the standard uml meta classes
+            var findByUrl = extent.FindInMeta<_UML>(x => x.Packages.__Package);
+            if (findByUrl != null)
+            {
+                yield return findByUrl;
+            }
+
+            // If not found, check for the default package model in the types workspace
+            findByUrl = extent.GetUriResolver()
+                .ResolveElement(
+                    WorkspaceNames.UriExtentInternalTypes + "#" + typeof(Package).FullName,
+                    ResolveType.OnlyMetaClasses);
+
+            if (findByUrl != null)
+            {
+                yield return findByUrl; 
+            }
         }
 
         /// <summary>

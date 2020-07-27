@@ -41,7 +41,7 @@ namespace DatenMeister.Modules.Reports.Evaluators
             if (form == null)
             {
                 // Create form
-                var formCreator = new FormCreator(
+                var formCreator = FormCreator.Create(
                     htmlReportCreator.WorkspaceLogic, 
                     null);
                 form = formCreator.CreateListFormForElements(elements, CreationMode.All);

@@ -50,7 +50,7 @@ namespace DatenMeister.Modules.Reports.Simple
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = reportConfiguration;
             _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
-            _formCreator = new FormCreator(workspaceLogic, null);
+            _formCreator = FormCreator.Create(workspaceLogic, null);
         }
 
         /// <summary>

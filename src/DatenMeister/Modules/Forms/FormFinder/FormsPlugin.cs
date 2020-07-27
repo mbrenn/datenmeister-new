@@ -122,6 +122,11 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     created.set(_FormAndFields._ViewMode.id, "Default");
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
+                    
+                    // Adds the View Mode for the forms
+                    var extentSetting =
+                        new ExtentTypeSetting("Forms");
+                    _extentSettings.extentTypeSettings.Add(extentSetting);
                     break;
             }
         }
@@ -631,6 +636,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <returns>The created instance of the form creator</returns>
         public FormCreator.FormCreator CreateFormCreator()
-            => new FormCreator.FormCreator(WorkspaceLogic, this, _extentSettings);
+            =>  FormCreator.FormCreator.Create(WorkspaceLogic, this, _extentSettings);
     }
 }

@@ -377,7 +377,10 @@ namespace DatenMeister.WPF.Forms.Fields
 
                 listItems.AddRange(
                     from x in specializedTypes
-                    select CreateButtonForType(x));
+                    let button = CreateButtonForType(x)
+                    orderby button.Item1
+                    select button
+                    );
             }
 
             // If user clicks on the button, an empty reflective collection is created

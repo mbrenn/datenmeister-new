@@ -12,5 +12,10 @@
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="InWork" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="Closed" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="IssueState" p1:id="IssueMeister.Iteration" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="id" isID="True" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/xmi/uml#Property" name="endDate" type-ref="dm:///_internal/types/internal#PrimitiveTypes.DateTime" />
+    </packagedElement>
   </package>
 </item>

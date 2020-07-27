@@ -115,10 +115,15 @@ namespace DatenMeister.WPF.Forms.Fields
             // Checks, whether the reference shall be included as an inline selection
             return _isInline
                 ? CreateInlineField(fieldData, fieldFlags)
-                : CreateSelectionField(element, navigationHost, fieldFlags, isReadOnly);
+                : CreateSelectionField(element, fieldData, navigationHost, fieldFlags, isReadOnly);
         }
 
-        private UIElement CreateSelectionField(IObject value, INavigationHost navigationHost, FieldParameter fieldFlags, bool isReadOnly)
+        private UIElement CreateSelectionField(
+            IObject value,
+            IElement fieldData,
+            INavigationHost navigationHost,
+            FieldParameter fieldFlags,
+            bool isReadOnly)
         {
             if (_name == null) throw new InvalidOperationException("_name == null");
             
@@ -154,15 +159,28 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
 
-                var (foundWorkspace, foundExtent ) = workspaceLogic.TryGetWorkspaceAndExtent(
+                var (foundWorkspace, foundExtent) = workspaceLogic.TryGetWorkspaceAndExtent(
                     _workspace,
                     _extent);
+
+
+                var configuration =
+                    new NavigatorForDialogs.NavigatorForDialogConfiguration
+                    {
+                        DefaultWorkspace = foundWorkspace,
+                        DefaultExtent = foundExtent
+                    };
                 
-                // TODO: Select the one, of the currently referenced field
+                var filterMetaClasses =
+                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+                if (filterMetaClasses != null)
+                {
+                    configuration.FilteredMetaClasses = filterMetaClasses.OfType<IElement>().ToList();
+                }
+                
                 var selectedItem = await NavigatorForDialogs.Locate(
                     navigationHost,
-                    foundWorkspace,
-                    foundExtent);
+                    configuration);
 
                 if (selectedItem != null)
                 {

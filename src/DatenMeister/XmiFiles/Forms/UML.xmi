@@ -54,7 +54,7 @@
         </packagedElement>
 
         <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package"
-                         p1:id="Package-UML.StructuredClassifiers.Class" name="Class"
+                         name="Class"
                          xmlns:p1="http://www.omg.org/spec/XMI/20131001">
             <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm"
                              p1:id="UML.StructuredClassifiers.ClassFormDetail" name="Class - Detail"
@@ -231,5 +231,7 @@
                              metaClass-ref="dm:///_internal/model/uml#EnumerationLiteral"
                              name="Association for EnumerationLiteral - List"/>
         </packagedElement>
+        
+        
     </item>
 </item>

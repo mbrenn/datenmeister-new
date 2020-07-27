@@ -136,6 +136,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private readonly HashSet<string> _propertiesForChildren = new HashSet<string>();
 
+        /// <summary>
+        /// Maps the items to the treeviewitem
+        /// </summary>
         private readonly Dictionary<IObject, TreeViewItem> _mappingItems = new Dictionary<IObject, TreeViewItem>();
 
         /// <summary>

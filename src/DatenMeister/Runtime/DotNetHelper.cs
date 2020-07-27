@@ -443,7 +443,7 @@ namespace DatenMeister.Runtime
         /// <param name="filePath"></param>
         public static void CreateProcess(string filePath, string? arguments = null)
         {
-            var startInfo = new ProcessStartInfo()
+            var startInfo = new ProcessStartInfo
             {
                 FileName = filePath,
                 UseShellExecute = true

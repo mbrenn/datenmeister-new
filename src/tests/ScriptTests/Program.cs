@@ -9,7 +9,7 @@ namespace ScriptTests
     {
         static void Main(string[] args)
         {
-            var configuration = new SimpleReportConfiguration()
+            var configuration = new SimpleReportConfiguration
             {
                 typeMode = ReportTableForTypeMode.PerType,
                 descendentMode = DescendentMode.Inline,

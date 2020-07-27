@@ -447,6 +447,9 @@ namespace DatenMeister.WPF.Forms.Base
                         n++;
                     }
 
+                    childModels.Sort((x,y) => 
+                        NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
+
                     if (n >= MaxItemsPerLevel) break;
                 }
 

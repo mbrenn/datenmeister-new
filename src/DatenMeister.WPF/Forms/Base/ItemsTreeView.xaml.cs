@@ -34,6 +34,10 @@ namespace DatenMeister.WPF.Forms.Base
     /// </summary>
     public partial class ItemsTreeView : UserControl, INavigationGuest
     {
+        /// <summary>
+        /// Just a configuration option which may be set during the development to recreate all items in treeview
+        /// instead of reusing the existing items
+        /// </summary>
         private const bool ConfigurationAlwaysRefresh = false;
             
         /// <summary>

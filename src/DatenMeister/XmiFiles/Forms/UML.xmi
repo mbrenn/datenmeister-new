@@ -231,7 +231,18 @@
                              metaClass-ref="dm:///_internal/model/uml#EnumerationLiteral"
                              name="Association for EnumerationLiteral - List"/>
         </packagedElement>
-        
-        
+
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="66674244-0809-4e95-a532-2253eeee08bb" name="PrimitiveType" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+            <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="1ff7698d-445b-45f9-a08f-6da03f9c8d91" name="Primitive Type - List">
+                <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="3c716d95-b5a4-4ac2-8c14-7b47ef6c23cc" name="Detail - Primitive Type">
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="be407fe8-cee5-40bd-a530-a0dd96e3264d" name="name" title="Name" />
+                </tab>
+            </packagedElement>
+            <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="c56fa272-2307-4c2a-a572-d4dce5206ee2" name="Primitive Type - Detail">
+                <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="fea0362e-2bda-4d33-a515-b22b69468353" name="name" title="Name" />
+            </packagedElement>
+            <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="d0da76dc-a286-4868-b0c0-f9a0e11b3eb9" name="Association - PrimitiveTypes - List" formType="TreeItemDetail" metaClass-ref="dm:///_internal/model/uml#PrimitiveType" form-ref="#1ff7698d-445b-45f9-a08f-6da03f9c8d91" />
+            <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="19bee149-04c9-4cbb-a51e-3523e094f75c" name="Association - PrimitiveTypes - Detail" formType="Detail" metaClass-ref="dm:///_internal/model/uml#PrimitiveType" form-ref="#c56fa272-2307-4c2a-a572-d4dce5206ee2" />
+        </packagedElement>
     </item>
 </item>

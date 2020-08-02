@@ -64,7 +64,6 @@ namespace DatenMeister.Tests.Provider
             var secondElement = second.getOrDefault<IElement>("element");
             Assert.That(secondElement, Is.Not.Null);
             Assert.That((secondElement as IHasId)!.Id, Is.EqualTo("first"));
-            
         }
     }
 }

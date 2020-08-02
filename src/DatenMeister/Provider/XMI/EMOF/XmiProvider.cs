@@ -33,6 +33,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         private static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
         
         internal object LockObject  = new object(); 
+        
+        internal Dictionary<string, string> NormalizationCache = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information

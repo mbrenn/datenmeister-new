@@ -301,7 +301,6 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Updates the text of the text block. 
         /// </summary>
         /// <param name="value">The item which is used to set the textfield</param>
-        /// <param name="_inputTextBox">The textblock which shall be followed</param>
         /// <returns>true, if an item was given</returns>
         private void UpdateTextOfTextBlock(IObject? value)
         {

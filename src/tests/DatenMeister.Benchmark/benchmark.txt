@@ -1,0 +1,20 @@
+﻿PropertyNameCache = false
+|               Method |     Mean |    Error |   StdDev |
+|--------------------- |---------:|---------:|---------:|
+| BenchMarkGetProperty | 60.30 us | 0.766 us | 0.717 us |
+
+
+PropertyNameCache = true:
+|               Method |     Mean |    Error |   StdDev |
+|--------------------- |---------:|---------:|---------:|
+| BenchMarkGetProperty | 60.28 us | 0.562 us | 0.499 us |
+
+No Lock, but not threadsafe
+|               Method |     Mean |    Error |   StdDev |
+|--------------------- |---------:|---------:|---------:|
+| BenchMarkGetProperty | 58.04 us | 1.064 us | 0.943 us |
+
+Threadsafe
+|               Method |     Mean |    Error |   StdDev |
+|--------------------- |---------:|---------:|---------:|
+| BenchMarkGetProperty | 59.50 us | 1.004 us | 0.939 us |

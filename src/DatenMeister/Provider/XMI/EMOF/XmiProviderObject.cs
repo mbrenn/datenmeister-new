@@ -16,19 +16,47 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// </summary>
     public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMovements
     {
+        private const bool ConfigurationUseNormalizationCache = true;
+     
+        private const bool ConfigurationUsePropertyCache = true;
+
+        /// <summary>
+        /// Defines a cache to store the property values upon the xml
+        /// </summary>
+        private readonly Dictionary<string, object> _propertyCache = new Dictionary<string, object>();
+
+#pragma warning disable 162
         /// <summary>
         /// Checks whether the given property name is valid. This conversion is used to store the data into the xml
         /// </summary>
         /// <param name="property"></param>
-        public static string NormalizePropertyName(string property)
+        private string NormalizePropertyName(string property)
         {
-            if (property == "href")
+            if (ConfigurationUseNormalizationCache)
             {
-                return "_href";
-            }
+                    if (_xmiProvider.NormalizationCache.TryGetValue(property, out var value))
+                    {
+                        return value;
+                    }
 
-            return XmlConvert.EncodeLocalName(property);
+                    value = property == "href"
+                        ? "_href"
+                        : XmlConvert.EncodeLocalName(property);
+
+                    _xmiProvider.NormalizationCache[property] = value;
+                    return value;
+                
+            }
+            else
+            {
+                var value = property == "href"
+                    ? "_href"
+                    : XmlConvert.EncodeLocalName(property);
+
+                return value;
+            }
         }
+#pragma warning restore 162
 
         /// <summary>
         /// Denormalizes the property names, so they can be stored into the xml.
@@ -53,7 +81,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         /// <param name="propertyName">The name of the property to be converted</param>
         /// <returns>The proeprty with added-ref</returns>
-        private static string ConvertPropertyToReference(string propertyName) =>
+        private string ConvertPropertyToReference(string propertyName) =>
             NormalizePropertyName(propertyName) + "-ref";
 
         /// <summary>
@@ -78,6 +106,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 lock (_xmiProvider.LockObject)
                 {
+                    ClearPropertyProviderCache();
                     if (value == null || string.IsNullOrEmpty(value))
                     {
                         XmiId.Remove(XmlNode);
@@ -90,10 +119,18 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
         }
 
+        private void ClearPropertyProviderCache()
+        {
+            if (ConfigurationUsePropertyCache)
+            {
+                _propertyCache.Clear();
+            }
+        }
+
         /// <inheritdoc />
         public IProvider Provider { get; }
 
-        private XmiProvider _xmiProvider;
+        private readonly XmiProvider _xmiProvider;
 
         /// <summary>
         /// Initializes a new instance of the XmlElement class.
@@ -270,6 +307,14 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                if (ConfigurationUsePropertyCache)
+                {
+                    if (_propertyCache.ContainsKey(property))
+                    {
+                        return true;
+                    }
+                }
+                
                 var normalizedPropertyName = NormalizePropertyName(property);
 
                 var propertyAsString = ReturnObjectAsString(normalizedPropertyName);
@@ -286,6 +331,11 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                if (ConfigurationUsePropertyCache && _propertyCache.TryGetValue(property, out var value))
+                {
+                    return value;
+                }
+
                 var normalizePropertyName = NormalizePropertyName(property);
 
                 // Check, if there are subelements as the given value
@@ -314,6 +364,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                         }
                     }
 
+                    _propertyCache[property] = list;
                     return list;
                 }
 
@@ -324,21 +375,28 @@ namespace DatenMeister.Provider.XMI.EMOF
                     if (objectType == ObjectType.Element)
                     {
                         // User requests an element, so return a Uri reference
-                        return new UriReference($"#{attribute.Value}");
+                        var reference = new UriReference($"#{attribute.Value}");
+                        _propertyCache[property] = reference;
+                        return reference;
                     }
 
                     // User requests normal types
+                    _propertyCache[property] = attribute.Value;
                     return attribute.Value;
                 }
 
                 var uriAttribute = XmlNode.Attribute(ConvertPropertyToReference(property));
                 if (uriAttribute != null)
                 {
-                    return new UriReference(uriAttribute.Value);
+                    var reference = new UriReference(uriAttribute.Value);
+                    _propertyCache[property] = reference;
+                    return reference;
                 }
 
                 // For unknown objects, return an empty enumeration which will then be converted to an Reflective Sequence
-                return new List<object>();
+                var empty = new List<object>();
+                _propertyCache[property] = empty;
+                return empty;
             }
         }
 
@@ -379,6 +437,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                ClearPropertyProviderCache();
+
                 var normalizePropertyName = NormalizePropertyName(property);
 
                 XmlNode.Attributes(normalizePropertyName).FirstOrDefault()?.Remove();
@@ -398,6 +458,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                ClearPropertyProviderCache();
+                
                 var normalizePropertyName = NormalizePropertyName(property);
                 DeleteProperty(property);
 
@@ -434,6 +496,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                ClearPropertyProviderCache();
+
                 var normalizePropertyName = NormalizePropertyName(property);
 
                 XmlNode.Attribute(normalizePropertyName)?.Remove();
@@ -460,6 +524,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                ClearPropertyProviderCache();
+            
                 var normalizePropertyName = NormalizePropertyName(property);
 
                 if (index == GetSizeOfList(property) || index == -1)
@@ -483,6 +549,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                ClearPropertyProviderCache();
+            
                 var normalizePropertyName = NormalizePropertyName(property);
 
                 if (value is XmiProviderObject valueAsXmlElement)
@@ -589,6 +657,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                ClearPropertyProviderCache();
+            
                 var found = FindInPropertyList(property, value);
                 if (found == null)
                 {
@@ -618,6 +688,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
+                ClearPropertyProviderCache();
+            
                 var found = FindInPropertyList(property, value);
                 if (found == null)
                 {

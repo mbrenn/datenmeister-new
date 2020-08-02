@@ -645,64 +645,69 @@ namespace DatenMeister.WPF.Forms.Base
             string? parentProperty)
         {
             if (usedViewExtensions == null) throw new ArgumentNullException(nameof(usedViewExtensions));
-            
-            // Stores the menu items for the context menu
-            var menuItems = new List<MenuItem>();
-            var menuItem = new MenuItem
+
+            List<MenuItem> GetMenuItems()
             {
-                Header = "Select Type..."
-            };
-
-            menuItem.Click += async (x, y) => await CreateNewElementByUser(null, parentProperty);
-            menuItems.Add(menuItem);
-
-            // Sets the generic buttons to create the new types
-            foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-            {
-                // Check if type is a directly type or the DefaultTypeForNewElement
-                if (type.metaclass?.equals(
-                    GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
-                        x => x.__DefaultTypeForNewElement)) == true)
+                // Stores the menu items for the context menu
+                var menuItems = new List<MenuItem>();
+                var menuItem = new MenuItem
                 {
-                    var newType =
-                        type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
-                    var tempParentProperty =
-                        type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty)
-                        ?? parentProperty;
+                    Header = "Select Type..."
+                };
 
-                    if (newType != null)
-                    {
-                        Create(newType, tempParentProperty);
-                    }
-                }
-                else
+                menuItem.Click += async (x, y) => await CreateNewElementByUser(null, parentProperty);
+                menuItems.Add(menuItem);
+
+                // Sets the generic buttons to create the new types
+                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
-                    Create(type, parentProperty);
-                }
-
-                void Create(IElement newType, string? innerParentProperty)
-                {
-                    var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
-
-                    usedViewExtensions.Add(new GenericButtonDefinition(
-                        $"New {typeName}", 
-                        async () => await CreateNewElementByUser(newType, innerParentProperty))
+                    // Check if type is a directly type or the DefaultTypeForNewElement
+                    if (type.metaclass?.equals(
+                        GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
+                            x => x.__DefaultTypeForNewElement)) == true)
                     {
-                        Tag = new TagCreateMetaClass(newType)
-                    });
+                        var newType =
+                            type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                        var tempParentProperty =
+                            type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty)
+                            ?? parentProperty;
 
-                    foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
-                    {
-                        // Stores the menu items for the context menu
-                        menuItem = new MenuItem
+                        if (newType != null)
                         {
-                            Header = $"New {newSpecializationType}"
-                        };
+                            Create(newType, tempParentProperty);
+                        }
+                    }
+                    else
+                    {
+                        Create(type, parentProperty);
+                    }
 
-                        menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, null);
-                        menuItems.Add(menuItem);
+                    void Create(IElement newType, string? innerParentProperty)
+                    {
+                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
+
+                        usedViewExtensions.Add(new GenericButtonDefinition(
+                            $"New {typeName}",
+                            async () => await CreateNewElementByUser(newType, innerParentProperty))
+                        {
+                            Tag = new TagCreateMetaClass(newType)
+                        });
+
+                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
+                        {
+                            // Stores the menu items for the context menu
+                            menuItem = new MenuItem
+                            {
+                                Header = $"New {newSpecializationType}"
+                            };
+
+                            menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, null);
+                            menuItems.Add(menuItem);
+                        }
                     }
                 }
+
+                return menuItems;
             }
 
             async Task CreateNewElementByUser(IElement? type, string? innerParentProperty)
@@ -730,7 +735,7 @@ namespace DatenMeister.WPF.Forms.Base
             usedViewExtensions.Add(
                 new GenericButtonDefinition(
                     "New Item...",
-                    () => _ = new ContextMenu {ItemsSource = menuItems, IsOpen = true}));
+                    () => _ = new ContextMenu {ItemsSource = GetMenuItems(), IsOpen = true}));
         }
 
         /// <summary>

@@ -16,8 +16,16 @@ namespace DatenMeister.Provider.XMI.EMOF
     /// </summary>
     public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMovements
     {
+        /// <summary>
+        /// Stores the configuration whether a cache shall be used for the normalization function for the
+        /// xmiProviders
+        /// </summary>
         private const bool ConfigurationUseNormalizationCache = true;
      
+        /// <summary>
+        /// Gets or sets a value whether a cache shall be used for the property values.
+        /// This value may only be set, of the UniqueXmiProvider Objects are set in XmiProvider
+        /// </summary>
         private const bool ConfigurationUsePropertyCache = true;
 
         /// <summary>
@@ -341,7 +349,9 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             lock (_xmiProvider.LockObject)
             {
-                if (ConfigurationUsePropertyCache && _propertyCache.TryGetValue(property, out var value))
+                var propertyCacheName = ConfigurationUsePropertyCache ? property + objectType : property;
+                if (ConfigurationUsePropertyCache 
+                    && _propertyCache.TryGetValue(propertyCacheName, out var value))
                 {
                     return value;
                 }
@@ -374,7 +384,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                         }
                     }
 
-                    _propertyCache[property] = list;
+                    _propertyCache[propertyCacheName] = list;
                     return list;
                 }
 
@@ -386,12 +396,12 @@ namespace DatenMeister.Provider.XMI.EMOF
                     {
                         // User requests an element, so return a Uri reference
                         var reference = new UriReference($"#{attribute.Value}");
-                        _propertyCache[property] = reference;
+                        _propertyCache[propertyCacheName] = reference;
                         return reference;
                     }
 
                     // User requests normal types
-                    _propertyCache[property] = attribute.Value;
+                    _propertyCache[propertyCacheName] = attribute.Value;
                     return attribute.Value;
                 }
 
@@ -399,13 +409,13 @@ namespace DatenMeister.Provider.XMI.EMOF
                 if (uriAttribute != null)
                 {
                     var reference = new UriReference(uriAttribute.Value);
-                    _propertyCache[property] = reference;
+                    _propertyCache[propertyCacheName] = reference;
                     return reference;
                 }
 
                 // For unknown objects, return an empty enumeration which will then be converted to an Reflective Sequence
                 var empty = new List<object>();
-                _propertyCache[property] = empty;
+                _propertyCache[propertyCacheName] = empty;
                 return empty;
             }
         }

@@ -13,6 +13,12 @@ namespace DatenMeister.Provider.XMI.EMOF
     public class XmiProvider : IProvider, IHasUriResolver, IProviderSupportFunctions
     {
         /// <summary>
+        /// Gets the value whether the same xmiprovider instance shall always be used
+        /// for the same XmlNode. 
+        /// </summary>
+        public const bool ConfigurationUniqueXmiProviderObjects = true;
+        
+        /// <summary>
         /// Defines the name of the element
         /// </summary>
         public string ElementName { get; set; } = DefaultElementNodeName;
@@ -34,7 +40,14 @@ namespace DatenMeister.Provider.XMI.EMOF
         
         internal object LockObject  = new object(); 
         
-        internal Dictionary<string, string> NormalizationCache = new Dictionary<string, string>();
+        internal readonly Dictionary<string, string> NormalizationCache = new Dictionary<string, string>();
+        
+        /// <summary>
+        /// Stores the cached provider objects to be sure that the same XmiProvider object will be used
+        /// when the same XElement is retrieved
+        /// </summary>
+        private readonly Dictionary<XElement, XmiProviderObject> _providerObjectCache 
+            = new Dictionary<XElement, XmiProviderObject>();
 
         /// <summary>
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information
@@ -117,7 +130,28 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// <returns>Created ProviderObject</returns>
         public XmiProviderObject CreateProviderObject(XElement xmlElement)
         {
-            return XmiProviderObject.Create(xmlElement, this);
+#pragma warning disable 162
+            if (ConfigurationUniqueXmiProviderObjects)
+            {
+                lock (_providerObjectCache)
+                {
+                    if (_providerObjectCache.TryGetValue(xmlElement, out var result))
+                    {
+                        return result;
+                    }
+
+                    result = XmiProviderObject.Create(xmlElement, this);
+                    _providerObjectCache[xmlElement] = result;
+
+                    return result;
+                }
+            }
+            else
+            {
+                return XmiProviderObject.Create(xmlElement, this);
+                
+            }
+#pragma warning restore 162
         }
 
         /// <inheritdoc />

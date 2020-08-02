@@ -34,12 +34,25 @@ namespace DatenMeister.Benchmark.Integration
         }
 
         [Benchmark]
-        public void GetAllSpecializedClasses()
+        public void GetFirst3SpecializedClasses()
         {
             var totalName = _umlElements.elements().GetAllDescendantsIncludingThemselves()
                 .OfType<IElement>()
                 .Where(x => x.metaclass?.Equals( _UML.TheOne.StructuredClassifiers.__Class) == true)
                 .Take(3)
+                .SelectMany(x => ClassifierMethods.GetSpecializations(x))
+                .ToList()
+                .Count;
+
+            Console.WriteLine(totalName);
+        }
+
+        [Benchmark]
+        public void GetAllSpecializedClasses()
+        {
+            var totalName = _umlElements.elements().GetAllDescendantsIncludingThemselves()
+                .OfType<IElement>()
+                .Where(x => x.metaclass?.Equals( _UML.TheOne.StructuredClassifiers.__Class) == true)
                 .SelectMany(x => ClassifierMethods.GetSpecializations(x))
                 .ToList()
                 .Count;

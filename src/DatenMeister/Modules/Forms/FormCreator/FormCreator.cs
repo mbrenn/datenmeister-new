@@ -542,11 +542,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                            ClassifierMethods.GetSpecializations(propertyType).ToList());
+                            new[] {propertyType});
+                        elements.set(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                         
                         // Create the internal form out of the metaclass
-                        var enumerationListForm = CreateListFormForMetaClass(propertyType, CreationMode.All, property as IElement);
+                        var enumerationListForm 
+                            = CreateListFormForMetaClass(propertyType, CreationMode.All, property as IElement);
                         elements.set(_FormAndFields._SubElementFieldData.form, enumerationListForm);
 
                         return elements;

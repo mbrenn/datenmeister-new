@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Modules
                 File.Delete(filename);
             }
 
-            var settings = PublicSettingHandler.LoadSettings(directory);
+            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
 
             Assert.That(settings, Is.Null);
         }
@@ -38,7 +38,7 @@ namespace DatenMeister.Tests.Modules
             File.WriteAllText(filename,
                 @"<xmi><settings databasePath=""test""></settings></xmi>");
 
-            var settings = PublicSettingHandler.LoadSettings(directory);
+            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
 
             Assert.That(settings, Is.Not.Null);
             Assert.That(settings.databasePath, Is.EqualTo("test"));
@@ -58,7 +58,7 @@ namespace DatenMeister.Tests.Modules
             File.WriteAllText(filename,
                 @"<xmi><settings databasePath=""%USERNAME%\test""></settings></xmi>");
 
-            var settings = PublicSettingHandler.LoadSettings(directory);
+            var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
 
             Assert.That(settings, Is.Not.Null);
             Assert.That(settings.databasePath, Is.EqualTo($"{Environment.UserName}\\test"));

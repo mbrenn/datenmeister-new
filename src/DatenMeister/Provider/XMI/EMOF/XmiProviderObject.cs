@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -126,6 +127,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ClearPropertyProviderCache()
         {
 #pragma warning disable 162

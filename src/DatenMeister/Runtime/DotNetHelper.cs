@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using DatenMeister.Core.EMOF.Implementation;
@@ -455,6 +456,24 @@ namespace DatenMeister.Runtime
             }
 
             Process.Start(startInfo);
+        }
+
+        /// <summary>
+        /// Opens the windows explorer
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void OpenExplorer(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            // combine the arguments together
+            // it doesn't matter if there is a space after ','
+            string argument = "/select, \"" + filePath +"\"";
+
+            CreateProcess("explorer.exe", argument);
         }
     }
 }

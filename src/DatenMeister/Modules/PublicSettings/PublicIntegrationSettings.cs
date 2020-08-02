@@ -14,5 +14,12 @@ namespace DatenMeister.Modules.PublicSettings
         /// Gets or sets the path to the database
         /// </summary>
         public string? databasePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the path of the file being loaded.
+        /// This information is not retrieved from the content. This information is directly written
+        /// by the PublicSettingsHandler
+        /// </summary>
+        public string settingsFilePath { get; set; } = string.Empty;
     }
 }

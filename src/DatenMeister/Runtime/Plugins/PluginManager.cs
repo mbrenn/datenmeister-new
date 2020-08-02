@@ -61,6 +61,7 @@ namespace DatenMeister.Runtime.Plugins
         /// <returns>true, if all plugins have been started without exception</returns>
         public bool StartPlugins(ILifetimeScope kernel, IPluginLoader pluginLoader, PluginLoadingPosition loadingPosition)
         {
+            Logger.Debug("Starting Plugins" + loadingPosition);
             _pluginTypes ??= pluginLoader.GetPluginTypes();
             var pluginList = _pluginTypes
                 .Where(type => GetPluginEntry(type).HasFlag(loadingPosition))

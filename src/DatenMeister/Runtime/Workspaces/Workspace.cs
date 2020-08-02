@@ -354,7 +354,6 @@ namespace DatenMeister.Runtime.Workspaces
                 
                 return result;
             }
-
         }
 
         public IElement? ResolveById(string elementId)

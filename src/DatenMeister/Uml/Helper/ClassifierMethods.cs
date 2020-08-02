@@ -180,13 +180,13 @@ namespace DatenMeister.Uml.Helper
                         .Where(elementInExtent => classInstance.@equals(elementInExtent.getMetaClass()))
                         .Where(elementInExtent => !visitedElements.Contains(elementInExtent)))
                 {
-                    visitedElements.Add(elementInExtent);
-
-                    // Checks, if the element contains a generalization
-                    if (GetGeneralizations(elementInExtent).Contains(element))
+                    var generalizations = GetGeneralizations(elementInExtent).ToList();
+                    if (!visitedElements.Contains(elementInExtent) && generalizations.Contains(element))
                     {
                         yield return elementInExtent;
-                    }
+                        
+                        visitedElements.Add(elementInExtent);
+                    }                    
                 }
             }
         }

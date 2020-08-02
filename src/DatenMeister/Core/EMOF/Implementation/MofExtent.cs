@@ -189,13 +189,13 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (XmlMetaExtent != null)
             {
                 MetaXmiElement = new MofElement(
-                    new XmiProviderObject(new XElement("meta"), rootProvider),
+                    rootProvider.CreateProviderObject(new XElement("meta")),
                     XmlMetaExtent);
             }
             else
             {
                 MetaXmiElement = new MofElement(
-                    new XmiProviderObject(new XElement("meta"), rootProvider),
+                    rootProvider.CreateProviderObject(new XElement("meta")),
                     this);
             }
             

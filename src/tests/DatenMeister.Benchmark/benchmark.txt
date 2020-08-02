@@ -18,3 +18,30 @@ Threadsafe
 |               Method |     Mean |    Error |   StdDev |
 |--------------------- |---------:|---------:|---------:|
 | BenchMarkGetProperty | 59.50 us | 1.004 us | 0.939 us |
+
+
+
+-----------------
+
+|                   Method |     Mean |    Error |   StdDev |   Median |
+|------------------------- |---------:|---------:|---------:|---------:|
+| GetAllSpecializedClasses | 637.6 ms | 31.02 ms | 89.49 ms | 604.9 ms |
+
+|                   Method |    Mean |   Error |  StdDev |
+|------------------------- |--------:|--------:|--------:|
+| GetAllSpecializedClasses | 35.15 s | 0.449 s | 0.375 s |
+
+Only Composite Elements
+
+> 7 seconds, does not make sense
+
+Improve filtering, but still not OK. Improvement by 5% 
+|                   Method |     Mean |    Error |   StdDev |
+|------------------------- |---------:|---------:|---------:|
+| GetAllSpecializedClasses | 604.7 ms | 11.77 ms | 15.31 ms |
+
+With naming and property cache: 
+
+|                   Method |     Mean |   Error |   StdDev |
+|------------------------- |---------:|--------:|---------:|
+| GetAllSpecializedClasses | 490.6 ms | 9.52 ms | 12.04 ms |

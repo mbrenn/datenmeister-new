@@ -77,7 +77,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     var result = FindById(id);
                     if (result == null) return null;
 
-                    return new XmiProviderObject(result, this);
+                    return CreateProviderObject(result);
                 }
             };
         }
@@ -107,7 +107,17 @@ namespace DatenMeister.Provider.XMI.EMOF
                 node.Add(new XAttribute(XmiProviderObject.TypeAttribute, metaClassUri));
             }
 
-            return new XmiProviderObject(node, this);
+            return CreateProviderObject(node);
+        }
+
+        /// <summary>
+        /// Creates a new provider object for the xmiprovider
+        /// </summary>
+        /// <param name="xmlElement">Xml element storing the data</param>
+        /// <returns>Created ProviderObject</returns>
+        public XmiProviderObject CreateProviderObject(XElement xmlElement)
+        {
+            return XmiProviderObject.Create(xmlElement, this);
         }
 
         /// <inheritdoc />
@@ -169,11 +179,11 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 if (id == null)
                 {
-                    return new XmiProviderObject(GetMetaNode(), this);
+                    return CreateProviderObject(GetMetaNode());
                 }
 
                 var result = FindById(id);
-                return result == null ? null : new XmiProviderObject(result, this);
+                return result == null ? null : CreateProviderObject(result);
 
             }
         }
@@ -232,7 +242,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     continue;
                 }
 
-                yield return new XmiProviderObject(element, this);
+                yield return CreateProviderObject(element);
             }
         }
 

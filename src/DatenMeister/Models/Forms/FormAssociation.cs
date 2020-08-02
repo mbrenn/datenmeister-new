@@ -32,7 +32,6 @@ namespace DatenMeister.Models.Forms
 
         public string? parentProperty { get; set; }
 
-
         public Form? form { get; set; }
 
         public FormAssociation()

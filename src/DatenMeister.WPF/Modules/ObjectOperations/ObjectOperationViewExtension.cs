@@ -59,8 +59,11 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             var extent = o.GetExtentOf();
             var found = await NavigatorForDialogs.Locate(
                 navigationHost,
-                extent?.GetWorkspace(),
-                extent);
+                new NavigatorForDialogs.NavigatorForDialogConfiguration
+                {
+                    DefaultWorkspace = extent?.GetWorkspace(),
+                    DefaultExtent = extent
+                });
 
             if (found == null)
             {
@@ -82,8 +85,11 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             var extent = o.GetExtentOf();
             var found = await NavigatorForDialogs.Locate(
                 navigationHost,
-                extent?.GetWorkspace(),
-                extent);
+                new NavigatorForDialogs.NavigatorForDialogConfiguration
+                {
+                    DefaultWorkspace = extent?.GetWorkspace(),
+                    DefaultExtent = extent
+                });
 
             if (found == null)
             {

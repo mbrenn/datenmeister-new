@@ -35,6 +35,12 @@ namespace DatenMeister.WPF.Forms.Base
     public partial class ItemsTreeView : UserControl, INavigationGuest
     {
         /// <summary>
+        /// Just a configuration option which may be set during the development to recreate all items in treeview
+        /// instead of reusing the existing items
+        /// </summary>
+        private const bool ConfigurationAlwaysRefresh = false;
+            
+        /// <summary>
         /// Defines the logger being used
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(ItemsTreeView));
@@ -43,7 +49,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Defines the element which is the source for the definition of the treeview
         /// </summary>
         private IObject? _itemsSource;
-
+        
         /// <summary>
         /// Defines the set of already visited items to prevent that one item is 'visited' multiple times
         /// </summary>
@@ -61,9 +67,15 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
             }
-            
+
+            var newValue = (bool) e.NewValue;
             itemsTreeView.UpdateForm();
-            itemsTreeView._cacheShowMetaClasses = (bool) e.NewValue;
+            itemsTreeView._cacheShowMetaClasses = newValue;
+
+            if (newValue != (itemsTreeView.ShowMetaClassesCheckBtn.IsChecked == true))
+            {
+                itemsTreeView.ShowMetaClassesCheckBtn.IsChecked = newValue;
+            }
         }
 
         public bool ShowMetaClasses
@@ -113,6 +125,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private IEnumerable<IElement>? _filterMetaClasses;
 
+
+        private bool _enableFilterMetaClasses = true;
+
         /// <summary>
         /// Gets or sets the metaclasses that will be used as filtering
         /// </summary>
@@ -136,6 +151,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private readonly HashSet<string> _propertiesForChildren = new HashSet<string>();
 
+        /// <summary>
+        /// Maps the items to the treeviewitem
+        /// </summary>
         private readonly Dictionary<IObject, TreeViewItem> _mappingItems = new Dictionary<IObject, TreeViewItem>();
 
         /// <summary>
@@ -218,15 +236,34 @@ namespace DatenMeister.WPF.Forms.Base
             _propertiesForChildren.Add(_UML._Packages._Package.packagedElement);
         }
 
+        public void ClearForm()
+        {
+            TreeView.ItemsSource = null;
+        }
+
+        /// <summary>
+        /// Updates the form and of all including buttons
+        /// </summary>
+        public void UpdateForm()
+        {
+            UpdateForm(true);
+        }
+
         /// <summary>
         /// Updates the complete view of the item tree
         /// </summary>
-        public void UpdateForm()
+        /// <param name="updateButtons">true, if all the buttons shall be updated</param>
+        public void UpdateForm(bool updateButtons)
         {
             if (!IsInitialized)
             {
                 // Save the time...
                 return;
+            }
+
+            if (updateButtons)
+            {
+                UpdateFilterMetaClassButton();
             }
 
             using var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
@@ -250,7 +287,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // Checks, if a tree views are already created
                 var availableTreeViewItem = (container.ItemsSource as List<TreeViewItem>)?.FirstOrDefault();
-                if (availableTreeViewItem == null)
+                if (availableTreeViewItem == null || ConfigurationAlwaysRefresh)
                 {
                     var found = CreateTreeViewItem(ItemsSource, true);
                     if (found != null)
@@ -300,8 +337,8 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                     
                     // Checks, if the given element is in the children of Item
-                    if (childrenOfItem.FirstOrDefault(x => viewChildItem.@equals(x))
-                        is IObject found)
+                    if (childrenOfItem.FirstOrDefault(x => viewChildItem.@equals(x)) is IObject found 
+                        && !ConfigurationAlwaysRefresh)
                     {
                         // If the element was found, add it
                         UpdateTreeViewItem(viewChild, found);
@@ -335,7 +372,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Creates the treeview item for the given item.
         /// If this item is an object and contains additional items within the properties,
-        /// these subitems are also creates as TreeViewItemss
+        /// these subitems are also creates as TreeViewItems
         /// </summary>
         /// <param name="item">Item to be converted to a treeview</param>
         /// <param name="isRoot">true, if this is the root element. This means that the element is expanded. </param>
@@ -350,7 +387,7 @@ namespace DatenMeister.WPF.Forms.Base
             _alreadyVisited.Add(item);
 
             // Perform filtering of the item
-            if (FilterMetaClasses != null && item is IElement itemAsElement)
+            if (_enableFilterMetaClasses && FilterMetaClasses != null && item is IElement itemAsElement)
             {
                 var list = FilterMetaClasses.ToList();
                 if (list.Count != 0)
@@ -447,6 +484,9 @@ namespace DatenMeister.WPF.Forms.Base
                         n++;
                     }
 
+                    childModels.Sort((x,y) => 
+                        NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
+
                     if (n >= MaxItemsPerLevel) break;
                 }
 
@@ -466,7 +506,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (item is IExtent extent)
             {
-                return extent.elements();
+                return extent.elements().Take(MaxItemsPerLevel);
             }
 
             var result = new List<object>();
@@ -488,11 +528,21 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         if (childItem == null) continue;
                         result.Add(childItem);
+
+                        if (result.Count > MaxItemsPerLevel)
+                        {
+                            break;
+                        }
                     }
                 }
                 else if (propertyValue is IElement element)
                 {
                     result.Add(propertyValue);
+                }
+                
+                if (result.Count > MaxItemsPerLevel)
+                {
+                    break;
                 }
             }
 
@@ -709,6 +759,48 @@ namespace DatenMeister.WPF.Forms.Base
         private void ItemContextMenu_OnOpened(object sender, RoutedEventArgs e)
         {
             ShowContextMenu();
+        }
+
+        private void UpdateFilterMetaClassButton()
+        {
+            if (_filterMetaClasses == null || _filterMetaClasses?.Count() == 0)
+            {
+                FilterMetaClassCheck.IsEnabled = false;
+                return;
+            }
+
+            FilterMetaClassCheck.IsEnabled = true;
+
+            if (_enableFilterMetaClasses)
+            {
+                FilterMetaClassCheck.IsChecked = true;
+            }
+            else
+            {
+                FilterMetaClassCheck.IsChecked = false;
+            }
+        }
+
+        private void ShowMetaClassesCheckBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMetaClasses = ShowMetaClassesCheckBtn.IsChecked == true;
+            UpdateForm();
+        }
+
+        private void FilterMetaClassCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterMetaClassCheck.IsChecked == true)
+            {
+                _enableFilterMetaClasses = true;
+            }
+            else
+            {
+                _enableFilterMetaClasses = false;
+            }
+
+            // Clear Complete Form
+            ClearForm();
+            UpdateForm(false);
         }
     }
 }

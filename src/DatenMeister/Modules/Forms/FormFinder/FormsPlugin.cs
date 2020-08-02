@@ -122,6 +122,11 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     created.set(_FormAndFields._ViewMode.id, "Default");
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
+                    
+                    // Adds the View Mode for the forms
+                    var extentSetting =
+                        new ExtentTypeSetting("Forms");
+                    _extentSettings.extentTypeSettings.Add(extentSetting);
                     break;
             }
         }
@@ -490,12 +495,14 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// Gets the list form for an elements property to be shown in sub item view or other views
         /// </summary>
         /// <param name="element">Element whose property is enumerated</param>
-        /// <param name="property">Name of the property to be enumeration</param>
+        /// <param name="parentProperty">Name of the property to be enumeration</param>
+        /// <param name="propertyType">Type of the property</param>
         /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns>The list form for the list</returns>
         public IElement? GetListFormForElementsProperty(
             IObject element,
-            string property,
+            string parentProperty,
+            IElement? propertyType,
             FormDefinitionMode formDefinitionMode = FormDefinitionMode.Default)
         {
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
@@ -505,7 +512,10 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     new FindFormQuery
                     {
                         extentType = (element as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
-                        FormType = FormType.ObjectList
+                        parentMetaClass = (element as IElement)?.metaclass,
+                        metaClass = propertyType,
+                        FormType = FormType.ObjectList,
+                        parentProperty = parentProperty
                     }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -519,7 +529,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             {
                 var formCreator = CreateFormCreator();
                 var createdForm = formCreator.CreateListFormForElements(
-                    element.get<IReflectiveCollection>(property),
+                    element.get<IReflectiveCollection>(parentProperty),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
 
                 return createdForm;
@@ -631,6 +641,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// </summary>
         /// <returns>The created instance of the form creator</returns>
         public FormCreator.FormCreator CreateFormCreator()
-            => new FormCreator.FormCreator(WorkspaceLogic, this, _extentSettings);
+            =>  FormCreator.FormCreator.Create(WorkspaceLogic, this, _extentSettings);
     }
 }

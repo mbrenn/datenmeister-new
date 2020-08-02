@@ -67,9 +67,9 @@ namespace DatenMeister.Uml.Helper
         /// Gets the property of a classifier by name
         /// </summary>
         /// <param name="classifier">Classifier being queried</param>
-        /// <param name="propertyName">Name of the propertyf</param>
+        /// <param name="propertyName">Name of the properties</param>
         /// <returns>The found property</returns>
-        public static IElement GetPropertyOfClassifier(IElement classifier, string propertyName)
+        public static IElement GetPropertyOfClassifier(IObject classifier, string propertyName)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
@@ -180,13 +180,13 @@ namespace DatenMeister.Uml.Helper
                         .Where(elementInExtent => classInstance.@equals(elementInExtent.getMetaClass()))
                         .Where(elementInExtent => !visitedElements.Contains(elementInExtent)))
                 {
-                    visitedElements.Add(elementInExtent);
-
-                    // Checks, if the element contains a generalization
-                    if (GetGeneralizations(elementInExtent).Contains(element))
+                    var generalizations = GetGeneralizations(elementInExtent).ToList();
+                    if (!visitedElements.Contains(elementInExtent) && generalizations.Contains(element))
                     {
                         yield return elementInExtent;
-                    }
+                        
+                        visitedElements.Add(elementInExtent);
+                    }                    
                 }
             }
         }

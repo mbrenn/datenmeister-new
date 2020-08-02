@@ -5,17 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" Initialized="ItemsTreeView_OnInitialized" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            <TreeView x:Name="TreeView" 
-                      MouseDoubleClick="treeView_MouseDoubleClicked" KeyDown="treeView_KeyDown" 
-                      SelectedItemChanged="treeView_SelectedItemChanged"
-                      MouseRightButtonDown="TreeView_MouseRightButtonDown"
-                      ContextMenuOpening="TreeView_ContextMenuOpening" 
-                      HorizontalContentAlignment="Left"
-                      VerticalContentAlignment="Center">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
+            <ToggleButton x:Name="ShowMetaClassesCheckBtn" Click="ShowMetaClassesCheckBtn_Click" >Show</ToggleButton>
+            <ToggleButton x:Name="FilterMetaClassCheck" Click="FilterMetaClassCheck_Click" >Filter</ToggleButton>
+
+        </StackPanel>
+        <TreeView x:Name="TreeView" 
+                  MouseDoubleClick="treeView_MouseDoubleClicked" KeyDown="treeView_KeyDown" 
+                  SelectedItemChanged="treeView_SelectedItemChanged"
+                  MouseRightButtonDown="TreeView_MouseRightButtonDown"
+                  ContextMenuOpening="TreeView_ContextMenuOpening" 
+                  HorizontalContentAlignment="Left"
+                  VerticalContentAlignment="Center">
                 <TreeView.ContextMenu>
                     <ContextMenu x:Name="ItemContextMenu" Opened="ItemContextMenu_OnOpened"></ContextMenu>
                 </TreeView.ContextMenu>
             </TreeView>
-    </Grid>
+    </DockPanel>
 </UserControl>

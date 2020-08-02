@@ -54,6 +54,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), true);
         }
 
+        /// <summary>
+        /// Gets the descendents of an element by following the properties and the element itself
+        /// </summary>
+        /// <param name="element">The element that shall be evaluated</param>
+        /// <param name="byFollowingProperties">The properties that are requested</param>
+        /// <param name="onlyComposites">true, if only composite elements shall be regarded</param>
+        /// <returns>An enumeration of all descendent elements</returns>
         private IEnumerable<IObject> GetDescendentsInternal(IObject element, ICollection<string>? byFollowingProperties, bool onlyComposites = false)
         {
             if (_alreadyVisited.Contains(element))
@@ -107,6 +114,12 @@ namespace DatenMeister.Runtime.Functions.Queries
 
                 if (value is IObject valueAsObject)
                 {
+                    if (_alreadyVisited.Contains(valueAsObject))
+                    {
+                        // Skip what is already visited
+                        yield break;
+                    }
+                    
                     // Value is an object... perfect!
                     foreach (var innerValue in GetDescendentsInternal(valueAsObject, byFollowingProperties, onlyComposites))
                     {
@@ -115,19 +128,33 @@ namespace DatenMeister.Runtime.Functions.Queries
                 }
                 else if (value != null && DotNetHelper.IsOfEnumeration(value))
                 {
-                    // Value is a real enumeration. Unfortunately strings are also
-                    // enumeration, but we would like to skip them. Their content
-                    // would be skipped either.
+                    // Value is a real enumeration. 
                     var valueAsEnumerable = (IEnumerable) value;
                     foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties, onlyComposites))
                     {
+                        if (_alreadyVisited.Contains(innerValue))
+                        {
+                            // Skip what is already visited
+                            continue;
+                        }
+
                         yield return innerValue;
                     }
                 }
             }
         }
 
-        private IEnumerable<IObject> GetDescendentsInternal(IEnumerable valueAsEnumerable, ICollection<string>? byFollowingProperties, bool onlyComposites = false)
+        /// <summary>
+        /// Gets the enumeration and returns all properties by following the enumeration
+        /// </summary>
+        /// <param name="valueAsEnumerable">Value as enumerable which shall be parsed</param>
+        /// <param name="byFollowingProperties">The properties that are requested</param>
+        /// <param name="onlyComposites">true, if only composite elements shall be regarded</param>
+        /// <returns>The descendents of each list item of the enumeration</returns>
+        private IEnumerable<IObject> GetDescendentsInternal(
+            IEnumerable valueAsEnumerable,
+            ICollection<string>? byFollowingProperties,
+            bool onlyComposites = false)
         {
             if (valueAsEnumerable == null)
             {

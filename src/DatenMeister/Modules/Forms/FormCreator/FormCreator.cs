@@ -73,20 +73,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
         {
 
         }
+        
         /// <summary>
         /// Initializes a new instance of the FormCreator class
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="formLogic">View logic being used</param>
         /// <param name="extentSettings">Stores the extent settings</param>
-        public FormCreator(
-            IWorkspaceLogic workspaceLogic,
+        private FormCreator(
+            IWorkspaceLogic? workspaceLogic,
             FormsPlugin? formLogic, 
             ExtentSettings? extentSettings = null)
         {
             _formLogic = formLogic;
             _extentSettings = extentSettings ?? new ExtentSettings();
-
             _workspaceLogic = workspaceLogic;
 
             var userExtent = _formLogic?.GetUserFormExtent();
@@ -101,6 +101,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _uml = _workspaceLogic?.GetUmlData() ??
                    _UML.TheOne ??
                    throw new InvalidOperationException("UML not found");
+        }
+        
+        /// <summary>
+        /// Creates the form logic by using the private constructor
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace Logic to be evaluated</param>
+        /// <param name="formLogic">Form Logic to be evaluated</param>
+        /// <param name="extentSettings">Settings of the extent</param>
+        /// <returns></returns>
+        public static FormCreator Create(IWorkspaceLogic? workspaceLogic,
+            FormsPlugin? formLogic, 
+            ExtentSettings? extentSettings = null)
+        {
+            return new FormCreator(workspaceLogic, formLogic, extentSettings);
         }
 
         /// <summary>
@@ -528,11 +542,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                            ClassifierMethods.GetSpecializations(propertyType).ToList());
+                            new[] {propertyType});
+                        elements.set(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                         
                         // Create the internal form out of the metaclass
-                        var enumerationListForm = CreateListFormForMetaClass(propertyType, CreationMode.All, property as IElement);
+                        var enumerationListForm 
+                            = CreateListFormForMetaClass(propertyType, CreationMode.All, property as IElement);
                         elements.set(_FormAndFields._SubElementFieldData.form, enumerationListForm);
 
                         return elements;
@@ -543,6 +559,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
                     reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
                     reference.set(_FormAndFields._ReferenceFieldData.isReadOnly, isReadOnly);
+                    if (propertyType != null)
+                    {
+                        reference.set(
+                            _FormAndFields._ReferenceFieldData.metaClassFilter,
+                            new[] {propertyType});
+                    }
 
                     return reference;
                 }
@@ -560,6 +582,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 element.set(_FormAndFields._SubElementFieldData.title, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                 element.set(_FormAndFields._SubElementFieldData.isEnumeration, propertyIsEnumeration);
+                
+                if (propertyType != null)
+                {
+                    element.set(
+                        _FormAndFields._SubElementFieldData.defaultTypesForNewElements,
+                        new[] {propertyType});
+                }
                 return element;
             }
 

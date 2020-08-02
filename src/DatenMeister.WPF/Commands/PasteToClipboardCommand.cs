@@ -54,7 +54,7 @@ namespace DatenMeister.WPF.Commands
                         var xmiProvider = new XmiProvider();
                         var tempExtent = new MofExtent(xmiProvider);
 
-                        var providerObject = new XmiProviderObject(document.Root, xmiProvider);
+                        var providerObject = xmiProvider.CreateProviderObject(document.Root);
                         var element = new MofElement(providerObject, tempExtent);
 
                         var copier = new ObjectCopier(new MofFactory(tempExtent));

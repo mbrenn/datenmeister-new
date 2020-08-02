@@ -43,7 +43,7 @@ namespace DatenMeister.DotNet
 
             var extent = new MofExtent(xmlProvider);
             var element = new MofElement(
-                new XmiProviderObject(xml.Root, xmlProvider), extent);
+                xmlProvider.CreateProviderObject(xml.Root), extent);
 
             return element;
         }

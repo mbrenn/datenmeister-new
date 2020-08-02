@@ -30,10 +30,27 @@ namespace DatenMeister.Modules.PublicSettings
         /// </summary>
         /// <param name="directoryPath">Path to the directory</param>
         /// <returns>The found public integrations settings</returns>
-        public static PublicIntegrationSettings? LoadSettings(string directoryPath)
+        public static PublicIntegrationSettings? LoadSettingsFromDirectory(string directoryPath)
         {
             var path = Path.Combine(directoryPath, XmiFileName);
-            
+
+            var result =  LoadSettingsFromFile(path);
+            if (result == null)
+            {
+                Logger.Info($"No Configuration file found in {directoryPath}");
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Loads the settings from 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        private static PublicIntegrationSettings? LoadSettingsFromFile(string path)
+        {
             if (File.Exists(path))
             {
                 try
@@ -49,6 +66,7 @@ namespace DatenMeister.Modules.PublicSettings
                     }
 
                     var settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+                    settings.settingsFilePath = path;
                     settings.databasePath = Environment.ExpandEnvironmentVariables(settings.databasePath);
                     return settings;
                 }
@@ -59,7 +77,6 @@ namespace DatenMeister.Modules.PublicSettings
             }
 
             Logger.Info($"No Xmi-File for external configuration found in: {path}");
-            Logger.Info($"No Configuration file found in {directoryPath}");
             return null;
         }
     }

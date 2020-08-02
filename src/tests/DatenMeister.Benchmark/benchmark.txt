@@ -67,3 +67,17 @@ Now with xmiprovider cache
 |        GetAllUmlDescendents |     71.95 ms |     1.432 ms |     3.204 ms |     71.82 ms |
 | GetFirst3SpecializedClasses |    422.23 ms |     8.338 ms |    18.301 ms |    426.09 ms |
 |    GetAllSpecializedClasses | 28,337.32 ms | 1,485.767 ms | 4,262.945 ms | 26,946.98 ms |
+
+// Aggressive Inlining
+|                      Method |     Mean |   Error |  StdDev |
+|---------------------------- |---------:|--------:|--------:|
+| GetFirst3SpecializedClasses | 368.5 ms | 5.14 ms | 9.78 ms |
+|               Method |     Mean |    Error |   StdDev |
+|--------------------- |---------:|---------:|---------:|
+| GetAllUmlDescendents | 61.11 ms | 1.182 ms | 1.265 ms |
+|               Method |     Mean |    Error |   StdDev |
+|--------------------- |---------:|---------:|---------:|
+| BenchMarkGetProperty | 56.55 us | 0.585 us | 0.519 us |
+|           Method |     Mean |   Error |   StdDev |
+|----------------- |---------:|--------:|---------:|
+| LoadDatenMeister | 175.4 ms | 5.93 ms | 17.11 ms |

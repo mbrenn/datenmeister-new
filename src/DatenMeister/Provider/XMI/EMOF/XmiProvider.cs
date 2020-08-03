@@ -37,8 +37,8 @@ namespace DatenMeister.Provider.XMI.EMOF
         private static readonly XNamespace XDatenMeisterNamespace = "http://datenmeister.net/";
 
         private static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
-        
-        internal object LockObject  = new object(); 
+
+        internal readonly object LockObject = new object(); 
         
         internal readonly Dictionary<string, string> NormalizationCache = new Dictionary<string, string>();
         

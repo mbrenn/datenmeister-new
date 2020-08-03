@@ -651,7 +651,10 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (HasContainer())
             {
-                return _xmiProvider.CreateProviderObject(XmlNode.Parent);
+                lock (_xmiProvider.LockObject)
+                {
+                    return _xmiProvider.CreateProviderObject(XmlNode.Parent);
+                }
             }
 
             return null;

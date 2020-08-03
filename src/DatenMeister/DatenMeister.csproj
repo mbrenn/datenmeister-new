@@ -18,18 +18,9 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Integration\Modules\**" />
-    <EmbeddedResource Remove="Integration\Modules\**" />
-    <None Remove="Integration\Modules\**" />
-    <None Remove="Modules\HtmlReporter\Css\default_report.css" />
     <EmbeddedResource Include="Modules\HtmlReporter\Css\default_report.css" />
-    <None Remove="XmiFiles\Default.xmi" />
     <EmbeddedResource Include="XmiFiles\Default.xmi" />
-    <None Remove="XmiFiles\Internal.xmi" />
     <EmbeddedResource Include="XmiFiles\Internal.xmi" />
-    <Compile Remove="Runtime\Extents\Configuration\**" />
-    <EmbeddedResource Remove="Runtime\Extents\Configuration\**" />
-    <None Remove="Runtime\Extents\Configuration\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmiFiles\Modules\AttachedExtent.xmi" />
@@ -37,10 +28,8 @@
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\ImportExtentManager.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\Formmanager.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\WorkspacesAndExtents.xmi" />
     <EmbeddedResource Include="XmiFiles\Forms\UML.xmi" />
+    <EmbeddedResource Include="XmiFiles\Forms\DatenMeister.xmi" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />

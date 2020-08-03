@@ -1,9 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
@@ -25,15 +27,12 @@ namespace DatenMeister.WPF.Forms.Fields
 
             var metaClass = (value as IElement)?.getMetaClass();
 
-            var textField = new TextBlock
-            {
-                Text = metaClass == null ? "None" : NamedElementMethods.GetFullName(metaClass)
-            };
-
+            var textField = new TextBlock();
+            var runName = new Run(metaClass == null ? "None" : NamedElementMethods.GetFullName(metaClass));
             if (metaClass != null)
             {
-                textField.TextDecorations = TextDecorations.Underline;
-                textField.MouseDown += (sender, args) =>
+                runName.TextDecorations = TextDecorations.Underline;
+                runName.MouseDown += (sender, args) =>
                 {
                     if (metaClass == null)
                     {
@@ -47,13 +46,46 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
                 };
                 
-                textField.Foreground = SystemColors.HotTrackBrush;
-                textField.Cursor = Cursors.Hand;
+                runName.Foreground = SystemColors.HotTrackBrush;
+                runName.Cursor = Cursors.Hand;
             }
             else
             {
-                textField.FontStyle = FontStyles.Italic;
+                runName.FontStyle = FontStyles.Italic;
             }
+            
+            textField.Inlines.Add(runName);
+            textField.Inlines.Add(" (");
+            var change = new Run("Change")
+            {
+                TextDecorations = TextDecorations.Underline,
+                Foreground = SystemColors.HotTrackBrush,
+                Cursor = Cursors.Hand
+            };
+            change.MouseDown += async (x, y) =>
+            {
+                if (!(value is IElementSetMetaClass asSet))
+                {
+                    MessageBox.Show("Metaclass cannot be set since object does not allow setting");
+                    return;
+                }
+
+                if (await NavigatorForDialogs.Locate(
+                    detailForm.NavigationHost,
+                    WorkspaceNames.WorkspaceTypes,
+                    WorkspaceNames.UriExtentUserTypes) is IElement result)
+                {
+                    asSet.SetMetaClass(result);
+                }
+                else
+                {
+                    MessageBox.Show("No MetaClass was selected");
+                }
+                
+                detailForm.UpdateForm();
+            };
+            textField.Inlines.Add(change);
+            textField.Inlines.Add(")");
             
             detailForm.CreateRowForField(
                 new TextBlock { Text = "Meta Class:"},

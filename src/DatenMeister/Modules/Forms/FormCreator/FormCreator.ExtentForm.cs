@@ -99,7 +99,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 {
                     var element = x as IElement;
                     var metaClass = element?.getMetaClass();
-                    return metaClass == null;
+                    return metaClass == null || metaClass is MofObjectShadow;
                 })
                 .ToList();
 
@@ -108,7 +108,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 .GroupBy(x =>
                 {
                     var metaClass = x.getMetaClass();
-                    return metaClass;
+                    return metaClass is MofObjectShadow ? null : metaClass;
                 })
                 .Where(x => x.Key != null)
                 .ToList();

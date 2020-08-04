@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.Proxies;
@@ -26,9 +27,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             foreach (var value in Collection)
             {
-                var valueAsObject = value as IElement;
-
-                if (valueAsObject != null && IsInList(valueAsObject))
+                if (value is IElement valueAsObject && IsInList(valueAsObject))
                 {
                     yield return valueAsObject;
                 }
@@ -62,7 +61,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             var isIn = false;
             var metaClass = valueAsObject?.getMetaClass();
-            if (metaClass == null && _filteredMetaClass == null)
+            if (metaClass == null && _filteredMetaClass == null  || metaClass is MofObjectShadow)
                 isIn = true;
             else if (metaClass != null && _filteredMetaClass?.Any(x => x.@equals(metaClass)) == true) isIn = true;
 

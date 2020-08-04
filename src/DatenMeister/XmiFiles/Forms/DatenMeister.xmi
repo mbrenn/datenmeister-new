@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///datenmeister" />
-  <item p1:id="_package_FormManager" name="FormManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+  <item p1:id="_package_FormManager" name="FormManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" p1:id="FormManagerFindForm" name="Find View" title="Open view" defaultApplyText="Open View" allowNewProperties="False">
-      <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="form" title="Select Form" defaultWorkspace="Management" isSelectionInline="True" defaultExtentUri="dm:///management/views/user">
+      <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="form" title="Select Form" defaultWorkspace="Management" isSelectionInline="True" defaultExtentUri="dm:///management/views/user" p1:id="931fe9d1-f016-4c4e-aa4f-7882bb84bb64">
         <metaClassFilter href="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" />
         <metaClassFilter href="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" />
         <metaClassFilter href="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" />
       </field>
     </packagedElement>
   </item>
-  <item p1:id="_package_ImportManager" name="ImportExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+  <item p1:id="_package_ImportManager" name="ImportExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" p1:id="ImportManagerFindExtent" name="Find Extent">
-      <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True" defaultExtentUri="dm:///_internal/workspaces/" showAllChildren="True" />
+      <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True" defaultExtentUri="dm:///_internal/workspaces/" showAllChildren="True" p1:id="19d57ee5-4222-48cc-a85a-ab012a1b6bc7" />
     </packagedElement>
   </item>
-  <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/xmi/uml#Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
+  <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail - New Xmi Extent" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi" title="Create Xmi Extent" p1:id="WorkspacesAndExtents.Xmi.New">
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" lineHeight="0" width="0" isAttached="False" fieldType="text" name="uri" title="URI" isEnumeration="False" defaultValue="dm:///" isReadOnly="False" />
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FileSelectionFieldData" defaultExtension="*.xmi" isSaving="True" initialPathToDirectory="%MyDocuments%" name="filepath" title="Path to File" />

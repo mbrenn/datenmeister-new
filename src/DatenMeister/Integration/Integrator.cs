@@ -26,6 +26,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Integration
 {
@@ -241,6 +242,14 @@ namespace DatenMeister.Integration
                         "DatenMeister::Management") ?? throw new InvalidOperationException("DatenMeister::Management not found"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
+                
+                var formsPlugin = scope.Resolve<FormsPlugin>();
+                packageMethods.ImportByManifest(
+                    typeof(UmlPlugin),
+                    "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
+                    "CommonForms",
+                    formsPlugin.GetInternalFormExtent(),
+                    "DatenMeister::CommonForms");
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);

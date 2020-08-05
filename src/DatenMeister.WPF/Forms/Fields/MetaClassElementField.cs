@@ -2,8 +2,13 @@
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -20,6 +25,25 @@ namespace DatenMeister.WPF.Forms.Fields
 
             var uriExtentText = ((value as IHasExtent)?.Extent as IUriExtent)?.contextURI() ?? string.Empty;
             var fullName = NamedElementMethods.GetFullName(value);
+            var idTextBlock = detailForm.CreateRowForField("Id:", uriExtentText, true);
+            idTextBlock.Foreground = SystemColors.HotTrackBrush;
+            idTextBlock.Cursor = Cursors.Hand;
+            idTextBlock.MouseDown += async (x, y) =>
+            {
+                var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+                var form = formsPlugin.GetInternalFormExtent().element("#CommonForms.ChangeId");
+
+                var element = InMemoryObject.CreateEmpty();
+                element.set("oldId", (value as IHasId).Id);
+                element.set("newId", (value as IHasId).Id);
+
+                await NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost,
+                    new NavigateToItemConfig()
+                    {
+                        Form = new FormDefinition(form),
+                        DetailElement = element
+                    });
+            };
             detailForm.CreateRowForField("Extent:", uriExtentText, true);
             detailForm.CreateRowForField("Full Name:", fullName, true);
             detailForm.CreateRowForField("Url w/ ID:", (value as IElement)?.GetUri() ?? string.Empty, true);

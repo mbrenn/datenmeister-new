@@ -23,34 +23,80 @@ namespace DatenMeister.WPF.Forms.Fields
         {
             detailForm.CreateSeparator();
 
-            var uriExtentText = ((value as IHasExtent)?.Extent as IUriExtent)?.contextURI() ?? string.Empty;
             var fullName = NamedElementMethods.GetFullName(value);
-            var idTextBlock = detailForm.CreateRowForField("Id:", uriExtentText, true);
-            idTextBlock.Foreground = SystemColors.HotTrackBrush;
-            idTextBlock.Cursor = Cursors.Hand;
-            idTextBlock.MouseDown += async (x, y) =>
+            
+            // Creates the ID block
+            var uriExtentText = ((value as IHasExtent)?.Extent as IUriExtent)?.contextURI() ?? string.Empty;
+            if (value is IHasId asHasId)
             {
-                var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
-                var form = formsPlugin.GetInternalFormExtent().element("#CommonForms.ChangeId");
+                CreateIdElement(detailForm, asHasId);
+            }
 
-                var element = InMemoryObject.CreateEmpty();
-                element.set("oldId", (value as IHasId).Id);
-                element.set("newId", (value as IHasId).Id);
-
-                await NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost,
-                    new NavigateToItemConfig()
-                    {
-                        Form = new FormDefinition(form),
-                        DetailElement = element
-                    });
-            };
+            // Creates information about extent, fullname and reference Urls
             detailForm.CreateRowForField("Extent:", uriExtentText, true);
             detailForm.CreateRowForField("Full Name:", fullName, true);
             detailForm.CreateRowForField("Url w/ ID:", (value as IElement)?.GetUri() ?? string.Empty, true);
             detailForm.CreateRowForField("Url w/Fullname:", $"{uriExtentText}?fn={fullName}", true);
 
-            var metaClass = (value as IElement)?.getMetaClass();
+            CreateMetaClassElement(detailForm, value);
 
+            return null;
+        }
+
+        /// <summary>
+        /// Creates the line showing the id of the current element and allows the user to modify the id
+        /// </summary>
+        /// <param name="detailForm">Detail Form Control which is the host. </param>
+        /// <param name="asHasId">The element containing the id</param>
+        private static void CreateIdElement(DetailFormControl detailForm, IHasId asHasId)
+        {
+            var idTextBlock = detailForm.CreateRowForField("Id:", asHasId.Id ?? "None", true);
+
+            if (asHasId is ICanSetId asSetId)
+            {
+                UnderlineForLink(idTextBlock);
+                idTextBlock.MouseDown += async (x, y) =>
+                {
+                    var formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+                    var form = formsPlugin.GetInternalFormExtent().element("#CommonForms.ChangeId");
+
+                    var element = InMemoryObject.CreateEmpty();
+                    element.set("oldId", asHasId.Id);
+                    element.set("newId", asHasId.Id);
+
+                    var result = await NavigatorForItems.NavigateToElementDetailView(detailForm.NavigationHost,
+                        new NavigateToItemConfig
+                        {
+                            Form = new FormDefinition(form),
+                            DetailElement = element
+                        });
+
+                    if (result.Result == NavigationResult.Saved)
+                    {
+                        var newId = result.DetailElement.getOrDefault<string>("newId");
+                        if (newId != null && !string.IsNullOrEmpty(newId))
+                        {
+                            asSetId.Id = newId;
+                            detailForm.UpdateForm();
+                        }
+                        else
+                        {
+                            MessageBox.Show("An empty ID is not valid");
+                        }
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        /// Creates the line containing the metaclass of the element and allowing the user to modify the metaclass 
+        /// </summary>
+        /// <param name="detailForm">Detailform to be used</param>
+        /// <param name="value">Value of the element</param>
+        private static void CreateMetaClassElement(DetailFormControl detailForm, IObject value)
+        {
+            // Creates the information about the metaclasse
+            var metaClass = (value as IElement)?.getMetaClass();
             var textField = new TextBlock();
             var runName = new Run(metaClass == null ? "None" : NamedElementMethods.GetFullName(metaClass));
             if (metaClass != null)
@@ -69,7 +115,7 @@ namespace DatenMeister.WPF.Forms.Fields
                             metaClass);
                     }
                 };
-                
+
                 runName.Foreground = SystemColors.HotTrackBrush;
                 runName.Cursor = Cursors.Hand;
             }
@@ -77,45 +123,57 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 runName.FontStyle = FontStyles.Italic;
             }
-            
+
             textField.Inlines.Add(runName);
-            textField.Inlines.Add(" (");
-            var change = new Run("Change")
-            {
-                TextDecorations = TextDecorations.Underline,
-                Foreground = SystemColors.HotTrackBrush,
-                Cursor = Cursors.Hand
-            };
-            change.MouseDown += async (x, y) =>
-            {
-                if (!(value is IElementSetMetaClass asSet))
-                {
-                    MessageBox.Show("Metaclass cannot be set since object does not allow setting");
-                    return;
-                }
-
-                if (await NavigatorForDialogs.Locate(
-                    detailForm.NavigationHost,
-                    WorkspaceNames.WorkspaceTypes,
-                    WorkspaceNames.UriExtentUserTypes) is IElement result)
-                {
-                    asSet.SetMetaClass(result);
-                }
-                else
-                {
-                    MessageBox.Show("No MetaClass was selected");
-                }
-                
-                detailForm.UpdateForm();
-            };
-            textField.Inlines.Add(change);
-            textField.Inlines.Add(")");
             
-            detailForm.CreateRowForField(
-                new TextBlock { Text = "Meta Class:"},
-                textField);
+            if (value is IElementSetMetaClass asSet)
+            {
+                textField.Inlines.Add(" (");
+                var change = new Run("Change")
+                {
+                    Foreground = SystemColors.HotTrackBrush,
+                    Cursor = Cursors.Hand
+                };
+                UnderlineForLink(change);
+                change.MouseDown += async (x, y) =>
+                {
+                    if (await NavigatorForDialogs.Locate(
+                        detailForm.NavigationHost,
+                        WorkspaceNames.WorkspaceTypes,
+                        WorkspaceNames.UriExtentUserTypes) is IElement result)
+                    {
+                        asSet.SetMetaClass(result);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No MetaClass was selected");
+                    }
 
-            return null;
+                    detailForm.UpdateForm();
+                };
+                textField.Inlines.Add(change);
+                textField.Inlines.Add(")");
+            }
+
+            detailForm.CreateRowForField(
+                new TextBlock {Text = "Meta Class:"},
+                textField);
+        }
+
+        private static void UnderlineForLink(DependencyObject idTextBlock)
+        {
+            if (idTextBlock is TextBlock textBlock)
+            {
+                textBlock.TextDecorations = TextDecorations.Underline;
+                textBlock.Foreground = SystemColors.HotTrackBrush;
+                textBlock.Cursor = Cursors.Hand;
+            }
+            else if (idTextBlock is Run run)
+            {
+                run.TextDecorations = TextDecorations.Underline;
+                run.Foreground = SystemColors.HotTrackBrush;
+                run.Cursor = Cursors.Hand;
+            }
         }
 
         public void CallSetAction(IObject element)

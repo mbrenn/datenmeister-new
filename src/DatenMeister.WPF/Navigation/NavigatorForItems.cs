@@ -126,7 +126,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="window">Window to be used as navigation host</param>
         /// <param name="navigateToItemConfig">Configuration for navigation</param>
         /// <returns>The task providing the result</returns>
-        public static async Task<NavigateToElementDetailResult?> NavigateToElementDetailView(
+        public static async Task<NavigateToElementDetailResult> NavigateToElementDetailView(
             INavigationHost window,
             NavigateToItemConfig navigateToItemConfig)
             =>

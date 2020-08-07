@@ -17,7 +17,20 @@ namespace DatenMeister.Core.EMOF.Implementation
         public string? Id
         {
             get => ProviderObject.Id;
-            set => ProviderObject.Id = value;
+            set
+            {
+                if (Extent is MofUriExtent mofUriExtent && !string.IsNullOrEmpty(value))
+                {
+                    var foundValue = mofUriExtent.element($"#{value!}");
+                    if (foundValue != null && !foundValue.Equals(this))
+                    {
+                        throw new InvalidOperationException("The ID is already set within the extent.");
+                    }
+                    
+                }
+                
+                ProviderObject.Id = value;
+            }
         }
 
         /// <summary>

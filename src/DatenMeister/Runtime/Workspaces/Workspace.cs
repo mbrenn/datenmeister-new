@@ -74,7 +74,7 @@ namespace DatenMeister.Runtime.Workspaces
             get
             {
                 var result = new List<IExtent>();
-                lock (_extent)
+                lock (_syncObject)
                 {
                     foreach (var localExtent in _extent)
                     {
@@ -341,21 +341,28 @@ namespace DatenMeister.Runtime.Workspaces
 
         public object? Resolve(string uri, ResolveType resolveType, bool traceFailing)
         {
-            var result = _extent
-                .Select(theExtent =>
-                    (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
-                .FirstOrDefault(found => found != null);
-            if (result == null && traceFailing)
+            lock (_syncObject)
             {
-                Logger.Trace($"URI not resolved: {uri}");
+                var result = _extent
+                    .Select(theExtent =>
+                        (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
+                    .FirstOrDefault(found => found != null);
+                if (result == null && traceFailing)
+                {
+                    Logger.Trace($"URI not resolved: {uri}");
+                }
+                
+                return result;
             }
-
-            return result;
         }
 
         public IElement? ResolveById(string elementId)
         {
-            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId)).FirstOrDefault(found => found != null);
+            lock (_syncObject)
+            {
+                return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId))
+                    .FirstOrDefault(found => found != null);
+            }
         }
     }
 }

@@ -26,6 +26,7 @@ using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
+using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Integration
 {
@@ -52,6 +53,7 @@ namespace DatenMeister.Integration
         }
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
+        private PublicIntegrationSettings? _publicSettings;
 
         public static string GetPathToWorkspaces(IntegrationSettings settings)
             => Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
@@ -71,10 +73,14 @@ namespace DatenMeister.Integration
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
         {
-            PrepareSettings();
-            
             var scopeStorage = new ScopeStorage();
             kernel.RegisterInstance(scopeStorage).As<IScopeStorage>();
+            
+            PrepareSettings();
+            if (_publicSettings != null)
+            {
+                scopeStorage.Add(_publicSettings);
+            }
 
             scopeStorage.Add(_settings);
 
@@ -141,6 +147,8 @@ namespace DatenMeister.Integration
             var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
 
+            
+            Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
@@ -234,6 +242,14 @@ namespace DatenMeister.Integration
                         "DatenMeister::Management") ?? throw new InvalidOperationException("DatenMeister::Management not found"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
+                
+                var formsPlugin = scope.Resolve<FormsPlugin>();
+                packageMethods.ImportByManifest(
+                    typeof(UmlPlugin),
+                    "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
+                    "CommonForms",
+                    formsPlugin.GetInternalFormExtent(),
+                    "DatenMeister::CommonForms");
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
@@ -318,19 +334,19 @@ namespace DatenMeister.Integration
                 var path = Assembly.GetEntryAssembly()?.Location;
                 if (path != null)
                 {
-                    var publicSettings = PublicSettingHandler.LoadSettings(Path.GetDirectoryName(path));
-                    if (publicSettings != null)
+                    _publicSettings = PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(path));
+                    if (_publicSettings != null)
                     {
-                        if (publicSettings.databasePath != null && !string.IsNullOrEmpty(publicSettings.databasePath))
+                        if (_publicSettings.databasePath != null && !string.IsNullOrEmpty(_publicSettings.databasePath))
                         {
-                            Logger.Info($"Overwriting database path to {publicSettings.databasePath}");
+                            Logger.Info($"Overwriting database path to {_publicSettings.databasePath}");
 
-                            _settings.DatabasePath = publicSettings.databasePath;
+                            _settings.DatabasePath = _publicSettings.databasePath;
                         }
 
-                        if (publicSettings.windowTitle != null && !string.IsNullOrEmpty(publicSettings.windowTitle))
+                        if (_publicSettings.windowTitle != null && !string.IsNullOrEmpty(_publicSettings.windowTitle))
                         {
-                            _settings.WindowTitle = publicSettings.windowTitle;
+                            _settings.WindowTitle = _publicSettings.windowTitle;
                         }
                     }
                 }

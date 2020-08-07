@@ -13,6 +13,12 @@ namespace DatenMeister.Provider.XMI.EMOF
     public class XmiProvider : IProvider, IHasUriResolver, IProviderSupportFunctions
     {
         /// <summary>
+        /// Gets the value whether the same xmiprovider instance shall always be used
+        /// for the same XmlNode. 
+        /// </summary>
+        public const bool ConfigurationUniqueXmiProviderObjects = true;
+        
+        /// <summary>
         /// Defines the name of the element
         /// </summary>
         public string ElementName { get; set; } = DefaultElementNodeName;
@@ -31,8 +37,17 @@ namespace DatenMeister.Provider.XMI.EMOF
         private static readonly XNamespace XDatenMeisterNamespace = "http://datenmeister.net/";
 
         private static readonly XName XMetaXmlNodeName = XDatenMeisterNamespace + "meta";
+
+        internal readonly object LockObject = new object(); 
         
-        internal object LockObject  = new object(); 
+        internal readonly Dictionary<string, string> NormalizationCache = new Dictionary<string, string>();
+        
+        /// <summary>
+        /// Stores the cached provider objects to be sure that the same XmiProvider object will be used
+        /// when the same XElement is retrieved
+        /// </summary>
+        private readonly Dictionary<XElement, XmiProviderObject> _providerObjectCache 
+            = new Dictionary<XElement, XmiProviderObject>();
 
         /// <summary>
         /// Gets or sets the uri resolver for this provider. Will be used to figure out information
@@ -75,7 +90,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     var result = FindById(id);
                     if (result == null) return null;
 
-                    return new XmiProviderObject(result, this);
+                    return CreateProviderObject(result);
                 }
             };
         }
@@ -105,7 +120,38 @@ namespace DatenMeister.Provider.XMI.EMOF
                 node.Add(new XAttribute(XmiProviderObject.TypeAttribute, metaClassUri));
             }
 
-            return new XmiProviderObject(node, this);
+            return CreateProviderObject(node);
+        }
+
+        /// <summary>
+        /// Creates a new provider object for the xmiprovider
+        /// </summary>
+        /// <param name="xmlElement">Xml element storing the data</param>
+        /// <returns>Created ProviderObject</returns>
+        public XmiProviderObject CreateProviderObject(XElement xmlElement)
+        {
+#pragma warning disable 162
+            if (ConfigurationUniqueXmiProviderObjects)
+            {
+                lock (_providerObjectCache)
+                {
+                    if (_providerObjectCache.TryGetValue(xmlElement, out var result))
+                    {
+                        return result;
+                    }
+
+                    result = XmiProviderObject.Create(xmlElement, this);
+                    _providerObjectCache[xmlElement] = result;
+
+                    return result;
+                }
+            }
+            else
+            {
+                return XmiProviderObject.Create(xmlElement, this);
+                
+            }
+#pragma warning restore 162
         }
 
         /// <inheritdoc />
@@ -167,11 +213,11 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 if (id == null)
                 {
-                    return new XmiProviderObject(GetMetaNode(), this);
+                    return CreateProviderObject(GetMetaNode());
                 }
 
                 var result = FindById(id);
-                return result == null ? null : new XmiProviderObject(result, this);
+                return result == null ? null : CreateProviderObject(result);
 
             }
         }
@@ -230,7 +276,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     continue;
                 }
 
-                yield return new XmiProviderObject(element, this);
+                yield return CreateProviderObject(element);
             }
         }
 

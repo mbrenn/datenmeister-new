@@ -96,9 +96,9 @@ namespace DatenMeister.WPF.Modules.FormManager
                     NavigationCategories.Form + ".Form Manager");
             }
 
-            void ChangeFormDefinition()
+            async void ChangeFormDefinition()
             {
-                if (!(NavigatorForDialogs.Locate(
+                if (!(await NavigatorForDialogs.Locate(
                     detailWindow,
                     WorkspaceNames.WorkspaceManagement,
                     WorkspaceNames.UriExtentUserForm) is IElement form))

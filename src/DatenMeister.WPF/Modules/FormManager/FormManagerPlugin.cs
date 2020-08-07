@@ -28,13 +28,6 @@ namespace DatenMeister.WPF.Modules.FormManager
         public void Start(PluginLoadingPosition position)
         {
             GuiObjectCollection.TheOne.ViewExtensionFactories.Add(new FormManagerViewExtension());
-
-            _packageMethods.ImportByManifest(
-                typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Forms.Formmanager.xmi",
-                PackageName,
-                _formsPlugin.GetInternalFormExtent(),
-                $"DatenMeister::{PackageName}");
         }
     }
 }

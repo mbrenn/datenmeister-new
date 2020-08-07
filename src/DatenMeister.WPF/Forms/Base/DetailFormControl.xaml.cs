@@ -546,7 +546,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="keyText">Text to be added</param>
         /// <param name="valueText">Value to be added</param>
         /// <param name="selectable">True, if the user can copy the content to the clipboard.</param>
-        public void CreateRowForField(string keyText, string valueText, bool selectable = false)
+        public TextBlock CreateRowForField(string keyText, string valueText, bool selectable = false)
         {
             var valueTextBlock = new TextBlock {Text = valueText};
 
@@ -562,6 +562,8 @@ namespace DatenMeister.WPF.Forms.Base
             CreateRowForField(
                 new TextBlock {Text = keyText},
                 valueTextBlock);
+
+            return valueTextBlock;
         }
 
         /// <summary>

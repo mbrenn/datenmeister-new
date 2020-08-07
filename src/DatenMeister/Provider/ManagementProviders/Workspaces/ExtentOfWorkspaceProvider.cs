@@ -70,7 +70,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// Stores the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        private readonly ProviderCapability _providerCapability = new ProviderCapability()
+        private readonly ProviderCapability _providerCapability = new ProviderCapability
         {
             IsTemporaryStorage = true
         };

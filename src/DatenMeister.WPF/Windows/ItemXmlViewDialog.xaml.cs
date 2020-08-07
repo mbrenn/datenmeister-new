@@ -76,7 +76,7 @@ namespace DatenMeister.WPF.Windows
             
             var provider = new XmiProvider();
             var extent = new MofExtent(provider);
-            var xmlProviderObject = new XmiProviderObject(xmlElement, provider);
+            var xmlProviderObject = provider.CreateProviderObject(xmlElement);
             return new MofElement(xmlProviderObject, extent);
         }
 

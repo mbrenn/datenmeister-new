@@ -29,7 +29,7 @@ namespace DatenMeister.Provider
     {
         public static ProviderCapability None => new ProviderCapability();
 
-        public static ProviderCapability StoreMetaDataInExtent => new ProviderCapability()
+        public static ProviderCapability StoreMetaDataInExtent => new ProviderCapability
         {
             StoreMetaDataInExtent = true
         };

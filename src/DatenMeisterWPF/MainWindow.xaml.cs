@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,6 +10,7 @@ using System.Windows.Controls.Ribbon;
 using Autofac;
 using BurnSystems;
 using DatenMeister.Integration;
+using DatenMeister.Modules.PublicSettings;
 using DatenMeister.NetCore;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -204,7 +206,23 @@ namespace DatenMeisterWPF
                         Owner = this
                     }.ShowDialog(),
                     "file-about",
-                    NavigationCategories.DatenMeister + ".Tool")
+                    NavigationCategories.DatenMeister + ".Tool"),
+                new ApplicationMenuButtonDefinition(
+                    "Open Public Settings",
+                    () =>
+                    {
+                        var publicSettings = GiveMe.Scope.ScopeStorage.Get<PublicIntegrationSettings>();
+                        if (File.Exists(publicSettings.settingsFilePath))
+                        {
+                            DotNetHelper.OpenExplorer(publicSettings.settingsFilePath);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No Public Settings were loaded.");
+                        }
+                    },
+                    "",
+                    NavigationCategories.DatenMeister + ".Tool"),
             };
 
             // 2) The properties of the guest

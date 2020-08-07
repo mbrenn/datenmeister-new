@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -76,7 +77,15 @@ namespace DatenMeister.WPF.Forms.Fields
                         var newId = result.DetailElement.getOrDefault<string>("newId");
                         if (newId != null && !string.IsNullOrEmpty(newId))
                         {
-                            asSetId.Id = newId;
+                            try
+                            {
+                                asSetId.Id = newId;
+                            }
+                            catch (InvalidOperationException exc)
+                            {
+                                MessageBox.Show(exc.Message);
+                            }
+                            
                             detailForm.UpdateForm();
                         }
                         else

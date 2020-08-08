@@ -817,12 +817,12 @@ namespace DatenMeister.WPF.Forms.Base
                 element.set(propertyKey, propertyValue);
             }
         }
-
+        
         /// <summary>
         ///     Takes the input that the user has currently into the dialog and stores these changes into the given element.
         /// </summary>
         /// <param name="element">Element in which the content of the element shall be stored</param>
-        private void StoreDialogContentIntoElement(IObject element)
+        public void StoreDialogContentIntoElement(IObject element)
         {
             if (DetailElement != null && !Equals(element, DetailElement))
             {

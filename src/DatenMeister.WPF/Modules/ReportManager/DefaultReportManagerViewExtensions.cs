@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -16,6 +15,7 @@ using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -54,15 +54,22 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         {
                             var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
 
+                            var tempObject = InMemoryObject.CreateEmpty();
+                            simpleReportInfo.Value.Item1.StoreDialogContentIntoElement(tempObject);
+
                             var result = await NavigatorForDialogs.Locate(viewExtensionInfo.NavigationHost,
                                 new NavigatorForDialogs.NavigatorForDialogConfiguration
                                 {
-                                    DefaultWorkspace = workspaceLogic.GetDataWorkspace()
+                                    DefaultWorkspace = workspaceLogic.GetDataWorkspace(),
+                                    Title = "Create Report",
+                                    OkButtonText = "Create Report",
+                                    Description =
+                                        "You can now select an object to which the simple report will be created. If you select a root element, then the report will be created upon all elements of the extent. "
                                 });
 
                             if (result != null)
                             {
-                                var configuration = DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(y);
+                                var configuration = DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(tempObject);
                                 configuration.rootElement = result;
                                 var simpleReport = new SimpleReportCreator(workspaceLogic, configuration);
 
@@ -120,11 +127,18 @@ namespace DatenMeister.WPF.Modules.ReportManager
                                 .ResolveById(
                                     "DatenMeister.Models.Reports.Simple.SimpleReportConfiguration")
                             ?? throw new InvalidOperationException("SimpleReportConfiguration not found");
+                        
+                        var form = workspaceLogic.GetInternalFormsExtent().element("#Form.Report.SimpleConfiguration");
 
                         var simpleConfiguration = InMemoryObject.TemporaryFactory.create(simpleConfigurationType);
                         var result = await NavigatorForItems.NavigateToElementDetailView(
                             viewExtensionInfo.NavigationHost,
-                            simpleConfiguration,null, "Configure simple Report");
+                            new NavigateToItemConfig(simpleConfiguration)
+                            {
+                                Title = "Configure simple report",
+                                Form = new FormDefinition(form)
+                            });
+                        
                         if (result?.Result == NavigationResult.Saved)
                         {
                             if (x is IExtent asExtent)

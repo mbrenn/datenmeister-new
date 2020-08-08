@@ -24,7 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmiFiles\Modules\AttachedExtent.xmi" />
-    <EmbeddedResource Include="XmiFiles\Modules\Reports.xmi" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />

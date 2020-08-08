@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using BurnSystems;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -11,6 +15,7 @@ using DatenMeister.Models.Reports;
 using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
+using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -79,6 +84,56 @@ namespace DatenMeister.WPF.Modules.ReportManager
                                 DotNetHelper.CreateProcess(tmpPath);
                             }
                         });
+            }
+            
+            var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
+                _Reports.TheOne.__HtmlReportInstance);
+            if (reportInstance != null)
+            {yield return
+                new RowItemButtonDefinition(
+                    "Create Report",
+                    (x, y) =>
+                    {
+                        var reportGenerator = new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+                        var sources = y.getOrDefault<IReflectiveCollection>(_Reports._HtmlReportInstance.sources);
+                        foreach (var source in sources.OfType<IObject>())
+                        {
+                            var name = source.getOrDefault<string>(_Reports._ReportInstanceSource.name);
+                            var sourceRef = source.getOrDefault<string>(_Reports._ReportInstanceSource.source);
+
+                            IReflectiveCollection? sourceItems;
+                            var foundSource = y.GetUriResolver()?.Resolve(sourceRef, ResolveType.Default);
+                            if (foundSource is IExtent extent)
+                            {
+                                sourceItems = extent.elements();
+                            }
+                            else
+                            {
+                                sourceItems = foundSource as IReflectiveCollection;
+                            }
+                            
+                            if (sourceItems == null)
+                            {
+                                MessageBox.Show($"Source {name} with reference {sourceRef} was not found");
+                                continue;
+                            }
+                            
+                            reportGenerator.AddSource(name, sourceItems);
+                        }
+
+                        var reportDefinition = y.getOrDefault<IElement>(_Reports._HtmlReportInstance.reportDefinition);
+                        if (reportDefinition == null)
+                        {
+                            MessageBox.Show("The report is not found");
+                            return;
+                        }
+
+                        var filePath = GetRandomWriter(out var writer);
+                        reportGenerator.GenerateReport(reportDefinition, writer);
+                        
+                        DotNetHelper.CreateProcess(filePath);
+                    });
+                
             }
 
             // Check if the the query is about the current view

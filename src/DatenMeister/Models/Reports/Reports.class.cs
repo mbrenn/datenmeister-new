@@ -89,7 +89,7 @@ namespace DatenMeister.Models.Reports
         public _ReportInstanceSource @ReportInstanceSource = new _ReportInstanceSource();
         public IElement @__ReportInstanceSource = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource");
 
-        public class _ReportInstance
+        public class _HtmlReportInstance
         {
             public static string @name = "name";
             public IElement? _name = null;
@@ -102,8 +102,8 @@ namespace DatenMeister.Models.Reports
 
         }
 
-        public _ReportInstance @ReportInstance = new _ReportInstance();
-        public IElement @__ReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance");
+        public _HtmlReportInstance @HtmlReportInstance = new _HtmlReportInstance();
+        public IElement @__HtmlReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.HtmlReportInstance");
 
         public class _DescendentMode
         {

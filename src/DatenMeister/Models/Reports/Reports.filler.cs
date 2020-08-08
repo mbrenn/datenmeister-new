@@ -154,9 +154,9 @@ namespace DatenMeister.Models.Reports
                                 }
                             }
                         }
-                        if(name == "ReportInstance") // Looking for class
+                        if(name == "HtmlReportInstance") // Looking for class
                         {
-                            tree.__ReportInstance = value;
+                            tree.__HtmlReportInstance = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
@@ -165,15 +165,15 @@ namespace DatenMeister.Models.Reports
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
-                                    tree.ReportInstance._name = value;
+                                    tree.HtmlReportInstance._name = value;
                                 }
                                 if(name == "reportDefinition") // Looking for property
                                 {
-                                    tree.ReportInstance._reportDefinition = value;
+                                    tree.HtmlReportInstance._reportDefinition = value;
                                 }
                                 if(name == "sources") // Looking for property
                                 {
-                                    tree.ReportInstance._sources = value;
+                                    tree.HtmlReportInstance._sources = value;
                                 }
                             }
                         }

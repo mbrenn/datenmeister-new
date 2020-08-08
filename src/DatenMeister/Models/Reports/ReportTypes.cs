@@ -15,7 +15,7 @@ namespace DatenMeister.Models.Reports
                 typeof(ReportParagraph),
                 typeof(ReportTable),
                 typeof(ReportInstanceSource),
-                typeof(ReportInstance),
+                typeof(HtmlReportInstance),
                 
                 typeof(Simple.DescendentMode),
                 typeof(Simple.ReportTableForTypeMode),

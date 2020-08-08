@@ -38,9 +38,9 @@ namespace DatenMeister.Modules.Reports
         private static HtmlReportEvaluators CreateEvaluators()
         {
             var evaluator = new HtmlReportEvaluators();
-            evaluator.Evaluators.Add(new HtmlReportHeadline());
-            evaluator.Evaluators.Add(new HtmlReportParagraph());
-            evaluator.Evaluators.Add( new HtmlReportTable());
+            evaluator.AddEvaluator(new HtmlReportHeadline());
+            evaluator.AddEvaluator(new HtmlReportParagraph());
+            evaluator.AddEvaluator(new HtmlReportTable());
             return evaluator;
         }
     }

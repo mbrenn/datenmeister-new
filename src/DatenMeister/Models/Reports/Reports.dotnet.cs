@@ -66,10 +66,10 @@ namespace DatenMeister.Models.Reports
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Reports.ReportInstance);
+                var type = typeof(DatenMeister.Models.Reports.HtmlReportInstance);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ReportInstance = typeAsElement;
+                filledStructure.__HtmlReportInstance = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {

@@ -202,7 +202,6 @@ namespace DatenMeister.WPF.Modules.FormManager
             {
                 var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
-                var defaultTypeClassifierHints = new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic);
                 var extent = (detailAsElement as IHasExtent)?.Extent;
                 if (extent == null)
                     throw new InvalidOperationException("extent == null");

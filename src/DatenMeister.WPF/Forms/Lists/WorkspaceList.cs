@@ -91,7 +91,6 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Prepares the navigation
         /// </summary>
-        /// <param name="viewDefinition">Definition of the view</param>
         public override IEnumerable<ViewExtension> GetViewExtensions()
         {
             yield return new InfoLineDefinition(() => new TextBlock

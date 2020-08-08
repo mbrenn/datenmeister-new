@@ -19,7 +19,6 @@ namespace DatenMeister.Runtime
     /// <summary>
     /// Caches the ids to improve navigation
     /// </summary>
-    /// <typeparam name="T">Type of the elements that are abstracted</typeparam>
     public class ExtentUrlNavigator
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentUrlNavigator));
@@ -211,7 +210,7 @@ namespace DatenMeister.Runtime
 #endif
                     var resultElement = new MofElement(resultingObject, _extent)
                         {Extent = _extent};
-                    return (MofElement) resultElement;
+                    return resultElement;
                 }
             }
             else

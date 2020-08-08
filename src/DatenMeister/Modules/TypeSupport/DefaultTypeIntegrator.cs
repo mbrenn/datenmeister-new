@@ -20,14 +20,12 @@ namespace DatenMeister.Modules.TypeSupport
     public class DefaultTypeIntegrator
     {
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly LocalTypeSupport _localTypeSupport;
         private readonly IntegrationSettings _integrationSettings;
         private readonly PackageMethods _packageMethods;
 
-        public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
+        public DefaultTypeIntegrator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
-            _localTypeSupport = localTypeSupport;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
             _packageMethods = new PackageMethods(_workspaceLogic);
         }

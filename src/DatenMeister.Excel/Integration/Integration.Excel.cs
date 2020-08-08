@@ -7,7 +7,7 @@ namespace DatenMeister.Excel.Integration
 {
     public static class Integration
     {
-        public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, ExcelExtentLoaderConfig settings = null)
+        public static ExcelProvider LoadExcel(this IDatenMeisterScope container, string url, ExcelExtentLoaderConfig? settings = null)
         {
             settings ??= new ExcelExtentLoaderConfig(url);
             return ExcelFileProviderLoader.LoadProvider(settings);

@@ -351,7 +351,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// The extent will also be unlocked
         /// </summary>
         /// <param name="extent"></param>
-        /// <<param name="doStore">Defines whether the extent shall also be stored by calling Store Extent</param>
+        /// <param name="doStore">true, if the values shall be stored into the database</param>
         public void DetachExtent(IExtent extent, bool doStore = false)
         {
             lock (_extentStorageData.LoadedExtents)
@@ -564,8 +564,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores all extents
         /// </summary>
-        /// <param name="unlock">true, if the extents shall also be removed from the internal list of loaded
-        /// extents which also means that the providers are unlocked</param>
         public void StoreAllExtents()
         {
             VerifyDatabaseContent();

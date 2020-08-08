@@ -2,7 +2,7 @@
 {
     public class TextFieldData : FieldData
     {
-        public TextFieldData() : base()
+        public TextFieldData()
         {
 
         }

@@ -23,7 +23,6 @@ namespace DatenMeister.Excel.Helper
         /// <summary>
         /// Loads the excel into the given file path
         /// </summary>
-        /// <param name="filePath">The excel file to be loaded</param>
         public void LoadExcel()
         {
             _excelDocument = SSDocument.LoadFromFile(LoaderConfig.filePath);

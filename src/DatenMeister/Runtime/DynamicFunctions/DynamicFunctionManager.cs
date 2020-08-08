@@ -70,9 +70,9 @@ namespace DatenMeister.Runtime.DynamicFunctions
             Property = property;
         }
 
-        public IElement MetaClass { get; set; }
+        public IElement MetaClass { get; }
         
-        public string Property { get; set; }
+        public string Property { get; }
 
         public override bool Equals(object obj)
         {

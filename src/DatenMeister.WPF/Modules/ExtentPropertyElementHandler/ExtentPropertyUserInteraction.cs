@@ -8,7 +8,7 @@ using DatenMeister.Runtime;
 using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.Modules.ExtentPropertyElementHandler
+namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
 {
     public class ExtentPropertyUserInteraction : IElementInteractionsHandler
     {

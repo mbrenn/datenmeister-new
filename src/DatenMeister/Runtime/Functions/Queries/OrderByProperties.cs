@@ -42,7 +42,10 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 foreach (var item in _parent)
                 {
-                    yield return _parent;
+                    if (item != null)
+                    {
+                        yield return item;
+                    }
                 }
 
                 yield break;

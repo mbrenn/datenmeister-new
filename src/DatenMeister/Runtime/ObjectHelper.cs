@@ -172,7 +172,7 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(object))
             {
-                return ((T) value.GetAsSingle(property, noReferences, ObjectType.None))!;
+                return ((T) value.GetAsSingle(property, noReferences))!;
             }
 
             if (typeof(T).IsEnum)
@@ -600,17 +600,13 @@ namespace DatenMeister.Runtime
         /// <returns>Enumeration of properties</returns>
         public static IEnumerable<string> GetPropertyNames(IObject value)
         {
-            switch (value)
+            return value switch
             {
-                case IElement element when element.metaclass != null:
-                    return ClassifierMethods.GetPropertyNamesOfClassifier(element.metaclass);
-
-                case IObjectAllProperties knowsProperties:
-                    return knowsProperties.getPropertiesBeingSet();
-
-                default:
-                    return Array.Empty<string>();
-            }
+                IElement element when element.metaclass != null => ClassifierMethods.GetPropertyNamesOfClassifier(
+                    element.metaclass),
+                IObjectAllProperties knowsProperties => knowsProperties.getPropertiesBeingSet(),
+                _ => Array.Empty<string>()
+            };
         }
     }
 }

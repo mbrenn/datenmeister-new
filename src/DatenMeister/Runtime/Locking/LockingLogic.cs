@@ -59,7 +59,7 @@ namespace DatenMeister.Runtime.Locking
                             return true;
                         }
                     }
-                };
+                }
             }
 
             return false;

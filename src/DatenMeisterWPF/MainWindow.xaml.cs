@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
-using Autofac;
 using BurnSystems;
 using DatenMeister.Integration;
 using DatenMeister.Modules.PublicSettings;

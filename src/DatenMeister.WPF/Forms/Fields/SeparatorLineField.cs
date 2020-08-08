@@ -28,7 +28,6 @@ namespace DatenMeister.WPF.Forms.Fields
 
         public void CallSetAction(IObject element)
         {
-            return;
         }
     }
 }

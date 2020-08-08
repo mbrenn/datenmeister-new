@@ -41,9 +41,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         {
             var createdForm = _factory.create(_formAndFields.__DetailForm);
             var name = NamedElementMethods.GetName(metaClass);
-            var fullName = NamedElementMethods.GetFullName(metaClass);
             createdForm.set(_FormAndFields._DetailForm.name, $"{name} - Detail");
-            var id = fullName + "Detail";
 
             if (creationMode.HasFlag(CreationMode.AddMetaClass))
             {

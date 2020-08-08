@@ -40,7 +40,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                     ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Delete...", (x) => { DeleteItem(viewExtensionInfo.NavigationHost, x); }
+                    "Delete...", (x) => { DeleteItem(x); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
@@ -102,7 +102,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
         }
 
-        private void DeleteItem(INavigationHost navigationHost, IObject? o)
+        private void DeleteItem(IObject? o)
         {
             if (o == null)
             {
@@ -118,7 +118,6 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             {
             
                 var extent = o.GetExtentOf();
-                var hints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
                 var container = (o as IElement)?.container();
 
                 if (container != null || extent != null)

@@ -125,7 +125,6 @@ namespace DatenMeister.Uml.Helper
         /// <param name="factory">Factory being used to create the subitems</param>
         /// <param name="packagePath">Path of the package to be created</param>
         /// <param name="nameProperty">The name property which contain the name for the element</param>
-        /// <param name="childProperty">The child property which contain the subelements</param>
         /// <param name="metaClass">The Metaclass being used to create the child packages</param>
         /// <param name="flagCreate">true, if the structure shall be really created.
         /// If false, null will be returned if the package is not found</param>

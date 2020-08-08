@@ -5,7 +5,7 @@
     /// </summary>
     public class MetaClassElementFieldData : FieldData
     {
-        public MetaClassElementFieldData() : base()
+        public MetaClassElementFieldData()
         {
         }
 

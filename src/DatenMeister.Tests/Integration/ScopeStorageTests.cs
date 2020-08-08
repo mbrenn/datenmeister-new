@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using DatenMeister.Integration;
 using DatenMeister.Provider.CSV;
 using NUnit.Framework;

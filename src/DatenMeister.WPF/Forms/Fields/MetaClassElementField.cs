@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -188,7 +187,6 @@ namespace DatenMeister.WPF.Forms.Fields
         public void CallSetAction(IObject element)
         {
             // Nothing to do
-            return;
         }
     }
 }

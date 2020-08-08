@@ -290,7 +290,7 @@ namespace DatenMeister.Runtime.Workspaces
 
             var workspace = new WorkspaceData {Default = workspaceData};
 
-            var logic = WorkspaceLogic.Create(workspace);
+            var logic = Create(workspace);
             logic.AddWorkspace(workspaceData);
             logic.AddWorkspace(workspaceTypes);
             logic.AddWorkspace(workspaceUml);

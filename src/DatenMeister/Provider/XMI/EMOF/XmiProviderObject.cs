@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,10 +9,10 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using DatenMeister.Provider.XMI.Standards;
 using DatenMeister.Runtime;
+// ReSharper disable UnreachableCode
 
 namespace DatenMeister.Provider.XMI.EMOF
 {
-    /// <inheritdoc />
     /// <summary>
     /// Abstracts the IObject from EMOF
     /// </summary>
@@ -347,12 +348,13 @@ namespace DatenMeister.Provider.XMI.EMOF
         }
 
         /// <inheritdoc />
+        [SuppressMessage("ReSharper", "RedundantLogicalConditionalExpressionOperand")]
         public object GetProperty(string property, ObjectType objectType)
         {
             lock (_xmiProvider.LockObject)
             {
-                var propertyCacheName = ConfigurationUsePropertyCache ? property + objectType : property;
-                if (ConfigurationUsePropertyCache 
+                var propertyCacheName = property + objectType;
+                if (ConfigurationUsePropertyCache
                     && _propertyCache.TryGetValue(propertyCacheName, out var value))
                 {
                     return value;
@@ -386,7 +388,9 @@ namespace DatenMeister.Provider.XMI.EMOF
                         }
                     }
 
-                    _propertyCache[propertyCacheName] = list;
+                    if (ConfigurationUsePropertyCache)
+                        _propertyCache[propertyCacheName] = list;
+
                     return list;
                 }
 
@@ -398,12 +402,16 @@ namespace DatenMeister.Provider.XMI.EMOF
                     {
                         // User requests an element, so return a Uri reference
                         var reference = new UriReference($"#{attribute.Value}");
-                        _propertyCache[propertyCacheName] = reference;
+
+                        if (ConfigurationUsePropertyCache)
+                            _propertyCache[propertyCacheName] = reference;
                         return reference;
                     }
 
                     // User requests normal types
-                    _propertyCache[propertyCacheName] = attribute.Value;
+
+                    if (ConfigurationUsePropertyCache)
+                        _propertyCache[propertyCacheName] = attribute.Value;
                     return attribute.Value;
                 }
 
@@ -411,7 +419,9 @@ namespace DatenMeister.Provider.XMI.EMOF
                 if (uriAttribute != null)
                 {
                     var reference = new UriReference(uriAttribute.Value);
-                    _propertyCache[propertyCacheName] = reference;
+
+                    if (ConfigurationUsePropertyCache)
+                        _propertyCache[propertyCacheName] = reference;
                     return reference;
                 }
 

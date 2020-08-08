@@ -23,7 +23,6 @@ namespace DatenMeister.Modules.ZipExample
         /// Initializes a new instance of the ZipCodePlugin
         /// </summary>
         /// <param name="localTypeSupport">The local type support being used</param>
-        /// <param name="zipCodeModel">The zip code model</param>
         /// <param name="scopeStorage">Scope storage</param>
         public ZipCodePlugin(
             LocalTypeSupport localTypeSupport,

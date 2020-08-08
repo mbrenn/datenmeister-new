@@ -50,7 +50,6 @@ namespace DatenMeister.Tests.Runtime
             mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var workspaceData = WorkspaceLogic.InitDefault();
 
-            var data = new ExtentStorageData();
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
             var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(workspaceData), scopeStorage);

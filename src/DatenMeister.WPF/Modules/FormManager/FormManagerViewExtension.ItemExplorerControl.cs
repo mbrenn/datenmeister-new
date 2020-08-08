@@ -86,14 +86,12 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             yield return new ExtentMenuButtonDefinition(
                 "Change Form Definition",
-                x =>
+                async x =>
                 {
-                    var form = NavigatorForDialogs.Locate(
+                    if (!(await NavigatorForDialogs.Locate(
                         itemExplorerControl.NavigationHost,
                         WorkspaceNames.WorkspaceManagement,
-                        WorkspaceNames.UriExtentUserForm) as IElement;
-
-                    if (form == null)
+                        WorkspaceNames.UriExtentUserForm) is IElement form))
                     {
                         itemExplorerControl.ClearOverridingForm();
                     }
@@ -269,19 +267,13 @@ namespace DatenMeister.WPF.Modules.FormManager
             {
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
 
-                IElement createdForm;
-                switch (type)
+                IElement createdForm = type switch
                 {
-                    case CreateFormByClassifierType.DetailForm:
-                        createdForm = formCreator.CreateDetailFormByMetaClass(locatedItem);
-                        break;
-                    case CreateFormByClassifierType.ExtentForm:
-                        createdForm = formCreator.CreateExtentFormByMetaClass(locatedItem);
-                        break;
-                    default:
-                        throw new InvalidOperationException();
-                }
-                
+                    CreateFormByClassifierType.DetailForm => formCreator.CreateDetailFormByMetaClass(locatedItem),
+                    CreateFormByClassifierType.ExtentForm => formCreator.CreateExtentFormByMetaClass(locatedItem),
+                    _ => throw new InvalidOperationException()
+                };
+
                 DefaultClassifierHints.AddToExtentOrElement(
                     selectedItem, 
                     createdForm);
@@ -296,7 +288,6 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// Creates a form by using the classifier
         /// </summary>
         /// <param name="itemExplorerControl">Navigational element to create the windows</param>
-        /// <param name="type">Type of the form to be created</param>
         private static async void AskUserForFormsAndAssociation(
             ItemExplorerControl itemExplorerControl)
         {   
@@ -321,7 +312,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var className = NamedElementMethods.GetName(locatedItem);
                 
                 var formCreator = GiveMe.Scope.Resolve<FormCreator>();
-                var defaultClassifierHints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
                 
                 ////////////////////////////////////
                 // Creates the package

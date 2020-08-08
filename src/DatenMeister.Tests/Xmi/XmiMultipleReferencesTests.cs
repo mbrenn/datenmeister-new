@@ -142,6 +142,10 @@ namespace DatenMeister.Tests.Xmi
             var subItem2 = extent1.element("#item2");
             var subItem3 = extent1.element("#item3");
             var subItem4 = extent1.element("#item4");
+            Assert.That(subItem1, Is.Not.Null);
+            Assert.That(subItem2, Is.Not.Null);
+            Assert.That(subItem3, Is.Not.Null);
+            Assert.That(subItem4, Is.Not.Null);
 
             var retrievedItem1 = item2.get("sub") as IReflectiveCollection;
             Assert.That(retrievedItem1, Is.Not.Null);

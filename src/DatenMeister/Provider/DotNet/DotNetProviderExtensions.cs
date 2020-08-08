@@ -115,7 +115,7 @@ namespace DatenMeister.Provider.DotNet
             {
                 var asEnumeration = (IEnumerable<object>) result;
 
-                return asEnumeration.Select(provider.CreateDotNetElementIfNecessary).ToList();
+                return asEnumeration.Select(provider.CreateDotNetElementIfNecessary!).ToList();
             }
 
             if (DotNetHelper.IsOfMofObject(result))

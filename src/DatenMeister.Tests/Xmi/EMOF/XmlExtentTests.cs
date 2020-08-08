@@ -12,7 +12,6 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.CSV;
 using NUnit.Framework;
@@ -276,9 +275,10 @@ namespace DatenMeister.Tests.Xmi.EMOF
             // Reloads it
             storageConfiguration.extentUri = "dm:///test_new";
 
-            var newExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOnly);
-            Assert.That(newExtent.elements().size(), Is.EqualTo(1));
-            Assert.That((newExtent.elements().ElementAt(0) as IElement).get("test"), Is.EqualTo("Test"));
+            var newExtent = loader.LoadExtent(storageConfiguration);
+            Assert.That(newExtent, Is.Not.Null);
+            Assert.That(newExtent!.elements().size(), Is.EqualTo(1));
+            Assert.That((newExtent.elements().ElementAt(0) as IElement)!.get("test"), Is.EqualTo("Test"));
         }
 
         [Test]

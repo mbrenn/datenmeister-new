@@ -2,7 +2,7 @@
 {
     public class CheckboxFieldData : FieldData
     {
-        public CheckboxFieldData() : base()
+        public CheckboxFieldData()
         {
 
         }

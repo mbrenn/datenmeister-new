@@ -199,7 +199,7 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Removes the item from the reflective collection and asks the user beforehand
         /// </summary>
         /// <param name="reflectiveCollection">Defines the reflective collection from which the item will be removed</param>
-        /// <param name="item">The item to be removed</param>
+        /// <param name="items">The items to be removed</param>
         private static void RemoveItem(IReflectiveCollection reflectiveCollection, IList<IObject> items)
         {
             var names = items.Select(NamedElementMethods.GetName).Join(", ");
@@ -363,8 +363,6 @@ namespace DatenMeister.WPF.Forms.Fields
                                 panel.Children.Clear();
                                 CreatePanelElement();
                             }
-
-                            ;
                         })
                 };
 
@@ -452,7 +450,7 @@ namespace DatenMeister.WPF.Forms.Fields
 
                         _panel.Children.Clear();
                         CreatePanelElement();
-                    };
+                    }
                 });
 
             return result;

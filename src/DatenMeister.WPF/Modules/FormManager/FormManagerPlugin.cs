@@ -1,8 +1,5 @@
 ﻿using DatenMeister.Excel.Properties;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Plugins;
-using DatenMeister.Uml.Helper;
-using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.WPF.Modules.FormManager
 {
@@ -12,17 +9,6 @@ namespace DatenMeister.WPF.Modules.FormManager
     [UsedImplicitly]
     public class FormManagerPlugin : IDatenMeisterPlugin
     {
-        private readonly PackageMethods _packageMethods;
-
-        private readonly FormsPlugin _formsPlugin;
-
-        public const string PackageName = "FormManager";
-
-        public FormManagerPlugin(PackageMethods packageMethods, FormsPlugin formsPlugin)
-        {
-            _packageMethods = packageMethods;
-            _formsPlugin = formsPlugin;
-        }
 
         /// <inheritdoc />
         public void Start(PluginLoadingPosition position)

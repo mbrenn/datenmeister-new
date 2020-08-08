@@ -41,7 +41,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             ExtentLoaderConfig loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)
         {
-            var asExtentManager = extentManager as ExtentManager
+            var asExtentManager = extentManager
                                   ?? throw new InvalidOperationException("extentManager is not ExtentManager");
             var workspaceLogic = asExtentManager.WorkspaceLogic;
             var workspace = workspaceLogic.GetWorkspace(loaderConfiguration.workspaceId);

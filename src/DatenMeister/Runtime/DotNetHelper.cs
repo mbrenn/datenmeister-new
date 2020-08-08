@@ -211,17 +211,15 @@ namespace DatenMeister.Runtime
         /// <returns>Converted value</returns>
         public static double AsDouble(object? value)
         {
-            switch (value)
+            return value switch
             {
-                case null:
-                    return 0.0;
-                case string valueAsString:
-                    return double.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultAsDouble)
-                        ? resultAsDouble
-                        : 0.0;
-            }
-
-            return Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                null => 0.0,
+                string valueAsString => double.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture,
+                    out var resultAsDouble)
+                    ? resultAsDouble
+                    : 0.0,
+                _ => Convert.ToDouble(value, CultureInfo.InvariantCulture)
+            };
         }
 
         /// <summary>
@@ -231,20 +229,16 @@ namespace DatenMeister.Runtime
         /// <returns>Converted value</returns>
         public static int AsInteger(object? value)
         {
-            switch (value)
+            return value switch
             {
-                case null:
-                    return 0;
-                case string valueAsString:
-                    return int.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultAsDouble)
-                        ? resultAsDouble
-                        : 0;
-
-                case IConvertible convertible:
-                    return Convert.ToInt32(convertible, CultureInfo.InvariantCulture);
-            }
-
-            return 0;
+                null => 0,
+                string valueAsString => int.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture,
+                    out var resultAsDouble)
+                    ? resultAsDouble
+                    : 0,
+                IConvertible convertible => Convert.ToInt32(convertible, CultureInfo.InvariantCulture),
+                _ => 0
+            };
         }
 
         /// <summary>
@@ -442,6 +436,7 @@ namespace DatenMeister.Runtime
         /// Creates the process 
         /// </summary>
         /// <param name="filePath"></param>
+        /// <param name="arguments">Arguments being used to create the process</param>
         public static void CreateProcess(string filePath, string? arguments = null)
         {
             var startInfo = new ProcessStartInfo

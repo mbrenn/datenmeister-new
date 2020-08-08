@@ -7,13 +7,6 @@ namespace DatenMeister.Modules.DefaultTypes
 {
     public class ObjectOperations
     {
-        private readonly DefaultClassifierHints _hints;
-
-        public ObjectOperations(DefaultClassifierHints hints)
-        {
-            _hints = hints;
-        }
-        
         /// <summary>
         /// Moves the object to the target 
         /// </summary>

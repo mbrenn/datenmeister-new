@@ -287,6 +287,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // Checks, if a tree views are already created
                 var availableTreeViewItem = (container.ItemsSource as List<TreeViewItem>)?.FirstOrDefault();
+                
+                // ReSharper disable once RedundantLogicalConditionalExpressionOperand
                 if (availableTreeViewItem == null || ConfigurationAlwaysRefresh)
                 {
                     var found = CreateTreeViewItem(ItemsSource, true);
@@ -337,7 +339,8 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                     
                     // Checks, if the given element is in the children of Item
-                    if (childrenOfItem.FirstOrDefault(x => viewChildItem.@equals(x)) is IObject found 
+                    // ReSharper disable once RedundantLogicalConditionalExpressionOperand
+                    if (childrenOfItem.FirstOrDefault(x => viewChildItem.@equals(x)) is IObject found
                         && !ConfigurationAlwaysRefresh)
                     {
                         // If the element was found, add it
@@ -535,7 +538,7 @@ namespace DatenMeister.WPF.Forms.Base
                         }
                     }
                 }
-                else if (propertyValue is IElement element)
+                else if (propertyValue is IElement)
                 {
                     result.Add(propertyValue);
                 }

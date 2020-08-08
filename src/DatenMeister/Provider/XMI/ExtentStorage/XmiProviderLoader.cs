@@ -15,25 +15,22 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
         private readonly LockingLogic _lockingLogic;
-        
-        private readonly ExtentStorageData _extentStorageData;
-        
+
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
 
         public XmiProviderLoader(IScopeStorage scopeStorage, LockingLogic lockingLogic)
         {
             _lockingLogic = lockingLogic;
-            _extentStorageData = scopeStorage.Get<ExtentStorageData>();
+            scopeStorage.Get<ExtentStorageData>();
         }
         
-        private XmiProviderLoader(ExtentStorageData extentStorageData, LockingLogic lockingLogic)
+        private XmiProviderLoader(LockingLogic lockingLogic)
         {
-            _extentStorageData = extentStorageData;
             _lockingLogic = lockingLogic;
         }
 
-        public XmiProviderLoader Create(ExtentStorageData data, LockingLogic lockingLogic) =>
-            new XmiProviderLoader(data, lockingLogic);
+        public XmiProviderLoader Create(LockingLogic lockingLogic) =>
+            new XmiProviderLoader(lockingLogic);
         
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {

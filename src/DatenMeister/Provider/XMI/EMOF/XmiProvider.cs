@@ -30,8 +30,6 @@ namespace DatenMeister.Provider.XMI.EMOF
         private readonly XDocument _document;
         private readonly XElement _rootNode;
 
-        public XElement RootNode => _rootNode;
-
         public XDocument Document => _document;
 
         private static readonly XNamespace XDatenMeisterNamespace = "http://datenmeister.net/";

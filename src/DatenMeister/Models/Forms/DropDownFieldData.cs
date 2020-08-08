@@ -15,7 +15,7 @@ namespace DatenMeister.Models.Forms
         /// </summary>
         public IElement? valuesByEnumeration { get; set; }
 
-        public DropDownFieldData() : base()
+        public DropDownFieldData()
         {
         }
 

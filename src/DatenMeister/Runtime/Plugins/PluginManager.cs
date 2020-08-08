@@ -56,6 +56,7 @@ namespace DatenMeister.Runtime.Plugins
         /// Starts the plugins in all loaded assemblies by calling each class which has the implementation
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>
+        /// <param name="kernel">The dependency injector</param>
         /// <param name="pluginLoader">The plugin loader being used</param>
         /// <param name="loadingPosition">Defines the plugin position currently used</param>
         /// <returns>true, if all plugins have been started without exception</returns>

@@ -60,7 +60,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <param name="workspaceLogic">The workspace being used</param>
         /// <param name="extentCreator">The support class to create extents</param>
         /// <param name="scopeStorage">The settings that had been used for integration</param>
-        /// <param name="extentSettings">Added the extent settings</param>
         public FormsPlugin(IWorkspaceLogic workspaceLogic, 
             ExtentCreator extentCreator,
             IScopeStorage scopeStorage)
@@ -201,15 +200,12 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns>The found extent of the given location</returns>
         public IUriExtent GetFormExtent(FormLocationType locationType)
         {
-            switch (locationType)
+            return locationType switch
             {
-                case FormLocationType.Internal:
-                    return GetInternalFormExtent();
-                case FormLocationType.User:
-                    return GetUserFormExtent();
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(locationType), locationType, null);
-            }
+                FormLocationType.Internal => GetInternalFormExtent(),
+                FormLocationType.User => GetUserFormExtent(),
+                _ => throw new ArgumentOutOfRangeException(nameof(locationType), locationType, null)
+            };
         }
 
         /// <summary>

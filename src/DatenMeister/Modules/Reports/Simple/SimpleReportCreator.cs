@@ -57,7 +57,6 @@ namespace DatenMeister.Modules.Reports.Simple
         /// Creates the html report according the given form and elements
         /// </summary>
         /// <param name="textWriter">Text Writer to be used for html file creation</param>
-        /// <param name="configuration">Configuration of the report</param>
         public void CreateReport(TextWriter textWriter)
         {
             var creationMode = _reportConfiguration.showMetaClasses
@@ -172,9 +171,6 @@ namespace DatenMeister.Modules.Reports.Simple
 
         private void ReportItemCollection(IReflectiveCollection metaClass, IObject form, ItemFormatter itemFormatter)
         {
-            var creationMode = _reportConfiguration.showMetaClasses
-                ? CreationMode.All
-                : CreationMode.All & ~CreationMode.AddMetaClass;
             // Gets the reflective sequence for the name
             var collection = new TemporaryReflectiveSequence(metaClass);
 

@@ -8,20 +8,17 @@ using DatenMeister.Models.DataViews;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Proxies.ReadOnly;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
 {
     public class DataViewExtent : IUriExtent
     {
         private readonly IElement _dataViewElement;
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly DataViewLogic _dataViewLogic;
 
-        public DataViewExtent(IElement dataViewElement, IWorkspaceLogic workspaceLogic, DataViewLogic dataViewLogic)
+        public DataViewExtent(IElement dataViewElement, DataViewLogic dataViewLogic)
         {
             _dataViewElement = dataViewElement ?? throw new ArgumentNullException(nameof(dataViewElement));
-            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             _dataViewLogic = dataViewLogic ?? throw new ArgumentNullException(nameof(dataViewLogic));
         }
 

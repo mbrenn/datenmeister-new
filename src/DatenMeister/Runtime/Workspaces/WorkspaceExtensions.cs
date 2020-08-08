@@ -157,8 +157,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <param name="workspaceLogic">Workspace collection to be used</param>
         /// <param name="model">Model to be queried</param>
-        /// <param name="foundWorkspace">The found workspace</param>
-        /// <param name="foundExtent">The found extent</param>
+        /// <returns>The found workspace and the found extent</returns>
         public static (Workspace foundWorkspace, IUriExtent foundExtent) RetrieveWorkspaceAndExtent(
             this IWorkspaceLogic workspaceLogic,
             WorkspaceExtentAndItemReference model)

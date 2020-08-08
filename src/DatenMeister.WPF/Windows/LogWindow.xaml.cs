@@ -19,7 +19,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Gets or sets the whether the information whether we had a first run
         /// </summary>
-        private bool _firstSet = false;
+        private bool _firstSet;
 
         public LogWindow()
         {

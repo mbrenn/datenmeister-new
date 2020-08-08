@@ -8,9 +8,8 @@ namespace DatenMeister.Excel.EMOF
 {
     public class ExcelProvider : IProvider
     {
-        private readonly _ExcelModels _models = new _ExcelModels();
-
         private readonly XSSFWorkbook _workbook;
+        
         public ExcelExtentLoaderConfig Settings { get; }
 
         public ExcelProvider(XSSFWorkbook workbook, ExcelExtentLoaderConfig settings)

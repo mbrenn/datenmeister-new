@@ -102,7 +102,6 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
         /// </summary>
         /// <param name="info">The target information to be used</param>
         /// <param name="extentType">The extent type which is requested</param>
-        /// <param name="metaClasses">MetaClasses which are required </param>
         /// <returns>null, if the item is not fitting or the ItemsInExtentList if the
         /// extent type is fitting</returns>
         public static ItemsInExtentList? GetListViewForItemsTabForExtentType(

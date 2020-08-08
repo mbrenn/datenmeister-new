@@ -102,7 +102,6 @@ namespace DatenMeister.WPF.Forms.Lists
             base.UpdateForm();
             if (ShowAllItemsInOneTab)
             {
-                return;
             }
 
             /*// Goes through the metaclasses and gets the one, that are not already in a tab

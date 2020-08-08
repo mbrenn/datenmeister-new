@@ -26,7 +26,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         {
             if (value == null)
             {
-                return new HtmlRawString("");;
+                return new HtmlRawString("");
             }
             
             return new HtmlRawString(WebUtility.HtmlEncode(value).Replace("\r\n", "<br />"));

@@ -104,6 +104,17 @@ namespace DatenMeister.WPF.Forms.Fields
             _workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
             _extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
 
+            if (_extent == null)
+            {
+                var foundExtent = element.GetUriExtentOf();
+                _extent = foundExtent?.contextURI() ?? null;
+
+                if (foundExtent != null)
+                {
+                    _workspace = GiveMe.Scope.WorkspaceLogic.GetWorkspaceOfExtent(foundExtent)?.id;
+                }
+            }
+
             if (_name == null)
             {
                 return new TextBlock

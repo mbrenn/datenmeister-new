@@ -21,17 +21,14 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public void TestDotNetTypeCreation()
         {
-            _MOF mof;
-            _UML uml;
-
             var typeExtent = DotNetExtentTests.Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test");
             extent.AddMetaExtent(typeExtent);
-            var strapper = XmiTests.CreateUmlAndMofInstance(out mof, out uml);
-            extent.AddMetaExtent(strapper.UmlInfrastructure);
-            extent.AddMetaExtent(strapper.MofInfrastructure);
-            extent.AddMetaExtent(strapper.PrimitiveTypesInfrastructure);
+            var strapper = XmiTests.CreateUmlAndMofInstance(out _, out var uml);
+            extent.AddMetaExtent(strapper.UmlInfrastructure!);
+            extent.AddMetaExtent(strapper.MofInfrastructure!);
+            extent.AddMetaExtent(strapper.PrimitiveTypesInfrastructure!);
 
             var mofFactory = new MofFactory(typeExtent);
             var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory, uml);

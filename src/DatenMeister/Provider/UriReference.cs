@@ -10,7 +10,7 @@
         /// <summary>
         /// Stores the Uri to which the element is a reference
         /// </summary>
-        public string Uri { get; set; } = string.Empty;
+        public string Uri { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the UriReference class

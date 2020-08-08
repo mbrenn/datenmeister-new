@@ -1,13 +1,10 @@
-﻿using System;
-using DatenMeister.Models.Reports.Simple;
-using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Simple;
+﻿using DatenMeister.Models.Reports.Simple;
 
 namespace ScriptTests
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var configuration = new SimpleReportConfiguration
             {

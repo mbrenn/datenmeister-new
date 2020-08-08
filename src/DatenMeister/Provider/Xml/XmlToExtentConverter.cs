@@ -57,7 +57,8 @@ namespace DatenMeister.Provider.Xml
         /// <param name="xmlElement">Xml element to be converted</param>
         /// <param name="mofElement">Element which shall be filled</param>
         /// <param name="innerName">The name for hte inner element</param>
-        private void Convert(XElement xmlElement, IElement mofElement, string innerName, MofFactory factory)
+        /// <param name="factory">The MOF Factory being used</param>
+        private void Convert(XElement xmlElement, IElement mofElement, string innerName, IFactory factory)
         {
             // Converts the attributes
             foreach (var attribute in xmlElement.Attributes())

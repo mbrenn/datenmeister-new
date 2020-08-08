@@ -90,13 +90,13 @@ namespace DatenMeister.Runtime.Functions.Queries
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public bool add(object value) => throw new System.NotImplementedException();
+        public bool add(object value) => throw new NotImplementedException();
 
-        public bool addAll(IReflectiveSequence value) => throw new System.NotImplementedException();
+        public bool addAll(IReflectiveSequence value) => throw new NotImplementedException();
 
         public void clear()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool remove(object? value)
@@ -119,6 +119,15 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <summary>
         /// Gets the extent associated to the parent extent
         /// </summary>
-        public IExtent? Extent => (_value as IHasExtent)?.Extent;
+        public IExtent? Extent
+        {
+            get
+            {
+                lock (_propertyValues)
+                {
+                    return (_value as IHasExtent)?.Extent;
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-using BurnSystems.Logging;
 
 namespace DatenMeister.WPF.Helper
 {
@@ -14,8 +13,6 @@ namespace DatenMeister.WPF.Helper
     /// </summary>
     public class DelayedRefreshDispatcher
     {
-        private static readonly ClassLogger ClassLogger = new ClassLogger(typeof(DelayedRefreshDispatcher));
-
         /// <summary>
         /// The dispatcher being used
         /// </summary>
@@ -34,8 +31,6 @@ namespace DatenMeister.WPF.Helper
         /// </summary>
         private bool _isRefreshed = true;
 
-        private int _instance;
-
         /// <summary>
         /// Initializes a new instance of the DelayedRefreshDispatcher
         /// </summary>
@@ -45,7 +40,7 @@ namespace DatenMeister.WPF.Helper
         {
             _dispatcher = dispatcher;
             _action = action;
-            _instance = Interlocked.Add(ref _instanceCount, 1);
+            Interlocked.Add(ref _instanceCount, 1);
         }
 
         /// <summary>

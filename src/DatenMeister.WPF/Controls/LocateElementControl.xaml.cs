@@ -25,7 +25,6 @@ namespace DatenMeister.WPF.Controls
             InitializeComponent();
 
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            _defaultClassifierHints = new DefaultClassifierHints(_workspaceLogic);
         }
 
         private void Control_Loaded(object sender, RoutedEventArgs e)
@@ -156,8 +155,6 @@ namespace DatenMeister.WPF.Controls
         public static readonly DependencyProperty ShowAllChildrenProperty = DependencyProperty.Register(
             "ShowAllChildren", typeof(bool), typeof(LocateElementControl),
             new PropertyMetadata(default(bool)));
-
-        private DefaultClassifierHints _defaultClassifierHints;
 
         public bool ShowAllChildren
         {

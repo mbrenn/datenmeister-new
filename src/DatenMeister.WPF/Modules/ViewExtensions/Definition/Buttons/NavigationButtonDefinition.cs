@@ -150,7 +150,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
         {
             public bool Equals(NavigationButtonDefinition? x, NavigationButtonDefinition? y)
             {
-                return NavigationButtonDefinition.AreEqual(x, y);
+                return AreEqual(x, y);
             }
 
             public int GetHashCode(NavigationButtonDefinition obj)

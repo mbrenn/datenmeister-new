@@ -21,7 +21,7 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Initializes a new element of the subelement field data and sets the field as an enumeration
         /// </summary>
-        public SubElementFieldData() : base()
+        public SubElementFieldData()
         {
             isEnumeration = true;
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
@@ -9,7 +8,6 @@ using DatenMeister.Models.AttachedExtent;
 using DatenMeister.Modules.AttachedExtent;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 

@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using Autofac;
@@ -9,7 +8,6 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Navigation;
-using Org.BouncyCastle.Security;
 using StundenMeister.Logic;
 
 namespace StundenMeister

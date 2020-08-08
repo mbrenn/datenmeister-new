@@ -264,8 +264,7 @@ namespace DatenMeister.WPF.Forms.Base
                                 Items?.remove(item);
                             }
                         }
-                    },
-                    ButtonPosition.After);
+                    });
 
             yield return
                 new CollectionMenuButtonDefinition(
@@ -855,7 +854,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (!(DataGrid.SelectedItem is ExpandoObject selectedItem)) return;
 
-            if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
+            if (_itemMapping.TryGetValue(selectedItem, out _))
             {
                 // OnMouseDoubleClick(foundItem);
             }
@@ -890,7 +889,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="e"></param>
         private void FastViewFilter_OnClick(object sender, RoutedEventArgs e)
         {
-            var translator = new FastViewFilterTranslator(GiveMe.Scope.Resolve<IWorkspaceLogic>());
+            var translator = new FastViewFilterTranslator();
             var menu = new ContextMenu();
             var list = new List<object>();
 
@@ -992,8 +991,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             foreach (var filter in fastFilters.OfType<IElement>())
             {
-                var translator = new FastViewFilterTranslator(
-                    GiveMe.Scope.Resolve<IWorkspaceLogic>());
+                var translator = new FastViewFilterTranslator();
 
                 var text = new TextBlock
                 {

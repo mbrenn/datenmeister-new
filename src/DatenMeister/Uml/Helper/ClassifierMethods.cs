@@ -22,6 +22,7 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
         /// <param name="alreadyIn">Returns the properties that are already in. </param>
+        /// <param name="followGeneralizations">true, if the generalizations shall also be followed</param>
         public static IEnumerable<IElement> GetPropertiesOfClassifier(IObject classifier, HashSet<string>? alreadyIn = null, bool followGeneralizations = true)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
@@ -87,7 +88,7 @@ namespace DatenMeister.Uml.Helper
             var properties = GetPropertiesOfClassifier(classifier);
             foreach (var property in properties)
             {
-                if (property.getOrDefault<bool>(_UML._Classification._Property.isComposite) == true)
+                if (property.getOrDefault<bool>(_UML._Classification._Property.isComposite))
                 {
                     yield return property;
                 }

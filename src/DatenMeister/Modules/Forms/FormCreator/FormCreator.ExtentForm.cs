@@ -79,7 +79,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         /// <param name="elements">Elements which are parsed to create the form</param>
         /// <param name="creationMode">The creation mode defining whether metaclass are used or not</param>
-        /// <returns></returns>
+        /// <param name="extentFormConfiguration">Configuration of the extent form</param>
+        /// <returns>The created form</returns>
         public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode, ExtentFormConfiguration? extentFormConfiguration)
         {
             extentFormConfiguration ??= new ExtentFormConfiguration();
@@ -424,7 +425,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 var fields = new List<IElement>();
                 foreach (var pair in propertiesWithoutCollection)
                 {
-                    if (objectMetaClass != null)
+                    if (objectMetaClass != null && pair.propertyName != null)
                     {
                         var property = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
                         if (property != null)
@@ -461,7 +462,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                 if (ConfigurationFormCreatorSeparateProperties)
 #pragma warning disable 162
+                    // ReSharper disable HeuristicUnreachableCode
                 {
+                    
                     var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
                     {
                         if (x is IElement innerElement)
@@ -514,6 +517,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         }
                     }
                 }
+                // ReSharper restore HeuristicUnreachableCode
                 else
 #pragma warning restore 162
                 {

@@ -67,6 +67,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         public IWorkspaceLogic WorkspaceLogic { get; }
 
         private readonly IntegrationSettings _integrationSettings;
+        
+        /// <summary>
+        /// Stores the locking logic. May be null, if no locking is active. 
+        /// </summary>
+        private LockingLogic? _lockingHandler;
 
         public ExtentManager(
             ConfigurationToExtentStorageMapper map,
@@ -76,11 +81,14 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             _scopeStorage = scopeStorage ?? throw new ArgumentNullException(nameof(scopeStorage));
             _extentStorageData = scopeStorage?.Get<ExtentStorageData>() ?? throw new InvalidOperationException("Extent Storage Data not found");
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>() ?? throw new InvalidOperationException("IntegrationSettings not found");
+            _lockingHandler = _integrationSettings.IsLockingActivated ? new LockingLogic(scopeStorage) : null;
+                
+
             _map = map ?? throw new ArgumentNullException(nameof(map));
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
-            var integrationSettings = scopeStorage.Get<IntegrationSettings>();
-            _integrationSettings = integrationSettings ?? throw new ArgumentNullException(nameof(integrationSettings));
             _diScope = diScope;
+            
         }
 
         /// <summary>
@@ -302,6 +310,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         public void StoreExtent(IExtent extent)
         {
             VerifyDatabaseContent();
+            CheckForOpenedManager();
             
             ExtentStorageData.LoadedExtentInformation information;
             lock (_extentStorageData.LoadedExtents)
@@ -338,13 +347,19 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Detaches the extent by removing it from the database of loaded extents
+        /// Detaches the extent by removing it from the database of loaded extents.
+        /// The extent will also be unlocked
         /// </summary>
         /// <param name="extent"></param>
-        public void DetachExtent(IExtent extent)
+        /// <param name="doStore">true, if the values shall be stored into the database</param>
+        public void DetachExtent(IExtent extent, bool doStore = false)
         {
             lock (_extentStorageData.LoadedExtents)
             {
+                CheckForOpenedManager();
+                
+                if (doStore) StoreExtent(extent);
+                
                 var information = _extentStorageData.LoadedExtents.FirstOrDefault(x => x.Extent.@equals(extent));
                 if (information != null)
                 {
@@ -383,12 +398,26 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Loads all extents
+        /// Loads all extents and evaluates the extent manager as having loaded the extents
         /// </summary>
         public void LoadAllExtents()
         {
             lock (_extentStorageData.LoadedExtents)
             {
+                // Checks, if loading has already occured
+                if (_extentStorageData.IsOpened)
+                {
+                    Logger.Warn("The Extent Storage was already opened...");
+                }
+                else
+                {
+                    _lockingHandler?.Lock(_extentStorageData.GetLockPath());
+                }
+                
+                _extentStorageData.IsOpened = true;
+                
+                
+            
                 // Stores the last the exception
                 Exception? lastException = null;
                 
@@ -535,11 +564,10 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores all extents
         /// </summary>
-        /// <param name="unlock">true, if the extents shall also be removed from the internal list of loaded
-        /// extents which also means that the providers are unlocked</param>
-        public void StoreAllExtents(bool unlock)
+        public void StoreAllExtents()
         {
             VerifyDatabaseContent();
+            CheckForOpenedManager();
                 
             List<ExtentStorageData.LoadedExtentInformation> copy;
 
@@ -560,14 +588,50 @@ namespace DatenMeister.Runtime.ExtentStorage
                 try
                 {
                     StoreExtent(info.Extent);
-                    if (unlock)
-                    {
-                        UnlockProvider(info.Configuration);
-                    }
                 }
                 catch (Exception exc)
                 {
                     Logger.Error($"Error during storing of extent: {info.Configuration.extentUri}: {exc.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unloads all extents from the internal registration and releases the lock to the extent files and
+        /// extent registration
+        /// </summary>
+        /// <param name="doStore">true, if all extents shall be stored</param>
+        public void UnloadManager(bool doStore = false)
+        {
+            lock (_extentStorageData.LoadedExtents)
+            {
+                CheckForOpenedManager();
+                
+                if (doStore) StoreAllExtents();
+
+                Logger.Info("Unloading and unlocking");
+                var copy = _extentStorageData.LoadedExtents.ToList();
+
+                foreach (var info in copy)
+                {
+                    UnlockProvider(info.Configuration);
+                }
+
+                if (_extentStorageData.IsOpened)
+                {
+                    _lockingHandler?.Unlock(_extentStorageData.GetLockPath());
+                    _extentStorageData.IsOpened = false;
+                }
+            }
+        }
+
+        private void CheckForOpenedManager()
+        {
+            lock (_extentStorageData.LoadedExtents)
+            {
+                if (!_extentStorageData.IsOpened)
+                {
+                    Logger.Warn("The manager is not opened, but we do it eitherway");
                 }
             }
         }

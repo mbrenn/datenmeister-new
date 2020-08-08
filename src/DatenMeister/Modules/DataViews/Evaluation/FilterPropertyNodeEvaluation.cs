@@ -78,36 +78,22 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
                 var elementValue = element.getOrDefault<string>(property);
 
-                bool isIn;
-                switch (comparisonMode)
+                bool isIn = comparisonMode switch
                 {
-                    case ComparisonMode.Equal:
-                        isIn = elementValue == propertyValue;
-                        break;
-                    case ComparisonMode.NotEqual:
-                        isIn = elementValue != propertyValue;
-                        break;
-                    case ComparisonMode.Contains:
-                        isIn = elementValue.Contains(propertyValue);
-                        break;
-                    case ComparisonMode.DoesNotContain:
-                        isIn = !elementValue.Contains(propertyValue);
-                        break;
-                    case ComparisonMode.GreaterThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) > 0;
-                        break;
-                    case ComparisonMode.GreaterOrEqualThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) >= 0;
-                        break;
-                    case ComparisonMode.LighterThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) < 0;
-                        break;
-                    case ComparisonMode.LighterOrEqualThan:
-                        isIn = string.Compare(elementValue, propertyValue, StringComparison.Ordinal) <= 0;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, null);
-                }
+                    ComparisonMode.Equal => elementValue == propertyValue,
+                    ComparisonMode.NotEqual => elementValue != propertyValue,
+                    ComparisonMode.Contains => elementValue.Contains(propertyValue),
+                    ComparisonMode.DoesNotContain => !elementValue.Contains(propertyValue),
+                    ComparisonMode.GreaterThan =>
+                    string.Compare(elementValue, propertyValue, StringComparison.Ordinal) > 0,
+                    ComparisonMode.GreaterOrEqualThan => string.Compare(elementValue, propertyValue,
+                        StringComparison.Ordinal) >= 0,
+                    ComparisonMode.LighterThan =>
+                    string.Compare(elementValue, propertyValue, StringComparison.Ordinal) < 0,
+                    ComparisonMode.LighterOrEqualThan => string.Compare(elementValue, propertyValue,
+                        StringComparison.Ordinal) <= 0,
+                    _ => throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, null)
+                };
 
                 if (isIn)
                 {

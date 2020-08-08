@@ -108,7 +108,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 if (option.IsChecked == true)
                 {
                     result.Append(separator);
-                    result.Append(option.Tag.ToString());
+                    result.Append(option.Tag);
                     separator = _separator;
                 }
             }

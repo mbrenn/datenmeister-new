@@ -27,21 +27,15 @@ namespace DatenMeister.Modules.FastViewFilter
 
                 var propertyValue = valueAsObject.getOrDefault<string>(filterObject.Property);
 
-                switch (filterObject.ComparisonType)
+                return filterObject.ComparisonType switch
                 {
-                    case ComparisonType.Equal:
-                        return propertyValue == filterObject.Value;
-                    case ComparisonType.GreaterThan:
-                        return string.CompareOrdinal(propertyValue, filterObject.Value) > 0;
-                    case ComparisonType.LighterThan:
-                        return string.CompareOrdinal(propertyValue, filterObject.Value) < 0;
-                    case ComparisonType.GreaterOrEqualThan:
-                        return string.CompareOrdinal(propertyValue, filterObject.Value) >= 0;
-                    case ComparisonType.LighterOrEqualThan:
-                        return string.CompareOrdinal(propertyValue, filterObject.Value) <= 0;
-                    default:
-                        return true;
-                }
+                    ComparisonType.Equal => propertyValue == filterObject.Value,
+                    ComparisonType.GreaterThan => string.CompareOrdinal(propertyValue, filterObject.Value) > 0,
+                    ComparisonType.LighterThan => string.CompareOrdinal(propertyValue, filterObject.Value) < 0,
+                    ComparisonType.GreaterOrEqualThan => string.CompareOrdinal(propertyValue, filterObject.Value) >= 0,
+                    ComparisonType.LighterOrEqualThan => string.CompareOrdinal(propertyValue, filterObject.Value) <= 0,
+                    _ => true
+                };
             }
 
             return false;

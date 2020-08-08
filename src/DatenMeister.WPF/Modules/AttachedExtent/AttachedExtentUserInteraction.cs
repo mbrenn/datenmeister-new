@@ -35,7 +35,7 @@ namespace DatenMeister.WPF.Modules.AttachedExtent
                 var configuration = _attachedExtentHandler.GetConfiguration(attachedExtent);
                 if (configuration == null) continue;
 
-                var interaction = new UserInteractions.DefaultElementInteraction(
+                var interaction = new DefaultElementInteraction(
                     $"Attach Item: {configuration.name ?? "Attached Item"}",
                     async (guest, o) =>
                     {

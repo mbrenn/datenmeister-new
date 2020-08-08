@@ -203,6 +203,7 @@ namespace DatenMeister.Provider.XMI
                     var loadedElement = LoadElement(factory, subElement);
 
                     // Sets the container being used
+                    // ReSharper disable once SuspiciousTypeConversion.Global
                     var asSetContainer = loadedElement as IElementSetContainer;
                     asSetContainer?.setContainer(resultingElement);
 

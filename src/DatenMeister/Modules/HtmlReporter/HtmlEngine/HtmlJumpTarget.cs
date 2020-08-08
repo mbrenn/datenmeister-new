@@ -11,7 +11,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         {
             id = id.Replace(" ", string.Empty);
             _id = id;
-            this._text = text;
+            _text = text;
         }
 
         public override string ToString()

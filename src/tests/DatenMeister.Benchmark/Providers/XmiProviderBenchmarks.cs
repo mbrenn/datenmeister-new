@@ -11,21 +11,20 @@ namespace DatenMeister.Benchmark.Providers
 {
     public class XmiProviderBenchmarks
     {
-        private readonly XmiProvider _provider;
-        private readonly MofUriExtent _extent;
-        private List<IElement> _elements;
+        private readonly List<IElement> _elements;
 
         public XmiProviderBenchmarks()
         {
-            _provider = new XmiProvider(
+            var provider = new XmiProvider(
                 XDocument.Parse("" +
                                 "<item>" +
                                 "    <item name=\"name1\" age=\"18\" />" +
                                 "    <item name=\"name2\" age=\"25\" />" +
                                 "    <item name=\"name3\" age=\"32\" />" +
                                 "</item>"));    
-            _extent = new MofUriExtent(_provider, "dm:///test");
-            _elements = _extent.elements().OfType<IElement>().ToList();
+            var extent = new MofUriExtent(provider, "dm:///test");
+            
+            _elements = extent.elements().OfType<IElement>().ToList();
         }
         
         [Benchmark]

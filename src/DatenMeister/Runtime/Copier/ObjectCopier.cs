@@ -48,7 +48,7 @@ namespace DatenMeister.Runtime.Copier
         /// <summary>
         /// Stores the current depth
         /// </summary>
-        private int _currentDepth = 0;
+        private int _currentDepth;
 
         /// <summary>
         /// Defines the maximum recursion depth that is accepted by the object copier

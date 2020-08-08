@@ -6,7 +6,7 @@
     /// </summary>
     public class FileSelectionFieldData: FieldData
     {
-        public FileSelectionFieldData(): base()
+        public FileSelectionFieldData()
         {
         }
 

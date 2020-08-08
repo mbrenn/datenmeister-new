@@ -18,7 +18,7 @@ namespace DatenMeister.WPF.Forms.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
             fieldFlags.CanBeFocused = true;
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void CallSetAction(IObject element)

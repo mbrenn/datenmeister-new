@@ -9,7 +9,6 @@ using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.ZipExample

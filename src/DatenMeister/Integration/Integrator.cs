@@ -146,7 +146,6 @@ namespace DatenMeister.Integration
             
             var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
-
             
             Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();

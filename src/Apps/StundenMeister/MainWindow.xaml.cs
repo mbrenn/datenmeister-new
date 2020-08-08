@@ -67,7 +67,7 @@ namespace StundenMeister
                 (x, y) => { UpdateCostCenters(); });
         }
 
-        private int _ticksOccured = 0;
+        private int _ticksOccured;
 
         /// <summary>
         /// Just a flag indicating whether the form is currently

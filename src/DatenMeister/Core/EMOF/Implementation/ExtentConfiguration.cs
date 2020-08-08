@@ -77,7 +77,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Sets the default type package which is shown, when the user wants
         /// to create a new item
         /// </summary>
-        /// <param name="extent">Extent shall get the default type package</param>
         /// <param name="defaultTypePackages">The elements which shall be considered as the
         /// default type package</param>
         public void SetDefaultTypePackages(IEnumerable<IElement> defaultTypePackages)
@@ -106,7 +105,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the default type package
         /// </summary>
-        /// <param name="extent">Extent to be used</param>
         /// <returns>The found element</returns>
         public IEnumerable<IElement> GetDefaultTypePackages() =>
             _extent.get<IReflectiveCollection>(DatenmeisterDefaultTypePackage).OfType<IElement>();

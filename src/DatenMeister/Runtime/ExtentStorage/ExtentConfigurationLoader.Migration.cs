@@ -19,21 +19,19 @@
             /// <returns>Translated name</returns>
             public static string TranslateLegacyConfigurationType(string oldName)
             {
-                switch (oldName)
+                return oldName switch
                 {
-                    case "DatenMeister.Provider.Xml.XmlReferenceSettings":
-                        return "DatenMeister.Provider.Xml.XmlReferenceLoaderConfig";
-                    case "DatenMeister.Provider.XMI.ExtentStorage.XmiStorageConfiguration":
-                        return "DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig";
-                    case "DatenMeister.Excel.Helper.ExcelImportSettings":
-                        return "DatenMeister.Excel.Helper.ExcelImportLoaderConfig";
-                    case "DatenMeister.Excel.Helper.ExcelReferenceSettings":
-                        return "DatenMeister.Excel.Helper.ExcelReferenceLoaderConfig";
-                    case "DatenMeister.Excel.Helper.ExcelSettings":
-                        return "DatenMeister.Excel.Helper.ExcelLoaderConfig";
-                    default:
-                        return oldName;
-                }
+                    "DatenMeister.Provider.Xml.XmlReferenceSettings" =>
+                    "DatenMeister.Provider.Xml.XmlReferenceLoaderConfig",
+                    "DatenMeister.Provider.XMI.ExtentStorage.XmiStorageConfiguration" =>
+                    "DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig",
+                    "DatenMeister.Excel.Helper.ExcelImportSettings" =>
+                    "DatenMeister.Excel.Helper.ExcelImportLoaderConfig",
+                    "DatenMeister.Excel.Helper.ExcelReferenceSettings" =>
+                    "DatenMeister.Excel.Helper.ExcelReferenceLoaderConfig",
+                    "DatenMeister.Excel.Helper.ExcelSettings" => "DatenMeister.Excel.Helper.ExcelLoaderConfig",
+                    _ => oldName
+                };
             }
         }
     }

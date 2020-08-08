@@ -1,11 +1,8 @@
 ﻿using DatenMeister.Integration;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.Plugins;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace IssueMeisterLib
@@ -18,7 +15,6 @@ namespace IssueMeisterLib
         public const string PackageName = "IssueMeister";
         public const string TargetPackageName = "Apps::IssueMeister";
         public const string ExtentTypeName = "IssueMeister";
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly PackageMethods _packageMethods;
         private readonly FormsPlugin _formsPlugin;
         private readonly LocalTypeSupport _localTypeSupport;
@@ -27,15 +23,13 @@ namespace IssueMeisterLib
         /// <summary>
         /// Initializes a new instance of the IssueMeisterPlugin
         /// </summary>
-        /// <param name="workspaceLogic">Defines the workspacelogic</param>
         /// <param name="packageMethods"></param>
         /// <param name="formsPlugin">Sets the form logic</param>
         /// <param name="localTypeSupport">Sets the local type support</param>
         /// <param name="scopeStorage">The settings for the extent</param>
-        public IssueMeisterPlugin(IWorkspaceLogic workspaceLogic, PackageMethods packageMethods, FormsPlugin formsPlugin,
+        public IssueMeisterPlugin(PackageMethods packageMethods, FormsPlugin formsPlugin,
             LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
         {
-            _workspaceLogic = workspaceLogic;
             _packageMethods = packageMethods;
             _formsPlugin = formsPlugin;
             _localTypeSupport = localTypeSupport;

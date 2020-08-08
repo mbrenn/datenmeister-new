@@ -413,49 +413,33 @@ namespace StundenMeister.Logic
         public DateTime FindStartOfWeek(DateTime day)
         {
             var dayOfWeek = day.DayOfWeek;
-            switch (dayOfWeek)
+            return dayOfWeek switch
             {
-                case DayOfWeek.Sunday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-6);
-                case DayOfWeek.Monday:
-                    return new DateTime(day.Year, day.Month,day.Day);
-                case DayOfWeek.Tuesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-1);
-                case DayOfWeek.Wednesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-2);
-                case DayOfWeek.Thursday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-3);
-                case DayOfWeek.Friday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-4);
-                case DayOfWeek.Saturday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-5);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                DayOfWeek.Sunday => new DateTime(day.Year, day.Month, day.Day).AddDays(-6),
+                DayOfWeek.Monday => new DateTime(day.Year, day.Month, day.Day),
+                DayOfWeek.Tuesday => new DateTime(day.Year, day.Month, day.Day).AddDays(-1),
+                DayOfWeek.Wednesday => new DateTime(day.Year, day.Month, day.Day).AddDays(-2),
+                DayOfWeek.Thursday => new DateTime(day.Year, day.Month, day.Day).AddDays(-3),
+                DayOfWeek.Friday => new DateTime(day.Year, day.Month, day.Day).AddDays(-4),
+                DayOfWeek.Saturday => new DateTime(day.Year, day.Month, day.Day).AddDays(-5),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public DateTime FindEndOfWeek(DateTime day)
         {
             var dayOfWeek = day.DayOfWeek;
-            switch (dayOfWeek)
+            return dayOfWeek switch
             {
-                case DayOfWeek.Sunday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(1);
-                case DayOfWeek.Monday:
-                    return new DateTime(day.Year, day.Month,day.Day).AddDays(7);
-                case DayOfWeek.Tuesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(6);
-                case DayOfWeek.Wednesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(5);
-                case DayOfWeek.Thursday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(4);
-                case DayOfWeek.Friday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(3);
-                case DayOfWeek.Saturday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(2);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                DayOfWeek.Sunday => new DateTime(day.Year, day.Month, day.Day).AddDays(1),
+                DayOfWeek.Monday => new DateTime(day.Year, day.Month, day.Day).AddDays(7),
+                DayOfWeek.Tuesday => new DateTime(day.Year, day.Month, day.Day).AddDays(6),
+                DayOfWeek.Wednesday => new DateTime(day.Year, day.Month, day.Day).AddDays(5),
+                DayOfWeek.Thursday => new DateTime(day.Year, day.Month, day.Day).AddDays(4),
+                DayOfWeek.Friday => new DateTime(day.Year, day.Month, day.Day).AddDays(3),
+                DayOfWeek.Saturday => new DateTime(day.Year, day.Month, day.Day).AddDays(2),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         /// <summary>

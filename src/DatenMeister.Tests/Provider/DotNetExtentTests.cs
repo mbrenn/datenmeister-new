@@ -71,7 +71,7 @@ namespace DatenMeister.Tests.Provider
         [Test]
         public void TestListWithObjects()
         {
-            var typeExtent = DotNetExtentTests.Initialize();
+            var typeExtent = Initialize();
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test");
             extent.AddMetaExtent(typeExtent);

@@ -128,7 +128,7 @@ namespace DatenMeister.WPF.Navigation
             var detailFormWindow = new DetailFormWindow
             {
                 Owner = navigationHost.GetWindow(),
-                Title = navigateToItemConfig.Title.ToString() ?? string.Empty
+                Title = navigateToItemConfig.Title ?? string.Empty
             };
 
             detailFormWindow.SetContent(
@@ -205,7 +205,7 @@ namespace DatenMeister.WPF.Navigation
                         task.SetResult(result);
                     };
 
-                    SetPosition(listFormWindow, parentWindow, navigationMode);
+                    SetPosition(listFormWindow, parentWindow);
                     break;
                 }
                 case DetailFormControl asDetailFormControl:
@@ -230,7 +230,7 @@ namespace DatenMeister.WPF.Navigation
                     };
 
                     asDetailFormControl.UpdateForm();
-                    SetPosition(detailFormWindow, parentWindow, navigationMode);
+                    SetPosition(detailFormWindow, parentWindow);
 
                     detailFormWindow.Show();
                     break;
@@ -245,8 +245,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="newWindow">New window whose position need to be defined</param>
         /// <param name="parentWindow">The parent window, which is the source of creation</param>
-        /// <param name="navigationMode">The used navigation mode</param>
-        private static void SetPosition(Window newWindow, Window parentWindow, NavigationMode navigationMode)
+        private static void SetPosition(Window newWindow, Window parentWindow)
         {
             if (parentWindow == null)
             {

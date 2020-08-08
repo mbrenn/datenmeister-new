@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Integration;
@@ -18,23 +15,22 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
         private readonly LockingLogic _lockingLogic;
-        private readonly ExtentStorageData _extentStorageData;
+
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
 
         public XmiProviderLoader(IScopeStorage scopeStorage, LockingLogic lockingLogic)
         {
             _lockingLogic = lockingLogic;
-            _extentStorageData = scopeStorage.Get<ExtentStorageData>();
+            scopeStorage.Get<ExtentStorageData>();
         }
         
-        private XmiProviderLoader(ExtentStorageData extentStorageData, LockingLogic lockingLogic)
+        private XmiProviderLoader(LockingLogic lockingLogic)
         {
-            _extentStorageData = extentStorageData;
             _lockingLogic = lockingLogic;
         }
 
-        public XmiProviderLoader Create(ExtentStorageData data, LockingLogic lockingLogic) =>
-            new XmiProviderLoader(data, lockingLogic);
+        public XmiProviderLoader Create(LockingLogic lockingLogic) =>
+            new XmiProviderLoader(lockingLogic);
         
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
@@ -122,12 +118,19 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             }
         }
 
+        /// <summary>
+        /// Gets the locking path for the provider
+        /// </summary>
+        /// <param name="config">Configuration storing the locking path</param>
+        /// <returns></returns>
         public string GetLockFilePath(XmiStorageLoaderConfig config)
         {
-            if (config.filePath == null || config.filePath != String.Empty)
+            if (string.IsNullOrEmpty(config.filePath))
             {
-                
+                throw new InvalidOperationException(
+                    "The locking path could not be retrieved because the configuration is empty. ");
             }
+            
             return config.filePath + ".lock";
         }
 

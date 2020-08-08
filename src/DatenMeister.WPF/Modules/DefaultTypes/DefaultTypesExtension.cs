@@ -83,8 +83,6 @@ namespace DatenMeister.WPF.Modules.DefaultTypes
                             clickedItem, 
                             package);
 
-                        var navigationHost = viewExtensionInfo.NavigationHost ??
-                                             throw new InvalidOperationException("NavigationHost == null");
                         _ = NavigatorForItems.NavigateToElementDetailView(
                             viewExtensionInfo.NavigationHost,
                             package);

@@ -2,7 +2,7 @@
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.WPF.Modules.UserInteractions;
 
-namespace DatenMeister.Modules.ExtentPropertyElementHandler
+namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
 {
     /// <summary>
     /// This plugin allows the definition of extentproperties in the extent property dialog.

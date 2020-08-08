@@ -105,7 +105,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Stores the information whether the evaluation about the item count is currently
         /// running in the background. 
         /// </summary>
-        private bool _isItemCountRunning = false;
+        private bool _isItemCountRunning;
 
         private DynamicFunctionManager? _dynamicFunctionManager;
 

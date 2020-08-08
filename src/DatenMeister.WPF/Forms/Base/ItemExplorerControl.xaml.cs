@@ -867,8 +867,6 @@ namespace DatenMeister.WPF.Forms.Base
         private void AddTreeViewUiElement(IEnumerable<ViewExtension> viewExtensionInfo)
         {
             // Gets the elements of the plugin
-            var data = new ViewExtensionInfo(NavigationHost, NavigationTreeView);
-            
             foreach (var buttonView in viewExtensionInfo.OfType<ItemButtonDefinition>())
             {
                 var button = new Button
@@ -916,7 +914,7 @@ namespace DatenMeister.WPF.Forms.Base
             var managementWorkspace = GiveMe.Scope.WorkspaceLogic.GetManagementWorkspace();
             var form = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>() ??
                        throw new InvalidOperationException("FormAndFields not found");
-            var viewModes = managementWorkspace.GetAllDescendentsOfType(form.__ViewMode, true);
+            var viewModes = managementWorkspace.GetAllDescendentsOfType(form.__ViewMode);
             var contextMenu = new ContextMenu();
 
             var list = new List<MenuItem>();

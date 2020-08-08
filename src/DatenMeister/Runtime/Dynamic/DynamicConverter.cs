@@ -39,7 +39,7 @@ namespace DatenMeister.Runtime.Dynamic
         {
             if (value != null)
             {
-                value.__wrappedObject__ = null;
+                value.__wrappedObject__ = null!;
             }
         }
 

@@ -2,7 +2,7 @@
 {
     public class DateTimeFieldData : FieldData
     {
-        public DateTimeFieldData() : base ()
+        public DateTimeFieldData()
         {
         }
 

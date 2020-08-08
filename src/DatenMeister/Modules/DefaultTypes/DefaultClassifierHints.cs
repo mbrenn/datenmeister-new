@@ -28,12 +28,10 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(DefaultClassifierHints));
 
-        private IWorkspaceLogic _workspaceLogic;
         private readonly _UML _uml;
 
         public DefaultClassifierHints(IWorkspaceLogic workspaceLogic)
         {
-            _workspaceLogic = workspaceLogic;
             _uml = workspaceLogic.GetUmlWorkspace().Get<_UML>() ??
                    throw new InvalidOperationException("Uml Workspace does not have uml");
         }

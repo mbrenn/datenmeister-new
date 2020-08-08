@@ -28,7 +28,7 @@ namespace DatenMeisterWPF
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            var path = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location), "log.txt");
+            var path = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location)!, "log.txt");
 
             TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
             TheLog.AddProvider(new FileProvider(path, true), LogLevel.Trace);

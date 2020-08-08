@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Reflection;
-using Autofac;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;

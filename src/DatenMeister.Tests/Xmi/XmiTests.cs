@@ -42,9 +42,7 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestBootstrap()
         {
-            _MOF mof;
-            _UML uml;
-            CreateUmlAndMofInstance(out mof, out uml);
+            CreateUmlAndMofInstance(out _, out _);
         }
 
         [Test]

@@ -49,7 +49,7 @@ namespace DatenMeister.Excel.ProviderLoader
 
         public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

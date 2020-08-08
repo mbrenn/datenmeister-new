@@ -340,6 +340,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element"></param>
         /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
+        /// <param name="attachedElement">The attached element that can retrieve additional information</param>
         public void SetContent(
             IObject? element, 
             FormDefinition? formDefinition,

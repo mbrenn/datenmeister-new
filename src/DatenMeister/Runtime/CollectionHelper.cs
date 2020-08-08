@@ -63,7 +63,7 @@ namespace DatenMeister.Runtime
                 if (value is IElement x)
                 {
                     var metaClass = x.getMetaClass();
-                    if (metaClass is IElement result)
+                    if (metaClass is { } result)
                     {
                         if (set.Add(metaClass))
                         {

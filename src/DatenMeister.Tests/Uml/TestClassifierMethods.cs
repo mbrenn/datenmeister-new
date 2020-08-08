@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
-using NUnit.Common;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml
@@ -21,7 +19,6 @@ namespace DatenMeister.Tests.Uml
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
             var uml = workspaceLogic.GetUmlData();
-            var extent = dm.CreateXmiExtent("dm:///test");
 
             var properties = ClassifierMethods.GetCompositingProperties(uml.Classification.__Classifier).ToList();
             Assert.That(properties, Is.Not.Null);

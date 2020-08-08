@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Reports;
 using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlReporter.Formatter;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
@@ -39,6 +41,37 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         null,
                         "Item"
                     );
+            }
+
+            var simpleReportInfo = viewExtensionInfo.IsItemInDetailWindowOfType(
+                _Reports.TheOne.__SimpleReportConfiguration);
+            if (simpleReportInfo != null)
+            {
+                yield return
+                    new RowItemButtonDefinition(
+                        "Create Report",
+                        async (x, y) =>
+                        {
+                            var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
+
+                            var result = await NavigatorForDialogs.Locate(viewExtensionInfo.NavigationHost,
+                                new NavigatorForDialogs.NavigatorForDialogConfiguration
+                                {
+                                    DefaultWorkspace = workspaceLogic.GetDataWorkspace()
+                                });
+
+                            if (result != null)
+                            {
+                                var configuration = DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(y);
+                                configuration.rootElement = result;
+                                var simpleReport = new SimpleReportCreator(workspaceLogic, configuration);
+
+                                var tmpPath = GetRandomWriter(out var streamWriter);
+                                simpleReport.CreateReport(streamWriter);
+
+                                DotNetHelper.CreateProcess(tmpPath);
+                            }
+                        });
             }
 
             // Check if the the query is about the current view
@@ -133,15 +166,20 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
             simpleReportConfiguration.rootElement = rootElement;
 
-            var id = StringManipulation.RandomString(10);
-            var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
-            using var streamWriter = new StreamWriter(tmpPath, false, Encoding.UTF8);
+            var tmpPath = GetRandomWriter(out var streamWriter);
 
-            
             var reportCreator = new SimpleReportCreator(GiveMe.Scope.WorkspaceLogic, simpleReportConfiguration);
             reportCreator.CreateReport(streamWriter);
 
             DotNetHelper.CreateProcess(tmpPath);
+        }
+
+        private static string GetRandomWriter(out StreamWriter streamWriter)
+        {
+            var id = StringManipulation.RandomString(10);
+            var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
+            streamWriter = new StreamWriter(tmpPath, false, Encoding.UTF8);
+            return tmpPath;
         }
 
         private void CreateReportForDetailElement(IObject effectiveForm, IObject selectedItem)

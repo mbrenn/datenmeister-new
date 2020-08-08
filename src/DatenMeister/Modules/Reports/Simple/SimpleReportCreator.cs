@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
@@ -40,6 +41,14 @@ namespace DatenMeister.Modules.Reports.Simple
         /// </summary>
         private readonly SimpleReportConfiguration _reportConfiguration;
 
+        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, IElement element)
+        {
+            _workspaceLogic = workspaceLogic;
+            _reportConfiguration = DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>( element);
+            _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
+            _formCreator = FormCreator.Create(workspaceLogic, null);
+        }
+
         /// <summary>
         /// Initializes a new instance of the ReportCreator class.
         /// </summary>
@@ -66,7 +75,6 @@ namespace DatenMeister.Modules.Reports.Simple
             var rootElement = _reportConfiguration.rootElement;
             if (rootElement == null)
                 throw new InvalidOperationException("rootElement is null");
-
 
             using (var report = new HtmlReport(textWriter))
             {

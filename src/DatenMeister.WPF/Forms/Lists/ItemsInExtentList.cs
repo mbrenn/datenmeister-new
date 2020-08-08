@@ -335,8 +335,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            var extent = RootItem as IExtent;
-            if (extent == null)
+            if (!(RootItem is IExtent extent))
             {
                 MessageBox.Show("The root item is not an extent");
                 return;

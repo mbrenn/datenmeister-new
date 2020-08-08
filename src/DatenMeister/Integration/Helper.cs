@@ -25,7 +25,7 @@ namespace DatenMeister.Integration
         public static void UnuseDatenMeister(this ILifetimeScope scope)
         {
             scope.Resolve<WorkspaceLoader>().Store();
-            scope.Resolve<ExtentManager>().StoreAllExtents(true);
+            scope.Resolve<ExtentManager>().UnloadManager(true);
             scope.Resolve<ExtentConfigurationLoader>().StoreConfiguration();
         }
     }

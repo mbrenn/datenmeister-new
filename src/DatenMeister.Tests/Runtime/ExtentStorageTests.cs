@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Runtime
 
             // Changes content, store it and check, if stored
             ((IObject) csvExtent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
-            logic.StoreAllExtents(true);
+            logic.UnloadManager(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);
@@ -66,7 +66,6 @@ namespace DatenMeister.Tests.Runtime
             mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 
-            var data = new ExtentStorageData();
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
             var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);

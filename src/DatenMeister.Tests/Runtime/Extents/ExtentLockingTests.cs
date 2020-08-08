@@ -50,12 +50,12 @@ namespace DatenMeister.Tests.Runtime.Extents
                         extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
                     });
                     
-                    extentManager.StoreAllExtents(true);
+                    extentManager.UnloadManager(true);
                     
                     var provider2= extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
                     Assert.That(provider2, Is.Not.Null);
 
-                    extentManager2.StoreAllExtents(true);
+                    extentManager2.UnloadManager(true);
                 }
             }
         }

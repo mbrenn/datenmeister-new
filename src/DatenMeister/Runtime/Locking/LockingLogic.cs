@@ -10,6 +10,7 @@ namespace DatenMeister.Runtime.Locking
     public class LockingLogic
     {
         private readonly LockingState _lockingState;
+        
         private static readonly ClassLogger Logger = new ClassLogger(typeof(LockingLogic));
 
         public LockingLogic(IScopeStorage scopeStorage)
@@ -76,10 +77,7 @@ namespace DatenMeister.Runtime.Locking
                 UpdateLockFile(_lockingState, filePath);
                 _lockingState.LockFilePaths.Add(filePath);
 
-                if (_lockingState.LockingTask == null)
-                {
-                    _lockingState.LockingTask = Task.Run(() => TickLoop(_lockingState));
-                }
+                _lockingState.LockingTask ??= Task.Run(() => TickLoop(_lockingState));
             }
 
             Logger.Info("Locking: " + filePath);
@@ -124,8 +122,6 @@ namespace DatenMeister.Runtime.Locking
                 {
                     lockingState.GlobalMutex.ReleaseMutex();
                 }
-
-                Logger.Info("Updated Lockfile: " + filePath);
             }
         }
 
@@ -133,18 +129,22 @@ namespace DatenMeister.Runtime.Locking
         /// Performs a tick
         /// </summary>
         /// <param name="lockingState">The locking state</param>
-        public static void Tick(LockingState lockingState)
+        private static void Tick(LockingState lockingState)
         {
+            var n = 0;
             foreach (var filePath in lockingState.LockFilePaths)
             {
                 UpdateLockFile(lockingState, filePath);
+                n++;
             }
+            
+            Logger.Info($"Updated {n} Lockfiles");
         }
 
         /// <summary>
         /// Performs the ticks
         /// </summary>
-        public static async void TickLoop(LockingState lockingState)
+        private static async void TickLoop(LockingState lockingState)
         {
             while (true)
             {

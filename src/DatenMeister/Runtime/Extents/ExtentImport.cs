@@ -5,7 +5,6 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Exceptions;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.Extents
 {

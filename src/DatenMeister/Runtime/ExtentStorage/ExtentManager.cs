@@ -8,7 +8,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
-using DatenMeister.Models.DataViews;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider;
 using DatenMeister.Runtime.ExtentStorage.Configuration;

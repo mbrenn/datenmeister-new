@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Models.Runtime;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews

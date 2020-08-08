@@ -167,6 +167,10 @@ namespace DatenMeister.Models.Reports
                                 {
                                     tree.ReportInstance._name = value;
                                 }
+                                if(name == "reportDefinition") // Looking for property
+                                {
+                                    tree.ReportInstance._reportDefinition = value;
+                                }
                                 if(name == "sources") // Looking for property
                                 {
                                     tree.ReportInstance._sources = value;

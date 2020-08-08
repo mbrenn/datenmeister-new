@@ -94,6 +94,9 @@ namespace DatenMeister.Models.Reports
             public static string @name = "name";
             public IElement? _name = null;
 
+            public static string @reportDefinition = "reportDefinition";
+            public IElement? _reportDefinition = null;
+
             public static string @sources = "sources";
             public IElement? _sources = null;
 

@@ -14,12 +14,12 @@ namespace DatenMeister.Provider.ManagementProviders.Model
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _ManagementProvider tree)
+        public void Fill(IEnumerable<object?> collection, _ManagementProvider tree)
         {
             FillTheManagementProvider.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _ManagementProvider tree)
+        public static void DoFill(IEnumerable<object?> collection, _ManagementProvider tree)
         {
             string? name;
             IElement? value;
@@ -52,6 +52,10 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 if(name == "count") // Looking for property
                                 {
                                     tree.Extent._count = value;
+                                }
+                                if(name == "totalCount") // Looking for property
+                                {
+                                    tree.Extent._totalCount = value;
                                 }
                                 if(name == "type") // Looking for property
                                 {
@@ -110,6 +114,106 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 if(name == "annotation") // Looking for property
                                 {
                                     tree.CreateNewWorkspaceModel._annotation = value;
+                                }
+                            }
+                        }
+                        if(name == "ExtentTypeSetting") // Looking for class
+                        {
+                            tree.__ExtentTypeSetting = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ExtentTypeSetting._name = value;
+                                }
+                                if(name == "rootElementMetaClasses") // Looking for property
+                                {
+                                    tree.ExtentTypeSetting._rootElementMetaClasses = value;
+                                }
+                            }
+                        }
+                        if(name == "ExtentProperties") // Looking for class
+                        {
+                            tree.__ExtentProperties = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "uri") // Looking for property
+                                {
+                                    tree.ExtentProperties._uri = value;
+                                }
+                                if(name == "count") // Looking for property
+                                {
+                                    tree.ExtentProperties._count = value;
+                                }
+                                if(name == "totalCount") // Looking for property
+                                {
+                                    tree.ExtentProperties._totalCount = value;
+                                }
+                                if(name == "type") // Looking for property
+                                {
+                                    tree.ExtentProperties._type = value;
+                                }
+                                if(name == "extentType") // Looking for property
+                                {
+                                    tree.ExtentProperties._extentType = value;
+                                }
+                                if(name == "isModified") // Looking for property
+                                {
+                                    tree.ExtentProperties._isModified = value;
+                                }
+                                if(name == "alternativeUris") // Looking for property
+                                {
+                                    tree.ExtentProperties._alternativeUris = value;
+                                }
+                            }
+                        }
+                        if(name == "ExtentPropertyDefinition") // Looking for class
+                        {
+                            tree.__ExtentPropertyDefinition = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ExtentPropertyDefinition._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.ExtentPropertyDefinition._title = value;
+                                }
+                                if(name == "metaClass") // Looking for property
+                                {
+                                    tree.ExtentPropertyDefinition._metaClass = value;
+                                }
+                            }
+                        }
+                        if(name == "ExtentSettings") // Looking for class
+                        {
+                            tree.__ExtentSettings = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "extentTypeSettings") // Looking for property
+                                {
+                                    tree.ExtentSettings._extentTypeSettings = value;
+                                }
+                                if(name == "propertyDefinitions") // Looking for property
+                                {
+                                    tree.ExtentSettings._propertyDefinitions = value;
                                 }
                             }
                         }

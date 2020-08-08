@@ -1,5 +1,7 @@
-﻿using System.Runtime.Remoting.Messaging;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms;
@@ -67,6 +69,25 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
                 ? null
                 : info.NavigationGuest as ExtentList;
         }
+
+        /// <summary>
+        /// Gets the information whether the event is sent out of the explorer control for extent list
+        /// </summary>
+        /// <param name="info">TargetInformation to be used</param>
+        /// <param name="rootExtentType">Defines the extent type which shall be used as a filter</param>
+        /// <returns>true, if that is the case</returns>
+        public static ItemExplorerControl? GetItemExplorerControlForExtentType(this ViewExtensionInfo info, string? rootExtentType)
+        {
+            var extentList = info is ViewExtensionInfoExploreExtents
+                ? null
+                : info.NavigationGuest as ItemExplorerControl;
+
+            var isCorrect = extentList != null &&
+                            (rootExtentType == null ||
+                             extentList.Extent.GetConfiguration().ContainsExtentType(rootExtentType));
+
+            return isCorrect ? extentList : null;
+        }
         
         /// <summary>
         /// Gets the list view control if it is the navigation guest
@@ -93,8 +114,9 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
             }
             
             var extentList = info.NavigationGuest as ItemsInExtentList;
+            
             var isCorrect = extentList != null &&
-                            extentList.Extent.GetExtentType() == extentType;
+                            extentList.Extent.GetConfiguration().ContainsExtentType(extentType);
 
             return isCorrect ? extentList : null;
         }
@@ -117,5 +139,90 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
         /// <returns></returns>
         public static DetailFormControl? GetDetailFormControlOfDetailWindow(this ViewExtensionInfo info) => 
             info.NavigationHost is DetailFormWindow ? info.NavigationGuest as DetailFormControl : null;
+
+        /// <summary>
+        /// Checks whether the selected item is a root item 
+        /// </summary>
+        /// <param name="info">View extension to be used</param>
+        /// <param name="extentType">true only, if the extent item is of the given extent. If null,
+        /// then it does not matter which extent type is set</param>
+        /// <returns></returns>
+        public static bool IsExtentSelectedInExplorerControl(this ViewExtensionInfo info, string? extentType = null)
+        {
+            return GetItemExplorerControlForExtentType(info, extentType) != null;
+        }
+
+        /// <summary>
+        /// Gets the information whether the view extension reflects a listview control and an extent is checked
+        /// </summary>
+        /// <param name="info">Information to be used</param>
+        /// <param name="extentType">Type of the extent</param>
+        /// <returns>true, if that is the case</returns>
+        public static bool IsExtentInListViewControl(this ViewExtensionInfo info, string? extentType = null)
+        {
+            if (info is ViewExtensionInfoTab extensionTab
+                && extensionTab.NavigationGuest is ItemExplorerControl explorerControl)
+            {
+                var selectedItem = explorerControl.SelectedItem;
+                if ((selectedItem ?? explorerControl.RootItem) is IExtent asExtent)
+                {
+                    if (extentType != null && !asExtent.GetConfiguration().ContainsExtentType(extentType))
+                    {
+                        return false;
+                    }
+                    
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the information whether the view extension reflects a listview control and an extent is checked
+        /// </summary>
+        /// <param name="info">Information to be used</param>
+        /// <param name="propertyName">Name of the property</param>
+        /// <param name="metaClasses">Only true, if the element is in one of the metaclasses</param>
+        /// <param name="extentType">Extent type to be used</param>
+        /// <returns>true, if that is the case</returns>
+        public static bool IsItemOfExtentTypeInListViewControl(this ViewExtensionInfo info, string propertyName,
+            IEnumerable<IElement>? metaClasses = null, string? extentType = null)
+        {
+            if (info is ViewExtensionInfoTab extensionTab
+                && extensionTab.NavigationGuest is ItemExplorerControl explorerControl)
+            {
+                var formPropertyName = extensionTab.TabFormDefinition.getOrDefault<string>(_FormAndFields._ListForm.property);
+                var selectedItem = (explorerControl.SelectedItem ?? explorerControl.RootItem) as IElement; 
+                if (selectedItem == null) return false; // Nothing selected, should not occur
+                
+                // Checks the extent type
+                var extentConfiguration = selectedItem.GetExtentOf()?.GetConfiguration();
+                
+                if (extentType != null)
+                {
+                    if (extentConfiguration == null || !extentConfiguration.ContainsExtentType(extentType))
+                    {
+                        return false;
+                    }
+                }
+                
+                // Checks for property name
+                if (formPropertyName != propertyName)
+                {
+                    return false;
+                }
+
+                // Checks the metaclasses
+                if (metaClasses != null && !metaClasses.Contains(selectedItem.getMetaClass()))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

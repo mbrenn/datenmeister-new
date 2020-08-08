@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
-using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
 
@@ -37,7 +36,7 @@ namespace DatenMeister.WPF.Navigation
                     dlg.ExcelSettings ?? throw new InvalidOperationException("dlg.ExcelSettings == null");
 
                 excelSettings.workspaceId = workspaceId;
-                excelSettings.extentUri = "datenmeister:///excelimport_" + newGuid;
+                excelSettings.extentUri = "dm:///excelimport_" + newGuid;
                 excelSettings.extentPath = newGuid + ".xmi";
 
                 dlg.Owner = host as Window;
@@ -49,13 +48,13 @@ namespace DatenMeister.WPF.Navigation
                     {
                         case ExcelImportType.AsCopy:
                             var importSettings =
-                                DotNetConverter.ConvertToDotNetObject<ExcelImportSettings>(configurationObject);
-                            GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(importSettings, ExtentCreationFlags.LoadOrCreate);
+                                DotNetConverter.ConvertToDotNetObject<ExcelImportLoaderConfig>(configurationObject);
+                            GiveMe.Scope.Resolve<ExtentManager>().LoadExtent(importSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                         case ExcelImportType.AsReference:
                             var referenceSettings =
-                                DotNetConverter.ConvertToDotNetObject<ExcelReferenceSettings>(configurationObject);
-                            GiveMe.Scope.Resolve<IExtentManager>().LoadExtent(referenceSettings, ExtentCreationFlags.LoadOrCreate);
+                                DotNetConverter.ConvertToDotNetObject<ExcelReferenceLoaderConfig>(configurationObject);
+                            GiveMe.Scope.Resolve<ExtentManager>().LoadExtent(referenceSettings, ExtentCreationFlags.LoadOrCreate);
                             break;
                     }
 

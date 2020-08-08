@@ -3,9 +3,11 @@
 using System;
 using System.Windows;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.XMI.EMOF;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -28,6 +30,12 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
+        public bool IgnoreIDs
+        {
+            get => IgnoreIDsBtn.IsChecked == true;
+            set => IgnoreIDsBtn.IsChecked = value;
+        }
+
         /// <summary>
         /// Called, if the user clicks the update button
         /// </summary>
@@ -37,6 +45,7 @@ namespace DatenMeister.WPF.Windows
         {
             InitializeComponent();
             SupportWriting = false;
+            RelativePaths.IsChecked = true;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -64,9 +73,11 @@ namespace DatenMeister.WPF.Windows
         public IElement GetCurrentContentAsMof(IFactory factory)
         {
             var xmlElement = XElement.Parse(XmlTextField.Text);
-            var xmlConverter = new XmlConverter();
-
-            return (IElement) xmlConverter.ConvertFromXml(xmlElement, factory);
+            
+            var provider = new XmiProvider();
+            var extent = new MofExtent(provider);
+            var xmlProviderObject = provider.CreateProviderObject(xmlElement);
+            return new MofElement(xmlProviderObject, extent);
         }
 
         /// <summary>
@@ -85,7 +96,9 @@ namespace DatenMeister.WPF.Windows
         {
             var converter = new XmlConverter
             {
-                SkipIds = IgnoreIDs.IsChecked == true
+                SkipIds = IgnoreIDsBtn.IsChecked == true,
+                RelativePaths = RelativePaths.IsChecked == true
+                
             };
 
             if (_usedReflectiveCollection != null)
@@ -116,6 +129,14 @@ namespace DatenMeister.WPF.Windows
             }
         }
 
+        /// <summary>
+        /// Copies the content of the item to the clipboard
+        /// </summary>
+        public void CopyToClipboard()
+        {
+            Clipboard.SetText(XmlTextField.Text);
+        }
+
         /*
         /// <summary>
         /// Event arguments being used when the user performs an update
@@ -132,6 +153,10 @@ namespace DatenMeister.WPF.Windows
             }
         }*/
         private void Ignore_IDs_OnClick(object sender, RoutedEventArgs e)
+        {
+            UpdateContent();
+        }
+        private void RelativePaths_OnClick(object sender, RoutedEventArgs e)
         {
             UpdateContent();
         }

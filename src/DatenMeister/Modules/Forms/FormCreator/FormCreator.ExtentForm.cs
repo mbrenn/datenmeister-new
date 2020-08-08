@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -45,15 +46,44 @@ namespace DatenMeister.Modules.Forms.FormCreator
             tabs.add(newTab);
             return newTab;
         }
-        
+
+        /// <summary>
+        /// Creates an extent form containing the subforms
+        /// </summary>    
+        /// <returns>The created extent</returns>
+        public IElement CreateExtentForm(params IElement[] subForms)
+        {
+            var result = _factory.create(_formAndFields.__ExtentForm);
+            result.set(_FormAndFields._ExtentForm.tab, subForms);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates an extent form for the given extent by parsing through each element
+        /// and creating the form out of the max elements
+        /// </summary>
+        /// <param name="extent">Extent to be parsed</param>
+        /// <param name="creationMode">The creation mode being used</param>
+        /// <returns>The created element</returns>
+        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
+        {
+            var extentFormConfiguration = new ExtentFormConfiguration();
+            var extentTypes = extent.GetConfiguration().ExtentTypes;
+            extentFormConfiguration.ExtentTypes.AddRange(extentTypes);
+            
+            return CreateExtentForm(extent.elements(), creationMode, extentFormConfiguration);
+        }
+
         /// <summary>
         /// Creates the extent by parsing through all the elements and creation of fields.
         /// </summary>
         /// <param name="elements">Elements which are parsed to create the form</param>
         /// <param name="creationMode">The creation mode defining whether metaclass are used or not</param>
-        /// <returns></returns>
-        public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode)
+        /// <param name="extentFormConfiguration">Configuration of the extent form</param>
+        /// <returns>The created form</returns>
+        public IElement CreateExtentForm(IReflectiveCollection elements, CreationMode creationMode, ExtentFormConfiguration? extentFormConfiguration)
         {
+            extentFormConfiguration ??= new ExtentFormConfiguration();
             var cache = new FormCreatorCache();
 
             if (elements == null)
@@ -70,7 +100,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 {
                     var element = x as IElement;
                     var metaClass = element?.getMetaClass();
-                    return metaClass == null;
+                    return metaClass == null || metaClass is MofObjectShadow;
                 })
                 .ToList();
 
@@ -79,10 +109,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 .GroupBy(x =>
                 {
                     var metaClass = x.getMetaClass();
-                    return metaClass;
+                    return metaClass is MofObjectShadow ? null : metaClass;
                 })
                 .Where(x => x.Key != null)
                 .ToList();
+
+            // Goes through all the extent types and adds the default metaclasses into the list of tables
+            var metaClasses = elementsWithMetaClass.Select(x => x.Key).ToList();
+            foreach (var extentType in extentFormConfiguration.ExtentTypes)
+            {
+                var extentTypeSetting = _extentSettings.GetExtentTypeSetting(extentType);
+                if (extentTypeSetting == null) continue;
+
+                metaClasses.AddRange(extentTypeSetting.rootElementMetaClasses);
+            }
 
             if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
             {
@@ -95,16 +135,27 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 foreach (var item in elementsWithoutMetaClass)
                     AddToForm(form, item, creationMode, cache);
 
-                SetDefaultTypes(form);
+                AddTextFieldForNameIfNoFieldAvailable(form);
+                
+                SetDefaultTypesByPackages(form);
 
                 tabs.Add(form);
             }
 
             // Go through all the meta classes. 
-            foreach (var group in elementsWithMetaClass)
+            foreach (var groupedMetaclass in metaClasses)
             {
+                var group =
+                    elementsWithMetaClass.FirstOrDefault(y => y.Key == groupedMetaclass)?.ToList() ??
+                            new List<IElement>();
+                
                 // Now try to figure out the metaclass
-                var groupedMetaclass = group.Key;
+                if (groupedMetaclass == null)
+                {
+                    // Should not happen, but we need to handle this
+                    continue;
+                }
+
                 IElement form;
                 if (_formLogic != null) // View logic is used to ask for a default list view. 
                 {
@@ -136,9 +187,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     form = CreateListFormForMetaClass(groupedMetaclass, creationMode);
                 }
 
-                form.set(_FormAndFields._ListForm.metaClass, group.Key);
+                form.set(_FormAndFields._ListForm.metaClass, groupedMetaclass);
 
-                SetDefaultTypes(form);
+                SetDefaultTypesByPackages(form);
 
                 tabs.Add(form);
             }
@@ -146,12 +197,36 @@ namespace DatenMeister.Modules.Forms.FormCreator
             result.set(_FormAndFields._ExtentForm.tab, tabs);
             return result;
 
-            void SetDefaultTypes(IElement form)
+            void SetDefaultTypesByPackages(IObject form)
             {
+                if(_uml == null) throw new InvalidOperationException("_uml is null");
+                
                 var extent = elements.GetAssociatedExtent();
-                var defaultTypePackages = extent?.GetDefaultTypePackages();
+                var defaultTypePackages = extent?.GetConfiguration().GetDefaultTypePackages();
                 if (defaultTypePackages != null)
-                    form.set(_FormAndFields._ListForm.defaultTypesForNewElements, defaultTypePackages);
+                {
+                    var currentDefaultPackages =
+                        form.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+                    
+                    // Now go through the packages and pick the classifier and add them to the list
+                    foreach (var package in defaultTypePackages)
+                    {
+                        var childItems =
+                            package.getOrDefault<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+                        if (childItems == null) continue;
+
+                        foreach (var type in childItems.OfType<IElement>())
+                        {
+                            if (type.@equals(_uml.StructuredClassifiers.__Class))
+                            {
+                                var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
+                                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, package);
+                                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(package));
+                                currentDefaultPackages.add(defaultType);
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -200,7 +275,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     fields.Add(field);
                 }
 
-                if (creationMode.HasFlag(CreationMode.AddMetaClass))
+                if (creationMode.HasFlag(CreationMode.AddMetaClass)
+                    || !FormMethods.HasMetaClassFieldInForm(detailForm))
                 {
                     // Add the element itself
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
@@ -214,10 +290,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             foreach (var pair in propertiesWithCollection)
             {
+                var propertyType = PropertyMethods.GetPropertyType(pair.property);
                 // Now try to figure out the metaclass
                 var form = CreateListFormForMetaClass(
-                    pair.property,
-                    CreationMode.ByMetaClass);
+                    propertyType,
+                    CreationMode.ByMetaClass,
+                    pair.property);
 
                 tabs.Add(form);
             }
@@ -225,6 +303,31 @@ namespace DatenMeister.Modules.Forms.FormCreator
             extentForm.set(_FormAndFields._ExtentForm.tab, tabs);
 
             return extentForm;
+        }
+
+        public class P
+        {
+            public string? PropertyName { get; set; }
+            
+            public IElement? PropertyType { get; set; }
+
+            public class PropertyNameEqualityComparer : IEqualityComparer<P>
+            {
+                public bool Equals(P x, P y)
+                {
+                    if (x == null || y == null)
+                    {
+                        return false;
+                    }
+
+                    return x.PropertyName?.Equals(y.PropertyName) == true;
+                }
+
+                public int GetHashCode(P obj)
+                {
+                    return obj.PropertyName?.GetHashCode() ?? 0;
+                }
+            }
         }
 
         /// <summary>
@@ -236,6 +339,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <returns>Created Extent form as MofObject</returns>
         public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
         {
+            if (_workspaceLogic == null)
+                throw new InvalidOperationException("WorkspaceLogic is null");
+            
             var cache = new FormCreatorCache();
 
             var extentForm = _factory.create(_formAndFields.__ExtentForm);
@@ -247,8 +353,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
             // Get all properties of the elements
             var flagAddByMetaClass = creationMode.HasFlag(CreationMode.ByMetaClass) ||
                                      creationMode.HasFlag(CreationMode.AddMetaClass);
-            var propertyNamesWithCollection = new List<string>();
-            var propertyNamesWithoutCollection = new List<string>();
+            var propertyNamesWithCollection = new List<P>();
+            var propertyNamesWithoutCollection = new List<P>();
             
             // Adds the properties by the stored properties of the element
             if (creationMode.HasFlag(CreationMode.ByPropertyValues))
@@ -260,13 +366,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     where element.IsPropertyOfType<IReflectiveCollection>(p)
                     let propertyContent = element.get<IReflectiveCollection>(p)
                     where propertyContent != null
-                    select p).ToList();
+                    select new P {PropertyName = p}).ToList();
 
                 propertyNamesWithoutCollection = (from p in properties
                     where !element.IsPropertyOfType<IReflectiveCollection>(p)
                     let propertyContent = element.get(p)
                     where propertyContent != null
-                    select p).ToList();
+                    select new P {PropertyName = p}).ToList();
             }
 
             // Adds the properties by the metaclasses
@@ -277,25 +383,39 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 {
                     if (PropertyMethods.IsCollection(property))
                     {
-                        propertyNamesWithCollection.Add(NamedElementMethods.GetName(property));
+                        propertyNamesWithCollection.Add(
+                            new P
+                            {
+                                PropertyName = NamedElementMethods.GetName(property),
+                                PropertyType = property
+                            });
                     }
                     else
                     {
-                        propertyNamesWithoutCollection.Add(NamedElementMethods.GetName(property));
+                        propertyNamesWithoutCollection.Add(
+                            new P
+                            {
+                                PropertyName = NamedElementMethods.GetName(property),
+                                PropertyType = property
+                            });
                     }
                 }
             }
 
             // Now collect the property Values
+            propertyNamesWithCollection.Reverse();
+            propertyNamesWithoutCollection.Reverse();
+            
             var propertiesWithCollection =
-                from p in propertyNamesWithCollection.Distinct()
-                let propertyContent = element.get<IReflectiveCollection>(p)
-                select new {propertyName = p, propertyContent};
+                from p in propertyNamesWithCollection.Distinct(new P.PropertyNameEqualityComparer())
+                let propertyContent = element.get<IReflectiveCollection>(p.PropertyName)
+                select new {propertyName = p.PropertyName, propertyType =p.PropertyType, propertyContent};
 
             var propertiesWithoutCollection =
-                (from p in propertyNamesWithoutCollection.Distinct()
-                    let propertyContent = element.getOrDefault<object>(p)
-                    select new {propertyName = p, propertyContent}).ToList();
+                (from p in propertyNamesWithoutCollection.Distinct(new P.PropertyNameEqualityComparer())
+                    let propertyContent = element.getOrDefault<object>(p.PropertyName)
+                    select new {propertyName = p.PropertyName, propertyType = p.PropertyType, propertyContent})
+                .ToList();
 
             if (propertiesWithoutCollection.Any() || creationMode.HasFlag(CreationMode.AddMetaClass))
             {
@@ -305,7 +425,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 var fields = new List<IElement>();
                 foreach (var pair in propertiesWithoutCollection)
                 {
-                    if (objectMetaClass != null)
+                    if (objectMetaClass != null && pair.propertyName != null)
                     {
                         var property = ClassifierMethods.GetPropertyOfClassifier(objectMetaClass, pair.propertyName);
                         if (property != null)
@@ -318,13 +438,17 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
                 }
 
-                if (!cache.MetaClassAlreadyAdded && creationMode.HasFlag(CreationMode.AddMetaClass))
+                if (!cache.MetaClassAlreadyAdded
+                    && creationMode.HasFlag(CreationMode.AddMetaClass)
+                    && extent != null
+                    && (_workspaceLogic == null ||
+                        !new FormMethods(_workspaceLogic).HasMetaClassFieldInForm(extent, fields)))
                 {
                     // Add the element itself
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                     metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
                     fields.Add(metaClassField);
-                    
+
                     cache.MetaClassAlreadyAdded = true;
                 }
 
@@ -338,7 +462,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                 if (ConfigurationFormCreatorSeparateProperties)
 #pragma warning disable 162
+                    // ReSharper disable HeuristicUnreachableCode
                 {
+                    
                     var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
                     {
                         if (x is IElement innerElement)
@@ -391,8 +517,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         }
                     }
                 }
-#pragma warning restore 162
+                // ReSharper restore HeuristicUnreachableCode
                 else
+#pragma warning restore 162
                 {
                     // If there are elements included and they are filled
                     // OR, if there is no element included at all, create the corresponding list form
@@ -400,11 +527,30 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     form.set(_FormAndFields._ListForm.name, pair.propertyName);
                     form.set(_FormAndFields._ListForm.property, pair.propertyName);
 
-                    foreach (var item in elementsAsObjects)
+                    if (creationMode.HasFlagFast(CreationMode.ByPropertyValues))
                     {
-                        AddToForm(form, item, creationMode, cache);
+                        foreach (var item in elementsAsObjects)
+                        {
+                            AddToForm(form, item, creationMode, cache);
+                        }
                     }
 
+                    if (creationMode.HasFlagFast(CreationMode.ByMetaClass))
+                    {
+                        var property = pair.propertyType;
+                        var propertyType = property != null ? PropertyMethods.GetPropertyType(property) : null;
+                        if (propertyType != null)
+                        {
+                            AddToFormByMetaclass(
+                                form,
+                                propertyType,
+                                creationMode);
+                        }
+                    }
+                    
+                    AddTextFieldForNameIfNoFieldAvailable(form);
+
+                    // Adds the form to the tabs
                     tabs.Add(form);
                 }
             }
@@ -413,6 +559,39 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             return extentForm;
         }
-        
+
+        /// <summary>
+        /// Checks whether at least one field is given.
+        /// If no field is given, then the one text field for the name will be added
+        /// </summary>
+        /// <param name="form">Form to be checked</param>
+        private void AddTextFieldForNameIfNoFieldAvailable(IObject form)
+        {
+            // If the field is empty, create an empty textfield with 'name' as a placeholder
+            var fieldLength =
+                form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field)?.Count() ?? 0;
+            if (fieldLength == 0)
+            {
+                var factory = new MofFactory(form);
+                var textFieldData = factory.create(_formAndFields.__TextFieldData);
+                textFieldData.set(_FormAndFields._TextFieldData.name, "name");
+                textFieldData.set(_FormAndFields._TextFieldData.title, "name");
+
+                form.AddCollectionItem(_FormAndFields._ListForm.field, textFieldData);
+            }
+        }
+    }
+    
+    
+
+    /// <summary>
+    /// A configuration helper class to create the extent form
+    /// </summary>
+    public class ExtentFormConfiguration
+    {
+        /// <summary>
+        /// Gets or sets the extent type to be used
+        /// </summary>
+        public List<string> ExtentTypes { get; set; } = new List<string>();
     }
 }

@@ -47,11 +47,13 @@ namespace DatenMeister.Provider.DotNet
         /// <param name="provider">The Dotnet Provider storing the items</param>
         /// <param name="value">Value to be set</param>
         /// <param name="metaClassUri">metaclass to be set to the object</param>
-        public DotNetProviderObject(DotNetProvider provider, object value, string metaClassUri)
+        public DotNetProviderObject(DotNetProvider provider, object value, string? metaClassUri = null)
         {
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _value = value ?? throw new ArgumentNullException(nameof(value));
-            MetaclassUri = metaClassUri ?? throw new ArgumentNullException(nameof(metaClassUri));
+            
+            // Gets the metaclass uri if explicitly given, otherwise look up into the types
+            MetaclassUri = metaClassUri ?? Provider.TypeLookup.ToElement(value.GetType());
             _type = value.GetType();
 
             Id = provider.TypeLookup.GetId(value);
@@ -62,7 +64,7 @@ namespace DatenMeister.Provider.DotNet
             _type.GetProperty(property) != null;
 
         /// <inheritdoc />
-        public object? GetProperty(string property)
+        public object? GetProperty(string property, ObjectType objectType)
         {
             var result = GetValueOfProperty(property);
             return Provider.CreateDotNetElementIfNecessary(result);
@@ -151,7 +153,7 @@ namespace DatenMeister.Provider.DotNet
         public IProviderObject? GetContainer() =>
             null;
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
         }
 

@@ -11,15 +11,15 @@ namespace StundenMeister.Logic
 {
     public class TimeRecordingLogic
     {
-        private bool hibernationActive => _stundenMeisterLogic.Configuration.HibernationDetectionActive;
+        private bool hibernationActive => _stundenMeisterPlugin.Configuration.HibernationDetectionActive;
 
-        private TimeSpan hibernationTime => _stundenMeisterLogic.Configuration.HibernationDetectionTime;
+        private TimeSpan hibernationTime => _stundenMeisterPlugin.Configuration.HibernationDetectionTime;
 
-        private readonly StundenMeisterLogic _stundenMeisterLogic;
+        private readonly StundenMeisterPlugin _stundenMeisterPlugin;
 
-        public TimeRecordingLogic(StundenMeisterLogic stundenMeisterLogic)
+        public TimeRecordingLogic(StundenMeisterPlugin stundenMeisterPlugin)
         {
-            _stundenMeisterLogic = stundenMeisterLogic;
+            _stundenMeisterPlugin = stundenMeisterPlugin;
         }
 
         /// <summary>
@@ -30,9 +30,9 @@ namespace StundenMeister.Logic
         /// </summary>
         public void Initialize()
         {
-            var list = _stundenMeisterLogic.Data.Extent.elements()
+            var list = _stundenMeisterPlugin.Data.Extent.elements()
                 .WhenMetaClassIs(
-                    _stundenMeisterLogic.Data.ClassTimeRecording)
+                    _stundenMeisterPlugin.Data.ClassTimeRecording)
                 .WhenPropertyHasValue(
                     nameof(TimeRecording.isActive), true)
                 .OfType<IElement>()
@@ -71,7 +71,7 @@ namespace StundenMeister.Logic
 
             if (theActiveOne != null)
             {
-                _stundenMeisterLogic.Data.CurrentTimeRecording = theActiveOne;
+                _stundenMeisterPlugin.Data.CurrentTimeRecording = theActiveOne;
             }
         }
 
@@ -90,9 +90,9 @@ namespace StundenMeister.Logic
 
             TimeRecordingSet costCenterSet = null;
             
-            foreach (var recording in _stundenMeisterLogic.Data.Extent
+            foreach (var recording in _stundenMeisterPlugin.Data.Extent
                 .elements()
-                .WhenMetaClassIs(_stundenMeisterLogic.Data.ClassTimeRecording)
+                .WhenMetaClassIs(_stundenMeisterPlugin.Data.ClassTimeRecording)
                 .OfType<IElement>())
             {
                 // Checks, if cost center is in given list
@@ -159,7 +159,7 @@ namespace StundenMeister.Logic
             var factory = new MofFactory(StundenMeisterData.TheOne.Extent);
             var createdItem = factory.create(StundenMeisterData.TheOne.ClassTimeRecording);
             StundenMeisterData.TheOne.Extent.elements().add(createdItem);
-            _stundenMeisterLogic.Data.CurrentTimeRecording = createdItem;
+            _stundenMeisterPlugin.Data.CurrentTimeRecording = createdItem;
             return createdItem;
         }
 
@@ -172,7 +172,7 @@ namespace StundenMeister.Logic
         {
             EndRecording();
 
-            var logic = new TimeRecordingLogic(StundenMeisterLogic.Get());
+            var logic = new TimeRecordingLogic(StundenMeisterPlugin.Get());
 
             var currentTimeRecording = logic.CreateAndAddNewTimeRecoding();
             currentTimeRecording.set(nameof(TimeRecording.startDate), DateTime.UtcNow);
@@ -186,12 +186,12 @@ namespace StundenMeister.Logic
         /// </summary>
         public void EndRecording()
         {
-            var currentTimeRecording = _stundenMeisterLogic.Data.CurrentTimeRecording;
+            var currentTimeRecording = _stundenMeisterPlugin.Data.CurrentTimeRecording;
             
             if (currentTimeRecording != null)
             {
                 currentTimeRecording.set(nameof(TimeRecording.isActive), false);
-                _stundenMeisterLogic.Data.CurrentTimeRecording = null;
+                _stundenMeisterPlugin.Data.CurrentTimeRecording = null;
             }
             
             // By the way. Check for any other active time recording
@@ -206,7 +206,7 @@ namespace StundenMeister.Logic
         public void ChangeCostCenter(IElement selectedCostCenter)
         {
             var costCenter =
-                _stundenMeisterLogic.Data?.CurrentTimeRecording
+                _stundenMeisterPlugin.Data?.CurrentTimeRecording
                     ?.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
 
             if (costCenter != null && costCenter == selectedCostCenter)
@@ -214,13 +214,13 @@ namespace StundenMeister.Logic
                 return;
             }
 
-            if (_stundenMeisterLogic.Data?.CurrentTimeRecording?.getOrDefault<bool>(nameof(TimeRecording.isActive)) != true)
+            if (_stundenMeisterPlugin.Data?.CurrentTimeRecording?.getOrDefault<bool>(nameof(TimeRecording.isActive)) != true)
             {
                 // If, there is no "isActive" time recording, then do not start a new time recording
                 return;
             }
 
-            var recordingLogic = new TimeRecordingLogic(_stundenMeisterLogic);
+            var recordingLogic = new TimeRecordingLogic(_stundenMeisterPlugin);
             recordingLogic.StartNewRecording(selectedCostCenter);
 
         }
@@ -231,9 +231,9 @@ namespace StundenMeister.Logic
         /// </summary>
         private void CheckForActiveTimeRecordingsAndDeactivate()
         {
-            foreach (var element in _stundenMeisterLogic.Data.Extent.elements()
+            foreach (var element in _stundenMeisterPlugin.Data.Extent.elements()
                 .WhenMetaClassIs(
-                    _stundenMeisterLogic.Data.ClassTimeRecording)
+                    _stundenMeisterPlugin.Data.ClassTimeRecording)
                 .WhenPropertyHasValue(
                     nameof(TimeRecording.isActive), true)
                 .OfType<IElement>())
@@ -279,12 +279,12 @@ namespace StundenMeister.Logic
                 if (hibernationActive && (endDate - currentEndDate) > hibernationTime)
                 {
                     // Ok, we have a hibernation overflow
-                    _stundenMeisterLogic.Data.HibernationDetected = true;
+                    _stundenMeisterPlugin.Data.HibernationDetected = true;
                 }
                 else
                 {
                     // No hibernation, we can continue
-                    _stundenMeisterLogic.Data.HibernationDetected = false;
+                    _stundenMeisterPlugin.Data.HibernationDetected = false;
                     currentTimeRecording.set(nameof(TimeRecording.endDate), endDate);
                 }
             }
@@ -297,7 +297,7 @@ namespace StundenMeister.Logic
         /// <param name="continueRecording">true, if the hibernation is confirmed</param>
         public void ConfirmHibernation(bool continueRecording)
         {
-            if (!_stundenMeisterLogic.Data.HibernationDetected)
+            if (!_stundenMeisterPlugin.Data.HibernationDetected)
             {
                 // No active hibernation
                 return;
@@ -315,7 +315,7 @@ namespace StundenMeister.Logic
                 // Ok, it is OK to continue with timing
                 var endDate = DateTime.UtcNow;
 
-                _stundenMeisterLogic.Data.HibernationDetected = false;
+                _stundenMeisterPlugin.Data.HibernationDetected = false;
                 currentTimeRecording.set(nameof(TimeRecording.endDate), endDate);
             }
             else
@@ -324,7 +324,7 @@ namespace StundenMeister.Logic
                 EndRecording();
             }
             
-            _stundenMeisterLogic.Data.HibernationDetected = false;
+            _stundenMeisterPlugin.Data.HibernationDetected = false;
         }
 
         public TimeSpan CalculateWorkingHoursInDay(DateTime day = default)
@@ -375,9 +375,9 @@ namespace StundenMeister.Logic
         {
             var result = TimeSpan.Zero;
 
-            foreach (var recording in _stundenMeisterLogic.Data.Extent
+            foreach (var recording in _stundenMeisterPlugin.Data.Extent
                 .elements()
-                .WhenMetaClassIs(_stundenMeisterLogic.Data.ClassTimeRecording)
+                .WhenMetaClassIs(_stundenMeisterPlugin.Data.ClassTimeRecording)
                 .OfType<IElement>())
             {
                 var recordingStartDate = recording.getOrDefault<DateTime>(nameof(TimeRecording.startDate));
@@ -413,49 +413,33 @@ namespace StundenMeister.Logic
         public DateTime FindStartOfWeek(DateTime day)
         {
             var dayOfWeek = day.DayOfWeek;
-            switch (dayOfWeek)
+            return dayOfWeek switch
             {
-                case DayOfWeek.Sunday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-6);
-                case DayOfWeek.Monday:
-                    return new DateTime(day.Year, day.Month,day.Day);
-                case DayOfWeek.Tuesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-1);
-                case DayOfWeek.Wednesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-2);
-                case DayOfWeek.Thursday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-3);
-                case DayOfWeek.Friday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-4);
-                case DayOfWeek.Saturday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(-5);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                DayOfWeek.Sunday => new DateTime(day.Year, day.Month, day.Day).AddDays(-6),
+                DayOfWeek.Monday => new DateTime(day.Year, day.Month, day.Day),
+                DayOfWeek.Tuesday => new DateTime(day.Year, day.Month, day.Day).AddDays(-1),
+                DayOfWeek.Wednesday => new DateTime(day.Year, day.Month, day.Day).AddDays(-2),
+                DayOfWeek.Thursday => new DateTime(day.Year, day.Month, day.Day).AddDays(-3),
+                DayOfWeek.Friday => new DateTime(day.Year, day.Month, day.Day).AddDays(-4),
+                DayOfWeek.Saturday => new DateTime(day.Year, day.Month, day.Day).AddDays(-5),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         public DateTime FindEndOfWeek(DateTime day)
         {
             var dayOfWeek = day.DayOfWeek;
-            switch (dayOfWeek)
+            return dayOfWeek switch
             {
-                case DayOfWeek.Sunday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(1);
-                case DayOfWeek.Monday:
-                    return new DateTime(day.Year, day.Month,day.Day).AddDays(7);
-                case DayOfWeek.Tuesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(6);
-                case DayOfWeek.Wednesday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(5);
-                case DayOfWeek.Thursday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(4);
-                case DayOfWeek.Friday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(3);
-                case DayOfWeek.Saturday:
-                    return new DateTime(day.Year, day.Month, day.Day).AddDays(2);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                DayOfWeek.Sunday => new DateTime(day.Year, day.Month, day.Day).AddDays(1),
+                DayOfWeek.Monday => new DateTime(day.Year, day.Month, day.Day).AddDays(7),
+                DayOfWeek.Tuesday => new DateTime(day.Year, day.Month, day.Day).AddDays(6),
+                DayOfWeek.Wednesday => new DateTime(day.Year, day.Month, day.Day).AddDays(5),
+                DayOfWeek.Thursday => new DateTime(day.Year, day.Month, day.Day).AddDays(4),
+                DayOfWeek.Friday => new DateTime(day.Year, day.Month, day.Day).AddDays(3),
+                DayOfWeek.Saturday => new DateTime(day.Year, day.Month, day.Day).AddDays(2),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         /// <summary>

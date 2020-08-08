@@ -1,17 +1,22 @@
 ﻿#nullable enable
 
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -66,7 +71,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         return;
                     }
                     
-                    var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                    var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                     var target = viewLogic.GetUserFormExtent();
                     var copier = new ObjectCopier(new MofFactory(target));
 
@@ -81,14 +86,12 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             yield return new ExtentMenuButtonDefinition(
                 "Change Form Definition",
-                x =>
+                async x =>
                 {
-                    var form = NavigatorForDialogs.Locate(
+                    if (!(await NavigatorForDialogs.Locate(
                         itemExplorerControl.NavigationHost,
-                        WorkspaceNames.NameManagement,
-                        WorkspaceNames.UriUserFormExtent) as IElement;
-
-                    if (form == null)
+                        WorkspaceNames.WorkspaceManagement,
+                        WorkspaceNames.UriExtentUserForm) is IElement form))
                     {
                         itemExplorerControl.ClearOverridingForm();
                     }
@@ -119,7 +122,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                     if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
                     {
-                        var selectedExtentType = selectedExtent.GetExtentType();
+                        var selectedExtentType = selectedExtent.GetConfiguration().ExtentType;
                         if (string.IsNullOrEmpty(selectedExtentType))
                         {
                             MessageBox.Show("Given Extent does not contain an extent type, so rule cannot be created");
@@ -134,7 +137,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                             return;
                         }
 
-                        var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                        var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                         var userViewExtent = viewLogic.GetUserFormExtent();
                         var factory = new MofFactory(userViewExtent);
                         var formAndFields = viewLogic.GetFormAndFieldInstance();
@@ -163,14 +166,14 @@ namespace DatenMeister.WPF.Modules.FormManager
                 {
                     if (itemExplorerControl.SelectedItem is IExtent selectedExtent)
                     {
-                        var selectedExtentType = selectedExtent.GetExtentType();
+                        var selectedExtentType = selectedExtent.GetConfiguration().ExtentType;
                         if (string.IsNullOrEmpty(selectedExtentType))
                         {
                             MessageBox.Show("Given Extent does not contain an extent type, so rule cannot be created");
                             return;
                         }
 
-                        var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                        var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
 
                         if (viewLogic.RemoveFormAssociationForExtentType(selectedExtentType))
                         {
@@ -200,8 +203,8 @@ namespace DatenMeister.WPF.Modules.FormManager
             if (rootItem != null)
             {
                 var extent = rootItem.GetExtentOf();
-                var extentType = extent?.GetExtentType();
-                if (extentType == FormLogic.FormExtentType)
+                var extentType = extent?.GetConfiguration().ExtentType;
+                if (extentType == FormsPlugin.FormExtentType)
                 {
                     yield return new ItemMenuButtonDefinition(
                         "Create Extent Form by Classifier",
@@ -214,7 +217,141 @@ namespace DatenMeister.WPF.Modules.FormManager
                         (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.DetailForm),
                         null,
                         "Form.Form Manager");
+
+                    yield return new ItemMenuButtonDefinition(
+                        "Create Forms and Association",
+                        (x) => AskUserForFormsAndAssociation(itemExplorerControl),
+                        null,
+                        "Form.Form Manager");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Defines whether the form shall be created for an extent form or for the detail form
+        /// </summary>
+        enum CreateFormByClassifierType
+        {
+            /// <summary>
+            /// To be chosen, when the form shall be created for a detail form
+            /// </summary>
+            DetailForm,
+            
+            /// <summary>
+            /// To be chosen, when the form shall be created for an extent form
+            /// </summary>
+            ExtentForm
+        }
+
+        /// <summary>
+        /// Creates a form by using the classifier
+        /// </summary>
+        /// <param name="itemExplorerControl">Navigational element to create the windows</param>
+        /// <param name="type">Type of the form to be created</param>
+        private static async void AskUserAndCreateFormInstance(
+            ItemExplorerControl itemExplorerControl, 
+            CreateFormByClassifierType type)
+        {
+            var navigationHost = itemExplorerControl.NavigationHost ??
+                                 throw new InvalidOperationException("navigationHost == null");
+            if (!(itemExplorerControl.SelectedItem is { } selectedItem))
+            {
+                MessageBox.Show("No item is selected.");
+                return;
+            }
+            
+            if (await NavigatorForDialogs.Locate(
+                navigationHost,
+                WorkspaceNames.WorkspaceTypes,
+                WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
+            {
+                var formCreator = GiveMe.Scope.Resolve<FormCreator>();
+
+                IElement createdForm = type switch
+                {
+                    CreateFormByClassifierType.DetailForm => formCreator.CreateDetailFormByMetaClass(locatedItem),
+                    CreateFormByClassifierType.ExtentForm => formCreator.CreateExtentFormByMetaClass(locatedItem),
+                    _ => throw new InvalidOperationException()
+                };
+
+                DefaultClassifierHints.AddToExtentOrElement(
+                    selectedItem, 
+                    createdForm);
+
+                _ = NavigatorForItems.NavigateToElementDetailView(
+                    navigationHost,
+                    createdForm);
+            }
+        }
+
+        /// <summary>
+        /// Creates a form by using the classifier
+        /// </summary>
+        /// <param name="itemExplorerControl">Navigational element to create the windows</param>
+        private static async void AskUserForFormsAndAssociation(
+            ItemExplorerControl itemExplorerControl)
+        {   
+            var navigationHost = itemExplorerControl.NavigationHost ??
+                                 throw new InvalidOperationException("navigationHost == null");
+            if (!(itemExplorerControl.SelectedItem is { } selectedItem))
+            {
+                MessageBox.Show("No item is selected.");
+                return;
+            }
+
+            if (await NavigatorForDialogs.Locate(
+                navigationHost,
+                WorkspaceNames.WorkspaceTypes,
+                WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
+            {
+                // Prepare the variables and fullname
+                var containerExtent = selectedItem.GetUriExtentOf() ??
+                                      throw new InvalidOperationException("Extent is not found");
+                var factory = new MofFactory(containerExtent);
+                var fullName = NamedElementMethods.GetFullName(locatedItem, ".");
+                var className = NamedElementMethods.GetName(locatedItem);
+                
+                var formCreator = GiveMe.Scope.Resolve<FormCreator>();
+                
+                ////////////////////////////////////
+                // Creates the package
+                var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(containerExtent);
+                var package = factory.create(packageClassifier);
+                package.set(_UML._CommonStructure._NamedElement.name, className);
+                DefaultClassifierHints.AddToExtentOrElement(selectedItem, package);
+                var packageName = "Package-" + fullName;
+                ExtentHelper.SetAvailableId(containerExtent, package, packageName);
+
+                // Creates the detail form
+                var detailForm = formCreator.CreateDetailFormByMetaClass(locatedItem);
+                DefaultClassifierHints.AddToExtentOrElement(
+                    package, 
+                    detailForm);
+                var name = fullName + "FormDetail";
+                ExtentHelper.SetAvailableId(containerExtent, detailForm, name);
+                
+                // Creates the extent form
+                var extentForm = formCreator.CreateExtentFormByMetaClass(locatedItem);
+                DefaultClassifierHints.AddToExtentOrElement(
+                    package, 
+                    extentForm);
+                name = fullName + "FormList";
+                ExtentHelper.SetAvailableId(containerExtent, extentForm, name);
+
+                // Creates association
+                var formLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+                var association1 = 
+                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.Detail);
+                var association2 = 
+                    formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, FormType.TreeItemDetail);
+                
+                DefaultClassifierHints.AddToExtentOrElement(package, association1);
+                name = fullName + "AssociationDetail";
+                ExtentHelper.SetAvailableId(containerExtent, association1, name);
+
+                DefaultClassifierHints.AddToExtentOrElement(package, association2);
+                name = fullName + "AssociationList";
+                ExtentHelper.SetAvailableId(containerExtent, association2, name);
             }
         }
     }

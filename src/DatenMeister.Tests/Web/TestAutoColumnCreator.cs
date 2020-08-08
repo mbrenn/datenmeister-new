@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using NUnit.Framework;
@@ -20,7 +19,7 @@ namespace DatenMeister.Tests.Web
         {
             var property1 = "zip";
             var property2 = "location";
-            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
             var factory = new MofFactory(extent);
             var mofObject = factory.create(null);
             mofObject.set(property1, "55130");
@@ -32,7 +31,7 @@ namespace DatenMeister.Tests.Web
             
             extent.elements().add(mofObject);
             extent.elements().add(mofObject2);
-            var creator = new FormCreator(null, null);
+            var creator = FormCreator.Create(null, null);
             var result = creator.CreateExtentForm(extent, CreationMode.All);
             Assert.That(result, Is.Not.Null);
             var tab = result.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab).Select(x=> x as IElement).FirstOrDefault();
@@ -64,7 +63,7 @@ namespace DatenMeister.Tests.Web
             var property2 = "location";
             var property3 = "other";
 
-            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///");
             var factory = new MofFactory(extent);
             var mofObject = factory.create(null);
             mofObject.set(property1, "55130");
@@ -81,7 +80,7 @@ namespace DatenMeister.Tests.Web
             extent.elements().add(mofObject2);
 
             // Execute the stuff
-            var creator = new FormCreator(null, null);
+            var creator = FormCreator.Create(null, null);
             var result = creator.CreateExtentForm(extent, CreationMode.All);
             Assert.That(result, Is.Not.Null);
 

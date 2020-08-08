@@ -34,7 +34,7 @@ namespace DatenMeister.WPF.Navigation
         /// <summary>
         ///  Updates the content
         /// </summary>
-        void UpdateView();
+        void UpdateForm();
     }
 
     /// <summary>

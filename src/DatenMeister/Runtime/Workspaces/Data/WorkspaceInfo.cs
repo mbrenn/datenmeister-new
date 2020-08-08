@@ -6,6 +6,18 @@ namespace DatenMeister.Runtime.Workspaces.Data
     /// </summary>
     public class WorkspaceInfo
     {
+        public WorkspaceInfo()
+        {
+            id = string.Empty;
+            annotation = string.Empty;
+        }
+        
+        public WorkspaceInfo(string id, string annotation)
+        {
+            this.id = id;
+            this.annotation = annotation;
+        }
+
         public string id { get; set; }
         public string annotation { get; set; }
     }

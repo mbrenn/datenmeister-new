@@ -14,12 +14,12 @@ namespace DatenMeister.Models.Reports
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _Reports tree)
+        public void Fill(IEnumerable<object?> collection, _Reports tree)
         {
             FillTheReports.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _Reports tree)
+        public static void DoFill(IEnumerable<object?> collection, _Reports tree)
         {
             string? name;
             IElement? value;
@@ -109,6 +109,72 @@ namespace DatenMeister.Models.Reports
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ReportParagraph._name = value;
+                                }
+                            }
+                        }
+                        if(name == "ReportTable") // Looking for class
+                        {
+                            tree.__ReportTable = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "viewNode") // Looking for property
+                                {
+                                    tree.ReportTable._viewNode = value;
+                                }
+                                if(name == "form") // Looking for property
+                                {
+                                    tree.ReportTable._form = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ReportTable._name = value;
+                                }
+                            }
+                        }
+                        if(name == "SimpleReportConfiguration") // Looking for class
+                        {
+                            tree.__SimpleReportConfiguration = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "showDescendents") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showDescendents = value;
+                                }
+                                if(name == "rootElement") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._rootElement = value;
+                                }
+                                if(name == "showRootElement") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showRootElement = value;
+                                }
+                                if(name == "showMetaClasses") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showMetaClasses = value;
+                                }
+                                if(name == "showFullName") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._showFullName = value;
+                                }
+                                if(name == "form") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._form = value;
+                                }
+                                if(name == "descendentMode") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._descendentMode = value;
+                                }
+                                if(name == "typeMode") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._typeMode = value;
                                 }
                             }
                         }

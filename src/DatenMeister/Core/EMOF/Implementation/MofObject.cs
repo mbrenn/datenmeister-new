@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -160,13 +161,26 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public object? get(string property)
-            => get(property, false);
+            => get(property, false, ObjectType.None);
 
         // ReSharper disable once InconsistentNaming
-        public object? get(string property, bool noReferences)
+        public object? get(string property, bool noReferences, ObjectType objectType)
         {
-            var result = ProviderObject.GetProperty(property);
+            // Checks, if we have a dynamic property
+            var (isValid, resultValue) = GetDynamicProperty(property);
+            if (isValid)
+            {
+                return ConvertToMofObject(this, property, resultValue, noReferences);
+            }
+            
+            // If not, return the item from the database
+            var result = ProviderObject.GetProperty(property, objectType);
             return ConvertToMofObject(this, property, result, noReferences);
+        }
+
+        protected virtual (bool, object?) GetDynamicProperty(string property)
+        {
+            return (false, null);
         }
 
         /// <summary>
@@ -332,7 +346,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool isSet(string property)
+        public virtual bool isSet(string property)
             => ProviderObject.IsPropertySet(property);
 
         /// <inheritdoc />
@@ -368,5 +382,19 @@ namespace DatenMeister.Core.EMOF.Implementation
             _extent?.ChangeEventManager?.SendChangeEvent(this);
             _extent?.SignalUpdateOfContent();
         }
+    }
+}
+
+public class MofObjectEqualityComparer : IEqualityComparer<IObject?>
+{
+    public bool Equals(IObject? x, IObject? y)
+    {
+        var result = MofObject.AreEqual(x, y);
+        return result;
+    }
+
+    public int GetHashCode(IObject? obj)
+    {
+        return obj?.GetHashCode() ?? 0;
     }
 }

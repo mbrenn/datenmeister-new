@@ -56,10 +56,17 @@ namespace DatenMeister.Runtime.Extents
         public CreateableTypeResult GetCreatableTypes(IExtent extent)
         {
             var dataLayer = _workspaceLogic.GetWorkspaceOfExtent(extent);
-            var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault();
-            var umlLayer = typeLayer.MetaWorkspaces.FirstOrDefault();
+            if (dataLayer == null)
+            {
+                throw new InvalidOperationException("Datalayer is not found");
+            }
+            
+            var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault() 
+                            ?? _workspaceLogic.GetTypesWorkspace();
 
-            var uml = umlLayer.Get<_UML>();
+            var umlLayer = typeLayer?.MetaWorkspaces.FirstOrDefault();
+
+            var uml = umlLayer?.Get<_UML>();
             var classType = uml?.StructuredClassifiers.__Class;
 
             if (classType == null)
@@ -75,7 +82,7 @@ namespace DatenMeister.Runtime.Extents
             return new CreateableTypeResult
             {
                 MetaLayer = typeLayer,
-                CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer)
+                CreatableTypes = _workspaceLogic.GetExtentsForWorkspace(typeLayer!)
                     .SelectMany(x => x.elements().GetAllDescendants().WhenMetaClassIs(classType))
                     .Cast<IElement>()
                     .ToList()

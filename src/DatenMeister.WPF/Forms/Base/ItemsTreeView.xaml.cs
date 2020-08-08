@@ -15,6 +15,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
@@ -34,6 +35,12 @@ namespace DatenMeister.WPF.Forms.Base
     public partial class ItemsTreeView : UserControl, INavigationGuest
     {
         /// <summary>
+        /// Just a configuration option which may be set during the development to recreate all items in treeview
+        /// instead of reusing the existing items
+        /// </summary>
+        private const bool ConfigurationAlwaysRefresh = false;
+            
+        /// <summary>
         /// Defines the logger being used
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(ItemsTreeView));
@@ -42,7 +49,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Defines the element which is the source for the definition of the treeview
         /// </summary>
         private IObject? _itemsSource;
-
+        
         /// <summary>
         /// Defines the set of already visited items to prevent that one item is 'visited' multiple times
         /// </summary>
@@ -60,9 +67,15 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
             }
-            
-            itemsTreeView.UpdateView();
-            itemsTreeView._cacheShowMetaClasses = (bool) e.NewValue;
+
+            var newValue = (bool) e.NewValue;
+            itemsTreeView.UpdateForm();
+            itemsTreeView._cacheShowMetaClasses = newValue;
+
+            if (newValue != (itemsTreeView.ShowMetaClassesCheckBtn.IsChecked == true))
+            {
+                itemsTreeView.ShowMetaClassesCheckBtn.IsChecked = newValue;
+            }
         }
 
         public bool ShowMetaClasses
@@ -87,7 +100,7 @@ namespace DatenMeister.WPF.Forms.Base
             set
             {
                 SetValue(ShowRootProperty, value);
-                UpdateView();
+                UpdateForm();
             }
         }
 
@@ -102,7 +115,7 @@ namespace DatenMeister.WPF.Forms.Base
                 if (ShowAllChildren != value)
                 {
                     SetValue(ShowAllChildrenProperty, value);
-                    UpdateView();
+                    UpdateForm();
                 }
             }
         }
@@ -111,6 +124,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// Stores the metaclasses that will be used as filtering
         /// </summary>
         private IEnumerable<IElement>? _filterMetaClasses;
+
+
+        private bool _enableFilterMetaClasses = true;
 
         /// <summary>
         /// Gets or sets the metaclasses that will be used as filtering
@@ -121,7 +137,7 @@ namespace DatenMeister.WPF.Forms.Base
             set
             {
                 _filterMetaClasses = value;
-                UpdateView();
+                UpdateForm();
             }
         }
 
@@ -135,6 +151,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private readonly HashSet<string> _propertiesForChildren = new HashSet<string>();
 
+        /// <summary>
+        /// Maps the items to the treeviewitem
+        /// </summary>
         private readonly Dictionary<IObject, TreeViewItem> _mappingItems = new Dictionary<IObject, TreeViewItem>();
 
         /// <summary>
@@ -172,7 +191,7 @@ namespace DatenMeister.WPF.Forms.Base
             set
             {
                 _itemsSource = value;
-                UpdateView();
+                UpdateForm();
             }
         }
 
@@ -205,7 +224,7 @@ namespace DatenMeister.WPF.Forms.Base
                 _propertiesForChildren.Add(property);
             }
 
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
@@ -217,10 +236,24 @@ namespace DatenMeister.WPF.Forms.Base
             _propertiesForChildren.Add(_UML._Packages._Package.packagedElement);
         }
 
+        public void ClearForm()
+        {
+            TreeView.ItemsSource = null;
+        }
+
+        /// <summary>
+        /// Updates the form and of all including buttons
+        /// </summary>
+        public void UpdateForm()
+        {
+            UpdateForm(true);
+        }
+
         /// <summary>
         /// Updates the complete view of the item tree
         /// </summary>
-        public void UpdateView()
+        /// <param name="updateButtons">true, if all the buttons shall be updated</param>
+        public void UpdateForm(bool updateButtons)
         {
             if (!IsInitialized)
             {
@@ -228,7 +261,12 @@ namespace DatenMeister.WPF.Forms.Base
                 return;
             }
 
-            using var watch = new StopWatchLogger(Logger, "UpdateView");
+            if (updateButtons)
+            {
+                UpdateFilterMetaClassButton();
+            }
+
+            using var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
 
             if (ItemsSource == null)
             {
@@ -246,11 +284,23 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _alreadyVisited.Clear();
                 _mappingItems.Clear();
-                var found = CreateTreeViewItem(ItemsSource, true);
-                if (found != null)
-                    model.Add(found);
+
+                // Checks, if a tree views are already created
+                var availableTreeViewItem = (container.ItemsSource as List<TreeViewItem>)?.FirstOrDefault();
                 
-                container.ItemsSource = model;
+                // ReSharper disable once RedundantLogicalConditionalExpressionOperand
+                if (availableTreeViewItem == null || ConfigurationAlwaysRefresh)
+                {
+                    var found = CreateTreeViewItem(ItemsSource, true);
+                    if (found != null)
+                        model.Add(found);
+                    
+                    container.ItemsSource = model;
+                }
+                else
+                {
+                    UpdateTreeViewItem(availableTreeViewItem, ItemsSource);
+                }
             }
 
             if (_newSelectedItem != null)
@@ -262,9 +312,70 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
+        /// Updates the treeview item by using the current item and compares it to the given item
+        /// which should be matching to the treeview item
+        /// </summary>
+        /// <param name="availableTreeViewItem"></param>
+        /// <param name="item"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void UpdateTreeViewItem(TreeViewItem availableTreeViewItem, IObject item)
+        {
+            // Updates the current item
+            availableTreeViewItem.Header = GetItemHeader(item);
+            availableTreeViewItem.Tag = item;
+
+            var childrenOfItem = GetChildrenOfItem(item).ToList();
+            
+            if (availableTreeViewItem.ItemsSource is List<TreeViewItem> viewChildren)
+            {
+                foreach (var viewChild in viewChildren.ToList())
+                {
+                    if (!(viewChild.Tag is IObject viewChildItem))
+                    {
+                        // If the tag is not an IObject, remove it
+                        // Should not happen, but who knows
+                        viewChildren.Remove(viewChild);
+                        continue;
+                    }
+                    
+                    // Checks, if the given element is in the children of Item
+                    // ReSharper disable once RedundantLogicalConditionalExpressionOperand
+                    if (childrenOfItem.FirstOrDefault(x => viewChildItem.@equals(x)) is IObject found
+                        && !ConfigurationAlwaysRefresh)
+                    {
+                        // If the element was found, add it
+                        UpdateTreeViewItem(viewChild, found);
+                        childrenOfItem.Remove(found);
+                    }
+                    else
+                    {
+                        // If the element is not found, remove it
+                        viewChildren.Remove(viewChild);
+                    }
+                }
+                
+                // Now add the items which are left
+                foreach (var child in childrenOfItem)
+                {
+                    if (child is null)
+                        continue;
+
+                    var createdTreeViewItem = CreateTreeViewItem(child);
+                    if (createdTreeViewItem != null)
+                    {
+                        viewChildren.Add(createdTreeViewItem);
+                    }
+                }
+
+                availableTreeViewItem.ItemsSource = viewChildren;
+                availableTreeViewItem.Items.Refresh();
+            }
+        }
+
+        /// <summary>
         /// Creates the treeview item for the given item.
         /// If this item is an object and contains additional items within the properties,
-        /// these subitems are also creates as TreeViewItemss
+        /// these subitems are also creates as TreeViewItems
         /// </summary>
         /// <param name="item">Item to be converted to a treeview</param>
         /// <param name="isRoot">true, if this is the root element. This means that the element is expanded. </param>
@@ -279,7 +390,7 @@ namespace DatenMeister.WPF.Forms.Base
             _alreadyVisited.Add(item);
 
             // Perform filtering of the item
-            if (FilterMetaClasses != null && item is IElement itemAsElement)
+            if (_enableFilterMetaClasses && FilterMetaClasses != null && item is IElement itemAsElement)
             {
                 var list = FilterMetaClasses.ToList();
                 if (list.Count != 0)
@@ -302,17 +413,8 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            // Filtering agrees to the item, so it will be added
-            var itemHeader = item is IExtent ? "Root" : item.ToString();
-            if (_cacheShowMetaClasses)
-            {
-                if (item is IElement element)
-                {
-                    var metaClass = element.getMetaClass();
-                    itemHeader += " [" + (metaClass != null ? metaClass.ToString() : "Unclassified") + "]";
-                }
-            }
-            
+            var itemHeader = GetItemHeader(item);
+
             var treeViewItem = new TreeViewItem
             {
                 Header = itemHeader,
@@ -332,7 +434,7 @@ namespace DatenMeister.WPF.Forms.Base
                 _mappingItems[extent] = treeViewItem;
                 var childModels = new List<TreeViewItem>();
                 var n = 0;
-                foreach (var element in extent.elements())
+                foreach (var element in GetChildrenOfItem(extent))
                 {
                     if (element == null) continue; // Skip the empty ones
                     
@@ -353,15 +455,8 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // Gets the properties
                 var childModels = new List<TreeViewItem>();
-                var propertiesForChildren =
-                    ShowAllChildren // Defines whether all children shall be shown
-                        ? (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>()
-                        : _defaultClassifierHints.GetPackagingPropertyNames(itemAsObject);
-
-                foreach (var property in propertiesForChildren)
+                foreach (var propertyValue in GetChildrenOfItem(itemAsObject))
                 {
-                    // Goes through the properties
-                    var propertyValue = itemAsObject.getOrDefault<object>(property, true);
                     if (propertyValue is IReflectiveCollection childItems)
                     {
                         // If, we have a collection of properties, add the enumeration of the properties
@@ -369,6 +464,7 @@ namespace DatenMeister.WPF.Forms.Base
                         // Do not perform a resolving of the items
                         foreach (var childItem in CollectionHelper.EnumerateWithNoResolving(childItems, true))
                         {
+                            if (childItem == null) continue;
                             var childTreeViewItem = CreateTreeViewItem(childItem);
                             if (childTreeViewItem != null)
                             {
@@ -391,6 +487,9 @@ namespace DatenMeister.WPF.Forms.Base
                         n++;
                     }
 
+                    childModels.Sort((x,y) => 
+                        NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
+
                     if (n >= MaxItemsPerLevel) break;
                 }
 
@@ -400,10 +499,98 @@ namespace DatenMeister.WPF.Forms.Base
             return treeViewItem;
         }
 
+        /// <summary>
+        /// Gets the children of the items as they would be listed in the tree.
+        /// This methods parsed extents and objects. 
+        /// </summary>
+        /// <param name="item">Item whose children are evaluated</param>
+        /// <returns>Enumeration of children</returns>
+        public IEnumerable<object?> GetChildrenOfItem(IObject item)
+        {
+            if (item is IExtent extent)
+            {
+                return extent.elements().Take(MaxItemsPerLevel);
+            }
+
+            var result = new List<object>();
+            var propertiesForChildren =
+                ShowAllChildren // Defines whether all children shall be shown
+                    ? (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>()
+                    : _defaultClassifierHints.GetPackagingPropertyNames(item);
+            foreach (var property in propertiesForChildren)
+            {
+                // Goes through the properties
+                var propertyValue = item.getOrDefault<object>(property, true);
+                
+                if (propertyValue is IReflectiveCollection childItems)
+                {
+                    // If, we have a collection of properties, add the enumeration of the properties
+                    // to the treeview (as long as we don't have too many items)
+                    // Do not perform a resolving of the items
+                    foreach (var childItem in CollectionHelper.EnumerateWithNoResolving(childItems, true))
+                    {
+                        if (childItem == null) continue;
+                        result.Add(childItem);
+
+                        if (result.Count > MaxItemsPerLevel)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else if (propertyValue is IElement)
+                {
+                    result.Add(propertyValue);
+                }
+                
+                if (result.Count > MaxItemsPerLevel)
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        private string GetItemHeader(object item)
+        {
+            string itemHeader;
+            if (item is IExtent extent)
+            {
+                itemHeader = "Root";
+                
+                if (ExtentManager.GetProviderCapabilities(extent).IsTemporaryStorage)
+                {
+                    itemHeader += " [Non-Permanent]";
+                }
+                
+                if (ExtentManager.IsExtentModified(extent))
+                {
+                    itemHeader += "*";
+                }
+            }
+            else
+            {
+                // Filtering agrees to the item, so it will be added
+                itemHeader = item.ToString() ?? string.Empty;
+            }
+
+            if (_cacheShowMetaClasses)
+            {
+                if (item is IElement element)
+                {
+                    var metaClass = element.getMetaClass();
+                    itemHeader += " [" + (metaClass != null ? metaClass.ToString() : "Unclassified") + "]";
+                }
+            }
+
+            return itemHeader ?? string.Empty;
+        }
+
 
         private void ItemsTreeView_OnInitialized(object sender, EventArgs e)
         {
-            UpdateView();
+            UpdateForm();
         }
 
         private void OnItemChosen(object? item)
@@ -575,6 +762,48 @@ namespace DatenMeister.WPF.Forms.Base
         private void ItemContextMenu_OnOpened(object sender, RoutedEventArgs e)
         {
             ShowContextMenu();
+        }
+
+        private void UpdateFilterMetaClassButton()
+        {
+            if (_filterMetaClasses == null || _filterMetaClasses?.Count() == 0)
+            {
+                FilterMetaClassCheck.IsEnabled = false;
+                return;
+            }
+
+            FilterMetaClassCheck.IsEnabled = true;
+
+            if (_enableFilterMetaClasses)
+            {
+                FilterMetaClassCheck.IsChecked = true;
+            }
+            else
+            {
+                FilterMetaClassCheck.IsChecked = false;
+            }
+        }
+
+        private void ShowMetaClassesCheckBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMetaClasses = ShowMetaClassesCheckBtn.IsChecked == true;
+            UpdateForm();
+        }
+
+        private void FilterMetaClassCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterMetaClassCheck.IsChecked == true)
+            {
+                _enableFilterMetaClasses = true;
+            }
+            else
+            {
+                _enableFilterMetaClasses = false;
+            }
+
+            // Clear Complete Form
+            ClearForm();
+            UpdateForm(false);
         }
     }
 }

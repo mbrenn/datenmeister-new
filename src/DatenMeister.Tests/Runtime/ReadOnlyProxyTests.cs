@@ -50,12 +50,12 @@ namespace DatenMeister.Tests.Runtime
             mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var workspaceData = WorkspaceLogic.InitDefault();
 
-            var data = new ExtentStorageData();
-            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(workspaceData), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(new IntegrationSettings());
+            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(workspaceData), scopeStorage);
+            var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
-                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,

@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
@@ -109,6 +109,11 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
                     // Gets the extent from which the data shall be imported
                     var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);
+                    if (sourceExtent == null)
+                    {
+                        MessageBox.Show($"Source extent with {uri} is not found. ");
+                        return;
+                    }
 
                     var itemCountBefore = sourceExtent.elements().Count();
                     var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
@@ -132,7 +137,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 if (result != null)
                 {
                     // Now, we got the item extent...
-                    var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                     var loadedExtent = extentManager.LoadExtentWithoutAdding(result);
                     if (loadedExtent != null)
                     {

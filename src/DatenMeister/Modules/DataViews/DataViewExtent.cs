@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -7,20 +8,17 @@ using DatenMeister.Models.DataViews;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Proxies.ReadOnly;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
 {
     public class DataViewExtent : IUriExtent
     {
         private readonly IElement _dataViewElement;
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly DataViewLogic _dataViewLogic;
 
-        public DataViewExtent(IElement dataViewElement, IWorkspaceLogic workspaceLogic, DataViewLogic dataViewLogic)
+        public DataViewExtent(IElement dataViewElement, DataViewLogic dataViewLogic)
         {
             _dataViewElement = dataViewElement ?? throw new ArgumentNullException(nameof(dataViewElement));
-            _workspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
             _dataViewLogic = dataViewLogic ?? throw new ArgumentNullException(nameof(dataViewLogic));
         }
 
@@ -57,17 +55,17 @@ namespace DatenMeister.Modules.DataViews
             }
             else
             {
-                return _dataViewLogic.GetElementsForViewNode(viewNode);
+                return new TemporaryReflectiveSequence(_dataViewLogic.GetElementsForViewNode(viewNode));
             }
         }
 
         public string contextURI() =>
             _dataViewElement.getOrDefault<string>(_DataViews._DataView.uri);
 
-        public string uri(IElement element) =>
+        public string? uri(IElement element) =>
             element.GetUri();
 
-        public IElement element(string uri)
+        public IElement? element(string uri)
         {
             return elements().FirstOrDefault(x => x != null && x.AsIElement()?.GetUri() == uri) as IElement;
         }

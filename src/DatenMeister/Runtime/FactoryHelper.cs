@@ -22,6 +22,7 @@ namespace DatenMeister.Runtime
                              throw new ArgumentException(
                                  @"Not of type MofExtent",
                                  nameof(factory));
+            
             return mofFactory.Extent?.Workspace?.GetFromMetaWorkspace<TFilledType>();
         }
 
@@ -39,6 +40,11 @@ namespace DatenMeister.Runtime
             where TFilledType : class, new()
         {
             var metaInfo = GetMetaInformation<TFilledType>(factory);
+            if (metaInfo == null)
+            {
+                throw new InvalidOperationException($"metaInfo for type {typeof(TFilledType).FullName} is not found");
+            }
+            
             return factory.create(type(metaInfo));
         }
 
@@ -58,6 +64,11 @@ namespace DatenMeister.Runtime
             where TFilledType : class, new()
         {
             var filledType = workspace.Get<TFilledType>();
+            if (filledType == null)
+            {
+                throw new InvalidOperationException("FilledType is not found");
+            }
+
             var typeToCreated = funcType(filledType);
             return factory.create(typeToCreated);
         }

@@ -16,18 +16,25 @@ namespace DatenMeister.WPF.Windows
     {
         private readonly DelayedRefreshDispatcher _dispatcher;
 
+        /// <summary>
+        /// Gets or sets the whether the information whether we had a first run
+        /// </summary>
+        private bool _firstSet;
+
         public LogWindow()
         {
             InitializeComponent();
 
             SelectedLogLevels.ItemsSource = Enum.GetNames(typeof(LogLevel));
-            SelectedLogLevels.SelectedValue = TheLog.FilterThreshold.ToString();
+            SelectedLogLevels.SelectedValue = TheLog.GetLogLevel(InMemoryDatabaseProvider.TheOne).ToString();
 
             _dispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateMessageContentDelayed)
             {
                 MinDispatchTime = TimeSpan.FromSeconds(1),
                 MaxDispatchTime = TimeSpan.FromSeconds(2)
             };
+
+            _firstSet = true;
         }
 
         private void LogWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -36,8 +43,8 @@ namespace DatenMeister.WPF.Windows
 
             void Action(object x, LogEventArgs y) => UpdateMessageContent();
 
-            TheLog.MessageLogged += Action;
-            Closed += (x, y) => TheLog.MessageLogged -= Action;
+            TheLog.MessageLogged += Action!;
+            Closed += (x, y) => TheLog.MessageLogged -= Action!;
 
             _dispatcher.ForceRefresh();
         }
@@ -81,11 +88,18 @@ namespace DatenMeister.WPF.Windows
 
         private void SelectedLogLevels_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            var selectedValue = SelectedLogLevels.SelectedValue?.ToString();
-            if (!string.IsNullOrEmpty(selectedValue))
+            if (_firstSet)
             {
-                TheLog.FilterThreshold =
-                    (LogLevel) Enum.Parse(typeof(LogLevel), selectedValue);
+                var selectedValue = SelectedLogLevels.SelectedValue?.ToString();
+                if (!string.IsNullOrEmpty(selectedValue))
+                {
+                    /*TheLog.FilterThreshold =
+                        (LogLevel) Enum.Parse(typeof(LogLevel), selectedValue);*/
+
+                    var logLevel = (LogLevel) Enum.Parse(typeof(LogLevel), selectedValue);
+                    TheLog.SetLogLevel(InMemoryDatabaseProvider.TheOne, logLevel);
+                    TheLog.FilterThreshold = logLevel;
+                }
             }
         }
 

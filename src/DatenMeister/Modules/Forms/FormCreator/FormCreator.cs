@@ -7,16 +7,16 @@ using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {
@@ -30,9 +30,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// Stores the reference to the view logic which is required to get the views
         /// for the tabs of the extent form
         /// </summary>
-        private readonly FormLogic? _formLogic;
-
-        private readonly DefaultClassifierHints _defaultClassifierHints;
+        private readonly FormsPlugin? _formLogic;
 
         /// <summary>
         /// Stores the associated workspace logic
@@ -49,6 +47,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         private readonly _FormAndFields _formAndFields;
 
+        private readonly ExtentSettings _extentSettings;
+
         private IElement? _stringType;
         private IElement? _integerType;
         private IElement? _booleanType;
@@ -61,43 +61,60 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Initializes a new instance of the FormCreator class
         /// </summary>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="formLogic">View logic being used</param>
-        /// <param name="defaultClassifierHints">The classifier hints</param>
-        public FormCreator(FormLogic? formLogic, DefaultClassifierHints defaultClassifierHints)
+        /// <param name="scopeStorage">Stores the extent settings</param>
+        public FormCreator(
+            IWorkspaceLogic workspaceLogic,
+            FormsPlugin? formLogic,
+            IScopeStorage scopeStorage)
+             : this (workspaceLogic, formLogic, scopeStorage.TryGet<ExtentSettings>())
+        {
+
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the FormCreator class
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="formLogic">View logic being used</param>
+        /// <param name="extentSettings">Stores the extent settings</param>
+        private FormCreator(
+            IWorkspaceLogic? workspaceLogic,
+            FormsPlugin? formLogic, 
+            ExtentSettings? extentSettings = null)
         {
             _formLogic = formLogic;
-            _defaultClassifierHints = defaultClassifierHints;
+            _extentSettings = extentSettings ?? new ExtentSettings();
+            _workspaceLogic = workspaceLogic;
 
-            _workspaceLogic = _formLogic?.WorkspaceLogic;
-            
             var userExtent = _formLogic?.GetUserFormExtent();
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
-            _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>()
-                             ?? _FormAndFields.TheOne;
-        }
+            _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>() ??
+                             _workspaceLogic?.GetTypesWorkspace()?.Get<_FormAndFields>() ??
+                             _FormAndFields.TheOne ??
+                             throw new InvalidOperationException("FormAndFields not found");
 
-        /// <summary>
-        /// Creates an extent form containing the subforms
-        /// </summary>    
-        /// <returns>The created extent</returns>
-        public IElement CreateExtentForm(params IElement[] subForms)
-        {
-            var result = _factory.create(_formAndFields.__ExtentForm);
-            result.set(_FormAndFields._ExtentForm.tab, subForms);
-            return result;
+            _uml = _workspaceLogic?.GetUmlData() ??
+                   _UML.TheOne ??
+                   throw new InvalidOperationException("UML not found");
         }
-
+        
         /// <summary>
-        /// Creates an extent form for the given extent by parsing through each element
-        /// and creating the form out of the max elements
+        /// Creates the form logic by using the private constructor
         /// </summary>
-        /// <param name="extent">Extent to be parsed</param>
-        /// <param name="creationMode">The creation mode being used</param>
-        /// <returns>The created element</returns>
-        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
-            => CreateExtentForm(extent.elements(), creationMode);
+        /// <param name="workspaceLogic">Workspace Logic to be evaluated</param>
+        /// <param name="formLogic">Form Logic to be evaluated</param>
+        /// <param name="extentSettings">Settings of the extent</param>
+        /// <returns></returns>
+        public static FormCreator Create(IWorkspaceLogic? workspaceLogic,
+            FormsPlugin? formLogic, 
+            ExtentSettings? extentSettings = null)
+        {
+            return new FormCreator(workspaceLogic, formLogic, extentSettings);
+        }
 
         /// <summary>
         /// Creates the fields of the form by evaluation of the given object.
@@ -125,7 +142,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (!cache.CoveredMetaClasses.Contains(metaClass))
                 {
                     cache.CoveredMetaClasses.Add(metaClass);
-                    wasInMetaClass = AddToFormByMetaclass(form, metaClass, creationMode, cache);
+                    wasInMetaClass = AddToFormByMetaclass(
+                        form,
+                        metaClass,
+                        creationMode & ~(CreationMode.AddMetaClass),
+                        cache);
                 }
                 else
                 {
@@ -152,25 +173,22 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             // Third phase: Add metaclass element itself
             var isMetaClass = creationMode.HasFlag(CreationMode.AddMetaClass);
-            if (!cache.MetaClassAlreadyAdded &&
-                isMetaClass &&
-                !form
-                    .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
-                    .OfType<IElement>()
-                    .Any(x => x.getMetaClass()?.@equals(_formAndFields.__MetaClassElementFieldData) ?? false))
+            if (!cache.MetaClassAlreadyAdded
+                && isMetaClass
+                && !FormMethods.HasMetaClassFieldInForm(form))
             {
-                // Sets the information in cache, that the element was already added
-                cache.MetaClassAlreadyAdded = true;
-
                 // Add the element itself
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
 
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(metaClassField);
+
+                // Sets the information in cache, that the element was already added
+                cache.MetaClassAlreadyAdded = true;
             }
 
 #if DEBUG
-            if (!new FormMethods().ValidateForm(form))
+            if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
         }
@@ -265,7 +283,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
             
 #if DEBUG
-            if (!new FormMethods().ValidateForm(form))
+            if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
         }
@@ -277,8 +295,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="form">Form that will be extended. Must be list or detail form.</param>
         /// <param name="metaClass">Metaclass to be used</param>
         /// <param name="creationMode">Creation Mode to be used</param>
+        /// <param name="cache">Cache of creator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
-        private bool AddToFormByMetaclass(IObject form, IElement metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
+        private bool AddToFormByMetaclass(IObject form, IObject metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
         {
             cache ??= new FormCreatorCache();
             
@@ -320,17 +339,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             // After having created all the properties, add the meta class information at the end
-            if (!cache.MetaClassAlreadyAdded && creationMode.HasFlagFast(CreationMode.AddMetaClass))
+            if (!cache.MetaClassAlreadyAdded
+                && creationMode.HasFlagFast(CreationMode.AddMetaClass)
+                && !FormMethods.HasMetaClassFieldInForm(form))
             {
                 var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                metaClassField.set(_FormAndFields._MetaClassElementFieldData.title, "Metaclass");
                 form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(metaClassField);
 
                 cache.MetaClassAlreadyAdded = true;
             }
 
 #if DEBUG
-            if (!new FormMethods().ValidateForm(form))
+            if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");
 #endif
             
@@ -346,7 +368,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="form">Form that will be enriched</param>
         /// <param name="umlElement">The uml element, property, class or type that will be added</param>
         /// <param name="creationMode">The creation mode</param>
-        /// <returns>true, if an alement was created</returns>
+        /// <returns>true, if an element was created</returns>
         public bool AddToFormByUmlElement(IElement form, IElement umlElement, CreationMode creationMode)
         {
             if (form == null) throw new ArgumentNullException(nameof(form));
@@ -392,7 +414,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             // First, let's parse the properties
             if (isDetailForm && isPropertyUml || isListForm && isPropertyUml)
             {
-                if (noDuplicate && FormHelper.GetField(form, NamedElementMethods.GetName(umlElement)) != null)
+                if (noDuplicate && FormMethods.GetField(form, NamedElementMethods.GetName(umlElement)) != null)
                 {
                     // Field is already existing
                     return false;
@@ -417,7 +439,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 else
                 {
                     var propertyName = umlElement.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
-                    if (noDuplicate && FormHelper.GetListTabForPropertyName(form, propertyName) != null )
+                    if (noDuplicate && FormMethods.GetListTabForPropertyName(form, propertyName) != null )
                     {
                         // List form is already existing
                         return false;
@@ -487,7 +509,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _integerType ??= _primitiveTypes?.__Integer;
             _booleanType ??= _primitiveTypes?.__Boolean;
             _realType ??= _primitiveTypes?.__Real;
-            _dateTimeType ??= _uriResolver?.Resolve(CoreTypeNames.DateTimeType, ResolveType.Default, false);
+            _dateTimeType ??= _uriResolver?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
             var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)
@@ -523,11 +545,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                            ClassifierMethods.GetSpecializations(propertyType).ToList());
+                            new[] {propertyType});
+                        elements.set(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                         
                         // Create the internal form out of the metaclass
-                        var enumerationListForm = CreateListFormForMetaClass(propertyType, CreationMode.All);
+                        var enumerationListForm 
+                            = CreateListFormForMetaClass(propertyType, CreationMode.All, property as IElement);
                         elements.set(_FormAndFields._SubElementFieldData.form, enumerationListForm);
 
                         return elements;
@@ -538,6 +562,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
                     reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
                     reference.set(_FormAndFields._ReferenceFieldData.isReadOnly, isReadOnly);
+                    if (propertyType != null)
+                    {
+                        reference.set(
+                            _FormAndFields._ReferenceFieldData.metaClassFilter,
+                            new[] {propertyType});
+                    }
 
                     return reference;
                 }
@@ -554,6 +584,14 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 element.set(_FormAndFields._SubElementFieldData.name, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.title, propertyName);
                 element.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
+                element.set(_FormAndFields._SubElementFieldData.isEnumeration, propertyIsEnumeration);
+                
+                if (propertyType != null)
+                {
+                    element.set(
+                        _FormAndFields._SubElementFieldData.defaultTypesForNewElements,
+                        new[] {propertyType});
+                }
                 return element;
             }
 

@@ -23,8 +23,8 @@ namespace DatenMeister.WPF.Modules.FormManager
             var result = new ApplicationMenuButtonDefinition(
                 "Goto User Forms", async () => await NavigatorForItems.NavigateToItemsInExtent(
                     navigationHost,
-                    WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserFormExtent),
+                    WorkspaceNames.WorkspaceManagement,
+                    WorkspaceNames.UriExtentUserForm),
                 string.Empty,
                 NavigationCategories.DatenMeisterNavigation);
 

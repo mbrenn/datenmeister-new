@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestDataLayers()
         {
             var data = WorkspaceLogic.InitDefault();
-            var logic = new WorkspaceLogic(data);
+            var logic = WorkspaceLogic.Create(data);
 
             var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data");
             var typeExtent = new MofUriExtent(new InMemoryProvider(), "Types");
@@ -38,7 +38,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestDataLayersForItem()
         {
             var data = WorkspaceLogic.InitDefault();
-            var logic = new WorkspaceLogic(data);
+            var logic =  WorkspaceLogic.Create(data);
 
             var dataExtent = new MofUriExtent(new InMemoryProvider(), "Data");
             var umlExtent = new MofUriExtent(new InMemoryProvider(), "Uml");
@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
         public void TestClassTreeUsage()
         {
             var data = WorkspaceLogic.InitDefault();
-            var dataLayerLogic = new WorkspaceLogic(data);
+            var dataLayerLogic = WorkspaceLogic.Create(data);
 
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,

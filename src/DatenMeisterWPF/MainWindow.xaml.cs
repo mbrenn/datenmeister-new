@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
-using Autofac;
 using BurnSystems;
 using DatenMeister.Integration;
+using DatenMeister.Modules.PublicSettings;
+using DatenMeister.NetCore;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Locking;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF;
 using DatenMeister.WPF.Forms;
@@ -55,16 +58,36 @@ namespace DatenMeisterWPF
         private async void Window_Initialized(object sender, EventArgs e)
         {
             MainControl.Content = new IntroScreen();
-            GiveMe.Scope = await Task.Run(
-                () => GiveMe.DatenMeister());
+            var defaultSettings = GiveMeDotNetCore.GetDefaultIntegrationSettings();
+            defaultSettings.IsLockingActivated = true;
+
+            try
+            {
+                GiveMe.Scope = await Task.Run(
+                    () => GiveMeDotNetCore.DatenMeister(defaultSettings));
+            }
+            catch (IsLockedException exception)
+            {
+                MessageBox.Show($"The following file is currently locked:\r\n\r\n{exception.FilePath}\r\n\r\n" +
+                                $"The Application will be closed. Please check whether another application is running.");
+                DoCloseWithoutAcknowledgement = true;
+                Close();
+                return;
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.ToString());
+                throw;
+            }
 
             _ribbonHelper.LoadIconRepository();
 
             //NavigatorForWorkspaces.NavigateToWorkspaces(this);
-            _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData);
+            _ = NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData);
 
-            var extentStorageData = GiveMe.Scope.Resolve<ExtentStorageData>();
-            if (GiveMe.Scope.Resolve<ExtentStorageData>().FailedLoading)
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
+            var extentStorageData = GiveMe.Scope.ScopeStorage.Get<ExtentStorageData>();
+            if (extentStorageData.FailedLoading)
             {
                 Title += " (READ-ONLY)";
                 var message = extentStorageData.FailedLoadingException == null
@@ -85,9 +108,16 @@ namespace DatenMeisterWPF
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    var databasePath = GiveMe.Scope.Resolve<IntegrationSettings>().DatabasePath;
-                    Process.Start(databasePath);
+                    var databasePath = integrationSettings.DatabasePath;
+
+                    DotNetHelper.CreateProcess(databasePath);
                 }
+            }
+            
+            // Sets the title of the mainwindow
+            if (integrationSettings.WindowTitle != null)
+            {
+                Title = integrationSettings.WindowTitle;
             }
         }
 
@@ -139,7 +169,7 @@ namespace DatenMeisterWPF
             {
                 new ApplicationMenuButtonDefinition(
                     "Goto Data",
-                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.NameData),
+                    () => NavigatorForExtents.NavigateToExtentList(this, WorkspaceNames.WorkspaceData),
                     Icons.FileHome,
                     NavigationCategories.DatenMeisterNavigation,
                     10),
@@ -175,7 +205,23 @@ namespace DatenMeisterWPF
                         Owner = this
                     }.ShowDialog(),
                     "file-about",
-                    NavigationCategories.DatenMeister + ".Tool")
+                    NavigationCategories.DatenMeister + ".Tool"),
+                new ApplicationMenuButtonDefinition(
+                    "Open Public Settings",
+                    () =>
+                    {
+                        var publicSettings = GiveMe.Scope.ScopeStorage.Get<PublicIntegrationSettings>();
+                        if (File.Exists(publicSettings.settingsFilePath))
+                        {
+                            DotNetHelper.OpenExplorer(publicSettings.settingsFilePath);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No Public Settings were loaded.");
+                        }
+                    },
+                    "",
+                    NavigationCategories.DatenMeister + ".Tool"),
             };
 
             // 2) The properties of the guest
@@ -232,13 +278,20 @@ namespace DatenMeisterWPF
                 canUnregister.Unregister();
             }
             
+            
             // Asks the user, if he was not already asked before
-            if (!DoCloseWithoutAcknowledgement && MessageBox.Show(
-                    "Are you sure, that you would like to close Der DatenMeister",
-                    "Close DatenMeister?",
-                    MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+
+            if (!DoCloseWithoutAcknowledgement)
             {
-                e.Cancel = true;
+                var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
+                var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
+                if (MessageBox.Show(
+                    $"Are you sure, that you would like to close '{windowTitle}'",
+                    $"Close {windowTitle}?",
+                    MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    e.Cancel = true;
+                }
             }
         }
 

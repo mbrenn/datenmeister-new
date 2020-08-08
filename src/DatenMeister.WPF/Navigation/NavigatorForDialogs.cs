@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
@@ -88,7 +90,33 @@ namespace DatenMeister.WPF.Navigation
                 extent = workspace.FindExtent(extentUri);
             }
 
-            return await Locate(navigationHost, workspace, extent);
+            return await Locate(navigationHost,
+                new NavigatorForDialogConfiguration
+                {
+                    DefaultWorkspace = workspace,
+                    DefaultExtent = extent
+                });
+        }
+
+        /// <summary>
+        /// Defines the configuration for the navigator for dialog
+        /// </summary>
+        public class NavigatorForDialogConfiguration
+        {
+            /// <summary>
+            /// Gets or sets the default workspace
+            /// </summary>
+            public IWorkspace? DefaultWorkspace { get; set; }
+            
+            /// <summary>
+            /// Gets or sets the default extent
+            /// </summary>
+            public IExtent? DefaultExtent { get; set; }
+
+            /// <summary>
+            /// Defines the metaclasses to which the shall be filtered 
+            /// </summary>
+            public List<IElement> FilteredMetaClasses { get; set; } = new List<IElement>();
         }
 
         /// <summary>
@@ -98,7 +126,30 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="workspace">Defines the workspace to which shall be navigated</param>
         /// <param name="defaultExtent">Extent that shall be opened per default</param>
         /// <returns></returns>
-        public static async Task<IObject?> Locate(INavigationHost navigationHost, IWorkspace? workspace = null, IExtent? defaultExtent = null)
+        [Obsolete]
+        public static async Task<IObject?> Locate(
+            INavigationHost navigationHost,
+            IWorkspace? workspace = null,
+            IExtent? defaultExtent = null)
+        {
+            return await Locate(
+                navigationHost,
+                new NavigatorForDialogConfiguration
+                {
+                    DefaultWorkspace = workspace,
+                    DefaultExtent = defaultExtent
+                });
+        }
+        
+        /// <summary>
+        /// Opens a dialog and asks the user to locate an item 
+        /// </summary>
+        /// <param name="navigationHost">Navigation host to be used</param>
+        /// <param name="configuration">Configuration to be used</param>
+        /// <returns></returns>
+        public static async Task<IObject?> Locate(
+            INavigationHost navigationHost,
+            NavigatorForDialogConfiguration configuration)
         {
             var task = new TaskCompletionSource<IObject?>();
             var dlg = new LocateItemDialog
@@ -108,20 +159,25 @@ namespace DatenMeister.WPF.Navigation
                 SelectButtonText = "Select"
             };
 
-            if (workspace != null && defaultExtent != null)
+            if (configuration.FilteredMetaClasses?.Any() == true)
             {
-                dlg.Select(defaultExtent);
+                dlg.SetMetaClassesForFilter(configuration.FilteredMetaClasses);
+            }
+
+            if (configuration.DefaultWorkspace != null && configuration.DefaultExtent != null)
+            {
+                dlg.Select(configuration.DefaultExtent);
             }
             else
             {
-                if (workspace != null)
+                if (configuration.DefaultWorkspace != null)
                 {
-                    dlg.Select(workspace);
+                    dlg.Select(configuration.DefaultWorkspace);
                 }
 
-                if (defaultExtent != null)
+                if (configuration.DefaultExtent != null)
                 {
-                    dlg.Select(defaultExtent);
+                    dlg.Select(configuration.DefaultExtent);
                 }
             }
 

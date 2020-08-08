@@ -24,7 +24,12 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// <returns>The HtmlRawString</returns>
         public static implicit operator HtmlElement(string value)
         {
-            return new HtmlRawString(WebUtility.HtmlEncode(value));
+            if (value == null)
+            {
+                return new HtmlRawString("");
+            }
+            
+            return new HtmlRawString(WebUtility.HtmlEncode(value).Replace("\r\n", "<br />"));
         }
     }
 }

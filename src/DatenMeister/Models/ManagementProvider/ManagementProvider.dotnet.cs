@@ -44,6 +44,34 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                 filledStructure.__CreateNewWorkspaceModel = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
+            {
+                var type = typeof(DatenMeister.Models.Runtime.ExtentTypeSetting);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentTypeSetting = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Runtime.ExtentProperties);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentProperties = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Runtime.ExtentPropertyDefinition);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentPropertyDefinition = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Runtime.ExtentSettings);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentSettings = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
         }
     }
 }

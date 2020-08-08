@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.Forms;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.ExtentStorage.Validators;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
@@ -52,7 +56,7 @@ namespace DatenMeister.WPF.Navigation
         public static async Task<NavigateToElementDetailResult?> OpenDetailOfExtent(INavigationHost navigationHost, string extentUrl)
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var uri = WorkspaceNames.ExtentManagementExtentUri + "#" + WebUtility.UrlEncode(extentUrl);
+            var uri = WorkspaceNames.UriExtentWorkspaces + "#" + WebUtility.UrlEncode(extentUrl);
             var foundItem = workspaceLogic.FindItem(uri);
             if (foundItem == null)
             {
@@ -75,9 +79,61 @@ namespace DatenMeister.WPF.Navigation
         {
             if (extent is MofExtent mofExtent)
             {
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+                var managementWorkspace = workspaceLogic.GetManagementWorkspace();
+                var resolvedForm = managementWorkspace.ResolveElement(
+                    $"{WorkspaceNames.UriExtentInternalForm}#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
+                var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
+                var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
+                                    throw new InvalidOperationException("FormAndFields not found");
+
+                // Look for the checkbox item list for the possible extent types
+                if (resolvedForm != null)
+                {
+                    // Add the options for the extent types
+                    var foundExtentType =
+                        resolvedForm.GetByPropertyFromCollection(
+                            _FormAndFields._ListForm.field, 
+                            _FormAndFields._Form.name,
+                            ExtentConfiguration.ExtentTypeProperty).FirstOrDefault();
+                    if (foundExtentType == null)
+                    {
+                        Logger.Error($"Found Form #ExtentPropertyDetailForm did not find the field ${ExtentConfiguration.ExtentTypeProperty}");
+                    }
+                    else
+                    {
+                        var list = new List<IElement>();
+                        var factory = new MofFactory(foundExtentType);
+                        foreach (var setting in extentSettings.extentTypeSettings)
+                        {
+                            var pair = factory.create(formAndFields.__ValuePair);
+                            pair.set(_FormAndFields._ValuePair.name, setting.name);
+                            pair.set(_FormAndFields._ValuePair.value, setting.name);
+
+                            list.Add(pair);
+                        }
+
+                        foundExtentType.set(_FormAndFields._CheckboxListTaggingFieldData.values, list);
+                    }
+                }
+
+
+                // Gets the properties of the extent themselves
+                var uri = 
+                    WorkspaceNames.UriExtentWorkspaces + "#" +
+                    WebUtility.UrlEncode(((IUriExtent) mofExtent).contextURI());
+                var foundItem = workspaceLogic.FindItem(uri);
+
+                var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
+                {
+                    Form = new FormDefinition(resolvedForm),
+                    AttachedElement = foundItem,
+                    Title = "Edit Extent Properties"
+                };
+                
                 return await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
-                    mofExtent.GetMetaObject());
+                    config);
             }
 
             return await NavigatorForItems.NavigateToElementDetailView(
@@ -95,7 +151,7 @@ namespace DatenMeister.WPF.Navigation
             INavigationHost window,
             string workspaceId)
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var form =
                 viewLogic.GetInternalFormExtent().element(ManagementViewDefinitions.IdNewXmiDetailForm)
                 ?? throw new InvalidOperationException(ManagementViewDefinitions.IdNewXmiDetailForm + " was not found");
@@ -105,7 +161,7 @@ namespace DatenMeister.WPF.Navigation
                 GiveMe.Scope.WorkspaceLogic,
                 workspaceId));
             
-            var navigateToItemConfig = new NavigateToItemConfig()
+            var navigateToItemConfig = new NavigateToItemConfig
             {
                 Form = formDefinition
             };
@@ -125,18 +181,19 @@ namespace DatenMeister.WPF.Navigation
                                 throw new InvalidOperationException("detailElement == null");
             if (result.Result == NavigationResult.Saved)
             {
-                var configuration = new XmiStorageConfiguration
+                var uri = detailElement.isSet("uri")
+                    ? detailElement.getOrDefault<string>("uri")
+                    : string.Empty;
+                
+                var configuration = new XmiStorageLoaderConfig(uri)
                 {
-                    extentUri = detailElement.isSet("uri")
-                        ? detailElement.getOrDefault<string>("uri")
-                        : string.Empty,
                     filePath = detailElement.isSet("filepath")
                         ? detailElement.getOrDefault<string>("filepath")
                         : string.Empty,
                     workspaceId = workspaceId
                 };
 
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 try
                 {
                     extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);

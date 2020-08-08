@@ -15,6 +15,8 @@ namespace DatenMeister.SourceGeneration.Console
 {
     class Program
     {
+        public const string R = "../../..";
+
         public static void Main(string[] args)
         {
             // First, creates
@@ -24,7 +26,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = "datenmeister:///DatenMeister/Types/FormAndFields",
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "FormAndFields",
                     Path = "./",
                     Namespace = "DatenMeister.Models.Forms",
@@ -36,7 +38,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = "datenmeister:///DatenMeister/Types/Excel",
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "ExcelModels",
                     Path = "./",
                     Namespace = "DatenMeister.Excel",
@@ -48,7 +50,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "ManagementProvider",
                     Path = "./",
                     Namespace = "DatenMeister.Provider.ManagementProviders.Model",
@@ -59,7 +61,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "FastViewFilters",
                     Path = "./",
                     Namespace = "DatenMeister.Models.FastViewFilter",
@@ -72,7 +74,7 @@ namespace DatenMeister.SourceGeneration.Console
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "DataViews",
                     Path = "./",
                     Namespace = "DatenMeister.Models.DataViews",
@@ -80,14 +82,14 @@ namespace DatenMeister.SourceGeneration.Console
                 });
 
             System.Console.WriteLine(" Done");
-            
-            
+
+
 
             System.Console.Write("Create Sourcecode for Reports...");
             SourceGenerator.GenerateSourceFor(
                 new SourceGeneratorOptions
                 {
-                    ExtentUrl = WorkspaceNames.UriInternalTypesExtent,
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "Reports",
                     Path = "./",
                     Namespace = "DatenMeister.Models.Reports",
@@ -97,45 +99,54 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.WriteLine(" Done");
 
 #if !DEBUG
-            File.Copy("../../primitivetypes.cs", "../../../DatenMeister/Core/Filler/primitivetypes.cs", true);
-            File.Copy("../../FillThePrimitiveTypes.cs", "../../../DatenMeister/Core/Filler/FillThePrimitiveTypes.cs", true);
-            File.Copy("../../mof.cs", "../../../DatenMeister/Core/Filler/mof.cs", true);
-            File.Copy("../../FillTheMOF.cs", "../../../DatenMeister/Core/Filler/FillTheMOF.cs", true);
-            File.Copy("../../uml.cs", "../../../DatenMeister/Core/Filler/uml.cs", true);
-            File.Copy("../../FillTheUML.cs", "../../../DatenMeister/Core/Filler/FillTheUML.cs", true);
+            File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Core/Filler/primitivetypes.cs", true);
+            File.Copy($"{R}/FillThePrimitiveTypes.cs", $"{R}/../DatenMeister/Core/Filler/FillThePrimitiveTypes.cs",
+                true);
+            File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister/Core/Filler/mof.cs", true);
+            File.Copy($"{R}/FillTheMOF.cs", $"{R}/../DatenMeister/Core/Filler/FillTheMOF.cs", true);
+            File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Core/Filler/uml.cs", true);
+            File.Copy($"{R}/FillTheUML.cs", $"{R}/../DatenMeister/Core/Filler/FillTheUML.cs", true);
 
-            File.Copy("./FormAndFields.filler.cs", "../../../DatenMeister/Models/Forms/FormAndFields.filler.cs", true);
-            File.Copy("./FormAndFields.class.cs", "../../../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
-            File.Copy("./FormAndFields.dotnet.cs", "../../../DatenMeister/Models/Forms/FormAndFields.dotnet.cs", true);
+            File.Copy($"./FormAndFields.filler.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.filler.cs",
+                true);
+            File.Copy($"./FormAndFields.class.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
+            File.Copy($"./FormAndFields.dotnet.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.dotnet.cs",
+                true);
 
-            File.Copy("./ExcelModels.filler.cs", "../../../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
-            File.Copy("./ExcelModels.class.cs", "../../../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
-            File.Copy("./ExcelModels.dotnet.cs", "../../../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
+            File.Copy($"./ExcelModels.filler.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
+            File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
+            File.Copy($"./ExcelModels.dotnet.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
 
-            File.Copy("./ManagementProvider.filler.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.filler.cs", true);
-            File.Copy("./ManagementProvider.class.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
-            File.Copy("./ManagementProvider.dotnet.cs", "../../../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
+            File.Copy($"./ManagementProvider.filler.cs",
+                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.filler.cs", true);
+            File.Copy($"./ManagementProvider.class.cs",
+                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
+            File.Copy($"./ManagementProvider.dotnet.cs",
+                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
 
-            File.Copy("./FastViewFilters.filler.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.filler.cs", true);
-            File.Copy("./FastViewFilters.class.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
-            File.Copy("./FastViewFilters.dotnet.cs", "../../../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
+            File.Copy($"./FastViewFilters.filler.cs",
+                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.filler.cs", true);
+            File.Copy($"./FastViewFilters.class.cs",
+                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
+            File.Copy($"./FastViewFilters.dotnet.cs",
+                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
 
-            File.Copy("./DataViews.filler.cs", "../../../DatenMeister/Models/DataViews/DataViews.filler.cs", true);
-            File.Copy("./DataViews.class.cs", "../../../DatenMeister/Models/DataViews/DataViews.class.cs", true);
-            File.Copy("./DataViews.dotnet.cs", "../../../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
+            File.Copy($"./DataViews.filler.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.filler.cs", true);
+            File.Copy($"./DataViews.class.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.class.cs", true);
+            File.Copy($"./DataViews.dotnet.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
 
-            File.Copy("./Reports.filler.cs", "../../../DatenMeister/Models/Reports/Reports.filler.cs", true);
-            File.Copy("./Reports.class.cs", "../../../DatenMeister/Models/Reports/Reports.class.cs", true);
-            File.Copy("./Reports.dotnet.cs", "../../../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
+            File.Copy($"./Reports.filler.cs", $"{R}/../DatenMeister/Models/Reports/Reports.filler.cs", true);
+            File.Copy($"./Reports.class.cs", $"{R}/../DatenMeister/Models/Reports/Reports.class.cs", true);
+            File.Copy($"./Reports.dotnet.cs", $"{R}/../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
 
 #endif
         }
 
         private static void CreateSourceForUmlAndMof()
         {
-            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriUmlExtent);
-            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriMofExtent);
-            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriPrimitiveTypesExtent);
+            var umlExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentUml);
+            var mofExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentMof);
+            var primitiveTypeExtent = new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentPrimitiveTypes);
 
             var loader = new SimpleLoader();
             loader.LoadFromFile(new MofFactory(umlExtent), umlExtent, "data/UML.xmi");
@@ -156,8 +167,8 @@ namespace DatenMeister.SourceGeneration.Console
             };
             extentCreator.Walk(umlExtent);
 
-            File.WriteAllText("../../uml.cs", generator.Result.ToString());
-            File.WriteAllText("../../FillTheUML.cs", extentCreator.Result.ToString());
+            File.WriteAllText($"{R}/uml.cs", generator.Result.ToString());
+            File.WriteAllText($"{R}/FillTheUML.cs", extentCreator.Result.ToString());
             System.Console.WriteLine("C# Code for UML written");
 
             // Generates tree for MOF
@@ -174,8 +185,8 @@ namespace DatenMeister.SourceGeneration.Console
 
             extentCreator.Walk(mofExtent);
 
-            File.WriteAllText("../../mof.cs", generator.Result.ToString());
-            File.WriteAllText("../../FillTheMOF.cs", extentCreator.Result.ToString());
+            File.WriteAllText($"{R}/mof.cs", generator.Result.ToString());
+            File.WriteAllText($"{R}/FillTheMOF.cs", extentCreator.Result.ToString());
             System.Console.WriteLine("C# Code for MOF written");
 
             // Generates tree for PrimitiveTypes
@@ -192,8 +203,8 @@ namespace DatenMeister.SourceGeneration.Console
 
             extentCreator.Walk(primitiveTypeExtent);
 
-            File.WriteAllText("../../primitivetypes.cs", generator.Result.ToString());
-            File.WriteAllText("../../FillThePrimitiveTypes.cs", extentCreator.Result.ToString());
+            File.WriteAllText($"{R}/primitivetypes.cs", generator.Result.ToString());
+            File.WriteAllText($"{R}/FillThePrimitiveTypes.cs", extentCreator.Result.ToString());
             System.Console.WriteLine("C# Code for PrimitiveTypes written");
         }
     }

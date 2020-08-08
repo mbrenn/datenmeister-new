@@ -62,6 +62,8 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             foreach (var element in value)
             {
+                if (element == null) continue;
+                
                 if (result == null)
                 {
                     result = add(element);
@@ -83,7 +85,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool remove(object value)
+        public bool remove(object? value)
         {
             if (value is MofObject valueAsObject)
             {
@@ -98,7 +100,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return false;
             }
 
-            if (value is MofObjectShadow shadow)
+            if (value is MofObjectShadow)
             {
                 //_extent.Provider.DeleteElement(shadow);
             }
@@ -145,8 +147,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                     $"An instance of a primitive type may not be added to the extent root elements: {value}");
             }
 
-            _extent.Provider.AddElement((IProviderObject) _extent.ConvertForSetting(value), index);
+            if (_extent.ConvertForSetting(value) is IProviderObject convertedElement)
+            {
+                _extent?.Provider.AddElement(convertedElement, index);
+            }
             
+
             UpdateContent();
             
             return true;

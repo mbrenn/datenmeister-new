@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -24,23 +24,28 @@ namespace DatenMeister.Modules.UserManagement
         /// <summary>
         /// Defines the default extent for the users
         /// </summary>
-        public const string ExtentUri = "datenmeister:///users";
+        public const string ExtentUri = "dm:///_internal/users";
 
-        private const string ExtentName = "DatenMeister.Users";
+        private const string ExtentTypeName = "DatenMeister.Users";
 
         private readonly LocalTypeSupport _localTypeSupport;
 
         private readonly ExtentCreator _extentCreator;
 
         private readonly IWorkspaceLogic _workspaceLogic;
+        
         private readonly IntegrationSettings _integrationSettings;
 
-        public UserLogic(LocalTypeSupport localTypeSupport, ExtentCreator extentCreator, IWorkspaceLogic workspaceLogic, IntegrationSettings integrationSettings)
+        public UserLogic(
+            LocalTypeSupport localTypeSupport,
+            ExtentCreator extentCreator,
+            IWorkspaceLogic workspaceLogic,
+            IScopeStorage scopeStorage)
         {
             _localTypeSupport = localTypeSupport;
             _extentCreator = extentCreator;
             _workspaceLogic = workspaceLogic;
-            _integrationSettings = integrationSettings;
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 
         /// <summary>
@@ -56,11 +61,15 @@ namespace DatenMeister.Modules.UserManagement
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
 
             var extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
-                WorkspaceNames.NameManagement,
+                WorkspaceNames.WorkspaceManagement,
                 ExtentUri,
-                ExtentName,
-                null,
+                ExtentTypeName,
+                "",
                 _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
+            if (extent == null)
+            {
+                throw new InvalidOperationException("Extent could not be created");
+            }
 
             if (!(extent.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement))
             {
@@ -82,17 +91,20 @@ namespace DatenMeister.Modules.UserManagement
         /// </summary>
         public void ClearDatabase()
         {
-            GetsUserDatabase().elements().clear();
+            GetUserDatabase().elements().clear();
         }
 
         public (string password, string salt) HashPassword(string password)
         {
-            var userDatabase = GetsUserDatabase();
+            var userDatabase = GetUserDatabase();
             var salt = RandomFunctions.GetRandomAlphanumericString(16);
             var settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
-            var settings = userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() as IElement;
 
-            Debug.Assert(settings != null, "settings != null");
+            if (!(userDatabase.elements().WhenMetaClassIs(settingsMetaClass).FirstOrDefault() is IElement settings))
+            {
+                throw new InvalidOperationException("UserManagementSettings is not found");
+            }
+            
             var globalSalt = settings.getOrDefault<string>(nameof(UserManagementSettings.salt));
 
             var totalPassword = salt + password + globalSalt;
@@ -100,9 +112,14 @@ namespace DatenMeister.Modules.UserManagement
             return (totalPassword, salt);
         }
 
-        private IUriExtent GetsUserDatabase()
+        private IUriExtent GetUserDatabase()
         {
-            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.NameManagement).FindExtent(ExtentName);
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)?.FindExtent(ExtentTypeName);
+            if (userDatabase == null)
+            {
+                throw new InvalidOperationException("User Database was not found");
+            }
+            
             return userDatabase;
         }
 

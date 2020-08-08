@@ -8,7 +8,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Stores the DateTime type
         /// </summary>
-        public static string DateTimeType = WorkspaceNames.UriInternalTypesExtent + "#PrimitiveTypes.DateTime";
+        public static string DateTimeType = WorkspaceNames.UriExtentInternalTypes + "#PrimitiveTypes.DateTime";
 
         public static string StringType = WorkspaceNames.StandardPrimitiveTypeNamespace + "#String";
 

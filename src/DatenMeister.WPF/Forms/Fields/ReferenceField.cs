@@ -65,6 +65,8 @@ namespace DatenMeister.WPF.Forms.Fields
         private Button? _removeButton;
         
         private Button? _selectButton;
+        private string? _workspace;
+        private string? _extent;
 
         public bool IsEnabled
         {
@@ -93,10 +95,14 @@ namespace DatenMeister.WPF.Forms.Fields
             var navigationHost = detailForm.NavigationHost;
             
             _isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isReadOnly)
+                || fieldFlags.IsReadOnly;
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
             _detailFormControl = detailForm;
             _element = element;
+            
+            _workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
+            _extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
 
             if (_name == null)
             {
@@ -109,10 +115,15 @@ namespace DatenMeister.WPF.Forms.Fields
             // Checks, whether the reference shall be included as an inline selection
             return _isInline
                 ? CreateInlineField(fieldData, fieldFlags)
-                : CreateSelectionField(element, navigationHost, fieldFlags, isReadOnly);
+                : CreateSelectionField(element, fieldData, navigationHost, fieldFlags, isReadOnly);
         }
 
-        private UIElement CreateSelectionField(IObject value, INavigationHost navigationHost, FieldParameter fieldFlags, bool isReadOnly)
+        private UIElement CreateSelectionField(
+            IObject value,
+            IElement fieldData,
+            INavigationHost navigationHost,
+            FieldParameter fieldFlags,
+            bool isReadOnly)
         {
             if (_name == null) throw new InvalidOperationException("_name == null");
             
@@ -133,6 +144,8 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 VerticalAlignment = VerticalAlignment.Center
             };
+            
+            _inputTextBox.MouseDown += TextBlockOnMouseDown;
 
             UpdateTextOfTextBlock(SelectedValue);
 
@@ -144,11 +157,30 @@ namespace DatenMeister.WPF.Forms.Fields
 
             _selectButton.Click += async (sender, args) =>
             {
-                // TODO: Select the one, of the currently referenced field
+                var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+
+                var (foundWorkspace, foundExtent) = workspaceLogic.TryGetWorkspaceAndExtent(
+                    _workspace,
+                    _extent);
+
+
+                var configuration =
+                    new NavigatorForDialogs.NavigatorForDialogConfiguration
+                    {
+                        DefaultWorkspace = foundWorkspace,
+                        DefaultExtent = foundExtent
+                    };
+                
+                var filterMetaClasses =
+                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+                if (filterMetaClasses != null)
+                {
+                    configuration.FilteredMetaClasses = filterMetaClasses.OfType<IElement>().ToList();
+                }
+                
                 var selectedItem = await NavigatorForDialogs.Locate(
                     navigationHost,
-                    null /* workspace */,
-                    (value as IHasExtent)?.Extent);
+                    configuration);
 
                 if (selectedItem != null)
                 {
@@ -214,26 +246,21 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                var workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
-                var extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
-
-                if (!string.IsNullOrEmpty(workspace) && !string.IsNullOrEmpty(extent))
+                if (!string.IsNullOrEmpty(_workspace) && !string.IsNullOrEmpty(_extent))
                 {
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                    workspaceLogic.RetrieveWorkspaceAndExtent(
-                        workspace,
-                        extent,
-                        out var foundWorkspace,
-                        out var foundExtent);
+                    var (foundWorkspace, foundExtent) = workspaceLogic.RetrieveWorkspaceAndExtent(
+                        _workspace,
+                        _extent);
                     if (foundWorkspace != null && foundExtent != null)
                     {
                         _control.Select(foundWorkspace, foundExtent);
                     }
                 }
-                else if (!string.IsNullOrEmpty(workspace))
+                else if (!string.IsNullOrEmpty(_workspace))
                 {
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                    var foundWorkspace = workspaceLogic.GetWorkspace(workspace);
+                    var foundWorkspace = workspaceLogic.GetWorkspace(_workspace);
                     if (foundWorkspace != null)
                     {
                         _control.Select((IWorkspace) foundWorkspace);
@@ -274,7 +301,6 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Updates the text of the text block. 
         /// </summary>
         /// <param name="value">The item which is used to set the textfield</param>
-        /// <param name="_inputTextBox">The textblock which shall be followed</param>
         /// <returns>true, if an item was given</returns>
         private void UpdateTextOfTextBlock(IObject? value)
         {
@@ -291,7 +317,6 @@ namespace DatenMeister.WPF.Forms.Fields
             _inputTextBox.Text = value.ToString();
             _inputTextBox.TextDecorations = TextDecorations.Underline;
             _inputTextBox.Cursor = Cursors.Hand;
-            _inputTextBox.MouseDown += TextBlockOnMouseDown;
         }
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)

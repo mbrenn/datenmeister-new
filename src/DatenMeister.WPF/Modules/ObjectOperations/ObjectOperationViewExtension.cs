@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,7 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
+using DatenMeister.WPF.Windows;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.ObjectOperations
@@ -25,16 +27,24 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             {
                 yield return new TreeViewItemCommandDefinition(
                     "Move...",
-                     async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x); }
-                    ) {CategoryName = "Item"};
+                    async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x); }
+                ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                     "Copy...",
-                    async (x) => {await CopyItem(viewExtensionInfo.NavigationHost, x); }
+                    async (x) => { await CopyItem(viewExtensionInfo.NavigationHost, x); }
                 ) {CategoryName = "Item"};
-                
+
                 yield return new TreeViewItemCommandDefinition(
-                    "Delete...", (x) => {DeleteItem(viewExtensionInfo.NavigationHost, x); }
+                        "Edit...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x); }
+                    ) {CategoryName = "Item"};
+
+                yield return new TreeViewItemCommandDefinition(
+                    "Delete...", (x) => { DeleteItem(x); }
+                ) {CategoryName = "Item"};
+
+                yield return new TreeViewItemCommandDefinition(
+                    "Copy as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x); }
                 ) {CategoryName = "Item"};
             }
         }
@@ -49,8 +59,11 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             var extent = o.GetExtentOf();
             var found = await NavigatorForDialogs.Locate(
                 navigationHost,
-                extent?.GetWorkspace(),
-                extent);
+                new NavigatorForDialogs.NavigatorForDialogConfiguration
+                {
+                    DefaultWorkspace = extent?.GetWorkspace(),
+                    DefaultExtent = extent
+                });
 
             if (found == null)
             {
@@ -72,8 +85,11 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             var extent = o.GetExtentOf();
             var found = await NavigatorForDialogs.Locate(
                 navigationHost,
-                extent?.GetWorkspace(),
-                extent);
+                new NavigatorForDialogs.NavigatorForDialogConfiguration
+                {
+                    DefaultWorkspace = extent?.GetWorkspace(),
+                    DefaultExtent = extent
+                });
 
             if (found == null)
             {
@@ -86,7 +102,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
         }
 
-        private void DeleteItem(INavigationHost navigationHost, IObject? o)
+        private void DeleteItem(IObject? o)
         {
             if (o == null)
             {
@@ -102,15 +118,56 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             {
             
                 var extent = o.GetExtentOf();
-                var hints = GiveMe.Scope.Resolve<DefaultClassifierHints>();
                 var container = (o as IElement)?.container();
 
                 if (container != null || extent != null)
                 {
-                    hints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
+                    DefaultClassifierHints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
                 }
 
             }
+        }
+
+        private async void EditItem(INavigationHost navigationHost, IObject? o)
+        {
+            if (o == null)
+            {
+                return;
+            }
+
+            try
+            {
+                await NavigatorForItems.NavigateToElementDetailView(navigationHost, o);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void CopyAsXmi(INavigationHost navigationHost, IObject? o)
+        {
+            if (o == null)
+            {
+                return;
+            }
+
+            var itemDialog = new ItemXmlViewWindow
+            {
+                IgnoreIDs = true,
+                Owner = navigationHost.GetWindow(),
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+
+            itemDialog.UpdateContent(o);
+            itemDialog.Show();
+            itemDialog.CopyToClipboard();
+            MessageBox.Show(
+                itemDialog,
+                "Content copied to clipboard",
+                "Done",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
     }
 }

@@ -55,7 +55,7 @@ namespace DatenMeister.Tests.Mof.Core
         {
             var provider = new InMemoryProvider();
             var otherMofElement = InMemoryObject.CreateEmpty();
-            var mofInstance = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
+            var mofInstance = new MofUriExtent(new InMemoryProvider(), "dm:///test");
             var mofElement = new MofElement(new InMemoryObject(provider), mofInstance);
             mofInstance.elements().add(mofElement);
             mofInstance.elements().add(otherMofElement);
@@ -79,7 +79,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestProxyForUriExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
             var proxiedUriExtent = new ProxyUriExtent(uriExtent).ActivateObjectConversion();
 
             var mofElement = InMemoryObject.CreateEmpty();
@@ -110,7 +110,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestKnowsExtent()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
             var factory = new MofFactory(uriExtent);
 
             var mofElement = factory.create(null);
@@ -158,7 +158,7 @@ namespace DatenMeister.Tests.Mof.Core
         [Test]
         public void TestSetDotNet()
         {
-            var uriExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///test");
+            var uriExtent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
             var factory = new MofFactory(uriExtent);
 
             var mofElement = factory.create(null);

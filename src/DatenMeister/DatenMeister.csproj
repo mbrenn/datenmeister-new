@@ -7,7 +7,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
     <Configurations>Debug;Release;ViewLogicAdditional</Configurations>
-    <Nullable>annotations</Nullable>
+    <Nullable>enable</Nullable>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
@@ -18,24 +18,24 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Integration\Modules\**" />
-    <EmbeddedResource Remove="Integration\Modules\**" />
-    <None Remove="Integration\Modules\**" />
+    <EmbeddedResource Include="Modules\HtmlReporter\Css\default_report.css" />
+    <EmbeddedResource Include="XmiFiles\Default.xmi" />
+    <EmbeddedResource Include="XmiFiles\Internal.xmi" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="XmiFiles\Modules\AttachedExtent.xmi" />
+    <EmbeddedResource Include="XmiFiles\Modules\Reports.xmi" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\ImportExtentManager.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\Formmanager.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\WorkspacesAndExtents.xmi" />
-    <EmbeddedResource Include="XmiFiles\Views\UML.xmi" />
+    <EmbeddedResource Include="XmiFiles\Forms\UML.xmi" />
+    <EmbeddedResource Include="XmiFiles\Forms\DatenMeister.xmi" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.1" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Scriban" Version="2.1.2" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>

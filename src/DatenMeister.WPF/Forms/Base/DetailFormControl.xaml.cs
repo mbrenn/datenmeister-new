@@ -18,7 +18,6 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Modules.UserInteractions;
 using DatenMeister.Modules.Validators;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -26,6 +25,7 @@ using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Fields;
+using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
@@ -64,6 +64,11 @@ namespace DatenMeister.WPF.Forms.Base
         private string? _internalTitle;
 
         private IObject? _effectiveForm;
+        
+        /// <summary>
+        /// Gets the form parameter for the detail form
+        /// </summary>
+        public FormParameter? FormParameter { get; private set; }
 
         public DetailFormControl()
         {
@@ -96,7 +101,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _effectiveForm = value;
 #if DEBUG
-                if (value != null && !new FormMethods().ValidateForm(value)) 
+                if (value != null && !FormMethods.ValidateForm(value)) 
                     throw new InvalidOperationException("The form did not pass validation");
 #endif
             }
@@ -282,10 +287,17 @@ namespace DatenMeister.WPF.Forms.Base
 
                 dlg.UpdateButtonPressed += (x, y) =>
                 {
-                    var temporaryExtent = InMemoryProvider.TemporaryExtent;
-                    var factory = new MofFactory(temporaryExtent);
+                    if (EffectiveForm == null)
+                    {
+                        MessageBox.Show("No detail item is linked to the current view, so updating is not possible.");
+                        return;
+                    }
+                    
+                    var factory = new MofFactory(EffectiveForm);
                     EffectiveForm = dlg.GetCurrentContentAsMof(factory);
-                    UpdateView();
+                    UpdateForm();
+                    
+                    dlg.Close();
                 };
 
                 dlg.ShowDialog();
@@ -311,7 +323,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var pasteContent = new PasteToClipboardCommand(element);
                 pasteContent.Execute();
-                UpdateView();
+                UpdateForm();
             }
 
             void ShowAsXmi(IObject element)
@@ -329,7 +341,7 @@ namespace DatenMeister.WPF.Forms.Base
                     return;
                 }
                 
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 var target = viewLogic.GetUserFormExtent();
                 var copier = new ObjectCopier(new MofFactory(target));
 
@@ -365,24 +377,25 @@ namespace DatenMeister.WPF.Forms.Base
             OnViewDefined();
         }
 
-        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection? collection = null)
+        public void SetContent(IObject value, IObject detailForm, IReflectiveCollection? collection = null, FormParameter? formParameter = null)
         {
             DetailElement = value;
             EffectiveForm = detailForm;
             DetailElementContainer = collection;
-            UpdateView();
+            FormParameter = formParameter;
+            UpdateForm();
         }
 
         public void SetForm(IObject detailForm)
         {
             EffectiveForm = detailForm;
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
         ///     Updates the content
         /// </summary>
-        public void UpdateView()
+        public void UpdateForm()
         {
             var stopWatch = Stopwatch.StartNew();
             
@@ -420,20 +433,32 @@ namespace DatenMeister.WPF.Forms.Base
             if (fields == null) throw new ArgumentNullException(nameof(fields));
             if (DetailElement == null) throw new InvalidOperationException("DetailElement == null");
 
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true
+                                 || FormParameter?.IsReadOnly == true;
+
             var anyFocused = false;
             foreach (var field in fields.Cast<IElement>())
             {
-                var flags = new FieldParameter();
+                var flags = new FieldParameter {IsReadOnly = isFormReadOnly};
+                var isAttached = field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true;
 
+                var usedElement = isAttached ? AttachedElement : DetailElement;
+                if (usedElement == null) continue;
+                
                 var (detailElement, contentBlock) =
-                    FieldFactory.GetUIElementFor(DetailElement, field, this, flags);
+                    FieldFactory.GetUIElementFor(
+                        usedElement,
+                        field, 
+                        this,
+                        flags);
 
                 if (contentBlock != null)
                 {
                     if (!flags.IsSpanned)
                     {
                         var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
-                        var isReadOnly = field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+                        var isReadOnly = 
+                            field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly) || isFormReadOnly;
 
                         // Sets the title block
                         var titleBlock = new TextBlock
@@ -493,12 +518,15 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Creates additional rows for buttons with additional actions
-            var interactionHandlers = GiveMe.Scope.Resolve<IEnumerable<IElementInteractionsHandler>>();
+            var scope = GiveMe.Scope;
+            var interactionHandlers = 
+                scope.ScopeStorage.Get<UserInteractionState>().ElementInteractionHandler;
             foreach (var handler in interactionHandlers
                 .SelectMany(x => x.GetInteractions(DetailElement)))
             {
                 var button = new Button {Content = handler.Name};
-                button.Click += (x, y) => handler.Execute(DetailElement, null);
+                button.Click += (x, y) 
+                    => handler.Execute(this, DetailElement, null);
                 buttons.Add(button);
             }
 
@@ -518,7 +546,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="keyText">Text to be added</param>
         /// <param name="valueText">Value to be added</param>
         /// <param name="selectable">True, if the user can copy the content to the clipboard.</param>
-        public void CreateRowForField(string keyText, string valueText, bool selectable = false)
+        public TextBlock CreateRowForField(string keyText, string valueText, bool selectable = false)
         {
             var valueTextBlock = new TextBlock {Text = valueText};
 
@@ -534,6 +562,8 @@ namespace DatenMeister.WPF.Forms.Base
             CreateRowForField(
                 new TextBlock {Text = keyText},
                 valueTextBlock);
+
+            return valueTextBlock;
         }
 
         /// <summary>
@@ -689,8 +719,7 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var validator in ElementValidators)
             {
                 ValidatorResult? result = validator.ValidateElement(inMemory);
-
-
+                
                 while (result != null)
                 {
                     switch (result.State)

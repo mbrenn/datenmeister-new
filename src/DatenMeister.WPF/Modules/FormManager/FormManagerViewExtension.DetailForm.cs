@@ -70,6 +70,13 @@ namespace DatenMeister.WPF.Modules.FormManager
                 ClearAssociation,
                 null,
                 NavigationCategories.Form+".Current");
+            
+
+            yield return new ApplicationMenuButtonDefinition(
+                "Autogenerate form",
+                detailWindow.ForceAutoGenerationOfForm,
+                string.Empty,
+                NavigationCategories.Form + ".Current");
 
 
             // The currently selected element is a form
@@ -89,12 +96,12 @@ namespace DatenMeister.WPF.Modules.FormManager
                     NavigationCategories.Form + ".Form Manager");
             }
 
-            void ChangeFormDefinition()
+            async void ChangeFormDefinition()
             {
-                if (!(NavigatorForDialogs.Locate(
+                if (!(await NavigatorForDialogs.Locate(
                     detailWindow,
-                    WorkspaceNames.NameManagement,
-                    WorkspaceNames.UriUserFormExtent) is IElement form))
+                    WorkspaceNames.WorkspaceManagement,
+                    WorkspaceNames.UriExtentUserForm) is IElement form))
                 {
                     detailWindow.ClearOverridingForm();
                 }
@@ -120,7 +127,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     return;
                 }
 
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 if (viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass))
                 {
                     MessageBox.Show("View Association deleted");
@@ -158,7 +165,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     return;
                 }
 
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 var userViewExtent = viewLogic.GetUserFormExtent();
                 var factory = new MofFactory(userViewExtent);
 
@@ -173,15 +180,15 @@ namespace DatenMeister.WPF.Modules.FormManager
                 MessageBox.Show("View Association created");
             }
 
-            void CreateFieldByProperty()
+            async void CreateFieldByProperty()
             {
                 var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 
-                if (NavigatorForDialogs.Locate(
+                if (await NavigatorForDialogs.Locate(
                     navigationHost,
-                    WorkspaceNames.NameTypes,
-                    WorkspaceNames.UriUserTypesExtent) is IElement locatedItem)
+                    WorkspaceNames.WorkspaceTypes,
+                    WorkspaceNames.UriExtentUserTypes) is IElement locatedItem)
                 {
                     var formCreator = GiveMe.Scope.Resolve<FormCreator>();
                     formCreator.AddToFormByUmlElement(
@@ -195,7 +202,6 @@ namespace DatenMeister.WPF.Modules.FormManager
             {
                 var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
-                var defaultTypeClassifierHints = new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic);
                 var extent = (detailAsElement as IHasExtent)?.Extent;
                 if (extent == null)
                     throw new InvalidOperationException("extent == null");
@@ -205,18 +211,27 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 var factory = new MofFactory(extent);
                 var container = detailAsElement.container();
-                var isPackage = container != null && defaultTypeClassifierHints.IsPackageLike(container);
+                var isPackage = container != null && DefaultClassifierHints.IsPackageLike(container);
 
                 var formAssociation = factory.create(formAndFields.__FormAssociation);
 
-                defaultTypeClassifierHints.AddToExtentOrElement(
+                DefaultClassifierHints.AddToExtentOrElement(
                     isPackage && container != null ? container : (IObject) extent,
                     formAssociation);
                 
                 formAssociation.set(
                     _FormAndFields._FormAssociation.name, 
                     "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
-                formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
+
+                var formMetaClass = detailAsElement.metaclass;
+                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, formAndFields.__DetailForm);
+                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, formAndFields.__ExtentForm);
+                var formType = 
+                    isExtentForm ? FormType.TreeItemDetail :
+                    isDetailForm ? FormType.Detail :
+                    FormType.TreeItemExtent;
+
+                formAssociation.set(_FormAndFields._FormAssociation.formType, formType);
                 formAssociation.set(_FormAndFields._FormAssociation.form, detailAsElement);
 
                 await NavigatorForItems.NavigateToElementDetailView(navigationHost, formAssociation);

@@ -39,7 +39,6 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView
         /// <summary>
         /// Defines whether the Tree View item is valid for the selected item
         /// </summary>
-        /// <param name="element">Element which is selected or null, if no element is selected</param>
         /// <returns>true, if the item shall be shown</returns>
         public Func<IObject?, bool>? FilterFunction { get; set; }
 

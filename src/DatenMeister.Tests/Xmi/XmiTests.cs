@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.Standards;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml;
@@ -26,7 +27,7 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void LoadUmlInfrastructure()
         {
-            var extent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///target");
+            var extent = new MofUriExtent(new InMemoryProvider(), "dm:///target");
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var factory = new MofFactory(extent);
             Assert.That(extent.elements().Count(), Is.EqualTo(0));
@@ -41,9 +42,7 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestBootstrap()
         {
-            _MOF mof;
-            _UML uml;
-            CreateUmlAndMofInstance(out mof, out uml);
+            CreateUmlAndMofInstance(out _, out _);
         }
 
         [Test]
@@ -65,7 +64,7 @@ namespace DatenMeister.Tests.Xmi
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             var data = WorkspaceLogic.InitDefault();
-            var dataLayerLogic = new WorkspaceLogic(data);
+            var dataLayerLogic = WorkspaceLogic.Create(data);
 
             var strapper = Bootstrapper.PerformFullBootstrap(dataLayerLogic,
                 data.Uml,
@@ -137,7 +136,7 @@ namespace DatenMeister.Tests.Xmi
 
             var firstElement = generalizedElements.ElementAtOrDefault(0) as IElement;
             Assert.That(firstElement,Is.Not.Null);
-            var generalContent = firstElement.get(generalProperty);
+            var generalContent = firstElement.getOrDefault<IElement>(generalProperty);
             Assert.That(generalContent,Is.InstanceOf<IElement>());
             Assert.That(generalContent,Is.EqualTo(uml.CommonStructure.__PackageableElement));
         }
@@ -150,7 +149,7 @@ namespace DatenMeister.Tests.Xmi
         public static Bootstrapper CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
         {
             var data = WorkspaceLogic.InitDefault();
-            var dataLayerLogic = new WorkspaceLogic(data);
+            var dataLayerLogic =  WorkspaceLogic.Create(data);
             var strapper = Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
                 data.Mof,
@@ -174,7 +173,7 @@ namespace DatenMeister.Tests.Xmi
         private static _UML GetFilledUml()
         {
             var data = WorkspaceLogic.InitDefault();
-            var dataLayerLogic = new WorkspaceLogic(data);
+            var dataLayerLogic = WorkspaceLogic.Create(data);
             Bootstrapper.PerformFullBootstrap(
                 dataLayerLogic,
                 data.Mof,

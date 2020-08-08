@@ -175,3 +175,7 @@ project.lock.json
 /modules/DatenMeister.Icons
 src/.idea/*
 /docs/.compile/*
+/deliverables/*
+/src/tests/ScriptTests/tmp/*
+/src/tests/ScriptTests/tmp2/*
+/scripts/cscript/tmp/*

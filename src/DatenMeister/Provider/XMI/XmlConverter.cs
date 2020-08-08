@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.Standards;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Provider.XMI
@@ -21,6 +22,11 @@ namespace DatenMeister.Provider.XMI
         /// </summary>
         public bool SkipIds { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the xml form shall contain relative paths
+        /// </summary>
+        public bool RelativePaths { get; set; }
+
         public XmlConverter()
         {
             _extent = new MofExtent(
@@ -34,16 +40,26 @@ namespace DatenMeister.Provider.XMI
         /// <returns>Converted element to be shown</returns>
         public XElement ConvertToXml(IObject element)
         {
+            var copyOptions = new CopyOption {CloneAllReferences = false, CopyId = true};
+            var extentName = (element as IElement)?.GetUriExtentOf()?.contextURI() ??
+                             string.Empty;
             var copier = new ObjectCopier(new MofFactory(_extent));
 
-            var result = (MofElement) copier.Copy(element);
+            var result = (MofElement) copier.Copy(element, copyOptions); // Copies the element
             var xmlNode = ((XmiProviderObject) result.ProviderObject).XmlNode;
+
             if (SkipIds)
             {
                 foreach (var node in xmlNode.DescendantNodesAndSelf().OfType<XElement>())
                 {
                     node.Attribute(XmiId.IdAttributeName)?.Remove();
                 }
+            }
+
+            if (RelativePaths && extentName != string.Empty)
+            {
+                // Go through all nodes and converts the given paths to relative paths
+                RemoveAbsolutePathsOfExtent(xmlNode, extentName);
             }
 
             return xmlNode;
@@ -56,13 +72,16 @@ namespace DatenMeister.Provider.XMI
         /// <returns>Converted element to be shown</returns>
         public XElement ConvertToXml(IEnumerable<object?> elements)
         {
-            var copyOptions = new CopyOption {CloneAllReferences = false};
+            var copyOptions = new CopyOption {CloneAllReferences = false, CopyId = true};
             var factory = new MofFactory(_extent);
             var copier = new ObjectCopier(factory);
             var rootItem = (MofObject) factory.create(null);
+            var elementsAsList = elements.ToList();
+            var extentName = elementsAsList.OfType<IElement>().FirstOrDefault()?.GetUriExtentOf()?.contextURI() ??
+                             string.Empty;
 
             var list =
-                elements.Cast<IElement>()
+                elementsAsList.Cast<IElement>()
                     .Select(element => copier.Copy(element, copyOptions))
                     .Cast<object>().ToList();
 
@@ -78,7 +97,31 @@ namespace DatenMeister.Provider.XMI
                 }
             }
 
+            if (RelativePaths && extentName != string.Empty)
+            {
+                // Go through all nodes and converts the given paths to relative paths
+                RemoveAbsolutePathsOfExtent(xmlNode, extentName);
+            }
+
             return xmlNode;
+        }
+
+        private void RemoveAbsolutePathsOfExtent(XElement xmlNode, string extentPath)
+        {
+            foreach (var node in xmlNode.DescendantNodesAndSelf().OfType<XElement>())
+            {
+                foreach ( var attribute in node.Attributes())
+                {
+                    if (attribute == null) continue;
+
+                    if ((attribute.Name.ToString() == "href" || attribute.Name.ToString().EndsWith("-ref")) &&
+                        attribute.Value.StartsWith(extentPath))
+                    {
+                        attribute.Value = attribute.Value.Substring(extentPath.Length);
+                    }
+                }
+            }
+
         }
 
         /// <summary>

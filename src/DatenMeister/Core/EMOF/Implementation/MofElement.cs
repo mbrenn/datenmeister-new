@@ -4,6 +4,7 @@ using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -16,7 +17,20 @@ namespace DatenMeister.Core.EMOF.Implementation
         public string? Id
         {
             get => ProviderObject.Id;
-            set => ProviderObject.Id = value;
+            set
+            {
+                if (Extent is MofUriExtent mofUriExtent && !string.IsNullOrEmpty(value))
+                {
+                    var foundValue = mofUriExtent.element($"#{value!}");
+                    if (foundValue != null && !foundValue.Equals(this))
+                    {
+                        throw new InvalidOperationException("The ID is already set within the extent.");
+                    }
+                    
+                }
+                
+                ProviderObject.Id = value;
+            }
         }
 
         /// <summary>
@@ -60,6 +74,49 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private IElement? _cachedMetaClass;
 
+        private bool IsSlimEvaluation =>
+            !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
+
+        public override bool isSet(string property)
+        {
+            if (!IsSlimEvaluation)
+            {
+                // Checks whether we have a derived property 
+                var metaClass = getMetaClass();
+
+                if (metaclass?.GetExtentOf() is MofExtent extent
+                    && metaClass != null
+                    && extent.DynamicFunctionManager?.HasDerivedProperty(metaClass, property) == true)
+                {
+                    return true;
+                }
+            }
+            
+            return base.isSet(property);
+        }
+
+        protected override (bool, object?) GetDynamicProperty(string property)
+        {
+            if (!IsSlimEvaluation)
+            {
+                var metaClass = getMetaClass();
+                var extent = metaclass?.GetExtentOf() as MofExtent;
+                if (extent == null)
+                {
+                    return (false, null);
+                }
+
+                if (metaClass != null && extent?.DynamicFunctionManager != null)
+                {
+                    return extent.DynamicFunctionManager.GetDerivedPropertyValue(this, metaClass, property);
+                }
+
+                return (false, null);
+            }
+
+            return (false, null);
+        }
+
         /// <inheritdoc />
         public IElement? getMetaClass()
         {
@@ -75,7 +132,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = (ReferencedExtent as IUriResolver)?.Resolve(uri, ResolveType.OnlyMetaClasses)
+            var result = (ReferencedExtent as IUriResolver)?.ResolveElement(uri, ResolveType.OnlyMetaClasses)
                          ?? new MofObjectShadow(uri);
 
             _cachedMetaClass = result;
@@ -95,9 +152,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Sets the container for the element
         /// </summary>
-        public IObject Container
+        public IObject? Container
         {
-            set => ProviderObject.SetContainer(((MofObject) value).ProviderObject);
+            set => ProviderObject.SetContainer(((MofObject?) value)?.ProviderObject);
         }
 
         /// <summary>
@@ -107,14 +164,21 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void SetMetaClass(IElement metaClass)
         {
             _cachedMetaClass = metaClass;
-            var mofElement = (MofElement) metaClass;
-            if (mofElement.Extent == null)
+            if (metaClass is MofElement mofElement)
             {
-                throw new InvalidOperationException("The given metaclass is not connected to an element");
+                if (mofElement.Extent == null)
+                {
+                    throw new InvalidOperationException("The given metaclass is not connected to an element");
+                }
+
+                ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(mofElement);
+
             }
-
-            ProviderObject.MetaclassUri = ((MofUriExtent) mofElement.Extent).uri(metaClass);
-
+            else
+            {
+                ProviderObject.MetaclassUri = metaClass.GetUri();
+            }
+            
             UpdateContent();
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -37,6 +36,7 @@ namespace DatenMeister.WPF.Forms.Fields
         private string _propertyName = string.Empty;
         private ItemListViewControl? _listViewControl;
         private bool _includeSpecializationsForDefaultTypes;
+        private FieldParameter? _fieldFlags;
 
         /// <summary>
         /// Creates the element
@@ -52,6 +52,7 @@ namespace DatenMeister.WPF.Forms.Fields
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
+            _fieldFlags = fieldFlags;
             _element = value;
             _fieldData = fieldData;
             _navigationHost = detailForm.NavigationHost;
@@ -89,7 +90,8 @@ namespace DatenMeister.WPF.Forms.Fields
 
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
             var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
-            var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly);
+            var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly)
+                || _fieldFlags?.IsReadOnly == true;
             _includeSpecializationsForDefaultTypes =
                 _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData
                     .includeSpecializationsForDefaultTypes);
@@ -109,10 +111,19 @@ namespace DatenMeister.WPF.Forms.Fields
             if (form == null)
             {
                 // otherwise, we have to automatically create a form
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                form = viewLogic.GetListFormForElementsProperty(_element, _propertyName) ??
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+                IElement? propertyType = null;
+                var property = ClassifierMethods.GetPropertyOfClassifier(_element, _propertyName);
+                if (property != null)
+                {
+                    propertyType = PropertyMethods.GetPropertyType(property);
+                }
+                
+                form = viewLogic.GetListFormForElementsProperty(_element, _propertyName, propertyType) ??
                        throw new InvalidOperationException("Form could not be created");
             }
+
+            IncludePropertiesTypeIntoDefaultTypes(form);
 
             var viewExtensions =
                 isReadOnly
@@ -137,7 +148,6 @@ namespace DatenMeister.WPF.Forms.Fields
             if (!isReadOnly)
             {
                 // CreateNewItemButton();
-
                 CreateManipulationButtons(valueOfElement);
             }
             
@@ -145,10 +155,51 @@ namespace DatenMeister.WPF.Forms.Fields
         }
 
         /// <summary>
+        /// Tries to figure out the default type of the property within the element
+        /// </summary>
+        /// <param name="form">Form to be evaluated</param>
+        private void IncludePropertiesTypeIntoDefaultTypes(IObject form)
+        {
+            var metaClass = (_element as IElement)?.getMetaClass();
+            if (metaClass == null)
+            {
+                // The metaclass is not found
+                return;
+            }
+
+            var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, _propertyName);
+            if (property == null)
+            {
+                // The property is not found
+                return;
+            }
+
+            var propertyType = PropertyMethods.GetPropertyType(property);
+            if (propertyType == null)
+            {
+                // The property type is not found
+                return;
+            }
+
+            var defaultTypes =
+                form.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+            if (defaultTypes == null || defaultTypes.Any(x => x != null && x.Equals(propertyType)))
+            {
+                // Already included
+                return;
+            }
+
+            var defaultType = MofFactory.CreateElementFor<_FormAndFields>(form, x=>x.__DefaultTypeForNewElement);
+            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, propertyType);
+            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
+            defaultTypes.add(defaultType);
+        }
+
+        /// <summary>
         /// Removes the item from the reflective collection and asks the user beforehand
         /// </summary>
         /// <param name="reflectiveCollection">Defines the reflective collection from which the item will be removed</param>
-        /// <param name="item">The item to be removed</param>
+        /// <param name="items">The items to be removed</param>
         private static void RemoveItem(IReflectiveCollection reflectiveCollection, IList<IObject> items)
         {
             var names = items.Select(NamedElementMethods.GetName).Join(", ");
@@ -263,7 +314,7 @@ namespace DatenMeister.WPF.Forms.Fields
             DockPanel.SetDock(createItemButton, Dock.Bottom);
             _panel.Children.Add(createItemButton);
         }
-        
+
         /// <summary>
         /// Sets the style and the interaction for a button to become a button which
         /// can create new elements
@@ -272,73 +323,77 @@ namespace DatenMeister.WPF.Forms.Fields
         private void SetNewButton(Button createItemButton)
         {
             var navigationHost = _navigationHost ??
-                throw new InvalidOperationException("_navigationHost == null");
+                                 throw new InvalidOperationException("_navigationHost == null");
             var panel = _panel ??
                         throw new InvalidOperationException("_panel == null");
             var element = _element ??
-                        throw new InvalidOperationException("_element == null");
-            
-            // Create the button for the items
-            var listItems = new List<Tuple<string, Action>>
-            {
-                new Tuple<string, Action>(
-                    "Select Type...",
-                    async () =>
-                    {
-                        var referencedExtent = (element as MofObject)?.ReferencedExtent;
-                        if (referencedExtent == null)
-                            throw new InvalidOperationException("referencedExtent == null");
-
-                        var result = await NavigatorForItems.NavigateToCreateNewItem(
-                            navigationHost,
-                            referencedExtent,
-                            null);
-                        
-                        if (result?.IsNewObjectCreated == true && result.NewObject != null)
-                        {
-                            var propertyCollection = element.getOrDefault<IReflectiveCollection>(_propertyName); 
-                            if (propertyCollection != null)
-                            {
-                                propertyCollection.add(result.NewObject);
-                            }
-                            else
-                            {
-                                element.set(_propertyName, new List<object> {result.NewObject});
-                            }
-
-                            panel.Children.Clear();
-                            CreatePanelElement();
-                        };
-                    })
-            };
-
-            var getAllSpecializations = _includeSpecializationsForDefaultTypes;
-            // Gets the buttons for specific types
-            if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
-                .defaultTypesForNewElements) is { } defaultTypesForNewItems)
-            {
-                IEnumerable<IElement> specializedTypes;
-
-                if (getAllSpecializations)
-                {
-                    specializedTypes =
-                        (from type in defaultTypesForNewItems.OfType<IElement>()
-                            from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                            select newSpecializationType).Distinct();
-                }
-                else
-                {
-                    specializedTypes = defaultTypesForNewItems.OfType<IElement>();
-                }
-
-                listItems.AddRange(
-                    from x in specializedTypes
-                    select CreateButtonForType(x));
-            }
+                          throw new InvalidOperationException("_element == null");
 
             // If user clicks on the button, an empty reflective collection is created
             createItemButton.Click += (x, y) =>
             {
+                // Creates the default button
+                var listItems = new List<Tuple<string, Action>>
+                {
+                    new Tuple<string, Action>(
+                        "Select Type...",
+                        async () =>
+                        {
+                            var referencedExtent = (element as MofObject)?.ReferencedExtent;
+                            if (referencedExtent == null)
+                                throw new InvalidOperationException("referencedExtent == null");
+
+                            var result = await NavigatorForItems.NavigateToCreateNewItem(
+                                navigationHost,
+                                referencedExtent,
+                                null);
+
+                            if (result?.IsNewObjectCreated == true && result.NewObject != null)
+                            {
+                                var propertyCollection = element.getOrDefault<IReflectiveCollection>(_propertyName);
+                                if (propertyCollection != null)
+                                {
+                                    propertyCollection.add(result.NewObject);
+                                }
+                                else
+                                {
+                                    element.set(_propertyName, new List<object> {result.NewObject});
+                                }
+
+                                panel.Children.Clear();
+                                CreatePanelElement();
+                            }
+                        })
+                };
+
+                // Creates the button for the specializations
+                var getAllSpecializations = _includeSpecializationsForDefaultTypes;
+                // Gets the buttons for specific types
+                if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
+                    .defaultTypesForNewElements) is { } defaultTypesForNewItems)
+                {
+                    IEnumerable<IElement> specializedTypes;
+
+                    if (getAllSpecializations)
+                    {
+                        specializedTypes =
+                            (from type in defaultTypesForNewItems.OfType<IElement>()
+                                from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                                select newSpecializationType).Distinct();
+                    }
+                    else
+                    {
+                        specializedTypes = defaultTypesForNewItems.OfType<IElement>();
+                    }
+
+                    listItems.AddRange(
+                        from btn in specializedTypes
+                        let button = CreateButtonForType(btn)
+                        orderby button.Item1
+                        select button
+                    );
+                }
+
                 var menu = new ContextMenu();
                 var menuItems = new List<MenuItem>();
 
@@ -357,7 +412,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 menu.IsOpen = true;
             };
         }
-        
+
 
         /// <summary>
         /// Creates a button for a certain type and add it to the panel
@@ -395,7 +450,7 @@ namespace DatenMeister.WPF.Forms.Fields
 
                         _panel.Children.Clear();
                         CreatePanelElement();
-                    };
+                    }
                 });
 
             return result;

@@ -11,23 +11,22 @@ namespace DatenMeister.Excel.Helper
         /// <summary>
         /// Gets or sets the settings to be used for the excel importer
         /// </summary>
-        public ExcelSettings Settings { get; set; }
+        public ExcelLoaderConfig LoaderConfig { get; set; }
 
         private SSDocument _excelDocument;
 
-        public ExcelImporter([NotNull] ExcelSettings settings)
+        public ExcelImporter([NotNull] ExcelLoaderConfig loaderConfig)
         {
-            Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            LoaderConfig = loaderConfig ?? throw new ArgumentNullException(nameof(loaderConfig));
         }
 
         /// <summary>
         /// Loads the excel into the given file path
         /// </summary>
-        /// <param name="filePath">The excel file to be loaded</param>
         public void LoadExcel()
         {
-            _excelDocument = SSDocument.LoadFromFile(Settings.filePath);
-            Settings.sheetName = _excelDocument.Tables.FirstOrDefault()?.Name;
+            _excelDocument = SSDocument.LoadFromFile(LoaderConfig.filePath);
+            LoaderConfig.sheetName = _excelDocument.Tables.FirstOrDefault()?.Name;
         }
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace DatenMeister.Excel.Helper
         {
             if (IsExcelLoaded)
             {
-                return GetSheet(Settings.sheetName);
+                return GetSheet(LoaderConfig.sheetName);
             }
 
             return null;
@@ -80,8 +79,8 @@ namespace DatenMeister.Excel.Helper
         {
             var foundSheet = GetSelectedSheet();
             return foundSheet?.GetCellContent(
-                row + Settings.offsetRow + (Settings.hasHeader ? 1 : 0),
-                column + Settings.offsetColumn);
+                row + LoaderConfig.offsetRow + (LoaderConfig.hasHeader ? 1 : 0),
+                column + LoaderConfig.offsetColumn);
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace DatenMeister.Excel.Helper
             // Get Header Rows
             var columnNames = new List<string>();
             var columnCount = GuessColumnCount();
-            if (!Settings.hasHeader)
+            if (!LoaderConfig.hasHeader)
             {
                 for (var c = 0; c < columnCount; c++)
                 {
@@ -107,7 +106,7 @@ namespace DatenMeister.Excel.Helper
             {
                 for (var c = 0; c < columnCount; c++)
                 {
-                    var columnName = selectedSheet.GetCellContent(Settings.offsetRow, c + Settings.offsetColumn);
+                    var columnName = selectedSheet.GetCellContent(LoaderConfig.offsetRow, c + LoaderConfig.offsetColumn);
                     if (string.IsNullOrEmpty(columnName) || columnNames.Contains(columnName))
                     {
                         columnNames.Add(null);
@@ -123,16 +122,16 @@ namespace DatenMeister.Excel.Helper
 
         public int GuessRowCount()
         {
-            var hasHeaderRows = Settings.hasHeader;
+            var hasHeaderRows = LoaderConfig.hasHeader;
             var foundSheet = GetSelectedSheet();
             if (foundSheet == null) return -1;
-            if (Settings.fixRowCount) return Settings.countRows;
+            if (LoaderConfig.fixRowCount) return LoaderConfig.countRows;
 
-            var offsetRow = hasHeaderRows ? Settings.offsetRow + 1 : Settings.offsetRow;
+            var offsetRow = hasHeaderRows ? LoaderConfig.offsetRow + 1 : LoaderConfig.offsetRow;
             var n = 0;
             while (true)
             {
-                var content = foundSheet.GetCellContent(offsetRow + n, Settings.offsetColumn);
+                var content = foundSheet.GetCellContent(offsetRow + n, LoaderConfig.offsetColumn);
                 if (string.IsNullOrEmpty(content))
                 {
                     break;
@@ -141,7 +140,7 @@ namespace DatenMeister.Excel.Helper
                 n++;
             }
 
-            Settings.countRows = n;
+            LoaderConfig.countRows = n;
             return n;
         }
 
@@ -153,13 +152,13 @@ namespace DatenMeister.Excel.Helper
             var foundSheet = GetSelectedSheet();
             if (foundSheet == null) return -1;
 
-            if (Settings.fixColumnCount) return Settings.countColumns;
+            if (LoaderConfig.fixColumnCount) return LoaderConfig.countColumns;
 
 
             var n = 0;
             while (true)
             {
-                var content = foundSheet.GetCellContent(Settings.offsetRow, Settings.offsetColumn + n);
+                var content = foundSheet.GetCellContent(LoaderConfig.offsetRow, LoaderConfig.offsetColumn + n);
                 if (string.IsNullOrEmpty(content))
                 {
                     break;
@@ -168,7 +167,7 @@ namespace DatenMeister.Excel.Helper
                 n++;
             }
 
-            Settings.countColumns = n;
+            LoaderConfig.countColumns = n;
             return n;
         }
     }

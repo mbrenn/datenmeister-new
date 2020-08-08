@@ -14,12 +14,12 @@ namespace DatenMeister.Models.FastViewFilter
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _FastViewFilters tree)
+        public void Fill(IEnumerable<object?> collection, _FastViewFilters tree)
         {
             FillTheFastViewFilters.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _FastViewFilters tree)
+        public static void DoFill(IEnumerable<object?> collection, _FastViewFilters tree)
         {
             string? name;
             IElement? value;

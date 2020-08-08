@@ -14,12 +14,12 @@ namespace DatenMeister.Models.Forms
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _FormAndFields tree)
+        public void Fill(IEnumerable<object?> collection, _FormAndFields tree)
         {
             FillTheFormAndFields.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _FormAndFields tree)
+        public static void DoFill(IEnumerable<object?> collection, _FormAndFields tree)
         {
             string? name;
             IElement? value;
@@ -68,6 +68,25 @@ namespace DatenMeister.Models.Forms
                                 if(name == "isReadOnly") // Looking for property
                                 {
                                     tree.FieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "SortingOrder") // Looking for class
+                        {
+                            tree.__SortingOrder = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "field") // Looking for property
+                                {
+                                    tree.SortingOrder._field = value;
+                                }
+                                if(name == "isDescending") // Looking for property
+                                {
+                                    tree.SortingOrder._isDescending = value;
                                 }
                             }
                         }
@@ -154,13 +173,13 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement;
                                 name = GetNameOfElement(value);
-                                if(name == "showDate") // Looking for property
+                                if(name == "hideDate") // Looking for property
                                 {
-                                    tree.DateTimeFieldData._showDate = value;
+                                    tree.DateTimeFieldData._hideDate = value;
                                 }
-                                if(name == "showTime") // Looking for property
+                                if(name == "hideTime") // Looking for property
                                 {
-                                    tree.DateTimeFieldData._showTime = value;
+                                    tree.DateTimeFieldData._hideTime = value;
                                 }
                                 if(name == "showOffsetButtons") // Looking for property
                                 {
@@ -217,6 +236,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.FormAssociation._extentType = value;
                                 }
+                                if(name == "viewModeId") // Looking for property
+                                {
+                                    tree.FormAssociation._viewModeId = value;
+                                }
                                 if(name == "parentMetaClass") // Looking for property
                                 {
                                     tree.FormAssociation._parentMetaClass = value;
@@ -243,6 +266,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "values") // Looking for property
                                 {
                                     tree.DropDownFieldData._values = value;
+                                }
+                                if(name == "valuesByEnumeration") // Looking for property
+                                {
+                                    tree.DropDownFieldData._valuesByEnumeration = value;
                                 }
                                 if(name == "isAttached") // Looking for property
                                 {
@@ -566,6 +593,131 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "FullNameFieldData") // Looking for class
+                        {
+                            tree.__FullNameFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.FullNameFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.FullNameFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.FullNameFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.FullNameFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.FullNameFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.FullNameFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "CheckboxListTaggingFieldData") // Looking for class
+                        {
+                            tree.__CheckboxListTaggingFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "values") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._values = value;
+                                }
+                                if(name == "separator") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._separator = value;
+                                }
+                                if(name == "containsFreeText") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._containsFreeText = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.CheckboxListTaggingFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
+                        if(name == "NumberFieldData") // Looking for class
+                        {
+                            tree.__NumberFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "format") // Looking for property
+                                {
+                                    tree.NumberFieldData._format = value;
+                                }
+                                if(name == "isInteger") // Looking for property
+                                {
+                                    tree.NumberFieldData._isInteger = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.NumberFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.NumberFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.NumberFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.NumberFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.NumberFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.NumberFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                         if(name == "Form") // Looking for class
                         {
                             tree.__Form = value;
@@ -582,6 +734,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "title") // Looking for property
                                 {
                                     tree.Form._title = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.Form._isReadOnly = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -630,6 +786,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.DetailForm._title = value;
                                 }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.DetailForm._isReadOnly = value;
+                                }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.DetailForm._hideMetaInformation = value;
@@ -652,6 +812,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "metaClass") // Looking for property
                                 {
                                     tree.ListForm._metaClass = value;
+                                }
+                                if(name == "includeDescendents") // Looking for property
+                                {
+                                    tree.ListForm._includeDescendents = value;
                                 }
                                 if(name == "noItemsWithMetaClass") // Looking for property
                                 {
@@ -677,6 +841,14 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._field = value;
                                 }
+                                if(name == "sortingOrder") // Looking for property
+                                {
+                                    tree.ListForm._sortingOrder = value;
+                                }
+                                if(name == "viewNode") // Looking for property
+                                {
+                                    tree.ListForm._viewNode = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ListForm._name = value;
@@ -684,6 +856,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "title") // Looking for property
                                 {
                                     tree.ListForm._title = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.ListForm._isReadOnly = value;
                                 }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
@@ -716,9 +892,36 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ExtentForm._title = value;
                                 }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.ExtentForm._isReadOnly = value;
+                                }
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.ExtentForm._hideMetaInformation = value;
+                                }
+                            }
+                        }
+                        if(name == "ViewMode") // Looking for class
+                        {
+                            tree.__ViewMode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ViewMode._name = value;
+                                }
+                                if(name == "id") // Looking for property
+                                {
+                                    tree.ViewMode._id = value;
+                                }
+                                if(name == "defaultExtentType") // Looking for property
+                                {
+                                    tree.ViewMode._defaultExtentType = value;
                                 }
                             }
                         }

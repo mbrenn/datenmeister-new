@@ -16,7 +16,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Goes through all loaded types and add the extentstorage mapping as configured by the ConfiguredBy attributes
         /// </summary>
         /// <param name="map"></param>
-        public static void LoadAllExtentStorageConfigurationsFromAssembly(this IConfigurationToExtentStorageMapper map)
+        public static void LoadAllExtentStorageConfigurationsFromAssembly(this ConfigurationToExtentStorageMapper map)
         {
             foreach (var type in
                 from pair
@@ -29,7 +29,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
-        public static void MapExtentLoaderType(this IConfigurationToExtentStorageMapper map, Type type)
+        public static void MapExtentLoaderType(this ConfigurationToExtentStorageMapper map, Type type)
         {
             foreach (
                 var customAttribute in type.GetTypeInfo().GetCustomAttributes(typeof(ConfiguredByAttribute), false))
@@ -37,7 +37,11 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (customAttribute is ConfiguredByAttribute configuredByAttribute)
                 {
                     map.AddMapping(configuredByAttribute.ConfigurationType,
-                        scope => (IProviderLoader) scope.Resolve(type));
+                        scope =>
+                        {
+                            if (scope == null) throw new ArgumentException(nameof(scope));
+                            return (IProviderLoader) scope.Resolve(type);
+                        });
 
                     Logger.Trace(
                         $"Extent loader '{configuredByAttribute.ConfigurationType.Name}' configures '{type.Name}'");

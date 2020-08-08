@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime.DynamicFunctions;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -23,6 +24,14 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="id">Id of the workspace</param>
         /// <returns>Found workspace or null, if not found</returns>
         Workspace? GetWorkspace(string id);
+        
+        /// <summary>
+        /// Gets the dynamic function manager for a certain workspace.
+        /// The workspace needs to be retrieved in which the types are hosted
+        /// </summary>
+        /// <param name="workspace">Workspace to be queried</param>
+        /// <returns>The dynamic function manager</returns>
+        DynamicFunctionManager GetDynamicFunctionManager(string workspace);
 
         /// <summary>
         /// Gets the workspaces of the workspace logic
@@ -50,6 +59,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// <returns>enumeration of extents within the datalayer</returns>
         IEnumerable<IUriExtent> GetExtentsForWorkspace(Workspace dataLayer);
 
+        /// <summary>
+        /// Gets the default workspace
+        /// </summary>
+        /// <returns>The default workspace or null, if not found. </returns>
         Workspace? GetDefaultWorkspace();
 
         /// <summary>

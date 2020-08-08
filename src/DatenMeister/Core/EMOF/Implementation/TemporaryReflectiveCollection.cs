@@ -8,25 +8,25 @@ namespace DatenMeister.Core.EMOF.Implementation
 {
     public class TemporaryReflectiveCollection : IReflectiveCollection
     {
-        protected IEnumerable<object> Values;
+        protected IEnumerable<object?> Values;
 
         /// <summary>
         /// Gets or sets a value whether the temporary collection is read-only and hinders adding new items
         /// </summary>
-        protected bool IsReadOnly { get; set; }
+        public bool IsReadOnly { get; set; }
 
         public TemporaryReflectiveCollection()
         {
-            Values = new List<object>();
+            Values = new List<object?>();
         }
 
-        public TemporaryReflectiveCollection(IEnumerable<object> values)
+        public TemporaryReflectiveCollection(IEnumerable<object?> values)
         {
             Values = values;
         }
 
         /// <inheritdoc />
-        public IEnumerator<object> GetEnumerator()
+        public IEnumerator<object?> GetEnumerator()
             => Values.GetEnumerator();
 
         /// <inheritdoc />
@@ -73,7 +73,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public virtual bool remove(object value)
+        public virtual bool remove(object? value)
         {
             CheckForReadOnly();
             throw new NotImplementedException();

@@ -3,7 +3,6 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -17,12 +16,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="uri"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static IUriExtent CreateAndAddXmiExtent(this IExtentManager extentManager, string uri, string filename)
+        public static IUriExtent? CreateAndAddXmiExtent(this ExtentManager extentManager, string uri, string filename)
         {
-            var xmiConfiguration = new XmiStorageConfiguration
+            var xmiConfiguration = new XmiStorageLoaderConfig(uri)
             {
-                extentUri = uri,
-                workspaceId = WorkspaceNames.NameData,
+                workspaceId = WorkspaceNames.WorkspaceData,
                 filePath = filename
             };
 
@@ -38,12 +36,12 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="loaderConfiguration">The loader configuration being used to load the extent</param>
         /// <param name="flags">The extent creation flags being used to load the extent</param>
         /// <returns>The found or loaded extent</returns>
-        public static IUriExtent LoadExtentIfNotAlreadyLoaded(
-            this IExtentManager extentManager,
+        public static IUriExtent? LoadExtentIfNotAlreadyLoaded(
+            this ExtentManager extentManager,
             ExtentLoaderConfig loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)
         {
-            var asExtentManager = extentManager as ExtentManager
+            var asExtentManager = extentManager
                                   ?? throw new InvalidOperationException("extentManager is not ExtentManager");
             var workspaceLogic = asExtentManager.WorkspaceLogic;
             var workspace = workspaceLogic.GetWorkspace(loaderConfiguration.workspaceId);
@@ -61,7 +59,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUri">Uri of the extent</param>
         /// <returns>true, if successfully deleted</returns>
-        public static bool DeleteExtent(this IExtentManager manager, string workspaceId, string extentUri)
+        public static bool DeleteExtent(this ExtentManager manager, string workspaceId, string extentUri)
         {
             var found = manager.WorkspaceLogic.FindExtent(workspaceId, extentUri);
             if (found != null)

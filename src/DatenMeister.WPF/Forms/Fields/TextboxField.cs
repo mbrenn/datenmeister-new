@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using BurnSystems;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
@@ -25,14 +28,27 @@ namespace DatenMeister.WPF.Forms.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
             
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+                || fieldFlags.IsReadOnly;
             var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
             var height = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.lineHeight);
+            var isEnumeration = fieldData.getOrDefault<bool>(_FormAndFields._TextFieldData.isEnumeration);
 
             _valueText = string.Empty;
             if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
             {
-                _valueText = value.getOrDefault<string>(_name) ?? string.Empty;
+                if (isEnumeration && isReadOnly)
+                {
+                    _valueText = value.getOrDefault<IReflectiveSequence>(_name)
+                        .ToList()
+                        .Select(x=> x?.ToString() ?? string.Empty)
+                        .Where (x=> !string.IsNullOrEmpty(x))
+                        .Join("\r\n");
+                }
+                else
+                {
+                    _valueText = value.getOrDefault<string>(_name) ?? string.Empty;
+                }
             }
             else
             {
@@ -61,8 +77,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 _contentBlock = new TextBox
                 {
                     Text = _valueText,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    HorizontalContentAlignment = HorizontalAlignment.Stretch
+                    HorizontalAlignment = HorizontalAlignment.Stretch
                 };
 
                 if (width > 0)
@@ -81,7 +96,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     _contentBlock.Height = 10 * height;
                     _contentBlock.VerticalAlignment = VerticalAlignment.Top;
                     _contentBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                    _contentBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    _contentBlock.TextWrapping = TextWrapping.Wrap;
+                    _contentBlock.AcceptsReturn = true;
                 }
 
                 fieldFlags.CanBeFocused = true;

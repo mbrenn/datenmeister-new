@@ -4,10 +4,10 @@
     {
         void add(int index, object value);
 
-        object get(int index);
+        object? get(int index);
 
         void remove(int index);
 
-        object set(int index, object value);
+        object? set(int index, object value);
     }
 }

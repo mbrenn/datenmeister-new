@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
+using DatenMeister.Runtime.DynamicFunctions;
 
 // ReSharper disable InconsistentNaming
 
@@ -37,6 +38,11 @@ namespace DatenMeister.Runtime.Workspaces
         /// Adds plugins which allow additional extents to an extent
         /// </summary>
         public List<IEnumerable<IExtent>> ExtentPlugins = new List<IEnumerable<IExtent>>();
+        
+        /// <summary>
+        /// Stores the dynamic function managers
+        /// </summary>
+        public DynamicFunctionManager DynamicFunctionManager { get; } = new DynamicFunctionManager();
 
         /// <summary>
         /// Adds a meta workspace
@@ -67,15 +73,21 @@ namespace DatenMeister.Runtime.Workspaces
         {
             get
             {
-                foreach (var localExtent in _extent)
+                var result = new List<IExtent>();
+                lock (_syncObject)
                 {
-                    yield return localExtent;
+                    foreach (var localExtent in _extent)
+                    {
+                        result.Add(localExtent);
+                    }
+
+                    foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
+                    {
+                        result.Add(pluginExtent);
+                    }
                 }
 
-                foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
-                {
-                    yield return pluginExtent;
-                }
+                return result;
             }
         }
 
@@ -247,7 +259,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// </summary>
         /// <typeparam name="TFilledType">Property to be queried</typeparam>
         /// <returns>The property being queried</returns>
-        public TFilledType GetFromMetaWorkspace<TFilledType>(
+        public TFilledType? GetFromMetaWorkspace<TFilledType>(
             MetaRecursive metaRecursive = MetaRecursive.JustOne)
             where TFilledType : class, new()
         {
@@ -282,7 +294,7 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
 
-            return null;
+            return default;
         }
 
         public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
@@ -327,23 +339,30 @@ namespace DatenMeister.Runtime.Workspaces
             throw new NotImplementedException();
         }
 
-        public IElement Resolve(string uri, ResolveType resolveType, bool traceFailing)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing)
         {
-            var result = _extent
-                .Select(theExtent =>
-                    (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
-                .FirstOrDefault(found => found != null);
-            if (result == null && traceFailing)
+            lock (_syncObject)
             {
-                Logger.Trace($"URI not resolved: {uri}");
+                var result = _extent
+                    .Select(theExtent =>
+                        (theExtent as IUriResolver)?.Resolve(uri, resolveType | ResolveType.NoWorkspace, false))
+                    .FirstOrDefault(found => found != null);
+                if (result == null && traceFailing)
+                {
+                    Logger.Trace($"URI not resolved: {uri}");
+                }
+                
+                return result;
             }
-
-            return result;
         }
 
-        public IElement ResolveById(string elementId)
+        public IElement? ResolveById(string elementId)
         {
-            return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId)).FirstOrDefault(found => found != null);
+            lock (_syncObject)
+            {
+                return _extent.Select(theExtent => (theExtent as IUriResolver)?.ResolveById(elementId))
+                    .FirstOrDefault(found => found != null);
+            }
         }
     }
 }

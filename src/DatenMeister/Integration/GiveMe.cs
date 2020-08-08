@@ -30,6 +30,14 @@ namespace DatenMeister.Integration
         public static IDatenMeisterScope? TryGetScope() => _scope;
 
         /// <summary>
+        /// Clears the scope
+        /// </summary>
+        public static void ClearScope()
+        {
+            _scope = null;
+        }
+
+        /// <summary>
         /// Return the DatenMeisterScope asynchronisously as a task.
         /// </summary>
         /// <param name="settings">Settings to be used</param>
@@ -47,17 +55,23 @@ namespace DatenMeister.Integration
             settings ??= new IntegrationSettings
             {
                 EstablishDataEnvironment = true,
-                DatabasePath = DefaultDatabasePath
+                DatabasePath = DefaultDatabasePath,
+                IsLockingActivated = true
             };
-            
 
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);
 
-            Scope = new DatenMeisterScope(container.BeginLifetimeScope());
+            var scope = new DatenMeisterScope(container.BeginLifetimeScope());
+            scope.ScopeStorage = scope.Resolve<ScopeStorage>();
+
+            Scope = scope;
 
             Scope.BeforeDisposing += (x, y) =>
+            {
                 Scope.UnuseDatenMeister();
+                _scope = null; // Set to null to avoid wrong use of scope
+            };
 
             return Scope;
         }

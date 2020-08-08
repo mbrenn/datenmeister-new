@@ -33,6 +33,12 @@ namespace DatenMeister.Runtime.Functions.Queries
                 property,
                 x => x?.StartsWith(value) == true);
         }
+        
+
+        public static IReflectiveCollection WhenElementIsObject(
+            this IReflectiveCollection collection)
+            =>
+                new FilterOnElementType<IObject>(collection);
 
         public static IReflectiveCollection WhenMetaClassIs(
             this IReflectiveCollection collection,
@@ -96,11 +102,33 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// Gets all descendents of a reflective collection by opening all properties recursively
         /// </summary>
         /// <param name="collection">Collection to be evaluated</param>
+        /// <param name="filter">Filter to be added</param>
+        /// <returns>A reflective collection, containing all items</returns>
+        public static IReflectiveSequence WhenFiltered(
+            this IReflectiveCollection collection,
+            Func<object?, bool> filter)
+            =>
+                new TemporaryReflectiveSequence(collection.Where(filter).ToList());
+
+        /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
         /// <returns>A reflective collection, containing all items</returns>
         public static IReflectiveSequence GetAllDescendants(
             this IReflectiveCollection collection)
             =>
                 new TemporaryReflectiveSequence(AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList());
+
+        /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <returns>A reflective collection, containing all items</returns>
+        public static IReflectiveSequence GetCompositeDescendents(
+            this IReflectiveCollection collection)
+            =>
+                new TemporaryReflectiveSequence(AllDescendentsQuery.GetCompositeDescendents(collection).Cast<object>().ToList());
 
         /// <summary>
         /// Gets all descendents of a reflective collection by opening all properties recursively.
@@ -114,7 +142,19 @@ namespace DatenMeister.Runtime.Functions.Queries
             return new TemporaryReflectiveSequence(
                 collection.AsEnumerable().Union(
                     AllDescendentsQuery.GetDescendents(collection).Cast<object>().ToList()));
-            
+        }
+
+        /// <summary>
+        /// Gets all descendents of a reflective collection by opening all properties recursively.
+        /// The elements of the collection themselves will also be returned
+        /// </summary>
+        /// <param name="collection">Collection to be evaluated</param>
+        /// <returns>A reflective collection, containing all items</returns>
+        public static IReflectiveSequence GetAllCompositesIncludingThemselves(
+            this IReflectiveCollection collection)
+        {
+            return new TemporaryReflectiveSequence(
+                AllDescendentsQuery.GetCompositeDescendents(collection).Cast<object>().ToList());
         }
 
         /// <summary>
@@ -171,11 +211,23 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="collection">Collection to be ordered</param>
         /// <param name="property">Property being used as key</param>
         /// <returns>Ordered reflective collection</returns>
-        public static IReflectiveCollection OrderBy(
+        public static IReflectiveCollection OrderElementsBy(
             this IReflectiveCollection collection,
             string property)
             =>
-                new OrderByProperty(collection, property);
+                new OrderByProperties(collection, new[] {property});
+
+        /// <summary>
+        /// Orders the reflective section by the given property
+        /// </summary>
+        /// <param name="collection">Collection to be ordered</param>
+        /// <param name="properties">Properties being used as key</param>
+        /// <returns>Ordered reflective collection</returns>
+        public static IReflectiveCollection OrderElementsBy(
+            this IReflectiveCollection collection,
+            IEnumerable<string> properties)
+            =>
+                new OrderByProperties(collection, properties);
 
         public static IReflectiveCollection FilterDistinct(
             this IReflectiveCollection collection,

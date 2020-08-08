@@ -25,7 +25,8 @@ namespace DatenMeister.WPF.Forms.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
             _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+                || fieldFlags.IsReadOnly;
             
             _valueText = string.Empty;
             if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
@@ -63,10 +64,18 @@ namespace DatenMeister.WPF.Forms.Fields
             dockPanel.Children.Add(textField);
 
             _textField = textField;
+            dockPanel.Focusable = true;
+            dockPanel.GotFocus += (x, y) => { _textField.Focus(); };
 
             // Sets the event handler for the button
             button.Click += (x, y) =>
             {
+                if (isReadOnly)
+                {
+                    // Field is read-only, we don't use it
+                    return;
+                }
+
                 var isSaving = fieldData.getOrDefault<bool>(_FormAndFields._FileSelectionFieldData.isSaving);
                 var defaultExtension =
                     fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.defaultExtension);
@@ -113,6 +122,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
                 }
             };
+            
+            fieldFlags.CanBeFocused = true;
 
             return dockPanel;
         }

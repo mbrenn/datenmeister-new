@@ -13,7 +13,6 @@ namespace DatenMeister.Models.Forms
         /// extent including its root items shall be shown
         /// </summary>
         TreeItemExtent,
-        TreeItemList,
 
         /// <summary>
         /// Set,when the form is created when the user clicks upon on item in detail view and the form is created

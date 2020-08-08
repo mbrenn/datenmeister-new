@@ -21,12 +21,16 @@ namespace DatenMeister.Models.Forms
         public string? extentType { get; set; }
 
         /// <summary>
+        /// Gets or sets the id of the view mode
+        /// </summary>
+        public string? viewModeId { get; set; }
+        
+        /// <summary>
         /// Gets or sets the metaclass of the parent object containg the list of elements
         /// </summary>
         public IElement? parentMetaClass { get; set; }
 
         public string? parentProperty { get; set; }
-
 
         public Form? form { get; set; }
 

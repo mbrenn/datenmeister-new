@@ -11,7 +11,7 @@ namespace DatenMeister.Tests
         [Test]
         public void TestFindByUri()
         {
-            var workspaceLogic = new WorkspaceLogic(new WorkspaceData());
+            var workspaceLogic = WorkspaceLogic.Create(new WorkspaceData());
             var workspace = new Workspace("data", "No annotation");
             workspaceLogic.AddWorkspace(workspace);
 

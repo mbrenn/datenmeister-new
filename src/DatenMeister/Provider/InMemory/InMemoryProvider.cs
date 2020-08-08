@@ -13,7 +13,7 @@ namespace DatenMeister.Provider.InMemory
         /// <summary>
         /// Stores the temporary extent that can be used to create temporary objects
         /// </summary>
-        public static readonly MofUriExtent TemporaryExtent = new MofUriExtent(new InMemoryProvider(), "datenmeister:///temp");
+        public static readonly MofUriExtent TemporaryExtent = new MofUriExtent(new InMemoryProvider(), "dm:///temp");
 
         /// <summary>
         /// Gets the used temporary provider
@@ -101,9 +101,18 @@ namespace DatenMeister.Provider.InMemory
         }
 
         /// <summary>
+        /// Stores the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        private readonly ProviderCapability _providerCapability = new ProviderCapability
+        {
+            IsTemporaryStorage = true
+        };
+        
+        /// <summary>
         /// Gets the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities() => ProviderCapability.None;
+        public ProviderCapability GetCapabilities() => _providerCapability;
     }
 }

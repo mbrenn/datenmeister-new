@@ -7,7 +7,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
@@ -17,76 +16,12 @@ namespace DatenMeister.Core.EMOF.Implementation
     /// <summary>
     /// Implements the MOF interface for the uriextent
     /// </summary>
-    public class MofUriExtent : MofExtent, IUriExtent, IUriResolver
+    public partial class MofUriExtent : MofExtent, IUriExtent, IUriResolver
     {
-        private class ResolverCache
-        {
-            private readonly Dictionary<ResolverKey, IElement> _cache
-             = new Dictionary<ResolverKey, IElement>();
-
-            public void Clear()
-            {
-                lock (_cache)
-                {
-                    _cache.Clear();
-                }
-            }
-
-            public IElement? GetElementFor(string uri, ResolveType resolveType)
-            {
-                lock (_cache)
-                {
-                    return _cache.TryGetValue(new ResolverKey(uri, resolveType), out var result) ? result : null;
-                }
-            }
-
-            public void AddElementFor(string uri, ResolveType resolveType, IElement foundElement)
-            {
-                lock (_cache)
-                {
-                    _cache[new ResolverKey(uri, resolveType)] = foundElement;
-                }
-            }
-
-            private class ResolverKey
-            {
-                private readonly string _uri;
-
-                private readonly ResolveType _resolveType;
-
-                public ResolverKey(string uri, ResolveType resolveType)
-                {
-                    _uri = uri;
-                    _resolveType = resolveType;
-                }
-
-                protected bool Equals(ResolverKey other)
-                {
-                    return string.Equals(_uri, other._uri, StringComparison.InvariantCulture) && _resolveType == other._resolveType;
-                }
-
-                public override bool Equals(object obj)
-                {
-                    if (ReferenceEquals(null, obj)) return false;
-                    if (ReferenceEquals(this, obj)) return true;
-                    if (obj.GetType() != GetType()) return false;
-                    return Equals((ResolverKey) obj);
-                }
-
-                public override int GetHashCode()
-                {
-                    unchecked
-                    {
-                        return (_uri.GetHashCode() * 397) ^ (int) _resolveType;
-                    }
-                }
-            }
-        }
-        
         /// <summary>
         /// Stores the resolver cache
         /// </summary>
-        private ResolverCache _resolverCache = new ResolverCache();
+        private readonly ResolverCache _resolverCache = new ResolverCache();
         
         /// <summary>
         /// Defines a possible logger
@@ -105,7 +40,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores the navigator
         /// </summary>
-        private readonly ExtentUrlNavigator<MofElement> _navigator;
+        private readonly ExtentUrlNavigator _navigator;
 
         /// <summary>
         /// Gets or sets the uri of the extent
@@ -127,21 +62,25 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, ChangeEventManager? changeEventManager = null) :
-            base(provider, changeEventManager)
+        public MofUriExtent(
+            IProvider provider, 
+            IScopeStorage? scopeStorage = null) :
+            base(provider, scopeStorage)
         {
-            _navigator = new ExtentUrlNavigator<MofElement>(this);
+            _navigator = new ExtentUrlNavigator(this);
 
             if (provider is IHasUriResolver hasUriResolver)
             {
                 hasUriResolver.UriResolver = this;
             }
+            
+            MetaXmiElement?.Extent?.AddMetaExtent(this);
         }
 
 
         /// <inheritdoc />
-        public MofUriExtent(IProvider provider, string uri, ChangeEventManager? changeEventManager = null) :
-            this(provider, changeEventManager)
+        public MofUriExtent(IProvider provider, string uri, IScopeStorage? scopeStorage = null) :
+            this(provider, scopeStorage)
         {
             UriOfExtent = uri;
         }
@@ -170,11 +109,11 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public IElement? element(string uri)
-            => _navigator.element(uri);
+            => _navigator.element(uri) as IElement;
 
         /// <inheritdoc />
         public override string ToString()
-            => $"UriExent: {contextURI()}";
+            => $"UriExtent: {contextURI()}";
 
         /// <summary>
         /// Gets the id of the element as defined in the uri.
@@ -195,16 +134,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
+            uri = Migration.MigrateUriForResolver(uri);
+            
             // Check, if we have a cache...
             var cachedResult = _resolverCache.GetElementFor(uri, resolveType);
             if (cachedResult != null)
             {
                 return cachedResult;
             }
-            
-            
+
             // We have to find it
             var result = ResolveInternal(uri, resolveType);
             if (result == null && traceFailing)
@@ -220,11 +160,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             return result;
         }
 
-        private IElement? ResolveInternal(string uri, ResolveType resolveType)
+        private object? ResolveInternal(string uri, ResolveType resolveType)
         {
             if (resolveType != ResolveType.OnlyMetaClasses)
             {
-                var result = element(uri);
+                var result = _navigator.element(uri);
                 if (result != null)
                 {
                     return result;
@@ -261,7 +201,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // If still not found, do a full search in every extent in every workspace
-            if (resolveType == ResolveType.Default && GiveMe.Scope?.WorkspaceLogic != null)
+            if (resolveType == ResolveType.Default && GiveMe.TryGetScope()?.WorkspaceLogic != null)
             {
                 foreach (var workspace in GiveMe.Scope.WorkspaceLogic.Workspaces)
                 {
@@ -342,6 +282,71 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             var uri = contextURI() + "#" + id;
             return element(uri);
+        }
+        
+        
+        private class ResolverCache
+        {
+            private readonly Dictionary<ResolverKey, object> _cache
+             = new Dictionary<ResolverKey, object>();
+
+            public void Clear()
+            {
+                lock (_cache)
+                {
+                    _cache.Clear();
+                }
+            }
+
+            public object? GetElementFor(string uri, ResolveType resolveType)
+            {
+                lock (_cache)
+                {
+                    return _cache.TryGetValue(new ResolverKey(uri, resolveType), out var result) ? result : null;
+                }
+            }
+
+            public void AddElementFor(string uri, ResolveType resolveType, object foundElement)
+            {
+                lock (_cache)
+                {
+                    _cache[new ResolverKey(uri, resolveType)] = foundElement;
+                }
+            }
+            
+            private class ResolverKey
+            {
+                private readonly string _uri;
+
+                private readonly ResolveType _resolveType;
+
+                public ResolverKey(string uri, ResolveType resolveType)
+                {
+                    _uri = uri;
+                    _resolveType = resolveType;
+                }
+
+                protected bool Equals(ResolverKey other)
+                {
+                    return string.Equals(_uri, other._uri, StringComparison.InvariantCulture) && _resolveType == other._resolveType;
+                }
+
+                public override bool Equals(object obj)
+                {
+                    if (ReferenceEquals(null, obj)) return false;
+                    if (ReferenceEquals(this, obj)) return true;
+                    if (obj.GetType() != GetType()) return false;
+                    return Equals((ResolverKey) obj);
+                }
+
+                public override int GetHashCode()
+                {
+                    unchecked
+                    {
+                        return (_uri.GetHashCode() * 397) ^ (int) _resolveType;
+                    }
+                }
+            }
         }
     }
 }

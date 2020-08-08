@@ -14,12 +14,12 @@ namespace DatenMeister.Models.DataViews
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object> collection, _DataViews tree)
+        public void Fill(IEnumerable<object?> collection, _DataViews tree)
         {
             FillTheDataViews.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object> collection, _DataViews tree)
+        public static void DoFill(IEnumerable<object?> collection, _DataViews tree)
         {
             string? name;
             IElement? value;
@@ -198,6 +198,21 @@ namespace DatenMeister.Models.DataViews
                                 if(name == "name") // Looking for property
                                 {
                                     tree.SelectPathNode._name = value;
+                                }
+                            }
+                        }
+                        if(name == "DynamicSourceNode") // Looking for class
+                        {
+                            tree.__DynamicSourceNode = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement;
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.DynamicSourceNode._name = value;
                                 }
                             }
                         }

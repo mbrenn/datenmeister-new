@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Uml.Helper;
 // ReSharper disable InconsistentNaming
 
@@ -21,19 +22,24 @@ namespace DatenMeister.Runtime
         /// <param name="value">Object to be queried</param>
         /// <param name="property">Property to be queried</param>
         /// <param name="noReferences">Flag, if no recursion shall occur</param>
+        /// <param name="objectType">Defines the object type</param>
         /// <returns>The given and singlelized element, if there is just one element in the enumeration</returns>
-        private static object? GetAsSingle(this IObject value, string property, bool noReferences = false)
+        private static object? GetAsSingle(
+            this IObject value, 
+            string property,
+            bool noReferences = false,
+            ObjectType objectType = ObjectType.None)
         {
-            object propertyValue;
-            if (noReferences && value is MofObject valueAsMofObject)
+            object? propertyValue;
+            if (value is MofObject valueAsMofObject)
             {
-                propertyValue = valueAsMofObject.get(property, true);
+                propertyValue = valueAsMofObject.get(property, noReferences, objectType);
             }
             else
             {
                 propertyValue = value.get(property);
             }
-            
+
             if (propertyValue is IEnumerable<object> asObjectList)
             {
                 var list = asObjectList.ToList();
@@ -61,6 +67,8 @@ namespace DatenMeister.Runtime
             return false;
         }
 
+        #nullable disable
+        
         /// <summary>
         /// Gets the typed value of the property.
         /// </summary>
@@ -79,42 +87,49 @@ namespace DatenMeister.Runtime
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
 
-                return (T) metaObject.GetMetaObject().get(property, noReferences);
+                return (T) metaObject.GetMetaObject().get(property, noReferences, ObjectType.None)!;
             }
 
             if (typeof(T) == typeof(object) && value is MofObject mofObject2)
             {
-                return (T) mofObject2.get(property, noReferences);
+                return (T) mofObject2.get(property, noReferences, ObjectType.None)!;
             }
 
             if (typeof(T) == typeof(string))
             {
-                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsString(value.GetAsSingle(property, noReferences, ObjectType.String)!)!;
             }
 
             if (typeof(T) == typeof(int))
             {
-                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences, ObjectType.Integer)!)!;
+            }
+
+            if (typeof(T) == typeof(int?))
+            {
+                return (T) (object) DotNetHelper.AsInteger(value.GetAsSingle(property, noReferences, ObjectType.Integer)!)!;
             }
 
             if (typeof(T) == typeof(double))
             {
-                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences));
+                return (T) (object) DotNetHelper.AsDouble(value.GetAsSingle(property, noReferences, ObjectType.Double)!)!;
             }
 
             if (typeof(T) == typeof(bool))
             {
-                return (T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences));
+                return ((T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences, ObjectType.Boolean)))!;
             }
 
             if (typeof(T) == typeof(IObject))
             {
-                return (T) (value.GetAsSingle(property, noReferences) as IObject);
+                var asSingle = (value.GetAsSingle(property, noReferences, ObjectType.Element) as IObject)!;
+                return ((T) asSingle)!;
             }
 
             if (typeof(T) == typeof(IElement))
             {
-                return (T) (value.GetAsSingle(property, noReferences) as IElement);
+                var asSingle = (value.GetAsSingle(property, noReferences, ObjectType.Element) as IElement)!;
+                return asSingle is MofObjectShadow ? default : (T) asSingle;
             }
 
             if (typeof(T) == typeof(IReflectiveCollection))
@@ -126,7 +141,6 @@ namespace DatenMeister.Runtime
                 {
                     NoReferences = noReferences
                 };
-
             }
 
             if (typeof(T) == typeof(IReflectiveSequence))
@@ -143,8 +157,12 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(DateTime))
             {
-                if (DateTime.TryParse(value.GetAsSingle(property, noReferences).ToString(), CultureInfo.InvariantCulture,
-                    DateTimeStyles.None, out var result))
+                if (DateTime.TryParse(
+                    value.GetAsSingle(property, noReferences, ObjectType.DateTime)?.ToString() 
+                        ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out var result))
                 {
                     return (T) (object) result;
                 }
@@ -154,15 +172,15 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(object))
             {
-                return (T) value.GetAsSingle(property, noReferences);
+                return ((T) value.GetAsSingle(property, noReferences))!;
             }
 
             if (typeof(T).IsEnum)
             {
-                var valueAsElement = value.GetAsSingle(property, noReferences);
+                var valueAsElement = value.GetAsSingle(property, noReferences, ObjectType.Enum);
                 if (valueAsElement == null)
                 {
-                    return default(T);
+                    return default;
                 }
 
                 if (typeof(T) == valueAsElement.GetType())
@@ -172,7 +190,14 @@ namespace DatenMeister.Runtime
 
                 if (valueAsElement is string propertyValueAsString)
                 {
-                    return (T) Enum.Parse(typeof(T), propertyValueAsString);
+                    try
+                    {
+                        return (T) Enum.Parse(typeof(T), propertyValueAsString);
+                    }
+                    catch
+                    {
+                        return default;
+                    }
                 }
 
                 if (valueAsElement is IElement propertyObject && value is MofObject mofObject)
@@ -181,7 +206,7 @@ namespace DatenMeister.Runtime
                     var resolvedElement = mofObject.ReferencedExtent.Resolve(propertyObject);
                     if (resolvedElement == null)
                     {
-                        return default(T);
+                        return default;
                     }
 
                     var name = NamedElementMethods.GetName(resolvedElement);
@@ -191,6 +216,8 @@ namespace DatenMeister.Runtime
 
             throw new InvalidOperationException($"{typeof(T).FullName} is not handled by get");
         }
+        
+        #nullable enable
 
         public static T? getOrNull<T>(this IObject value, string property, bool noReferences = false) where T : struct
         {
@@ -202,15 +229,19 @@ namespace DatenMeister.Runtime
             return get<T>(value, property, noReferences);
         }
 
+        #nullable disable
+        
         public static T getOrDefault<T>(this IObject value, string property, bool noReferences = false)
         {
             if (!value.isSet(property))
             {
-                return default(T);
+                return default;
             }
 
             return get<T>(value, property, noReferences);
         }
+        
+        #nullable enable
 
         /// <summary>
         /// Gets the value of a property if the property is set.
@@ -246,7 +277,7 @@ namespace DatenMeister.Runtime
                 var result = value.get(property);
                 if (DotNetHelper.IsOfEnumeration(result))
                 {
-                    var resultAsEnumeration = (IEnumerable<object>) result;
+                    var resultAsEnumeration = (IEnumerable<object>) result!;
                     return resultAsEnumeration.FirstOrDefault();
                 }
 
@@ -283,7 +314,7 @@ namespace DatenMeister.Runtime
             return reflection.remove(toBeRemoved);
         }
        
-        public static Dictionary<object, object> AsDictionary(
+        public static Dictionary<object, object?> AsDictionary(
             this IObject value,
             IEnumerable<string> properties)
         {
@@ -414,6 +445,13 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Gets the extent of the given element
+        /// </summary>
+        /// <param name="hasExtent">The interface being able to request the extent</param>
+        /// <returns>The found extent</returns>
+        public static IExtent? GetExtentOf(this IHasExtent hasExtent) => hasExtent.Extent;
+
+        /// <summary>
         /// Tries to retrieve the extent as given by the implemented interface
         /// IObjectKnowsExtent. If the interface is not implemented by the root element
         /// of the given element, the method will return a failure
@@ -430,6 +468,12 @@ namespace DatenMeister.Runtime
                 return asExtent;
             }
 
+            // If the object knows the extent to which it belongs to, it will return it
+            if (value is IHasExtent objectKnowsExtent)
+            {
+                return objectKnowsExtent.Extent as IUriExtent;
+            }
+
             // If the object is contained by another object, query the contained objects
             // because the extents will only be stored in the root elements
             var asElement = value as IElement;
@@ -437,12 +481,6 @@ namespace DatenMeister.Runtime
             if (parent != null)
             {
                 return GetExtentOf(parent);
-            }
-
-            // If the object knows the extent to which it belongs to, it will return it
-            if (value is IHasExtent objectKnowsExtent)
-            {
-                return objectKnowsExtent.Extent as IUriExtent;
             }
 
             return null;
@@ -540,7 +578,7 @@ namespace DatenMeister.Runtime
             {
                 var asElement = x as IObject;
                 var valueOfChild = asElement?.get(propertyOfChild);
-                if (valueOfChild?.Equals(requestValue) == true)
+                if (valueOfChild?.Equals(requestValue) == true && asElement != null)
                 {
                     yield return asElement;
                 }
@@ -562,17 +600,13 @@ namespace DatenMeister.Runtime
         /// <returns>Enumeration of properties</returns>
         public static IEnumerable<string> GetPropertyNames(IObject value)
         {
-            switch (value)
+            return value switch
             {
-                case IElement element when element.metaclass != null:
-                    return ClassifierMethods.GetPropertyNamesOfClassifier(element.metaclass);
-
-                case IObjectAllProperties knowsProperties:
-                    return knowsProperties.getPropertiesBeingSet();
-
-                default:
-                    return Array.Empty<string>();
-            }
+                IElement element when element.metaclass != null => ClassifierMethods.GetPropertyNamesOfClassifier(
+                    element.metaclass),
+                IObjectAllProperties knowsProperties => knowsProperties.getPropertiesBeingSet(),
+                _ => Array.Empty<string>()
+            };
         }
     }
 }

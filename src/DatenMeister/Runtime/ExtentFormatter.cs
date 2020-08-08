@@ -56,7 +56,11 @@ namespace DatenMeister.Runtime
         {
             foreach (var element in elements)
             {
-                if (DotNetHelper.IsOfPrimitiveType(element))
+                if (element == null)
+                {
+                    _builder.AppendLine($"{_currentIndent}null");
+                }
+                else if (DotNetHelper.IsOfPrimitiveType(element))
                 {
                     _builder.AppendLine($"{_currentIndent}{element}");
                 }
@@ -89,7 +93,7 @@ namespace DatenMeister.Runtime
             IncreaseIndentation();
             foreach (var property in asProperties.getPropertiesBeingSet())
             {
-                var value = mofObject.get(property, true);
+                var value = mofObject.get(property, true, ObjectType.None);
 
                 if (DotNetHelper.IsOfPrimitiveType(value))
                 {

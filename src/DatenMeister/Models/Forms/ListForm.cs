@@ -18,10 +18,24 @@ namespace DatenMeister.Models.Forms
             AddFields(fieldsToBeAdded);
         }
 
+        /// <summary>
+        /// Defines the property name of the property whose values are retrieved from the given item 
+        /// </summary>
         public string? property { get; set; }
 
+        /// <summary>
+        /// Defines the filter for metaclasses being used
+        /// </summary>
         public IElement? metaClass { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the descendents shall be included
+        /// </summary>
+        public bool includeDescendents { get; set; }
 
+        /// <summary>
+        /// Indicates a flag whether all items having a metaclass shall not be shown in the fields
+        /// </summary>
         public bool noItemsWithMetaClass { get; set; }
 
         /// <summary>
@@ -48,6 +62,16 @@ namespace DatenMeister.Models.Forms
         /// Stores the fields which shall be shown in the form
         /// </summary>
         public IList<FieldData> field { get; set; } = new List<FieldData>();
+
+        /// <summary>
+        /// Gets a list of fields to which the table shall be ordered 
+        /// </summary>
+        public IList<FieldData> sortingOrder { get; set; } = new List<FieldData>();
+        
+        /// <summary>
+        /// Gets or sets the view node for the list view
+        /// </summary>
+        public IElement? viewNode { get; set; }
 
         /// <summary>
         /// Adds the fields to the form

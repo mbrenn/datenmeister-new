@@ -9,6 +9,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -34,6 +35,11 @@ namespace DatenMeister.WPF.Controls
                 UpdateExtents();
             }
         }
+        
+        /// <summary>
+        /// Defines the metaclasses for the filter
+        /// </summary>
+        private List<IElement> _metaClassesForFilter = new List<IElement>();
 
         private readonly IWorkspaceLogic _workspaceLogic;
 
@@ -109,7 +115,7 @@ namespace DatenMeister.WPF.Controls
             
             locateElementControl.items.ShowMetaClasses = (bool) e.NewValue;
         }
-
+    
         public bool ShowMetaClasses
         {
             get => (bool) GetValue(ShowMetaClassesProperty);
@@ -264,6 +270,15 @@ namespace DatenMeister.WPF.Controls
             
             items.SetSelectedItem(value);
         }
+        
+        /// <summary>
+        /// Sets the meta classes for filters
+        /// </summary>
+        /// <param name="elements">Elements to be filed</param>
+        public void SetMetaClassesForFilter(List<IElement> elements)
+        {
+            _metaClassesForFilter = elements;
+        }
 
         /// <summary>
         /// Updates the items for the workspace
@@ -373,6 +388,11 @@ namespace DatenMeister.WPF.Controls
                         items.TreeView.IsEnabled = false;
                         break;
                     case IExtent extent:
+                        items.FilterMetaClasses =
+                            _metaClassesForFilter.Any()
+                                ? DefaultClassifierHints.GetDefaultPackageClassifiers(extent)
+                                    .Union(_metaClassesForFilter)
+                                : null;
                         items.ItemsSource = extent;
                         items.TreeView.IsEnabled = true;
                         break;

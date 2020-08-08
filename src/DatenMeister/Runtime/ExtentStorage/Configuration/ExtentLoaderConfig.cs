@@ -10,14 +10,24 @@ namespace DatenMeister.Runtime.ExtentStorage.Configuration
     /// </summary>
     public class ExtentLoaderConfig
     {
+        public ExtentLoaderConfig()
+        {
+            extentUri = string.Empty;
+        }
+        
+        public ExtentLoaderConfig(string extentUri)
+        {
+            this.extentUri = extentUri;
+        }
+
         /// <summary>
         /// Gets or sets the extent uri
         /// </summary>
-        public string? extentUri { get; set; }
+        public string extentUri { get; set; }
 
         /// <summary>
         /// Gets ors sets the workspace in which the data will be loaded
         /// </summary>
-        public string workspaceId { get; set; } = WorkspaceNames.NameData;
+        public string workspaceId { get; set; } = WorkspaceNames.WorkspaceData;
     }
 }

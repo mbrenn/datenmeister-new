@@ -4,13 +4,12 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -35,16 +34,16 @@ namespace DatenMeister.WPF.Forms.Lists
             Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
             SetRootItem(Extent);
 
-            var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
+            var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(Extent,
                 (x,y) =>
-                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView());
+                    Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm());
         }
 
         /// <summary>
         /// Shows the workspaces of the DatenMeister
         /// </summary>
-        protected override void OnRecreateViews()
+        protected override void OnRecreateForms()
         {
             FormDefinition? form = null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
@@ -65,12 +64,12 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (form == null)
             {
-                var selectedItemMetaClass = (SelectedPackage as IElement)?.getMetaClass();
+                var selectedItemMetaClass = (SelectedItem as IElement)?.getMetaClass();
                 var extent = Extent ?? throw new InvalidOperationException("Extent == null");
-                if (selectedItemMetaClass != null && SelectedPackage != null
+                if (selectedItemMetaClass != null && SelectedItem != null
                     && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
                 {
-                    var workspaceId = SelectedPackage.getOrDefault<string>("id");
+                    var workspaceId = SelectedItem.getOrDefault<string>("id");
                     form = WorkspaceExtentFormGenerator.RequestFormForExtents(extent, workspaceId, NavigationHost);
                 }
                 else
@@ -92,7 +91,6 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Prepares the navigation
         /// </summary>
-        /// <param name="viewDefinition">Definition of the view</param>
         public override IEnumerable<ViewExtension> GetViewExtensions()
         {
             yield return new InfoLineDefinition(() => new TextBlock

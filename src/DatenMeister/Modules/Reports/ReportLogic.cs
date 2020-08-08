@@ -2,6 +2,6 @@
 {
     public class ReportLogic
     {
-        public const string PackagePathTypesReport = "DatenMeister::DataViews";
+        public const string PackagePathTypesReport = "DatenMeister::Reports";
     }
 }

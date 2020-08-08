@@ -4,15 +4,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
+using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.DynamicFunctions;
+using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -23,6 +29,11 @@ namespace DatenMeister.Core.EMOF.Implementation
     public class MofExtent : IExtent, IHasWorkspace, IObjectAllProperties, IHasExtent, IHasMofExtentMetaObject
     {
         /// <summary>
+        /// Stores the configuration for the extent
+        /// </summary>
+        public ExtentConfiguration ExtentConfiguration { get; }
+        
+        /// <summary>
         /// This type lookup can be used to convert the instances of the .Net types to real MOF meta classes.
         /// It is only used, if the data is directly set as a .Net object
         /// </summary>
@@ -32,14 +43,35 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets or sets the provider for the given extent
         /// </summary>
         public IProvider Provider { get; }
+        
+        /// <summary>
+        /// Defines the scope storage in which the extent is working
+        /// </summary>
+        public IScopeStorage? ScopeStorage { get; private set; }
+        
+        /// <summary>
+        /// Gets a value whether the extent will support the full Uml capabilities regarding auto enumeration
+        /// and default value of properties. For certain extents, especially 'just getting loaded' extents,
+        /// the slim evaluation might bring shorter execution times 
+        /// </summary>
+        public bool SlimUmlEvaluation { get; set; }
 
         /// <summary>
-        /// Gets or sets the workspace to which the extent is allocated
+        /// Gets or sets the Dynamic Function Manager which is used to retrieve the properties
+        /// </summary>
+        public DynamicFunctionManager? DynamicFunctionManager
+        {
+            get => _dynamicFunctionManager ?? (DynamicFunctionManager = Workspace?.DynamicFunctionManager);
+            set => _dynamicFunctionManager  = value;
+        }
+
+        /// <summary>
+        /// Gets the workspace to which the extent is allocated
         /// </summary>
         public Workspace? Workspace
         {
             get;
-            set;
+            internal set;
         }
 
         /// <summary>
@@ -62,6 +94,42 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         public bool IsModified { get; private set; }
 
+        private int _itemCountCached;
+
+        /// <summary>
+        /// STores the object for synchronization issues
+        /// </summary>
+        private object _syncObject = new object();
+
+        /// <summary>
+        /// Stores the information whether the evaluation about the item count is currently
+        /// running in the background. 
+        /// </summary>
+        private bool _isItemCountRunning;
+
+        private DynamicFunctionManager? _dynamicFunctionManager;
+
+        public int ItemCount
+        {
+            get
+            {
+                lock (_syncObject)
+                {
+                    if (_itemCountCached == -1 && !_isItemCountRunning)
+                    {
+                        _isItemCountRunning = true;
+                        Task.Run(() =>
+                        {
+                            _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
+                            ChangeEventManager?.SendChangeEvent(this);
+                        });
+                    }
+
+                    return _itemCountCached;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets the meta object representing the meta object. Setting, querying a list or getting
         /// is supported by this object
@@ -69,14 +137,15 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>The returned value representing the meta object</returns>
         public MofObject GetMetaObject()
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
                                      "Provider does not support setting of extent properties");
 
-                return new MofObject(nullObject, this);
+                var result = new MofElement(nullObject, this);
+                result.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
+                return result;
             }
 
             return MetaXmiElement;
@@ -85,7 +154,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets the meta element for xmi data
         /// </summary>
-        public MofObject MetaXmiElement { get; set; }
+        public MofElement MetaXmiElement { get; set; }
 
         /// <summary>
         /// Gets or sets the xml Node of the meta element.
@@ -98,22 +167,40 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode = value;
         }
 
+        private static readonly MofExtent? XmlMetaExtent = new MofUriExtent(new XmiProvider()); 
+
         /// <summary>
         /// Initializes a new instance of the Extent
         /// </summary>
         /// <param name="provider">Provider being used for the extent</param>
-        /// <param name="changeEventManager">The change event manager being used
-        /// to notify the system about changes in the event</param>
-        public MofExtent(IProvider provider, ChangeEventManager? changeEventManager = null)
+        /// <param name="scopeStorage">Scope storage to be used to find Change Event Manager</param>
+        public MofExtent(IProvider provider, IScopeStorage? scopeStorage = null)
         {
-            ChangeEventManager = changeEventManager;
+            ChangeEventManager = scopeStorage?.TryGet<ChangeEventManager>();
+            ScopeStorage = scopeStorage;
 
             var rootProvider = new XmiProvider();
             Provider = provider;
             TypeLookup = new DotNetTypeLookup();
-            MetaXmiElement = new MofObject(
-                new XmiProviderObject(new XElement("meta"), rootProvider),
-                this);
+            
+            // Defines the Meta Element. 
+            // The pseudo extent is used to allow the factory to create the correct instance of Xml
+            // instead of the specific type. 
+            if (XmlMetaExtent != null)
+            {
+                MetaXmiElement = new MofElement(
+                    rootProvider.CreateProviderObject(new XElement("meta")),
+                    XmlMetaExtent);
+            }
+            else
+            {
+                MetaXmiElement = new MofElement(
+                    rootProvider.CreateProviderObject(new XElement("meta")),
+                    this);
+            }
+            
+            MetaXmiElement.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
+            ExtentConfiguration = new ExtentConfiguration(this);
         }
 
         /// <inheritdoc />
@@ -130,8 +217,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object? get(string property)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -148,8 +234,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void set(string property, object? value)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -185,8 +270,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public bool isSet(string property)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -202,8 +286,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void unset(string property)
         {
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -261,7 +344,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Resolves the DotNetType by navigating through the current and the meta instances.
         /// </summary>
         /// <param name="metaclassUri">Uri class to be retrieved</param>
-        /// <param name="resolveType">The resolveing strategy</param>
+        /// <param name="resolveType">The resolving strategy</param>
         /// <returns>Resolved .Net Type as IElement</returns>
         public Type? ResolveDotNetType(string metaclassUri, ResolveType resolveType)
         {
@@ -366,14 +449,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 foreach (var metaWorkspace in metaWorkspaces)
                 {
-                    foreach (var metaExtent in metaWorkspace.extent.OfType<MofExtent>())
-                    {
-                        var element = metaExtent.TypeLookup.ToElement(type);
-                        if (!string.IsNullOrEmpty(element))
-                        {
-                            return element;
-                        }
-                    }
+                    var metaClassUri = WorkspaceDotNetHelper.GetMetaClassUriOfDotNetType(metaWorkspace, type);
+                    if (metaClassUri != null) return metaClassUri;
                 }
             }
 
@@ -455,19 +532,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                     }
 
                     var result = (MofElement) ObjectCopier.Copy(new MofFactory(extent), asMofObject);
-                    /*if (container is IElement containerAsElement)
-                    {
-                        // Setting a container shall not be done by the copying itself.
-                        // Setting the container will be done during the SetProperty
-                        // result.Container = containerAsElement;
-                    }*/
-
                     return result.ProviderObject;
                 }
 
-                
                 // It is a reference
-                var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type MofElement");
+                var asElement = asMofObject as IElement ?? throw new InvalidOperationException("Given element is not of type IElement");
                 return new UriReference(((MofUriExtent) asMofObject.Extent).uri(asElement));
             }
 
@@ -476,6 +545,11 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return ((IEnumerable) value)
                     .Cast<object>()
                     .Select(innerValue => ConvertForSetting(innerValue, extent, container)).ToList();
+            }
+
+            if (DotNetHelper.IsOfProviderObject(value))
+            {
+                return value;
             }
 
             // Then, we have a simple dotnet type, that we try to convert. Let's hope, that it works
@@ -492,14 +566,14 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Converts the object to be set by the data provider. This is the inverse object to ConvertToMofObject.
         /// An arbitrary object shall be stored into the database
         /// </summary>
-        /// <param name="value">The Mofobject for which the element will be created</param>
+        /// <param name="recipient">The Mofobject for which the element will be created</param>
         /// <param name="childValue">Value to be converted</param>
         /// <returns>The converted object or an exception if the object cannot be converted</returns>
-        public static object? ConvertForSetting(IObject value, object? childValue)
+        public static object? ConvertForSetting(IObject recipient, object? childValue)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (recipient == null) throw new ArgumentNullException(nameof(recipient));
 
-            if (value is MofObject mofObject)
+            if (recipient is MofObject mofObject)
             {
                 var result = ConvertForSetting(childValue, mofObject.ReferencedExtent, mofObject);
 
@@ -517,7 +591,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return result;
             }
 
-            if (value is MofExtent extent)
+            if (recipient is MofExtent extent)
             {
                 var result = ConvertForSetting(childValue, extent, null);
 
@@ -545,8 +619,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IEnumerable<string> getPropertiesBeingSet()
         {
             
-            if ((Provider.GetCapabilities() & ProviderCapability.StoreMetaDataInExtent) ==
-                ProviderCapability.StoreMetaDataInExtent)
+            if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??
                                  throw new InvalidOperationException(
@@ -567,6 +640,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="isModified">true, if the modification flag shall be set to true</param>
         internal void SignalUpdateOfContent(bool isModified = true)
         {
+            _itemCountCached = -1;
             IsModified = isModified;
         }
     }

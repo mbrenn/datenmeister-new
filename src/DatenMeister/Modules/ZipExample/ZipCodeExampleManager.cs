@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.ZipExample
@@ -17,14 +19,26 @@ namespace DatenMeister.Modules.ZipExample
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ZipCodeExampleManager
     {
+        private static readonly ILogger Logger = new ClassLogger(typeof(ZipCodeExampleManager));
+        
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IExtentManager _extentManager;
+        private readonly ExtentManager _extentManager;
         private readonly ZipCodeModel _zipCodeModel;
 
         public ZipCodeExampleManager(
             IWorkspaceLogic workspaceLogic,
-            IExtentManager extentManager,
+            ExtentManager extentManager,
+            IScopeStorage scopeStorage)
+            : this(workspaceLogic, extentManager, scopeStorage.Get<ZipCodeModel>())
+        {
+
+        }
+
+        private ZipCodeExampleManager(
+            IWorkspaceLogic workspaceLogic,
+            ExtentManager extentManager,
             ZipCodeModel zipCodeModel)
+
         {
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;
@@ -35,10 +49,11 @@ namespace DatenMeister.Modules.ZipExample
         /// Adds a zipcode example
         /// </summary>
         /// <param name="workspace">Workspace to which the zipcode example shall be added</param>
-        public IUriExtent AddZipCodeExample(Workspace workspace)
-            => AddZipCodeExample(workspace.id);
+        /// <param name="exampleFilePath">Defines the path to the example file</param>
+        public IUriExtent AddZipCodeExample(Workspace workspace, string? exampleFilePath = null)
+            => AddZipCodeExample(workspace.id, exampleFilePath);
 
-        public IUriExtent AddZipCodeExample(string workspaceId)
+        public IUriExtent AddZipCodeExample(string workspaceId, string? exampleFilePath = null)
         {
             var random = new Random();
 
@@ -67,7 +82,7 @@ namespace DatenMeister.Modules.ZipExample
             } while (File.Exists(filename));
 
             // Copies the example file to a new extent
-            var originalFilename = Path.Combine(appBase, "Examples", "plz.csv");
+            var originalFilename = exampleFilePath ?? Path.Combine(appBase, "Examples", "plz.csv");
             if (!File.Exists(originalFilename))
             {
                 throw new InvalidOperationException(
@@ -77,9 +92,8 @@ namespace DatenMeister.Modules.ZipExample
             File.Copy(originalFilename, filename);
 
             // Creates the configuration
-            var defaultConfiguration = new CsvExtentLoaderConfig
+            var defaultConfiguration = new CsvExtentLoaderConfig($"dm:///zipcodes/{randomNumber}")
             {
-                extentUri = $"datenmeister:///zipcodes/{randomNumber}",
                 filePath = filename,
                 workspaceId = workspaceId,
                 Settings =
@@ -99,13 +113,20 @@ namespace DatenMeister.Modules.ZipExample
                 }
             };
 
-            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration);
-            loadedExtent.SetExtentType("DatenMeister.Example.ZipCodes");
+            var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
+                               ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");
+            
+            loadedExtent.GetConfiguration().ExtentType = ZipCodePlugin.ExtentType;
 
-            var zipCodeTypePackage =
-                _workspaceLogic.GetTypesWorkspace().FindElementByUri(
-                    "datenmeister:///_internal/types/internal?" + ZipCodeModel.PackagePath) as IElement;
-            loadedExtent.SetDefaultTypePackages(new[] {zipCodeTypePackage});
+            if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
+                "dm:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
+            {
+                loadedExtent.GetConfiguration().SetDefaultTypePackages(new[] {zipCodeTypePackage});
+            }
+            else
+            {
+                Logger.Warn("dm:///_internal/types/internal?" + ZipCodeModel.PackagePath + "not found");
+            }
 
             return loadedExtent;
         }

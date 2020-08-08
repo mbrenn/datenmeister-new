@@ -11,6 +11,6 @@ namespace DatenMeister.Runtime.Functions.Interfaces
         /// <summary>
         /// Gets the current value
         /// </summary>
-        object Result { get; }
+        object? Result { get; }
     }
 }

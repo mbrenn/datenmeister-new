@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using DatenMeister.Core.EMOF.Implementation;
@@ -149,7 +151,7 @@ namespace DatenMeister.Runtime
         /// <returns>true, if the element is a string</returns>
         public static bool IsOfString(object? value) => value is string;
 
-        public static string AsString(object? value)
+        public static string? AsString(object? value)
         {
             if (value == null)
             {
@@ -209,17 +211,15 @@ namespace DatenMeister.Runtime
         /// <returns>Converted value</returns>
         public static double AsDouble(object? value)
         {
-            switch (value)
+            return value switch
             {
-                case null:
-                    return 0.0;
-                case string valueAsString:
-                    return double.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultAsDouble)
-                        ? resultAsDouble
-                        : 0.0;
-            }
-
-            return Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                null => 0.0,
+                string valueAsString => double.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture,
+                    out var resultAsDouble)
+                    ? resultAsDouble
+                    : 0.0,
+                _ => Convert.ToDouble(value, CultureInfo.InvariantCulture)
+            };
         }
 
         /// <summary>
@@ -229,17 +229,16 @@ namespace DatenMeister.Runtime
         /// <returns>Converted value</returns>
         public static int AsInteger(object? value)
         {
-            switch (value)
+            return value switch
             {
-                case null:
-                    return 0;
-                case string valueAsString:
-                    return int.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture, out var resultAsDouble)
-                        ? resultAsDouble
-                        : 0;
-            }
-
-            return Convert.ToInt32(value, CultureInfo.InvariantCulture);
+                null => 0,
+                string valueAsString => int.TryParse(valueAsString, NumberStyles.Any, CultureInfo.InvariantCulture,
+                    out var resultAsDouble)
+                    ? resultAsDouble
+                    : 0,
+                IConvertible convertible => Convert.ToInt32(convertible, CultureInfo.InvariantCulture),
+                _ => 0
+            };
         }
 
         /// <summary>
@@ -321,7 +320,7 @@ namespace DatenMeister.Runtime
         /// <param name="value">Value to be converted</param>
         /// <param name="extent">The extent being used to create and resolve the element</param>
         /// <returns>The converted element</returns>
-        public static IObject ConvertToMofElement(
+        public static IObject? ConvertToMofElement(
             object value,
             IUriExtent extent) =>
             ConvertToMofElement(
@@ -359,9 +358,9 @@ namespace DatenMeister.Runtime
 
             var typeUri = extent.GetMetaClassUri(value.GetType());
 
-            if (!string.IsNullOrEmpty(typeUri))
+            if (typeUri != null && !string.IsNullOrEmpty(typeUri))
             {
-                valueType = extent.Resolve(typeUri, ResolveType.OnlyMetaClasses);
+                valueType = extent.ResolveElement(typeUri, ResolveType.OnlyMetaClasses);
             }
 
             var instanceValue = factory.create(valueType);
@@ -386,7 +385,7 @@ namespace DatenMeister.Runtime
         /// <param name="extent">Extent being used to find references and/or meta classes</param>
         /// <param name="factory">Factory being used to create a new instance</param>
         /// <returns>The converted object that can directly be set. </returns>
-        private static object ConvertPropertyValue(object value, MofUriExtent extent, IFactory factory)
+        private static object? ConvertPropertyValue(object value, MofUriExtent extent, IFactory factory)
         {
             if (IsOfPrimitiveType(value))
             {
@@ -405,7 +404,11 @@ namespace DatenMeister.Runtime
                     }
                     else
                     {
-                        list.Add(ConvertToMofElement(listItem, extent, factory));
+                        var convertedElement = ConvertToMofElement(listItem, extent, factory);
+                        if (convertedElement != null)
+                        {
+                            list.Add(convertedElement);
+                        }
                     }
                 }
 
@@ -428,5 +431,44 @@ namespace DatenMeister.Runtime
         /// <param name="value">Value to be converted</param>
         /// <returns>true, if given type is urireference</returns>
         public static bool IsUriReference(object? value) => value is UriReference;
+
+        /// <summary>
+        /// Creates the process 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="arguments">Arguments being used to create the process</param>
+        public static void CreateProcess(string filePath, string? arguments = null)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = filePath,
+                UseShellExecute = true
+            };
+
+            if (arguments != null)
+            {
+                startInfo.Arguments = arguments;
+            }
+
+            Process.Start(startInfo);
+        }
+
+        /// <summary>
+        /// Opens the windows explorer
+        /// </summary>
+        /// <param name="filePath"></param>
+        public static void OpenExplorer(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            // combine the arguments together
+            // it doesn't matter if there is a space after ','
+            string argument = "/select, \"" + filePath +"\"";
+
+            CreateProcess("explorer.exe", argument);
+        }
     }
 }

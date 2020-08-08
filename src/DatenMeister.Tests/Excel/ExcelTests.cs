@@ -11,7 +11,6 @@ using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
@@ -23,7 +22,7 @@ namespace DatenMeister.Tests.Excel
         [Test]
         public void LoadExcel()
         {
-            using var dm = GiveMe.DatenMeister();
+            var dm = DatenMeisterTests.GetDatenMeisterScope();
             var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"));
 
@@ -56,15 +55,14 @@ namespace DatenMeister.Tests.Excel
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var excelReferenceSettings = new ExcelReferenceSettings
+                var excelReferenceSettings = new ExcelReferenceLoaderConfig("dm:///excel2")
                 {
-                    extentUri = "dm:///excel2",
                     filePath = Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"),
                     hasHeader = true,
                     sheetName = "Tabelle1"
                 };
 
-                var extentManager = dm.Resolve<IExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
@@ -102,16 +100,15 @@ namespace DatenMeister.Tests.Excel
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var excelReferenceSettings = new ExcelImportSettings
+                var excelReferenceSettings = new ExcelImportLoaderConfig("dm:///excel2")
                 {
-                    extentUri = "dm:///excel2",
                     filePath = Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"),
                     extentPath = Path.Combine(currentDirectory, "test.xmi"),
                     hasHeader = true,
                     sheetName = "Tabelle1"
                 };
 
-                var extentManager = dm.Resolve<IExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
@@ -125,8 +122,7 @@ namespace DatenMeister.Tests.Excel
 
                 dm.UnuseDatenMeister();
             }
-
-
+            
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
             {
                 var extentManager = dm.Resolve<IWorkspaceLogic>();

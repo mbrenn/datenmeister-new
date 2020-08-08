@@ -5,8 +5,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -52,14 +52,14 @@ namespace DatenMeister.WPF.Forms.Lists
                 SetRootItem(workspace);
 
                 // Registers upon events
-                var eventManager = GiveMe.Scope.Resolve<ChangeEventManager>();
+                var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
                 EventHandle = eventManager.RegisterFor(Extent, (x, y) =>
                     Dispatcher?.Invoke(() =>
-                        Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateView()));
+                        Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm()));
             }
         }
 
-        protected override void OnRecreateViews()
+        protected override void OnRecreateForms()
         {
             if (SelectedItem == null)
                 return;
@@ -70,7 +70,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var overridingDefinition = OverridingViewDefinition;
 
             if (IsExtentSelectedInTreeview ||
-                SelectedPackage is IElement selectedElement &&
+                SelectedItem is IElement selectedElement &&
                 selectedElement.metaclass?.@equals(managementProvider.__Workspace) == true)
             {
                 var formDefinition = overridingDefinition ??
@@ -81,10 +81,13 @@ namespace DatenMeister.WPF.Forms.Lists
                     SelectedItem,
                     formDefinition);
             }
-            else if (SelectedPackage != null)
+            else if (SelectedItem != null)
             {
-                var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
-                var form = viewLogic.GetItemTreeFormForObject(SelectedPackage, FormDefinitionMode.Default)
+                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+                var form = viewLogic.GetItemTreeFormForObject(
+                               SelectedItem, 
+                               FormDefinitionMode.Default, 
+                               CurrentViewModeId)
                            ?? throw new InvalidOperationException("form == null");
                 var formDefinition = overridingDefinition ??
                                      new FormDefinition(form);

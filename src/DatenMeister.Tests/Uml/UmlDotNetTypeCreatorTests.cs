@@ -14,13 +14,13 @@ namespace DatenMeister.Tests.Uml
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var typeWorkspace = dm.WorkspaceLogic.GetTypesWorkspace();
-            var zipCodes = typeWorkspace.Resolve(
-                "datenmeister:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCode",
+            var zipCodes = typeWorkspace.ResolveElement(
+                "dm:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCode",
                 ResolveType.Default,
                 false);
 
-            var zipCodesWithState = typeWorkspace.Resolve(
-                "datenmeister:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCodeWithState",
+            var zipCodesWithState = typeWorkspace.ResolveElement(
+                "dm:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCodeWithState",
                 ResolveType.Default,
                 false);
 

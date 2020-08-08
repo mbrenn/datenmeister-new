@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using Autofac;
 using BurnSystems.Logging;
@@ -19,6 +18,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -38,7 +38,15 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using Microsoft.Win32;
+using Binding = System.Windows.Data.Binding;
+using Button = System.Windows.Controls.Button;
+using Clipboard = System.Windows.Clipboard;
+using ContextMenu = System.Windows.Controls.ContextMenu;
+using DataGridCell = System.Windows.Controls.DataGridCell;
+using MenuItem = System.Windows.Controls.MenuItem;
+using MessageBox = System.Windows.MessageBox;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -83,7 +91,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         ///     Stores the view logic
         /// </summary>
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         private INavigationHost? _navigationHost;
         
@@ -96,9 +104,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         public ItemListViewControl()
         {
-            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateForm);
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
-            _formLogic = GiveMe.Scope.Resolve<FormLogic>();
+            _formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             InitializeComponent();
         }
 
@@ -119,7 +127,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _effectiveForm = value;
 #if DEBUG
-                if (value != null && !new FormMethods().ValidateForm(value)) 
+                if (value != null && !FormMethods.ValidateForm(value)) 
                     throw new InvalidOperationException("The form did not pass validation");
 #endif
             }
@@ -206,7 +214,7 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         var loader = new CsvLoader(GiveMe.Scope.Resolve<IWorkspaceLogic>());
                         var memoryProvider = new InMemoryProvider();
-                        var temporary = new MofUriExtent(memoryProvider, "datenmeister:///temp");
+                        var temporary = new MofUriExtent(memoryProvider, "dm:///temp");
                         var copier = new ExtentCopier(new MofFactory(temporary));
                         copier.Copy(Items, temporary.elements());
 
@@ -239,6 +247,24 @@ namespace DatenMeister.WPF.Forms.Base
                     "Edit",
                     NavigateToElement,
                     ButtonPosition.Before);
+            
+            yield return
+                new RowItemButtonDefinition(
+                    "Delete",
+                    (guest, item) =>
+                    {
+                        if (Items != null)
+                        {               var name = NamedElementMethods.GetName(item);
+                            if (MessageBox.Show(
+                                    $"Are you sure to delete the item '{name}'?",
+                                    "Confirmation",
+                                    MessageBoxButton.YesNo) ==
+                                MessageBoxResult.Yes)
+                            {
+                                Items?.remove(item);
+                            }
+                        }
+                    });
 
             yield return
                 new CollectionMenuButtonDefinition(
@@ -303,7 +329,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var extent = asExtent.Extent;
                 if (extent != null)
                 {
-                    _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
+                    _changeEventManager ??= GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
                     if (_changeEventHandle != null)
                     {
                         _changeEventManager.Unregister(_changeEventHandle);
@@ -317,10 +343,9 @@ namespace DatenMeister.WPF.Forms.Base
 
             // If form defines constraints upon metaclass, then the filtering will occur here
             Items = items;
-
             EffectiveForm = formDefinition;
             ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
@@ -330,8 +355,14 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (_changeEventHandle != null)
             {
-                _changeEventManager ??= GiveMe.Scope.Resolve<ChangeEventManager>();
-                GiveMe.Scope.Resolve<ChangeEventManager>().Unregister(_changeEventHandle);
+                _changeEventManager ??= GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
+                var tryScope = GiveMe.TryGetScope();
+
+                if (tryScope != null)
+                {
+                    tryScope.ScopeStorage.Get<ChangeEventManager>().Unregister(_changeEventHandle);
+                }
+
                 _changeEventHandle = null;
             }
         }
@@ -344,10 +375,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>Returned element for the </returns>
         private object? GetValueOfElement(IObject element, IElement field)
         {
-            if (_formLogic == null) throw new InvalidOperationException("_formlogic == null");
+            if (_formsPlugin == null) throw new InvalidOperationException("_formlogic == null");
             
             var fieldMetaClass = field.getMetaClass();
-            if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+            if (fieldMetaClass?.equals(_formsPlugin.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -367,11 +398,11 @@ namespace DatenMeister.WPF.Forms.Base
         ///     This method is called, when the used clicks on the left side or
         ///     an additional item was created/edited or removed.
         /// </summary>
-        public void UpdateView()
+        public void UpdateForm()
         {
             if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
             
-            var watch = new StopWatchLogger(Logger, "UpdateView");
+            var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
             var listItems = new ObservableCollection<ExpandoObject>();
 
             var selectedItem = GetSelectedItem();
@@ -386,6 +417,12 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Updates all columns and returns the fieldnames and fields
             var (fieldDataNames, fields) = UpdateColumnDefinitions();
+            if (fields == null)
+            {
+                Logger.Warn("UpdateColumnDefinitions did not return any fields.");
+                return;
+            }
+            
             watch.IntermediateLog("UpdateColumnDefinitions done");
 
             Task.Run(() =>
@@ -395,14 +432,20 @@ namespace DatenMeister.WPF.Forms.Base
                 // Creates the rows
                 if (Items != null)
                 {
+                    var items = Items;
+                    if (_effectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.includeDescendents))
+                    {
+                        items = items.GetAllDescendantsIncludingThemselves();
+                    }
+
                     // Get the items and honor searching
-                    var items = Items.OfType<IObject>();
+                    items = items.WhenElementIsObject();
                     if (!string.IsNullOrEmpty(_searchText))
                     {
                         var columnNames = fields.OfType<IElement>()
                             .Select(x => x.get("name")?.ToString())
                             .Where(x => x != null);
-                        items = Items.WhenOneOfThePropertyContains(columnNames!, _searchText).OfType<IObject>();
+                        items = items.WhenOneOfThePropertyContains(columnNames!, _searchText);
                     }
 
                     // Goes through the fast filters and filters the items
@@ -415,11 +458,38 @@ namespace DatenMeister.WPF.Forms.Base
                             continue;
                         }
 
-                        items = items.Where(x => converter.IsFiltered(x));
+                        items = items.WhenFiltered(x => converter.IsFiltered(x));
+                    }
+                    
+                    // Checks, if we have a view node
+                    var viewNode = _effectiveForm.getOrDefault<IElement>(_FormAndFields._ListForm.viewNode); 
+                    if (viewNode != null)
+                    {
+                        var dataviewHandler = new DataViewEvaluation(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+                        dataviewHandler.AddDynamicSource("input", items);
+
+                        items = dataviewHandler.GetElementsForViewNode(viewNode);
+                    }
+                    
+                    // Now performs the sorting
+                    var sortingOrder = _effectiveForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.sortingOrder);
+                    if (sortingOrder != null)
+                    {
+                        var sortingColumnNames =
+                            sortingOrder
+                                .OfType<IElement>()
+                                .Select(x =>
+                                    (x.getOrDefault<bool>(_FormAndFields._SortingOrder.isDescending)
+                                        ? "!"
+                                        : "") +
+                                    x.getOrDefault<IElement>(_FormAndFields._SortingOrder.field)
+                                        ?.getOrDefault<string>(_FormAndFields._FieldData.name))
+                                .Where(x => !string.IsNullOrEmpty(x) && x != "!");
+                        items = items.OrderElementsBy(sortingColumnNames);
                     }
 
                     // Go through the items and build up the list of elements
-                    foreach (var item in items)
+                    foreach (var item in items.OfType<IObject>())
                     {
                         var itemObject = new ExpandoObject();
                         var asDictionary = (IDictionary<string, object?>) itemObject;
@@ -471,7 +541,6 @@ namespace DatenMeister.WPF.Forms.Base
 
                         _itemMapping[itemObject] = item;
                         listItems.Add(itemObject);
-                        
                         
                         if (item.Equals(selectedItem))
                         {
@@ -540,7 +609,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// </returns>
         private (IList<string> names, IReflectiveCollection? fields) UpdateColumnDefinitions()
         {
-            if (!(EffectiveForm?.get(_FormAndFields._ListForm.field) is IReflectiveCollection fields))
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
+            if (fields == null)
                 return (new string[] { }, null);
 
             ClearInfoLines();
@@ -549,6 +619,8 @@ namespace DatenMeister.WPF.Forms.Base
             ButtonBar.Visibility = Visibility.Collapsed;
 
             var fieldNames = new List<string>();
+
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true;
 
             // Creates the column
             foreach (var field in fields.Cast<IElement>())
@@ -559,7 +631,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 bool isReadOnly;
 
-                if (fieldMetaClass?.equals(_formLogic.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                if (fieldMetaClass?.equals(_formsPlugin.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";
@@ -575,7 +647,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     Header = title,
                     Binding = new Binding(name),
-                    IsReadOnly = isReadOnly,
+                    IsReadOnly = isReadOnly || isFormReadOnly,
                     ElementStyle = (Style) TryFindResource("DataGridCellCentered")
                 };
 
@@ -584,7 +656,31 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Creates the row button
-            foreach (var definition in ViewExtensions)
+            var effectiveViewExtensions = new List<ViewExtension>(ViewExtensions);
+            
+            // Go through the form and create the creation button
+            var defaultTypes =
+                EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+            if (Items != null)
+            {
+                foreach (var defaultType in defaultTypes.OfType<IElement>().Distinct())
+                {
+                    var defaultTypeMetaClass =
+                        defaultType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                    if (defaultTypeMetaClass != null)
+                    {
+                        effectiveViewExtensions.Add(
+                            ViewExtensionHelper.GetCreateButtonForMetaClass(
+                                NavigationHost,
+                                defaultTypeMetaClass,
+                                Items));
+                    }
+                }
+            }
+            
+            var hashSet = new HashSet<object>();
+
+            foreach (var definition in effectiveViewExtensions)
                 switch (definition)
                 {
                     case RowItemButtonDefinition rowButtonDefinition:
@@ -603,6 +699,15 @@ namespace DatenMeister.WPF.Forms.Base
 
                         break;
                     case GenericButtonDefinition genericButtonDefinition:
+                        if (genericButtonDefinition.Tag != null)
+                        {
+                            // Skip the duplicates
+                            if (hashSet.Contains(genericButtonDefinition.Tag))
+                                continue;
+
+                            hashSet.Add(genericButtonDefinition.Tag);
+                        }
+                        
                         AddGenericButton(genericButtonDefinition.Name, genericButtonDefinition.OnPressed);
                         break;
                     case ItemButtonDefinition itemButtonDefinition:
@@ -737,7 +842,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             _searchText = SearchField.Text;
-            UpdateView();
+            UpdateForm();
         }
 
         /// <summary>
@@ -749,7 +854,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (!(DataGrid.SelectedItem is ExpandoObject selectedItem)) return;
 
-            if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
+            if (_itemMapping.TryGetValue(selectedItem, out _))
             {
                 // OnMouseDoubleClick(foundItem);
             }
@@ -784,7 +889,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="e"></param>
         private void FastViewFilter_OnClick(object sender, RoutedEventArgs e)
         {
-            var translator = new FastViewFilterTranslator(GiveMe.Scope.Resolve<IWorkspaceLogic>());
+            var translator = new FastViewFilterTranslator();
             var menu = new ContextMenu();
             var list = new List<object>();
 
@@ -872,7 +977,7 @@ namespace DatenMeister.WPF.Forms.Base
                                 ?? throw new InvalidOperationException("EffectiveForm == null");
             effectiveForm.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
             UpdateFastFilterTexts();
-            UpdateView();
+            UpdateForm();
         }
 
         private void UpdateFastFilterTexts()
@@ -886,8 +991,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             foreach (var filter in fastFilters.OfType<IElement>())
             {
-                var translator = new FastViewFilterTranslator(
-                    GiveMe.Scope.Resolve<IWorkspaceLogic>());
+                var translator = new FastViewFilterTranslator();
 
                 var text = new TextBlock
                 {
@@ -898,7 +1002,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     fastFilters.remove(filter);
                     UpdateFastFilterTexts();
-                    UpdateView();
+                    UpdateForm();
                 };
 
                 FastViewFilterPanel.Children.Add(text);

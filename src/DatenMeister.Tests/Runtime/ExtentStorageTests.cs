@@ -26,12 +26,12 @@ namespace DatenMeister.Tests.Runtime
             mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 
-            var data = new ExtentStorageData();
-            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(new IntegrationSettings());
+            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
-                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,
@@ -47,7 +47,7 @@ namespace DatenMeister.Tests.Runtime
 
             // Changes content, store it and check, if stored
             ((IObject) csvExtent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
-            logic.StoreAllExtents();
+            logic.UnloadManager(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);
@@ -65,12 +65,12 @@ namespace DatenMeister.Tests.Runtime
             mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
             var dataLayers = WorkspaceLogic.InitDefault();
 
-            var data = new ExtentStorageData();
-            var logic = new ExtentManager(data, mapper, null, new WorkspaceLogic(dataLayers), new IntegrationSettings());
-            var configuration = new CsvExtentLoaderConfig
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(new IntegrationSettings());
+            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
-                extentUri = "datenmeister:///local/",
                 Settings =
                 {
                     HasHeader = false,
@@ -88,7 +88,7 @@ namespace DatenMeister.Tests.Runtime
             foundConfiguration = logic.GetLoadConfigurationFor(null);
             Assert.That(foundConfiguration, Is.Null);
 
-            foundConfiguration = logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "datenmeister:///temp"));
+            foundConfiguration = logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "dm:///temp"));
             Assert.That(foundConfiguration, Is.Null);
         }
     }

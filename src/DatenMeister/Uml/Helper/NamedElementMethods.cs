@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -24,8 +25,9 @@ namespace DatenMeister.Uml.Helper
         /// objects and retrieves the partial names by 'name'.
         /// </summary>
         /// <param name="value">Value to be queried</param>
+        /// <param name="separator">Separator</param>
         /// <returns>Full name of the element</returns>
-        public static string GetFullName(IObject value)
+        public static string GetFullName(IObject value, string separator = "::")
         {
             switch (value)
             {
@@ -39,7 +41,42 @@ namespace DatenMeister.Uml.Helper
                     while (current != null)
                     {
                         var currentName = GetName(current);
-                        result = $"{currentName}::{result}";
+                        result = $"{currentName}{separator}{result}";
+                        current = current.container();
+                        depth++;
+
+                        if (depth > MaxDepth)
+                        {
+                            throw new InvalidOperationException(
+                                $"The full name of the element {value} could not be retrieved due to an infinite loop. (Threshold is 1000)");
+                        }
+                    }
+
+                    return result;
+            }
+
+            return GetName(value);
+        }
+        
+        public static string GetFullNameWithoutElementId(IObject value, string separator = "::")
+        {
+            var realSeparator = string.Empty;
+            switch (value)
+            {
+                case null:
+                    throw new ArgumentNullException(nameof(value));
+                case IElement valueAsElement:
+                    var current = valueAsElement.container();
+                    var result = string.Empty;
+                    var depth = 0;
+
+                    while (current != null)
+                    {
+                        var currentName = GetName(current);
+                        result = $"{currentName}{realSeparator}{result}";
+
+                        realSeparator = separator;
+
                         current = current.container();
                         depth++;
 
@@ -62,7 +99,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="workspace">Workspace to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IWorkspace workspace, string fullName)
+        public static IElement? GetByFullName(IWorkspace workspace, string fullName)
         {
             return workspace.extent
                 .Select(extent => GetByFullName(extent.elements(), fullName))
@@ -75,7 +112,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="extent">Extent to be queried</param>
         /// <param name="fullName">Name of the element</param>
         /// <returns>Found element or null</returns>
-        public static IElement GetByFullName(IUriExtent extent, string fullName) =>
+        public static IElement? GetByFullName(IUriExtent extent, string fullName) =>
             GetByFullName(extent.elements(), fullName);
 
         /// <summary>
@@ -143,17 +180,17 @@ namespace DatenMeister.Uml.Helper
 
                 // Property exists
                 object? propertyValue;
-                if (value is MofObject valueConverted && noReferences)
+                if (value is MofObject valueConverted)
                 {
                     // If no references is set and the given object supports the query via 'noReferences' 
-                    propertyValue = valueConverted.get(property, true);
+                    propertyValue = valueConverted.get(property, noReferences, ObjectType.ReflectiveSequence);
                 }
                 else
                 {
                     propertyValue = value.get(property);
                 }
 
-                if (!DotNetHelper.IsOfEnumeration(propertyValue))
+                if (!DotNetHelper.IsOfEnumeration(propertyValue) || propertyValue == null)
                 {
                     continue;
                 }
@@ -190,7 +227,7 @@ namespace DatenMeister.Uml.Helper
             switch (element)
             {
                 case IHasId elementAsHasId:
-                    return elementAsHasId.Id;
+                    return elementAsHasId.Id ?? string.Empty;
                 case IElement asIElement when asIElement.metaclass != null:
                 {
                     var name = GetName(asIElement.metaclass);

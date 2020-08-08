@@ -28,7 +28,7 @@ namespace DatenMeister.Runtime.Functions.Interfaces
             AggregateValue((TItem) Convert.ChangeType(value, typeof(TItem)));
         }
 
-        public object Result => FinalizeAggregation();
+        public object? Result => FinalizeAggregation();
 
         protected abstract void StartAggregation();
 

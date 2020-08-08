@@ -6,5 +6,13 @@
     /// </summary>
     public class ViewExtension
     {
+        /// <summary>
+        /// Gets or sets a tag that can be used to identify the purpose of the viewextension
+        /// </summary>
+        public object? Tag
+        {
+            get;
+            set;
+        }
     }
 }

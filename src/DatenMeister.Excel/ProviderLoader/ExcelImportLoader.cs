@@ -11,27 +11,27 @@ using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Excel.ProviderLoader
 {
-    [ConfiguredBy(typeof(ExcelImportSettings))]
+    [ConfiguredBy(typeof(ExcelImportLoaderConfig))]
     public class ExcelImportLoader : IProviderLoader
     {
-        private readonly IExtentManager _extentManager;
+        private readonly ExtentManager _extentManager;
 
-        public ExcelImportLoader(IExtentManager extentManager)
+        public ExcelImportLoader(ExtentManager extentManager)
         {
             _extentManager = extentManager;
         }
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            if (!(configuration is ExcelImportSettings settings))
+            if (!(configuration is ExcelImportLoaderConfig settings))
             {
-                throw new InvalidOperationException("Given configuration is not of type ExcelReferenceSettings");
+                throw new InvalidOperationException(
+                    $"Given configuration is not of type {typeof(ExcelImportLoaderConfig)}, is of {configuration.GetType().FullName}");
             }
 
             // Creates the XMI being used as a target
-            var xmiConfiguration = new XmiStorageConfiguration
+            var xmiConfiguration = new XmiStorageLoaderConfig(settings.extentUri)
             {
-                extentUri = settings.extentUri,
                 filePath = settings.extentPath,
                 workspaceId = settings.workspaceId
             };
@@ -49,7 +49,7 @@ namespace DatenMeister.Excel.ProviderLoader
 
         public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

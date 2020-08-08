@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using BurnSystems;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
 {
@@ -32,14 +33,14 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
             ImageName = imageName;
             CategoryName = categoryName;
             Priority = Math.Min(priority, 65535) * 65536 +
-                    name.GetHashCode() % 65535;
+                       name.GetDeterministicHashCode() % 65535;
         }
 
         /// <summary>
         /// Gets or sets the index of the ribbon definition which is used to order the items.
         /// The higher the number, the higher the priority
         /// </summary>
-        public int Priority { get; }
+        public int Priority { get; set; }
 
         /// <summary>
         /// Gets the name of the ribbon
@@ -105,7 +106,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
         /// <param name="first">First parameter to be evaluated</param>
         /// <param name="second">Second parameter to be evaluated</param>
         /// <returns>true, if both values are equal</returns>
-        public static bool AreEqual(NavigationButtonDefinition first, NavigationButtonDefinition second)
+        public static bool AreEqual(NavigationButtonDefinition? first, NavigationButtonDefinition? second)
         {
             if (first == second)
             {
@@ -147,9 +148,9 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
         /// </summary>
         public class Comparer : IEqualityComparer<NavigationButtonDefinition>
         {
-            public bool Equals(NavigationButtonDefinition x, NavigationButtonDefinition y)
+            public bool Equals(NavigationButtonDefinition? x, NavigationButtonDefinition? y)
             {
-                return NavigationButtonDefinition.AreEqual(x, y);
+                return AreEqual(x, y);
             }
 
             public int GetHashCode(NavigationButtonDefinition obj)

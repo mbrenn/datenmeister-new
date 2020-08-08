@@ -1,4 +1,6 @@
-﻿using DatenMeister.Modules.Forms.FormFinder;
+﻿using DatenMeister.Integration;
+using DatenMeister.Models.Runtime;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 
@@ -10,34 +12,34 @@ namespace DatenMeister.Uml.Plugin
         /// <summary>
         /// Defines the view logic
         /// </summary>
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         private readonly PackageMethods _packageMethods;
 
         public const string PackageName = "Uml";
 
-        public UmlPlugin(FormLogic formLogic, PackageMethods packageMethods)
+        /// <summary>
+        /// Stores the name of the extent type
+        /// </summary>
+        public const string ExtentType = "Uml.Classes";
+
+        public UmlPlugin(FormsPlugin formsPlugin, PackageMethods packageMethods, IScopeStorage scopeStorage)
         {
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
             _packageMethods = packageMethods;
+            var extentSettings = scopeStorage.Get<ExtentSettings>();
+            extentSettings.extentTypeSettings.Add(
+                new ExtentTypeSetting(ExtentType));
         }
 
         public void Start(PluginLoadingPosition position)
         {
-            AddToViewDefinition();
-        }
-
-        /// <summary>
-        /// Adds the views to the view logic.
-        /// </summary>
-        public void AddToViewDefinition()
-        {
             _packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Views.UML.xmi",
+                "DatenMeister.XmiFiles.Forms.UML.xmi",
                 PackageName,
-                _formLogic.GetInternalFormExtent(),
-                PackageName);
+                _formsPlugin.GetInternalFormExtent(),
+                $"DatenMeister::{PackageName}");
         }
     }
 }

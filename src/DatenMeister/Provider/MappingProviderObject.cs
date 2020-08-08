@@ -39,7 +39,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="getFunction">Defines the getter function to retrieve the container</param>
         /// <param name="setFunction">Defines the setter function to set the container</param>
-        public void AddContainerMapping(Func<T, IProviderObject> getFunction, Action<T, IProviderObject> setFunction)
+        public void AddContainerMapping(Func<T, IProviderObject> getFunction, Action<T, IProviderObject?> setFunction)
         {
             ContainerMapping = new MappingContainerProperty(
                 getFunction,
@@ -52,7 +52,7 @@ namespace DatenMeister.Provider
         /// <param name="propertyName">Name of the property to be set</param>
         /// <param name="getFunction">Get function to be used</param>
         /// <param name="setFunction">Set function to be used</param>
-        public void AddMapping(string propertyName, Func<T, object?> getFunction, Action<T, object> setFunction)
+        public void AddMapping(string propertyName, Func<T, object?> getFunction, Action<T, object?> setFunction)
         {
             _mappings[propertyName] =
                 new MappingProperty(
@@ -74,8 +74,9 @@ namespace DatenMeister.Provider
         /// Gets the property
         /// </summary>
         /// <param name="property">Property to be set</param>
+        /// <param name="objectType">Object types to be set</param>
         /// <returns>Value to be set</returns>
-        public object GetProperty(string property)
+        public object? GetProperty(string property, ObjectType objectType)
         {   
             _mappings.TryGetValue(property, out var result);
 
@@ -109,20 +110,20 @@ namespace DatenMeister.Provider
 
         public void EmptyListForProperty(string property)
         {
-            var result = GetProperty(property) as ICollection<object>;
+            var result = GetProperty(property, ObjectType.ReflectiveSequence) as ICollection<object>;
             result?.Clear();
         }
 
         public bool AddToProperty(string property, object value, int index = -1)
         {
-            var result = GetProperty(property) as ICollection<object>;
+            var result = GetProperty(property, ObjectType.ReflectiveSequence) as ICollection<object>;
             result?.Add(value);
             return true;
         }
 
         public bool RemoveFromProperty(string property, object value)
         {
-            var result = GetProperty(property) as ICollection<object>;
+            var result = GetProperty(property, ObjectType.ReflectiveSequence) as ICollection<object>;
             return result?.Remove(value) == true;
         }
 
@@ -131,12 +132,12 @@ namespace DatenMeister.Provider
             return ContainerMapping?.GetFunction(Value) != null;
         }
 
-        public IProviderObject GetContainer()
+        public IProviderObject? GetContainer()
         {
             return ContainerMapping?.GetFunction(Value);
         }
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             ContainerMapping?.SetFunction(Value, value);
         }
@@ -146,14 +147,14 @@ namespace DatenMeister.Provider
         /// </summary>
         private class MappingProperty
         {
-            public MappingProperty(Func<T, object> getFunction, Action<T, object> setFunction)
+            public MappingProperty(Func<T, object?> getFunction, Action<T, object?> setFunction)
             {
                 GetFunction = getFunction;
                 SetFunction = setFunction;
             }
 
-            public Func<T, object> GetFunction { get; }
-            public Action<T, object> SetFunction { get; }
+            public Func<T, object?> GetFunction { get; }
+            public Action<T, object?> SetFunction { get; }
         }
 
         /// <summary>
@@ -161,14 +162,14 @@ namespace DatenMeister.Provider
         /// </summary>
         private class MappingContainerProperty
         {
-            public MappingContainerProperty(Func<T, IProviderObject> getFunction, Action<T, IProviderObject> setFunction)
+            public MappingContainerProperty(Func<T, IProviderObject> getFunction, Action<T, IProviderObject?> setFunction)
             {
                 GetFunction = getFunction;
                 SetFunction = setFunction;
             }
 
             public Func<T, IProviderObject> GetFunction { get; }
-            public Action<T, IProviderObject> SetFunction { get; }
+            public Action<T, IProviderObject?> SetFunction { get; }
         }
     }
 }

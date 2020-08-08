@@ -4,6 +4,7 @@ using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
@@ -18,6 +19,9 @@ namespace DatenMeister.WPF.Forms.Fields
 
         public UIElement? CreateElement(IObject value, IElement fieldData, DetailFormControl detailForm, FieldParameter fieldFlags)
         {
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._AnyDataFieldData.isReadOnly) ||
+                             fieldFlags.IsReadOnly;
+            
             var groupName = StringManipulation.RandomString(10);
             var stackPanel = new StackPanel
                 {Orientation = Orientation.Vertical, HorizontalAlignment = HorizontalAlignment.Stretch};
@@ -31,7 +35,22 @@ namespace DatenMeister.WPF.Forms.Fields
                 };
             }
 
-            var elementValue = value.getOrDefault<object>(_name);
+            var isPrimitive = true;
+            var metaClass = (value as IElement)?.getMetaClass();
+            if (metaClass != null)
+            {
+                var propertyType = ClassifierMethods.GetPropertyOfClassifier(metaClass, _name);
+                if (propertyType != null)
+                {
+                    isPrimitive = ClassifierMethods.IsOfPrimitiveType(propertyType);
+                }
+            }
+
+            // When element is known to be an element, try to read it as an element
+            // if it does not return a value, then try to read it in as an object
+            var elementValue = isPrimitive 
+                ? value.getOrDefault<object>(_name)
+                : value.getOrDefault<IElement>(_name) ?? value.getOrDefault<object>(_name);
 
             _textRadioButton = new RadioButton
             {
@@ -67,11 +86,13 @@ namespace DatenMeister.WPF.Forms.Fields
             if (elementValue != null && DotNetHelper.IsOfPrimitiveType(elementValue))
             {
                 _textRadioButton.IsChecked = true;
+                _textRadioButton.IsEnabled = !isReadOnly;
                 _textBoxForString.Text = elementValue.ToString();
             }
             else
             {
                 _referenceRadioButton.IsChecked = true;
+                _referenceRadioButton.IsEnabled = !isReadOnly;
                 _referenceField.SetSelectedValue(elementValue);
                 _textBoxForString.IsEnabled = false;
             }
@@ -79,12 +100,12 @@ namespace DatenMeister.WPF.Forms.Fields
             _referenceRadioButton.Checked += (x, y) =>
             {
                 _textBoxForString.IsEnabled = false;
-                _referenceField.IsEnabled = true;
+                _referenceField.IsEnabled = !isReadOnly;
             };
 
             _textRadioButton.Checked += (x, y) =>
             {
-                _textBoxForString.IsEnabled = true;
+                _textBoxForString.IsEnabled = !isReadOnly;
                 _referenceField.IsEnabled = false;
             };
             

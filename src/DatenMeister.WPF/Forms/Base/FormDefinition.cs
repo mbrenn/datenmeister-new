@@ -71,7 +71,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
 
-        public FormDefinition(IObject element, FormDefinitionMode mode = FormDefinitionMode.Specific)
+        public FormDefinition(IObject? element, FormDefinitionMode mode = FormDefinitionMode.Specific)
         {
             if (element == null && mode == FormDefinitionMode.Specific)
             {

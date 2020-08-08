@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -16,12 +16,12 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// In addition, it will also use the ExtentManager class to load the actual data
     /// of the extents
     /// </summary>
-    public class ExtentConfigurationLoader
+    public partial class ExtentConfigurationLoader
     {
         /// <summary>
         /// Stores the mapper instance being used to find the allowed types
         /// </summary>
-        private readonly IConfigurationToExtentStorageMapper _mapper;
+        private readonly ConfigurationToExtentStorageMapper _mapper;
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
 
@@ -34,16 +34,16 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets the extent manager being used to actual load an extent
         /// </summary>
-        private IExtentManager ExtentManager { get; }
+        private ExtentManager ExtentManager { get; }
 
         public ExtentConfigurationLoader(
-            ExtentStorageData extentStorageData,
-            IExtentManager extentManager,
-            IConfigurationToExtentStorageMapper mapper)
+            IScopeStorage scopeStorage,
+            ExtentManager extentManager,
+            ConfigurationToExtentStorageMapper mapper)
         {
             _mapper = mapper;
             ExtentManager = extentManager;
-            ExtentStorageData = extentStorageData;
+            ExtentStorageData = scopeStorage.Get<ExtentStorageData>();
         }
 
         /// <summary>
@@ -55,29 +55,40 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             var path = ExtentStorageData.FilePath;
             var loaded = new List<Tuple<ExtentLoaderConfig, XElement>>();
-            var document = XDocument.Load(path);
-
-            foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
+            if (!File.Exists(path))
             {
-                var xmlConfig = xmlExtent.Element("config") ?? throw new InvalidOperationException("extents::extent::config Xml node not found");
-                var configType = xmlConfig.Attribute("configType")?.Value ?? throw new InvalidOperationException("configType not found");
+                Logger.Info($"File for Extent not found: {path}");
+            }
+            else
+            {
+                var document = XDocument.Load(path);
 
-                // Gets the type of the configuration in the white list to avoid any unwanted security issue
-                var found = _mapper.ConfigurationTypes.FirstOrDefault(x => x.FullName?.ToLower() == configType.ToLower());
-                if (found == null)
+                foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
                 {
-                    Logger.Fatal($"Unknown Configuration Type: {configType}");
-                    ExtentStorageData.FailedLoading = true;
-                    throw new InvalidOperationException($"Unknown Configuration Type: {configType}");
+                    var xmlConfig = xmlExtent.Element("config") ??
+                                    throw new InvalidOperationException("extents::extent::config Xml node not found");
+                    var configType = xmlConfig.Attribute("configType")?.Value ??
+                                     throw new InvalidOperationException("configType not found");
+                    configType = Migration.TranslateLegacyConfigurationType(configType);
+
+                    // Gets the type of the configuration in the white list to avoid any unwanted security issue
+                    var found = _mapper.ConfigurationTypes.FirstOrDefault(x =>
+                        x.FullName?.ToLower() == configType.ToLower());
+                    if (found == null)
+                    {
+                        Logger.Fatal($"Unknown Configuration Type: {configType}");
+                        ExtentStorageData.FailedLoading = true;
+                        throw new InvalidOperationException($"Unknown Configuration Type: {configType}");
+                    }
+
+                    xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
+                    var serializer = new XmlSerializer(found);
+                    var config = serializer.Deserialize(xmlConfig.CreateReader());
+
+                    var xmlMeta = xmlExtent.Element("metadata");
+
+                    loaded.Add(new Tuple<ExtentLoaderConfig, XElement>((ExtentLoaderConfig) config, xmlMeta));
                 }
-
-                xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
-                var serializer = new XmlSerializer(found);
-                var config = serializer.Deserialize(xmlConfig.CreateReader());
-
-                var xmlMeta = xmlExtent.Element("metadata");
-
-                loaded.Add(new Tuple<ExtentLoaderConfig, XElement>((ExtentLoaderConfig) config, xmlMeta));
             }
 
             return loaded;
@@ -106,11 +117,15 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var xmlExtent = new XElement("extent");
 
                 // Stores the configuration
-                var xmlData = SerializeToXElement(extent.Configuration);
+                var xmlData = SerializeToXElement(extent.Configuration ??
+                                                  throw new InvalidOperationException("Configuration is not set"));
+                
                 xmlData.Name = "config";
                 // Stores the .Net datatype to allow restore of the right element
-                Debug.Assert(extent?.Configuration?.GetType() != null);
-                xmlData.Add(new XAttribute("configType", extent.Configuration.GetType().FullName));
+                var fullName = extent.Configuration?.GetType().FullName;
+                if (fullName == null) continue;
+                
+                xmlData.Add(new XAttribute("configType",fullName));
                 xmlExtent.Add(xmlData);
 
                 // Stores the metadata

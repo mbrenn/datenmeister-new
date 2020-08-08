@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 
 namespace DatenMeister.Provider.DotNet
 {
@@ -109,9 +109,18 @@ namespace DatenMeister.Provider.DotNet
         }
 
         /// <summary>
-        /// Gets the capabilities of the provider
+        /// Stores the capabilities of the provider
         /// </summary>
         /// <returns></returns>
-        public ProviderCapability GetCapabilities() => ProviderCapability.None;
+        private readonly ProviderCapability _providerCapability = new ProviderCapability
+        {
+            IsTemporaryStorage = true
+        };
+
+        /// <summary>
+        /// Gets the capabilities of the provider
+        /// </summary>
+        /// <returns>Capabilities of the provider</returns>
+        public ProviderCapability GetCapabilities() => _providerCapability;
     }
 }

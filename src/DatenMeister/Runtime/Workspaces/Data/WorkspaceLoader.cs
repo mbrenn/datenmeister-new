@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using BurnSystems.Logging;
+using DatenMeister.Integration;
 
 namespace DatenMeister.Runtime.Workspaces.Data
 {
@@ -18,10 +18,10 @@ namespace DatenMeister.Runtime.Workspaces.Data
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic { get; set; }
 
-        public WorkspaceLoader(IWorkspaceLogic workspaceLogic, WorkspaceLoaderConfig config)
+        public WorkspaceLoader(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
-            Config = config ?? throw new ArgumentNullException(nameof(config));
+            Config = scopeStorage.Get<WorkspaceLoaderConfig>();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace DatenMeister.Runtime.Workspaces.Data
         /// If not, it will be created.
         /// </summary>
         /// <returns>The loaded workspace</returns>
-        public WorkspaceFileData Load()
+        public WorkspaceFileData? Load()
         {
             try
             {
@@ -74,11 +74,8 @@ namespace DatenMeister.Runtime.Workspaces.Data
             var workSpaceData = new WorkspaceFileData();
             foreach (var workSpace in WorkspaceLogic.Workspaces)
             {
-                workSpaceData.workspaces.Add(new WorkspaceInfo
-                {
-                    id = workSpace.id,
-                    annotation = workSpace.annotation
-                });
+                workSpaceData.workspaces.Add(
+                    new WorkspaceInfo(workSpace.id, workSpace.annotation));
             }
 
             Save(Config.filepath, workSpaceData);

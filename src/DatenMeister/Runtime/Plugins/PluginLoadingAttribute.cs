@@ -14,7 +14,6 @@ namespace DatenMeister.Runtime.Plugins
         /// <summary>
         /// Initializes a new instance of the PluginDependency attribute class
         /// </summary>
-        /// <param name="dependentType">Defines teh type upon which this plugin is dependent upon</param>
         /// <param name="pluginLoadingPosition">Defines the plugin execution position</param>
         public PluginLoadingAttribute(PluginLoadingPosition pluginLoadingPosition = PluginLoadingPosition.AfterLoadingOfExtents)
         {

@@ -1,13 +1,13 @@
 #nullable enable
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
@@ -20,7 +20,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         /// <param name="metaClass"></param>
         /// <param name="creationMode"></param>
-        public IElement CreateListFormForMetaClass(IElement metaClass, CreationMode creationMode)
+        /// <param name="property">Property being used</param>
+        public IElement CreateListFormForMetaClass(
+            IObject? metaClass,
+            CreationMode creationMode,
+            IElement? property = null)
         {
             if (!creationMode.HasFlag(CreationMode.ByMetaClass))
             {
@@ -28,16 +32,36 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             var result = _factory.create(_formAndFields.__ListForm);
+            var realPropertyName = NamedElementMethods.GetName(property);
+            var propertyName = property != null ? realPropertyName : "List";
+            
+            var title = 
+                (metaClass != null ? NamedElementMethods.GetName(metaClass) : string.Empty) +
+                (metaClass != null && property != null ? " - " : "") +
+                (property != null ? NamedElementMethods.GetName(property) : "");
 
-            var nameOfListForm = NamedElementMethods.GetName(metaClass);
-            result.set(_FormAndFields._ListForm.title, nameOfListForm);
-            result.set(_FormAndFields._ListForm.name, nameOfListForm);
-            AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
-
-            var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
-            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
+            result.set(_FormAndFields._ListForm.title, title);
+            result.set(_FormAndFields._ListForm.name, propertyName);
+            result.set(_FormAndFields._ListForm.property, realPropertyName);
+            
+            if (metaClass != null)
+            {
+                AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
+                
+                var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
+                result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
+            }
+            else
+            {
+                // Ok, we have no metaclass, but let's add at least the columns for the property 'name'
+                var nameProperty = _uml?.CommonStructure.NamedElement._name;
+                if (nameProperty != null)
+                {
+                    AddToFormByUmlElement(result, nameProperty, CreationMode.ForListForms | CreationMode.ByMetaClass);
+                }
+            }
 
             return result;
         }
@@ -81,15 +105,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     // of a metaclass
                     firstElementMetaClass = metaClass;
                 }
-                else if (firstElementMetaClass != metaClass &&
-                         !metaClassAdded &&
-                         creationMode.HasFlagFast(CreationMode.AddMetaClass))
+
+                else if (firstElementMetaClass != metaClass
+                         && !metaClassAdded
+                         && !cache.MetaClassAlreadyAdded
+                         && creationMode.HasFlagFast(CreationMode.AddMetaClass)
+                         && !FormMethods.HasMetaClassFieldInForm(result))
                 {
                     metaClassAdded = true;
-                    
+                    cache.MetaClassAlreadyAdded = true;
+
                     // Create the metaclass as a field
                     var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
                     metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
+                    metaClassField.set(_FormAndFields._MetaClassElementFieldData.title, "Metaclass");
                     result.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
                 }
 
@@ -177,7 +206,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
                     else
                     {
-                        var isSafeProperty = _defaultClassifierHints.IsGenericProperty(element, propertyName);
+                        var isSafeProperty = DefaultClassifierHints.IsGenericProperty(element, propertyName);
                         if (isSafeProperty)
                         {
                             propertyNames.Add(propertyName);
@@ -191,7 +220,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 toBeDeleted.Clear();
                 foreach (var propertyName in propertyNames)
                 {
-                    var isSafeProperty = _defaultClassifierHints.IsGenericProperty(element, propertyName);
+                    var isSafeProperty = DefaultClassifierHints.IsGenericProperty(element, propertyName);
                     if (!propertiesOfElement.Contains(propertyName) && !isSafeProperty)
                     {
                         toBeDeleted.Add(propertyName);

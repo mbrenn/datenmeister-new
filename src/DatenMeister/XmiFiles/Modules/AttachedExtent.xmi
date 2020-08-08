@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item>
+    <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Forms"
+          xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Item"
+                         hideMetaInformation="True" allowNewProperties="True" p1:id="AttachedElement.ExtentProperty">
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name"
+                   title="Name"/>
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                   name="referencedWorkspace" title="Original Workspace"/>
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                   name="referencedExtent" title="Original Extent"/>
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData"
+                   name="referenceType" title="Attached Element Type"
+                   defaultWorkspace="Types" defaultExtentUri="dm:///_internal/types/user"/>
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData"
+                   name="referenceProperty" title="Referencing Property"/>
+        </packagedElement>
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation"
+                         formType="Detail"
+                         form-ref="#AttachedElement.ExtentProperty"
+                         metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration"
+                         name="Association for Extent Property"/>
+
+    </item>
+</item>

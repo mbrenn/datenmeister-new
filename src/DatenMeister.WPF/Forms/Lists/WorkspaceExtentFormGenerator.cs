@@ -7,31 +7,32 @@ using System.Windows.Documents;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
-using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
-using DatenMeister.WPF.Forms.Specific;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Forms.Lists
 {
@@ -49,7 +50,7 @@ namespace DatenMeister.WPF.Forms.Lists
         internal static FormDefinition RequestFormForWorkspaces(IExtent extent, INavigationHost navigationHost)
         {
             // Finds the view
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var formElement = viewLogic.GetInternalFormExtent().element($"#{ManagementViewDefinitions.IdWorkspaceListView}");
 
             if (formElement == null)
@@ -57,10 +58,12 @@ namespace DatenMeister.WPF.Forms.Lists
                 // The form was not found, so the form is created automatically
                 // Creates the form out of the properties of the workspace
                 var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_ManagementProvider>();
-                formElement = viewLogic.GetExtentFormForSubforms(
-                    viewLogic.GetListFormForExtent(extent, managementProvider.__Workspace,
-                        FormDefinitionMode.Default) ??
-                    throw new InvalidOperationException("List form could not be created"));
+                var listForm = viewLogic.GetListFormForExtent(extent, managementProvider.__Workspace,
+                                   FormDefinitionMode.Default)
+                               ?? throw new InvalidOperationException("List form could not be created");
+                listForm.set(_FormAndFields._ListForm.inhibitNewItems, true);
+
+                formElement = viewLogic.GetExtentFormForSubforms(listForm);
             }
 
             var formDefinition = new FormDefinition("Workspaces", formElement)
@@ -146,7 +149,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <returns>The created form</returns>
         internal static FormDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewExtent = viewLogic.GetInternalFormExtent();
             var result =
                 NamedElementMethods.GetByFullName(
@@ -163,6 +166,8 @@ namespace DatenMeister.WPF.Forms.Lists
                                    FormDefinitionMode.Default) ??
                                throw new InvalidOperationException("listForm == null");
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
+                listForm.set(_FormAndFields._ListForm.inhibitNewItems, true);
+                listForm.set(_FormAndFields._ListForm.property, nameof(_ManagementProvider._Workspace.extents));
 
                 result = viewLogic.GetExtentFormForSubforms(listForm);
             }
@@ -178,13 +183,8 @@ namespace DatenMeister.WPF.Forms.Lists
             };
 
             viewDefinition.ViewExtensions.Add(
-                new TreeViewItemCommandDefinition(
-                    "New Extent",
-                    LoadExtent));
-
-            viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
-                    "New Xmi Extent",
+                    "Create Xmi Extent",
                     NewXmiExtent,
                     null,
                     NavigationCategories.DatenMeister + ".Extent"));
@@ -205,14 +205,14 @@ namespace DatenMeister.WPF.Forms.Lists
 
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
-                    "Import from XMI",
+                    "Load Extent",
                     ImportFromXmi,
                     Icons.ImportExcel,
-                    NavigationCategories.DatenMeister + ".Import"));
+                    NavigationCategories.DatenMeister + ".Extent"));
 
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
-                    "Load Extent",
+                    "Create Extent",
                     LoadExtent,
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));
@@ -235,16 +235,19 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var uri = element.getOrDefault<string>("uri");
                 if (MessageBox.Show(
-                        $"Are you sure, you would like to delete the extent '{uri}'?",
-                        "Delete Extent",
-                        MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    $"Are you sure, you would like to delete the extent '{uri}'?",
+                    "Delete Extent",
+                    MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
 
                     var extentToBeDeleted =
                         workspaceLogic.FindExtent(workspaceId, uri);
-                    extentManager.DeleteExtent(extentToBeDeleted);
+                    if (extentToBeDeleted != null)
+                    {
+                        extentManager.DeleteExtent(extentToBeDeleted);
+                    }
                 }
             }
 
@@ -264,24 +267,35 @@ namespace DatenMeister.WPF.Forms.Lists
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
             }
 
-            void ImportFromXmi(IObject item)
+            async void ImportFromXmi(IObject item)
             {
-                var dlg = new ImportExtentDlg
+                try
                 {
-                    Owner = navigationHost.GetWindow(),
-                    Workspace = workspaceId
-                };
+                    var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
+                    var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.ExtentManager.ImportSettings")
+                                    ?? throw new InvalidOperationException(
+                                        "DatenMeister.ExtentManager.ImportSettings is not found");
 
-                dlg.Closed += (x, y) =>
-                {
-                    if (dlg.ImportCommand != null)
+                    var userResult = InMemoryObject.CreateEmpty(foundType);
+                    var foundForm = viewExtent.element("#OpenExtentAsFile")
+                                    ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
+                    var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig
                     {
-                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
-                        extentImport.ImportExtent(dlg.ImportCommand);
-                    }
-                };
+                        DetailElement = userResult,
+                        Form = new FormDefinition(foundForm)
+                    });
 
-                dlg.Show();
+                    if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
+                    {
+                        // Load from extent import class
+                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
+                        extentImport.ImportExtent(navigationResult.DetailElement);
+                    }
+                }
+                catch (Exception exc)
+                {
+                    MessageBox.Show(exc.ToString());
+                }
             }
 
             return viewDefinition;
@@ -300,15 +314,25 @@ namespace DatenMeister.WPF.Forms.Lists
 
             async void LoadExtent(IObject? item)
             {
-                var extentLoaderConfig = await QueryExtentConfigurationByUserAsync(navigationHost);
+                var extentLoaderConfig = 
+                    await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)
                 {
-                    var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
 
                     try
                     {
-                        var loadedExtent = extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
-                        Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
+                        var loadedExtent =
+                            extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
+                        if (loadedExtent == null)
+                        {
+                            Logger.Info("Extent could not be created.");
+                            MessageBox.Show("Extent could not be created");
+                        }
+                        else
+                        {
+                            Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
+                        }
                     }
                     catch (Exception exc)
                     {
@@ -322,12 +346,15 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var uri = item.getOrDefault<string>(nameof(Extent.uri));
                 var storeExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, uri);
-                
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                extentManager.StoreExtent(storeExtent);
 
-                MessageBox.Show("Extent saved");
-                navigationGuest.UpdateView();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                if (storeExtent != null)
+                {
+                    extentManager.StoreExtent(storeExtent);
+
+                    MessageBox.Show("Extent saved");
+                    navigationGuest.UpdateForm();
+                }
             }
         }
 
@@ -339,15 +366,28 @@ namespace DatenMeister.WPF.Forms.Lists
                 ShowWorkspaceSelection = false,
                 ShowExtentSelection = false,
                 MessageText = "Select type of extent",
-                Title = "Select type of extent"
+                Title = "Select type of extent",
+                Owner = navigationHost.GetWindow()
             };
 
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var extent = workspaceLogic.FindExtent(WorkspaceNames.NameTypes, WorkspaceNames.UriInternalTypesExtent);
+            var extent = workspaceLogic.FindExtent(WorkspaceNames.WorkspaceTypes, WorkspaceNames.UriExtentInternalTypes);
+            if (extent == null)
+            {
+                Logger.Error("Extent for Types is not found");
+                return null;
+            }
 
             var packageMethods = GiveMe.Scope.Resolve<PackageMethods>();
             var package =
-                packageMethods.GetPackageStructure(extent.elements(), ExtentManager.PackagePathTypesExtentLoaderConfig);
+                packageMethods.GetPackageStructure(
+                    extent.elements(), 
+                    ExtentManager.PackagePathTypesExtentLoaderConfig);
+            if (package == null)
+            {
+                throw new InvalidOperationException(ExtentManager.PackagePathTypesExtentLoaderConfig + " not found");
+            }
+            
             dlg.SetAsRoot(package);
 
             // User has selected the type

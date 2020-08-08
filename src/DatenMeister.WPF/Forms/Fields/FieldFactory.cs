@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Forms.Fields
             var metaClass = field?.getMetaClass();
             if (metaClass == null)
             {
-                throw new ArgumentException("value does not have metaclass", nameof(value));
+                throw new ArgumentException("Value does not have metaclass", nameof(value));
             }
 
             var id = (metaClass as IHasId)?.Id;
@@ -54,6 +54,8 @@ namespace DatenMeister.WPF.Forms.Fields
                 return new MetaClassElementField();
             if (id == typeof(FileSelectionFieldData).FullName)
                 return new FileSelectionField();
+            if (id == typeof(CheckboxListTaggingFieldData).FullName)
+                return new CheckboxListTaggingField();
 
             Logger.Warn("Unknown FieldData type for field creation: " + metaClass);
             
@@ -100,5 +102,21 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Gets or sets the information whether the element is spanned through the complete row
         /// </summary>
         public bool IsSpanned { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the information whether the field shall be readonly despite the form settings
+        /// </summary>
+        public bool IsReadOnly { get; set; }
+    }
+
+    /// <summary>
+    /// Stores the form parameter
+    /// </summary>
+    public class FormParameter
+    {
+        /// <summary>
+        /// Gets or sets the flag whether the fields are read-only
+        /// </summary>
+        public bool IsReadOnly { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.ManagementProviders;
+using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
@@ -33,10 +33,10 @@ namespace DatenMeister.WPF.Navigation
             string buttonName = "Create")
         {
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
-            var defaultTypePackage = extent?.GetDefaultTypePackages()?.ToList();
+            var defaultTypePackage = extent?.GetConfiguration().GetDefaultTypePackages()?.ToList();
             IWorkspace? metaWorkspace = null;
             IExtent? metaExtent = null;
             if (defaultTypePackage == null || !defaultTypePackage.Any())
@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Navigation
                 if (workspace?.MetaWorkspaces?.Contains(typeWorkspace) == true)
                 {
                     metaWorkspace = workspaceLogic.GetTypesWorkspace();
-                    metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriUserTypesExtent);
+                    metaExtent = metaWorkspace.FindExtent(WorkspaceNames.UriExtentUserTypes);
                 }
                 else
                 {

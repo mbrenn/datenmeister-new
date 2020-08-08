@@ -1,10 +1,11 @@
 ﻿#nullable enable
 
 using System;
+using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
+using DatenMeister.Core.EMOF.Implementation.DefaultValue;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 
@@ -24,7 +25,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Gets the Mof Extent being connected to the factory
         /// </summary>
         public MofExtent? Extent { get; set; }
-
+        
         /// <summary>
         /// Initializes a new instance of the Factory
         /// </summary>
@@ -56,8 +57,14 @@ namespace DatenMeister.Core.EMOF.Implementation
                 _provider = _provider ?? throw new InvalidOperationException("Provider is not set");
                 return;
             }
-            
-            var asMofObject = value as MofObject ?? throw new ArgumentException("value is null or not of Type MofObject");
+
+            if (value is MofObjectShadow)
+                throw new InvalidOperationException("A MofObjectShadow cannot be used as argument for MofFactory");
+
+            var asMofObject = value as MofObject
+                              ?? throw new InvalidOperationException(
+                                  "value is null or not of type MofObject: It is "
+                                  + (value == null ? "null" : value.GetType().FullName));
             var extent = asMofObject.Extent;
             if (extent != null)
             {
@@ -146,7 +153,15 @@ namespace DatenMeister.Core.EMOF.Implementation
                 Extent.AddMetaExtent(typeExtent);
             }
 
-            return new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
+            var created = new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
+
+            if (!Extent.SlimUmlEvaluation)
+            {
+                AutoEnumerateHandler.HandleNewItem(Extent, created);
+                DefaultValueHandler.HandleNewItem(created);
+            }
+
+            return created;
         }
 
         /// <summary>
@@ -222,6 +237,30 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             var factory = new MofFactory(value);
             return factory.Create(metaClassFinder);
+        }
+
+        /// <summary>
+        /// Just a short call to create a new mof factory instance and call the create method
+        /// </summary>
+        /// <param name="extent">Extent for which the element will be created. The element will not be included
+        /// into the extent</param>
+        /// <param name="metaClass">Meta class whose element will be created. Ot may also be null,
+        /// if it is type-less</param>
+        /// <returns>The created element</returns>
+        public static IElement Create(IExtent extent, IElement? metaClass)
+        {
+            return new MofFactory(extent).create(metaClass);
+        }
+
+        /// <summary>
+        /// Just a short call to create a new mof factory instance and call the create method
+        /// </summary>
+        /// <param name="element">Element to be included</param>
+        /// <param name="metaClass">Meta class whose element will be created</param>
+        /// <returns>The created element</returns>
+        public static IElement Create(IObject element, IElement metaClass)
+        {
+            return new MofFactory(element).create(metaClass);
         }
     }
 }

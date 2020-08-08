@@ -79,6 +79,13 @@ namespace DatenMeister.Models.DataViews
                 filledStructure.__SelectPathNode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
+            {
+                var type = typeof(DatenMeister.Models.DataViews.DynamicSourceNode);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__DynamicSourceNode = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
         }
     }
 }

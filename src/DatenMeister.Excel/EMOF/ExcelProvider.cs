@@ -8,15 +8,14 @@ namespace DatenMeister.Excel.EMOF
 {
     public class ExcelProvider : IProvider
     {
-        private readonly _ExcelModels _models = new _ExcelModels();
-
         private readonly XSSFWorkbook _workbook;
-        public ExcelExtentSettings Settings { get; }
+        
+        public ExcelExtentLoaderConfig Settings { get; }
 
-        public ExcelProvider(XSSFWorkbook workbook, ExcelExtentSettings settings)
+        public ExcelProvider(XSSFWorkbook workbook, ExcelExtentLoaderConfig settings)
         {
             _workbook = workbook;
-            Settings = settings ?? new ExcelExtentSettings();
+            Settings = settings;
         }
 
         /// <inheritdoc />
@@ -65,7 +64,7 @@ namespace DatenMeister.Excel.EMOF
         /// <returns></returns>
         public ProviderCapability GetCapabilities()
         {
-            return 0;
+            return ProviderCapabilities.None;
         }
     }
 }

@@ -10,16 +10,16 @@ using NPOI.XSSF.UserModel;
 
 namespace DatenMeister.Excel.ProviderLoader
 {
-    [ConfiguredBy(typeof(ExcelExtentSettings))]
+    [ConfiguredBy(typeof(ExcelExtentLoaderConfig))]
     public class ExcelFileProviderLoader : IProviderLoader
     {
         /// <summary>
         /// Loads an excel file and returns
         /// </summary>
-        /// <param name="excelPath"></param>
-        public static ExcelProvider LoadProvider(ExcelExtentSettings settings = null)
+        /// <param name="settings">The settings being used to load the excel</param>
+        public static ExcelProvider LoadProvider(ExcelExtentLoaderConfig? settings)
         {
-            settings = settings ?? new ExcelExtentSettings();
+            settings ??= new ExcelExtentLoaderConfig("dm:///excel");
             if (!File.Exists(settings.filePath))
             {
                 throw new IOException($"File not found: {settings.filePath}");
@@ -31,7 +31,7 @@ namespace DatenMeister.Excel.ProviderLoader
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
-            var excelFile = (ExcelExtentSettings) configuration;
+            var excelFile = (ExcelExtentLoaderConfig) configuration;
             var excelProvider = LoadProvider(excelFile);
 
             return new LoadedProviderInfo(excelProvider);

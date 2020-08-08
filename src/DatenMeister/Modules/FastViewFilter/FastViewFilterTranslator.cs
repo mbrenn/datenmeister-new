@@ -1,20 +1,12 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.FastViewFilter
 {
     public class FastViewFilterTranslator
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
-
-        public FastViewFilterTranslator(IWorkspaceLogic workspaceLogic)
-        {
-            _workspaceLogic = workspaceLogic;
-        }
-
         public string TranslateType(IObject metaClassType)
         {
             if (metaClassType.Equals(_FastViewFilters.TheOne.__PropertyContainsFilter))
@@ -39,6 +31,8 @@ namespace DatenMeister.Modules.FastViewFilter
         public string TranslateFilter(IElement fastFilter)
         {
             var metaClass = fastFilter.getMetaClass();
+            if (metaClass == null) return "Unknown";
+            
             if (metaClass.Equals(_FastViewFilters.TheOne.__PropertyComparisonFilter))
             {
                 var property = fastFilter.get<string>(_FastViewFilters._PropertyComparisonFilter.Property);

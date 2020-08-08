@@ -29,16 +29,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
         private const bool ActivateDebuggingForViewRetrieval = false;
 #endif
 
-        private readonly FormLogic _formLogic;
+        private readonly FormsPlugin _formsPlugin;
 
         /// <summary>
         /// Initializes a new instance of the ViewFinder class
         /// </summary>
-        /// <param name="formLogic">View logic</param>
+        /// <param name="formsPlugin">View logic</param>
         public FormFinder(
-            FormLogic formLogic)
+            FormsPlugin formsPlugin)
         {
-            _formLogic = formLogic;
+            _formsPlugin = formsPlugin;
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns>The found view or null, if not found</returns>
         public IEnumerable<IElement> FindFormsFor(FindFormQuery query)
         {
-            var formAssociations = _formLogic.GetAllFormAssociations().Select(x => x as IElement).ToList();
+            var formAssociations = _formsPlugin.GetAllFormAssociations().Select(x => x as IElement).ToList();
             InternalDebug("---");
             InternalDebug("# of FormAssociations: " + formAssociations.Count);
 
@@ -81,6 +81,12 @@ namespace DatenMeister.Modules.Forms.FormFinder
             foreach (var element in formAssociations)
             {
                 InternalDebug("-");
+                if (element is IHasId hasId)
+                {
+                    InternalDebug(
+                        $"- Handling: ID = {hasId.Id ?? "none"}, Name = {NamedElementMethods.GetFullName(element)}");
+                }
+
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
@@ -93,10 +99,13 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var associationParentProperty =
                     element.getOrDefault<string>(_FormAndFields._FormAssociation.parentProperty);
                 var associationForm = element.getOrDefault<IElement>(_FormAndFields._FormAssociation.form);
+                var associationViewModeId = element.getOrDefault<string>(_FormAndFields._FormAssociation.viewModeId);
                 if (associationExtentType == null && associationMetaClass == null
                                                   && associationParentMetaclass == null 
-                                                  && associationParentProperty == null)
+                                                  && associationParentProperty == null
+                                                  && associationViewModeId == null)
                 {
+                    InternalDebug("- - This item is too unspecific");
                     // Skip item because it is too unspecific
                     continue;
                 }
@@ -115,7 +124,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (!string.IsNullOrEmpty(associationExtentType))
                 {
                     if (!string.IsNullOrEmpty(query.extentType)
-                        && query.extentType.Equals(associationExtentType))
+                        && query.extentType.Contains(associationExtentType))
                     {
                         InternalDebug("-- MATCH: ExtentType: " + query.extentType + ", FormAssociation ExtentType: " +
                                       associationExtentType);
@@ -126,6 +135,25 @@ namespace DatenMeister.Modules.Forms.FormFinder
                         InternalDebug("-- NO MATCH: ExtentType: " + query.extentType +
                                       ", FormAssociation ExtentType: " +
                                       associationExtentType);
+                        isMatching = false;
+                    }
+                }
+                
+                // ViewMode Id
+                if (!string.IsNullOrEmpty(associationViewModeId))
+                {
+                    if (!string.IsNullOrEmpty(query.viewModeId)
+                        && query.viewModeId.Equals(associationViewModeId))
+                    {
+                        InternalDebug("-- MATCH: ViewMode: " + query.viewModeId + ", FormAssociation ViewModeId: " +
+                                      associationViewModeId);
+                        points++;
+                    }
+                    else
+                    {
+                        InternalDebug("-- NO MATCH: ViewMode: " + query.viewModeId +
+                                      ", FormAssociation ViewMode: " +
+                                      associationViewModeId);
                         isMatching = false;
                     }
                 }

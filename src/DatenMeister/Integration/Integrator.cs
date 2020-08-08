@@ -3,27 +3,30 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using BurnSystems.Logging;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.Forms;
+using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Runtime.Workspaces.Data;
 using DatenMeister.Uml;
 using DatenMeister.Uml.Helper;
-using WorkspaceData = DatenMeister.Runtime.Workspaces.WorkspaceData;
+using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Integration
 {
@@ -34,11 +37,23 @@ namespace DatenMeister.Integration
         /// </summary>
         private IntegrationSettings _settings;
 
-        public string PathWorkspaces { get; }
+        private string? _pathWorkspaces;
+        private string? _pathExtents;
 
-        public string PathExtents { get; }
+        public string PathWorkspaces
+        {
+            get => _pathWorkspaces ?? throw new InvalidOperationException("PathWorkspaces is not set");
+            private set => _pathWorkspaces = value;
+        }
+
+        public string PathExtents
+        {
+            get => _pathExtents?? throw new InvalidOperationException("PathExtents is not set");
+            private set => _pathExtents = value;
+        }
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
+        private PublicIntegrationSettings? _publicSettings;
 
         public static string GetPathToWorkspaces(IntegrationSettings settings)
             => Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
@@ -54,20 +69,21 @@ namespace DatenMeister.Integration
         public Integrator(IntegrationSettings settings)
         {
             _settings = settings;
-
-            PathWorkspaces = GetPathToWorkspaces(settings);
-            PathExtents = GetPathToExtents(settings);
         }
 
         public IContainer UseDatenMeister(ContainerBuilder kernel)
         {
-            if (_settings == null)
+            var scopeStorage = new ScopeStorage();
+            kernel.RegisterInstance(scopeStorage).As<IScopeStorage>();
+            
+            PrepareSettings();
+            if (_publicSettings != null)
             {
-                Logger.Info("No integration settings were given. Loading the default values.");
-                _settings = new IntegrationSettings();
+                scopeStorage.Add(_publicSettings);
             }
 
-            kernel.RegisterInstance(_settings).As<IntegrationSettings>();
+            scopeStorage.Add(_settings);
+
             kernel.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
 
             // Creates the database path for the DatenMeister.
@@ -78,7 +94,7 @@ namespace DatenMeister.Integration
                                throw new InvalidOperationException("Entry assembly is null");
 
                 var assemblyDirectoryName = Path.GetDirectoryName(assembly.Location) ??
-                                            throw new InvalidOperationException("Assembly Directory NAme is null");
+                                            throw new InvalidOperationException("Assembly Directory Name is null");
 
                 _settings.DatabasePath = Path.Combine(assemblyDirectoryName, _settings.DatabasePath);
             }
@@ -93,32 +109,31 @@ namespace DatenMeister.Integration
 
             // Finds the loader for a certain extent type
             var storageMap = new ConfigurationToExtentStorageMapper();
-            kernel.RegisterInstance(storageMap).As<IConfigurationToExtentStorageMapper>();
+            kernel.RegisterInstance(storageMap).As<ConfigurationToExtentStorageMapper>();
 
             // Defines the extent storage data
             var extentStorageData = new ExtentStorageData
             {
                 FilePath = PathExtents
             };
-            kernel.RegisterInstance(extentStorageData).As<ExtentStorageData>();
-            kernel.RegisterType<ExtentManager>().As<IExtentManager>();
+            scopeStorage.Add(extentStorageData);
+            kernel.RegisterType<ExtentManager>().As<ExtentManager>();
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
-            kernel.RegisterInstance(workspaceData).As<WorkspaceData>();
+            scopeStorage.Add(workspaceData);
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
+            
+            var extentSettings = new ExtentSettings();
+            scopeStorage.Add(extentSettings);
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
-            kernel.RegisterInstance(changeEventManager).As<ChangeEventManager>();
+            scopeStorage.Add(changeEventManager);
 
             // Loading and storing the workspaces
-            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig
-            {
-                filepath = PathWorkspaces
-            };
-
-            kernel.RegisterInstance(workspaceLoadingConfiguration).As<WorkspaceLoaderConfig>();
+            var workspaceLoadingConfiguration = new WorkspaceLoaderConfig(PathWorkspaces);
+            scopeStorage.Add(workspaceLoadingConfiguration);
             kernel.RegisterType<WorkspaceLoader>().As<WorkspaceLoader>();
 
             kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
@@ -127,14 +142,16 @@ namespace DatenMeister.Integration
             kernel.RegisterType<FormFinder>().As<FormFinder>();
 
             var pluginManager = new PluginManager();
-            kernel.RegisterInstance(pluginManager).As<PluginManager>();
-
-            Modules.ZipExample.ZipCodePlugin.Into(kernel);
-
+            scopeStorage.Add(pluginManager);
+            
+            var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
+            pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
+            
+            Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();
             using (var scope = builder.BeginLifetimeScope())
             {
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.BeforeBootstrapping);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
 
                 // Load the default extents
                 // Performs the bootstrap
@@ -156,33 +173,48 @@ namespace DatenMeister.Integration
 
                 var umlWatch = new Stopwatch();
                 umlWatch.Start();
+                
                 Logger.Debug("Bootstrapping MOF and UML...");
-                Bootstrapper.PerformFullBootstrap(
-                    paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.NameMof) ?? throw new InvalidOperationException("Workspace for MOF is not found"),
-                    workspaceLogic,
-                    workspaceData.Mof,
-                    _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof);
-                Bootstrapper.PerformFullBootstrap(
-                    paths,
-                    workspaceLogic.GetWorkspace(WorkspaceNames.NameUml) ?? throw new InvalidOperationException("Workspace for UML is not found"),
-                    workspaceLogic,
-                    workspaceData.Uml,
-                    _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml);
+                var mofTask = Task.Run(() =>
+                    Bootstrapper.PerformFullBootstrap(
+                        paths,
+                        workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
+                        throw new InvalidOperationException("Workspace for MOF is not found"),
+                        workspaceLogic,
+                        workspaceData.Mof,
+                        _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof));
+                var umlTask = Task.Run(() =>
+                    Bootstrapper.PerformFullBootstrap(
+                        paths,
+                        workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceUml) ??
+                        throw new InvalidOperationException("Workspace for UML is not found"),
+                        workspaceLogic,
+                        workspaceData.Uml,
+                        _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml));
+                Task.WaitAll(mofTask, umlTask);
+                
                 umlWatch.Stop();
 
                 Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
 
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterBootstrapping);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
 
                 // Now goes through all classes and add the configuration support
-                storageMap.LoadAllExtentStorageConfigurationsFromAssembly();
+                var loadConfigurationTask = Task.Run(() => storageMap.LoadAllExtentStorageConfigurationsFromAssembly());
 
                 // Creates the workspace and extent for the types layer which are belonging to the types
                 var localTypeSupport = scope.Resolve<LocalTypeSupport>();
                 var typeWorkspace = workspaceLogic.GetTypesWorkspace();
                 var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
                 var packageMethods = scope.Resolve<PackageMethods>();
+                var internalUserExtent = localTypeSupport.InternalTypes;
+                
+                packageMethods.ImportByManifest(
+                    typeof(DefaultTypeIntegrator),
+                    "DatenMeister.XmiFiles.Internal.xmi",
+                    "Internal",
+                    internalUserExtent,
+                    string.Empty);
 
                 // Adds the module for form and fields
                 var fields = new _FormAndFields();
@@ -209,14 +241,24 @@ namespace DatenMeister.Integration
                         "DatenMeister::Management") ?? throw new InvalidOperationException("DatenMeister::Management not found"),
                     managementProvider,
                     (MofUriExtent) localTypeSupport.InternalTypes);
+                
+                var formsPlugin = scope.Resolve<FormsPlugin>();
+                packageMethods.ImportByManifest(
+                    typeof(UmlPlugin),
+                    "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
+                    "CommonForms",
+                    formsPlugin.GetInternalFormExtent(),
+                    "DatenMeister::CommonForms");
 
                 // Includes the extent for the helping extents
                 ManagementProviderHelper.Initialize(workspaceLogic);
-
+                loadConfigurationTask.Wait();
+                
                 // Finally loads the plugin
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterInitialization);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
                 // Boots up the typical DatenMeister Environment by loading the data
+                var extentManager = scope.Resolve<ExtentManager>();
                 if (_settings.EstablishDataEnvironment)
                 {
                     var workspaceLoader = scope.Resolve<WorkspaceLoader>();
@@ -225,7 +267,7 @@ namespace DatenMeister.Integration
                     // Loads all extents after all plugins were started
                     try
                     {
-                        scope.Resolve<IExtentManager>().LoadAllExtents();
+                        extentManager.LoadAllExtents();
                     }
                     catch (LoadingExtentsFailedException)
                     {
@@ -240,17 +282,81 @@ namespace DatenMeister.Integration
                 }
 
                 // Finally loads the plugin
-                pluginManager.StartPlugins(scope, PluginLoadingPosition.AfterLoadingOfExtents);
+                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
                 // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
-                var extentManager = scope.Resolve<IExtentManager>();
                 extentManager.CreateStorageTypeDefinitions();
+                
+                ResetUpdateFlagsOfExtent(workspaceLogic);
             }
 
             watch.Stop();
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
 
             return builder;
+        }
+
+        /// <summary>
+        /// Goes through each extent and resets the update flag for all extents with providers
+        /// indicating that they are just a temporary extent
+        /// </summary>
+        /// <param name="workspaceLogic"></param>
+        private static void ResetUpdateFlagsOfExtent(IWorkspaceLogic workspaceLogic)
+        {
+            // After the complete bootstrapping is done, the Update flags for the TemporaryExtents will be removed
+            foreach (var workspace in workspaceLogic.Workspaces)
+            {
+                foreach (var extent in workspace.extent.OfType<MofExtent>())
+                {
+                    if (extent.Provider.GetCapabilities()?.IsTemporaryStorage == true)
+                    {
+                        extent.SignalUpdateOfContent(false);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prepares the settings by looking into the public settings which may reside within the file
+        /// </summary>
+        private void PrepareSettings()
+        {
+            if (_settings == null)
+            {
+                Logger.Info("No integration settings were given. Loading the default values.");
+                _settings = new IntegrationSettings();
+            }
+
+            // Checks whether a public setting is available
+            try
+            {
+                var path = Assembly.GetEntryAssembly()?.Location;
+                if (path != null)
+                {
+                    _publicSettings = PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(path));
+                    if (_publicSettings != null)
+                    {
+                        if (_publicSettings.databasePath != null && !string.IsNullOrEmpty(_publicSettings.databasePath))
+                        {
+                            Logger.Info($"Overwriting database path to {_publicSettings.databasePath}");
+
+                            _settings.DatabasePath = _publicSettings.databasePath;
+                        }
+
+                        if (_publicSettings.windowTitle != null && !string.IsNullOrEmpty(_publicSettings.windowTitle))
+                        {
+                            _settings.WindowTitle = _publicSettings.windowTitle;
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Warn($"Error during loading of public settings {exc.Message}");
+            }
+
+            PathWorkspaces = GetPathToWorkspaces(_settings);
+            PathExtents = GetPathToExtents(_settings);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace StundenMeister.Tests
         {
             using (BootUp.CreateDatenMeisterEnvironment())
             {
-                var logic = StundenMeisterLogic.Get();
+                var logic = StundenMeisterPlugin.Get();
                 Assert.That(logic, Is.Not.Null);
 
                 var timeRecordingLogic = new TimeRecordingLogic(logic);
@@ -56,7 +56,7 @@ namespace StundenMeister.Tests
         {
             using (BootUp.CreateDatenMeisterEnvironment())
             {
-                var logic = StundenMeisterLogic.Get();
+                var logic = StundenMeisterPlugin.Get();
                 Assert.That(logic, Is.Not.Null);
 
                 var timeRecordingLogic = new TimeRecordingLogic(logic);
@@ -89,7 +89,7 @@ namespace StundenMeister.Tests
         {
             using (BootUp.CreateDatenMeisterEnvironment())
             {
-                var logic = StundenMeisterLogic.Get();
+                var logic = StundenMeisterPlugin.Get();
                 var timeRecordingLogic = new TimeRecordingLogic(logic);
 
                 var factory = new MofFactory(logic.Data.Extent);

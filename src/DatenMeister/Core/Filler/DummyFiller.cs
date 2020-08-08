@@ -9,7 +9,7 @@ namespace DatenMeister.Core.Filler
     /// <typeparam name="T">Type to be filled</typeparam>
     public class DummyFiller<T> : IFiller<T>
     {
-        public void Fill(IEnumerable<object> collection, T filled)
+        public void Fill(IEnumerable<object?> collection, T filled)
         {
             // Is doing nothing
         }

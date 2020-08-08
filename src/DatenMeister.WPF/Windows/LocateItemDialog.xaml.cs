@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -45,11 +46,16 @@ namespace DatenMeister.WPF.Windows
 
         public static readonly DependencyProperty SelectButtonTextProperty = DependencyProperty.Register(
             "SelectButtonText", typeof(string), typeof(LocateItemDialog), new PropertyMetadata(default(string), OnSelectButtonTextChanged));
-
+        
         public string MessageText
         {
             get => (string) GetValue(MessageTextProperty);
             set => SetValue(MessageTextProperty, value);
+        }
+
+        public void SetMetaClassesForFilter(List<IElement> elements)
+        {
+            LocateElementControl.SetMetaClassesForFilter(elements);
         }
 
         /// <summary>

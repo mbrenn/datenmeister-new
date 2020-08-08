@@ -79,7 +79,7 @@ namespace DatenMeister.Excel.EMOF
         }
 
         /// <inheritdoc />
-        public object GetProperty(string property)
+        public object GetProperty(string property, ObjectType objectType)
         {
             switch (property)
             {
@@ -120,7 +120,7 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public bool DeleteProperty(string property)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -137,14 +137,14 @@ namespace DatenMeister.Excel.EMOF
                     InitializeData();
                     break;
                 default:
-                    throw new System.NotImplementedException("Given property is not known");
+                    throw new NotImplementedException("Given property is not known");
             }
         }
 
         /// <inheritdoc />
         public bool AddToProperty(string property, object value, int index)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -177,7 +177,7 @@ namespace DatenMeister.Excel.EMOF
         /// <inheritdoc />
         public void EmptyListForProperty(string property)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -63,6 +63,8 @@ namespace DatenMeister.WPF.Windows
         private MenuHelper MenuHelper { get; }
         
         public IObject? DetailElement { get; set; }
+
+        public IElement? AttachedElement { get; set; }
         
         /// <summary>
         /// Stores the collection being used as a container
@@ -132,6 +134,16 @@ namespace DatenMeister.WPF.Windows
             Func<UserControl> factoryMethod,
             NavigationMode navigationMode)
             => await Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
+
+
+        /// <summary>
+        /// Forces the generation of the form via the form creator
+        /// </summary>
+        public void ForceAutoGenerationOfForm()
+        {
+            RequestedFormDefinition = new FormDefinition(FormDefinitionMode.ViaFormCreator);
+            RecreateView();
+        }
 
         /// <summary>
         /// Rebuilds the navigation by going through all view extensions
@@ -222,6 +234,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element">Element to be shown</param>
         public void SetMainContent(UIElement element)
         {
+            var hasTitle = Title != string.Empty;
             MainContent.Content = element;
             if (element is DetailFormControl control)
             {
@@ -236,12 +249,15 @@ namespace DatenMeister.WPF.Windows
                     }
                 }
 
-                var name = NamedElementMethods.GetName(control.DetailElement);
-                if (!string.IsNullOrEmpty(name))
-                    Title = $"Edit element: {name}";
+                if (!hasTitle)
+                {
+                    var name = NamedElementMethods.GetName(control.DetailElement);
+                    if (!string.IsNullOrEmpty(name))
+                        Title = $"Edit element: {name}";
+                }
             }
 
-            if (element is IHasTitle title)
+            if (!hasTitle && element is IHasTitle title)
                 Title = title.Title;
         }
 
@@ -324,9 +340,15 @@ namespace DatenMeister.WPF.Windows
         /// <param name="element"></param>
         /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
-        public void SetContent(IObject? element, FormDefinition? formDefinition, IReflectiveCollection? container = null)
+        /// <param name="attachedElement">The attached element that can retrieve additional information</param>
+        public void SetContent(
+            IObject? element, 
+            FormDefinition? formDefinition,
+            IReflectiveCollection? container = null,
+            IElement? attachedElement = null)
         {
             element ??= InMemoryObject.CreateEmpty();
+            AttachedElement = attachedElement;
             CreateDetailForm(element, formDefinition, container);
         }
 
@@ -344,7 +366,10 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(IObject detailElement, FormDefinition? formDefinition, IReflectiveCollection? container = null)
+        private void CreateDetailForm(
+            IObject detailElement,
+            FormDefinition? formDefinition,
+            IReflectiveCollection? container = null)
         {
             DetailElement = detailElement;
             ContainerCollection = container;
@@ -361,7 +386,7 @@ namespace DatenMeister.WPF.Windows
             var formDefinition = RequestedFormDefinition;
             
             IObject? effectiveForm = null;
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
 
             // Checks, if there is an overriding form 
             if (OverridingFormDefinition != null)
@@ -405,7 +430,12 @@ namespace DatenMeister.WPF.Windows
 
             if (effectiveForm != null)
             {
-                var control = new DetailFormControl {NavigationHost = this};
+                var control = new DetailFormControl
+                {
+                    NavigationHost = this,
+                    AttachedElement = AttachedElement
+                };
+                
                 control.SetContent(DetailElement, effectiveForm, ContainerCollection);
                 if (formDefinition != null)
                 {

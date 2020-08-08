@@ -14,7 +14,7 @@ namespace DatenMeister.WPF.Forms.Fields
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
-            var rectangele = new Canvas
+            var rectangle = new Canvas
             {
                 Background = Brushes.Black,
                 Margin = new Thickness(0,5,0,5),
@@ -23,12 +23,11 @@ namespace DatenMeister.WPF.Forms.Fields
 
             fieldFlags.IsSpanned = true;
 
-            return rectangele;
+            return rectangle;
         }
 
         public void CallSetAction(IObject element)
         {
-            return;
         }
     }
 }

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <item p1:type="dm:///_internal/xmi/uml#Package" p1:id="_package_Default" name="StundenMeister">
+        <!-- Report Definition -->
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition" p1:id="hourReport"
+            title="StundenMeister - Report">
+            <elements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline"
+                      title="Time Recordings" />
+            <elements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph"
+                paragraph="The reports contains the complete timerecordings including the duration of each one." />
+            <elements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable">
+                <viewNode p1:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" name="timeRecordings"/>
+                <form p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm">
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData"
+                           name="startDate" title="Day" hideTime="True"/>
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData"
+                           name="startDate" title="Starting Time" hideDate="True"/>
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DateTimeFieldData"
+                           name="endDate" title="Ending Time" hideDate="True"/>
+                    <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.NumberFieldData"
+                           name="timeSpanHours" title="Working Hours" format="F2"/>
+                </form>
+            </elements>
+        </packagedElement>
+        
+        <!-- Forms -->
+        <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="formListTimeRecordings" title="TimeRecording" name="List" property="null">
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="startDate" title="startDate" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="endDate" title="endDate" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="isActive" title="isActive" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="costCenter" title="costCenter" />
+            <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" metaClass-ref="dm:///_internal/types/internal#StundenMeister.Model.TimeRecording" name="TimeRecording" />
+        </packagedElement>
+    </item>
+</item>

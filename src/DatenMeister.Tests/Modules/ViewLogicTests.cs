@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
@@ -14,8 +13,8 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestAvailabiltyOfInternalViews()
         {
-            var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            var viewLogic = datenMeister.Resolve<FormsPlugin>();
             var internalViewExtent = viewLogic.GetInternalFormExtent();
 
             Assert.That(internalViewExtent, Is.Not.Null);
@@ -24,8 +23,8 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestAvailabiltyOfUserViews()
         {
-            var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            var viewLogic = datenMeister.Resolve<FormsPlugin>();
             var userViewExtent = viewLogic.GetUserFormExtent();
 
             Assert.That(userViewExtent, Is.Not.Null);
@@ -34,13 +33,12 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestGetAllViews()
         {
-            var datenMeister = GiveMe.DatenMeister();
-            var viewLogic = datenMeister.Resolve<FormLogic>();
+            var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
+            var viewLogic = datenMeister.Resolve<FormsPlugin>();
             var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             
             var listForm = viewExtent.FindInMeta<_FormAndFields>(x => x.__ListForm);
-            
             
             var n = 0;
             foreach (var _ in viewLogic.GetAllForms())

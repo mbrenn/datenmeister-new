@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StundenMeister"
         mc:Ignorable="d"
         Title="StundenMeister" Height="200" Width="400"
         Loaded="MainWindow_OnLoaded" Closed="MainWindow_OnClosed">
@@ -46,9 +45,6 @@
                 <ComboBox x:Name="cboCostCenters" SelectionChanged="CboCostCenters_OnSelectionChanged" />
             </Grid>
             <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -63,6 +59,7 @@
                             <MenuItem Header="Store Now" Click="StoreNow_Click" />
                             <MenuItem Header="Manage Cost Centers" Click="ManageCostCenters_Click" />
                             <MenuItem Header="Manage Time Recordings" Click="ManageTimeRecordings_Click" />
+                            <MenuItem Header="Create Report" Click="CreateReport_Click" />
                             <MenuItem Header="Open Storage Folder" Click="OpenStorageFolder_Click" />
                             <MenuItem Header="Exit" Click="Exit_OnClick" />
                         </ContextMenu>

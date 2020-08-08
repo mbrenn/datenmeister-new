@@ -13,6 +13,11 @@ namespace DatenMeister.Runtime.ExtentStorage
     public class ExtentStorageData
     {
         /// <summary>
+        /// Gets or sets the flag whether the extent is opened
+        /// </summary>
+        public bool IsOpened { get; set; }
+        
+        /// <summary>
         /// Gets or sets the information whether the loading has failed
         /// </summary>
         public bool FailedLoading { get; set; }
@@ -25,7 +30,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets the enumeration of extents which failed to load
         /// </summary>
-        public IEnumerable<string>? FailedLoadingExtents { get; set; }
+        public IEnumerable<string> FailedLoadingExtents { get; set; } = new List<string>();
         
         /// <summary>
         /// Stores the loaded extents including the configuration of the storage for the extent
@@ -38,12 +43,27 @@ namespace DatenMeister.Runtime.ExtentStorage
         public string? FilePath { get; set; }
 
         /// <summary>
+        /// Gets the locking path to lock the extent registration
+        /// </summary>
+        public string GetLockPath()
+        {
+
+            if (string.IsNullOrEmpty(FilePath))
+            {
+                throw new InvalidOperationException(
+                    "The locking path could not be retrieved because the configuration is empty. ");
+            }
+
+            return FilePath + ".lock";
+        }
+
+        /// <summary>
         /// Defines the class which stores the mapping between the extent and the configuration
         /// </summary>
         internal class LoadedExtentInformation
         {
             public IUriExtent Extent { get; set; }
-
+            
             public ExtentLoaderConfig Configuration { get; set; }
 
             /// <summary>

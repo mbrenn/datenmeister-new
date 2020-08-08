@@ -18,11 +18,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly ExtentManager _extentManager;
         private readonly IntegrationSettings _integrationSettings;
 
-        public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, IntegrationSettings integrationSettings)
+        public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _extentManager = extentManager;
-            _integrationSettings = integrationSettings;
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 
         /// <summary>
@@ -34,14 +34,14 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="name">Name of the extent (being used to stored into database). The
         /// name needs to be unique</param>
         /// <returns>The uri extent being found</returns>
-        public static IUriExtent GetOrCreateXmiExtentInInternalDatabase(ILifetimeScope scope, string workspace,
+        public static IUriExtent? GetOrCreateXmiExtentInInternalDatabase(ILifetimeScope scope, string workspace,
             string uri, string name)
         {
             var creator = scope.Resolve<ExtentCreator>();
             return creator.GetOrCreateXmiExtentInInternalDatabase(workspace, uri, name);
         }
 
-        public IUriExtent GetOrCreateXmiExtentInInternalDatabase(
+        public IUriExtent? GetOrCreateXmiExtentInInternalDatabase(
             string workspace,
             string uri,
             string name,
@@ -55,24 +55,23 @@ namespace DatenMeister.Runtime.ExtentStorage
                 Logger.Debug("Creates the extent for the " + name);
 
                 // Creates the extent for user types
-                var storageConfiguration = new XmiStorageConfiguration
+                var storageConfiguration = new XmiStorageLoaderConfig(uri)
                 {
-                    extentUri = uri,
                     filePath = Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")),
                     workspaceId = workspace
                 };
 
                 foundExtent = _extentManager.LoadExtent(storageConfiguration, extentCreationFlags);
 
-                if (extentType != null)
+                if (extentType != null && foundExtent != null)
                 {
-                    foundExtent.SetExtentType(extentType);
+                    foundExtent.GetConfiguration().ExtentType = extentType;
                 }
 
-                return (IUriExtent) foundExtent;
+                return (IUriExtent?) foundExtent;
             }
 
-            return (IUriExtent) foundExtent;
+            return (IUriExtent?) foundExtent;
         }
     }
 }

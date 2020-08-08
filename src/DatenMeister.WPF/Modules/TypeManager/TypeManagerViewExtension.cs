@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using BurnSystems.Logging;
 using DatenMeister.Core;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
-using DatenMeister.WPF.Forms;
-using DatenMeister.WPF.Forms.Base;
+using DatenMeister.Uml.Plugin;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -17,8 +16,12 @@ namespace DatenMeister.WPF.Modules.TypeManager
 {
     public class TypeManagerViewExtension : IViewExtensionFactory
     {
-        public IEnumerable<ViewExtension> GetViewExtensions(
-            ViewExtensionInfo viewExtensionInfo)
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static readonly ILogger Logger = new ClassLogger(typeof(TypeManagerViewExtension));
+
+        public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
             var navigationHost = viewExtensionInfo.NavigationHost ??
                                  throw new InvalidOperationException("NavigationHost == null");
@@ -28,99 +31,52 @@ namespace DatenMeister.WPF.Modules.TypeManager
                 yield return new ApplicationMenuButtonDefinition(
                     "Goto User Types", async () => await NavigatorForItems.NavigateToItemsInExtent(
                         navigationHost,
-                        WorkspaceNames.NameTypes,
-                        WorkspaceNames.UriUserTypesExtent),
+                        WorkspaceNames.WorkspaceTypes,
+                        WorkspaceNames.UriExtentUserTypes),
                     string.Empty,
                     NavigationCategories.DatenMeisterNavigation);
             }
 
-            var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
-            if (itemExplorerControl != null)
+            var uml = GiveMe.Scope.GetUmlData();
+            var packageMetaClass = uml.Packages.__Package;
+            var classMetaClass = uml.StructuredClassifiers.__Class;
+            var enumerationMetaClass = uml.SimpleClassifiers.__Enumeration;
+            var enumerationLiteralMetaClass = uml.SimpleClassifiers.__EnumerationLiteral;
+            var propertyMetaClass = uml.Classification.__Property;
+            if (packageMetaClass == null || classMetaClass == null || enumerationMetaClass == null)
             {
-                // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
-                var extent = itemExplorerControl.RootItem.GetExtentOf();
-                if (extent != null)
-                {
-                    var extentType = extent.GetExtentType();
-                    if (extentType == "Uml.Classes")
-                    {
-                        if (itemExplorerControl.IsExtentSelectedInTreeview)
-                        {
-                            var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                            if (classMetaClass == null)
-                                throw new InvalidOperationException("Class could not be found");
-
-                            yield return new NewInstanceViewDefinition(classMetaClass);
-
-                            yield return new ApplicationMenuButtonDefinition(
-                                "Create new Class",
-                                async () =>
-                                    await NavigatorForItems.NavigateToCreateNewItemInExtent(
-                                        navigationHost,
-                                        extent!,
-                                        classMetaClass),
-                                string.Empty,
-                                NavigationCategories.Type + "." + "Manager");
-                        }
-                    }
-                }
+                Logger.Warn("UML Classes or UML Enumeration not found in meta extent");
             }
-
-            var listControl = viewExtensionInfo.GetListViewForItemsTabForExtentType("Uml.Classes");
-            if (listControl != null)
+            else
             {
-                var extent = listControl.Extent;
-                if (extent != null)
+                var isExtentInListView = viewExtensionInfo.IsExtentInListViewControl(UmlPlugin.ExtentType);
+                var isInPackage = viewExtensionInfo.IsItemOfExtentTypeInListViewControl(
+                    _UML._Packages._Package.packagedElement,
+                    new[] {packageMetaClass},
+                    UmlPlugin.ExtentType);
+
+                var isInClass = viewExtensionInfo.IsItemOfExtentTypeInListViewControl(
+                    _UML._StructuredClassifiers._Class.ownedAttribute,
+                    new[] {classMetaClass});
+
+                var isInEnumeration = viewExtensionInfo.IsItemOfExtentTypeInListViewControl(
+                    _UML._SimpleClassifiers._Enumeration.ownedLiteral,
+                    new[] {enumerationMetaClass});
+
+                if (isInPackage || isExtentInListView)
                 {
-                    var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
-                    if (classMetaClass == null) throw new InvalidOperationException("Class not found");
-                    
-                    yield return
-                        new CollectionMenuButtonDefinition(
-                            "Create new Class",
-                            async (x) =>
-                                await NavigatorForItems.NavigateToNewItemForExtent(
-                                    navigationHost,
-                                    listControl.Extent,
-                                    classMetaClass),
-                            string.Empty,
-                            NavigationCategories.Type);
+                    yield return new NewInstanceViewExtension(classMetaClass);
+                    yield return new NewInstanceViewExtension(enumerationMetaClass);
                 }
-            }
 
-            if (viewExtensionInfo is ViewExtensionItemPropertiesInformation propertiesInformation)
-            {
-                if (propertiesInformation.Value is IElement selectedPackage)
+                if (isInClass)
                 {
-                    var extent = selectedPackage.GetExtentOf();
-                    if (extent != null)
-                    {
-                        var classMetaClass = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+                    yield return new NewInstanceViewExtension(propertyMetaClass);
+                }
 
-                        var propertyName = propertiesInformation.Property;
-                        if (selectedPackage.metaclass?.@equals(classMetaClass) == true
-                            && propertyName == _UML._StructuredClassifiers._Class.ownedAttribute)
-                        {
-                            var propertyMetaClass = extent.FindInMeta<_UML>(x => x.Classification.__Property);
-                            if (propertyMetaClass != null)
-                            {
-
-                                yield return new NewInstanceViewDefinition(propertyMetaClass);
-
-                                yield return
-                                    new CollectionMenuButtonDefinition(
-                                        "Create new Property",
-                                        async (x) =>
-                                            await NavigatorForItems.NavigateToNewItemForPropertyCollection(
-                                                navigationHost,
-                                                selectedPackage,
-                                                _UML._StructuredClassifiers._Class.ownedAttribute,
-                                                propertyMetaClass),
-                                        string.Empty,
-                                        NavigationCategories.Type);
-                            }
-                        }
-                    }
+                if (isInEnumeration)
+                {
+                    yield return new NewInstanceViewExtension(enumerationLiteralMetaClass);
                 }
             }
         }

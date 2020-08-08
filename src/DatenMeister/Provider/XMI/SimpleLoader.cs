@@ -22,7 +22,7 @@ namespace DatenMeister.Provider.XMI
         /// <summary>
         /// Stores the uri resolver being used to figure out the href instances.
         /// </summary>
-        private readonly IUriResolver _uriResolver;
+        private readonly IUriResolver? _uriResolver;
 
         private readonly Dictionary<string, IElement> _idToElement = new Dictionary<string, IElement>();
 
@@ -53,7 +53,7 @@ namespace DatenMeister.Provider.XMI
                 LoadFromStream(factory, extent, stream);
             }
         }
-
+        
         public void LoadFromFile(IFactory factory, IUriExtent extent, string filePath)
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));
@@ -203,6 +203,7 @@ namespace DatenMeister.Provider.XMI
                     var loadedElement = LoadElement(factory, subElement);
 
                     // Sets the container being used
+                    // ReSharper disable once SuspiciousTypeConversion.Global
                     var asSetContainer = loadedElement as IElementSetContainer;
                     asSetContainer?.setContainer(resultingElement);
 

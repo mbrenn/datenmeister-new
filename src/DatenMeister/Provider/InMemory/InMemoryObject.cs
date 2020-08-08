@@ -1,7 +1,6 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
@@ -107,8 +106,9 @@ namespace DatenMeister.Provider.InMemory
         /// Gets the property of the element or returns an exception, if the property could not be found
         /// </summary>
         /// <param name="property"></param>
+        /// <param name="objectType"></param>
         /// <returns></returns>
-        public object? GetProperty(string property)
+        public object? GetProperty(string property, ObjectType objectType = ObjectType.None)
         {
             if (_values.TryGetValue(property, out var result))
             {
@@ -214,7 +214,7 @@ namespace DatenMeister.Provider.InMemory
 
         public IProviderObject? GetContainer() => _container;
 
-        public void SetContainer(IProviderObject value)
+        public void SetContainer(IProviderObject? value)
         {
             _container = value;
         }

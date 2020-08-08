@@ -1,4 +1,6 @@
-﻿#nullable enable
+﻿using DatenMeister.Runtime.Plugins;
+
+#nullable enable
 
 namespace DatenMeister.Integration
 {
@@ -11,7 +13,6 @@ namespace DatenMeister.Integration
         /// </summary>
         public bool PerformSlimIntegration { get; set; }
 
-        
         /// <summary>
         /// Gets or sets the path to the xml files. It may be null, if the xmis shall be loaded
         /// from the embedded resources 
@@ -38,6 +39,21 @@ namespace DatenMeister.Integration
         /// Gets or sets a value indicating whether the loading of an extent may fail without interrupting the complete initialization of the DatenMeister
         /// </summary>
         public bool AllowNoFailOfLoading { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title of the mainwindow 
+        /// </summary>
+        public string? WindowTitle { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the flag indicating whether the locking is activated
+        /// </summary>
+        public bool IsLockingActivated { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the plugin loader to be used for the DatenMeister... If none is specified, the default loader will be used. 
+        /// </summary>
+        public IPluginLoader PluginLoader { get; set; } = new DefaultPluginLoader();
 
         public IntegrationSettings()
         {

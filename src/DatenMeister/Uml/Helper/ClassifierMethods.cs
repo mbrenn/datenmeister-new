@@ -22,7 +22,8 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="classifier">Gets the properties and all properties from base classes</param>
         /// <param name="alreadyIn">Returns the properties that are already in. </param>
-        public static IEnumerable<IElement> GetPropertiesOfClassifier(IElement classifier, HashSet<string>? alreadyIn = null)
+        /// <param name="followGeneralizations">true, if the generalizations shall also be followed</param>
+        public static IEnumerable<IElement> GetPropertiesOfClassifier(IObject classifier, HashSet<string>? alreadyIn = null, bool followGeneralizations = true)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
             alreadyIn ??= new HashSet<string>();
@@ -50,12 +51,15 @@ namespace DatenMeister.Uml.Helper
                 }
             }
 
-            // Check for generalizations
-            foreach (var general in GetGeneralizations(classifier))
+            if (followGeneralizations)
             {
-                foreach (var found in GetPropertiesOfClassifier(general, alreadyIn))
+                // Check for generalizations
+                foreach (var general in GetGeneralizations(classifier))
                 {
-                    yield return found;
+                    foreach (var found in GetPropertiesOfClassifier(general, alreadyIn, false))
+                    {
+                        yield return found;
+                    }
                 }
             }
         }
@@ -64,14 +68,35 @@ namespace DatenMeister.Uml.Helper
         /// Gets the property of a classifier by name
         /// </summary>
         /// <param name="classifier">Classifier being queried</param>
-        /// <param name="propertyName">Name of the propertyf</param>
+        /// <param name="propertyName">Name of the properties</param>
         /// <returns>The found property</returns>
-        public static IElement GetPropertyOfClassifier(IElement classifier, string propertyName)
+        public static IElement GetPropertyOfClassifier(IObject classifier, string propertyName)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
             var properties = GetPropertiesOfClassifier(classifier);
             return properties.FirstOrDefault(x => x.get<string>(_UML._CommonStructure._NamedElement.name) == propertyName);
+        }
+
+        /// <summary>
+        /// Gets an enumeration of all properties having a composite
+        /// </summary>
+        /// <param name="classifier">Classifier to be evaluated</param>
+        /// <returns>Enumeration of properties</returns>
+        public static IEnumerable<IElement> GetCompositingProperties(IElement classifier)
+        {
+            var properties = GetPropertiesOfClassifier(classifier);
+            foreach (var property in properties)
+            {
+                if (property.getOrDefault<bool>(_UML._Classification._Property.isComposite))
+                {
+                    yield return property;
+                }
+                else if (property.getOrDefault<string>(_UML._Classification._Property.aggregation) == "composite")
+                {
+                    yield return property;
+                }
+            }
         }
 
         /// <summary>
@@ -81,7 +106,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="alreadyVisited">Contains the elements that have been visited already
         /// The already visited elements will not be returned again</param>
         /// <returns>Enumeration of elements</returns>
-        public static IEnumerable<IElement> GetGeneralizations(IElement classifier, HashSet<IElement>? alreadyVisited = null)
+        public static IEnumerable<IElement> GetGeneralizations(IObject classifier, HashSet<IElement>? alreadyVisited = null)
         {
             alreadyVisited ??= new HashSet<IElement>();
             var propertyGeneralization = _UML._Classification._Classifier.generalization;
@@ -156,13 +181,13 @@ namespace DatenMeister.Uml.Helper
                         .Where(elementInExtent => classInstance.@equals(elementInExtent.getMetaClass()))
                         .Where(elementInExtent => !visitedElements.Contains(elementInExtent)))
                 {
-                    visitedElements.Add(elementInExtent);
-
-                    // Checks, if the element contains a generalization
-                    if (GetGeneralizations(elementInExtent).Contains(element))
+                    var generalizations = GetGeneralizations(elementInExtent).ToList();
+                    if (!visitedElements.Contains(elementInExtent) && generalizations.Contains(element))
                     {
                         yield return elementInExtent;
-                    }
+                        
+                        visitedElements.Add(elementInExtent);
+                    }                    
                 }
             }
         }
@@ -265,6 +290,16 @@ namespace DatenMeister.Uml.Helper
                 specializedClassifier);*/
 
             return newGeneralization;
+        }
+
+        /// <summary>
+        /// Checks whether the element is of a primitive type
+        /// </summary>
+        /// <param name="element">Element to be checked</param>
+        /// <returns>true, if primitive type, otherwise false, if probably of class or something else</returns>
+        public static bool IsOfPrimitiveType(IElement element)
+        {
+            return (element.getMetaClass() as IHasId)?.Id?.EndsWith("PrimitiveType") == true;
         }
     }
 }

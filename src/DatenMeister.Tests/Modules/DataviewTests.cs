@@ -8,6 +8,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -75,6 +76,39 @@ namespace DatenMeister.Tests.Modules
             Assert.That(elements.Length, Is.GreaterThan(0));
         }
 
+        [Test]
+        public void TestDynamicSourceNodes()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            var dataExtent = CreateDataForTest(dm);
+
+            var helper = dm.Resolve<DataViewHelper>();
+            var factory = InMemoryObject.TemporaryFactory;
+            var model = helper.GetModel();
+            
+            // Creates the dataview
+            var extentSource = factory.create(model.__DynamicSourceNode);
+            extentSource.set(_DataViews._DynamicSourceNode.name, "input");
+            
+            var propertyFilter = factory.create(model.__FilterPropertyNode);
+            propertyFilter.set(_DataViews._FilterPropertyNode.property, "name");
+            propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
+            propertyFilter.set(_DataViews._FilterPropertyNode.value, "ai");
+            propertyFilter.set(_DataViews._FilterPropertyNode.input, extentSource);
+            
+            // Gets the elements
+            var dataViewEvaluator = new DataViewEvaluation(dm.WorkspaceLogic, dm.ScopeStorage);
+            dataViewEvaluator.AddDynamicSource("input",  dataExtent.elements());
+
+            var elements = dataViewEvaluator.GetElementsForViewNode(propertyFilter)
+                .OfType<IElement>().ToArray();
+            
+            // Evaluates the elements
+            Assert.That(elements.All(x=> x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+            Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.True);
+            Assert.That(elements.Length, Is.GreaterThan(0));
+        }
+
         private IUriExtent CreateDataForTest(IDatenMeisterScope dm)
         {
             var localTypeSupport = dm.Resolve<LocalTypeSupport>();
@@ -110,7 +144,6 @@ namespace DatenMeister.Tests.Modules
             extent.elements().add(element1);
 
             return extent;
-
         }
     }
 }

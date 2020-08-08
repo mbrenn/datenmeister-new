@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Integration;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
@@ -26,8 +25,8 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestCallsOfEvents()
         {
-            var datenMeister = GiveMe.DatenMeister();
-            var manager = datenMeister.Resolve<ChangeEventManager>();
+            using var datenMeister  = DatenMeisterTests.GetDatenMeisterScope();
+            var manager = datenMeister.ScopeStorage.Get<ChangeEventManager>();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
             var data = workspaceLogic.GetDataWorkspace();
 

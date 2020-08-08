@@ -39,7 +39,7 @@ namespace DatenMeister.Runtime.Dynamic
         {
             if (value != null)
             {
-                value.__wrappedObject__ = null;
+                value.__wrappedObject__ = null!;
             }
         }
 
@@ -70,7 +70,7 @@ namespace DatenMeister.Runtime.Dynamic
             foreach (var property in allProperties.getPropertiesBeingSet())
             {
                 var propertyValue = value.get(property);
-                ((IDictionary<string, object>) result)[property] = ConvertValue(propertyValue, wrapInObject);
+                ((IDictionary<string, object?>) result)[property] = ConvertValue(propertyValue, wrapInObject);
             }
 
             if (wrapInObject)
@@ -85,7 +85,7 @@ namespace DatenMeister.Runtime.Dynamic
         {
             if (propertyValue == null) return null;
             if (DotNetHelper.IsOfPrimitiveType(propertyValue)) return propertyValue;
-            if (DotNetHelper.IsOfMofObject(propertyValue)) return ToDynamic(propertyValue as IObject, wrapInObject);
+            if (DotNetHelper.IsOfMofObject(propertyValue)) return ToDynamic((propertyValue as IObject)!, wrapInObject);
 
             if (DotNetHelper.IsOfEnumeration(propertyValue))
             {
@@ -93,9 +93,14 @@ namespace DatenMeister.Runtime.Dynamic
                 Debug.Assert(enumeration != null, "enumeration != null");
 
                 var result = new List<object>();
-                foreach (var innerValue in enumeration)
+                foreach (var innerValue in enumeration!)
                 {
-                    result.Add(ConvertValue(innerValue, wrapInObject));
+                    var convertedValue = ConvertValue(innerValue, wrapInObject);
+
+                    if (convertedValue != null)
+                    {
+                        result.Add(convertedValue);
+                    }
                 }
 
                 return result;

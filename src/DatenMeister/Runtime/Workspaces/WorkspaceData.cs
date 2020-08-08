@@ -9,6 +9,8 @@ namespace DatenMeister.Runtime.Workspaces
     /// </summary>
     public class WorkspaceData
     {
+        private Workspace? _default;
+
         /// <summary>
         /// Stores the workspaces
         /// </summary>
@@ -17,14 +19,18 @@ namespace DatenMeister.Runtime.Workspaces
         /// <summary>
         /// Gets or sets the default layer that shall be assumed, if no information is considered as available.
         /// </summary>
-        public Workspace? Default { get; set; }
+        public Workspace? Default
+        {
+            get => _default;
+            set => _default = value;
+        }
 
 
         public Workspace Data
         {
             get
             {
-                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameData)
+                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.WorkspaceData)
                        ?? throw new InvalidOperationException("Data Workspace is not found");
             }
         }
@@ -33,7 +39,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             get
             {
-                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameTypes)
+                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.WorkspaceTypes)
                        ?? throw new InvalidOperationException("Types Workspace is not found");
             }
         }
@@ -42,7 +48,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             get
             {
-                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameUml) ??
+                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.WorkspaceUml) ??
                        throw new InvalidOperationException("Uml Workspace is not found");
             }
         }
@@ -51,7 +57,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             get
             {
-                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.NameMof) ??
+                return Workspaces.FirstOrDefault(x => x.id == WorkspaceNames.WorkspaceMof) ??
                        throw new InvalidOperationException("Mof Workspace is not found");
             }
         }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -13,9 +13,10 @@ using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
@@ -36,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public ItemsInExtentList()
         {
             Loaded += ItemsInExtentList_Loaded;
-            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateView);
+            _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateForm);
             _workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
         }
 
@@ -73,7 +74,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             Extent = extent;
             
-            EventHandle = GiveMe.Scope.Resolve<ChangeEventManager>().RegisterFor(
+            EventHandle = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>().RegisterFor(
                 Extent,
                 (x, y) => _delayedDispatcher.RequestRefresh());
 
@@ -88,7 +89,7 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         ///     Sets the items of the given extent
         /// </summary>
-        protected override void OnRecreateViews()
+        protected override void OnRecreateForms()
         {
             CreateFormForItems();
         }
@@ -96,12 +97,11 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <summary>
         /// Updates all views without regenerating the tabulators, which are already set
         /// </summary>
-        public override void UpdateView()
+        public override void UpdateForm()
         {
-            base.UpdateView();
+            base.UpdateForm();
             if (ShowAllItemsInOneTab)
             {
-                return;
             }
 
             /*// Goes through the metaclasses and gets the one, that are not already in a tab
@@ -117,13 +117,14 @@ namespace DatenMeister.WPF.Forms.Lists
         /// </summary>
         private void CreateFormForItems()
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var formPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
                 
             IElement? form = null;
 
             var overridingMode = OverridingViewDefinition?.Mode ?? FormDefinitionMode.Default;
+            
             // Check if the used form shall be overridden
             if (OverridingViewDefinition != null && overridingMode == FormDefinitionMode.Specific)
             {
@@ -152,7 +153,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     // Extent is currently selected
                     // Finds the view by the extent type
-                    form = viewLogic.GetExtentForm((IUriExtent) RootItem, overridingMode);
+                    form = formPlugin.GetExtentForm((IUriExtent) RootItem, overridingMode, CurrentViewModeId);
                 }
                 else
                 {
@@ -160,9 +161,10 @@ namespace DatenMeister.WPF.Forms.Lists
                         throw new InvalidOperationException("Not a root item, but also no SelectedItem");
                     
                     // User has selected a sub element and its children shall be shown
-                    form = viewLogic.GetItemTreeFormForObject(
+                    form = formPlugin.GetItemTreeFormForObject(
                         SelectedItem,
-                        overridingMode);
+                        overridingMode, 
+                        CurrentViewModeId);
                 }
             }
 
@@ -187,11 +189,6 @@ namespace DatenMeister.WPF.Forms.Lists
                 () => NavigatorForExtents.NavigateToExtentList(navigationHost, WorkspaceId),
                 Icons.ExtentsShow,
                 NavigationCategories.DatenMeister + ".Navigation");
-
-            yield return new ExtentMenuButtonDefinition(
-                "Extent Info", async (x) => await NavigatorForExtents.OpenDetailOfExtent(navigationHost, ExtentUrl),
-                null,
-                NavigationCategories.Extents + ".Info");
 
             yield return new ExtentMenuButtonDefinition(
                 "Extent Properties", async (x) => await NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
@@ -256,7 +253,8 @@ namespace DatenMeister.WPF.Forms.Lists
                         ExtentExport.ExportToFile(Extent, filename);
                         MessageBox.Show($"Extent exported with {Extent.elements().Count()} root elements.");
                         // ReSharper disable once AssignNullToNotNullAttribute
-                        Process.Start(Path.GetDirectoryName(filename));
+                        
+                        DotNetHelper.CreateProcess(Path.GetDirectoryName(filename)!);
                     }
                     catch (Exception exc)
                     {
@@ -274,13 +272,16 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void OpenExtentFolder()
             {
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 var uriExtent = Extent as IUriExtent ?? throw new InvalidOperationException("Extent as IUriExtent");
                 if (extentManager.GetLoadConfigurationFor(uriExtent) is ExtentFileLoaderConfig
                         loadConfiguration && loadConfiguration.filePath != null)
                 {
-                    // ReSharper disable once AssignNullToNotNullAttribute
-                    Process.Start(Path.GetDirectoryName(loadConfiguration.filePath));
+                    var filePath = loadConfiguration.filePath;
+                    
+                    //Clean up file path so it can be navigated OK
+                    filePath = Path.GetFullPath(filePath);
+                    DotNetHelper.CreateProcess("explorer.exe", $"/select,\"{filePath}\"");
                 }
                 else
                 {
@@ -290,25 +291,35 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void ShowAsTree()
             {
-                if (Extent != null)
+                if (Extent != null && navigationHost != null)
                 {
                     var window = new TreeViewWindow {Owner = navigationHost.GetWindow()};
                     window.SetDefaultProperties();
                     window.SetRootItem(Extent);
                     window.ItemSelected += async (x, y) =>
-                        await NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                    {
+                        if (y.Item is IExtent asExtent)
+                        {
+                            await NavigatorForExtents.OpenPropertiesOfExtent(NavigationHost, asExtent);
+                        }
+                        else
+                        {
+                            await NavigatorForItems.NavigateToElementDetailView(NavigationHost, y.Item);
+                        }
+                    };
                     window.Show();
                 }
             }
 
-            void SaveExtent(IExtent extent)
-            {
-                var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-                extentManager.StoreExtent(extent);
-                MessageBox.Show("Extent saved");
-            }
-
             foreach (var extension in base.GetViewExtensions()) yield return extension;
+        }
+
+        private void SaveExtent(IExtent extent)
+        {
+            var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+            extentManager.StoreExtent(extent);
+            
+            UpdateTreeContent();
         }
 
         public override ViewExtensionInfo GetViewExtensionInfo()
@@ -320,6 +331,26 @@ namespace DatenMeister.WPF.Forms.Lists
                 RootElement = RootItem,
                 SelectedElement = SelectedItem
             };
+        }
+
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            var extent = RootItem as IExtent;
+            if (extent == null)
+            {
+                MessageBox.Show("The root item is not an extent");
+                return;
+            }
+            
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (e.Key == Key.S)
+                {
+                    SaveExtent(extent);   
+                }
+            }
+            
+            base.OnKeyDown(e);
         }
     }
 }

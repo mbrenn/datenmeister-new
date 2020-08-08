@@ -1,309 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D4696DF0-4FB2-494A-9541-6B993DF77798}</ProjectGuid>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DatenMeister.WPF</RootNamespace>
-    <AssemblyName>DatenMeister.WPF</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>8</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Controls.Ribbon" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
+    <Compile Remove="Navigation\Validators\**" />
+    <EmbeddedResource Remove="Navigation\Validators\**" />
+    <None Remove="Navigation\Validators\**" />
+    <Page Remove="Navigation\Validators\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\CopyToClipboardCommand.cs" />
-    <Compile Include="Commands\DatenMeisterCommands.cs" />
-    <Compile Include="Commands\PasteToClipboardCommand.cs" />
-    <Compile Include="Controls\LocateElementControl.xaml.cs">
-      <DependentUpon>LocateElementControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\DetailFormControl.xaml.cs">
-      <DependentUpon>DetailFormControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ExplorerTabContent.xaml.cs">
-      <DependentUpon>ExplorerTabContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ICanUnregister.cs" />
-    <Compile Include="Forms\Base\IHasSelectedItems.cs" />
-    <Compile Include="Forms\Base\ItemExplorerControl.xaml.cs">
-      <DependentUpon>ItemExplorerControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ItemExplorerTab.cs" />
-    <Compile Include="Forms\Base\ItemListViewControl.xaml.cs">
-      <DependentUpon>ItemListViewControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ItemsTreeView.xaml.cs">
-      <DependentUpon>ItemsTreeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Base\ViewButton.cs" />
-    <Compile Include="Forms\Base\FormDefinition.cs" />
-    <Compile Include="Forms\Base\ViewExtensionHelper.cs" />
-    <Compile Include="Forms\Fields\AnyDataField.cs" />
-    <Compile Include="Forms\Fields\CheckboxField.cs" />
-    <Compile Include="Forms\Fields\DateTimeField.cs" />
-    <Compile Include="Forms\Fields\DropdownField.cs" />
-    <Compile Include="Forms\Fields\FieldFactory.cs" />
-    <Compile Include="Forms\Fields\FileSelectionField.cs" />
-    <Compile Include="Forms\Fields\IDetailField.cs" />
-    <Compile Include="Forms\Fields\MetaClassElementField.cs" />
-    <Compile Include="Forms\Fields\ReadOnlyListField.cs" />
-    <Compile Include="Forms\Fields\ReferenceField.cs" />
-    <Compile Include="Forms\Fields\SeparatorLineField.cs" />
-    <Compile Include="Forms\Fields\SubElementsField.cs" />
-    <Compile Include="Forms\Fields\TextboxField.cs" />
-    <Compile Include="Forms\IApplicationWindow.cs" />
-    <Compile Include="Forms\IntroScreen.xaml.cs">
-      <DependentUpon>IntroScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Lists\ExtentList.cs" />
-    <Compile Include="Forms\Lists\ItemsInExtentList.cs" />
-    <Compile Include="Forms\Lists\WorkspaceExtentFormGenerator.cs" />
-    <Compile Include="Forms\Lists\WorkspaceList.cs" />
-    <Compile Include="Forms\Specific\ImportExtentDlg.xaml.cs">
-      <DependentUpon>ImportExtentDlg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GuiObjectCollection.cs" />
-    <Compile Include="Helper\ComboBoxEx.cs" />
-    <Compile Include="Helper\DelayedRefreshDispatcher.cs" />
-    <Compile Include="Modules\DefaultTypes\DefaultTypesExtension.cs" />
-    <Compile Include="Modules\DefaultTypes\DefaultTypesPlugin.cs" />
-    <Compile Include="Modules\FormManager\FormManagerPlugin.cs" />
-    <Compile Include="Modules\FormManager\FormManagerViewExtension.cs" />
-    <Compile Include="Modules\FormManager\FormManagerViewExtension.DetailForm.cs" />
-    <Compile Include="Modules\FormManager\FormManagerViewExtension.ItemExplorerControl.cs" />
-    <Compile Include="Modules\FormManager\FormManagerViewExtension.ApplicationWindow.cs" />
-    <Compile Include="Modules\FormManager\NavigatorForForms.cs" />
-    <Compile Include="Modules\Icons.cs" />
-    <Compile Include="Modules\IIconRepository.cs" />
-    <Compile Include="Modules\ImportExtentManager\ImportExtentManagerPlugin.cs" />
-    <Compile Include="Modules\ImportExtentManager\ImportExtentViewExtensions.cs" />
-    <Compile Include="Modules\ObjectOperations\ObjectOperationPlugin.cs" />
-    <Compile Include="Modules\ObjectOperations\ObjectOperationViewExtension.cs" />
-    <Compile Include="Modules\ReportManager\ReportManagerPlugin.cs" />
-    <Compile Include="Modules\ReportManager\ReportViewExtensions.cs" />
-    <Compile Include="Modules\ReportManager\DefaultReportManagerViewExtensions.cs" />
-    <Compile Include="Modules\StandardRepository.cs" />
-    <Compile Include="Modules\TypeManager\TypeManagerListView.cs" />
-    <Compile Include="Modules\TypeManager\TypeManagerPlugin.cs" />
-    <Compile Include="Modules\TypeManager\TypeManagerViewExtension.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\ApplicationMenuButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\CollectionMenuButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\ExtentMenuButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\GenericButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\ItemButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\ItemMenuButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\NavigationButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\Buttons\RowItemButtonDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\GuiElements\InfoLineDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\ListViews\NewInstanceViewDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\TreeView\TreeViewItemCommandDefinition.cs" />
-    <Compile Include="Modules\ViewExtensions\Definition\ViewExtension.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfo.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoApplication.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoCollection.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExplore.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreExtents.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreItems.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExploreWorkspace.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoItem.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoTab.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionItemPropertiesInformation.cs" />
-    <Compile Include="Modules\ViewExtensions\Information\ViewExtensionInfoExtension.cs" />
-    <Compile Include="Modules\ViewExtensions\IViewExtensionFactory.cs" />
-    <Compile Include="Modules\ViewExtensions\NavigationScope.cs" />
-    <Compile Include="Navigation\ControlNavigation.cs" />
-    <Compile Include="Navigation\CreatableTypeNavigator.cs" />
-    <Compile Include="Navigation\IControlNavigation.cs" />
-    <Compile Include="Navigation\IHasTitle.cs" />
-    <Compile Include="Navigation\INavigationGuest.cs" />
-    <Compile Include="Navigation\INavigationHost.cs" />
-    <Compile Include="Navigation\Navigator.cs" />
-    <Compile Include="Navigation\NavigatorForDialogs.cs" />
-    <Compile Include="Navigation\NavigatorForExcelHandling.cs" />
-    <Compile Include="Navigation\NavigatorForExtents.cs" />
-    <Compile Include="Navigation\NavigatorForItems.cs" />
-    <Compile Include="Navigation\NavigatorForWorkspaces.cs" />
-    <Compile Include="Navigation\ProgressBox\IProgressBox.cs" />
-    <Compile Include="Navigation\ProgressBox\NavigatorForProgress.cs" />
-    <Compile Include="Navigation\ProgressBox\WpfProgressBox.xaml.cs">
-      <DependentUpon>WpfProgressBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Windows\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\DetailFormWindow.xaml.cs">
-      <DependentUpon>DetailFormWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ExcelImportDefinitionDialog.xaml.cs">
-      <DependentUpon>ExcelImportDefinitionDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\IHasRibbon.cs" />
-    <Compile Include="Windows\ItemXmlViewDialog.xaml.cs">
-      <DependentUpon>ItemXmlViewDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\ListFormWindow.xaml.cs">
-      <DependentUpon>ListFormWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\LocateItemDialog.xaml.cs">
-      <DependentUpon>LocateItemDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\LogWindow.xaml.cs">
-      <DependentUpon>LogWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\QueryElementDialog.xaml.cs">
-      <DependentUpon>QueryElementDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\MenuHelper.cs" />
-    <Compile Include="Windows\RibbonHelper.cs" />
-    <Compile Include="Windows\TreeViewWindow.xaml.cs">
-      <DependentUpon>TreeViewWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\NavigationExtensionHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controls\LocateElementControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\Base\DetailFormControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\Base\ExplorerTabContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Forms\Base\ItemExplorerControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\Base\ItemListViewControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\Base\ItemsTreeView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\IntroScreen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Forms\Specific\ImportExtentDlg.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Navigation\ProgressBox\WpfProgressBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\AboutDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\DetailFormWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\ExcelImportDefinitionDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\ItemXmlViewDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\ListFormWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\LocateItemDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\LogWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\QueryElementDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\TreeViewWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Forms\Lists\ClassDiagram1.cd" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj">
-      <Project>{f052ce44-4f75-4a9a-b0f2-af7be3b880c2}</Project>
-      <Name>BurnSystems.WPF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj">
-      <Project>{1b5763e6-b595-4aa4-8b83-640715cc2fb1}</Project>
-      <Name>BurnSystems</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj">
-      <Project>{9026f9a3-c366-43da-abad-8cc94a3e793f}</Project>
-      <Name>DatenMeister.Excel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj">
-      <Project>{fea57312-8d46-440e-989a-476b9281eef7}</Project>
-      <Name>DatenMeister</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj" />
+    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
+    <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Navigation\Validators\" />
+    <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

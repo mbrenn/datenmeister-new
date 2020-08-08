@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -9,11 +8,11 @@ using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.ManagementProviders;
 using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
@@ -39,8 +38,8 @@ namespace DatenMeister.WPF.Navigation
 
         public static void OpenFolder(INavigationHost window)
         {
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
-            Process.Start(integrationSettings.DatabasePath);
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
+            DotNetHelper.CreateProcess(integrationSettings.DatabasePath);
         }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace DatenMeister.WPF.Navigation
         /// <returns></returns>
         public static async Task<NavigateToElementDetailResult?>? CreateNewWorkspace(INavigationHost navigationHost)
         {
-            var viewLogic = GiveMe.Scope.Resolve<FormLogic>();
+            var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewExtent = viewLogic.GetInternalFormExtent();
 
             var formElement = NamedElementMethods.GetByFullName(
@@ -65,7 +64,7 @@ namespace DatenMeister.WPF.Navigation
 
             var result = await NavigatorForItems.NavigateToElementDetailView(
                 navigationHost,
-                new NavigateToItemConfig()
+                new NavigateToItemConfig
                 {
                     Form = new FormDefinition(formElement)
                 });
@@ -105,11 +104,11 @@ namespace DatenMeister.WPF.Navigation
             // Collect all files...
             var files = new List<string>();
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var extentManager = GiveMe.Scope.Resolve<IExtentManager>();
-            var integrationSettings = GiveMe.Scope.Resolve<IntegrationSettings>();
+            var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {
-                if (workspace.id == WorkspaceNames.NameData)
+                if (workspace.id == WorkspaceNames.WorkspaceData)
                 {
                     continue;
                 }
@@ -131,38 +130,41 @@ namespace DatenMeister.WPF.Navigation
             {
                 mainWindow.DoCloseWithoutAcknowledgement = true;
             }
-            
-            
+
+            Application.Current.Exit += (x, y) =>
+            {
+                if (navigationHost.GetWindow().IsActive)
+                {
+                    MessageBox.Show("DatenMeister was not closed");
+                    return;
+                }
+
+                GiveMe.Scope.UnuseDatenMeister();
+                GiveMe.Scope = null!;
+
+                foreach (var file in files)
+                {
+                    File.Delete(file);
+                }
+
+                File.Delete(Integrator.GetPathToWorkspaces(integrationSettings));
+                File.Delete(Integrator.GetPathToExtents(integrationSettings));
+
+                // Restarts the DatenMeister
+                var entryAssembly = Assembly.GetEntryAssembly() ??
+                                    throw new InvalidOperationException("Assembly.GetEntryAssembly is null");
+                var location = entryAssembly.Location;
+                if (Path.GetExtension(location).EndsWith("exe"))
+                {
+                    DotNetHelper.CreateProcess(entryAssembly.Location);
+                }
+                else
+                {
+                    MessageBox.Show("The DatenMeister was not started by the .exe... So restart is not possible.");
+                }
+            };
+
             navigationHost.GetWindow().Close();
-            if (navigationHost.GetWindow().IsActive)
-            {
-                MessageBox.Show("DatenMeister was not closed");
-                return;
-            }
-
-            GiveMe.Scope.UnuseDatenMeister();
-            GiveMe.Scope = null!;
-
-
-            foreach (var file in files)
-            {
-                File.Delete(file);
-            }
-
-            File.Delete(Integrator.GetPathToWorkspaces(integrationSettings));
-            File.Delete(Integrator.GetPathToExtents(integrationSettings));
-
-            // Restarts the DatenMeister
-            var entryAssembly = Assembly.GetEntryAssembly() ?? throw new InvalidOperationException("Assembly.GetEntryAssembly is null");
-            var location = entryAssembly.Location;
-            if (Path.GetExtension(location).EndsWith("exe"))
-            {
-                Process.Start(entryAssembly.Location);
-            }
-            else
-            {
-                MessageBox.Show("The DatenMeister was not started by the .exe... So restart is not possible.");
-            }
         }
     }
 }

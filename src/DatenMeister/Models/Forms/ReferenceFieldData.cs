@@ -8,7 +8,7 @@ namespace DatenMeister.Models.Forms
     /// </summary>
     public class ReferenceFieldData : FieldData
     {
-        public ReferenceFieldData() : base()
+        public ReferenceFieldData()
         {
 
         }

@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
@@ -30,7 +31,8 @@ namespace DatenMeister.WPF.Forms.Fields
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
             _name = fieldData.get<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DropDownFieldData.isReadOnly);
+            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DropDownFieldData.isReadOnly)
+                             || fieldFlags.IsReadOnly;
 
             _propertyValue = null;
             if (value.isSet(_name))
@@ -45,26 +47,48 @@ namespace DatenMeister.WPF.Forms.Fields
                 }
             }
 
-            var dropDownValues =
-                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._DropDownFieldData.values);
-            if (dropDownValues == null)
+            List<KeyValuePair<string, object>>? values = null;
+
+            var enumerationProperty =
+                fieldData.getOrDefault<IElement>(_FormAndFields._DropDownFieldData.valuesByEnumeration);
+            if (enumerationProperty != null)
             {
-                return new TextBlock
+                values = new List<KeyValuePair<string, object>>();
+                
+                var enumValues = EnumerationMethods.GetEnumValues(enumerationProperty);
+                foreach (var enumValue in enumValues)
                 {
-                    Text = "No values are given"
-                };
+                    values.Add(new KeyValuePair<string, object>(enumValue, enumValue));
+                }
+            }
+
+            if (values == null)
+            {
+                var dropDownValues =
+                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._DropDownFieldData.values);
+                if (values == null && dropDownValues == null)
+                {
+                    return new TextBlock
+                    {
+                        Text = "No values are given"
+                    };
+                }
+                
+                values = dropDownValues.Select(x => x as IElement).Select(x =>
+                    new KeyValuePair<string, object>(
+                        x.getOrDefault<string>(_FormAndFields._ValuePair.name),
+                        x.getOrDefault<object>(_FormAndFields._ValuePair.value))
+                ).ToList();
             }
 
             _comboBox = new ComboBox();
             var items = new List<ComboBoxItem>();
             ComboBoxItem? selectedBoxItem = null;
 
-            foreach (var itemPair in dropDownValues.Select(x => x as IElement))
+            foreach (var itemPair in values)
             {
-                if (itemPair == null) continue;
-                
-                var nameOfItem = itemPair.getOrDefault<string>(_FormAndFields._ValuePair.name);
-                var valueOfItem = itemPair.getOrDefault<object>(_FormAndFields._ValuePair.value);
+                var nameOfItem = itemPair.Key;
+                var valueOfItem = itemPair.Value;
 
                 if (nameOfItem != null && valueOfItem != null)
                 {

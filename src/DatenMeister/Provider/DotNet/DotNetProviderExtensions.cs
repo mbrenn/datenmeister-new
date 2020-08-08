@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 
@@ -114,13 +115,29 @@ namespace DatenMeister.Provider.DotNet
             {
                 var asEnumeration = (IEnumerable<object>) result;
 
-                return asEnumeration.Select(provider.CreateDotNetElementIfNecessary).ToList();
+                return asEnumeration.Select(provider.CreateDotNetElementIfNecessary!).ToList();
             }
 
             if (DotNetHelper.IsOfMofObject(result))
             {
-                // Returns the given element itself, if it is an MofElement or MofObject
-                return result;
+                var asMofObject = result as MofObject ?? throw new InvalidOperationException("Not a MofObject");
+                var otherProvider = asMofObject.ProviderObject.Provider;
+                if (otherProvider == provider)
+                {
+                    // Returns the given element itself, if it is an MofElement or MofObject
+                    return asMofObject.ProviderObject;
+                }
+                else
+                {
+                    var uriExtent = asMofObject.GetUriExtentOf()
+                                    ?? throw new InvalidOperationException("No UriExtent connected");
+                    var asElement = asMofObject as IElement
+                                    ?? throw new InvalidOperationException("Element is not an IElement");
+                    var uri = uriExtent.uri(asElement) ?? throw new InvalidOperationException("Uri not found");
+
+                    // It is from another provider, so we have to create a urireference
+                    return new UriReference(uri);
+                }
             }
 
             var dotNetResult = provider.CreateDotNetProviderObject(result);

@@ -163,7 +163,6 @@ namespace DatenMeister.WPF.Forms.Fields
                     _workspace,
                     _extent);
 
-
                 var configuration =
                     new NavigatorForDialogs.NavigatorForDialogConfiguration
                     {

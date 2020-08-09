@@ -320,7 +320,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // Check by recursion
-            IProviderObject? parentContainer = parentObject;
+            var parentContainer = parentObject;
             for (var n = 0; n < 1000; n++)
             {
                 parentContainer = parentContainer.GetContainer();

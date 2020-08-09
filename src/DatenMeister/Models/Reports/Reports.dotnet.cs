@@ -59,6 +59,20 @@ namespace DatenMeister.Models.Reports
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
+                var type = typeof(DatenMeister.Models.Reports.ReportInstanceSource);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ReportInstanceSource = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Reports.HtmlReportInstance);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__HtmlReportInstance = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.Reports.Simple.DescendentMode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);

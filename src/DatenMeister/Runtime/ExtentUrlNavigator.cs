@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Web;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -45,6 +46,13 @@ namespace DatenMeister.Runtime
             var posHash = uri.IndexOf('#');
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
             var extentUri = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
+
+            // Checks, if the extent itself is selected
+            if (posQuestion == -1 && posHash == -1
+                                  && (uri == _extent.contextURI() || _extent.AlternativeUris.Contains(uri)))
+            {
+                return _extent;
+            }
 
             // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 
             // extent

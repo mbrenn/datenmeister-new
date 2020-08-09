@@ -2,6 +2,7 @@
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.DataViews;
@@ -19,8 +20,8 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var uriExtentNavigator = new ExtentUrlNavigator(extent);
-            var firstChild = uriExtentNavigator.element(testUri + "#child1") as IElement;
-            var firstChildCached = uriExtentNavigator.element(testUri + "#child1") as IElement;
+            var firstChild = uriExtentNavigator.element(TestUri + "#child1") as IElement;
+            var firstChildCached = uriExtentNavigator.element(TestUri + "#child1") as IElement;
             
             Assert.That(firstChild, Is.Not.Null);
             Assert.That(firstChildCached, Is.Not.Null);
@@ -32,15 +33,15 @@ namespace DatenMeister.Tests.Runtime
         public void TestById()
         {
             var extent = GetTestExtent();
-            var firstChild = extent.GetUriResolver().Resolve(testUri + "#child1", ResolveType.Default)
+            var firstChild = extent.GetUriResolver().Resolve(TestUri + "#child1", ResolveType.Default)
                 as IElement;
-            var firstChildCached = extent.GetUriResolver().Resolve(testUri + "#child1", ResolveType.Default)
+            var firstChildCached = extent.GetUriResolver().Resolve(TestUri + "#child1", ResolveType.Default)
                 as IElement;
-            var noChild = extent.GetUriResolver().Resolve(testUri + "#none", ResolveType.Default)
+            var noChild = extent.GetUriResolver().Resolve(TestUri + "#none", ResolveType.Default)
                 as IElement;
-            var child2Child1 = extent.GetUriResolver().Resolve(testUri + "#child2child1", ResolveType.Default)
+            var child2Child1 = extent.GetUriResolver().Resolve(TestUri + "#child2child1", ResolveType.Default)
                 as IElement;
-            var item1 = extent.GetUriResolver().Resolve(testUri + "#item1", ResolveType.Default)
+            var item1 = extent.GetUriResolver().Resolve(TestUri + "#item1", ResolveType.Default)
                 as IElement;
             var item1_2 = extent.GetUriResolver().Resolve("#item1", ResolveType.Default)
                 as IElement;
@@ -62,13 +63,13 @@ namespace DatenMeister.Tests.Runtime
         public void TestByFullname()
         {
             var extent = GetTestExtent();
-            var firstChild = extent.GetUriResolver().Resolve(testUri + "?fn=item2::child1", ResolveType.Default)
+            var firstChild = extent.GetUriResolver().Resolve(TestUri + "?fn=item2::child1", ResolveType.Default)
                 as IElement;
-            var noChild = extent.GetUriResolver().Resolve(testUri + "?fn=none", ResolveType.Default)
+            var noChild = extent.GetUriResolver().Resolve(TestUri + "?fn=none", ResolveType.Default)
                 as IElement;
-            var child2Child1 = extent.GetUriResolver().Resolve(testUri + "?fn=item2::child2::child2child1", ResolveType.Default)
+            var child2Child1 = extent.GetUriResolver().Resolve(TestUri + "?fn=item2::child2::child2child1", ResolveType.Default)
                 as IElement;
-            var item1 = extent.GetUriResolver().Resolve(testUri + "?fn=item1", ResolveType.Default)
+            var item1 = extent.GetUriResolver().Resolve(TestUri + "?fn=item1", ResolveType.Default)
                 as IElement;
 
             Assert.That(firstChild, Is.Not.Null);
@@ -84,7 +85,7 @@ namespace DatenMeister.Tests.Runtime
         public void TestByProperty()
         {
             var extent = GetTestExtent();
-            var firstChild = extent.GetUriResolver().Resolve(testUri + "?fn=item2&prop=packagedElement", ResolveType.Default)
+            var firstChild = extent.GetUriResolver().Resolve(TestUri + "?fn=item2&prop=packagedElement", ResolveType.Default)
                 as IReflectiveSequence;
 
             Assert.That(firstChild, Is.Not.Null);
@@ -104,7 +105,7 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var firstChild = extent.GetUriResolver().Resolve(
-                    testUri + "?fn=item2&prop=packagedElement&dataview=#child1Filter",
+                    TestUri + "?fn=item2&prop=packagedElement&dataview=#child1Filter",
                     ResolveType.Default)
                 as IReflectiveSequence;
 
@@ -120,10 +121,20 @@ namespace DatenMeister.Tests.Runtime
                 Is.True);
         }
 
+        [Test]
+        public void TestGetExtentPerResolver()
+        {
+            var extent = GetTestExtent();
+            var found = extent.GetUriResolver().Resolve(TestUri, ResolveType.Default);
+            Assert.That(found, Is.Not.Null);
+            Assert.That(found is IUriExtent, Is.True);
+            Assert.That(found.Equals(extent));
+        }
+
         /// <summary>
         /// Defines the test uri
         /// </summary>
-        private const string testUri = "dm:///Test";
+        private const string TestUri = "dm:///Test";
         
         /// <summary>
         /// Gets the test extent
@@ -157,7 +168,7 @@ namespace DatenMeister.Tests.Runtime
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
             var provider = new XmiProvider(XDocument.Parse(document));
-            return new MofUriExtent(provider, testUri, scopeStorage);
+            return new MofUriExtent(provider, TestUri, scopeStorage);
         }
     }
 }

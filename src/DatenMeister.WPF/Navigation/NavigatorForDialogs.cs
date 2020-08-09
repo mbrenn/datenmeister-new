@@ -104,6 +104,21 @@ namespace DatenMeister.WPF.Navigation
         public class NavigatorForDialogConfiguration
         {
             /// <summary>
+            /// Gets or sets the title of the window
+            /// </summary>
+            public string? Title { get; set; }
+
+            /// <summary>
+            /// Gets or sets a description to indicate further information to the user
+            /// </summary>
+            public string? Description { get; set; }
+
+            /// <summary>
+            /// Gets or sets the button to be pressed when the dialog result is the selected item
+            /// </summary>
+            public string? OkButtonText { get; set; }
+            
+            /// <summary>
             /// Gets or sets the default workspace
             /// </summary>
             public IWorkspace? DefaultWorkspace { get; set; }
@@ -156,8 +171,15 @@ namespace DatenMeister.WPF.Navigation
             {
                 WorkspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>(),
                 Owner = navigationHost.GetWindow(),
-                SelectButtonText = "Select"
+                SelectButtonText = configuration.OkButtonText ?? "Select",
+                Title = configuration.Title ?? "Locate Item",
+                MessageText = configuration.Title ?? "Locate Item"
             };
+
+            if (configuration.Description != null)
+            {
+                dlg.DescriptionText = configuration.Description;
+            }
 
             if (configuration.FilteredMetaClasses?.Any() == true)
             {

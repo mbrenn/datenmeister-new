@@ -530,6 +530,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     return checkbox;
                 }
 
+                if (propertyType.@equals(_dateTimeType) && !isForListForm)
+                {
+                    var dateTimeField= _factory.create(_formAndFields.__DateTimeFieldData);
+                    dateTimeField.set(_FormAndFields._CheckboxFieldData.name, propertyName);
+                    dateTimeField.set(_FormAndFields._CheckboxFieldData.title, propertyName);
+                    dateTimeField.set(_FormAndFields._CheckboxFieldData.isReadOnly, isReadOnly);
+                    return dateTimeField;
+                }
+
                 if (
                     !propertyType.@equals(_stringType) &&
                     !propertyType.@equals(_integerType) &&

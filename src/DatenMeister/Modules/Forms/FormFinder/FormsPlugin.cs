@@ -121,10 +121,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
                     
-                    // Adds the View Mode for the forms
-                    var extentSetting =
-                        new ExtentTypeSetting("Forms");
-                    _extentSettings.extentTypeSettings.Add(extentSetting);
                     break;
             }
         }

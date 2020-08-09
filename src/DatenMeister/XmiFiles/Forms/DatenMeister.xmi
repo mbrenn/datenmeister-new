@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-  <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///datenmeister.forms" />
+  <meta p2:id="528261e7-54b6-4f8c-aa71-894f7c559ec0" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///datenmeister.forms" __ExtentType="DatenMeister.Forms" />
   <item p1:id="_package_Common_Forms" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="CommonForms">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.Form" p1:id="ImportManagerFindExtent" name="Find Extent">
       <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="selectedExtent" title="Select Extent" defaultWorkspace="Management" isSelectionInline="True" defaultExtentUri="dm:///_internal/workspaces/" showAllChildren="True" p1:id="19d57ee5-4222-48cc-a85a-ab012a1b6bc7" />
@@ -86,5 +86,17 @@
             </packagedElement>
     
     -->
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="0dbf73e6-d72c-4e0a-b777-588000735a1c" name="ExtentProperties">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="9b764499-a1ca-4256-8005-08f3df7785ac" name="Extent - Detail" hideMetaInformation="True">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="13fca41b-d748-4eb2-b44f-20ff8e4fdf34" name="uri" title="uri" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="9aaa97be-c676-4904-98f1-fd208a4be6ac" name="count" title="count" width="10" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="bb31f384-872b-4043-a3bc-ca140db59057" name="totalCount" title="totalCount" width="10" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="053f6c85-32f3-4a0c-a886-31dba2b6d3e7" name="type" title="type" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="ab285590-9ac7-47ea-9ba9-a23253233757" name="extentType" title="extentType" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" p1:id="d9318374-f1cd-4dd3-9762-cc58be308a49" name="isModified" title="isModified" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="44a73b5c-8d0b-4927-a728-aefe92f981d6" name="alternativeUris" title="alternativeUris" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="43aad002-0aab-441b-865c-ef56e8c884ec" name="Metaclass" title="Metaclass" />
+      </packagedElement>
+    </packagedElement>
   </item>
 </item>

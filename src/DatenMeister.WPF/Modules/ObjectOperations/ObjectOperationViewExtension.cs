@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
@@ -27,16 +29,16 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
             {
                 yield return new TreeViewItemCommandDefinition(
                     "Move...",
-                    async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x); }
+                    async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                     "Copy...",
-                    async (x) => { await CopyItem(viewExtensionInfo.NavigationHost, x); }
+                    async (x) => { await CopyItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                        "Edit...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x); }
+                        "Edit...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x.Element); }
                     ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
@@ -44,7 +46,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Copy as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x); }
+                    "Copy as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
             }
         }
@@ -102,7 +104,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
         }
 
-        private void DeleteItem(IObject? o)
+        private void DeleteItem(TreeViewItemParameter o)
         {
             if (o == null)
             {
@@ -111,20 +113,23 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
 
             if (
                 MessageBox.Show(
-                    $"Shall the item '{NamedElementMethods.GetName(o)}' be deleted?",
+                    $"Shall the item '{NamedElementMethods.GetName(o.Element)}' be deleted?",
                     "Confirm Deletion",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-            
-                var extent = o.GetExtentOf();
-                var container = (o as IElement)?.container();
-
-                if (container != null || extent != null)
+                if (o.ParentElement is IExtent extent)
                 {
-                    DefaultClassifierHints.RemoveFromExtentOrElement(container ?? (IObject) extent!, o);
+                    extent.elements().remove(o.Element);
                 }
-
+                else if (o.ParentProperty != null)
+                {
+                    o.ParentElement.getOrDefault<IReflectiveCollection>(o.ParentProperty)?.remove(o.Element);
+                }
+                else
+                {
+                    MessageBox.Show("Don't know how to delete the item...");
+                }
             }
         }
 

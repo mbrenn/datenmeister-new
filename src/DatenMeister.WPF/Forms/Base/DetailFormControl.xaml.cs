@@ -249,8 +249,7 @@ namespace DatenMeister.WPF.Forms.Base
                     null,
                     NavigationCategories.DatenMeister);
             }
-            
-            
+  
             // 2) Get the view extensions by the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             var viewExtensionInfo = new ViewExtensionInfoItem(NavigationHost, this)
@@ -436,6 +435,7 @@ namespace DatenMeister.WPF.Forms.Base
             var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true
                                  || FormParameter?.IsReadOnly == true;
 
+            DataGrid.Children.Clear();
             var anyFocused = false;
             foreach (var field in fields.Cast<IElement>())
             {
@@ -528,6 +528,18 @@ namespace DatenMeister.WPF.Forms.Base
                 button.Click += (x, y) 
                     => handler.Execute(this, DetailElement, null);
                 buttons.Add(button);
+            }
+
+            var viewExtensions = GetViewExtensions();
+            if (viewExtensions != null)
+            {
+                foreach (var viewExtension in viewExtensions.OfType<RowItemButtonDefinition>())
+                {
+                    var button = new Button {Content = viewExtension.Name};
+                    button.Click += (x, y)
+                        => viewExtension.OnPressed(this, DetailElement);
+                    buttons.Add(button);
+                }
             }
 
             if (buttons.Count > 0)
@@ -725,7 +737,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             foreach (var validator in ElementValidators)
             {
-                ValidatorResult? result = validator.ValidateElement(inMemory);
+                var result = validator.ValidateElement(inMemory);
                 
                 while (result != null)
                 {
@@ -812,12 +824,12 @@ namespace DatenMeister.WPF.Forms.Base
                 element.set(propertyKey, propertyValue);
             }
         }
-
+        
         /// <summary>
         ///     Takes the input that the user has currently into the dialog and stores these changes into the given element.
         /// </summary>
         /// <param name="element">Element in which the content of the element shall be stored</param>
-        private void StoreDialogContentIntoElement(IObject element)
+        public void StoreDialogContentIntoElement(IObject element)
         {
             if (DetailElement != null && !Equals(element, DetailElement))
             {

@@ -18,7 +18,7 @@ namespace DatenMeister.Modules.Reports
     /// </summary>
     public class HtmlReportCreator
     {
-        private ClassLogger Logger = new ClassLogger(typeof(HtmlReportCreator));
+        private readonly ClassLogger Logger = new ClassLogger(typeof(HtmlReportCreator));
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
 

@@ -41,6 +41,11 @@ namespace DatenMeister.Models.Reports.Simple
     public class SimpleReportConfiguration
     {
         /// <summary>
+        /// Every report configuration requires a name
+        /// </summary>
+        public string name { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets or sets the flags which show also the descendents
         /// </summary>
         public bool showDescendents { get; set; }

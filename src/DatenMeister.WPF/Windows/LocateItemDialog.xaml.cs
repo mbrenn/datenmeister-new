@@ -94,6 +94,12 @@ namespace DatenMeister.WPF.Windows
             set => LocateElementControl.ShowExtentSelection = value;
         }
 
+        public string DescriptionText
+        {
+            get => txtDescription.Text;
+            set => txtDescription.Text = value;
+        }
+
         /// <summary>
         /// Navigates to a specific workspace
         /// </summary>

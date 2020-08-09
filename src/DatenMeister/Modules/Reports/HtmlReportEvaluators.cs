@@ -16,7 +16,12 @@ namespace DatenMeister.Modules.Reports
         /// <summary>
         /// Gets the evaluators
         /// </summary>
-        public List<IHtmlReportEvaluator> Evaluators => _htmlReportEvaluators.ToList();
+        public IEnumerable<IHtmlReportEvaluator> Evaluators => _htmlReportEvaluators.ToList();
+
+        public void AddEvaluator(IHtmlReportEvaluator evaluator)
+        {
+            _htmlReportEvaluators.Add(evaluator);
+        }
 
         /// <summary>
         /// Adds an additional evaluators

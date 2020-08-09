@@ -45,9 +45,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
-            var workspace =
-                Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
-            if (workspace != null)
+            if (Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() is IElement workspace)
             {
                 SetRootItem(workspace);
 

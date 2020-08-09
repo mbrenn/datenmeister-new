@@ -309,7 +309,7 @@ namespace DatenMeister.WPF.Forms.Base
                 _newSelectedItem.IsExpanded = true;
                 _newSelectedItem.BringIntoView();
             }
-        }
+         }
 
         /// <summary>
         /// Updates the treeview item by using the current item and compares it to the given item
@@ -346,7 +346,8 @@ namespace DatenMeister.WPF.Forms.Base
                     var found = childrenOfItem
                         .FirstOrDefault(
                             x => viewChild.TreeViewItemParameter.Element?.@equals(x.Element) == true);
-                    if (found.Element is { } foundItem && !ConfigurationAlwaysRefresh)
+                    
+                    if (found?.Element is { } foundItem && !ConfigurationAlwaysRefresh)
                     {
                         // If the element was found, add it
                         UpdateTreeViewItem(viewChild, foundItem);

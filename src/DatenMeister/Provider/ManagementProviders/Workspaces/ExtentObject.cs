@@ -14,14 +14,37 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             MetaclassUriPath = ((MofObjectShadow) _ManagementProvider.TheOne.__Extent).Uri;
         }
 
-        public ExtentObject(IProvider provider,
+        public ExtentObject(
+            ExtentOfWorkspaceProvider provider,
             Workspace parentWorkspace,
             IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
         {
             AddMapping(
                 _ManagementProvider._Extent.uri,
                 e => e.contextURI(),
-                (e, v) => throw new InvalidOperationException("uri cannot be set"));
+                (e, v) =>
+                {
+                    var asMofUriExtent = e as MofUriExtent;
+                    if (v == null)
+                    {
+                        throw new InvalidOperationException("value is null");
+                    }
+
+                    if (asMofUriExtent == null)
+                    {
+                        throw new InvalidOperationException("uri cannot be set");
+                    }
+
+                    // First, update the extent itself
+                    asMofUriExtent.UriOfExtent = v.ToString();
+
+                    // But we also need to update the extentmanager's configuration
+                    var extentConfiguration = provider.ExtentManager.GetLoadConfigurationFor(asMofUriExtent);
+                    if (extentConfiguration != null)
+                    {
+                        extentConfiguration.extentUri = v.ToString();
+                    }
+                });
 
             AddMapping(
                 _ManagementProvider._Extent.count,

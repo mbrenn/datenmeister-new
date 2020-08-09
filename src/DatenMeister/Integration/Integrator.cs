@@ -71,7 +71,7 @@ namespace DatenMeister.Integration
             _settings = settings;
         }
 
-        public IContainer UseDatenMeister(ContainerBuilder kernel)
+        public IDatenMeisterScope UseDatenMeister(ContainerBuilder kernel)
         {
             var scopeStorage = new ScopeStorage();
             kernel.RegisterInstance(scopeStorage).As<IScopeStorage>();
@@ -149,151 +149,152 @@ namespace DatenMeister.Integration
             
             Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();
-            using (var scope = builder.BeginLifetimeScope())
-            {
-                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
+            var scope = builder.BeginLifetimeScope();
+            var dmScope = new DatenMeisterScope(scope);
+            
+            // Creates the content
+            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
 
-                // Load the default extents
-                // Performs the bootstrap
-                var paths =
-                    new Bootstrapper.FilePaths
-                    {
-                        LoadFromEmbeddedResources = string.IsNullOrEmpty(_settings.PathToXmiFiles),
-                        PathPrimitive =
-                            _settings.PathToXmiFiles == null
-                                ? null
-                                : Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
-                        PathUml =
-                            _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
-                        PathMof =
-                            _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
-                    };
-
-                var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-
-                var umlWatch = new Stopwatch();
-                umlWatch.Start();
-                
-                Logger.Debug("Bootstrapping MOF and UML...");
-                var mofTask = Task.Run(() =>
-                    Bootstrapper.PerformFullBootstrap(
-                        paths,
-                        workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
-                        throw new InvalidOperationException("Workspace for MOF is not found"),
-                        workspaceLogic,
-                        workspaceData.Mof,
-                        _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof));
-                var umlTask = Task.Run(() =>
-                    Bootstrapper.PerformFullBootstrap(
-                        paths,
-                        workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceUml) ??
-                        throw new InvalidOperationException("Workspace for UML is not found"),
-                        workspaceLogic,
-                        workspaceData.Uml,
-                        _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml));
-                Task.WaitAll(mofTask, umlTask);
-                
-                umlWatch.Stop();
-
-                Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
-
-                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
-
-                // Now goes through all classes and add the configuration support
-                var loadConfigurationTask = Task.Run(() => storageMap.LoadAllExtentStorageConfigurationsFromAssembly());
-
-                // Creates the workspace and extent for the types layer which are belonging to the types
-                var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-                var typeWorkspace = workspaceLogic.GetTypesWorkspace();
-                var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
-                var packageMethods = scope.Resolve<PackageMethods>();
-                var internalUserExtent = localTypeSupport.InternalTypes;
-                
-                packageMethods.ImportByManifest(
-                    typeof(DefaultTypeIntegrator),
-                    "DatenMeister.XmiFiles.Internal.xmi",
-                    "Internal",
-                    internalUserExtent,
-                    string.Empty);
-
-                // Adds the module for form and fields
-                var fields = new _FormAndFields();
-                var uml = workspaceData.Uml.Get<_UML>() ??
-                          throw new InvalidOperationException("Workspace does not have uml");
-                typeWorkspace.Set(fields);
-                IntegrateFormAndFields.Assign(
-                    uml,
-                    mofFactory,
-                    packageMethods.GetPackagedObjects(
-                        localTypeSupport.InternalTypes.elements(),
-                        "DatenMeister::Forms") ?? throw new InvalidOperationException("DatenMeister::Forms not found"),
-                    fields,
-                    (MofUriExtent) localTypeSupport.InternalTypes);
-
-                // Adds the module for managementprovider
-                var managementProvider = new _ManagementProvider();
-                typeWorkspace.Set(managementProvider);
-                IntegrateManagementProvider.Assign(
-                    workspaceData.Uml.Get<_UML>() ?? throw new InvalidOperationException("Uml not found"),
-                    mofFactory,
-                    packageMethods.GetPackagedObjects(
-                        localTypeSupport.InternalTypes.elements(),
-                        "DatenMeister::Management") ?? throw new InvalidOperationException("DatenMeister::Management not found"),
-                    managementProvider,
-                    (MofUriExtent) localTypeSupport.InternalTypes);
-                
-                var formsPlugin = scope.Resolve<FormsPlugin>();
-                packageMethods.ImportByManifest(
-                    typeof(UmlPlugin),
-                    "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
-                    "CommonForms",
-                    formsPlugin.GetInternalFormExtent(),
-                    "DatenMeister::CommonForms");
-
-                // Includes the extent for the helping extents
-                ManagementProviderHelper.Initialize(workspaceLogic);
-                loadConfigurationTask.Wait();
-                
-                // Finally loads the plugin
-                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
-
-                // Boots up the typical DatenMeister Environment by loading the data
-                var extentManager = scope.Resolve<ExtentManager>();
-                if (_settings.EstablishDataEnvironment)
+            // Load the default extents
+            // Performs the bootstrap
+            var paths =
+                new Bootstrapper.FilePaths
                 {
-                    var workspaceLoader = scope.Resolve<WorkspaceLoader>();
-                    workspaceLoader.Load();
+                    LoadFromEmbeddedResources = string.IsNullOrEmpty(_settings.PathToXmiFiles),
+                    PathPrimitive =
+                        _settings.PathToXmiFiles == null
+                            ? null
+                            : Path.Combine(_settings.PathToXmiFiles, "PrimitiveTypes.xmi"),
+                    PathUml =
+                        _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "UML.xmi"),
+                    PathMof =
+                        _settings.PathToXmiFiles == null ? null : Path.Combine(_settings.PathToXmiFiles, "MOF.xmi")
+                };
 
-                    // Loads all extents after all plugins were started
-                    try
-                    {
-                        extentManager.LoadAllExtents();
-                    }
-                    catch (LoadingExtentsFailedException)
-                    {
-                        Logger.Info("Failure of loading extents will lead to a read-only application");
-                        if (_settings.AllowNoFailOfLoading)
-                        {
-                            throw;
-                        }
-                    }
+            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
 
-                    scope.Resolve<UserLogic>().Initialize();
+            var umlWatch = new Stopwatch();
+            umlWatch.Start();
+
+            Logger.Debug("Bootstrapping MOF and UML...");
+            var mofTask = Task.Run(() =>
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
+                    throw new InvalidOperationException("Workspace for MOF is not found"),
+                    workspaceLogic,
+                    workspaceData.Mof,
+                    _settings.PerformSlimIntegration ? BootstrapMode.SlimMof : BootstrapMode.Mof));
+            var umlTask = Task.Run(() =>
+                Bootstrapper.PerformFullBootstrap(
+                    paths,
+                    workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceUml) ??
+                    throw new InvalidOperationException("Workspace for UML is not found"),
+                    workspaceLogic,
+                    workspaceData.Uml,
+                    _settings.PerformSlimIntegration ? BootstrapMode.SlimUml : BootstrapMode.Uml));
+            Task.WaitAll(mofTask, umlTask);
+
+            umlWatch.Stop();
+
+            Logger.Info($" Bootstrapping Done: {Math.Floor(umlWatch.Elapsed.TotalMilliseconds)} ms");
+
+            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
+
+            // Now goes through all classes and add the configuration support
+            var loadConfigurationTask = Task.Run(() => storageMap.LoadAllExtentStorageConfigurationsFromAssembly());
+
+            // Creates the workspace and extent for the types layer which are belonging to the types
+            var localTypeSupport = scope.Resolve<LocalTypeSupport>();
+            var typeWorkspace = workspaceLogic.GetTypesWorkspace();
+            var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
+            var packageMethods = scope.Resolve<PackageMethods>();
+            var internalUserExtent = localTypeSupport.InternalTypes;
+
+            packageMethods.ImportByManifest(
+                typeof(UmlPlugin),
+                "DatenMeister.XmiFiles.Types.DatenMeister.xmi",
+                "CommonTypes",
+                internalUserExtent,
+                "DatenMeister");
+
+            // Adds the module for form and fields
+            var fields = new _FormAndFields();
+            var uml = workspaceData.Uml.Get<_UML>() ??
+                      throw new InvalidOperationException("Workspace does not have uml");
+            typeWorkspace.Set(fields);
+            IntegrateFormAndFields.Assign(
+                uml,
+                mofFactory,
+                packageMethods.GetPackagedObjects(
+                    localTypeSupport.InternalTypes.elements(),
+                    "DatenMeister::Forms") ?? throw new InvalidOperationException("DatenMeister::Forms not found"),
+                fields,
+                (MofUriExtent) localTypeSupport.InternalTypes);
+
+            // Adds the module for managementprovider
+            var managementProvider = new _ManagementProvider();
+            typeWorkspace.Set(managementProvider);
+            IntegrateManagementProvider.Assign(
+                workspaceData.Uml.Get<_UML>() ?? throw new InvalidOperationException("Uml not found"),
+                mofFactory,
+                packageMethods.GetPackagedObjects(
+                    localTypeSupport.InternalTypes.elements(),
+                    "DatenMeister::Management") ??
+                throw new InvalidOperationException("DatenMeister::Management not found"),
+                managementProvider,
+                (MofUriExtent) localTypeSupport.InternalTypes);
+
+            var formsPlugin = scope.Resolve<FormsPlugin>();
+            packageMethods.ImportByManifest(
+                typeof(UmlPlugin),
+                "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
+                "CommonForms",
+                formsPlugin.GetInternalFormExtent(),
+                "DatenMeister::CommonForms");
+
+            // Includes the extent for the helping extents
+            ManagementProviderHelper.Initialize(dmScope);
+            loadConfigurationTask.Wait();
+
+            // Finally loads the plugin
+            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
+
+            // Boots up the typical DatenMeister Environment by loading the data
+            var extentManager = scope.Resolve<ExtentManager>();
+            if (_settings.EstablishDataEnvironment)
+            {
+                var workspaceLoader = scope.Resolve<WorkspaceLoader>();
+                workspaceLoader.Load();
+
+                // Loads all extents after all plugins were started
+                try
+                {
+                    extentManager.LoadAllExtents();
+                }
+                catch (LoadingExtentsFailedException)
+                {
+                    Logger.Info("Failure of loading extents will lead to a read-only application");
+                    if (_settings.AllowNoFailOfLoading)
+                    {
+                        throw;
+                    }
                 }
 
-                // Finally loads the plugin
-                pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
-
-                // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
-                extentManager.CreateStorageTypeDefinitions();
-                
-                ResetUpdateFlagsOfExtent(workspaceLogic);
+                scope.Resolve<UserLogic>().Initialize();
             }
 
+            // Finally loads the plugin
+            pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
+
+            // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
+            extentManager.CreateStorageTypeDefinitions();
+
+            ResetUpdateFlagsOfExtent(workspaceLogic);
             watch.Stop();
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
-
-            return builder;
+            
+            return dmScope;
         }
 
         /// <summary>

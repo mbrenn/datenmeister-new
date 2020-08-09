@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Autofac;
+using DatenMeister.Integration;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
@@ -17,20 +21,25 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// <summary>
         /// Initializes a new instance of the ExtentOfWorkspaces
         /// </summary>
-        /// <param name="workspaceLogic">Logic of the workspace</param>
-        public ExtentOfWorkspaceProvider(IWorkspaceLogic workspaceLogic)
+        /// <param name="scope">The dependency inject</param>
+        public ExtentOfWorkspaceProvider(IDatenMeisterScope scope)
         {
-            WorkspaceLogic = workspaceLogic;
+            WorkspaceLogic = scope.WorkspaceLogic;
+            ExtentManager = scope.Resolve<ExtentManager>();
         }
+
+        public ExtentManager ExtentManager { get; set; }
 
         /// <summary>
         /// Gets the workspace logic for the elements
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic { get; }
 
-        public IProviderObject CreateElement(string? metaClassUri) =>
-            throw new System.NotImplementedException();
-
+        public IProviderObject CreateElement(string? metaClassUri)
+        {
+            throw new InvalidOperationException("The creation of new elements is not supported via MOF." +
+                                                "Use WorkspaceLogic to create new extents");
+        }
         public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
             throw new System.NotImplementedException();
@@ -72,7 +81,8 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// <returns></returns>
         private readonly ProviderCapability _providerCapability = new ProviderCapability
         {
-            IsTemporaryStorage = true
+            IsTemporaryStorage = true,
+            CanCreateElements = false
         };
 
         /// <summary>

@@ -36,13 +36,6 @@ namespace DatenMeister.Modules.Reports
                 IntegrateReports.Assign
             );
             
-            _packageMethods.ImportByManifest(
-                typeof(ReportPlugin),
-                "DatenMeister.XmiFiles.Modules.Reports.xmi",
-                "Forms",
-                _formsPlugin.GetInternalFormExtent(),
-                "DatenMeister::Reports");
-            
             _scopeStorage.Add(CreateEvaluators());
         }
 

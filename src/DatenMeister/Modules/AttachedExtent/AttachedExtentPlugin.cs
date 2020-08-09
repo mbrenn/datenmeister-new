@@ -48,12 +48,6 @@ namespace DatenMeister.Modules.AttachedExtent
             }
             else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)
             {
-                _packageMethods.ImportByManifest(
-                    typeof(AttachedExtentPlugin),
-                    "DatenMeister.XmiFiles.Modules.AttachedExtent.xmi",
-                    "Forms",
-                    _formsPlugin.GetInternalFormExtent(),
-                    "DatenMeister::AttachedExtent");
             }
         }
     }

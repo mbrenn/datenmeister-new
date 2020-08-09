@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BurnSystems.Logging;
 
 namespace DatenMeister.Integration
 {
@@ -9,6 +10,11 @@ namespace DatenMeister.Integration
     /// </summary>
     public class ScopeStorage : IScopeStorage
     {
+        /// <summary>
+        /// Defines the class logger
+        /// </summary>
+        public ClassLogger Logger = new ClassLogger(typeof(ScopeStorage));
+        
         /// <summary>
         /// Stores the items and is also used to be thread safe
         /// </summary>
@@ -35,6 +41,8 @@ namespace DatenMeister.Integration
                     return (T) result;
                 }
 
+                Logger.Info($"Type of {typeof(T).FullName} not available, so we have to create an empty one.");
+                
                 var newResult = new T();
                 Add(newResult);
                 return newResult;

@@ -19,7 +19,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// </summary>
         /// <param name="workspace">Workspace to be set</param>
         /// <param name="provider">The provider being set</param>
-        public WorkspaceObject(IProvider provider, Workspace workspace) : base(workspace, provider, workspace.id, MetaclassUriPath)
+        public WorkspaceObject(ExtentOfWorkspaceProvider provider, Workspace workspace) : base(workspace, provider, workspace.id, MetaclassUriPath)
         {
             AddMapping(
                 _ManagementProvider._Workspace.id,

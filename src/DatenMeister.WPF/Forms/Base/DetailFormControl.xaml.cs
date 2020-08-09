@@ -707,7 +707,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>true, if the validation was successful</returns>
         private bool CheckValidityOfContent(IObject detailElement)
         {
-            var inMemory = InMemoryObject.CreateEmpty(detailElement.GetExtentOf());
+            // Checks, if the provider is capable 
+            var capabilities = (detailElement.GetExtentOf() as MofExtent)?.Provider.GetCapabilities();
+            if (capabilities != null && !capabilities.CanCreateElements) return true;
+            
+            var inMemory = MofFactory.Create(
+                detailElement.GetExtentOf() ?? InMemoryProvider.TemporaryExtent,
+                (detailElement as IElement)?.metaclass);
+            
             StoreDialogContentIntoElement(inMemory);
             var success = true;
             var messages = new StringBuilder();

@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
@@ -14,12 +15,12 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// <summary>
         /// Initializes the ExtentHelper and creates the extent for the workspaces
         /// </summary>
-        /// <param name="workspaceLogic">The workspace logic to be used</param>
-        public static void Initialize(IWorkspaceLogic workspaceLogic)
+        /// <param name="scope">The Dependency Injector</param>
+        public static void Initialize(IDatenMeisterScope scope)
         {
             // Adds the extent containing the workpsaces
-            workspaceLogic.GetManagementWorkspace().AddExtent(
-                new MofUriExtent(new ExtentOfWorkspaceProvider(workspaceLogic), WorkspaceNames.UriExtentWorkspaces));
+            scope.WorkspaceLogic.GetManagementWorkspace().AddExtent(
+                new MofUriExtent(new ExtentOfWorkspaceProvider(scope), WorkspaceNames.UriExtentWorkspaces));
         }
 
         /// <summary>

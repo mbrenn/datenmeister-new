@@ -11,7 +11,7 @@ namespace DatenMeister.Integration
     /// </summary>
     public static class Helper
     {
-        public static IContainer UseDatenMeister(this ContainerBuilder kernel, IntegrationSettings settings)
+        public static IDatenMeisterScope UseDatenMeister(this ContainerBuilder kernel, IntegrationSettings settings)
         {
             var integration = new Integrator(settings);
             return integration.UseDatenMeister(kernel);
@@ -22,7 +22,7 @@ namespace DatenMeister.Integration
         /// This method is typically called at the end of the lifecycle of the application
         /// </summary>
         /// <param name="scope">Kernel to be used to find the appropriate methods</param>
-        public static void UnuseDatenMeister(this ILifetimeScope scope)
+        public static void UnuseDatenMeister(this IDatenMeisterScope scope)
         {
             scope.Resolve<WorkspaceLoader>().Store();
             scope.Resolve<ExtentManager>().UnloadManager(true);

@@ -272,9 +272,9 @@ namespace DatenMeister.WPF.Forms.Lists
                 try
                 {
                     var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
-                    var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.ExtentManager.ImportSettings")
+                    var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.Models.ExtentManager.ImportSettings")
                                     ?? throw new InvalidOperationException(
-                                        "DatenMeister.ExtentManager.ImportSettings is not found");
+                                        "DatenMeister.Models.ExtentManager.ImportSettings is not found");
 
                     var userResult = InMemoryObject.CreateEmpty(foundType);
                     var foundForm = viewExtent.element("#OpenExtentAsFile")

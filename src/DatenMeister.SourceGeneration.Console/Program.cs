@@ -1,4 +1,7 @@
 ﻿using System.IO;
+using System.Reflection;
+using System.Xml.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
 using DatenMeister.Models.FastViewFilter;
@@ -8,8 +11,11 @@ using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
+using DatenMeister.SourcecodeGenerator.SourceParser;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.SourceGeneration.Console
 {
@@ -33,6 +39,34 @@ namespace DatenMeister.SourceGeneration.Console
             CreateSourceForDataViews();
 
             CreateSourceForReports();
+            
+            System.Console.Write("Create Sourcecode for DatenMeister...");
+            using var stream = typeof(MofObject).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.XmiFiles.Types.DatenMeister.xmi");
+            
+
+            var document = XDocument.Load(stream);
+            var pseudoProvider = new XmiProvider(document);
+            var pseudoExtent = new MofUriExtent(pseudoProvider);
+
+            ////////////////////////////////////////
+            // Creates the class tree
+            
+            // Creates the source parser which is needed to navigate through the package
+            var sourceParser = new ElementSourceParser(_UML.TheOne);
+            var classTreeGenerator = new ClassTreeGenerator(sourceParser)
+            {
+                Namespace = "DatenMeister.Models"
+            };
+
+            classTreeGenerator.Walk(pseudoExtent);
+
+            var pathOfClassTree = "DatenMeister.class.cs";
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
+            
+            System.Console.WriteLine("Debug");
+            
 
 #if !DEBUG
             File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Core/Filler/primitivetypes.cs", true);
@@ -74,6 +108,9 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy($"./Reports.filler.cs", $"{R}/../DatenMeister/Models/Reports/Reports.filler.cs", true);
             File.Copy($"./Reports.class.cs", $"{R}/../DatenMeister/Models/Reports/Reports.class.cs", true);
             File.Copy($"./Reports.dotnet.cs", $"{R}/../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
+            
+            
+            File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 
 #endif
         }

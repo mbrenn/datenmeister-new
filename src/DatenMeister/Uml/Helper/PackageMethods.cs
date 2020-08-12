@@ -40,7 +40,7 @@ namespace DatenMeister.Uml.Helper
         {
             var extent = ((IHasExtent) rootElements).Extent  ?? throw new InvalidOperationException("extent is not set");
 
-            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
+            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively) ?? _UML.TheOne;
             if (uml == null) return null;
             
             var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
@@ -282,7 +282,8 @@ namespace DatenMeister.Uml.Helper
         /// the package</param>
         /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
         /// in case the loading failed. </param>
-        public IElement? ImportByManifest(Type manifestType, 
+        public IElement? ImportByManifest(
+            Type manifestType, 
             string manifestName,
             string sourcePackageName,
             IExtent targetExtent,

@@ -1,37 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-
-    <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="CommonTypes"
-          xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-        <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="Default"
-                         xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-            <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DefaultTypes.Package"
-                             name="Package">
-                <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name"
-                                type-ref="dm:///_internal/xmi/primitivetypes#String"/>
-                <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="packagedElement" upper="*"
-                                isComposite="true"/>
-            </packagedElement>
-        </packagedElement>
-        <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="DatenMeister"
-                         xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-            <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="ExtentManager"
-                             xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-                <packagedElement p1:type="dm:///_internal/model/uml#Class"
-                                 p1:id="DatenMeister.ExtentManager.ImportSettings" name="LoadFileFromXmi">
-                    <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath"
-                                    type-ref="dm:///_internal/xmi/primitivetypes#String"/>
-                    <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri"
-                                    type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="dm:///"/>
-                    <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspace"
-                                    type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="Data"/>
-                </packagedElement>
-                <packagedElement p1:type="dm:///_internal/model/uml#Class"
-                                 p1:id="DatenMeister.ExtentManager.ImportException" name="LoadFileFromXmi">
-                    <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="message"
-                                    type-ref="dm:///_internal/xmi/primitivetypes#String"/>
-                </packagedElement>
-            </packagedElement>
-        </packagedElement>
-    </item>
+  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" __uri="dm:///datenmeister.types" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" />
+  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="CommonTypes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="Default" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DefaultTypes.Package" name="Package">
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/xmi/primitivetypes#String" p1:id="1f901e57-0e10-488e-9ab6-c58e21f38f2a" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="packagedElement" upper="*" isComposite="true" p1:id="f59bd4b9-ea44-4dc4-bee9-ba5274ccd299" />
+      </packagedElement>
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="ExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.ExtentManager.ImportSettings" name="ImportSettings">
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/xmi/primitivetypes#String" p1:id="07f34b89-8ccc-4aea-a003-2c3a75b4a3b7" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="dm:///" p1:id="19a9d20f-710f-4865-99af-daf571f9cdcb" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspace" type-ref="dm:///_internal/xmi/primitivetypes#String" defaultValue="Data" p1:id="419416e6-ac3f-493f-a7bc-4cc0fde3fed1" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.ExtentManager.ImportException" name="ImportException">
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="message" type-ref="dm:///_internal/xmi/primitivetypes#String" p1:id="da1d7009-925f-438a-96ac-eecb9e8a4f4c" />
+      </packagedElement>
+    </packagedElement>
+  </item>
 </item>

@@ -137,7 +137,7 @@ namespace DatenMeister.SourcecodeGenerator
                 $"{ifStack.Indentation}collection = isSet ? ((value.get(\"ownedAttribute\") as IEnumerable<object>) ?? EmptyList): EmptyList;");
             Result.AppendLine($"{ifStack.Indentation}foreach (var item{ifStack.Level} in collection)");
             Result.AppendLine($"{ifStack.Indentation}{{");
-            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IElement;");
+            Result.AppendLine($"{ifForeachStack.Indentation}value = item{ifStack.Level} as IElement ?? throw new System.InvalidOperationException (\"Not OfType IElement\");");
             Result.AppendLine($"{ifForeachStack.Indentation}name = GetNameOfElement(value);");
 
             base.WalkClass(classInstance, ifStack);

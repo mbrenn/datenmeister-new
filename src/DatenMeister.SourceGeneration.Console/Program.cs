@@ -15,7 +15,6 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.SourcecodeGenerator.SourceParser;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.SourceGeneration.Console
 {

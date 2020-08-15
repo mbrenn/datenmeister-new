@@ -73,10 +73,7 @@ namespace DatenMeister.Provider.DotNet
             foreach (var type in types)
             {
                 var element = CreateTypeFor(type);
-                if (element != null)
-                {
-                    yield return element;
-                }
+                yield return element;
             }
         }
 
@@ -158,7 +155,7 @@ namespace DatenMeister.Provider.DotNet
                 var enumClass = _factoryForTypes.create(_umlHost.SimpleClassifiers.__Enumeration);
                 if (enumClass is ICanSetId umlClassAsSet)
                 {
-                    umlClassAsSet.Id = type.FullName;
+                    umlClassAsSet.Id = type.FullName ?? type.ToString();
                 }
 
                 enumClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
@@ -290,7 +287,7 @@ namespace DatenMeister.Provider.DotNet
             // Short-circuit for Array types
             if (typeof(Array).IsAssignableFrom(type))
             {
-                return type.GetElementType();
+                return type.GetElementType() ?? throw new InvalidOperationException("GetElementType == null");
             }
 
             while (true)

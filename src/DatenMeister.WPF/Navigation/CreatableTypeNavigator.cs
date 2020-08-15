@@ -36,7 +36,7 @@ namespace DatenMeister.WPF.Navigation
             var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewDefinitions = GiveMe.Scope.Resolve<ManagementViewDefinitions>();
 
-            var defaultTypePackage = extent?.GetConfiguration().GetDefaultTypePackages()?.ToList();
+            var defaultTypePackage = extent?.GetConfiguration().GetDefaultTypePackages().ToList();
             IWorkspace? metaWorkspace = null;
             IExtent? metaExtent = null;
             if (defaultTypePackage == null || !defaultTypePackage.Any())
@@ -53,7 +53,7 @@ namespace DatenMeister.WPF.Navigation
                 else
                 {
                     metaWorkspace = workspace?.MetaWorkspaces?.FirstOrDefault();
-                    metaExtent = metaWorkspace?.extent?.FirstOrDefault();
+                    metaExtent = metaWorkspace?.extent.FirstOrDefault();
                 }
             }
 
@@ -67,7 +67,7 @@ namespace DatenMeister.WPF.Navigation
             };
 
             var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);
-            if (result != null)
+            if (result.Result == NavigationResult.Saved)
             {
                 var detailElement = result.DetailElement;
                 if (result.Result == NavigationResult.Saved && detailElement != null)

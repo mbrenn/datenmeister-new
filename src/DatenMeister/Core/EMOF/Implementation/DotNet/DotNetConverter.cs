@@ -52,21 +52,19 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// </summary>
         /// <param name="value"></param>
         /// <param name="requestedId">Defines the id that shall be set upon the newly created object</param>
-        private object? ConvertToMofIfNotPrimitive(object value, string? requestedId = null)
+        private object? ConvertToMofIfNotPrimitive(object? value, string? requestedId = null)
         {
             if (DotNetHelper.IsOfPrimitiveType(value) || DotNetHelper.IsOfEnum(value))
             {
                 return value;
             }
 
-            if (value is IObject)
+            switch (value)
             {
-                return value;
-            }
-
-            if (value == null)
-            {
-                return null;
+                case null:
+                    return null;
+                case IObject _:
+                    return value;
             }
 
             // Check, if the element already existed
@@ -78,8 +76,8 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
             _visitedElements.Add(value);
 
             // Gets the uri of the lookup up type
-            var metaClassUri = _extent?.GetMetaClassUri(value.GetType());
-            var metaClass = metaClassUri == null ? null : _extent?.ResolveElement(metaClassUri, ResolveType.OnlyMetaClasses);
+            var metaClassUri = _extent.GetMetaClassUri(value.GetType());
+            var metaClass = metaClassUri == null ? null : _extent.ResolveElement(metaClassUri, ResolveType.OnlyMetaClasses);
 
             return ConvertToMofObject(value, metaClass, requestedId);
         }
@@ -155,7 +153,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="metaclass">Metaclass being used to create the element</param>
         /// <param name="requestedId">Id of the element that shall be put</param>
         /// <returns>The converted element as a MofObject</returns>
-        public static IObject? ConvertFromDotNetObject(
+        public static IObject ConvertFromDotNetObject(
             IUriExtent receiver,
             object value,
             IElement? metaclass = null,
@@ -169,7 +167,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="metaclass">Metaclass being used to create the element</param>
         /// <param name="requestedId">Id of the element that shall be put</param>
         /// <returns>The converted element as a MofObject</returns>
-        public static IObject? ConvertFromDotNetObject(
+        public static IObject ConvertFromDotNetObject(
             object value,
             IElement? metaclass = null,
             string? requestedId = null)
@@ -181,7 +179,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="element">MOF element to be converted</param>
         /// <param name="lookup">Lookup table to find the .Net type of the MOF element</param>
         /// <returns></returns>
-        public static object? ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
+        public static object ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
         {
             var uri = element.metaclass?.GetUri() ?? throw new InvalidOperationException("Uri is not set");
             var type = lookup.ToType(uri);
@@ -199,7 +197,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// </summary>
         /// <param name="element">Element to be converted</param>
         /// <returns>The converted .Net Type</returns>
-        public static object? ConvertToDotNetObject(IElement element)
+        public static object ConvertToDotNetObject(IElement element)
         {
             var mofElement = (MofElement) element;
             var metaClassUri = mofElement.metaclass?.GetUri();
@@ -268,7 +266,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
                     }
                     else if (reflectedProperty.PropertyType.IsEnum)
                     {
-                        var propertyValueType = propertyValue?.GetType();
+                        var propertyValueType = propertyValue.GetType();
                         if (propertyValueType == reflectedProperty.PropertyType)
                         {
                             reflectedProperty.SetValue(result, propertyValue);

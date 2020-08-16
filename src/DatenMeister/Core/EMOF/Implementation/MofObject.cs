@@ -156,7 +156,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
-        public override int GetHashCode() => ProviderObject?.GetHashCode() ?? base.GetHashCode();
+        public override int GetHashCode() => ProviderObject.GetHashCode();
 
         /// <inheritdoc />
         public object? get(string property)

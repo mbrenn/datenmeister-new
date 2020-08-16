@@ -1,6 +1,9 @@
 ﻿using System.IO;
+using System.Reflection;
+using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
@@ -8,8 +11,10 @@ using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
+using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourceGeneration.Console
 {
@@ -22,90 +27,53 @@ namespace DatenMeister.SourceGeneration.Console
             // First, creates
             CreateSourceForUmlAndMof();
 
-            System.Console.Write("Create Sourcecode for Web-Fields...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "FormAndFields",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.Forms",
-                    Types = FieldTypes.GetAll()
-                });
-            System.Console.WriteLine(" Done");
+            CreateSourceForWebFields();
 
-            System.Console.Write("Create Sourcecode for Excel...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "ExcelModels",
-                    Path = "./",
-                    Namespace = "DatenMeister.Excel",
-                    Types = ExcelModels.AllTypes
-                });
-            System.Console.WriteLine(" Done");
+            CreateSourceForExcel();
 
-            System.Console.Write("Create Sourcecode for Management Provider...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "ManagementProvider",
-                    Path = "./",
-                    Namespace = "DatenMeister.Provider.ManagementProviders.Model",
-                    Types = ManagementProviderModel.AllTypes
-                });
+            CreateSourceForManagementProvider();
 
-            System.Console.Write("Create Sourcecode for Fast Filter...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "FastViewFilters",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.FastViewFilter",
-                    Types = FastViewFilters.Types
-                });
+            CreateSourceForFastFilter();
 
-            System.Console.WriteLine(" Done");
+            CreateSourceForDataViews();
 
-            System.Console.Write("Create Sourcecode for DataViews...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "DataViews",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.DataViews",
-                    Types = DataViewPlugin.GetTypes()
-                });
+            CreateSourceForReports();
+            
+            System.Console.Write("Create Sourcecode for DatenMeister...");
+            using var stream = typeof(MofObject).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.XmiFiles.Types.DatenMeister.xmi");
 
-            System.Console.WriteLine(" Done");
+            var document = XDocument.Load(stream);
+            var pseudoProvider = new XmiProvider(document);
+            var pseudoExtent = new MofUriExtent(pseudoProvider);
 
+            ////////////////////////////////////////
+            // Creates the class tree
+            
+            // Creates the source parser which is needed to navigate through the package
+            var sourceParser = new ElementSourceParser(_UML.TheOne);
+            var classTreeGenerator = new ClassTreeGenerator(sourceParser)
+            {
+                Namespace = "DatenMeister.Models"
+            };
 
+            classTreeGenerator.Walk(pseudoExtent);
 
-            System.Console.Write("Create Sourcecode for Reports...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "Reports",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.Reports",
-                    Types = ReportTypes.GetTypes()
-                });
-
-            System.Console.WriteLine(" Done");
+            var pathOfClassTree = "DatenMeister.class.cs";
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
+            
+            System.Console.WriteLine("Debug");
+            
 
 #if !DEBUG
-            File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Core/Filler/primitivetypes.cs", true);
-            File.Copy($"{R}/FillThePrimitiveTypes.cs", $"{R}/../DatenMeister/Core/Filler/FillThePrimitiveTypes.cs",
+            File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Models/EMOF/primitivetypes.cs", true);
+            File.Copy($"{R}/FillThePrimitiveTypes.cs", $"{R}/../DatenMeister/Models/EMOF/FillThePrimitiveTypes.cs",
                 true);
-            File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister/Core/Filler/mof.cs", true);
-            File.Copy($"{R}/FillTheMOF.cs", $"{R}/../DatenMeister/Core/Filler/FillTheMOF.cs", true);
-            File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Core/Filler/uml.cs", true);
-            File.Copy($"{R}/FillTheUML.cs", $"{R}/../DatenMeister/Core/Filler/FillTheUML.cs", true);
+            File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister/Models/EMOF/mof.cs", true);
+            File.Copy($"{R}/FillTheMOF.cs", $"{R}/../DatenMeister/Models/EMOF/FillTheMOF.cs", true);
+            File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Models/EMOF/uml.cs", true);
+            File.Copy($"{R}/FillTheUML.cs", $"{R}/../DatenMeister/Models/EMOF/FillTheUML.cs", true);
 
             File.Copy($"./FormAndFields.filler.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.filler.cs",
                 true);
@@ -138,8 +106,103 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy($"./Reports.filler.cs", $"{R}/../DatenMeister/Models/Reports/Reports.filler.cs", true);
             File.Copy($"./Reports.class.cs", $"{R}/../DatenMeister/Models/Reports/Reports.class.cs", true);
             File.Copy($"./Reports.dotnet.cs", $"{R}/../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
+            
+            
+            File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 
 #endif
+        }
+
+        private static void CreateSourceForReports()
+        {
+            System.Console.Write("Create Sourcecode for Reports...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
+                    Name = "Reports",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.Reports",
+                    Types = ReportTypes.GetTypes()
+                });
+
+            System.Console.WriteLine(" Done");
+        }
+
+        private static void CreateSourceForDataViews()
+        {
+            System.Console.Write("Create Sourcecode for DataViews...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
+                    Name = "DataViews",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.DataViews",
+                    Types = DataViewPlugin.GetTypes()
+                });
+
+            System.Console.WriteLine(" Done");
+        }
+
+        private static void CreateSourceForFastFilter()
+        {
+            System.Console.Write("Create Sourcecode for Fast Filter...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
+                    Name = "FastViewFilters",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.FastViewFilter",
+                    Types = FastViewFilters.Types
+                });
+
+            System.Console.WriteLine(" Done");
+        }
+
+        private static void CreateSourceForManagementProvider()
+        {
+            System.Console.Write("Create Sourcecode for Management Provider...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
+                    Name = "ManagementProvider",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.ManagementProviders",
+                    Types = ManagementProviderModel.AllTypes
+                });
+        }
+
+        private static void CreateSourceForExcel()
+        {
+            System.Console.Write("Create Sourcecode for Excel...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
+                    Name = "ExcelModels",
+                    Path = "./",
+                    Namespace = "DatenMeister.Excel.Models",
+                    Types = ExcelModels.AllTypes
+                });
+            System.Console.WriteLine(" Done");
+        }
+
+        private static void CreateSourceForWebFields()
+        {
+            System.Console.Write("Create Sourcecode for Web-Fields...");
+            SourceGenerator.GenerateSourceFor(
+                new SourceGeneratorOptions
+                {
+                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
+                    Name = "FormAndFields",
+                    Path = "./",
+                    Namespace = "DatenMeister.Models.Forms",
+                    Types = FieldTypes.GetAll()
+                });
+            System.Console.WriteLine(" Done");
         }
 
         private static void CreateSourceForUmlAndMof()
@@ -156,14 +219,14 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for UML
             var generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.Core"
+                Namespace = "DatenMeister.Models.EMOF"
             };
 
             generator.Walk(umlExtent);
 
-            var extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._UML")
+            var extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._UML")
             {
-                Namespace = "DatenMeister.Core.Filler"
+                Namespace = "DatenMeister.Models.EMOF"
             };
             extentCreator.Walk(umlExtent);
 
@@ -174,13 +237,13 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for MOF
             generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.Core"
+                Namespace = "DatenMeister.Models.EMOF"
             };
             generator.Walk(mofExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._MOF")
+            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._MOF")
             {
-                Namespace = "DatenMeister.Core.Filler"
+                Namespace = "DatenMeister.Models.EMOF"
             };
 
             extentCreator.Walk(mofExtent);
@@ -192,13 +255,13 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for PrimitiveTypes
             generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.Core"
+                Namespace = "DatenMeister.Models.EMOF"
             };
             generator.Walk(primitiveTypeExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._PrimitiveTypes")
+            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._PrimitiveTypes")
             {
-                Namespace = "DatenMeister.Core.Filler"
+                Namespace = "DatenMeister.Models.EMOF"
             };
 
             extentCreator.Walk(primitiveTypeExtent);

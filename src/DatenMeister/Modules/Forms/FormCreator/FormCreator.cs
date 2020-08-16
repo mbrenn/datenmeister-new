@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -528,6 +528,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     checkbox.set(_FormAndFields._CheckboxFieldData.title, propertyName);
                     checkbox.set(_FormAndFields._CheckboxFieldData.isReadOnly, isReadOnly);
                     return checkbox;
+                }
+
+                if (propertyType.@equals(_dateTimeType) && !isForListForm)
+                {
+                    var dateTimeField= _factory.create(_formAndFields.__DateTimeFieldData);
+                    dateTimeField.set(_FormAndFields._CheckboxFieldData.name, propertyName);
+                    dateTimeField.set(_FormAndFields._CheckboxFieldData.title, propertyName);
+                    dateTimeField.set(_FormAndFields._CheckboxFieldData.isReadOnly, isReadOnly);
+                    return dateTimeField;
                 }
 
                 if (

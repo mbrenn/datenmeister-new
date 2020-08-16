@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Integration;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 using NUnit.Framework;
 using StundenMeister.Logic;

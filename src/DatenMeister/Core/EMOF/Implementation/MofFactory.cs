@@ -64,7 +64,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var asMofObject = value as MofObject
                               ?? throw new InvalidOperationException(
                                   "value is null or not of type MofObject: It is "
-                                  + (value == null ? "null" : value.GetType().FullName));
+                                  + value.GetType().FullName);
             var extent = asMofObject.Extent;
             if (extent != null)
             {
@@ -72,15 +72,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                 Extent = extent;
                 _provider = extent.Provider;
             }
-            else if (asMofObject.ReferencedExtent != null)
+            else
             {
                 Extent = asMofObject.ReferencedExtent;
                 _provider = Extent.Provider;
-            }
-            else
-            {
-                // If not available, do it via the providerobject
-                _provider = asMofObject.ProviderObject.Provider;
             }
         }
 

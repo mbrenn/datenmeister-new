@@ -45,7 +45,7 @@ namespace DatenMeister.Runtime.Extents
 
                 if (resultingExtent == null)
                 {
-                    var exception = _localTypeSupport.CreateInternalType("#DatenMeister.ExtentManager.ImportException");
+                    var exception = _localTypeSupport.CreateInternalType("#DatenMeister.Models.ExtentManager.ImportException");
                     exception.set("message", "Loading did not succeed");
                     throw new DatenMeisterException(exception);
                 }
@@ -53,7 +53,7 @@ namespace DatenMeister.Runtime.Extents
                 return resultingExtent;
             }
 
-            var resultingException = _localTypeSupport.CreateInternalType("#DatenMeister.ExtentManager.ImportException");
+            var resultingException = _localTypeSupport.CreateInternalType("#DatenMeister.Models.ExtentManager.ImportException");
             resultingException.set("message", "Unknown file extension (.xmi and .xml are supported)");
             throw new DatenMeisterException(resultingException);
         }

@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.AttachedExtent;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.AttachedExtent;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;

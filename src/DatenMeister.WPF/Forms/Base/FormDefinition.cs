@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Validators;
 using DatenMeister.Runtime;

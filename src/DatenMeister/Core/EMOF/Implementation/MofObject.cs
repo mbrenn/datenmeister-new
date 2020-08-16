@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -157,7 +156,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
-        public override int GetHashCode() => ProviderObject?.GetHashCode() ?? base.GetHashCode();
+        public override int GetHashCode() => ProviderObject.GetHashCode();
 
         /// <inheritdoc />
         public object? get(string property)

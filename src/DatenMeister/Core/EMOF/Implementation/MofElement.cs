@@ -106,7 +106,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return (false, null);
                 }
 
-                if (metaClass != null && extent?.DynamicFunctionManager != null)
+                if (metaClass != null && extent.DynamicFunctionManager != null)
                 {
                     return extent.DynamicFunctionManager.GetDerivedPropertyValue(this, metaClass, property);
                 }

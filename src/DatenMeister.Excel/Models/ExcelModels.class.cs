@@ -1,10 +1,10 @@
 #nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.InMemory;
 
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
-namespace DatenMeister.Excel
+namespace DatenMeister.Excel.Models
 {
     public class _ExcelModels
     {

@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\DataViews\" />
+    <Folder Include="Models\EMOF" />
     <Folder Include="Models\Example" />
     <Folder Include="Models\ManagementProvider\" />
   </ItemGroup>

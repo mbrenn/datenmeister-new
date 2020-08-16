@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.InMemory;

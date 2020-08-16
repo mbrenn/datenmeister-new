@@ -40,9 +40,10 @@ namespace DatenMeister.SourcecodeGenerator
             WriteUsages(new[]
             {
                 "DatenMeister.Core.EMOF.Interface.Reflection",
-                "DatenMeister.Core.EMOF.Implementation",
-                "DatenMeister.Provider.InMemory"
+                "DatenMeister.Core.EMOF.Implementation"
             });
+            
+            WriteResharperComments();
 
             base.Walk(extent);
         }

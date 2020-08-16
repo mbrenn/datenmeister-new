@@ -1,7 +1,6 @@
 ﻿#nullable enable
 
 using System;
-using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView
@@ -29,7 +28,6 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView
             Action = onClick;
         }
 
-
         public TreeViewItemCommandDefinition(string text, Action<TreeViewItemParameter> onClick, string categoryName)
             : this(text, onClick)
         {
@@ -45,7 +43,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView
 
         public override string ToString()
         {
-            return Text ?? "<no text>";
+            return Text;
         }
     }
 }

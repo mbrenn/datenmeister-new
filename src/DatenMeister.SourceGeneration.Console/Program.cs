@@ -185,7 +185,7 @@ namespace DatenMeister.SourceGeneration.Console
                     ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "ExcelModels",
                     Path = "./",
-                    Namespace = "DatenMeister.Excel",
+                    Namespace = "DatenMeister.Excel.Models",
                     Types = ExcelModels.AllTypes
                 });
             System.Console.WriteLine(" Done");

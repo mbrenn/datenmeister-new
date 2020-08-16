@@ -6,7 +6,7 @@ using DatenMeister.Provider.DotNet;
 // Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator
 // ReSharper disable RedundantNameQualifier
 
-namespace DatenMeister.Excel
+namespace DatenMeister.Excel.Models
 {
     public static class IntegrateExcelModels
     {

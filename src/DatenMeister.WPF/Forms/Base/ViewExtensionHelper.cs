@@ -1,6 +1,7 @@
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;

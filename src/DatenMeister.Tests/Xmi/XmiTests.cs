@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.Standards;

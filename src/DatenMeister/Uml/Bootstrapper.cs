@@ -10,6 +10,8 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Filler;
 using DatenMeister.DotNet;
+using DatenMeister.Models.EMOF;
+using DatenMeister.Modes.EMOF;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;

@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
@@ -42,7 +43,6 @@ namespace DatenMeister.SourceGeneration.Console
             System.Console.Write("Create Sourcecode for DatenMeister...");
             using var stream = typeof(MofObject).GetTypeInfo()
                 .Assembly.GetManifestResourceStream("DatenMeister.XmiFiles.Types.DatenMeister.xmi");
-            
 
             var document = XDocument.Load(stream);
             var pseudoProvider = new XmiProvider(document);
@@ -171,7 +171,7 @@ namespace DatenMeister.SourceGeneration.Console
                     ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
                     Name = "ManagementProvider",
                     Path = "./",
-                    Namespace = "DatenMeister.Provider.ManagementProviders.Model",
+                    Namespace = "DatenMeister.Models.ManagementProviders",
                     Types = ManagementProviderModel.AllTypes
                 });
         }
@@ -220,14 +220,14 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for UML
             var generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.Core"
+                Namespace = "DatenMeister.Models.EMOF"
             };
 
             generator.Walk(umlExtent);
 
             var extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._UML")
             {
-                Namespace = "DatenMeister.Core.Filler"
+                Namespace = "DatenMeister.Modes.EMOF"
             };
             extentCreator.Walk(umlExtent);
 
@@ -242,7 +242,7 @@ namespace DatenMeister.SourceGeneration.Console
             };
             generator.Walk(mofExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._MOF")
+            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._MOF")
             {
                 Namespace = "DatenMeister.Core.Filler"
             };
@@ -260,7 +260,7 @@ namespace DatenMeister.SourceGeneration.Console
             };
             generator.Walk(primitiveTypeExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Core._PrimitiveTypes")
+            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._PrimitiveTypes")
             {
                 Namespace = "DatenMeister.Core.Filler"
             };

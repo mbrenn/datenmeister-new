@@ -6,7 +6,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;

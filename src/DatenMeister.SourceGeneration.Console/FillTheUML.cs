@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 // ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Core.Filler
+namespace DatenMeister.Modes.EMOF
 {
     public class FillTheUML : DatenMeister.Core.Filler.IFiller<DatenMeister.Core._UML>
     {

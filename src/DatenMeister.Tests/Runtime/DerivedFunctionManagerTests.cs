@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;

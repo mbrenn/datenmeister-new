@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Core;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;

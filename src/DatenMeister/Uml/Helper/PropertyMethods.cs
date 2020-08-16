@@ -2,6 +2,7 @@
 using System.Globalization;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Uml.Helper

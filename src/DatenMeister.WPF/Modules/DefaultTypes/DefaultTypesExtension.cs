@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.ManagementProviders.Workspaces;

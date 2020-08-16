@@ -3,6 +3,7 @@ using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;

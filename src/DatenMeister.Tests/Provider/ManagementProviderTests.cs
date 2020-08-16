@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;

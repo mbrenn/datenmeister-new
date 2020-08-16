@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -52,7 +53,7 @@ namespace DatenMeister.Benchmark.Integration
         {
             var totalName = _umlElements.elements().GetAllDescendantsIncludingThemselves()
                 .OfType<IElement>()
-                .Where(x => x.metaclass?.Equals( _UML.TheOne.StructuredClassifiers.__Class) == true)
+                .Where(x => x.metaclass?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
                 .SelectMany(x => ClassifierMethods.GetSpecializations(x))
                 .ToList()
                 .Count;

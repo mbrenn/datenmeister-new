@@ -68,13 +68,13 @@ namespace DatenMeister.SourceGeneration.Console
             
 
 #if !DEBUG
-            File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Core/Filler/primitivetypes.cs", true);
-            File.Copy($"{R}/FillThePrimitiveTypes.cs", $"{R}/../DatenMeister/Core/Filler/FillThePrimitiveTypes.cs",
+            File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Models/EMOF/primitivetypes.cs", true);
+            File.Copy($"{R}/FillThePrimitiveTypes.cs", $"{R}/../DatenMeister/Models/EMOF/FillThePrimitiveTypes.cs",
                 true);
-            File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister/Core/Filler/mof.cs", true);
-            File.Copy($"{R}/FillTheMOF.cs", $"{R}/../DatenMeister/Core/Filler/FillTheMOF.cs", true);
-            File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Core/Filler/uml.cs", true);
-            File.Copy($"{R}/FillTheUML.cs", $"{R}/../DatenMeister/Core/Filler/FillTheUML.cs", true);
+            File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister/Models/EMOF/mof.cs", true);
+            File.Copy($"{R}/FillTheMOF.cs", $"{R}/../DatenMeister/Models/EMOF/FillTheMOF.cs", true);
+            File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Models/EMOF/uml.cs", true);
+            File.Copy($"{R}/FillTheUML.cs", $"{R}/../DatenMeister/Models/EMOF/FillTheUML.cs", true);
 
             File.Copy($"./FormAndFields.filler.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.filler.cs",
                 true);

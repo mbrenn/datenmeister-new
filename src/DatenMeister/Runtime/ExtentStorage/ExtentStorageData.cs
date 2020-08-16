@@ -40,7 +40,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets or sets the path in which the extent loading info is stored
         /// </summary>
-        public string? FilePath { get; set; }
+        public string FilePath { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets the locking path to lock the extent registration

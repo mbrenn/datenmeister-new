@@ -61,6 +61,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
             else
             {
+                Logger.Info($"Loading extent configuration from file: {path}");
                 var document = XDocument.Load(path);
 
                 foreach (var xmlExtent in document.Elements("extents").Elements("extent"))

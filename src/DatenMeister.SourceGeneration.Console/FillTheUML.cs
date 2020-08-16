@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 // ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Modes.EMOF
+namespace DatenMeister.Models.EMOF
 {
-    public class FillTheUML : DatenMeister.Core.Filler.IFiller<DatenMeister.Core._UML>
+    public class FillTheUML : DatenMeister.Core.Filler.IFiller<DatenMeister.Models.EMOF._UML>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject? element)
@@ -15,12 +15,12 @@ namespace DatenMeister.Modes.EMOF
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object?> collection, DatenMeister.Core._UML tree)
+        public void Fill(IEnumerable<object?> collection, DatenMeister.Models.EMOF._UML tree)
         {
             FillTheUML.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object?> collection, DatenMeister.Core._UML tree)
+        public static void DoFill(IEnumerable<object?> collection, DatenMeister.Models.EMOF._UML tree)
         {
             string? name;
             IElement? value;

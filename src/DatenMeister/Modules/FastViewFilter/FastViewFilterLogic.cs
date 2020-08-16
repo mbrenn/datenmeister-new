@@ -1,5 +1,4 @@
 ﻿using System;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.TypeSupport;

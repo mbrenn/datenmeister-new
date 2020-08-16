@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;

@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Excel
 {
@@ -43,7 +44,7 @@ namespace DatenMeister.Excel
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "tables") // Looking for property
                                 {
@@ -58,7 +59,7 @@ namespace DatenMeister.Excel
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {

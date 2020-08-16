@@ -109,6 +109,11 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine();
         }
 
+        protected void WriteResharperComments()
+        {
+            Result.AppendLine("// ReSharper disable RedundantNameQualifier");
+        }
+
         /// <summary>
         ///     Creates a C# source code. Not to be used for recursive
         ///     call since the namespace is just once created

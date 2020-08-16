@@ -20,13 +20,13 @@ namespace DatenMeister.SourcecodeGenerator
 
             var stack = new WalkPackageClass.CallStack(null);
 
-            Result.AppendLine($"{stack.Indentation}using DatenMeister;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Implementation;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Interface.Common;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Core.EMOF.Interface.Reflection;");
             Result.AppendLine($"{stack.Indentation}using DatenMeister.Provider.DotNet;");
             Result.AppendLine($"{stack.Indentation}// Created by ${typeof(DotNetIntegrationGenerator).FullName}");
+            Result.AppendLine("// ReSharper disable RedundantNameQualifier");
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}namespace {nameSpace}");
             Result.AppendLine($"{stack.Indentation}{{");

@@ -24,6 +24,8 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine("#nullable enable");
             Result.AppendLine("using System.Collections.Generic;");
             Result.AppendLine("using DatenMeister.Core.EMOF.Interface.Reflection;");
+            WriteResharperComments();
+            
             base.Walk(extent);
         }
 

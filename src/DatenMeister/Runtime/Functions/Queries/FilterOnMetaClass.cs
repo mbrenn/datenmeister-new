@@ -61,9 +61,17 @@ namespace DatenMeister.Runtime.Functions.Queries
         {
             var isIn = false;
             var metaClass = valueAsObject?.getMetaClass();
-            if (metaClass == null && _filteredMetaClass == null  || metaClass is MofObjectShadow)
+            if (metaClass == null && _filteredMetaClass == null)
+            {
                 isIn = true;
-            else if (metaClass != null && _filteredMetaClass?.Any(x => x.@equals(metaClass)) == true) isIn = true;
+            }
+            else
+            {
+                if (metaClass != null && _filteredMetaClass?.Any(x => x.@equals(metaClass)) == true)
+                {
+                    isIn = true;
+                }
+            }
 
             return isIn;
         }

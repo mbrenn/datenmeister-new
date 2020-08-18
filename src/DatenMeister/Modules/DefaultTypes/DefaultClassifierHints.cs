@@ -9,7 +9,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DefaultTypes;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -79,15 +79,7 @@ namespace DatenMeister.Modules.DefaultTypes
             }
 
             // If not found, check for the default package model in the types workspace
-            findByUrl = extent.GetUriResolver()
-                .ResolveElement(
-                    WorkspaceNames.UriExtentInternalTypes + "#" + typeof(Package).FullName,
-                    ResolveType.OnlyMetaClasses);
-
-            if (findByUrl != null)
-            {
-                yield return findByUrl; 
-            }
+            yield return _CommonTypes.TheOne.Default.__Package;
         }
 
         /// <summary>

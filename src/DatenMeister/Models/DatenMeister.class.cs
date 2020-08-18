@@ -18,6 +18,9 @@ namespace DatenMeister.Models
                 public static string @packagedElement = "packagedElement";
                 public IElement? _packagedElement = null;
 
+                public static string @preferredType = "preferredType";
+                public IElement? _preferredType = null;
+
             }
 
             public _Package @Package = new _Package();

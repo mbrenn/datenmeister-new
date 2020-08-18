@@ -701,7 +701,7 @@ namespace DatenMeister.WPF.Forms.Base
                                 Header = $"New {newSpecializationType}"
                             };
 
-                            menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, null);
+                            menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, innerParentProperty);
                             menuItems.Add(menuItem);
                         }
                     }

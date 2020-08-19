@@ -5,26 +5,19 @@ using DatenMeister.Runtime.Plugins;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Runtime;
-using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.AttachedExtent
 {
     [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class AttachedExtentPlugin : IDatenMeisterPlugin
     {
-        private readonly PackageMethods _packageMethods;
-        private readonly FormsPlugin _formsPlugin;
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly ExtentSettings _extentSettings;
 
         public AttachedExtentPlugin(
-            LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage, PackageMethods packageMethods,
-            FormsPlugin formsPlugin)
+            LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
         {
             _localTypeSupport = localTypeSupport;
-            _packageMethods = packageMethods;
-            _formsPlugin = formsPlugin;
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 

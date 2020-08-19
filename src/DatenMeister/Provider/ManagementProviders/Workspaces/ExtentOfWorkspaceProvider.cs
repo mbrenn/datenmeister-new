@@ -42,15 +42,15 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         }
         public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool DeleteElement(string id) =>
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
 
         public void DeleteAllElements()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IProviderObject? Get(string? id)

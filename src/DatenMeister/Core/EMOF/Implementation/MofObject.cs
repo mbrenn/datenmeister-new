@@ -3,10 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -361,9 +363,30 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IEnumerable<string> getPropertiesBeingSet()
             => ProviderObject.GetProperties();
 
+#if DEBUG
+        private int _stackDepth = 0;
+#endif
         /// <inheritdoc />
         public override string ToString()
-            => NamedElementMethods.GetName(this);
+        {
+#if DEBUG
+
+            Interlocked.Increment(ref _stackDepth);
+            if (_stackDepth > 50)
+            {
+                Debugger.Break();
+                return "STACKOVERFLOW";
+            }
+
+            var result = NamedElementMethods.GetName(this, true);
+
+            Interlocked.Decrement(ref _stackDepth);
+
+            return result;
+#else
+            return NamedElementMethods.GetName(this, true);
+#endif
+        }
 
         /// <summary>
         /// Gets the given object as a meta object

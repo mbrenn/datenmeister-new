@@ -26,7 +26,6 @@
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\UML.xmi" />
     <EmbeddedResource Include="XmiFiles\Forms\DatenMeister.xmi" />
   </ItemGroup>
   <ItemGroup>

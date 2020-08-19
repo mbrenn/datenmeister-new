@@ -34,12 +34,7 @@ namespace DatenMeister.Uml.Plugin
 
         public void Start(PluginLoadingPosition position)
         {
-            _packageMethods.ImportByManifest(
-                typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Forms.UML.xmi",
-                PackageName,
-                _formsPlugin.GetInternalFormExtent(),
-                $"DatenMeister::{PackageName}");
+          
         }
     }
 }

@@ -37,27 +37,13 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="AttachedExtents" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="1eb3f426-9edd-44e0-94a3-99bed960c816">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Item" hideMetaInformation="True" allowNewProperties="True" p1:id="AttachedElement.ExtentProperty">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="Name" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referencedWorkspace" title="Original Workspace" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referencedExtent" title="Original Extent" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="referenceType" title="Attached Element Type" defaultWorkspace="Types" defaultExtentUri="dm:///_internal/types/user" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referenceProperty" title="Referencing Property" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="Name" p1:id="c9feda4a-0595-4e22-9bb7-d3a1ac4780bc" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referencedWorkspace" title="Original Workspace" p1:id="1f8510e5-289c-4377-b500-c9c22c147ed9" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referencedExtent" title="Original Extent" p1:id="7e40bdc1-6719-4de8-951f-fec5dcff99db" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="referenceType" title="Attached Element Type" defaultWorkspace="Types" defaultExtentUri="dm:///_internal/types/user" p1:id="c0c8a785-8185-4d7b-b10c-508eda4d326a" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="referenceProperty" title="Referencing Property" p1:id="f3641c7b-4dad-4cf2-8d52-9105101d378f" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="Detail" form-ref="#AttachedElement.ExtentProperty" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration" name="Association for Extent Property" p1:id="0a43615b-42eb-4c0b-818c-985c966fbaa3" />
-    </packagedElement>
-    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="6416ba5f-b052-43f2-b7d6-cf589291bd35">
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Form SimpleConfiguration" hideMetaInformation="True" allowNewProperties="True" p1:id="Form.Report.SimpleConfiguration">
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showDescendents" title="Show all Descendents" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showRootElement" title="Show Root Element" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showMetaClasses" title="Include Metaclasses" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="showFullName" title="Include Full Names" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ReferenceFieldData" name="form" title="Form" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" name="typeMode" title="One table per type">
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" name="Yes" value="PerType" />
-          <values p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ValuePair" name="No" value="AllTypes" />
-        </field>
-      </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" name="Detail - SimpleConfiguration" formType="Detail" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration" form-ref="#Form.Report.SimpleConfiguration" p1:id="6fdbbf05-925d-4f6e-a3f8-5c51580e4dc1" />
     </packagedElement>
   </item>
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
@@ -95,6 +81,127 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="44a73b5c-8d0b-4927-a728-aefe92f981d6" name="alternativeUris" title="alternativeUris" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="43aad002-0aab-441b-865c-ef56e8c884ec" name="Metaclass" title="Metaclass" />
       </packagedElement>
+    </packagedElement>
+  </item>
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e0d85e06-1168-4840-b757-eef4e0a9baf3" name="DefaultTypes" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.Packages.Package" name="Package" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.Packages.PackageFormDetail" name="Package - Detail" hideMetaInformation="True">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="packagedElement" title="packagedElement" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.Packages.PackageFormList" name="Package - List">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        </tab>
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="packagedElement" name="packagedElement" property="packagedElement">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+          <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="null" />
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationDetail" formType="Detail" form-ref="#UML.Packages.PackageFormDetail" metaClass-ref="dm:///_internal/model/uml#Package" name="Association for Package - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationList" formType="TreeItemDetail" form-ref="#UML.Packages.PackageFormList" metaClass-ref="dm:///_internal/model/uml#Package" name="Association for Package - List" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationDetail" formType="Detail" form-ref="#UML.Packages.PackageFormDetail" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Association for Package - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationList" formType="TreeItemDetail" form-ref="#UML.Packages.PackageFormList" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Association for Package - List" />
+    </packagedElement>
+  </item>
+  <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="6610c4dc-0465-4a2b-a2f0-f1d35290c6b7" name="Uml">
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="Class" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="c1002f4b-5a29-4b03-b4f9-fcff4561ce45">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.StructuredClassifiers.ClassFormDetail" name="Class - Detail" hideMetaInformation="True">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="23771663-1f60-4ecc-9d7a-568d9d18e02e" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedAttribute" title="ownedAttribute" p1:id="f818db16-b3b8-42b2-971c-647b79c1f4b7">
+          <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="Property" metaClass-ref="dm:///_internal/model/uml#Property" />
+        </field>
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedOperation" title="ownedOperation" p1:id="d8464398-415e-47e5-aaa6-594f00db24a8" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedReception" title="ownedReception" p1:id="945279f8-c772-4ed1-af43-530a17067a36" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="85e8a142-8537-4f17-a053-778f84666b4d" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.StructuredClassifiers.ClassFormList" name="Class - List">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail" p1:id="8c7227c1-f3ce-49f9-8519-122a3ae01e81">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        </tab>
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedAttribute" name="ownedAttribute" property="ownedAttribute" p1:id="ba53e98f-a653-4b55-bba1-c3164e1cdc68">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        </tab>
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedOperation" name="ownedOperation" property="ownedOperation" p1:id="db80cef2-34e4-4e20-8edb-892323e690c5">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        </tab>
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedReception" name="ownedReception" property="ownedReception" p1:id="869d6177-5720-4bd1-982e-b8ed3dcf6102">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.StructuredClassifiers.ClassAssociationDetail" formType="Detail" form-ref="#UML.StructuredClassifiers.ClassFormDetail" metaClass-ref="dm:///_internal/model/uml#Class" name="Association for Class - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.StructuredClassifiers.ClassAssociationList" formType="TreeItemDetail" form-ref="#UML.StructuredClassifiers.ClassFormList" metaClass-ref="dm:///_internal/model/uml#Class" name="Association for Class - List" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.Classification.Property" name="Property" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.Classification.PropertyFormDetail" name="Property - Detail" hideMetaInformation="True">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" name="type" title="type" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="isID" title="isID" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="isComposite" title="isComposite" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="lower" title="lower" width="10" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="upper" title="upper" width="10" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.Classification.PropertyFormList" name="Property - List">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.AnyDataFieldData" name="type" title="type" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="isID" title="isID" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData" name="isComposite" title="isComposite" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="lower" title="lower" isReadOnly="True" width="10" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="upper" title="upper" isReadOnly="True" width="10" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Classification.PropertyAssociationDetail" formType="Detail" form-ref="#UML.Classification.PropertyFormDetail" metaClass-ref="dm:///_internal/model/uml#Property" name="Association for Property - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Classification.PropertyAssociationList" formType="TreeItemDetail" form-ref="#UML.Classification.PropertyFormList" metaClass-ref="dm:///_internal/model/uml#Property" name="Association for Property - List" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.SimpleClassifiers.Enumeration" name="Enumeration" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.SimpleClassifiers.EnumerationFormDetail" name="Enumeration - Detail" hideMetaInformation="True">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedAttribute" title="ownedLiteral" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.SimpleClassifiers.EnumerationFormList" name="Enumeration - List">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        </tab>
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedLiteral" name="ownedLiteral" property="ownedLiteral">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.SimpleClassifiers.EnumerationAssociationDetail" formType="Detail" form-ref="#UML.SimpleClassifiers.EnumerationFormDetail" metaClass-ref="dm:///_internal/model/uml#Enumeration" name="Association for Enumeration - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.SimpleClassifiers.EnumerationAssociationList" formType="TreeItemDetail" form-ref="#UML.SimpleClassifiers.EnumerationFormList" metaClass-ref="dm:///_internal/model/uml#Enumeration" name="Association for Enumeration - List" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.SimpleClassifiers.EnumerationLiteral" name="EnumerationLiteral" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.SimpleClassifiers.EnumerationFormLiteralDetail" name="EnumerationLiteral - Detail" hideMetaInformation="True">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="97092e5d-3edd-454a-bb8d-dcd05b832187" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="befd8e8b-7534-40ef-9c73-94df0e42dd11" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.SimpleClassifiers.EnumerationLiteralFormList" name="EnumerationLiteral - List">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail" p1:id="1fe88c71-9d88-4d6a-8fc9-0ac64a1e27b5">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.SimpleClassifiers.EnumerationLiteralAssociationDetail" formType="Detail" form-ref="#UML.SimpleClassifiers.EnumerationFormLiteralDetail" metaClass-ref="dm:///_internal/model/uml#EnumerationLiteral" name="Association for EnumerationLiteral - Detail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.SimpleClassifiers.EnumerationLiteralAssociationList" formType="TreeItemDetail" form-ref="#UML.SimpleClassifiers.EnumerationLiteralFormList" metaClass-ref="dm:///_internal/model/uml#EnumerationLiteral" name="Association for EnumerationLiteral - List" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="66674244-0809-4e95-a532-2253eeee08bb" name="PrimitiveType" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="1ff7698d-445b-45f9-a08f-6da03f9c8d91" name="Primitive Type - List">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="3c716d95-b5a4-4ac2-8c14-7b47ef6c23cc" name="Detail - Primitive Type">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="be407fe8-cee5-40bd-a530-a0dd96e3264d" name="name" title="Name" />
+        </tab>
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="c56fa272-2307-4c2a-a572-d4dce5206ee2" name="Primitive Type - Detail">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="fea0362e-2bda-4d33-a515-b22b69468353" name="name" title="Name" />
+      </packagedElement>
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="d0da76dc-a286-4868-b0c0-f9a0e11b3eb9" name="Association - PrimitiveTypes - List" formType="TreeItemDetail" metaClass-ref="dm:///_internal/model/uml#PrimitiveType" form-ref="#1ff7698d-445b-45f9-a08f-6da03f9c8d91" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="19bee149-04c9-4cbb-a51e-3523e094f75c" name="Association - PrimitiveTypes - Detail" formType="Detail" metaClass-ref="dm:///_internal/model/uml#PrimitiveType" form-ref="#c56fa272-2307-4c2a-a572-d4dce5206ee2" />
     </packagedElement>
   </item>
 </item>

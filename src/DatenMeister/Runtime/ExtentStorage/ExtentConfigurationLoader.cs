@@ -113,30 +113,36 @@ namespace DatenMeister.Runtime.ExtentStorage
             var rootNode = new XElement("extents");
             document.Add(rootNode);
 
-            foreach (var extent in ExtentStorageData.LoadedExtents)
+            foreach (var loadingInformation in ExtentStorageData.LoadedExtents)
             {
-                var xmlExtent = new XElement("extent");
-
-                // Stores the configuration
-                var xmlData = SerializeToXElement(extent.Configuration ??
-                                                  throw new InvalidOperationException("Configuration is not set"));
-                
-                xmlData.Name = "config";
-                // Stores the .Net datatype to allow restore of the right element
-                var fullName = extent.Configuration?.GetType().FullName;
-                if (fullName == null) continue;
-                
-                xmlData.Add(new XAttribute("configType",fullName));
-                xmlExtent.Add(xmlData);
-
-                // Stores the metadata
-                var xmlMetaData = new XElement(((MofExtent) extent.Extent).LocalMetaElementXmlNode)
+                if (loadingInformation.LoadingState == ExtentStorageData.ExtentLoadingState.Loaded)
                 {
-                    Name = "metadata"
-                };
+                    var xmlExtent = new XElement("extent");
 
-                xmlExtent.Add(xmlMetaData);
-                rootNode.Add(xmlExtent);
+                    // Stores the configuration
+                    var xmlData = SerializeToXElement(loadingInformation.Configuration ??
+                                                      throw new InvalidOperationException("Configuration is not set"));
+
+                    xmlData.Name = "config";
+                    // Stores the .Net datatype to allow restore of the right element
+                    var fullName = loadingInformation.Configuration?.GetType().FullName;
+                    if (fullName == null) continue;
+
+                    xmlData.Add(new XAttribute("configType", fullName));
+                    xmlExtent.Add(xmlData);
+
+                    var loadedExtent = loadingInformation.Extent as MofExtent ??
+                                       throw new InvalidOperationException("Extent should be loaded");
+
+                    // Stores the metadata
+                    var xmlMetaData = new XElement(loadedExtent.LocalMetaElementXmlNode)
+                    {
+                        Name = "metadata"
+                    };
+
+                    xmlExtent.Add(xmlMetaData);
+                    rootNode.Add(xmlExtent);
+                }
             }
 
             document.Save(path);

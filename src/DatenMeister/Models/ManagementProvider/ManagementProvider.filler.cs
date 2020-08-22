@@ -74,6 +74,14 @@ namespace DatenMeister.Models.ManagementProviders
                                 {
                                     tree.Extent._alternativeUris = value;
                                 }
+                                if(name == "state") // Looking for property
+                                {
+                                    tree.Extent._state = value;
+                                }
+                                if(name == "failMessage") // Looking for property
+                                {
+                                    tree.Extent._failMessage = value;
+                                }
                             }
                         }
                         if(name == "Workspace") // Looking for class
@@ -173,6 +181,14 @@ namespace DatenMeister.Models.ManagementProviders
                                 if(name == "alternativeUris") // Looking for property
                                 {
                                     tree.ExtentProperties._alternativeUris = value;
+                                }
+                                if(name == "state") // Looking for property
+                                {
+                                    tree.ExtentProperties._state = value;
+                                }
+                                if(name == "failMessage") // Looking for property
+                                {
+                                    tree.ExtentProperties._failMessage = value;
                                 }
                             }
                         }

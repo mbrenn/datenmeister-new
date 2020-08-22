@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.Models.ManagementProvider
 {
@@ -26,5 +27,9 @@ namespace DatenMeister.Models.ManagementProvider
         /// Gets the alternative uris of the extent
         /// </summary>
         public IEnumerable<string>? alternativeUris { get; set; }
+
+        public ExtentLoadingState state { get; set; }
+
+        public string? failMessage { get; set; }
     }
 }

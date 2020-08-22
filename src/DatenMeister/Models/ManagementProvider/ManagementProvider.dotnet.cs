@@ -25,6 +25,13 @@ namespace DatenMeister.Models.ManagementProviders
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
             {
+                var type = typeof(DatenMeister.Runtime.ExtentStorage.ExtentLoadingState);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentLoadingState = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.ManagementProvider.Extent);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);

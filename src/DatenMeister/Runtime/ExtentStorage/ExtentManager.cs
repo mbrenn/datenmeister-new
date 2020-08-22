@@ -274,6 +274,25 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
+        /// Gets the loaded extent information for the given extent
+        /// </summary>
+        /// <param name="extent">Extent to be queried</param>
+        /// <returns>The loaded extent information</returns>
+        public ExtentStorageData.LoadedExtentInformation? GetLoadedExtentInformation(IUriExtent extent)
+        {
+            ExtentStorageData.LoadedExtentInformation? information;
+            lock (_extentStorageData.LoadedExtents)
+            {
+                information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
+                    x.LoadingState == ExtentLoadingState.Loaded &&
+                    x.Extent?.@equals(extent) == true);
+            }
+
+            return information;
+        }
+
+
+        /// <summary>
         /// Gets the loading configuration for the given extent or null, if
         /// the extent does not contain a configuration
         /// </summary>

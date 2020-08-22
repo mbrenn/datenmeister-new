@@ -60,7 +60,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Defines the class which stores the mapping between the extent and the configuration
         /// </summary>
-        internal class LoadedExtentInformation
+        public class LoadedExtentInformation
         {
             public IExtent? Extent { get; set; }
             
@@ -101,6 +101,11 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public enum ExtentLoadingState
     {
+        /// <summary>
+        /// The loading state is unknown. Should never be set
+        /// </summary>
+        Unknown,
+
         /// <summary>
         /// The extent is not loaded
         /// </summary>

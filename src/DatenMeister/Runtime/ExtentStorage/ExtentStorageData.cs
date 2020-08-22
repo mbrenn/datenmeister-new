@@ -16,6 +16,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Gets or sets the flag whether the extent is opened
         /// </summary>
         public bool IsOpened { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value whether the extent manager uses a registration file. 
+        /// If the Extent Manager is just opened via OpenDecoupled, then all the changes are not registered
+        /// in the global configuration file
+        /// </summary>
+        public bool IsRegistrationOpen { get; set; }
         
         /// <summary>
         /// Gets or sets the information whether the loading has failed

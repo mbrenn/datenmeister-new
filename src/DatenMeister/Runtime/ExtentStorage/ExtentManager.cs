@@ -142,8 +142,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="configuration">Configuration to be loaded</param>
         /// <returns>Resulting uri extent</returns>
-        public IExtent? LoadExtentWithoutAdding(ExtentLoaderConfig configuration) =>
-            LoadExtentWithoutAddingInternal(configuration, ExtentCreationFlags.LoadOnly).Extent;
+        public ExtentStorageData.LoadedExtentInformation? LoadExtentWithoutAdding(ExtentLoaderConfig configuration) =>
+            LoadExtentWithoutAddingInternal(configuration, ExtentCreationFlags.LoadOnly);
 
         /// <summary>
         /// Loads the extent according given configuration and returns the information dataset
@@ -494,6 +494,24 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
+        /// Just opens an empty extent manager without having a connection to a extent registration storage date
+        /// </summary>
+        public void OpenDecoupled()
+        {
+            lock (_extentStorageData.LoadedExtents)
+            {
+                // Checks, if loading has already occurred
+                if (_extentStorageData.IsOpened)
+                {
+                    Logger.Warn("The Extent Storage was already opened...");
+                }
+
+                _extentStorageData.IsOpened = true;
+                _extentStorageData.IsRegistrationOpen = false;
+            }
+        }
+
+        /// <summary>
         /// Loads all extents and evaluates the extent manager as having loaded the extents
         /// </summary>
         public void LoadAllExtents()
@@ -511,7 +529,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
                 
                 _extentStorageData.IsOpened = true;
-            
+                _extentStorageData.IsRegistrationOpen = true;
+
                 // Stores the last the exception
                 Exception? lastException = null;
                 
@@ -722,16 +741,18 @@ namespace DatenMeister.Runtime.ExtentStorage
                     UnlockProvider(info.Configuration);
                 }
 
-
-                var configurationLoader = new ExtentConfigurationLoader(_scopeStorage, this, _map);
-                configurationLoader.StoreConfiguration();
-
-                _extentStorageData.LoadedExtents.Clear();
-
-                if (_extentStorageData.IsOpened)
+                if (_extentStorageData.IsRegistrationOpen)
                 {
-                    _lockingHandler?.Unlock(_extentStorageData.GetLockPath());
-                    _extentStorageData.IsOpened = false;
+                    var configurationLoader = new ExtentConfigurationLoader(_scopeStorage, this, _map);
+                    configurationLoader.StoreConfiguration();
+
+                    _extentStorageData.LoadedExtents.Clear();
+
+                    if (_extentStorageData.IsOpened)
+                    {
+                        _lockingHandler?.Unlock(_extentStorageData.GetLockPath());
+                        _extentStorageData.IsOpened = false;
+                    }
                 }
             }
         }

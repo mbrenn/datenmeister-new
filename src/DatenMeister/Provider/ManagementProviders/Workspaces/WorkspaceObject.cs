@@ -36,13 +36,21 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 _ManagementProvider._Workspace.extents,
                 w => w.extent.Select(x =>
                 {
-                    var loadedExtentInformation = provider.ExtentManager.GetLoadedExtentInformation((IUriExtent) x);
-                    if (loadedExtentInformation != null)
+                    var asUriExtent = x as IUriExtent;
+                    if (asUriExtent == null)
                     {
-                        return new ExtentObject(provider, workspace, (IUriExtent) x, loadedExtentInformation);
+                        return null;
+
                     }
 
-                    return null;
+                    var loadedExtentInformation = provider.ExtentManager.GetLoadedExtentInformation(asUriExtent);
+                    if (loadedExtentInformation != null)
+                    {
+                        return new ExtentObject(provider, workspace, asUriExtent, loadedExtentInformation);
+                    }
+
+                    return new ExtentObject(provider, workspace, asUriExtent, null);
+
                 }).Where(x => x != null),
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }

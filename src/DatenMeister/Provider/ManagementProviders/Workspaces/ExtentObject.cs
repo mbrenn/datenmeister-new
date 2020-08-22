@@ -9,7 +9,7 @@ using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
-    public class ExtentObject : MappingProviderObject<ExtentStorageData.LoadedExtentInformation>
+    public class ExtentObject : MappingProviderObject<Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>>
     {
         static ExtentObject()
         {
@@ -20,11 +20,16 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             ExtentOfWorkspaceProvider provider,
             Workspace parentWorkspace,
             IUriExtent? uriExtent,
-            ExtentStorageData.LoadedExtentInformation loadedExtentInformation) : base(loadedExtentInformation, provider, loadedExtentInformation.Configuration.extentUri, MetaclassUriPath)
+            ExtentStorageData.LoadedExtentInformation? loadedExtentInformation) 
+            : base(
+                new Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>(uriExtent, loadedExtentInformation), 
+                provider, 
+                loadedExtentInformation?.Configuration.extentUri ?? uriExtent?.contextURI() ?? throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"), 
+                MetaclassUriPath)
         {
             AddMapping(
                 _ManagementProvider._Extent.uri,
-                e => loadedExtentInformation.Configuration.extentUri,
+                e => loadedExtentInformation?.Configuration.extentUri ?? uriExtent?.contextURI() ?? "Invalid Uri",
                 (e, v) =>
                 {
                     if (v == null)
@@ -39,7 +44,10 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                     }
 
                     // But we also need to update the extentmanager's configuration
-                    loadedExtentInformation.Configuration.extentUri = v.ToString();
+                    if (loadedExtentInformation != null)
+                    {
+                        loadedExtentInformation.Configuration.extentUri = v.ToString();
+                    }
                 });
 
             AddMapping(
@@ -80,13 +88,13 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
             AddMapping(
                 _ManagementProvider._Extent.state,
-                e => loadedExtentInformation.LoadingState,
+                e => loadedExtentInformation?.LoadingState ?? ExtentLoadingState.Unknown,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 
 
             AddMapping(
                 _ManagementProvider._Extent.failMessage,
-                e => loadedExtentInformation.FailLoadingMessage,
+                e => loadedExtentInformation?.FailLoadingMessage ?? string.Empty,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 
             AddContainerMapping(

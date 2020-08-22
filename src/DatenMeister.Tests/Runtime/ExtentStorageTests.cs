@@ -28,7 +28,9 @@ namespace DatenMeister.Tests.Runtime
 
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var extentManager = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            extentManager.OpenDecoupled();
+
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
@@ -39,16 +41,16 @@ namespace DatenMeister.Tests.Runtime
                 }
             };
 
-            var csvExtent = logic.LoadExtent(configuration);
+            var csvExtent = extentManager.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
             Assert.That(csvExtent.Extent, Is.Not.Null);
 
             Assert.That(csvExtent.Extent!.elements().Count(), Is.EqualTo(4));
-            logic.StoreExtent(csvExtent.Extent);
+            extentManager.StoreExtent(csvExtent.Extent);
 
             // Changes content, store it and check, if stored
             ((IObject) csvExtent.Extent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
-            logic.UnloadManager(true);
+            extentManager.UnloadManager(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);

@@ -27,7 +27,7 @@ namespace DatenMeister.Tests.Runtime.Extents
     public class ExtentTests
     {
         [Test]
-        public void ExtentTest()
+        public void TestPropertiesOfManagementProvider()
         {
             using var builder = DatenMeisterTests.GetDatenMeisterScope();
             

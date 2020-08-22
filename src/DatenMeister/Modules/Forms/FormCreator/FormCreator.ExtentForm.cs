@@ -20,7 +20,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Stores the configuration whether we require a tab for each property
         /// </summary>
-        private const bool ConfigurationFormCreatorSeparateProperties = false;
+        private const bool ConfigurationFormCreatorSeparateProperties = true;
 
         /// <summary>
         /// Checks whether a detail form is already within the element form.

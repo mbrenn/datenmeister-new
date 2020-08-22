@@ -253,6 +253,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var result = _factory.create(_formAndFields.__ListForm);
             AddToFormByMetaclass(result, metaClass, creationMode);
             result.set(_FormAndFields._ListForm.property, propertyName);
+            result.set(_FormAndFields._ListForm.metaClass, metaClass);
             result.set(_FormAndFields._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
             return result;
         }

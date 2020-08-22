@@ -31,7 +31,7 @@ namespace DatenMeister.Integration
         /// <param name="uri"></param>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public static IUriExtent? CreateAndAddXmiExtent(
+        public static ExtentStorageData.LoadedExtentInformation CreateAndAddXmiExtent(
             this IDatenMeisterScope scope,
             string uri,
             string filename)

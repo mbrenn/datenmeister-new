@@ -257,28 +257,30 @@ namespace DatenMeister.Tests.Xmi.EMOF
             // Creates the extent
             var loader = scope.Resolve<ExtentManager>();
             var loadedExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
+            Assert.That(loadedExtent.Extent, Is.Not.Null);
 
             // Includes some data
-            var factory = MofFactory.CreateByExtent(loadedExtent);
+            var factory = MofFactory.CreateByExtent(loadedExtent.Extent);
             var createdElement = factory.create(null);
-            loadedExtent.elements().add(createdElement);
+            loadedExtent.Extent.elements().add(createdElement);
 
             createdElement.set("test", "Test");
             Assert.That(createdElement.get("test"), Is.EqualTo("Test"));
 
             // Stores the extent
-            loader.StoreExtent(loadedExtent);
+            loader.StoreExtent(loadedExtent.Extent);
 
             // Detaches it
-            loader.DetachExtent(loadedExtent);
+            loader.DetachExtent(loadedExtent.Extent);
 
             // Reloads it
             storageConfiguration.extentUri = "dm:///test_new";
 
             var newExtent = loader.LoadExtent(storageConfiguration);
             Assert.That(newExtent, Is.Not.Null);
-            Assert.That(newExtent!.elements().size(), Is.EqualTo(1));
-            Assert.That((newExtent.elements().ElementAt(0) as IElement)!.get("test"), Is.EqualTo("Test"));
+            Assert.That(newExtent.Extent, Is.Not.Null);
+            Assert.That(newExtent!.Extent.elements().size(), Is.EqualTo(1));
+            Assert.That((newExtent.Extent.elements().ElementAt(0) as IElement)!.get("test"), Is.EqualTo("Test"));
         }
 
         [Test]

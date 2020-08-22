@@ -62,7 +62,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public class LoadedExtentInformation
         {
-            public IExtent? Extent { get; set; }
+            public IUriExtent? Extent { get; set; }
             
             public ExtentLoaderConfig Configuration { get; set; }
             

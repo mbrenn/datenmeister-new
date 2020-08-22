@@ -115,20 +115,24 @@ namespace DatenMeister.Modules.ZipExample
 
             var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
                                ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");
+            if (loadedExtent.LoadingState == ExtentLoadingState.Failed || loadedExtent.Extent == null)
+            {
+                throw new InvalidOperationException("Loading of zip extent failed");
+            }
             
-            loadedExtent.GetConfiguration().ExtentType = ZipCodePlugin.ExtentType;
+            loadedExtent.Extent.GetConfiguration().ExtentType = ZipCodePlugin.ExtentType;
 
             if (_workspaceLogic.GetTypesWorkspace().FindElementByUri(
                 "dm:///_internal/types/internal?" + ZipCodeModel.PackagePath) is IElement zipCodeTypePackage)
             {
-                loadedExtent.GetConfiguration().SetDefaultTypePackages(new[] {zipCodeTypePackage});
+                loadedExtent.Extent.GetConfiguration().SetDefaultTypePackages(new[] {zipCodeTypePackage});
             }
             else
             {
                 Logger.Warn("dm:///_internal/types/internal?" + ZipCodeModel.PackagePath + "not found");
             }
 
-            return loadedExtent;
+            return loadedExtent.Extent;
         }
     }
 }

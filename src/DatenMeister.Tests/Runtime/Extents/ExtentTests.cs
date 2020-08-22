@@ -75,7 +75,10 @@ namespace DatenMeister.Tests.Runtime.Extents
                 }
 
                 var extentLoader = dm.Resolve<ExtentManager>();
-                var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
+                var loadedExtentInfo = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
+                Assert.That(loadedExtentInfo.Extent, Is.Not.Null);
+
+                var loadedExtent = loadedExtentInfo.Extent!;
                 loadedExtent.set("test", "this is a test");
                 loadedExtent.GetConfiguration().ExtentType = "Happy Extent";
                 extentLoader.StoreExtent(loadedExtent);
@@ -147,8 +150,10 @@ namespace DatenMeister.Tests.Runtime.Extents
 
                 var extentLoader = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
-                loadedExtent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
-                extentLoader.StoreExtent(loadedExtent);
+
+                Assert.That(loadedExtent.Extent, Is.Not.Null);
+                loadedExtent.Extent.GetConfiguration().AutoEnumerateType = AutoEnumerateType.Ordinal;
+                extentLoader.StoreExtent(loadedExtent.Extent);
 
                 dm.UnuseDatenMeister();
             }
@@ -261,8 +266,8 @@ namespace DatenMeister.Tests.Runtime.Extents
                         filePath = "./test.xmi"
                     }, ExtentCreationFlags.LoadOrCreate);
 
-                csvExtent.GetConfiguration().ExtentType = "CSVExtent";
-                mofExtent.GetConfiguration().ExtentType = "XMIExtent";
+                csvExtent.Extent!.GetConfiguration().ExtentType = "CSVExtent";
+                mofExtent.Extent!.GetConfiguration().ExtentType = "XMIExtent";
 
                 dm.UnuseDatenMeister();
             }

@@ -246,7 +246,7 @@ namespace DatenMeister.WPF.Forms.Lists
                         workspaceLogic.FindExtent(workspaceId, uri);
                     if (extentToBeDeleted != null)
                     {
-                        extentManager.DeleteExtent(extentToBeDeleted);
+                        extentManager.RemoveExtent(extentToBeDeleted);
                     }
                 }
             }
@@ -324,14 +324,15 @@ namespace DatenMeister.WPF.Forms.Lists
                     {
                         var loadedExtent =
                             extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
-                        if (loadedExtent == null)
+                        if (loadedExtent.LoadingState == ExtentLoadingState.Failed)
                         {
-                            Logger.Info("Extent could not be created.");
-                            MessageBox.Show("Extent could not be created");
+                            Logger.Info($"Extent could not be created: {loadedExtent.FailLoadingMessage}");
+                            MessageBox.Show($"Extent could not be created: {loadedExtent.FailLoadingMessage}");
                         }
-                        else
+                        else if (loadedExtent.LoadingState == ExtentLoadingState.Loaded
+                                 && loadedExtent.Extent != null)
                         {
-                            Logger.Info($"User created extent via general dialog: {loadedExtent.contextURI()}");
+                            Logger.Info($"User created extent via general dialog: {loadedExtent.Extent.contextURI()}");
                         }
                     }
                     catch (Exception exc)

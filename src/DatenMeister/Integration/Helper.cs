@@ -26,7 +26,7 @@ namespace DatenMeister.Integration
         {
             scope.Resolve<WorkspaceLoader>().Store();
             scope.Resolve<ExtentManager>().UnloadManager(true);
-            scope.Resolve<ExtentConfigurationLoader>().StoreConfiguration();
+
         }
     }
 }

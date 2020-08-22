@@ -41,12 +41,13 @@ namespace DatenMeister.Tests.Runtime
 
             var csvExtent = logic.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
-            
-            Assert.That(csvExtent.elements().Count(), Is.EqualTo(4));
-            logic.StoreExtent(csvExtent);
+            Assert.That(csvExtent.Extent, Is.Not.Null);
+
+            Assert.That(csvExtent.Extent!.elements().Count(), Is.EqualTo(4));
+            logic.StoreExtent(csvExtent.Extent);
 
             // Changes content, store it and check, if stored
-            ((IObject) csvExtent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
+            ((IObject) csvExtent.Extent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
             logic.UnloadManager(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
@@ -80,8 +81,9 @@ namespace DatenMeister.Tests.Runtime
 
             var csvExtent = logic.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
+            Assert.That(csvExtent.Extent, Is.Not.Null);
 
-            var foundConfiguration = logic.GetLoadConfigurationFor(csvExtent);
+            var foundConfiguration = logic.GetLoadConfigurationFor(csvExtent.Extent);
             Assert.That(foundConfiguration, Is.EqualTo(configuration));
 
 

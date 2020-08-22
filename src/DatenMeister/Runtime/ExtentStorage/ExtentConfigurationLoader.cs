@@ -115,25 +115,23 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             foreach (var loadingInformation in ExtentStorageData.LoadedExtents)
             {
-                if (loadingInformation.LoadingState == ExtentLoadingState.Loaded)
+                var xmlExtent = new XElement("extent");
+
+                // Stores the configuration
+                var xmlData = SerializeToXElement(loadingInformation.Configuration ??
+                                                  throw new InvalidOperationException("Configuration is not set"));
+
+                xmlData.Name = "config";
+
+                // Stores the .Net datatype to allow restore of the right element
+                var fullName = loadingInformation.Configuration?.GetType().FullName;
+                if (fullName == null) continue;
+
+                xmlData.Add(new XAttribute("configType", fullName));
+                xmlExtent.Add(xmlData);
+
+                if (loadingInformation.Extent is MofExtent loadedExtent)
                 {
-                    var xmlExtent = new XElement("extent");
-
-                    // Stores the configuration
-                    var xmlData = SerializeToXElement(loadingInformation.Configuration ??
-                                                      throw new InvalidOperationException("Configuration is not set"));
-
-                    xmlData.Name = "config";
-                    // Stores the .Net datatype to allow restore of the right element
-                    var fullName = loadingInformation.Configuration?.GetType().FullName;
-                    if (fullName == null) continue;
-
-                    xmlData.Add(new XAttribute("configType", fullName));
-                    xmlExtent.Add(xmlData);
-
-                    var loadedExtent = loadingInformation.Extent as MofExtent ??
-                                       throw new InvalidOperationException("Extent should be loaded");
-
                     // Stores the metadata
                     var xmlMetaData = new XElement(loadedExtent.LocalMetaElementXmlNode)
                     {
@@ -141,8 +139,9 @@ namespace DatenMeister.Runtime.ExtentStorage
                     };
 
                     xmlExtent.Add(xmlMetaData);
-                    rootNode.Add(xmlExtent);
                 }
+
+                rootNode.Add(xmlExtent);
             }
 
             document.Save(path);

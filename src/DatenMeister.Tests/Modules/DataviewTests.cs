@@ -126,7 +126,7 @@ namespace DatenMeister.Tests.Modules
             userTypeExtent.elements().add(secondClass);
 
             // Ok, now add the data
-            var extent = dm.CreateAndAddXmiExtent("dm:///testdata", "testdata.xmi");
+            var extent = dm.CreateAndAddXmiExtent("dm:///testdata", "testdata.xmi").Extent!;
             var factory = new MofFactory(extent);
             var element1 = factory.create(createdClass);
             element1.set("name", "Bach");

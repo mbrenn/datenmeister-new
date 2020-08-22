@@ -143,7 +143,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             var loadedExtentInformation = new ExtentStorageData.LoadedExtentInformation(configuration)
             {
-                LoadingState = ExtentStorageData.ExtentLoadingState.Unloaded
+                LoadingState = ExtentLoadingState.Unloaded
             };
 
             // Checks, if the given URL has a relative path and transforms the path to an absolute path
@@ -176,7 +176,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     var asFilePath = configuration as ExtentFileLoaderConfig;
                     var filePath = asFilePath?.filePath ?? string.Empty;
 
-                    loadedExtentInformation.LoadingState = ExtentStorageData.ExtentLoadingState.Failed;
+                    loadedExtentInformation.LoadingState = ExtentLoadingState.Failed;
                     loadedExtentInformation.FailLoadingMessage = $"The provider is locked: {filePath}";
                     return loadedExtentInformation;
                 }
@@ -189,12 +189,12 @@ namespace DatenMeister.Runtime.ExtentStorage
             try
             {
                 loadedProviderInfo = extentLoader.LoadProvider(configuration, extentCreationFlags);
-                loadedExtentInformation.LoadingState = ExtentStorageData.ExtentLoadingState.Loaded;
+                loadedExtentInformation.LoadingState = ExtentLoadingState.Loaded;
 
             }
             catch (Exception e)
             {
-                loadedExtentInformation.LoadingState = ExtentStorageData.ExtentLoadingState.Failed;
+                loadedExtentInformation.LoadingState = ExtentLoadingState.Failed;
                 loadedExtentInformation.FailLoadingMessage = e.ToString();
                 return loadedExtentInformation; 
             }
@@ -285,7 +285,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             lock (_extentStorageData.LoadedExtents)
             {
                 information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
-                    x.LoadingState == ExtentStorageData.ExtentLoadingState.Loaded &&
+                    x.LoadingState == ExtentLoadingState.Loaded &&
                     x.Extent?.@equals(extent) == true);
             }
 
@@ -347,7 +347,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             lock (_extentStorageData.LoadedExtents)
             {
                 information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
-                    x.LoadingState == ExtentStorageData.ExtentLoadingState.Loaded && x.Extent == extent);
+                    x.LoadingState == ExtentLoadingState.Loaded && x.Extent == extent);
             }
 
             if (information == null)
@@ -395,7 +395,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (doStore) StoreExtent(extent);
                 
                 var information = _extentStorageData.LoadedExtents.FirstOrDefault(x => 
-                    x.LoadingState == ExtentStorageData.ExtentLoadingState.Loaded && x.Extent?.@equals(extent) == true);
+                    x.LoadingState == ExtentLoadingState.Loaded && x.Extent?.@equals(extent) == true);
                 if (information != null)
                 {
                     _extentStorageData.LoadedExtents.Remove(information);
@@ -620,7 +620,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 try
                 {
-                    if (info.LoadingState == ExtentStorageData.ExtentLoadingState.Loaded && info.Extent != null)
+                    if (info.LoadingState == ExtentLoadingState.Loaded && info.Extent != null)
                     {
                         StoreExtent(info.Extent);
                     }

@@ -115,7 +115,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             foreach (var loadingInformation in ExtentStorageData.LoadedExtents)
             {
-                if (loadingInformation.LoadingState == ExtentStorageData.ExtentLoadingState.Loaded)
+                if (loadingInformation.LoadingState == ExtentLoadingState.Loaded)
                 {
                     var xmlExtent = new XElement("extent");
 

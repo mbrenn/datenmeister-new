@@ -58,27 +58,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         }
 
         /// <summary>
-        /// Defines the possible states of loading of the extent
-        /// </summary>
-        public enum ExtentLoadingState
-        {
-            /// <summary>
-            /// The extent is not loaded
-            /// </summary>
-            Unloaded,
-            
-            /// <summary>
-            /// The extent is loaded
-            /// </summary>
-            Loaded,
-            
-            /// <summary>
-            /// The loading of the extent has failed and saving will not be performed
-            /// </summary>
-            Failed
-        }
-
-        /// <summary>
         /// Defines the class which stores the mapping between the extent and the configuration
         /// </summary>
         internal class LoadedExtentInformation
@@ -115,5 +94,26 @@ namespace DatenMeister.Runtime.ExtentStorage
                 return $"({Extent}): " + Configuration;
             }
         }
+    }
+
+    /// <summary>
+    /// Defines the possible states of loading of the extent
+    /// </summary>
+    public enum ExtentLoadingState
+    {
+        /// <summary>
+        /// The extent is not loaded
+        /// </summary>
+        Unloaded,
+            
+        /// <summary>
+        /// The extent is loaded
+        /// </summary>
+        Loaded,
+            
+        /// <summary>
+        /// The loading of the extent has failed and saving will not be performed
+        /// </summary>
+        Failed
     }
 }

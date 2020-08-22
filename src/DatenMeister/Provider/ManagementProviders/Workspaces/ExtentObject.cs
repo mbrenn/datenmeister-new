@@ -4,11 +4,12 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Configuration;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
-    public class ExtentObject : MappingProviderObject<IUriExtent>
+    public class ExtentObject : MappingProviderObject<ExtentStorageData.LoadedExtentInformation>
     {
         static ExtentObject()
         {
@@ -18,56 +19,50 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         public ExtentObject(
             ExtentOfWorkspaceProvider provider,
             Workspace parentWorkspace,
-            IUriExtent uriExtent) : base(uriExtent, provider, uriExtent.contextURI(), MetaclassUriPath)
+            IUriExtent? uriExtent,
+            ExtentStorageData.LoadedExtentInformation loadedExtentInformation) : base(loadedExtentInformation, provider, loadedExtentInformation.Configuration.extentUri, MetaclassUriPath)
         {
             AddMapping(
                 _ManagementProvider._Extent.uri,
-                e => e.contextURI(),
+                e => loadedExtentInformation.Configuration.extentUri,
                 (e, v) =>
                 {
-                    var asMofUriExtent = e as MofUriExtent;
                     if (v == null)
                     {
                         throw new InvalidOperationException("value is null");
                     }
 
-                    if (asMofUriExtent == null)
-                    {
-                        throw new InvalidOperationException("uri cannot be set");
-                    }
-
                     // First, update the extent itself
-                    asMofUriExtent.UriOfExtent = v.ToString();
+                    if (uriExtent is MofUriExtent mofUriExtent)
+                    {
+                        (mofUriExtent).UriOfExtent = v.ToString();
+                    }
 
                     // But we also need to update the extentmanager's configuration
-                    var extentConfiguration = provider.ExtentManager.GetLoadConfigurationFor(asMofUriExtent);
-                    if (extentConfiguration != null)
-                    {
-                        extentConfiguration.extentUri = v.ToString();
-                    }
+                    loadedExtentInformation.Configuration.extentUri = v.ToString();
                 });
 
             AddMapping(
                 _ManagementProvider._Extent.count,
-                e => e.elements().size(),
+                e => uriExtent?.elements().size() ?? 0,
                 (e, v) => throw new InvalidOperationException("count cannot be set"));
 
             AddMapping(
                 _ManagementProvider._Extent.totalCount,
-                e => (e as MofExtent)?.ItemCount ?? 0,
+                e => (uriExtent as MofUriExtent)?.ItemCount ?? 0,
                 (e, v) => throw new InvalidOperationException("totalCount cannot be set"));
 
             AddMapping(
                 _ManagementProvider._Extent.type,
-                e => (e as MofExtent)?.Provider.GetType().Name,
+                e => (uriExtent as MofUriExtent)?.Provider.GetType().Name,
                 (e, v) => throw new InvalidOperationException("type cannot be set"));
 
             AddMapping(
                 _ManagementProvider._Extent.extentType,
-                e => (e as MofExtent)?.GetConfiguration().ExtentType,
+                e => (uriExtent as MofExtent)?.GetConfiguration().ExtentType,
                 (e, v) =>
                 {
-                    if (e is MofExtent mofExtent)
+                    if (uriExtent is MofExtent mofExtent)
                     {
                         mofExtent.GetConfiguration().ExtentType = v?.ToString() ?? string.Empty;
                     }
@@ -75,46 +70,23 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
             AddMapping(
                 _ManagementProvider._Extent.isModified,
-                e => (e as MofExtent)?.IsModified == true,
+                e => (uriExtent as MofExtent)?.IsModified == true,
                 (e, v) => throw new InvalidOperationException("isModified cannot be set"));
 
             AddMapping(
                 _ManagementProvider._Extent.alternativeUris,
-                e => (e as MofUriExtent)?.AlternativeUris,
+                e => (uriExtent as MofUriExtent)?.AlternativeUris,
                 (e, v) => throw new InvalidOperationException("alternativeUris cannot be set"));
 
             AddMapping(
                 _ManagementProvider._Extent.state,
-                e =>
-                    {
-                        var asMofUriExtent = e as MofUriExtent;
-
-                        if (asMofUriExtent == null)
-                        {
-                            throw new InvalidOperationException("uri cannot be set");
-                        }
-                        // But we also need to update the extentmanager's configuration
-                        var extentConfiguration = provider.ExtentManager.GetLoadedExtentInformation(asMofUriExtent);
-
-                        return extentConfiguration?.LoadingState ?? ExtentLoadingState.Unknown;
-                    },
+                e => loadedExtentInformation.LoadingState,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 
 
             AddMapping(
                 _ManagementProvider._Extent.failMessage,
-                e =>
-                {
-                    var asMofUriExtent = e as MofUriExtent;
-
-                    if (asMofUriExtent == null)
-                    {
-                        throw new InvalidOperationException("uri cannot be set");
-                    }
-                    // But we also need to update the extentmanager's configuration
-                    var extentConfiguration = provider.ExtentManager.GetLoadedExtentInformation(asMofUriExtent);
-                    return extentConfiguration != null ? extentConfiguration.FailLoadingMessage : string.Empty;
-                },
+                e => loadedExtentInformation.FailLoadingMessage,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 
             AddContainerMapping(

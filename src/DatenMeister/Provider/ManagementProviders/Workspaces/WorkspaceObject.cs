@@ -19,7 +19,8 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// </summary>
         /// <param name="workspace">Workspace to be set</param>
         /// <param name="provider">The provider being set</param>
-        public WorkspaceObject(ExtentOfWorkspaceProvider provider, Workspace workspace) : base(workspace, provider, workspace.id, MetaclassUriPath)
+        public WorkspaceObject(ExtentOfWorkspaceProvider provider, Workspace workspace) : base(workspace, provider,
+            workspace.id, MetaclassUriPath)
         {
             AddMapping(
                 _ManagementProvider._Workspace.id,
@@ -33,7 +34,16 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
             AddMapping(
                 _ManagementProvider._Workspace.extents,
-                w => w.extent.Select(x => new ExtentObject(provider, workspace, (IUriExtent) x)),
+                w => w.extent.Select(x =>
+                {
+                    var loadedExtentInformation = provider.ExtentManager.GetLoadedExtentInformation((IUriExtent) x);
+                    if (loadedExtentInformation != null)
+                    {
+                        return new ExtentObject(provider, workspace, (IUriExtent) x, loadedExtentInformation);
+                    }
+
+                    return null;
+                }).Where(x => x != null),
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }
 

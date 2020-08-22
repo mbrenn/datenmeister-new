@@ -40,7 +40,7 @@ namespace DatenMeister.Provider
         /// </summary>
         /// <param name="getFunction">Defines the getter function to retrieve the container</param>
         /// <param name="setFunction">Defines the setter function to set the container</param>
-        public void AddContainerMapping(Func<T, IProviderObject> getFunction, Action<T, IProviderObject> setFunction)
+        public void AddContainerMapping(Func<T, IProviderObject> getFunction, Action<T, IProviderObject?> setFunction)
         {
             ContainerMapping = new MappingContainerProperty(
                 getFunction,

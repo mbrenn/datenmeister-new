@@ -88,7 +88,7 @@
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.Packages.PackageFormDetail" name="Package - Detail" hideMetaInformation="True">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="118ecd46-9523-438e-b410-d5740bb809f0" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="packagedElement" title="packagedElement" p1:id="a82818a6-6f1a-4498-8054-d31a85820cf5" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" p1:id="1f44eba7-e48d-4787-8321-7cda61ac961f" name="preferredType" title="preferredType" includeSpecializationsForDefaultTypes="True" form-ref="dm:///datenmeister.forms#d13d1203-d643-4285-8eea-eee577667eff">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" p1:id="1f44eba7-e48d-4787-8321-7cda61ac961f" name="preferredType" title="preferredType" includeSpecializationsForDefaultTypes="True">
           <defaultTypesForNewElements href="dm:///_internal/model/uml#Class" />
         </field>
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="2ec15579-e205-443a-b89f-9e5d627d595d" />

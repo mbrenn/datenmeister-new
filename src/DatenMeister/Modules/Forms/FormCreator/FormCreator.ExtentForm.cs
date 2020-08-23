@@ -492,8 +492,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         // If there are elements included and they are filled
                         // OR, if there is no element included at all, create the corresponding list form
                         var form = _factory.create(_formAndFields.__ListForm);
-                        form.set(_FormAndFields._ListForm.name, pair.propertyName);
-                        form.set(_FormAndFields._ListForm.property, pair.propertyName);
+                        form.set(_FormAndFields._ListForm.name, propertyName);
+                        form.set(_FormAndFields._ListForm.property, propertyName);
                         form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
 
                         foreach (var item in elementsWithoutMetaClass)
@@ -513,7 +513,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                             var form = _formLogic.GetListFormForExtentForPropertyInObject(
                                 element,
                                 extent,
-                                pair.propertyName,
+                                propertyName,
                                 groupedMetaclass,
                                 FormDefinitionMode.Default);
                             tabs.Add(form);
@@ -530,8 +530,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     // If there are elements included and they are filled
                     // OR, if there is no element included at all, create the corresponding list form
                     var form = _factory.create(_formAndFields.__ListForm);
-                    form.set(_FormAndFields._ListForm.name, pair.propertyName);
-                    form.set(_FormAndFields._ListForm.property, pair.propertyName);
+                    form.set(_FormAndFields._ListForm.name, propertyName);
+                    form.set(_FormAndFields._ListForm.property, propertyName);
 
                     if (creationMode.HasFlagFast(CreationMode.ByPropertyValues))
                     {

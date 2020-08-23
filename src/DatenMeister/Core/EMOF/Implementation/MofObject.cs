@@ -8,7 +8,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -364,7 +363,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             => ProviderObject.GetProperties();
 
 #if DEBUG
-        private int _stackDepth = 0;
+        private int _stackDepth;
 #endif
         /// <inheritdoc />
         public override string ToString()

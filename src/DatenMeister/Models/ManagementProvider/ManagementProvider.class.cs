@@ -10,6 +10,8 @@ namespace DatenMeister.Models.ManagementProviders
     {
         public class _ExtentLoadingState
         {
+            public static string @Unknown = "Unknown";
+            public IElement @__Unknown = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Unknown");
             public static string @Unloaded = "Unloaded";
             public IElement @__Unloaded = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Unloaded");
             public static string @Loaded = "Loaded";

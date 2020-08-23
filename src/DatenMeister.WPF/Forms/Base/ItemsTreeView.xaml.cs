@@ -347,6 +347,7 @@ namespace DatenMeister.WPF.Forms.Base
                         .FirstOrDefault(
                             x => viewChild.TreeViewItemParameter.Element?.@equals(x.Element) == true);
                     
+                    // ReSharper disable once RedundantLogicalConditionalExpressionOperand
                     if (found?.Element is { } foundItem && !ConfigurationAlwaysRefresh)
                     {
                         // If the element was found, add it
@@ -385,8 +386,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         /// <param name="item">Item to be converted to a treeview</param>
         /// <param name="isRoot">true, if this is the root element. This means that the element is expanded. </param>
-        /// <param name="parent">The parent element which hosts the item</param>
-        /// <param name="parentProperty">Defines the property which is used to access the element</param>
         /// <returns>The created element</returns>
         private ItemsTreeViewItem? CreateTreeViewItem(TreeViewItemParameter item, bool isRoot = false)
         {

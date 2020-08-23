@@ -4,7 +4,6 @@ using System.Reflection;
 using Autofac;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Locking;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents

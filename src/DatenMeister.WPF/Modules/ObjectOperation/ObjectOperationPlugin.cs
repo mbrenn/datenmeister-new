@@ -1,6 +1,6 @@
 using DatenMeister.Runtime.Plugins;
 
-namespace DatenMeister.WPF.Modules.ObjectOperations
+namespace DatenMeister.WPF.Modules.ObjectOperation
 {
     public class ObjectOperationPlugin : IDatenMeisterPlugin
     {

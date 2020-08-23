@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
-using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions;
@@ -17,7 +16,7 @@ using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using MessageBox = System.Windows.MessageBox;
 
-namespace DatenMeister.WPF.Modules.ObjectOperations
+namespace DatenMeister.WPF.Modules.ObjectOperation
 {
     public class ObjectOperationViewExtension : IViewExtensionFactory
     {
@@ -72,8 +71,7 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                 return;
             }
 
-            var objectOperation = GiveMe.Scope.Resolve<DatenMeister.Modules.DefaultTypes.ObjectOperations>();
-            objectOperation.CopyObject(o, found);
+            ObjectOperations.CopyObject(o, found);
         }
 
         private async Task MoveItem(INavigationHost navigationHost, IObject? o)
@@ -97,10 +95,8 @@ namespace DatenMeister.WPF.Modules.ObjectOperations
                 // Nothing selected
                 return;
             }
-
-            var objectOperation = GiveMe.Scope.Resolve<DatenMeister.Modules.DefaultTypes.ObjectOperations>();
-            objectOperation.MoveObject(o, found);
-
+            
+            ObjectOperations.MoveObject(o, found);
         }
 
         private void DeleteItem(TreeViewItemParameter o)

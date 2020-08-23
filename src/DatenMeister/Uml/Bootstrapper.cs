@@ -570,10 +570,13 @@ namespace DatenMeister.Uml
                 workspaceLogic.AddExtent(dataLayer, mofExtent);
             }
 
-            var bootStrapper = new Bootstrapper(workspaceLogic);
-            bootStrapper.UmlInfrastructure = umlExtent;
-            bootStrapper.MofInfrastructure = mofExtent;
-            bootStrapper.PrimitiveTypesInfrastructure = primitiveExtent;
+            var bootStrapper = new Bootstrapper(workspaceLogic)
+            {
+                UmlInfrastructure = umlExtent,
+                MofInfrastructure = mofExtent,
+                PrimitiveTypesInfrastructure = primitiveExtent
+            };
+
             if (isSlim)
             {
                 dataLayer.Set(new _UML());
@@ -618,7 +621,7 @@ namespace DatenMeister.Uml
 
         /// <summary>
         /// Defines the file paths for doing the boot strap.
-        /// This avoids the clutterin of arguments
+        /// This avoids the cluttering of arguments
         /// </summary>
         public class FilePaths
         {
@@ -628,7 +631,9 @@ namespace DatenMeister.Uml
             public bool LoadFromEmbeddedResources { get; set; }
 
             public string? PathPrimitive { get; set; }
+
             public string? PathUml { get; set; }
+
             public string? PathMof { get; set; }
         }
     }

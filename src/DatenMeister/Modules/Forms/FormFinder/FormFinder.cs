@@ -23,10 +23,10 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// Stores a debug variable that can be used to extent the debugging of view retrieval process.
         /// </summary>
 #if VIEWLOGICINFO
-        private const bool ActivateDebuggingForViewRetrieval = true;
+        private const bool ConfigurationActivateDebuggingForViewRetrieval = true;
 #warning Internal Debugging Info activated
 #else
-        private const bool ActivateDebuggingForViewRetrieval = false;
+        private const bool ConfigurationActivateDebuggingForViewRetrieval = false;
 #endif
 
         private readonly FormsPlugin _formsPlugin;
@@ -241,13 +241,13 @@ namespace DatenMeister.Modules.Forms.FormFinder
         }
 
         /// <summary>
-        /// Writes the information to the debugger, if the ActivateDebuggingForViewRetrieval is configured as true
+        /// Writes the information to the debugger, if the ConfigurationActivateDebuggingForViewRetrieval is configured as true
         /// </summary>
         /// <param name="s"></param>
         private void InternalDebug(string s)
         {
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (ActivateDebuggingForViewRetrieval)
+            if (ConfigurationActivateDebuggingForViewRetrieval)
 #pragma warning disable 162
             {
                 Logger.Trace(s);

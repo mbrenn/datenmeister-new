@@ -8,7 +8,7 @@ namespace DatenMeister.Modules.Forms.FormModifications
     public interface IFormModificationPlugin
     {
         /// <summary>
-        /// Állows the plugin to modify the form. This method is called by the FormsPlugin for each added plugin
+        /// Allows the plugin to modify the form. This method is called by the FormsPlugin for each added plugin
         /// </summary>
         /// <param name="context">Form Context defining the elements for which the form was created
         /// and the purpose</param>

@@ -45,7 +45,7 @@ namespace DatenMeister.SourceGeneration.Console
 
             var document = XDocument.Load(stream);
             var pseudoProvider = new XmiProvider(document);
-            var pseudoExtent = new MofUriExtent(pseudoProvider);
+            var pseudoExtent = new MofUriExtent(pseudoProvider, WorkspaceNames.UriExtentInternalTypes);
 
             ////////////////////////////////////////
             // Creates the class tree

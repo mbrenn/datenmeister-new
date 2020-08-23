@@ -24,7 +24,7 @@ namespace DatenMeister.Models
             }
 
             public _Package @Package = new _Package();
-            public IElement @__Package = new MofObjectShadow("dm:///datenmeister.types#DatenMeister.Models.DefaultTypes.Package");
+            public IElement @__Package = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package");
 
         }
 
@@ -46,7 +46,7 @@ namespace DatenMeister.Models
             }
 
             public _ImportSettings @ImportSettings = new _ImportSettings();
-            public IElement @__ImportSettings = new MofObjectShadow("dm:///datenmeister.types#DatenMeister.Models.ExtentManager.ImportSettings");
+            public IElement @__ImportSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportSettings");
 
             public class _ImportException
             {
@@ -56,7 +56,7 @@ namespace DatenMeister.Models
             }
 
             public _ImportException @ImportException = new _ImportException();
-            public IElement @__ImportException = new MofObjectShadow("dm:///datenmeister.types#DatenMeister.Models.ExtentManager.ImportException");
+            public IElement @__ImportException = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentManager.ImportException");
 
         }
 

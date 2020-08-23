@@ -255,6 +255,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             result.set(_FormAndFields._ListForm.property, propertyName);
             result.set(_FormAndFields._ListForm.metaClass, metaClass);
             result.set(_FormAndFields._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
+            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[]{metaClass});
             return result;
         }
 

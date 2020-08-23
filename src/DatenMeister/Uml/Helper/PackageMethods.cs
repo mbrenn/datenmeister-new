@@ -230,8 +230,17 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="package">Package to be evaluated</param>
         /// <returns>ReflectiveCollection containing the packaged elements</returns>
-        public static IReflectiveCollection GetPackagedObjects(IObject package) =>
-            package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+        public static IReflectiveCollection GetPackagedObjects(IObject package)
+        {
+            if (package is IExtent asExtent)
+            {
+                return asExtent.elements();
+            }
+            else
+            {
+                return package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
+            }
+        }
 
         /// <summary>
         /// Imports a set of element into the the target package by creating the additional
@@ -276,16 +285,16 @@ namespace DatenMeister.Uml.Helper
         /// <param name="manifestType">Type of the assembly containing the
         /// manifest. It eases the life instead of given the assembly</param>
         /// <param name="manifestName">Name of the manifest resource stream</param>
-        /// <param name="sourcePackageName">Path of the package to be imported</param>
+        /// <param name="sourcePackageName">Path of the package to be imported. Null, if the complete extent shall be imported</param>
         /// <param name="targetExtent">Extent to which the extent shall be imported</param>
         /// <param name="targetPackageName">Path within the extent that shall receive
         /// the package</param>
         /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
         /// in case the loading failed. </param>
-        public IElement? ImportByManifest(
+        public IObject? ImportByManifest(
             Type manifestType, 
             string manifestName,
-            string sourcePackageName,
+            string? sourcePackageName,
             IExtent targetExtent,
             string targetPackageName,
             bool loadingRequired = true)
@@ -305,10 +314,18 @@ namespace DatenMeister.Uml.Helper
                 Workspace = (Workspace?) targetExtent.GetWorkspace()
             };
 
-            var sourcePackage = GetOrCreatePackageStructure(
-                pseudoExtent.elements(),
-                sourcePackageName,
-                false);
+            IObject? sourcePackage;
+            if (!string.IsNullOrEmpty(sourcePackageName) && sourcePackageName != null)
+            {
+                sourcePackage = GetOrCreatePackageStructure(
+                    pseudoExtent.elements(),
+                    sourcePackageName,
+                    false);
+            }
+            else
+            {
+                sourcePackage = pseudoExtent;
+            }
 
             if (sourcePackage == null)
             {
@@ -325,7 +342,6 @@ namespace DatenMeister.Uml.Helper
 
             if (string.IsNullOrEmpty(targetPackageName))
             {
-                // TODO: Add the elements to the target package
                 ImportPackage(sourcePackage, targetExtent, CopyOptions.CopyId);
             }
             else

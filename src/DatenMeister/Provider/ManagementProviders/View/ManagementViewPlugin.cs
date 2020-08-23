@@ -33,12 +33,6 @@ namespace DatenMeister.Provider.ManagementProviders.View
         /// </summary>
         public void AddToViewDefinition()
         {
-            _packageMethods.ImportByManifest(
-                typeof(ManagementViewPlugin),
-                "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
-                ManagementViewDefinitions.PackageName,
-                _formsPlugin.GetInternalFormExtent(),
-                $"DatenMeister::{ManagementViewDefinitions.PackageName}");
         }
     }
 }

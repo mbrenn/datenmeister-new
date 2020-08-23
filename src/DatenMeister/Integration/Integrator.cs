@@ -249,9 +249,9 @@ namespace DatenMeister.Integration
             packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
-                "CommonForms",
+                null,
                 formsPlugin.GetInternalFormExtent(),
-                "DatenMeister::CommonForms");
+                "DatenMeister");
 
             // Includes the extent for the helping extents
             ManagementProviderHelper.Initialize(dmScope);

@@ -248,8 +248,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     {
                         XmiId.Set(valueAsXmlObject.XmlNode, XmiId.CreateNew());
                     }
-
-
+                    
                     return valueAsXmlObject.XmlNode;
                 }
 
@@ -596,6 +595,17 @@ namespace DatenMeister.Provider.XMI.EMOF
                         subElement.Remove();
                         return true;
                     }
+                }
+                else if (value is UriReference uriReference)
+                {
+                    foreach (var subElement in
+                        XmlNode.Elements(normalizePropertyName)
+                            .Where(subElement => subElement.Attribute("href")?.Value.Equals(uriReference.Uri) == true))
+                    {
+                        subElement.Remove();
+                        return true;
+                    }
+                    
                 }
                 else
                 {

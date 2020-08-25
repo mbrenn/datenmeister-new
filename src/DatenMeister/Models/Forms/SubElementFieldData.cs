@@ -11,12 +11,19 @@ namespace DatenMeister.Models.Forms
         /// <summary>
         /// Gets or sets the metaclass that will be created when the user creates a new instance
         /// </summary>
-        public string? metaClassUri { get; set; }
+        public IElement? metaClass { get; set; }
 
         /// <summary>
         /// Gets or sets the fields being shown in the subelements. If null, the fields will be automatically generated.
         /// </summary>
         public Form? form { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether only existing elements are allowed.
+        /// If the value is set, then the use cannot create new elements.
+        /// This should be set, if the associated element is not a composite
+        /// </summary>
+        public bool allowOnlyExistingElements { get; set; }
 
         /// <summary>
         /// Initializes a new element of the subelement field data and sets the field as an enumeration

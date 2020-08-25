@@ -83,9 +83,11 @@ namespace DatenMeister.Runtime
 
             if (typeof(T) == typeof(object) && value is MofExtent)
             {
+                // ReSharper disable HeuristicUnreachableCode
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (!(value is IHasMofExtentMetaObject metaObject))
                     throw new NotImplementedException("Unfortunately not supported: " + value.GetType());
+                // ReSharper restore HeuristicUnreachableCode
 
                 return (T) metaObject.GetMetaObject().get(property, noReferences, ObjectType.None)!;
             }

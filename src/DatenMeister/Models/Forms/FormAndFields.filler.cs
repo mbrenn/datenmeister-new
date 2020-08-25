@@ -424,13 +424,17 @@ namespace DatenMeister.Models.Forms
                             {
                                 value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
-                                if(name == "metaClassUri") // Looking for property
+                                if(name == "metaClass") // Looking for property
                                 {
-                                    tree.SubElementFieldData._metaClassUri = value;
+                                    tree.SubElementFieldData._metaClass = value;
                                 }
                                 if(name == "form") // Looking for property
                                 {
                                     tree.SubElementFieldData._form = value;
+                                }
+                                if(name == "allowOnlyExistingElements") // Looking for property
+                                {
+                                    tree.SubElementFieldData._allowOnlyExistingElements = value;
                                 }
                                 if(name == "defaultTypesForNewElements") // Looking for property
                                 {

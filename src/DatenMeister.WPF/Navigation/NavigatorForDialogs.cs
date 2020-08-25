@@ -131,7 +131,7 @@ namespace DatenMeister.WPF.Navigation
             /// <summary>
             /// Defines the metaclasses to which the shall be filtered 
             /// </summary>
-            public List<IElement> FilteredMetaClasses { get; set; } = new List<IElement>();
+            public IList<IElement>? FilteredMetaClasses { get; set; } = new List<IElement>();
         }
 
         /// <summary>

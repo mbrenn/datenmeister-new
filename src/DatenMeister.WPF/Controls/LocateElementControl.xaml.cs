@@ -39,7 +39,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Defines the metaclasses for the filter
         /// </summary>
-        private List<IElement> _metaClassesForFilter = new List<IElement>();
+        private IList<IElement> _metaClassesForFilter = new List<IElement>();
 
         private readonly IWorkspaceLogic _workspaceLogic;
 
@@ -275,7 +275,7 @@ namespace DatenMeister.WPF.Controls
         /// Sets the meta classes for filters
         /// </summary>
         /// <param name="elements">Elements to be filed</param>
-        public void SetMetaClassesForFilter(List<IElement> elements)
+        public void SetMetaClassesForFilter(IList<IElement> elements)
         {
             _metaClassesForFilter = elements;
         }

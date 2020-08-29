@@ -19,16 +19,13 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Modules\HtmlReporter\Css\default_report.css" />
-    <EmbeddedResource Include="XmiFiles\Default.xmi" />
-    <EmbeddedResource Include="XmiFiles\Internal.xmi" />
+    <None Remove="XmiFiles\Types\DatenMeister.xml" />
+    <EmbeddedResource Include="XmiFiles\Types\DatenMeister.xmi" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XmiFiles\Modules\AttachedExtent.xmi" />
-    <EmbeddedResource Include="XmiFiles\Modules\Reports.xmi" />
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
     <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
     <EmbeddedResource Include="XmiFiles\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\UML.xmi" />
     <EmbeddedResource Include="XmiFiles\Forms\DatenMeister.xmi" />
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\DataViews\" />
+    <Folder Include="Models\EMOF" />
     <Folder Include="Models\Example" />
     <Folder Include="Models\ManagementProvider\" />
   </ItemGroup>

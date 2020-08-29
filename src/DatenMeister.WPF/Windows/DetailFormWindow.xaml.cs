@@ -75,6 +75,8 @@ namespace DatenMeister.WPF.Windows
         /// Gets or sets the form that is overriding the default form
         /// </summary>
         public FormDefinition? OverridingFormDefinition { get; private set; }
+        
+        public List<ViewExtension> ViewExtensions { get; private set; } = new List<ViewExtension>();
 
         /// <summary>
         /// Sets the form that shall be shown instead of the default form as created by the inheriting items
@@ -162,7 +164,7 @@ namespace DatenMeister.WPF.Windows
                 extensions.AddRange(otherExtensions);
             }
 
-            // 3) Ask the plugin
+            // 3) Ask the plugins
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
             var data = new ViewExtensionInfoItem(this, navigationGuest)
             {
@@ -183,6 +185,8 @@ namespace DatenMeister.WPF.Windows
             MenuHelper.ShowApplicationItems = true;
             MenuHelper.NavigationScope = NavigationScope.Application | NavigationScope.Item;
             MenuHelper.EvaluateExtensions(extensionList);
+
+            ViewExtensions = extensionList;
         }
 
         /// <summary>
@@ -424,10 +428,6 @@ namespace DatenMeister.WPF.Windows
                 }
             }
 
-            // Clones the EffectiveForm, so modification are possible afterwards by plugins without changing
-            // the original form
-            effectiveForm = ObjectCopier.Copy(new MofFactory(effectiveForm), effectiveForm);
-
             if (effectiveForm != null)
             {
                 var control = new DetailFormControl
@@ -437,6 +437,7 @@ namespace DatenMeister.WPF.Windows
                 };
                 
                 control.SetContent(DetailElement, effectiveForm, ContainerCollection);
+                
                 if (formDefinition != null)
                 {
                     foreach (var validator in formDefinition.Validators)
@@ -464,7 +465,7 @@ namespace DatenMeister.WPF.Windows
                 {
                     Title = title;
                 }
-
+                
                 RebuildNavigation();
             }
         }

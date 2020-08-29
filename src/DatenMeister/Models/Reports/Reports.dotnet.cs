@@ -1,10 +1,11 @@
-using DatenMeister;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.DotNet;
 // Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator
+// ReSharper disable RedundantNameQualifier
 
 namespace DatenMeister.Models.Reports
 {
@@ -56,6 +57,20 @@ namespace DatenMeister.Models.Reports
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 filledStructure.__ReportTable = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Reports.ReportInstanceSource);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ReportInstanceSource = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Reports.HtmlReportInstance);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__HtmlReportInstance = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {

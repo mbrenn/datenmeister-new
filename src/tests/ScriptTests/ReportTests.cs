@@ -48,7 +48,7 @@ namespace ScriptTests
                         filePath = "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi"
                     };
 
-                    testExtent = extentManager.LoadExtent(loaderConfig);
+                    testExtent = extentManager.LoadExtent(loaderConfig).Extent;
                 }
                 else
                 {

@@ -138,9 +138,9 @@ namespace DatenMeister.WPF.Forms.Lists
                         formMetaClass, 
                         formAndFields.__ExtentForm))
                     {
-                        var formName = formMetaClass?.ToString() ?? "Unclassified";
+                        var formType = formMetaClass?.ToString() ?? "Unclassified";
                         
-                        MessageBox.Show($"Overriding form is not of type ExtentForm, overriding form is of type {formName}");
+                        MessageBox.Show($"Overriding form is not of type ExtentForm, overriding form is of type {formType}");
                         form = null;
                     }
                 }
@@ -335,8 +335,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            var extent = RootItem as IExtent;
-            if (extent == null)
+            if (!(RootItem is IExtent extent))
             {
                 MessageBox.Show("The root item is not an extent");
                 return;

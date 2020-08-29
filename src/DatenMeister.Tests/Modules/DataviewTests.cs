@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Autofac;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.InMemory;
@@ -126,7 +126,7 @@ namespace DatenMeister.Tests.Modules
             userTypeExtent.elements().add(secondClass);
 
             // Ok, now add the data
-            var extent = dm.CreateAndAddXmiExtent("dm:///testdata", "testdata.xmi");
+            var extent = dm.CreateAndAddXmiExtent("dm:///testdata", "testdata.xmi").Extent!;
             var factory = new MofFactory(extent);
             var element1 = factory.create(createdClass);
             element1.set("name", "Bach");

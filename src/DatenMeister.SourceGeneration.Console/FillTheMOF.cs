@@ -1,10 +1,11 @@
 #nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Core.Filler
+namespace DatenMeister.Models.EMOF
 {
-    public class FillTheMOF : DatenMeister.Core.Filler.IFiller<DatenMeister.Core._MOF>
+    public class FillTheMOF : DatenMeister.Core.Filler.IFiller<DatenMeister.Models.EMOF._MOF>
     {
         private static readonly object[] EmptyList = new object[] { };
         private static string GetNameOfElement(IObject? element)
@@ -14,12 +15,12 @@ namespace DatenMeister.Core.Filler
             return nameAsObject == null ? string.Empty : nameAsObject.ToString();
         }
 
-        public void Fill(IEnumerable<object?> collection, DatenMeister.Core._MOF tree)
+        public void Fill(IEnumerable<object?> collection, DatenMeister.Models.EMOF._MOF tree)
         {
             FillTheMOF.DoFill(collection, tree);
         }
 
-        public static void DoFill(IEnumerable<object?> collection, DatenMeister.Core._MOF tree)
+        public static void DoFill(IEnumerable<object?> collection, DatenMeister.Models.EMOF._MOF tree)
         {
             string? name;
             IElement? value;
@@ -51,7 +52,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -62,7 +63,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -93,7 +94,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                         if(name == "tagOwner") // Looking for property
                                         {
@@ -118,7 +119,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                         if(name == "name") // Looking for property
                                         {
@@ -151,7 +152,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -162,7 +163,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -193,7 +194,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -204,7 +205,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -215,7 +216,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                         if(name == "name") // Looking for property
                                         {
@@ -234,7 +235,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -245,7 +246,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                         if(name == "firstElement") // Looking for property
                                         {
@@ -268,7 +269,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                         if(name == "objectInError") // Looking for property
                                         {
@@ -301,7 +302,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                         if(name == "package") // Looking for property
                                         {
@@ -316,7 +317,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -327,7 +328,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                     }
                                 }
@@ -338,7 +339,7 @@ namespace DatenMeister.Core.Filler
                                     collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                                     foreach (var item2 in collection)
                                     {
-                                        value = item2 as IElement;
+                                        value = item2 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                         name = GetNameOfElement(value);
                                         if(name == "metaclass") // Looking for property
                                         {

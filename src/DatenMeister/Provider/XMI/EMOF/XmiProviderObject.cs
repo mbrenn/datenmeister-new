@@ -36,6 +36,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         private readonly Dictionary<string, object> _propertyCache = new Dictionary<string, object>();
 
 #pragma warning disable 162
+        // ReSharper disable HeuristicUnreachableCode
         /// <summary>
         /// Checks whether the given property name is valid. This conversion is used to store the data into the xml
         /// </summary>
@@ -44,18 +45,18 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (ConfigurationUseNormalizationCache)
             {
-                    if (_xmiProvider.NormalizationCache.TryGetValue(property, out var value))
-                    {
-                        return value;
-                    }
-
-                    value = property == "href"
-                        ? "_href"
-                        : XmlConvert.EncodeLocalName(property);
-
-                    _xmiProvider.NormalizationCache[property] = value;
+                if (_xmiProvider.NormalizationCache.TryGetValue(property, out var value))
+                {
                     return value;
-                
+                }
+
+                value = property == "href"
+                    ? "_href"
+                    : XmlConvert.EncodeLocalName(property);
+
+                _xmiProvider.NormalizationCache[property] = value;
+                return value;
+
             }
             else
             {
@@ -66,6 +67,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                 return value;
             }
         }
+        // ReSharper restore HeuristicUnreachableCode
 #pragma warning restore 162
 
         /// <summary>
@@ -246,8 +248,7 @@ namespace DatenMeister.Provider.XMI.EMOF
                     {
                         XmiId.Set(valueAsXmlObject.XmlNode, XmiId.CreateNew());
                     }
-
-
+                    
                     return valueAsXmlObject.XmlNode;
                 }
 
@@ -594,6 +595,17 @@ namespace DatenMeister.Provider.XMI.EMOF
                         subElement.Remove();
                         return true;
                     }
+                }
+                else if (value is UriReference uriReference)
+                {
+                    foreach (var subElement in
+                        XmlNode.Elements(normalizePropertyName)
+                            .Where(subElement => subElement.Attribute("href")?.Value.Equals(uriReference.Uri) == true))
+                    {
+                        subElement.Remove();
+                        return true;
+                    }
+                    
                 }
                 else
                 {

@@ -1,8 +1,8 @@
 #nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.InMemory;
 
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
 namespace DatenMeister.Models.Reports
 {
@@ -76,6 +76,35 @@ namespace DatenMeister.Models.Reports
         public _ReportTable @ReportTable = new _ReportTable();
         public IElement @__ReportTable = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable");
 
+        public class _ReportInstanceSource
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @source = "source";
+            public IElement? _source = null;
+
+        }
+
+        public _ReportInstanceSource @ReportInstanceSource = new _ReportInstanceSource();
+        public IElement @__ReportInstanceSource = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource");
+
+        public class _HtmlReportInstance
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @reportDefinition = "reportDefinition";
+            public IElement? _reportDefinition = null;
+
+            public static string @sources = "sources";
+            public IElement? _sources = null;
+
+        }
+
+        public _HtmlReportInstance @HtmlReportInstance = new _HtmlReportInstance();
+        public IElement @__HtmlReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.HtmlReportInstance");
+
         public class _DescendentMode
         {
             public static string @None = "None";
@@ -104,6 +133,9 @@ namespace DatenMeister.Models.Reports
 
         public class _SimpleReportConfiguration
         {
+            public static string @name = "name";
+            public IElement? _name = null;
+
             public static string @showDescendents = "showDescendents";
             public IElement? _showDescendents = null;
 

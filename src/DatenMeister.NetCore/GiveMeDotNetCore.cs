@@ -25,7 +25,7 @@ namespace DatenMeister.NetCore
         {
             settings ??= GetDefaultIntegrationSettings();
 
-            if (settings.PluginLoader is DefaultPluginLoader || settings.PluginLoader == null)
+            if (settings.PluginLoader is DefaultPluginLoader)
             {
                 settings.PluginLoader = new DotNetCorePluginLoader();
             }

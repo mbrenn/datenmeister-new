@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Models.ManagementProvider.FormViewModels;
 using DatenMeister.Models.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.Models.ManagementProvider
 {
@@ -15,6 +16,7 @@ namespace DatenMeister.Models.ManagementProvider
         /// </summary>
         public static IEnumerable<Type> AllTypes => new[]
         {
+            typeof(ExtentLoadingState),
             typeof(Extent),
             typeof(Workspace),
             typeof(CreateNewWorkspaceModel),

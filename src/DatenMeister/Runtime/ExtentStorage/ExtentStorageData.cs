@@ -16,6 +16,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// Gets or sets the flag whether the extent is opened
         /// </summary>
         public bool IsOpened { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value whether the extent manager uses a registration file. 
+        /// If the Extent Manager is just opened via OpenDecoupled, then all the changes are not registered
+        /// in the global configuration file
+        /// </summary>
+        public bool IsRegistrationOpen { get; set; }
         
         /// <summary>
         /// Gets or sets the information whether the loading has failed
@@ -40,7 +47,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Gets or sets the path in which the extent loading info is stored
         /// </summary>
-        public string? FilePath { get; set; }
+        public string FilePath { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets the locking path to lock the extent registration
@@ -60,20 +67,27 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Defines the class which stores the mapping between the extent and the configuration
         /// </summary>
-        internal class LoadedExtentInformation
+        public class LoadedExtentInformation
         {
-            public IUriExtent Extent { get; set; }
+            public IUriExtent? Extent { get; set; }
             
             public ExtentLoaderConfig Configuration { get; set; }
+            
+            public ExtentLoadingState LoadingState { get; set; }
+
+            /// <summary>
+            /// Gets or sets the message why the loading of the extent has failed
+            /// </summary>
+            public string FailLoadingMessage { get; set; } = string.Empty;
+
+            public bool IsExtentAddedToWorkspace { get; set; }
 
             /// <summary>
             /// Initializes a new instance of the  LoadedExtentInformation class
             /// </summary>
-            /// <param name="extent">Extent to be connected to</param>
             /// <param name="configuration">Configuration of the loading extent</param>
-            public LoadedExtentInformation(IUriExtent extent, ExtentLoaderConfig configuration)
+            public LoadedExtentInformation(ExtentLoaderConfig configuration)
             {
-                Extent = extent;
                 Configuration = configuration;
             }
 
@@ -87,5 +101,31 @@ namespace DatenMeister.Runtime.ExtentStorage
                 return $"({Extent}): " + Configuration;
             }
         }
+    }
+
+    /// <summary>
+    /// Defines the possible states of loading of the extent
+    /// </summary>
+    public enum ExtentLoadingState
+    {
+        /// <summary>
+        /// The loading state is unknown. Should never be set
+        /// </summary>
+        Unknown,
+
+        /// <summary>
+        /// The extent is not loaded
+        /// </summary>
+        Unloaded,
+            
+        /// <summary>
+        /// The extent is loaded
+        /// </summary>
+        Loaded,
+            
+        /// <summary>
+        /// The loading of the extent has failed and saving will not be performed
+        /// </summary>
+        Failed
     }
 }

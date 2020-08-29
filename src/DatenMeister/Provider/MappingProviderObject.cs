@@ -6,9 +6,10 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider
 {
-    public class MappingProviderObject<T> : IProviderObject
+    public class MappingProviderObject<T> : IProviderObject where T : class
     {
-        public MappingProviderObject(T value, IProvider provider, string id, string? metaclassUri = null)
+        public MappingProviderObject(T value, IProvider provider, string id, string? metaclassUri = null) 
+
         {
             Value = value;
             Provider = provider;

@@ -57,16 +57,17 @@ namespace DatenMeister.Tests.Excel
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var excelReferenceSettings = new ExcelReferenceLoaderConfig("dm:///excel2")
                 {
-                    filePath = Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"),
+                    filePath = Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"),
                     hasHeader = true,
                     sheetName = "Tabelle1"
                 };
 
                 var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
-                Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
+                Assert.That(loadedExtent.Extent, Is.Not.Null);
+                Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));
 
-                var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;
+                var secondElement = loadedExtent.Extent.elements().ElementAtOrDefault(1) as IObject;
                 Assert.That(secondElement, Is.Not.Null);
                 var value1 = DotNetHelper.AsInteger(secondElement.get("Wert"));
                 var value2 = DotNetHelper.AsInteger(secondElement.get("Quadratzahl"));
@@ -82,6 +83,7 @@ namespace DatenMeister.Tests.Excel
                 var extentManager = dm.Resolve<IWorkspaceLogic>();
 
                 var loadedExtent = extentManager.FindExtent("dm:///excel2");
+                Assert.That(loadedExtent, Is.Not.Null);
                 Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
 
                 var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;
@@ -110,9 +112,10 @@ namespace DatenMeister.Tests.Excel
 
                 var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
-                Assert.That(loadedExtent.elements().Count(), Is.GreaterThan(0));
+                Assert.That(loadedExtent.Extent, Is.Not.Null);
+                Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));
 
-                var secondElement = loadedExtent.elements().ElementAtOrDefault(1) as IObject;
+                var secondElement = loadedExtent.Extent!.elements().ElementAtOrDefault(1) as IObject;
                 Assert.That(secondElement, Is.Not.Null);
                 var value1 = DotNetHelper.AsInteger(secondElement.get("Wert"));
                 var value2 = DotNetHelper.AsInteger(secondElement.get("Quadratzahl"));

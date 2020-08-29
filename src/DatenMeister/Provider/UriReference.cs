@@ -10,7 +10,7 @@
         /// <summary>
         /// Stores the Uri to which the element is a reference
         /// </summary>
-        public string Uri { get; set; }
+        public string Uri { get; }
 
         /// <summary>
         /// Initializes a new instance of the UriReference class
@@ -19,6 +19,26 @@
         public UriReference(string uri)
         {
             Uri = uri;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is UriReference asUriReference)
+            {
+                return Uri == asUriReference.Uri;
+            }
+
+            return false;
+        }
+
+        protected bool Equals(UriReference other)
+        {
+            return Uri == other.Uri;
+        }
+
+        public override int GetHashCode()
+        {
+            return Uri.GetHashCode();
         }
     }
 }

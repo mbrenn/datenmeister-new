@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -209,8 +209,9 @@ namespace DatenMeister.Uml.Helper
         /// Gets the name of the given object
         /// </summary>
         /// <param name="element">Element whose name is requested</param>
+        /// <param name="noReferences">Indicates whether the elements shall be dereferenced</param>
         /// <returns>The found name or null, if not found</returns>
-        public static string GetName(IObject? element)
+        public static string GetName(IObject? element, bool noReferences = false)
         {
             if (element == null)
             {
@@ -221,7 +222,7 @@ namespace DatenMeister.Uml.Helper
             // the default "name" property
             if (element.isSet(_UML._CommonStructure._NamedElement.name))
             {
-                return element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                return element.getOrDefault<string>(_UML._CommonStructure._NamedElement.name, noReferences);
             }
 
             switch (element)
@@ -230,7 +231,7 @@ namespace DatenMeister.Uml.Helper
                     return elementAsHasId.Id ?? string.Empty;
                 case IElement asIElement when asIElement.metaclass != null:
                 {
-                    var name = GetName(asIElement.metaclass);
+                    var name = GetName(asIElement.metaclass, noReferences);
                     if (name != null && !string.IsNullOrEmpty(name))
                     {
                         return $"({name})";

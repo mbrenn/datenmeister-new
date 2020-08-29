@@ -36,7 +36,13 @@ namespace DatenMeister.Excel.ProviderLoader
                 workspaceId = settings.workspaceId
             };
 
-            var extent = (MofExtent) _extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
+            var loadedInfo = _extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
+            if (loadedInfo.LoadingState == ExtentLoadingState.Failed || loadedInfo.Extent == null)
+            {
+                throw new InvalidOperationException("Loading of the extent has failed");
+            }
+
+            var extent = loadedInfo.Extent as MofExtent ?? throw new InvalidOperationException("Not a MofExtent");
             extent.elements().RemoveAll();
 
             // Loads the excelinformation into the extent

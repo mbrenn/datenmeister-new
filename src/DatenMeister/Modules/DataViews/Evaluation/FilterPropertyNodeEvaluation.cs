@@ -78,7 +78,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
                 var elementValue = element.getOrDefault<string>(property);
 
-                bool isIn = comparisonMode switch
+                var isIn = comparisonMode switch
                 {
                     ComparisonMode.Equal => elementValue == propertyValue,
                     ComparisonMode.NotEqual => elementValue != propertyValue,

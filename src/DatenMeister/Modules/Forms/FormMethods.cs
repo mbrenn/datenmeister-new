@@ -125,7 +125,7 @@ namespace DatenMeister.Modules.Forms
         /// <param name="form">Form to be evaluated</param>
         /// <param name="fieldName">Name of the field</param>
         /// <returns>The found element or null, if not found</returns>
-        public static IElement GetField(IElement form, string fieldName)
+        public static IElement? GetField(IElement form, string fieldName)
         {
             if (_FormAndFields._DetailForm.field != _FormAndFields._ListForm.field)
                 throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
@@ -173,7 +173,7 @@ namespace DatenMeister.Modules.Forms
         /// </summary>
         /// <param name="extent">Extent whose view mode is requested</param>
         /// <returns>Found element or null if not found</returns>
-        public IElement GetDefaultViewMode(IExtent? extent)
+        public IElement? GetDefaultViewMode(IExtent? extent)
         {
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
             var formAndFields = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>()

@@ -3,9 +3,9 @@ using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.ManagementProviders.Model;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -45,9 +45,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
-            var workspace =
-                Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() as IElement;
-            if (workspace != null)
+            if (Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() is IElement workspace)
             {
                 SetRootItem(workspace);
 

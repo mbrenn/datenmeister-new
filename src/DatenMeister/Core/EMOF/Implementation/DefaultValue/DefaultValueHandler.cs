@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 

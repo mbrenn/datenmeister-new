@@ -23,12 +23,14 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
             
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
+            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null!));
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var extentManager = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            extentManager.OpenDecoupled();
+
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,
@@ -39,15 +41,16 @@ namespace DatenMeister.Tests.Runtime
                 }
             };
 
-            var csvExtent = logic.LoadExtent(configuration);
+            var csvExtent = extentManager.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
-            
-            Assert.That(csvExtent.elements().Count(), Is.EqualTo(4));
-            logic.StoreExtent(csvExtent);
+            Assert.That(csvExtent.Extent, Is.Not.Null);
+
+            Assert.That(csvExtent.Extent!.elements().Count(), Is.EqualTo(4));
+            extentManager.StoreExtent(csvExtent.Extent);
 
             // Changes content, store it and check, if stored
-            ((IObject) csvExtent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
-            logic.UnloadManager(true);
+            ((IObject) csvExtent.Extent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
+            extentManager.UnloadManager(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
             Assert.That(read.Contains("eens"), Is.True);
@@ -62,7 +65,7 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
 
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader(null));
+            mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader(null!));
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();
@@ -80,12 +83,13 @@ namespace DatenMeister.Tests.Runtime
 
             var csvExtent = logic.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
+            Assert.That(csvExtent.Extent, Is.Not.Null);
 
-            var foundConfiguration = logic.GetLoadConfigurationFor(csvExtent);
+            var foundConfiguration = logic.GetLoadConfigurationFor(csvExtent.Extent);
             Assert.That(foundConfiguration, Is.EqualTo(configuration));
 
 
-            foundConfiguration = logic.GetLoadConfigurationFor(null);
+            foundConfiguration = logic.GetLoadConfigurationFor(null!);
             Assert.That(foundConfiguration, Is.Null);
 
             foundConfiguration = logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "dm:///temp"));

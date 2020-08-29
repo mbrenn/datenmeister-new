@@ -1,8 +1,8 @@
 #nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.InMemory;
 
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
 namespace DatenMeister.Models.Forms
 {
@@ -281,11 +281,14 @@ namespace DatenMeister.Models.Forms
 
         public class _SubElementFieldData
         {
-            public static string @metaClassUri = "metaClassUri";
-            public IElement? _metaClassUri = null;
+            public static string @metaClass = "metaClass";
+            public IElement? _metaClass = null;
 
             public static string @form = "form";
             public IElement? _form = null;
+
+            public static string @allowOnlyExistingElements = "allowOnlyExistingElements";
+            public IElement? _allowOnlyExistingElements = null;
 
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
             public IElement? _defaultTypesForNewElements = null;

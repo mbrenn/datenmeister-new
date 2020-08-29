@@ -1,8 +1,9 @@
 #nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
-namespace DatenMeister.Provider.ManagementProviders.Model
+namespace DatenMeister.Models.ManagementProviders
 {
     public class FillTheManagementProvider : DatenMeister.Core.Filler.IFiller<_ManagementProvider>
     {
@@ -43,7 +44,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "uri") // Looking for property
                                 {
@@ -73,6 +74,14 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 {
                                     tree.Extent._alternativeUris = value;
                                 }
+                                if(name == "state") // Looking for property
+                                {
+                                    tree.Extent._state = value;
+                                }
+                                if(name == "failMessage") // Looking for property
+                                {
+                                    tree.Extent._failMessage = value;
+                                }
                             }
                         }
                         if(name == "Workspace") // Looking for class
@@ -82,7 +91,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "id") // Looking for property
                                 {
@@ -105,7 +114,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "id") // Looking for property
                                 {
@@ -124,7 +133,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
@@ -143,7 +152,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "uri") // Looking for property
                                 {
@@ -173,6 +182,14 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                                 {
                                     tree.ExtentProperties._alternativeUris = value;
                                 }
+                                if(name == "state") // Looking for property
+                                {
+                                    tree.ExtentProperties._state = value;
+                                }
+                                if(name == "failMessage") // Looking for property
+                                {
+                                    tree.ExtentProperties._failMessage = value;
+                                }
                             }
                         }
                         if(name == "ExtentPropertyDefinition") // Looking for class
@@ -182,7 +199,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
@@ -205,7 +222,7 @@ namespace DatenMeister.Provider.ManagementProviders.Model
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "extentTypeSettings") // Looking for property
                                 {

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -64,7 +65,7 @@ namespace DatenMeister.Tests.Runtime
             };
 
             var csvExtent = logic.LoadExtent(configuration);
-            return csvExtent;
+            return csvExtent.Extent ?? throw new InvalidOperationException("Loading failed");
         }
     }
 }

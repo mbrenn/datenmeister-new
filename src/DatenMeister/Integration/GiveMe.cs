@@ -81,7 +81,7 @@ namespace DatenMeister.Integration
         /// </summary>
         public static string DefaultDatabasePath =>
             Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "datenmeister/data");
 
         /// <summary>

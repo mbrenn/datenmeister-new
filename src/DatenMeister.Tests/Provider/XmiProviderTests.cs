@@ -1,9 +1,12 @@
 ﻿using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider
@@ -64,6 +67,73 @@ namespace DatenMeister.Tests.Provider
             var secondElement = second.getOrDefault<IElement>("element");
             Assert.That(secondElement, Is.Not.Null);
             Assert.That((secondElement as IHasId)!.Id, Is.EqualTo("first"));
+        }
+
+        [Test]
+        public void TestAddAndRemoveOfElementsInSequenceInMemoryProvider()
+        {
+            var inMemoryProvider = new InMemoryProvider();
+            var xmiProvider = new XmiProvider();
+            
+            var workspace = new Workspace("Test");
+            var extent1 = new MofUriExtent(inMemoryProvider, "dm:///extent1");
+            var extent2 = new MofUriExtent(xmiProvider, "dm:///extent2");
+            workspace.AddExtent(extent1);
+            workspace.AddExtent(extent2);
+            
+            var factory1 = new MofFactory(extent1);
+            var factory2 = new MofFactory(extent2);
+
+            var element1 = factory1.create(null);
+            var element2 = factory2.create(null);
+
+            extent1.elements().add(element1);
+            extent2.elements().add(element2);
+
+            var collection = element1.get<IReflectiveCollection>("queue");
+            Assert.That(collection.Count(), Is.EqualTo(0));
+            Assert.That(element1.get<IReflectiveCollection>("queue").Count(), Is.EqualTo(0));
+            collection.add(element2);
+            Assert.That(collection.Count(), Is.EqualTo(1));
+            Assert.That(element1.get<IReflectiveCollection>("queue").Count(), Is.EqualTo(1));
+
+            collection.remove(element2);
+            Assert.That(collection.Count(), Is.EqualTo(0));
+            Assert.That(element1.get<IReflectiveCollection>("queue").Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestAddAndRemoveOfElementsInSequenceInXmiProvider()
+        {
+            var inMemoryProvider = new InMemoryProvider();
+            var xmiProvider = new XmiProvider();
+            
+            var workspace = new Workspace("Test");
+            var extent1 = new MofUriExtent(xmiProvider, "dm:///extent2");
+            var extent2 = new MofUriExtent(inMemoryProvider, "dm:///extent1");
+            
+            workspace.AddExtent(extent1);
+            workspace.AddExtent(extent2);
+            
+            var factory1 = new MofFactory(extent1);
+            var factory2 = new MofFactory(extent2);
+
+            var element1 = factory1.create(null);
+            var element2 = factory2.create(null);
+
+            extent1.elements().add(element1);
+            extent2.elements().add(element2);
+
+            var collection = element1.get<IReflectiveCollection>("queue");
+            Assert.That(collection.Count(), Is.EqualTo(0));
+            Assert.That(element1.get<IReflectiveCollection>("queue").Count(), Is.EqualTo(0));
+            collection.add(element2);
+            Assert.That(collection.Count(), Is.EqualTo(1));
+            Assert.That(element1.get<IReflectiveCollection>("queue").Count(), Is.EqualTo(1));
+
+            collection.remove(element2);
+            Assert.That(collection.Count(), Is.EqualTo(0));
+            Assert.That(element1.get<IReflectiveCollection>("queue").Count(), Is.EqualTo(0));
         }
     }
 }

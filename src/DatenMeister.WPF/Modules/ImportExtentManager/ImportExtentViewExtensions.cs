@@ -6,7 +6,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -139,13 +139,13 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     // Now, we got the item extent...
                     var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                     var loadedExtent = extentManager.LoadExtentWithoutAdding(result);
-                    if (loadedExtent != null)
+                    if (loadedExtent != null && loadedExtent.Extent != null && loadedExtent.LoadingState == ExtentLoadingState.Loaded)
                     {
-                        var itemCountBefore = loadedExtent.elements().Count();
+                        var itemCountBefore = loadedExtent.Extent.elements().Count();
                         var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
                                        ?? throw new InvalidOperationException("elements == null");
-                        _plugin.PerformImport(loadedExtent, elements);
-                        var itemCountAfter = loadedExtent.elements().Count();
+                        _plugin.PerformImport(loadedExtent.Extent, elements);
+                        var itemCountAfter = loadedExtent.Extent.elements().Count();
 
                         MessageBox.Show(
                             $"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");

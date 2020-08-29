@@ -61,6 +61,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
             else
             {
+                Logger.Info($"Loading extent configuration from file: {path}");
                 var document = XDocument.Load(path);
 
                 foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
@@ -112,29 +113,34 @@ namespace DatenMeister.Runtime.ExtentStorage
             var rootNode = new XElement("extents");
             document.Add(rootNode);
 
-            foreach (var extent in ExtentStorageData.LoadedExtents)
+            foreach (var loadingInformation in ExtentStorageData.LoadedExtents)
             {
                 var xmlExtent = new XElement("extent");
 
                 // Stores the configuration
-                var xmlData = SerializeToXElement(extent.Configuration ??
+                var xmlData = SerializeToXElement(loadingInformation.Configuration ??
                                                   throw new InvalidOperationException("Configuration is not set"));
-                
+
                 xmlData.Name = "config";
+
                 // Stores the .Net datatype to allow restore of the right element
-                var fullName = extent.Configuration?.GetType().FullName;
+                var fullName = loadingInformation.Configuration?.GetType().FullName;
                 if (fullName == null) continue;
-                
-                xmlData.Add(new XAttribute("configType",fullName));
+
+                xmlData.Add(new XAttribute("configType", fullName));
                 xmlExtent.Add(xmlData);
 
-                // Stores the metadata
-                var xmlMetaData = new XElement(((MofExtent) extent.Extent).LocalMetaElementXmlNode)
+                if (loadingInformation.Extent is MofExtent loadedExtent)
                 {
-                    Name = "metadata"
-                };
+                    // Stores the metadata
+                    var xmlMetaData = new XElement(loadedExtent.LocalMetaElementXmlNode)
+                    {
+                        Name = "metadata"
+                    };
 
-                xmlExtent.Add(xmlMetaData);
+                    xmlExtent.Add(xmlMetaData);
+                }
+
                 rootNode.Add(xmlExtent);
             }
 

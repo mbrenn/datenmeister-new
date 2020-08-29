@@ -80,7 +80,6 @@ namespace DatenMeister.Modules.AttachedExtent
         {
             var workspaceName = originalExtent.GetWorkspace()?.id ?? string.Empty;
             var extentName = originalExtent.contextURI();
-            if (workspaceName == null || extentName == null) yield break;
 
             var foundExtents =
                 from workspace in _workspaceLogic.Workspaces

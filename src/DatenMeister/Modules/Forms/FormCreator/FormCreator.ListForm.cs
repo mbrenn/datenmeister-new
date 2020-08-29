@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
@@ -253,7 +253,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var result = _factory.create(_formAndFields.__ListForm);
             AddToFormByMetaclass(result, metaClass, creationMode);
             result.set(_FormAndFields._ListForm.property, propertyName);
+            result.set(_FormAndFields._ListForm.metaClass, metaClass);
             result.set(_FormAndFields._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
+            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[]{metaClass});
+
             return result;
         }
 

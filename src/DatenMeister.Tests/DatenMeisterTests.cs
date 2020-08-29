@@ -16,7 +16,7 @@ namespace DatenMeister.Tests
         public static string GetPathForTemporaryStorage(string fileName)
         {
             var path = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location!)!,
                 "testing/datenmeister/data");
             if (!Directory.Exists(path))
             {

@@ -1,13 +1,29 @@
 #nullable enable
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.InMemory;
 
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
-namespace DatenMeister.Provider.ManagementProviders.Model
+namespace DatenMeister.Models.ManagementProviders
 {
     public class _ManagementProvider
     {
+        public class _ExtentLoadingState
+        {
+            public static string @Unknown = "Unknown";
+            public IElement @__Unknown = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Unknown");
+            public static string @Unloaded = "Unloaded";
+            public IElement @__Unloaded = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Unloaded");
+            public static string @Loaded = "Loaded";
+            public IElement @__Loaded = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Loaded");
+            public static string @Failed = "Failed";
+            public IElement @__Failed = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Failed");
+
+        }
+
+        public _ExtentLoadingState @ExtentLoadingState = new _ExtentLoadingState();
+        public IElement @__ExtentLoadingState = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState");
+
         public class _Extent
         {
             public static string @uri = "uri";
@@ -30,6 +46,12 @@ namespace DatenMeister.Provider.ManagementProviders.Model
 
             public static string @alternativeUris = "alternativeUris";
             public IElement? _alternativeUris = null;
+
+            public static string @state = "state";
+            public IElement? _state = null;
+
+            public static string @failMessage = "failMessage";
+            public IElement? _failMessage = null;
 
         }
 
@@ -100,6 +122,12 @@ namespace DatenMeister.Provider.ManagementProviders.Model
 
             public static string @alternativeUris = "alternativeUris";
             public IElement? _alternativeUris = null;
+
+            public static string @state = "state";
+            public IElement? _state = null;
+
+            public static string @failMessage = "failMessage";
+            public IElement? _failMessage = null;
 
         }
 

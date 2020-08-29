@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.ManagementProviders.Model;
+using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;

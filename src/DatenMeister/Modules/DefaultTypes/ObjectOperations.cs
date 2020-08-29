@@ -5,14 +5,14 @@ using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Modules.DefaultTypes
 {
-    public class ObjectOperations
+    public static class ObjectOperations
     {
         /// <summary>
         /// Moves the object to the target 
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetContainer">Defines the target container receiving the object</param>
-        public void MoveObject(IObject value, IObject targetContainer)
+        public static void MoveObject(IObject value, IObject targetContainer)
         {
             var extent = value.GetExtentOf();
             var container = (value as IElement)?.container();
@@ -35,7 +35,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         /// <param name="value">The value to be copied</param>
         /// <param name="targetContainer">Defines the target container receiving the object</param>
-        public void CopyObject(IObject value, IObject targetContainer)
+        public static void CopyObject(IObject value, IObject targetContainer)
         {
             var options = new CopyOption {CloneAllReferences = false};
             var copied = ObjectCopier.Copy(new MofFactory(targetContainer), value, options);

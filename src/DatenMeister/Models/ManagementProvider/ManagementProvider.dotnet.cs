@@ -1,12 +1,13 @@
-using DatenMeister;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.DotNet;
 // Created by $DatenMeister.SourcecodeGenerator.DotNetIntegrationGenerator
+// ReSharper disable RedundantNameQualifier
 
-namespace DatenMeister.Provider.ManagementProviders.Model
+namespace DatenMeister.Models.ManagementProviders
 {
     public static class IntegrateManagementProvider
     {
@@ -23,6 +24,13 @@ namespace DatenMeister.Provider.ManagementProviders.Model
         public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _ManagementProvider filledStructure, MofExtent extent)
         {
             var generator = new DotNetTypeGenerator(factory, uml, extent);
+            {
+                var type = typeof(DatenMeister.Runtime.ExtentStorage.ExtentLoadingState);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__ExtentLoadingState = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
             {
                 var type = typeof(DatenMeister.Models.ManagementProvider.Extent);
                 var typeAsElement = generator.CreateTypeFor(type);

@@ -13,8 +13,8 @@
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="InWork" p1:id="d55f4ac8-c47b-4ccd-9bed-44699a03ffac" />
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" name="Closed" p1:id="59c5badd-f924-436e-b908-5b373e95bd9b" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="IssueState" p1:id="IssueMeister.Iteration" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="id" isID="True" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="35a876de-ddcf-4c31-b8de-58365c167c56" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="IssueMeister.Iteration" xmlns:p1="http://www.omg.org/spec/XMI/20131001" name="Iteration">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="id" isID="True" p1:id="35a876de-ddcf-4c31-b8de-58365c167c56" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="de85ff14-e5b1-40db-948d-bfd0985e429f" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="endDate" type-ref="dm:///_internal/types/internal#PrimitiveTypes.DateTime" p1:id="82afe338-1380-436b-909a-4ca7ed1b1cf7" />
     </packagedElement>

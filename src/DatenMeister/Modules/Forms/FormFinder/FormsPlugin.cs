@@ -3,17 +3,19 @@
 using System;
 using System.Linq;
 using BurnSystems.Logging;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Modules.Forms.FormModifications;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Plugins;
@@ -50,6 +52,11 @@ namespace DatenMeister.Modules.Forms.FormFinder
         private _FormAndFields? _cachedFormAndField;
 
         /// <summary>
+        /// Defines the state for the form plugin
+        /// </summary>
+        private FormsPluginState _formPluginState;
+
+        /// <summary>
         /// Gets the workspace logic of the view logic
         /// </summary>
         public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
@@ -68,6 +75,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             _extentCreator = extentCreator;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
             _extentSettings = scopeStorage.Get<ExtentSettings>();
+            _formPluginState = scopeStorage.Get<FormsPluginState>();
         }
 
         /// <summary>
@@ -121,10 +129,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
                     
-                    // Adds the View Mode for the forms
-                    var extentSetting =
-                        new ExtentTypeSetting("Forms");
-                    _extentSettings.extentTypeSettings.Add(extentSetting);
                     break;
             }
         }
@@ -372,15 +376,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
             return _cachedFormAndField ?? throw new InvalidOperationException("FormAndFields could not be found");
         }
 
-        public IElement GetDetailForm(IObject? element, IExtent? extent, FormDefinitionMode formDefinitionMode)
+        public IElement? GetDetailForm(IObject? element, IExtent? extent, FormDefinitionMode formDefinitionMode)
         {
+            IElement? foundForm = null;
             if (element == null) throw new ArgumentNullException(nameof(element));
-            
+
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 // Tries to find the form
                 var viewFinder = new FormFinder(this);
-                var foundForm = viewFinder.FindFormsFor(
+                foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
                         metaClass = (element as IElement)?.getMetaClass(),
@@ -391,21 +396,39 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (foundForm != null)
                 {
                     Logger.Info("GetDetailForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
-                    return foundForm;
                 }
             }
 
-            // Ok, we have not found the form. So create one
-            var formCreator = CreateFormCreator();
-            return formCreator.CreateDetailForm(element);
+            if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
+            {
+                // Ok, we have not found the form. So create one
+                var formCreator = CreateFormCreator();
+                foundForm = formCreator.CreateDetailForm(element);
+            }
+
+            if (foundForm != null)
+            {
+                CallFormsModificationPlugins(new FormCreationContext()
+                    {
+                        DefinitionMode = formDefinitionMode,
+                        MetaClass = (element as IElement)?.getMetaClass(),
+                        FormType = FormType.Detail,
+                        ExtentType = extent?.GetConfiguration().ExtentType ?? string.Empty,
+                        DetailElement = element
+                    },
+                    ref foundForm);
+            }
+
+            return foundForm;
         }
 
         public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
         {
+            IElement? foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 var viewFinder = new FormFinder(this);
-                var foundForm = viewFinder.FindFormsFor(
+                foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
@@ -416,20 +439,30 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (foundForm != null)
                 {
                     Logger.Info("GetExtentForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
-                    return foundForm;
                 }
             }
 
-            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
+            if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 // Ok, now perform the creation...
                 var formCreator = CreateFormCreator();
-                return formCreator.CreateExtentForm(
+                foundForm = formCreator.CreateExtentForm(
                     extent,
                     CreationMode.All | CreationMode.ForListForms);
             }
 
-            return null;
+            if (foundForm != null)
+            {
+                CallFormsModificationPlugins(new FormCreationContext()
+                    {
+                        DefinitionMode = formDefinitionMode,
+                        FormType = FormType.TreeItemExtent,
+                        ExtentType = extent.GetConfiguration().ExtentType
+                    },
+                    ref foundForm);
+            }
+
+            return foundForm;
         }
 
         /// <summary>
@@ -483,6 +516,17 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 foundForm =  formCreator.CreateListFormForMetaClass(metaClass, CreationMode.All);
             }
 
+            if (foundForm != null)
+            {
+                CallFormsModificationPlugins(new FormCreationContext()
+                    {
+                        DefinitionMode = formDefinitionMode,
+                        FormType = FormType.TreeItemExtent,
+                        MetaClass = metaClass
+                    },
+                    ref foundForm);
+            }
+
             return foundForm;
         }
 
@@ -500,10 +544,12 @@ namespace DatenMeister.Modules.Forms.FormFinder
             IElement? propertyType,
             FormDefinitionMode formDefinitionMode = FormDefinitionMode.Default)
         {
+            IElement? foundForm = null;
+
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 var viewFinder = new FormFinder(this);
-                var foundForm = viewFinder.FindFormsFor(
+                foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
                         extentType = (element as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
@@ -516,21 +562,31 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (foundForm != null)
                 {
                     Logger.Info("GetListFormForElementsProperty: Found form: " + NamedElementMethods.GetFullName(foundForm));
-                    return foundForm;
                 }
             }
 
-            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
+            if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 var formCreator = CreateFormCreator();
-                var createdForm = formCreator.CreateListFormForElements(
+                foundForm = formCreator.CreateListFormForElements(
                     element.get<IReflectiveCollection>(parentProperty),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
-
-                return createdForm;
             }
 
-            return null;
+            if (foundForm != null)
+            {
+                CallFormsModificationPlugins(new FormCreationContext()
+                    {
+                        DefinitionMode = formDefinitionMode,
+                        FormType = FormType.ObjectList,
+                        MetaClass = (element as IElement)?.metaclass,
+                        ParentPropertyName = parentProperty,
+                        DetailElement = element
+                    },
+                    ref foundForm);
+            }
+
+            return foundForm;
         }
 
         public IElement? GetExtentForm(IReflectiveCollection collection, FormDefinitionMode formDefinitionMode)
@@ -553,6 +609,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <returns>Found extent form</returns>
         public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode, string viewModeId)
         {
+            IElement? foundForm = null;
+
             var extent = (element as IHasExtent)?.Extent;
             if (extent == null)
             {
@@ -562,7 +620,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 var viewFinder = new FormFinder(this);
-                var foundForm = viewFinder.FindFormsFor(new FindFormQuery
+                foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = (element as IElement)?.getMetaClass(),
@@ -573,20 +631,30 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 if (foundForm != null)
                 {
                     Logger.Info("GetItemTreeFormForObject: Found form: " + NamedElementMethods.GetFullName(foundForm));
-                    return foundForm;
                 }
             }
 
-            if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
+            if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 var formCreator = CreateFormCreator();
-                var createdForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All | CreationMode.OnlyCommonProperties);
+                foundForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All | CreationMode.OnlyCommonProperties);
+            }
 
-                return createdForm;
+            if (foundForm != null)
+            {
+                CallFormsModificationPlugins(new FormCreationContext()
+                    {
+                        DefinitionMode = formDefinitionMode,
+                        FormType = FormType.TreeItemDetail,
+                        MetaClass = (element as IElement)?.metaclass,
+                        ViewMode = viewModeId,
+                        DetailElement = element
+                    },
+                    ref foundForm);
             }
 
             // No Form
-            return null;
+            return foundForm;
         }
 
         /// <summary>
@@ -598,37 +666,77 @@ namespace DatenMeister.Modules.Forms.FormFinder
         /// <param name="metaClass">The metaclass for which the form is created</param>
         /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns></returns>
-        public IElement GetListFormForExtentForPropertyInObject(
+        public IElement? GetListFormForExtentForPropertyInObject(
             IObject element,
             IExtent extent,
             string propertyName,
-            IElement metaClass, 
+            IElement metaClass,
             FormDefinitionMode formDefinitionMode)
         {
+            IElement? foundForm = null;
+
+            var parentMetaClass = (element as IElement)?.getMetaClass();
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 var viewFinder = new FormFinder(this);
-                var foundForm = viewFinder.FindFormsFor(new FindFormQuery
+                foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = metaClass,
                     FormType = FormType.TreeItemDetail,
                     parentProperty = propertyName,
-                    parentMetaClass = (element as IElement)?.getMetaClass()
+                    parentMetaClass = parentMetaClass
                 }).FirstOrDefault();
 
                 if (foundForm != null)
                 {
-                    Logger.Info("GetListFormForExtentForPropertyInObject: Found form: " + NamedElementMethods.GetFullName(foundForm));
-                    return foundForm;
+                    Logger.Info("GetListFormForExtentForPropertyInObject: Found form: " +
+                                NamedElementMethods.GetFullName(foundForm));
                 }
             }
 
-            var formCreator = CreateFormCreator();
-            var createdForm =
-                formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, CreationMode.All);
+            if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
+            {
+                var formCreator = CreateFormCreator();
+                foundForm =
+                    formCreator.CreateListFormForPropertyInObject(metaClass, propertyName, CreationMode.All);
+            }
 
-            return createdForm;
+            if (foundForm != null)
+            {
+                CallFormsModificationPlugins(new FormCreationContext()
+                    {
+                        DefinitionMode = formDefinitionMode,
+                        FormType = FormType.TreeItemDetail,
+                        MetaClass = metaClass,
+                        ParentPropertyName = propertyName,
+                        ParentMetaClass = parentMetaClass,
+                        DetailElement = element
+                    },
+                    ref foundForm);
+            }
+
+            return foundForm;
+        }
+
+        /// <summary>
+        /// Calls all the form modification plugins, if allowed. 
+        /// </summary>
+        /// <param name="formCreationContext">The creation context used by the plugins</param>
+        /// <param name="form">The form that is evaluated</param>
+        public void CallFormsModificationPlugins(FormCreationContext formCreationContext, ref IElement form)
+        {
+            if (form == null || formCreationContext.DefinitionMode.HasFlagFast(FormDefinitionMode.NoFormModifications))
+            {
+                return; // Nothing to do
+            }
+
+            form = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, form, new CopyOption());
+
+            foreach (var plugin in _formPluginState.FormModificationPlugins)
+            {
+                plugin.ModifyForm(formCreationContext, form);
+            }
         }
         
         /// <summary>

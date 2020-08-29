@@ -45,7 +45,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the uri of the extent
         /// </summary>
-        private string UriOfExtent
+        public string UriOfExtent
         {
             get
             {

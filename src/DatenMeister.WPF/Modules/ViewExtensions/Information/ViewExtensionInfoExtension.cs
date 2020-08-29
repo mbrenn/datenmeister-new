@@ -4,6 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
@@ -130,6 +131,53 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
         {
             return info.NavigationHost as DetailFormWindow;
         }
+        
+        /// <summary>
+        /// Gets the detailform window, if the given view extension reflects a detail form window
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static DetailFormControl? GetDetailFormControl(this ViewExtensionInfo info)
+        {
+            return info.NavigationGuest as DetailFormControl;
+        }
+
+        /// <summary>
+        /// Checks whether the shown item in the detail window form is of a specific metaclass  
+        /// </summary>
+        /// <param name="info">ViewExtension information</param>
+        /// <param name="metaclass">The Metaclass against which the value is queried</param>
+        /// <param name="followGeneralizations">true, if the generalizations shall also be followed</param>
+        /// <returns>The found detail form window and the retrieved element or null, if not found</returns>
+        public static (DetailFormControl, IElement)? IsItemInDetailWindowOfType(this ViewExtensionInfo info, IElement metaclass,
+            bool followGeneralizations = false)
+        {
+            var detailFormControl = info.GetDetailFormControl();
+            if (detailFormControl == null)
+            {
+                return null;
+            }
+
+            if (!(detailFormControl.DetailElement is IElement element))
+            {
+                return null;
+            }
+
+            var itemMetaClass = element.getMetaClass();
+            if (itemMetaClass == null)
+            {
+                return null;
+            }
+
+            if (itemMetaClass.@equals(metaclass)
+                || followGeneralizations
+                   && ClassifierMethods.IsSpecializedClassifierOf(itemMetaClass, metaclass))
+            {
+                return (detailFormControl, element);
+            }
+            
+            return null;
+        }
 
         /// <summary>
         /// Gets the detailform control if the navigation host is the DetailFormWindow.
@@ -193,8 +241,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
                 && extensionTab.NavigationGuest is ItemExplorerControl explorerControl)
             {
                 var formPropertyName = extensionTab.TabFormDefinition.getOrDefault<string>(_FormAndFields._ListForm.property);
-                var selectedItem = (explorerControl.SelectedItem ?? explorerControl.RootItem) as IElement; 
-                if (selectedItem == null) return false; // Nothing selected, should not occur
+                if (!((explorerControl.SelectedItem ?? explorerControl.RootItem) is IElement selectedItem)) return false; // Nothing selected, should not occur
                 
                 // Checks the extent type
                 var extentConfiguration = selectedItem.GetExtentOf()?.GetConfiguration();

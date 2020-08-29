@@ -27,8 +27,9 @@ namespace DatenMeister.Tests.Runtime.Extents
             var extent = extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
 
             Assert.That(extent, Is.Not.Null);
-            
-            extentManager.DeleteExtent(extent!);
+            Assert.That(extent.Extent, Is.Not.Null);
+
+            extentManager.RemoveExtent(extent.Extent!);
             extentManager.LoadExtent(loaderConfig, ExtentCreationFlags.CreateOnly);
         }
     }

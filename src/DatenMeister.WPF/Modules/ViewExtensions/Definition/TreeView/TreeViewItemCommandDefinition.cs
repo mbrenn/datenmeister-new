@@ -20,16 +20,15 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView
         /// <summary>
         /// Gets or sets the action that shall be executed upon click
         /// </summary>
-        public Action<IObject?> Action { get; set; }
+        public Action<TreeViewItemParameter> Action { get; set; }
 
-        public TreeViewItemCommandDefinition(string text, Action<IObject?> onClick)
+        public TreeViewItemCommandDefinition(string text, Action<TreeViewItemParameter> onClick)
         {
             Text = text;
             Action = onClick;
         }
 
-
-        public TreeViewItemCommandDefinition(string text, Action<IObject?> onClick, string categoryName)
+        public TreeViewItemCommandDefinition(string text, Action<TreeViewItemParameter> onClick, string categoryName)
             : this(text, onClick)
         {
             CategoryName = categoryName;
@@ -44,7 +43,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView
 
         public override string ToString()
         {
-            return Text ?? "<no text>";
+            return Text;
         }
     }
 }

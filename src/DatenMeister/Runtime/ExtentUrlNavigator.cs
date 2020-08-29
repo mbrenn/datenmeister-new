@@ -46,6 +46,13 @@ namespace DatenMeister.Runtime
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
             var extentUri = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
 
+            // Checks, if the extent itself is selected
+            if (posQuestion == -1 && posHash == -1
+                                  && (uri == _extent.contextURI() || _extent.AlternativeUris.Contains(uri)))
+            {
+                return _extent;
+            }
+
             // Verifies that the extent is working. Hash or question mark must be on first character, if there is no 
             // extent
             if (string.IsNullOrEmpty(extentUri) && posExtentEnd != 0) return null;

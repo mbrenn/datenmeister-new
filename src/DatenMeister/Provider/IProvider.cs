@@ -20,12 +20,17 @@ namespace DatenMeister.Provider
         /// Gets or sets the value whether the provider allows permanent storage
         /// </summary>
         public bool IsTemporaryStorage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the flag whether the provider is able to create new items
+        /// </summary>
+        public bool CanCreateElements { get; set; } = true;
     }
 
     /// <summary>
     /// Stores some pre-defined capabilities
     /// </summary>
-    public class ProviderCapabilities
+    public static class ProviderCapabilities
     {
         public static ProviderCapability None => new ProviderCapability();
 
@@ -34,7 +39,6 @@ namespace DatenMeister.Provider
             StoreMetaDataInExtent = true
         };
     }
-
 
     /// <summary>
     /// Defines the interface as required for the provider.

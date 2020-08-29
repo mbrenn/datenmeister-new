@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Modules.TypeSupport;
@@ -43,17 +44,17 @@ namespace DatenMeister.Runtime.Extents
                     workspaceId = workspaceId
                 });
 
-                if (resultingExtent == null)
+                if (resultingExtent.LoadingState == ExtentLoadingState.Failed)
                 {
-                    var exception = _localTypeSupport.CreateInternalType("#DatenMeister.ExtentManager.ImportException");
+                    var exception = _localTypeSupport.CreateInternalType("#DatenMeister.Models.ExtentManager.ImportException");
                     exception.set("message", "Loading did not succeed");
                     throw new DatenMeisterException(exception);
                 }
 
-                return resultingExtent;
+                return resultingExtent.Extent ?? throw new InvalidOperationException("Loading should have succeeded");
             }
 
-            var resultingException = _localTypeSupport.CreateInternalType("#DatenMeister.ExtentManager.ImportException");
+            var resultingException = _localTypeSupport.CreateInternalType("#DatenMeister.Models.ExtentManager.ImportException");
             resultingException.set("message", "Unknown file extension (.xmi and .xml are supported)");
             throw new DatenMeisterException(resultingException);
         }

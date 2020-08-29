@@ -3,11 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
@@ -20,7 +20,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <summary>
         /// Stores the configuration whether we require a tab for each property
         /// </summary>
-        private const bool ConfigurationFormCreatorSeparateProperties = false;
+        private const bool ConfigurationFormCreatorSeparateProperties = true;
 
         /// <summary>
         /// Checks whether a detail form is already within the element form.
@@ -124,6 +124,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 metaClasses.AddRange(extentTypeSetting.rootElementMetaClasses);
             }
 
+            // Create the tab for the elements of without any metaclass
             if (elementsWithoutMetaClass.Any() || elementsAsObjects.Count == 0)
             {
                 // If there are elements without a metaclass or if there are no elements at all within the extent
@@ -142,7 +143,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 tabs.Add(form);
             }
 
-            // Go through all the meta classes. 
+            // Go through all the meta classes and create a tab for each of them
             foreach (var groupedMetaclass in metaClasses)
             {
                 var group =
@@ -197,6 +198,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
             result.set(_FormAndFields._ExtentForm.tab, tabs);
             return result;
 
+
+            // Some helper method which creates the button to create new elements by the extent being connected
+            // to the enumeration of elements
             void SetDefaultTypesByPackages(IObject form)
             {
                 if(_uml == null) throw new InvalidOperationException("_uml is null");
@@ -307,7 +311,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
         public class P
         {
-            public string? PropertyName { get; set; }
+            public string PropertyName { get; set; } = string.Empty;
             
             public IElement? PropertyType { get; set; }
 
@@ -332,10 +336,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
         /// <summary>
         /// Creates the extent form for a specific object which is selected in the item explorer view.
+        /// This is the typical method that is used to create the form via the FormFinder
         /// </summary>
         /// <param name="element">Element which shall be shown</param>
         /// <param name="extent">Extent containing the element</param>
-        /// <param name="creationMode">The creation mode for autogeneration of the fields</param>
+        /// <param name="creationMode">The creation mode for auto-generation of the fields</param>
         /// <returns>Created Extent form as MofObject</returns>
         public IElement CreateExtentFormForObject(IObject element, IExtent extent, CreationMode creationMode)
         {
@@ -344,6 +349,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             
             var cache = new FormCreatorCache();
 
+            // Creates the empty form
             var extentForm = _factory.create(_formAndFields.__ExtentForm);
             extentForm.set(_FormAndFields._ExtentForm.name, NamedElementMethods.GetName(element));
             var objectMetaClass = (element as IElement)?.getMetaClass();
@@ -458,10 +464,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             foreach (var pair in propertiesWithCollection)
             {
+                var propertyName = pair.propertyName;
                 var elementsAsObjects = pair.propertyContent.OfType<IObject>().ToList();
 
-                if (ConfigurationFormCreatorSeparateProperties)
 #pragma warning disable 162
+                if (ConfigurationFormCreatorSeparateProperties)
                     // ReSharper disable HeuristicUnreachableCode
                 {
                     
@@ -477,15 +484,16 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                     var elementsWithMetaClass = elementsAsObjects
                         .OfType<IElement>()
-                        .GroupBy(x => x.getMetaClass());
+                        .Where(x => x.getMetaClass() != null)
+                        .GroupBy(x => x.getMetaClass()!);
                     
                     if (elementsWithoutMetaClass.Any() || !elementsAsObjects.Any())
                     {
                         // If there are elements included and they are filled
                         // OR, if there is no element included at all, create the corresponding list form
                         var form = _factory.create(_formAndFields.__ListForm);
-                        form.set(_FormAndFields._ListForm.name, pair.propertyName);
-                        form.set(_FormAndFields._ListForm.property, pair.propertyName);
+                        form.set(_FormAndFields._ListForm.name, propertyName);
+                        form.set(_FormAndFields._ListForm.property, propertyName);
                         form.set(_FormAndFields._ListForm.noItemsWithMetaClass, true);
 
                         foreach (var item in elementsWithoutMetaClass)
@@ -499,16 +507,19 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     foreach (var group in elementsWithMetaClass)
                     {
                         // Now try to figure out the metaclass
-                        var groupedMetaclass = group.Key;
-                        if (_formLogic != null)
+                        var groupedMetaclass = group.Key ?? throw new InvalidOperationException("Key may not be null");
+                        if (_formLogic != null && extent != null)
                         {
                             var form = _formLogic.GetListFormForExtentForPropertyInObject(
                                 element,
                                 extent,
-                                pair.propertyName,
+                                propertyName,
                                 groupedMetaclass,
                                 FormDefinitionMode.Default);
-                            tabs.Add(form);
+                            if (form != null)
+                            {
+                                tabs.Add(form);
+                            }
                         }
                         else
                         {
@@ -517,15 +528,13 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         }
                     }
                 }
-                // ReSharper restore HeuristicUnreachableCode
                 else
-#pragma warning restore 162
                 {
                     // If there are elements included and they are filled
                     // OR, if there is no element included at all, create the corresponding list form
                     var form = _factory.create(_formAndFields.__ListForm);
-                    form.set(_FormAndFields._ListForm.name, pair.propertyName);
-                    form.set(_FormAndFields._ListForm.property, pair.propertyName);
+                    form.set(_FormAndFields._ListForm.name, propertyName);
+                    form.set(_FormAndFields._ListForm.property, propertyName);
 
                     if (creationMode.HasFlagFast(CreationMode.ByPropertyValues))
                     {
@@ -554,6 +563,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     tabs.Add(form);
                 }
             }
+#pragma warning restore 162
+            // ReSharper restore HeuristicUnreachableCode
 
             extentForm.set(_FormAndFields._ExtentForm.tab, tabs);
 

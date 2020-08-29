@@ -9,12 +9,12 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using BurnSystems.Logging;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms;
@@ -701,7 +701,7 @@ namespace DatenMeister.WPF.Forms.Base
                                 Header = $"New {newSpecializationType}"
                             };
 
-                            menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, null);
+                            menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, innerParentProperty);
                             menuItems.Add(menuItem);
                         }
                     }
@@ -766,7 +766,7 @@ namespace DatenMeister.WPF.Forms.Base
                 return new PropertiesAsReflectiveCollection(value);
             }
 
-            return new PropertiesAsReflectiveCollection(value, propertyName);
+            return value.get<IReflectiveCollection>(propertyName);
         }
 
         /// <summary>

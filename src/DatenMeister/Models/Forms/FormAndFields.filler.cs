@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Models.Forms
 {
@@ -43,7 +44,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "isAttached") // Looking for property
                                 {
@@ -78,7 +79,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "field") // Looking for property
                                 {
@@ -97,7 +98,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "isAttached") // Looking for property
                                 {
@@ -132,7 +133,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "lineHeight") // Looking for property
                                 {
@@ -171,7 +172,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "hideDate") // Looking for property
                                 {
@@ -218,7 +219,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
@@ -261,7 +262,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "values") // Looking for property
                                 {
@@ -304,7 +305,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "value") // Looking for property
                                 {
@@ -323,7 +324,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "isAttached") // Looking for property
                                 {
@@ -358,7 +359,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "isSelectionInline") // Looking for property
                                 {
@@ -421,15 +422,19 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
-                                if(name == "metaClassUri") // Looking for property
+                                if(name == "metaClass") // Looking for property
                                 {
-                                    tree.SubElementFieldData._metaClassUri = value;
+                                    tree.SubElementFieldData._metaClass = value;
                                 }
                                 if(name == "form") // Looking for property
                                 {
                                     tree.SubElementFieldData._form = value;
+                                }
+                                if(name == "allowOnlyExistingElements") // Looking for property
+                                {
+                                    tree.SubElementFieldData._allowOnlyExistingElements = value;
                                 }
                                 if(name == "defaultTypesForNewElements") // Looking for property
                                 {
@@ -472,7 +477,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "lineHeight") // Looking for property
                                 {
@@ -515,7 +520,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "Height") // Looking for property
                                 {
@@ -530,7 +535,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "defaultExtension") // Looking for property
                                 {
@@ -577,7 +582,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
@@ -600,7 +605,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "isAttached") // Looking for property
                                 {
@@ -635,7 +640,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "values") // Looking for property
                                 {
@@ -682,7 +687,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "format") // Looking for property
                                 {
@@ -725,7 +730,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
@@ -752,7 +757,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "buttonApplyText") // Looking for property
                                 {
@@ -803,7 +808,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "property") // Looking for property
                                 {
@@ -874,7 +879,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "tab") // Looking for property
                                 {
@@ -909,7 +914,7 @@ namespace DatenMeister.Models.Forms
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {

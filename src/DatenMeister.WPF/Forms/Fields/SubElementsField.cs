@@ -5,14 +5,15 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using BurnSystems;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -134,20 +135,17 @@ namespace DatenMeister.WPF.Forms.Fields
                             "Edit",
                             async (guest, item) =>
                                 await NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
-                            ItemListViewControl.ButtonPosition.Before) /*,
-                    
-                    The DELETE button is not required anymore. It is in the stack
-
-                new RowItemButtonDefinition(
-                    "Delete",
-                    (guest, item) => { RemoveItem(valueOfElement, item); })*/
+                            ItemListViewControl.ButtonPosition.Before)
                     };
+
+            form.set(
+                _FormAndFields._ListForm.inhibitNewItems,
+                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements));
 
             _listViewControl.SetContent(valueOfElement, form, viewExtensions);
 
             if (!isReadOnly)
             {
-                // CreateNewItemButton();
                 CreateManipulationButtons(valueOfElement);
             }
             
@@ -189,7 +187,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 return;
             }
 
-            var defaultType = MofFactory.CreateElementFor<_FormAndFields>(form, x=>x.__DefaultTypeForNewElement);
+            var defaultType = MofFactory.Create(form, _FormAndFields.TheOne.__DefaultTypeForNewElement);
             defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, propertyType);
             defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
             defaultTypes.add(defaultType);
@@ -260,16 +258,13 @@ namespace DatenMeister.WPF.Forms.Fields
                     reflectiveSequence.MoveElementDown(selectedItem);
                     _listViewControl.ForceRefresh();
                 };
+                
                 SetStyle(buttonDown);
                 
                 stackPanel.Children.Add(buttonUp);
                 stackPanel.Children.Add(buttonDown);
             }
 
-            var buttonNew = new Button {Content = "N"};
-            SetStyle(buttonNew);
-            SetNewButton(buttonNew);
-            
             var buttonDelete = new Button {Content = "✗"};
             buttonDelete.Click += (x, y) =>
             {
@@ -285,10 +280,56 @@ namespace DatenMeister.WPF.Forms.Fields
             };
             
             SetStyle(buttonDelete);
-
             stackPanel.Children.Add(buttonDelete);
-            stackPanel.Children.Add(buttonNew);
             
+            var allowOnlyExistingElements =
+                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements);
+            if (!allowOnlyExistingElements)
+            {
+                var buttonNew = new Button {Content = "N"};
+                SetStyle(buttonNew);
+                SetNewButton(buttonNew);
+                stackPanel.Children.Add(buttonNew);
+            }
+
+            var buttonAttach = new Button {Content = "A"};
+            var metaClass = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.metaClass);
+            
+            buttonAttach.Click += async (x, y) =>
+            {
+                var typesWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
+                var internalTypes = typesWorkspace.FindExtent(WorkspaceNames.UriExtentInternalTypes);
+                
+                var result = await NavigatorForDialogs.Locate(
+                    _navigationHost ?? throw new InvalidOperationException("Navigation Host"),
+                    new NavigatorForDialogs.NavigatorForDialogConfiguration
+                    {
+                        Title = "Attach Element",
+                        Description = "Select the element to be attached",
+                        DefaultWorkspace = typesWorkspace,
+                        DefaultExtent = internalTypes,
+                        FilteredMetaClasses = metaClass == null ? null : new[] {metaClass}
+                    });
+
+                if (result != null)
+                {
+                    collection.add(result);
+                    if (collection.Count() == 1)
+                    {
+                        // When the first item is added, then the complete form must be regenerated. 
+                        CreatePanelElement();
+                    }
+                    else
+                    {
+                        _listViewControl.ForceRefresh();    
+                    }
+                }
+            };
+            
+            SetStyle(buttonAttach);
+            stackPanel.Children.Add(buttonAttach);
+                
+            // Adds it to the stack panel
             DockPanel.SetDock(stackPanel, Dock.Right);
             stackPanel.VerticalAlignment = VerticalAlignment.Top;
             _panel.Children.Add(stackPanel);
@@ -298,18 +339,18 @@ namespace DatenMeister.WPF.Forms.Fields
                 button.Padding = new Thickness(10,3, 10, 3);
             }
         }
-        
+
         /// <summary>
         /// Creates a new button 
         /// </summary>
         private void CreateNewItemButton()
         {
-           _ = _panel ?? throw new InvalidOperationException("_panel == null");
-            
+            _ = _panel ?? throw new InvalidOperationException("_panel == null");
+
             var createItemButton = new Button
                 {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
-            
-            SetNewButton(createItemButton);            
+
+            SetNewButton(createItemButton);
 
             DockPanel.SetDock(createItemButton, Dock.Bottom);
             _panel.Children.Add(createItemButton);
@@ -369,29 +410,33 @@ namespace DatenMeister.WPF.Forms.Fields
                 // Creates the button for the specializations
                 var getAllSpecializations = _includeSpecializationsForDefaultTypes;
                 // Gets the buttons for specific types
-                if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
-                    .defaultTypesForNewElements) is { } defaultTypesForNewItems)
+                if (!_fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements))
                 {
-                    IEnumerable<IElement> specializedTypes;
-
-                    if (getAllSpecializations)
+                    // Only of new elements may be added
+                    if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
+                        .defaultTypesForNewElements) is { } defaultTypesForNewItems)
                     {
-                        specializedTypes =
-                            (from type in defaultTypesForNewItems.OfType<IElement>()
-                                from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                                select newSpecializationType).Distinct();
-                    }
-                    else
-                    {
-                        specializedTypes = defaultTypesForNewItems.OfType<IElement>();
-                    }
+                        IEnumerable<IElement> specializedTypes;
 
-                    listItems.AddRange(
-                        from btn in specializedTypes
-                        let button = CreateButtonForType(btn)
-                        orderby button.Item1
-                        select button
-                    );
+                        if (getAllSpecializations)
+                        {
+                            specializedTypes =
+                                (from type in defaultTypesForNewItems.OfType<IElement>()
+                                    from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                                    select newSpecializationType).Distinct();
+                        }
+                        else
+                        {
+                            specializedTypes = defaultTypesForNewItems.OfType<IElement>();
+                        }
+
+                        listItems.AddRange(
+                            from btn in specializedTypes
+                            let button = CreateButtonForType(btn)
+                            orderby button.Item1
+                            select button
+                        );
+                    }
                 }
 
                 var menu = new ContextMenu();
@@ -448,7 +493,6 @@ namespace DatenMeister.WPF.Forms.Fields
                             _element.set(_propertyName, new List<object> {elements.NewObject});
                         }
 
-                        _panel.Children.Clear();
                         CreatePanelElement();
                     }
                 });

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.Uml;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -157,7 +158,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         // ReSharper disable once BaseObjectGetHashCodeCallInGetHashCode
-        public override int GetHashCode() => ProviderObject?.GetHashCode() ?? base.GetHashCode();
+        public override int GetHashCode() => ProviderObject.GetHashCode();
 
         /// <inheritdoc />
         public object? get(string property)
@@ -320,7 +321,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             // Check by recursion
-            IProviderObject? parentContainer = parentObject;
+            var parentContainer = parentObject;
             for (var n = 0; n < 1000; n++)
             {
                 parentContainer = parentContainer.GetContainer();
@@ -361,9 +362,30 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IEnumerable<string> getPropertiesBeingSet()
             => ProviderObject.GetProperties();
 
+#if DEBUG
+        private int _stackDepth;
+#endif
         /// <inheritdoc />
         public override string ToString()
-            => NamedElementMethods.GetName(this);
+        {
+#if DEBUG
+
+            Interlocked.Increment(ref _stackDepth);
+            if (_stackDepth > 50)
+            {
+                Debugger.Break();
+                return "STACKOVERFLOW";
+            }
+
+            var result = NamedElementMethods.GetName(this, true);
+
+            Interlocked.Decrement(ref _stackDepth);
+
+            return result;
+#else
+            return NamedElementMethods.GetName(this, true);
+#endif
+        }
 
         /// <summary>
         /// Gets the given object as a meta object

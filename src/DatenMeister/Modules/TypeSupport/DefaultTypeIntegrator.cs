@@ -1,9 +1,9 @@
 using System;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -76,17 +76,6 @@ namespace DatenMeister.Modules.TypeSupport
                 ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
                 dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
                 PackageMethods.AddObjectToPackage(package, dateTime);
-
-                // Create the class for the default types
-                //_localTypeSupport.AddInternalType("Default", typeof(Package));
-                
-                
-/*                _packageMethods.ImportByManifest(
-                    typeof(DefaultTypeIntegrator),
-                    "DatenMeister.XmiFiles.Default.xmi",
-                    "Default",
-                    internalUserExtent,
-                    "Default");*/
             }
         }
     }

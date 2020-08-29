@@ -11,14 +11,10 @@ namespace DatenMeister.DotNet
     {
         public static string LoadStringFromAssembly(Type typeInAssembly, string resourcePath)
         {
-            using (var stream =
-                typeInAssembly.Assembly.GetManifestResourceStream(resourcePath))
-            {
-                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException("Stream is empty")))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
+            using var stream =
+                typeInAssembly.Assembly.GetManifestResourceStream(resourcePath);
+            using var reader = new StreamReader(stream ?? throw new InvalidOperationException("Stream is empty"));
+            return reader.ReadToEnd();
         }
 
         /// <summary>
@@ -29,11 +25,10 @@ namespace DatenMeister.DotNet
         /// <returns>Document to be located</returns>
         public static XDocument LoadXmlFromAssembly(Type typeInAssembly, string resourcePath)
         {
-            using (var stream =
-                typeInAssembly.Assembly.GetManifestResourceStream(resourcePath))
-            {
-                return XDocument.Load(stream);
-            }
+            using var stream =
+                typeInAssembly.Assembly.GetManifestResourceStream(resourcePath);
+            
+            return XDocument.Load(stream);
         }
 
         public static IObject LoadElementFromResource(Type typeInAssembly, string resourcePath)

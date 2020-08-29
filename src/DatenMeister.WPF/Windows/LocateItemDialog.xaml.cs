@@ -53,7 +53,7 @@ namespace DatenMeister.WPF.Windows
             set => SetValue(MessageTextProperty, value);
         }
 
-        public void SetMetaClassesForFilter(List<IElement> elements)
+        public void SetMetaClassesForFilter(IList<IElement> elements)
         {
             LocateElementControl.SetMetaClassesForFilter(elements);
         }
@@ -92,6 +92,12 @@ namespace DatenMeister.WPF.Windows
         {
             get => LocateElementControl.ShowExtentSelection;
             set => LocateElementControl.ShowExtentSelection = value;
+        }
+
+        public string DescriptionText
+        {
+            get => txtDescription.Text;
+            set => txtDescription.Text = value;
         }
 
         /// <summary>

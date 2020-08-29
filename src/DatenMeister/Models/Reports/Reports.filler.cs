@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+// ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.FillClassTreeByExtentCreator Version 1.1.0.0
 namespace DatenMeister.Models.Reports
 {
@@ -43,7 +44,7 @@ namespace DatenMeister.Models.Reports
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
@@ -66,7 +67,7 @@ namespace DatenMeister.Models.Reports
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "name") // Looking for property
                                 {
@@ -81,7 +82,7 @@ namespace DatenMeister.Models.Reports
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "title") // Looking for property
                                 {
@@ -100,7 +101,7 @@ namespace DatenMeister.Models.Reports
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "paragraph") // Looking for property
                                 {
@@ -119,7 +120,7 @@ namespace DatenMeister.Models.Reports
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
                                 if(name == "viewNode") // Looking for property
                                 {
@@ -135,6 +136,48 @@ namespace DatenMeister.Models.Reports
                                 }
                             }
                         }
+                        if(name == "ReportInstanceSource") // Looking for class
+                        {
+                            tree.__ReportInstanceSource = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.ReportInstanceSource._name = value;
+                                }
+                                if(name == "source") // Looking for property
+                                {
+                                    tree.ReportInstanceSource._source = value;
+                                }
+                            }
+                        }
+                        if(name == "HtmlReportInstance") // Looking for class
+                        {
+                            tree.__HtmlReportInstance = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
+                                name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.HtmlReportInstance._name = value;
+                                }
+                                if(name == "reportDefinition") // Looking for property
+                                {
+                                    tree.HtmlReportInstance._reportDefinition = value;
+                                }
+                                if(name == "sources") // Looking for property
+                                {
+                                    tree.HtmlReportInstance._sources = value;
+                                }
+                            }
+                        }
                         if(name == "SimpleReportConfiguration") // Looking for class
                         {
                             tree.__SimpleReportConfiguration = value;
@@ -142,8 +185,12 @@ namespace DatenMeister.Models.Reports
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
                             {
-                                value = item1 as IElement;
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.SimpleReportConfiguration._name = value;
+                                }
                                 if(name == "showDescendents") // Looking for property
                                 {
                                     tree.SimpleReportConfiguration._showDescendents = value;

@@ -5,6 +5,8 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -137,9 +139,22 @@ namespace DatenMeister.Core.EMOF.Implementation
         {
             if (value == null) return false;
             bool result;
-            if (value is MofObject valueAsMofObject)
+            if (value is MofElement valueAsMofObject)
             {
-                var asProviderObject = valueAsMofObject.ProviderObject;
+                object asProviderObject;
+                if (valueAsMofObject.ReferencedExtent != MofObject.ReferencedExtent)
+                {
+                    asProviderObject =
+                        new UriReference(
+                            valueAsMofObject.GetUriExtentOf()?.uri(valueAsMofObject)
+                            ?? throw new InvalidOperationException(
+                                "Given uri is not known"));
+                }
+                else
+                {
+                    asProviderObject = valueAsMofObject.ProviderObject;
+                }
+
                 result = MofObject.ProviderObject.RemoveFromProperty(PropertyName, asProviderObject);
             }
             else
@@ -158,7 +173,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void add(int index, object value)
         {
-            if (value == null) return; // null will ot be added
+            if (value == null) return; // null will never be added
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
             if (valueToBeAdded == null) return;
 

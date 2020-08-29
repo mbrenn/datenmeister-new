@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.XMI.UmlBootstrap;
 using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
@@ -107,6 +107,11 @@ namespace DatenMeister.SourcecodeGenerator
             }
 
             Result.AppendLine();
+        }
+
+        protected void WriteResharperComments()
+        {
+            Result.AppendLine("// ReSharper disable RedundantNameQualifier");
         }
 
         /// <summary>

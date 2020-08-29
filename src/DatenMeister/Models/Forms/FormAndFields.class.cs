@@ -530,6 +530,9 @@ namespace DatenMeister.Models.Forms
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
 
+            public static string @originalUri = "originalUri";
+            public IElement? _originalUri = null;
+
         }
 
         public _Form @Form = new _Form();
@@ -566,6 +569,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
+
+            public static string @originalUri = "originalUri";
+            public IElement? _originalUri = null;
 
         }
 
@@ -619,6 +625,9 @@ namespace DatenMeister.Models.Forms
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
 
+            public static string @originalUri = "originalUri";
+            public IElement? _originalUri = null;
+
         }
 
         public _ListForm @ListForm = new _ListForm();
@@ -643,6 +652,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @hideMetaInformation = "hideMetaInformation";
             public IElement? _hideMetaInformation = null;
+
+            public static string @originalUri = "originalUri";
+            public IElement? _originalUri = null;
 
         }
 

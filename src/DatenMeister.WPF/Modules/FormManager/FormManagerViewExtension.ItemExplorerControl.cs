@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -11,6 +12,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
@@ -23,6 +25,7 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.FormManager
@@ -36,7 +39,7 @@ namespace DatenMeister.WPF.Modules.FormManager
             ItemExplorerControl itemExplorerControl)
         {
             yield return new ExtentMenuButtonDefinition(
-                "Show Form Definition",
+                "Open Form as Xmi",
                 x =>
                 {
                     var effectiveForm = itemExplorerControl.EffectiveForm;
@@ -45,7 +48,12 @@ namespace DatenMeister.WPF.Modules.FormManager
                         MessageBox.Show("No effective form is set");
                         return;
                     }
-                    
+
+                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var originalForm = string.IsNullOrEmpty(url)
+                        ? null
+                        : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
+
                     var window = itemExplorerControl.NavigationHost?.GetWindow();
                     var dlg = new ItemXmlViewWindow
                     {
@@ -53,12 +61,61 @@ namespace DatenMeister.WPF.Modules.FormManager
                         Owner = window == null ? null : Window.GetWindow(window),
                         SupportWriting = false
                     };
-
-                    dlg.UpdateContent(effectiveForm);
+                    
+                    if (originalForm == null)
+                    {
+                        MessageBox.Show(
+                            "The form is dynamically created. Modifications will not be stored permanently.");
+                        
+                        dlg.UpdateContent(effectiveForm);
+                    }
+                    else
+                    {
+                        dlg.UpdateContent(originalForm);
+                    }
+                    
                     dlg.ShowDialog();
                 },
                 "",
                 NavigationCategories.Form + ".Current");
+            
+            yield return new ExtentMenuButtonDefinition(
+                "Open Form",
+                async x =>
+                {
+                    var effectiveForm = itemExplorerControl.EffectiveForm;
+                    if (effectiveForm == null)
+                    {
+                        MessageBox.Show("No effective form is set");
+                        return;
+                    }
+
+                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var originalForm = string.IsNullOrEmpty(url)
+                        ? null
+                        : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
+                    
+                    if (originalForm == null)
+                    {
+                        MessageBox.Show(
+                            "The form is dynamically created. Modifications will not be stored permanently.");
+
+                        await NavigatorForItems.NavigateToElementDetailView(
+                            itemExplorerControl.NavigationHost ?? throw new InvalidOperationException("NavigationHost is not set"),
+                            effectiveForm, 
+                            title: "Dynamic Form");
+                    }
+                    else
+                    {
+                        await NavigatorForItems.NavigateToElementDetailView(
+                            itemExplorerControl.NavigationHost ?? throw new InvalidOperationException("NavigationHost is not set"),
+                            originalForm, 
+                            title: "Form");
+                    }
+                },
+                "",
+                NavigationCategories.Form + ".Current");
+            
 
             yield return new ExtentMenuButtonDefinition(
                 "Save Form Definition",
@@ -82,7 +139,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         copiedForm);
                 },
                 "",
-                NavigationCategories.Form + ".Current");
+                NavigationCategories.Form + ".Change");
 
             yield return new ExtentMenuButtonDefinition(
                 "Change Form Definition",
@@ -101,13 +158,13 @@ namespace DatenMeister.WPF.Modules.FormManager
                     }
                 },
                 "",
-                NavigationCategories.Form + ".Current");
+                NavigationCategories.Form + ".Change");
 
             yield return new ExtentMenuButtonDefinition(
                 "Reset Form Definition",
                 x => itemExplorerControl.ClearOverridingForm(),
                 string.Empty,
-                NavigationCategories.Form + ".Current");
+                NavigationCategories.Form + ".Change");
 
             yield return new ExtentMenuButtonDefinition(
                 "Set as default for extenttype",
@@ -154,7 +211,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     }
                 },
                 string.Empty,
-                NavigationCategories.Form + ".Current"
+                NavigationCategories.Form + ".Create"
             )
             {
                 IsEnabled = itemExplorerControl.OverridingViewDefinition?.Element != null
@@ -186,7 +243,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                     }
                 },
                 string.Empty,
-                NavigationCategories.Form + ".Current")
+                NavigationCategories.Form + ".Create")
             {
                 IsEnabled = itemExplorerControl.OverridingViewDefinition?.Element != null
             };
@@ -195,7 +252,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 "Autogenerate form",
                 x => { itemExplorerControl.ForceAutoGenerationOfForm(); },
                 string.Empty,
-                NavigationCategories.Form + ".Current");
+                NavigationCategories.Form + ".Change");
 
             // Inject the buttons to create a new class or a new property (should be done per default, but at the moment per plugin)
             var rootItem = itemExplorerControl.RootItem;

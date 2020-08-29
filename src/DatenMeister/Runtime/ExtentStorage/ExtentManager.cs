@@ -248,8 +248,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             var mofUriExtent = new MofUriExtent(loadedProvider, configuration.extentUri);
-            mofUriExtent.SignalUpdateOfContent();
             loadedExtentInformation.Extent = mofUriExtent;
+            mofUriExtent.SignalUpdateOfContent(false);
 
             VerifyDatabaseContent();
 

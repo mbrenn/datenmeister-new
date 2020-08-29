@@ -173,7 +173,7 @@ namespace DatenMeister.Modules.Forms
         /// </summary>
         /// <param name="extent">Extent whose view mode is requested</param>
         /// <returns>Found element or null if not found</returns>
-        public IElement GetDefaultViewMode(IExtent? extent)
+        public IElement? GetDefaultViewMode(IExtent? extent)
         {
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
             var formAndFields = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>()

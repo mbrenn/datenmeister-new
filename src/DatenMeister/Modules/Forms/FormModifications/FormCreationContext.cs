@@ -19,6 +19,18 @@ namespace DatenMeister.Modules.Forms.FormModifications
         public string ViewMode { get; set; } = string.Empty;
 
         /// <summary>
+        /// Gets or sets the element being used to create the form.
+        /// This property is only filled, if the FormType is a detailform
+        /// or a TreeItemDetail Form.
+        /// For the ObjectList interface, the element containing the property is set within this field
+        /// </summary>
+        public IObject? DetailElement
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the metaclass that was used to create the form.
         /// For detail form, it is the metaclass of the element itself. 
         /// For the list form, it is the metaclass of the enumeration, as long as it is given

@@ -516,7 +516,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
                                 propertyName,
                                 groupedMetaclass,
                                 FormDefinitionMode.Default);
-                            tabs.Add(form);
+                            if (form != null)
+                            {
+                                tabs.Add(form);
+                            }
                         }
                         else
                         {

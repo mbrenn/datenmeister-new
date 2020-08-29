@@ -428,10 +428,6 @@ namespace DatenMeister.WPF.Windows
                 }
             }
 
-            // Clones the EffectiveForm, so modification are possible afterwards by plugins without changing
-            // the original form
-            effectiveForm = ObjectCopier.Copy(new MofFactory(effectiveForm), effectiveForm);
-
             if (effectiveForm != null)
             {
                 var control = new DetailFormControl

@@ -7,6 +7,7 @@ using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Models.ManagementProviders;
+using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.View;

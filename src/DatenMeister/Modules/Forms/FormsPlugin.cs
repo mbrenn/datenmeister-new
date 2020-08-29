@@ -12,6 +12,7 @@ using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Forms.FormModifications;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -22,7 +23,7 @@ using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.Forms.FormFinder
+namespace DatenMeister.Modules.Forms
 {
     /// <summary>
     /// Defines the access to the view logic and abstracts the access to the view extent
@@ -384,7 +385,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
                 // Tries to find the form
-                var viewFinder = new FormFinder(this);
+                var viewFinder = new FormFinder.FormFinder(this);
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
@@ -427,7 +428,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             IElement? foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new FormFinder(this);
+                var viewFinder = new FormFinder.FormFinder(this);
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
@@ -493,7 +494,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             IElement? foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new FormFinder(this);
+                var viewFinder = new FormFinder.FormFinder(this);
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
@@ -548,7 +549,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new FormFinder(this);
+                var viewFinder = new FormFinder.FormFinder(this);
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
@@ -619,7 +620,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new FormFinder(this);
+                var viewFinder = new FormFinder.FormFinder(this);
                 foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
                     extentType = extent.GetConfiguration().ExtentType,
@@ -678,7 +679,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             var parentMetaClass = (element as IElement)?.getMetaClass();
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
-                var viewFinder = new FormFinder(this);
+                var viewFinder = new FormFinder.FormFinder(this);
                 foundForm = viewFinder.FindFormsFor(new FindFormQuery
                 {
                     extentType = extent.GetConfiguration().ExtentType,

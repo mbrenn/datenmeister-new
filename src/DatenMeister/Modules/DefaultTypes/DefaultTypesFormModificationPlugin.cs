@@ -55,7 +55,6 @@ namespace DatenMeister.Modules.DefaultTypes
                             AddPreferredTypes(factory, preferredTypes2, defaultTypes);
                         }
                     }
-                    
                 }
             }
         }

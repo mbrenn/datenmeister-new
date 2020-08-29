@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormModifications;
@@ -28,26 +29,60 @@ namespace DatenMeister.Modules.DefaultTypes
 
                 if (tabPackagedElement != null)
                 {
+                    var factory = new MofFactory(form);
+                    
                     var defaultTypes =
                         tabPackagedElement.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
 
+                    // Checks the preferred types
                     var preferredTypes =
                         context.DetailElement.getOrDefault<IReflectiveCollection>(
                             _CommonTypes._Default._Package.preferredType);
 
-                    if (preferredTypes != null)
+                    AddPreferredTypes(factory, preferredTypes, defaultTypes);
+                    
+                    // Checks the preferred package. 
+                    // If a preferred package is set, then all containing classes will be added
+                    var preferredPackages =
+                        context.DetailElement.getOrDefault<IReflectiveCollection>(
+                            _CommonTypes._Default._Package.preferredPackage);
+
+                    if (preferredPackages != null)
                     {
-                        var factory = new MofFactory(form);
-                        foreach (var preferredType in preferredTypes.OfType<IElement>())
+                        foreach (var preferredPackage in preferredPackages.OfType<IElement>())
                         {
-                            var defaultType = factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
-                            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name,
-                                NamedElementMethods.GetName(preferredType));
-                            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, preferredType);
-                            defaultTypes.add(defaultType);
+                            var preferredTypes2 = PackageMethods.GetPackagedObjects(preferredPackage);
+                            AddPreferredTypes(factory, preferredTypes2, defaultTypes);
                         }
                     }
+                    
                 }
+            }
+        }
+
+        private static void AddPreferredTypes(
+            MofFactory factory,
+            IReflectiveCollection? preferredTypes,
+            IReflectiveCollection defaultTypes)
+        {
+            if (preferredTypes != null)
+            {
+                foreach (var preferredType in preferredTypes.OfType<IElement>())
+                {
+                    AddPreferredType(factory, preferredType, defaultTypes);
+                }
+            }
+        }
+
+        private static void AddPreferredType(MofFactory factory, IElement preferredType, IReflectiveCollection defaultTypes)
+        {
+            if (preferredType.getMetaClass()?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
+            {
+                var defaultType = factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name,
+                    NamedElementMethods.GetName(preferredType));
+                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, preferredType);
+                defaultTypes.add(defaultType);
             }
         }
     }

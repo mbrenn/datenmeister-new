@@ -748,6 +748,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.Form._hideMetaInformation = value;
                                 }
+                                if(name == "originalUri") // Looking for property
+                                {
+                                    tree.Form._originalUri = value;
+                                }
                             }
                         }
                         if(name == "DetailForm") // Looking for class
@@ -798,6 +802,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.DetailForm._hideMetaInformation = value;
+                                }
+                                if(name == "originalUri") // Looking for property
+                                {
+                                    tree.DetailForm._originalUri = value;
                                 }
                             }
                         }
@@ -870,6 +878,10 @@ namespace DatenMeister.Models.Forms
                                 {
                                     tree.ListForm._hideMetaInformation = value;
                                 }
+                                if(name == "originalUri") // Looking for property
+                                {
+                                    tree.ListForm._originalUri = value;
+                                }
                             }
                         }
                         if(name == "ExtentForm") // Looking for class
@@ -904,6 +916,10 @@ namespace DatenMeister.Models.Forms
                                 if(name == "hideMetaInformation") // Looking for property
                                 {
                                     tree.ExtentForm._hideMetaInformation = value;
+                                }
+                                if(name == "originalUri") // Looking for property
+                                {
+                                    tree.ExtentForm._originalUri = value;
                                 }
                             }
                         }

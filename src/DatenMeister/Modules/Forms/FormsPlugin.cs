@@ -732,7 +732,12 @@ namespace DatenMeister.Modules.Forms
                 return; // Nothing to do
             }
 
+            var originalUrl = form.GetUri();
             form = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, form, new CopyOption());
+            if (originalUrl != null)
+            {
+                form.set(_FormAndFields._Form.originalUri, originalUrl);
+            }
 
             foreach (var plugin in _formPluginState.FormModificationPlugins)
             {

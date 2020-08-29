@@ -26,6 +26,11 @@
         /// </summary>
         public bool hideMetaInformation { get; set; }
 
+        /// <summary>
+        /// Gets or sets the original uri
+        /// </summary>
+        public string originalUri { get; set; } = string.Empty;
+
         public Form()
         {
         }

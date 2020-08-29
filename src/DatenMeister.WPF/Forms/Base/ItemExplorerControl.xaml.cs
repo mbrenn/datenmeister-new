@@ -766,7 +766,7 @@ namespace DatenMeister.WPF.Forms.Base
                 return new PropertiesAsReflectiveCollection(value);
             }
 
-            return new PropertiesAsReflectiveCollection(value, propertyName);
+            return value.get<IReflectiveCollection>(propertyName);
         }
 
         /// <summary>

@@ -12,8 +12,10 @@ using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -40,6 +42,11 @@ namespace DatenMeister.WPF.Modules.FormManager
             ViewExtensionInfo viewExtensionInfo,
             DetailFormWindow detailWindow)
         {
+            if (!(detailWindow.MainControl is DetailFormControl detailFormControl))
+            {
+                yield break;
+            }
+            
             var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>()
                                 ?? throw new InvalidOperationException("No _FormAndFields in Type Workspace");
             
@@ -48,36 +55,114 @@ namespace DatenMeister.WPF.Modules.FormManager
             var metaClassOfDetailElement = detailAsElement?.getMetaClass();
             
             yield return new ApplicationMenuButtonDefinition(
+                "Open Form as Xmi",
+                () =>
+                {
+                    var effectiveForm = detailFormControl.EffectiveForm;
+                    if (effectiveForm == null)
+                    {
+                        MessageBox.Show("No effective form is set");
+                        return;
+                    }
+
+                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var originalForm = string.IsNullOrEmpty(url)
+                        ? null
+                        : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
+
+                    var window = detailWindow.GetWindow();
+                    var dlg = new ItemXmlViewWindow
+                    {
+                        /*SupportWriting = true,*/
+                        Owner = window,
+                        SupportWriting = false
+                    };
+                    
+                    if (originalForm == null)
+                    {
+                        MessageBox.Show(
+                            "The form is dynamically created. Modifications will not be stored permanently.");
+                        
+                        dlg.UpdateContent(effectiveForm);
+                    }
+                    else
+                    {
+                        dlg.UpdateContent(originalForm);
+                    }
+                    
+                    dlg.ShowDialog();
+                },
+                "",
+                NavigationCategories.Form + ".Current");
+            
+            yield return new ApplicationMenuButtonDefinition(
+                "Open Form",
+                async () =>
+                {
+                    var effectiveForm = detailFormControl.EffectiveForm;
+                    if (effectiveForm == null)
+                    {
+                        MessageBox.Show("No effective form is set");
+                        return;
+                    }
+
+                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var originalForm = string.IsNullOrEmpty(url)
+                        ? null
+                        : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
+                    
+                    if (originalForm == null)
+                    {
+                        MessageBox.Show(
+                            "The form is dynamically created. Modifications will not be stored permanently.");
+
+                        await NavigatorForItems.NavigateToElementDetailView(
+                            detailWindow ?? throw new InvalidOperationException("NavigationHost is not set"),
+                            effectiveForm, 
+                            title: "Dynamic Form");
+                    }
+                    else
+                    {
+                        await NavigatorForItems.NavigateToElementDetailView(
+                            detailWindow ?? throw new InvalidOperationException("NavigationHost is not set"),
+                            originalForm, 
+                            title: "Form");
+                    }
+                },
+                "",
+                NavigationCategories.Form + ".Current");
+            
+            yield return new ApplicationMenuButtonDefinition(
                 "Change Form Definition",
                 ChangeFormDefinition,
                 null,
-                NavigationCategories.Form + ".Current");
+                NavigationCategories.Form + ".Change");
 
             yield return new ApplicationMenuButtonDefinition(
                 "Reset Form Definition",
                 ClearOverridingForm,
                 null,
-                NavigationCategories.Form +".Current");
+                NavigationCategories.Form +".Change");
 
             yield return new ApplicationMenuButtonDefinition(
                 "Set as default for Metaclass",
                 SetAsDefaultForMetaclass,
                 string.Empty,
-                NavigationCategories.Form+".Current"
+                NavigationCategories.Form+".Create"
             );
 
             yield return new ApplicationMenuButtonDefinition(
                 "Clear default Association",
                 ClearAssociation,
                 null,
-                NavigationCategories.Form+".Current");
+                NavigationCategories.Form+".Create");
             
 
             yield return new ApplicationMenuButtonDefinition(
                 "Autogenerate form",
                 detailWindow.ForceAutoGenerationOfForm,
                 string.Empty,
-                NavigationCategories.Form + ".Current");
+                NavigationCategories.Form + ".Change");
 
 
             // The currently selected element is a form

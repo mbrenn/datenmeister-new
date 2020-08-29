@@ -94,14 +94,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                     var originalForm = string.IsNullOrEmpty(url)
                         ? null
                         : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
-
-                    var window = itemExplorerControl.NavigationHost?.GetWindow();
-                    var dlg = new ItemXmlViewWindow
-                    {
-                        /*SupportWriting = true,*/
-                        Owner = window == null ? null : Window.GetWindow(window),
-                        SupportWriting = false
-                    };
                     
                     if (originalForm == null)
                     {
@@ -120,8 +112,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                             originalForm, 
                             title: "Form");
                     }
-                    
-                    dlg.ShowDialog();
                 },
                 "",
                 NavigationCategories.Form + ".Current");

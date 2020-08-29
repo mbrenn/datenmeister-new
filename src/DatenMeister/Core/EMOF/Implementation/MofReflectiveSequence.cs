@@ -173,7 +173,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public void add(int index, object value)
         {
-            if (value == null) return; // null will ot be added
+            if (value == null) return; // null will never be added
             var valueToBeAdded = MofExtent.ConvertForSetting(MofObject, value);
             if (valueToBeAdded == null) return;
 

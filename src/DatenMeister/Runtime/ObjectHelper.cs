@@ -154,7 +154,6 @@ namespace DatenMeister.Runtime
                 {
                     NoReferences = noReferences
                 };
-
             }
 
             if (typeof(T) == typeof(DateTime))

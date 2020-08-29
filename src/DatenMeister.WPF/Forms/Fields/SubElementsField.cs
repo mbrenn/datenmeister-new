@@ -135,20 +135,17 @@ namespace DatenMeister.WPF.Forms.Fields
                             "Edit",
                             async (guest, item) =>
                                 await NavigatorForItems.NavigateToElementDetailView(_navigationHost, item),
-                            ItemListViewControl.ButtonPosition.Before) /*,
-                    
-                    The DELETE button is not required anymore. It is in the stack
-
-                new RowItemButtonDefinition(
-                    "Delete",
-                    (guest, item) => { RemoveItem(valueOfElement, item); })*/
+                            ItemListViewControl.ButtonPosition.Before)
                     };
+
+            form.set(
+                _FormAndFields._ListForm.inhibitNewItems,
+                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements));
 
             _listViewControl.SetContent(valueOfElement, form, viewExtensions);
 
             if (!isReadOnly)
             {
-                // CreateNewItemButton();
                 CreateManipulationButtons(valueOfElement);
             }
             
@@ -317,8 +314,15 @@ namespace DatenMeister.WPF.Forms.Fields
                 if (result != null)
                 {
                     collection.add(result);
-                    _listViewControl.Items = _element.get<IReflectiveCollection>(_propertyName);
-                    _listViewControl.ForceRefresh();
+                    if (collection.Count() == 1)
+                    {
+                        // When the first item is added, then the complete form must be regenerated. 
+                        CreatePanelElement();
+                    }
+                    else
+                    {
+                        _listViewControl.ForceRefresh();    
+                    }
                 }
             };
             
@@ -406,29 +410,33 @@ namespace DatenMeister.WPF.Forms.Fields
                 // Creates the button for the specializations
                 var getAllSpecializations = _includeSpecializationsForDefaultTypes;
                 // Gets the buttons for specific types
-                if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
-                    .defaultTypesForNewElements) is { } defaultTypesForNewItems)
+                if (!_fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements))
                 {
-                    IEnumerable<IElement> specializedTypes;
-
-                    if (getAllSpecializations)
+                    // Only of new elements may be added
+                    if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
+                        .defaultTypesForNewElements) is { } defaultTypesForNewItems)
                     {
-                        specializedTypes =
-                            (from type in defaultTypesForNewItems.OfType<IElement>()
-                                from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                                select newSpecializationType).Distinct();
-                    }
-                    else
-                    {
-                        specializedTypes = defaultTypesForNewItems.OfType<IElement>();
-                    }
+                        IEnumerable<IElement> specializedTypes;
 
-                    listItems.AddRange(
-                        from btn in specializedTypes
-                        let button = CreateButtonForType(btn)
-                        orderby button.Item1
-                        select button
-                    );
+                        if (getAllSpecializations)
+                        {
+                            specializedTypes =
+                                (from type in defaultTypesForNewItems.OfType<IElement>()
+                                    from newSpecializationType in ClassifierMethods.GetSpecializations(type)
+                                    select newSpecializationType).Distinct();
+                        }
+                        else
+                        {
+                            specializedTypes = defaultTypesForNewItems.OfType<IElement>();
+                        }
+
+                        listItems.AddRange(
+                            from btn in specializedTypes
+                            let button = CreateButtonForType(btn)
+                            orderby button.Item1
+                            select button
+                        );
+                    }
                 }
 
                 var menu = new ContextMenu();
@@ -485,7 +493,6 @@ namespace DatenMeister.WPF.Forms.Fields
                             _element.set(_propertyName, new List<object> {elements.NewObject});
                         }
 
-                        _panel.Children.Clear();
                         CreatePanelElement();
                     }
                 });

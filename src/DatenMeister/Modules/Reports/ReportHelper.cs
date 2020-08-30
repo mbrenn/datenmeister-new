@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using BurnSystems;
+using DatenMeister.Core.EMOF.Interface.Common;
 
 namespace DatenMeister.Modules.Reports
 {

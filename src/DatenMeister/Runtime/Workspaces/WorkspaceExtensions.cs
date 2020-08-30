@@ -220,7 +220,7 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspaceCollection">The workspace collection to be queried</param>
         /// <param name="extent">The extent to which the workspace is required</param>
         /// <returns>Found workspace or null, if not found</returns>
-        public static Workspace FindWorkspace(
+        public static Workspace? FindWorkspace(
             this IWorkspaceLogic workspaceCollection,
             IExtent extent)
         {

@@ -157,6 +157,10 @@ namespace DatenMeister.Models.Reports
                                 {
                                     tree.ReportInstanceSource._name = value;
                                 }
+                                if(name == "workspaceId") // Looking for property
+                                {
+                                    tree.ReportInstanceSource._workspaceId = value;
+                                }
                                 if(name == "source") // Looking for property
                                 {
                                     tree.ReportInstanceSource._source = value;

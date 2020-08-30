@@ -87,6 +87,9 @@ namespace DatenMeister.Models.Reports
             public static string @name = "name";
             public IElement? _name = null;
 
+            public static string @workspaceId = "workspaceId";
+            public IElement? _workspaceId = null;
+
             public static string @source = "source";
             public IElement? _source = null;
 

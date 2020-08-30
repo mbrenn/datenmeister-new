@@ -27,8 +27,8 @@ namespace DatenMeister.Modules.Reports
         /// </summary>
         private readonly Dictionary<string, IReflectiveCollection> _sources 
             = new Dictionary<string, IReflectiveCollection>();
-        
-        private  HtmlReport? _htmlReporter;
+
+        private HtmlReport? _htmlReporter;
         
         public HtmlReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
@@ -58,9 +58,38 @@ namespace DatenMeister.Modules.Reports
             _sources[id] = collection;
         }
 
-        public void GenerateReport(IElement reportDefinition, TextWriter report)
+        /// <summary>
+        /// Generates a full html report by using the instance
+        /// </summary>
+        /// <param name="reportInstance">Report instance to be used</param>
+        /// <param name="writer">The writer being used</param>
+        public void GenerateReportByInstance(IElement reportInstance, TextWriter writer)
         {
-            _htmlReporter = new HtmlReport(report);
+            var reportLogic = new ReportLogic(_workspaceLogic);
+            foreach (var scope in reportLogic.EvaluateSources(reportInstance))
+            {
+                AddSource(scope.Name, scope.Collection);
+            }
+
+            var definition = reportInstance.getOrDefault<IObject>(_Reports._HtmlReportInstance.reportDefinition);
+            if (definition == null)
+            {
+                throw new InvalidOperationException("There is no report definition set.");
+            }
+            
+            GenerateReportByDefinition(definition, writer);
+        }
+
+        /// <summary>
+        /// Generates a report after the sources has been manually attached
+        /// It is important that the reportDefinition value is not of type ReportInstance.
+        /// If a report shall be generated upon a Report Instance, use GenerateByInstance
+        /// </summary>
+        /// <param name="reportDefinition">The report definition to be used</param>
+        /// <param name="writer">The writer being used</param>
+        public void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
+        {
+            _htmlReporter = new HtmlReport(writer);
             
             var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
             _htmlReporter.SetDefaultCssStyle();

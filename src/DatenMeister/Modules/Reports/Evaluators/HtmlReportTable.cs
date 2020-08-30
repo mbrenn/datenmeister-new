@@ -26,15 +26,8 @@ namespace DatenMeister.Modules.Reports.Evaluators
         {
             var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportTable.viewNode);
             var form = reportNode.getOrDefault<IElement>(_Reports._ReportTable.form);
-            
-            // Gets the elements for the table
-            var dataviewEvaluation =
-                new DataViewEvaluation(htmlReportCreator.WorkspaceLogic, htmlReportCreator.ScopeStorage);
-            foreach (var source in htmlReportCreator.Sources)
-            {
-                dataviewEvaluation.AddDynamicSource(source.Key, source.Value);
-            }
 
+            var dataviewEvaluation = htmlReportCreator.GetDataViewEvaluation();
             var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
 
             // Find form 

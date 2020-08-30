@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Models.Reports;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Provider.InMemory;
@@ -30,10 +31,12 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestHtmlParagraphWithDataSet()
+        public void TestHtmlParagraphWithDataNode()
         {
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(WorkspaceLogic.InitDefault());
+            scopeStorage.Add(ReportPlugin.CreateEvaluators());
+            scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
             
             var inMemoryProvider = new InMemoryProvider();
@@ -71,6 +74,7 @@ namespace DatenMeister.Tests.Modules
             reportInstance.set(_Reports._HtmlReportInstance.name, "Report");
 
             var source = factory.create(_Reports.TheOne.__ReportInstanceSource);
+            source.set(_Reports._ReportInstanceSource.name, "input");
             source.set(_Reports._ReportInstanceSource.source, "dm:///test#TheOne");
             source.set(_Reports._ReportInstanceSource.workspaceId,"Data");
             reportInstance.set(_Reports._HtmlReportInstance.sources, new[] {source});
@@ -81,7 +85,7 @@ namespace DatenMeister.Tests.Modules
             var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
             htmlReport.GenerateReportByInstance(reportInstance, writer);
 
-            Assert.That(writer.ToString().Contains("Hallo Brenn Martin"), Is.True, writer.ToString());
+            Assert.That(writer.ToString().Contains("Hello Brenn Martin"), Is.True, writer.ToString());
         }
     }
 }

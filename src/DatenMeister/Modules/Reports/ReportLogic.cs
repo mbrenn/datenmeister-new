@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
@@ -40,6 +41,10 @@ namespace DatenMeister.Modules.Reports
             foreach (var source in sources.OfType<IObject>())
             {
                 var name = source.getOrDefault<string>(_Reports._ReportInstanceSource.name);
+                if (string.IsNullOrEmpty(name))
+                {
+                    throw new InvalidOperationException("name of ReportInstanceSource is not set");
+                }
                 
                 var workspaceId = source.getOrDefault<string>(_Reports._ReportInstanceSource.workspaceId);
                 if (string.IsNullOrEmpty(workspaceId))
@@ -52,7 +57,7 @@ namespace DatenMeister.Modules.Reports
                 IReflectiveCollection? sourceItems = null;
                 var workspace = _workspaceLogic.GetWorkspace(workspaceId) ?? _workspaceLogic.GetDataWorkspace();
                 
-                var foundSource = workspace.GetUriResolver()?.Resolve(sourceRef, ResolveType.Default);
+                var foundSource = workspace.Resolve(sourceRef, ResolveType.Default);
                 if (foundSource is IExtent extent)
                 {
                     sourceItems = extent.elements();
@@ -68,8 +73,7 @@ namespace DatenMeister.Modules.Reports
                 
                 if (sourceItems == null)
                 {
-                    Logger.Warn($"Source with uri {sourceRef} was not found");
-                    continue;
+                    throw new InvalidOperationException($"Source with uri {sourceRef} was not found");
                 }
                 
                 yield return new ReportSource(name, sourceItems);

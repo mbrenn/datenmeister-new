@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Reports;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -29,7 +30,7 @@ namespace DatenMeister.Modules.Reports
             = new Dictionary<string, IReflectiveCollection>();
 
         private HtmlReport? _htmlReporter;
-        
+
         public HtmlReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
@@ -116,6 +117,23 @@ namespace DatenMeister.Modules.Reports
             }
             
             _htmlReporter.EndReport();
+        }
+
+        /// <summary>
+        /// Gets the dataview evaluation for the given context with associated sources
+        /// </summary>
+        /// <returns>The dataview evaluation</returns>
+        public DataViewEvaluation GetDataViewEvaluation()
+        {
+            // Gets the elements for the table
+            var dataviewEvaluation =
+                new DataViewEvaluation(WorkspaceLogic, ScopeStorage);
+            foreach (var source in Sources)
+            {
+                dataviewEvaluation.AddDynamicSource(source.Key, source.Value);
+            }
+
+            return dataviewEvaluation;
         }
     }
 }

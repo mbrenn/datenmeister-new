@@ -107,6 +107,14 @@ namespace DatenMeister.Models.Reports
                                 {
                                     tree.ReportParagraph._paragraph = value;
                                 }
+                                if(name == "evalParagraph") // Looking for property
+                                {
+                                    tree.ReportParagraph._evalParagraph = value;
+                                }
+                                if(name == "viewNode") // Looking for property
+                                {
+                                    tree.ReportParagraph._viewNode = value;
+                                }
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ReportParagraph._name = value;
@@ -148,6 +156,10 @@ namespace DatenMeister.Models.Reports
                                 if(name == "name") // Looking for property
                                 {
                                     tree.ReportInstanceSource._name = value;
+                                }
+                                if(name == "workspaceId") // Looking for property
+                                {
+                                    tree.ReportInstanceSource._workspaceId = value;
                                 }
                                 if(name == "source") // Looking for property
                                 {

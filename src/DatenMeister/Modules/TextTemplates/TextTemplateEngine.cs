@@ -31,6 +31,20 @@ namespace DatenMeister.Modules.TextTemplates
         }
     }
 
+    public class NullDmObject : ScriptObject
+    {
+        public override string ToString(TemplateContext context, SourceSpan span)
+        {
+            return string.Empty;
+        }
+
+        public override bool TryGetValue(TemplateContext context, SourceSpan span, string member, out object value)
+        {
+            value = new NullDmObject();
+            return true;
+        }
+    }
+
     /// <summary>
     /// Defines the abstraction for the template engine.
     /// It provides the properties of the datenmeister objects to
@@ -45,27 +59,31 @@ namespace DatenMeister.Modules.TextTemplates
             _value = value;
         }
 
-        
         public override bool TryGetValue(TemplateContext context, SourceSpan span, string member, out object? value)
         {
             if (_value == null)
             {
-                value = string.Empty;
+                value = new NullDmObject();
                 return true;
             }
 
             if (_value.isSet(member))
             {
                 value = _value.get(member);
-                if (value is IObject o)
+                switch (value)
                 {
-                    value = new TemplateDmObject(o);
+                    case IObject o:
+                        value = new TemplateDmObject(o);
+                        break;
+                    case null:
+                        value = new NullDmObject();
+                        break;
                 }
 
                 return true;
             }
 
-            value = null;
+            value = new NullDmObject();
             return false;
         }
     }

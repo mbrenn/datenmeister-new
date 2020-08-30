@@ -101,7 +101,7 @@ namespace StundenMeister
             }
 
             using var stream = ReportHelper.CreateRandomFile(out var filePath);
-            htmlReportCreator.GenerateReport(hourReport, stream);
+            htmlReportCreator.GenerateReportByDefinition(hourReport, stream);
             
             DotNetHelper.CreateProcess(filePath);
         }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Autofac;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
@@ -89,51 +90,34 @@ namespace DatenMeister.WPF.Modules.ReportManager
             var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
                 _Reports.TheOne.__HtmlReportInstance);
             if (reportInstance != null)
-            {yield return
-                new RowItemButtonDefinition(
-                    "Create Report",
-                    (x, y) =>
-                    {
-                        var reportGenerator = new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                        var sources = y.getOrDefault<IReflectiveCollection>(_Reports._HtmlReportInstance.sources);
-                        foreach (var source in sources.OfType<IObject>())
+            {
+                yield return
+                    new RowItemButtonDefinition(
+                        "Create Report",
+                        (x, y) =>
                         {
-                            var name = source.getOrDefault<string>(_Reports._ReportInstanceSource.name);
-                            var sourceRef = source.getOrDefault<string>(_Reports._ReportInstanceSource.source);
-
-                            IReflectiveCollection? sourceItems;
-                            var foundSource = y.GetUriResolver()?.Resolve(sourceRef, ResolveType.Default);
-                            if (foundSource is IExtent extent)
+                            var reportGenerator =
+                                new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+                            var reportLogic = GiveMe.Scope.Resolve<ReportLogic>();
+                            var sources = reportLogic.EvaluateSources(y);
+                            foreach (var source in sources)
                             {
-                                sourceItems = extent.elements();
+                                reportGenerator.AddSource(source.Name, source.Collection);
                             }
-                            else
-                            {
-                                sourceItems = foundSource as IReflectiveCollection;
-                            }
-                            
-                            if (sourceItems == null)
-                            {
-                                MessageBox.Show($"Source {name} with reference {sourceRef} was not found");
-                                continue;
-                            }
-                            
-                            reportGenerator.AddSource(name, sourceItems);
-                        }
 
-                        var reportDefinition = y.getOrDefault<IElement>(_Reports._HtmlReportInstance.reportDefinition);
-                        if (reportDefinition == null)
-                        {
-                            MessageBox.Show("The report is not found");
-                            return;
-                        }
+                            var reportDefinition =
+                                y.getOrDefault<IElement>(_Reports._HtmlReportInstance.reportDefinition);
+                            if (reportDefinition == null)
+                            {
+                                MessageBox.Show("The report is not found");
+                                return;
+                            }
 
-                        var filePath = GetRandomWriter(out var writer);
-                        reportGenerator.GenerateReport(reportDefinition, writer);
-                        
-                        DotNetHelper.CreateProcess(filePath);
-                    });
-                
+                            var filePath = GetRandomWriter(out var writer);
+                            reportGenerator.GenerateReportByDefinition(reportDefinition, writer);
+
+                            DotNetHelper.CreateProcess(filePath);
+                        });
             }
 
             // Check if the the query is about the current view

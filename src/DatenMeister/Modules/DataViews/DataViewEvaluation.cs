@@ -75,7 +75,7 @@ namespace DatenMeister.Modules.DataViews
             _referenceCount++;
             if (_referenceCount > MaximumReferenceCount)
             {
-                Logger.Warn("Maximum number of references are evaluated in dataview evaluation");
+                Logger.Warn("Maximum number of recursions are evaluated in dataview evaluation");
                 return new PureReflectiveSequence();
             }
             

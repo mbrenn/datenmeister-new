@@ -35,7 +35,7 @@ namespace DatenMeister.Modules.Reports
         /// Creates the default evaluator
         /// </summary>
         /// <returns>The default evaluators</returns>
-        private static HtmlReportEvaluators CreateEvaluators()
+        public static HtmlReportEvaluators CreateEvaluators()
         {
             var evaluator = new HtmlReportEvaluators();
             evaluator.AddEvaluator(new HtmlReportHeadline());

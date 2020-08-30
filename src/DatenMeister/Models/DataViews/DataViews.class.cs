@@ -131,7 +131,7 @@ namespace DatenMeister.Models.DataViews
         public _ComparisonMode @ComparisonMode = new _ComparisonMode();
         public IElement @__ComparisonMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ComparisonMode");
 
-        public class _SelectPathNode
+        public class _SelectByFullNameNode
         {
             public static string @input = "input";
             public IElement? _input = null;
@@ -144,8 +144,8 @@ namespace DatenMeister.Models.DataViews
 
         }
 
-        public _SelectPathNode @SelectPathNode = new _SelectPathNode();
-        public IElement @__SelectPathNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectPathNode");
+        public _SelectByFullNameNode @SelectByFullNameNode = new _SelectByFullNameNode();
+        public IElement @__SelectByFullNameNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.SelectByFullNameNode");
 
         public class _DynamicSourceNode
         {

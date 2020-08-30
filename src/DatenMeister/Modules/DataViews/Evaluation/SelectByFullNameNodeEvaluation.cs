@@ -9,21 +9,20 @@ using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DataViews.Evaluation
 {
-    public class SelectPathNodeEvaluation : IDataViewNodeEvaluation
+    public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
     {
-        private static readonly ILogger Logger = new ClassLogger(typeof(SelectPathNodeEvaluation));
+        private static readonly ILogger Logger = new ClassLogger(typeof(SelectByFullNameNodeEvaluation));
+        
         public bool IsResponsible(IElement node)
         {
-            
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DataViews.TheOne.__SelectPathNode);
+                   metaClass.@equals(_DataViews.TheOne.__SelectByFullNameNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {
-            
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._SelectPathNode.input);
+            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._SelectByFullNameNode.input);
             if (inputNode == null)
             {
                 Logger.Warn($"Input node not found");
@@ -32,7 +31,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
             var input = evaluation.GetElementsForViewNode(inputNode);
 
-            var pathNode = viewNode.getOrDefault<string>(_DataViews._SelectPathNode.path);
+            var pathNode = viewNode.getOrDefault<string>(_DataViews._SelectByFullNameNode.path);
             if (pathNode == null)
             {
                 Logger.Warn($"Path is not set");

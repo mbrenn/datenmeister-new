@@ -339,7 +339,7 @@ namespace DatenMeister.Runtime.Workspaces
             throw new NotImplementedException();
         }
 
-        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing)
+        public object? Resolve(string uri, ResolveType resolveType, bool traceFailing = true)
         {
             lock (_syncObject)
             {

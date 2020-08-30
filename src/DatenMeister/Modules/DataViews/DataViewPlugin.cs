@@ -31,7 +31,7 @@ namespace DatenMeister.Modules.DataViews
                 typeof(FilterPropertyNode),
                 typeof(FilterTypeNode),
                 typeof(ComparisonMode),
-                typeof(SelectPathNode),
+                typeof(SelectByFullNameNode),
                 typeof(DynamicSourceNode)
             };
         }
@@ -83,7 +83,7 @@ namespace DatenMeister.Modules.DataViews
             result.Add(new FilterPropertyNodeEvaluation());
             result.Add(new FilterTypeNodeEvaluation());
             result.Add(new FlattenNodeEvaluation());
-            result.Add(new SelectPathNodeEvaluation());
+            result.Add(new SelectByFullNameNodeEvaluation());
             result.Add(new SourceExtentNodeEvaluation());
 
             return result;

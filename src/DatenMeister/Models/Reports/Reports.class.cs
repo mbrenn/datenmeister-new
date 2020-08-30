@@ -52,6 +52,12 @@ namespace DatenMeister.Models.Reports
             public static string @paragraph = "paragraph";
             public IElement? _paragraph = null;
 
+            public static string @evalParagraph = "evalParagraph";
+            public IElement? _evalParagraph = null;
+
+            public static string @viewNode = "viewNode";
+            public IElement? _viewNode = null;
+
             public static string @name = "name";
             public IElement? _name = null;
 
@@ -80,6 +86,9 @@ namespace DatenMeister.Models.Reports
         {
             public static string @name = "name";
             public IElement? _name = null;
+
+            public static string @workspaceId = "workspaceId";
+            public IElement? _workspaceId = null;
 
             public static string @source = "source";
             public IElement? _source = null;

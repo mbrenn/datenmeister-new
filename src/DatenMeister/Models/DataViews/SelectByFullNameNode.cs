@@ -1,6 +1,6 @@
 ﻿namespace DatenMeister.Models.DataViews
 {
-    public class SelectPathNode : ViewNode
+    public class SelectByFullNameNode : ViewNode
     {
         public ViewNode? input { get; set; }
 

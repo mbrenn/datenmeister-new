@@ -38,6 +38,12 @@ namespace DatenMeister.Tests.Modules.TextTemplates
             Assert.That(
                 TextTemplateEngine.Parse(null, template),
                 Is.EqualTo("Hallo "));
+                
+            template = "Hallo {{i.department.name}}";
+
+            Assert.That(
+                TextTemplateEngine.Parse(null, template),
+                Is.EqualTo("Hallo "));
         }
 
         [Test]

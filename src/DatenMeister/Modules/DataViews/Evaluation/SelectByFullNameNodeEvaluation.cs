@@ -9,9 +9,10 @@ using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DataViews.Evaluation
 {
-    public class SelectPathNodeEvaluation : IDataViewNodeEvaluation
+    public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
     {
-        private static readonly ILogger Logger = new ClassLogger(typeof(SelectPathNodeEvaluation));
+        private static readonly ILogger Logger = new ClassLogger(typeof(SelectByFullNameNodeEvaluation));
+        
         public bool IsResponsible(IElement node)
         {
             
@@ -22,7 +23,6 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {
-            
             var inputNode = viewNode.getOrDefault<IElement>(_DataViews._SelectPathNode.input);
             if (inputNode == null)
             {

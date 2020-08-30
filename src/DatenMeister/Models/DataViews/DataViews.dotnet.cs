@@ -74,10 +74,10 @@ namespace DatenMeister.Models.DataViews
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.DataViews.SelectPathNode);
+                var type = typeof(DatenMeister.Models.DataViews.SelectByFullNameNode);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__SelectPathNode = typeAsElement;
+                filledStructure.__SelectByFullNameNode = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {

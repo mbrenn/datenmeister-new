@@ -179,9 +179,9 @@ namespace DatenMeister.Models.DataViews
                                 }
                             }
                         }
-                        if(name == "SelectPathNode") // Looking for class
+                        if(name == "SelectByFullNameNode") // Looking for class
                         {
-                            tree.__SelectPathNode = value;
+                            tree.__SelectByFullNameNode = value;
                             isSet = value.isSet("ownedAttribute");
                             collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
                             foreach (var item1 in collection)
@@ -190,15 +190,15 @@ namespace DatenMeister.Models.DataViews
                                 name = GetNameOfElement(value);
                                 if(name == "input") // Looking for property
                                 {
-                                    tree.SelectPathNode._input = value;
+                                    tree.SelectByFullNameNode._input = value;
                                 }
                                 if(name == "path") // Looking for property
                                 {
-                                    tree.SelectPathNode._path = value;
+                                    tree.SelectByFullNameNode._path = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {
-                                    tree.SelectPathNode._name = value;
+                                    tree.SelectByFullNameNode._name = value;
                                 }
                             }
                         }

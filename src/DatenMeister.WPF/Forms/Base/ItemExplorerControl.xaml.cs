@@ -482,7 +482,10 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="tabForm">Form definition of the tab</param>
         /// <param name="usedViewExtensions">The view extensions for the tab</param>
         /// <returns></returns>
-        private UserControl CreateListControl(IObject value, IObject tabForm, List<ViewExtension> usedViewExtensions)
+        private UserControl CreateListControl(
+            IObject value,
+            IObject tabForm,
+            List<ViewExtension> usedViewExtensions)
         {
             // Creates the layoutcontrol for the given view
             var control = new ItemListViewControl
@@ -519,7 +522,10 @@ namespace DatenMeister.WPF.Forms.Base
                 foreach (var extension in 
                     usedViewExtensions.OfType<NewInstanceViewExtension>())
                 {
-                    defaultTypesForNewItems.Add(extension.MetaClass);
+                    var factory = new MofFactory(tabForm);
+                    var newElement = factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
+                    newElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass, extension.MetaClass);
+                    defaultTypesForNewItems.Add(newElement);
                 }
 
                 // Filter MofObject Shadows out, they are not useable anyway.
@@ -566,7 +572,11 @@ namespace DatenMeister.WPF.Forms.Base
                 // Gets the default types by the View Extensions
                 foreach (var extension in usedViewExtensions.OfType<NewInstanceViewExtension>())
                 {
-                    defaultTypesForNewItems.Add(extension.MetaClass);
+                    var factory = new MofFactory(tabForm);
+                    var newElement = factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
+                    newElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass, extension.MetaClass);
+                    newElement.set(_FormAndFields._DefaultTypeForNewElement.parentProperty, propertyName);
+                    defaultTypesForNewItems.Add(newElement);
                 }
 
                 // Adds the default type for the extension, if appropriate

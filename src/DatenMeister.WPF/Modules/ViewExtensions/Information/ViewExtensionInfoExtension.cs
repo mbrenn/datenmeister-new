@@ -255,13 +255,14 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
                 }
                 
                 // Checks for property name
-                if (formPropertyName != propertyName)
+                if (!string.IsNullOrEmpty(formPropertyName) && formPropertyName != propertyName)
                 {
                     return false;
                 }
 
                 // Checks the metaclasses
-                if (metaClasses != null && !metaClasses.Contains(selectedItem.getMetaClass()))
+                if (metaClasses != null 
+                    && !metaClasses.Any(x => x.@equals(selectedItem.getMetaClass())))
                 {
                     return false;
                 }

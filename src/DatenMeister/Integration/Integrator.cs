@@ -215,7 +215,7 @@ namespace DatenMeister.Integration
             packageMethods.ImportByManifest(
                 typeof(UmlPlugin),
                 "DatenMeister.XmiFiles.Types.DatenMeister.xmi",
-                "CommonTypes",
+                null,
                 internalUserExtent,
                 "DatenMeister");
 

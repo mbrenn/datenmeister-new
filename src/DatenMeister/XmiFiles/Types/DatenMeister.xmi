@@ -21,4 +21,18 @@
       </packagedElement>
     </packagedElement>
   </item>
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="282381a9-004f-43e1-b370-9ec6c04e53d8" name="Actions" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="04021da2-4d13-4534-9986-aceeb8f031e2" name="Action">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="df6ab663-22c1-41a0-8bc3-8ed67a318268" name="ActionSet">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+    </packagedElement>
+  </item>
 </item>

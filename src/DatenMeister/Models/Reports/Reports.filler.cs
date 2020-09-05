@@ -138,6 +138,10 @@ namespace DatenMeister.Models.Reports
                             {
                                 value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
                                 name = GetNameOfElement(value);
+                                if(name == "cssClass") // Looking for property
+                                {
+                                    tree.ReportTable._cssClass = value;
+                                }
                                 if(name == "viewNode") // Looking for property
                                 {
                                     tree.ReportTable._viewNode = value;
@@ -145,6 +149,10 @@ namespace DatenMeister.Models.Reports
                                 if(name == "form") // Looking for property
                                 {
                                     tree.ReportTable._form = value;
+                                }
+                                if(name == "evalProperties") // Looking for property
+                                {
+                                    tree.ReportTable._evalProperties = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {

@@ -24,10 +24,16 @@ namespace DatenMeister.Modules.Reports.Evaluators
             {
                 GetDataEvaluation(out var element);
                 var evalProperties = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalProperties);
+
+                var dict = new Dictionary<string, object> {["v"] = reportNode};
+                if (element != null)
+                {
+                    dict["i"] = element;
+                }
+                
                 TextTemplateEngine.Parse(
-                    element,
                     "{{" + evalProperties + "}}",
-                    new Dictionary<string, object> {["v"] = reportNode});
+                    dict);
             }
 
             HtmlParagraph htmlParagraph;
@@ -39,7 +45,9 @@ namespace DatenMeister.Modules.Reports.Evaluators
                 if (GetDataEvaluation(out var element) || element == null) return;
 
                 var evalParagraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalParagraph);
-                var evalResult = TextTemplateEngine.Parse(element, evalParagraph);
+                var evalResult = TextTemplateEngine.Parse(
+                    evalParagraph,
+                    new Dictionary<string, object> {["i"] = element});
                 htmlParagraph = new HtmlParagraph(evalResult);
             }
             else
@@ -60,7 +68,7 @@ namespace DatenMeister.Modules.Reports.Evaluators
             
             bool GetDataEvaluation(out IElement? element)
             {
-                var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportParagraph.viewNode);
+                var viewNode = reportNodeOrigin.getOrDefault<IElement>(_Reports._ReportParagraph.viewNode);
                 if (viewNode == null)
                 {
                     htmlReportCreator.HtmlReporter.Add(new HtmlParagraph("No Viewnode found"));

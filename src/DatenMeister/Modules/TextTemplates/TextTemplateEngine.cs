@@ -19,15 +19,12 @@ namespace DatenMeister.Modules.TextTemplates
         /// <param name="additionalObjects">Additional objects that can be added to the parser
         /// DatenMeister Objects are converted to the appropriate object type</param>
         /// <returns>The parsed element</returns>
-        public static string Parse(IObject? element, string text, Dictionary<string, object>? additionalObjects = null)
+        public static string Parse(string text, Dictionary<string, object>? additionalObjects = null)
         {
             var template = Template.Parse(text);
 
             var templateContext = new TemplateContext();
-            var scriptObject = new ScriptObject
-            {
-                ["i"] = new TemplateDmObject(element)
-            };
+            var scriptObject = new ScriptObject();
 
             // Adds the elements to the parser
             if (additionalObjects != null)

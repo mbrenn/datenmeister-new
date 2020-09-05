@@ -14,6 +14,11 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// </summary>
         private readonly List<HtmlTableRow> _rows = new List<HtmlTableRow>();
 
+        /// <summary>
+        /// Gets or sets the css class for the table
+        /// </summary>
+        public string CssClass { get; set; } = string.Empty;
+
         public HtmlTableRow AddRow(params HtmlElement[] cells)
         {
             var result = new HtmlTableRow(cells);

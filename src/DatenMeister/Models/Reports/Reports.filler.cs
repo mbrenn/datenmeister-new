@@ -107,6 +107,10 @@ namespace DatenMeister.Models.Reports
                                 {
                                     tree.ReportParagraph._paragraph = value;
                                 }
+                                if(name == "cssClass") // Looking for property
+                                {
+                                    tree.ReportParagraph._cssClass = value;
+                                }
                                 if(name == "evalParagraph") // Looking for property
                                 {
                                     tree.ReportParagraph._evalParagraph = value;
@@ -114,6 +118,10 @@ namespace DatenMeister.Models.Reports
                                 if(name == "viewNode") // Looking for property
                                 {
                                     tree.ReportParagraph._viewNode = value;
+                                }
+                                if(name == "evalProperties") // Looking for property
+                                {
+                                    tree.ReportParagraph._evalProperties = value;
                                 }
                                 if(name == "name") // Looking for property
                                 {

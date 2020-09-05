@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.HtmlReporter.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Modules.Reports.Evaluators
 {
@@ -15,35 +17,66 @@ namespace DatenMeister.Modules.Reports.Evaluators
             return metaClass?.@equals(_Reports.TheOne.__ReportParagraph) == true;
         }
 
-        public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNode)
+        public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNodeOrigin)
         {
-            // Checks, if we have an evalParagraph
+            var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
+            if (reportNode.isSet(_Reports._ReportParagraph.evalProperties))
+            {
+                GetDataEvaluation(out var element);
+                var evalProperties = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalProperties);
+                TextTemplateEngine.Parse(
+                    element,
+                    "{{" + evalProperties + "}}",
+                    new Dictionary<string, object> {["v"] = reportNode});
+            }
+
+            HtmlParagraph htmlParagraph;
+
+            // Gets the htmlParagraph
             if (reportNode.isSet(_Reports._ReportParagraph.evalParagraph))
             {
-                var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportParagraph.viewNode);
+                // Dynamic evaluation
+                if (GetDataEvaluation(out var element) || element == null) return;
+
                 var evalParagraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalParagraph);
-                if (viewNode == null)
-                {
-                    htmlReportCreator.HtmlReporter.Add(new HtmlParagraph("No Viewnode found"));
-                    return;
-                }
-
-                var dataViewEvaluation = htmlReportCreator.GetDataViewEvaluation();
-                var element =
-                    dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
-                if (element == null)
-                {
-                    htmlReportCreator.HtmlReporter.Add(new HtmlParagraph("No Element found"));
-                    return;
-                }
-
                 var evalResult = TextTemplateEngine.Parse(element, evalParagraph);
-                htmlReportCreator.HtmlReporter.Add(new HtmlParagraph(evalResult));
+                htmlParagraph = new HtmlParagraph(evalResult);
             }
             else
             {
                 var paragraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.paragraph);
-                htmlReportCreator.HtmlReporter.Add(new HtmlParagraph(paragraph));
+                htmlParagraph = new HtmlParagraph(paragraph);
+            }
+            
+            // Gets the cssClass
+            var cssClass = reportNode.getOrDefault<string>(_Reports._ReportParagraph.cssClass);
+            if (!string.IsNullOrEmpty(cssClass) && cssClass != null)
+            {
+                htmlParagraph.CssClass = cssClass;
+            }
+            
+            // Creates the paragraph
+            htmlReportCreator.HtmlReporter.Add(htmlParagraph);
+            
+            bool GetDataEvaluation(out IElement? element)
+            {
+                var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportParagraph.viewNode);
+                if (viewNode == null)
+                {
+                    htmlReportCreator.HtmlReporter.Add(new HtmlParagraph("No Viewnode found"));
+                    element = null;
+                    return true;
+                }
+
+                var dataViewEvaluation = htmlReportCreator.GetDataViewEvaluation();
+                element = dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
+                if (element == null)
+                {
+                    htmlReportCreator.HtmlReporter.Add(new HtmlParagraph("No Element found"));
+                    return true;
+                }
+
+                return false;
             }
         }
     }

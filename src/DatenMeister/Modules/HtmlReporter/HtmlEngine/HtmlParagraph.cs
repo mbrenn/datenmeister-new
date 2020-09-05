@@ -7,7 +7,7 @@ namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
         /// <summary>
         /// Defines the css class being used for that paragraph
         /// </summary>
-        private string? CssClass { get; set; }
+        public string? CssClass { get; set; }
 
         /// <summary>
         /// Gets or sets the paragraph to be stored

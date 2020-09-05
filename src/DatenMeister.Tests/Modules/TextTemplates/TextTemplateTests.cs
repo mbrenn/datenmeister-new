@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.TextTemplates
@@ -62,6 +63,19 @@ namespace DatenMeister.Tests.Modules.TextTemplates
             Assert.That(
                 TextTemplateEngine.Parse(value2, template),
                 Is.EqualTo("Hallo Martin from developer."));
+        }
+
+        [Test]
+        public void TestSetting()
+        {
+            var value = InMemoryObject.CreateEmpty();
+
+            var template = "Hallo {{i.name = \"abc\"; i.name}}.";
+            Assert.That(
+                TextTemplateEngine.Parse(value, template),
+                Is.EqualTo("Hallo abc."));
+
+            Assert.That(value.getOrDefault<string>("name"), Is.EqualTo("abc"));
         }
     }
 }

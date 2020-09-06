@@ -42,6 +42,14 @@ namespace DatenMeister.Modules.Reports.Evaluators
             
             // Creates the table
             var table = new HtmlTable();
+            var cssClass = reportNode.getOrDefault<string>(_Reports._ReportTable.cssClass);
+            if (!string.IsNullOrEmpty(cssClass) && cssClass != null)
+            {
+                table.CssClass = cssClass;
+            }
+            
+            
+            
             var cells = new List<HtmlTableCell>();
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
             foreach (var field in fields.OfType<IElement>())

@@ -52,11 +52,17 @@ namespace DatenMeister.Models.Reports
             public static string @paragraph = "paragraph";
             public IElement? _paragraph = null;
 
+            public static string @cssClass = "cssClass";
+            public IElement? _cssClass = null;
+
             public static string @evalParagraph = "evalParagraph";
             public IElement? _evalParagraph = null;
 
             public static string @viewNode = "viewNode";
             public IElement? _viewNode = null;
+
+            public static string @evalProperties = "evalProperties";
+            public IElement? _evalProperties = null;
 
             public static string @name = "name";
             public IElement? _name = null;
@@ -68,11 +74,17 @@ namespace DatenMeister.Models.Reports
 
         public class _ReportTable
         {
+            public static string @cssClass = "cssClass";
+            public IElement? _cssClass = null;
+
             public static string @viewNode = "viewNode";
             public IElement? _viewNode = null;
 
             public static string @form = "form";
             public IElement? _form = null;
+
+            public static string @evalProperties = "evalProperties";
+            public IElement? _evalProperties = null;
 
             public static string @name = "name";
             public IElement? _name = null;

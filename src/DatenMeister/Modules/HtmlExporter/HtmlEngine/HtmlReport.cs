@@ -72,7 +72,7 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         {
             CssStyleSheet = DotNet.ResourceHelper.LoadStringFromAssembly(
                 typeof(HtmlReport), 
-                "DatenMeister.Modules.HtmlReporter.Css.default_report.css");
+                "DatenMeister.Modules.HtmlExporter.Css.default_report.css");
         }
 
         /// <summary>

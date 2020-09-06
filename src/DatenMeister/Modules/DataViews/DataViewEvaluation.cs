@@ -98,7 +98,6 @@ namespace DatenMeister.Modules.DataViews
             }
 
             // Check, if viewnode has been visited
-
             foreach (var evaluation in
                 from x in _dataViewFactories.Evaluations
                 where x.IsResponsible(viewNode)

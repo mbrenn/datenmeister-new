@@ -1,6 +1,5 @@
 using System.IO;
 using System.Text;
-using BurnSystems.Collections;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -13,7 +12,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Modules
+namespace DatenMeister.Tests.Modules.HtmlReports
 {
     [TestFixture]
     public class HtmlReportTests
@@ -33,11 +32,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestHtmlParagraphWithDataNode()
         {
-            var scopeStorage = new ScopeStorage();
-            scopeStorage.Add(WorkspaceLogic.InitDefault());
-            scopeStorage.Add(ReportPlugin.CreateEvaluators());
-            scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
-            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+            var (scopeStorage, workspaceLogic) = PrepareWorkspaceLogic();
             
             var inMemoryProvider = new InMemoryProvider();
             var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
@@ -91,12 +86,8 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestHtmlParagraphWithProperties()
         {
-            var scopeStorage = new ScopeStorage();
-            scopeStorage.Add(WorkspaceLogic.InitDefault());
-            scopeStorage.Add(ReportPlugin.CreateEvaluators());
-            scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
-            var workspaceLogic = new WorkspaceLogic(scopeStorage);
-            
+            var (scopeStorage, workspaceLogic) = PrepareWorkspaceLogic();
+
             var inMemoryProvider = new InMemoryProvider();
             var extent = new MofUriExtent(inMemoryProvider, "dm:///test");
             workspaceLogic.GetDataWorkspace().AddExtent(extent);
@@ -153,6 +144,16 @@ namespace DatenMeister.Tests.Modules
             htmlReport.GenerateReportByInstance(reportInstance, writer);
 
             Assert.That(writer.ToString().Contains("under18"), Is.True, writer.ToString());
+        }
+
+        public static (ScopeStorage scopeStorage, WorkspaceLogic workspaceLogic) PrepareWorkspaceLogic()
+        {
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(WorkspaceLogic.InitDefault());
+            scopeStorage.Add(ReportPlugin.CreateEvaluators());
+            scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+            return (scopeStorage, workspaceLogic);
         }
     }
 }

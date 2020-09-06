@@ -513,6 +513,53 @@ namespace DatenMeister.Models.Forms
                                 }
                             }
                         }
+                        if(name == "EvalTextFieldData") // Looking for class
+                        {
+                            tree.__EvalTextFieldData = value;
+                            isSet = value.isSet("ownedAttribute");
+                            collection = isSet ? ((value.get("ownedAttribute") as IEnumerable<object>) ?? EmptyList): EmptyList;
+                            foreach (var item1 in collection)
+                            {
+                                value = item1 as IElement ?? throw new System.InvalidOperationException ("Not OfType IElement");
+                                name = GetNameOfElement(value);
+                                if(name == "evalCellProperties") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._evalCellProperties = value;
+                                }
+                                if(name == "lineHeight") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._lineHeight = value;
+                                }
+                                if(name == "width") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._width = value;
+                                }
+                                if(name == "isAttached") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._isAttached = value;
+                                }
+                                if(name == "name") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._name = value;
+                                }
+                                if(name == "title") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._title = value;
+                                }
+                                if(name == "isEnumeration") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._isEnumeration = value;
+                                }
+                                if(name == "defaultValue") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._defaultValue = value;
+                                }
+                                if(name == "isReadOnly") // Looking for property
+                                {
+                                    tree.EvalTextFieldData._isReadOnly = value;
+                                }
+                            }
+                        }
                         if(name == "SeparatorLineFieldData") // Looking for class
                         {
                             tree.__SeparatorLineFieldData = value;

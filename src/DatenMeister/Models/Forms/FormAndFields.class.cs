@@ -350,6 +350,40 @@ namespace DatenMeister.Models.Forms
         public _TextFieldData @TextFieldData = new _TextFieldData();
         public IElement @__TextFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData");
 
+        public class _EvalTextFieldData
+        {
+            public static string @evalCellProperties = "evalCellProperties";
+            public IElement? _evalCellProperties = null;
+
+            public static string @lineHeight = "lineHeight";
+            public IElement? _lineHeight = null;
+
+            public static string @width = "width";
+            public IElement? _width = null;
+
+            public static string @isAttached = "isAttached";
+            public IElement? _isAttached = null;
+
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @title = "title";
+            public IElement? _title = null;
+
+            public static string @isEnumeration = "isEnumeration";
+            public IElement? _isEnumeration = null;
+
+            public static string @defaultValue = "defaultValue";
+            public IElement? _defaultValue = null;
+
+            public static string @isReadOnly = "isReadOnly";
+            public IElement? _isReadOnly = null;
+
+        }
+
+        public _EvalTextFieldData @EvalTextFieldData = new _EvalTextFieldData();
+        public IElement @__EvalTextFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.EvalTextFieldData");
+
         public class _SeparatorLineFieldData
         {
             public static string @Height = "Height";

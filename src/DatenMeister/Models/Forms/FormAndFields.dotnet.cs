@@ -109,6 +109,13 @@ namespace DatenMeister.Models.Forms
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
+                var type = typeof(DatenMeister.Models.Forms.EvalTextFieldData);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                filledStructure.__EvalTextFieldData = typeAsElement;
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
                 var type = typeof(DatenMeister.Models.Forms.SeparatorLineFieldData);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);

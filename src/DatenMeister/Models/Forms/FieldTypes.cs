@@ -23,6 +23,7 @@ namespace DatenMeister.Models.Forms
                 typeof(ReferenceFieldData),
                 typeof(SubElementFieldData),
                 typeof(TextFieldData),
+                typeof(EvalTextFieldData),
                 typeof(SeparatorLineFieldData),
                 typeof(FileSelectionFieldData),
                 typeof(DefaultTypeForNewElement),

@@ -2,7 +2,7 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Reports;
-using DatenMeister.Modules.HtmlReporter.HtmlEngine;
+using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;

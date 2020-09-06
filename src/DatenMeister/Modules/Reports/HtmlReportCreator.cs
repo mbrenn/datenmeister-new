@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
-using DatenMeister.Modules.HtmlReporter.HtmlEngine;
+using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 

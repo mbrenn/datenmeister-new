@@ -1,4 +1,4 @@
-namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
+namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
 {
     /// <summary>
     /// Defines a single html cell which is used in  a table row

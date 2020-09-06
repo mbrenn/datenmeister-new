@@ -13,7 +13,7 @@ namespace DatenMeister.Models.Reports.Simple
         /// </summary>
         Inline,
         /// <summary>
-        /// Shows them in separate chapters per Pckage
+        /// Shows them in separate chapters per Package
         /// </summary>
         PerPackage
     }

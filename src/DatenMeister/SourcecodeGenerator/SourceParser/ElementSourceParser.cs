@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 
 namespace DatenMeister.SourcecodeGenerator.SourceParser
@@ -15,7 +16,14 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
         public bool IsPackage(IObject element)
         {
             var asElement = element as IElement;
-            return asElement?.getMetaClass()?.equals(_uml.Packages.__Package) == true;
+            var metaClass = asElement?.getMetaClass();
+            if (metaClass == null)
+            {
+                return false;
+            }
+
+            return metaClass.equals(_uml.Packages.__Package)
+                   || metaClass.@equals(_CommonTypes.TheOne.Default.__Package);
         }
 
         public bool IsClass(IObject element)

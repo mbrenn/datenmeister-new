@@ -23,6 +23,5 @@ namespace DatenMeister.Models.Runtime
         /// Gets the metaclass to be created
         /// </summary>
         public IElement? metaClass { get; set; }
-
     }
 }

@@ -69,4 +69,33 @@ namespace DatenMeister.Models
 
     }
 
+    public class _Actions
+    {
+        public class _Action
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+        }
+
+        public _Action @Action = new _Action();
+        public IElement @__Action = new MofObjectShadow("dm:///_internal/types/internal#Actions.Action");
+
+        public class _ActionSet
+        {
+            public static string @name = "name";
+            public IElement? _name = null;
+
+            public static string @action = "action";
+            public IElement? _action = null;
+
+        }
+
+        public _ActionSet @ActionSet = new _ActionSet();
+        public IElement @__ActionSet = new MofObjectShadow("dm:///_internal/types/internal#Actions.ActionSet");
+
+        public static _Actions TheOne = new _Actions();
+
+    }
+
 }

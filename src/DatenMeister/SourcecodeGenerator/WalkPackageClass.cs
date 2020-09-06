@@ -91,7 +91,7 @@ namespace DatenMeister.SourcecodeGenerator
         }
 
         /// <summary>
-        /// Writes the usage decleration for each element as given in the namespaces parameter
+        /// Writes the usage declaration for each element as given in the namespaces parameter
         /// </summary>
         /// <param name="namespaces">Namespaces to be used within the file</param>
         protected void WriteUsages(IEnumerable<string> namespaces)

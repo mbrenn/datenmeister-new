@@ -38,7 +38,7 @@ namespace DatenMeister.Integration
         }
 
         /// <summary>
-        /// Return the DatenMeisterScope asynchronisously as a task.
+        /// Return the DatenMeisterScope asynchronously as a task.
         /// </summary>
         /// <param name="settings">Settings to be used</param>
         /// <returns>The created task, retuning the DatenMeister. </returns>

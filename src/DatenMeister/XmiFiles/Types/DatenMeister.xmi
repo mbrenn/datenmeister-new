@@ -74,7 +74,7 @@
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
       <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
       <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
-      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="3e7091d0-19db-450c-8aec-11e0abd9a651" general-ref="dm:///_internal/types/internal#04021da2-4d13-4534-9986-aceeb8f031e2">
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="3e7091d0-19db-450c-8aec-11e0abd9a651" general-ref="dm:///_internal/types/internal#Actions.Action">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
     </packagedElement>

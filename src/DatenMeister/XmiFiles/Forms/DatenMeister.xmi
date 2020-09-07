@@ -117,10 +117,27 @@
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.StructuredClassifiers.ClassFormDetail" name="Class - Detail" hideMetaInformation="True">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="23771663-1f60-4ecc-9d7a-568d9d18e02e" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedAttribute" title="ownedAttribute" p1:id="f818db16-b3b8-42b2-971c-647b79c1f4b7">
-          <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="Property" metaClass-ref="dm:///_internal/model/uml#Property" />
+          <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="Property" metaClass-ref="dm:///_internal/model/uml#Property" p1:id="969c1e40-56d4-4d49-b711-be25f86ca480" />
         </field>
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedOperation" title="ownedOperation" p1:id="d8464398-415e-47e5-aaa6-594f00db24a8" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedReception" title="ownedReception" p1:id="945279f8-c772-4ed1-af43-530a17067a36" />
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" p1:id="4bd729a9-7fd7-47a5-a31b-a625c2c24378" name="generalization" title="generalization" includeSpecializationsForDefaultTypes="True">
+          <defaultTypesForNewElements href="dm:///_internal/model/uml#Generalization" />
+          <form p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="e0fcd778-7691-4365-8ad2-49176d530a83" title="Generalization - generalization" name="generalization" property="generalization">
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="0464030b-3ab0-4131-84d3-d56f8511ea83" name="general" title="general" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="88b17d9e-9da6-4f5e-8035-872f88e25d69" name="generalizationSet" title="generalizationSet" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="6bc5bf8b-563b-4647-8c73-4c08cc712fc9" name="isSubstitutable" title="isSubstitutable" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="dc59c610-4265-4769-bd1b-552056b781d8" name="specific" title="specific" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="9b13ae4b-3014-4df0-a664-6ca2ee51a7af" name="source" title="source" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="9e387b5c-f61e-4923-803d-45ea62acf4f2" name="target" title="target" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="a4ae0a44-005b-4581-be2e-678f32efc30a" name="relatedElement" title="relatedElement" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="ed0ea71b-606c-4f2e-9f2e-ea0a0b4f6b1d" name="ownedComment" title="ownedComment" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="89288582-935b-43e0-bbab-74fec1b544ab" name="ownedElement" title="ownedElement" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="6d575214-f147-43d6-8c3f-d5b5d13bb427" name="owner" title="owner" />
+            <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="3307f3f0-fb53-4dd8-a421-9ad45b787c5c" name="Metaclass" title="Metaclass" />
+            <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="47ed90f1-d59b-4bc2-9e0a-919ae28ffd6f" metaClass-ref="dm:///_internal/model/uml#Generalization" name="Generalization" />
+          </form>
+        </field>
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="85e8a142-8537-4f17-a053-778f84666b4d" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.StructuredClassifiers.ClassFormList" name="Class - List">

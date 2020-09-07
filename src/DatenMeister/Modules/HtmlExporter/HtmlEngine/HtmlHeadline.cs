@@ -1,6 +1,6 @@
 using System;
 
-namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
+namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
 {
     public class HtmlHeadline : HtmlElement
     {

@@ -29,7 +29,7 @@ namespace DatenMeister.Modules.Actions
         public static ActionLogicState GetDefaultLogicState()
         {
             var logicState = new ActionLogicState();
-            logicState.AddActionHandler(new LoggingActionHandler());
+            logicState.AddActionHandler(new LoggingWriterActionHandler());
 
             return logicState;
         }

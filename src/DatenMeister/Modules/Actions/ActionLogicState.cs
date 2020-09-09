@@ -25,5 +25,13 @@ namespace DatenMeister.Modules.Actions
                 ActionHandlers.Add(actionHandler);
             }
         }
+
+        public static ActionLogicState GetDefaultLogicState()
+        {
+            var logicState = new ActionLogicState();
+            logicState.AddActionHandler(new LoggingActionHandler());
+
+            return logicState;
+        }
     }
 }

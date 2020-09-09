@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models;
+using DatenMeister.Modules.Actions;
 using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.Actions
@@ -18,13 +20,16 @@ namespace DatenMeister.WPF.Modules.Actions
         
         public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
         {
-            if (IsRelevant(element))
+            if (IsRelevant(element) && element is IElement asElement)
             {
                 yield return new DefaultElementInteraction(
                     "Execute ActionSet",
-                    () =>
+                    async () =>
                     {
-                        MessageBox.Show(element.ToString());
+                        var actionLogic = new ActionLogic(
+                            GiveMe.Scope.WorkspaceLogic,
+                            GiveMe.Scope.ScopeStorage);
+                        await actionLogic.ExecuteActionSet(asElement);
                     });
             }
         }

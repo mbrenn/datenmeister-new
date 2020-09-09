@@ -8,7 +8,9 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.Forms.FormCreator;
-using DatenMeister.Modules.HtmlReporter.HtmlEngine;
+using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Modules.TextTemplates;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports.Evaluators
@@ -22,9 +24,20 @@ namespace DatenMeister.Modules.Reports.Evaluators
             return metaClass?.@equals(_Reports.TheOne.__ReportTable) == true;
         }
 
+        /// <summary>
+        /// Evaluates the table
+        /// </summary>
+        /// <param name="htmlReportCreator">The report creator</param>
+        /// <param name="reportNode">The element describing the report.
+        /// The form should be of type ListForm</param>
         public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNode)
         {
             var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportTable.viewNode);
+            if (viewNode == null)
+            {
+                throw new InvalidOperationException("The viewNode is null");
+            }
+            
             var form = reportNode.getOrDefault<IElement>(_Reports._ReportTable.form);
 
             var dataviewEvaluation = htmlReportCreator.GetDataViewEvaluation();
@@ -47,8 +60,6 @@ namespace DatenMeister.Modules.Reports.Evaluators
             {
                 table.CssClass = cssClass;
             }
-            
-            
             
             var cells = new List<HtmlTableCell>();
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
@@ -149,6 +160,26 @@ namespace DatenMeister.Modules.Reports.Evaluators
                 }
 
                 return new HtmlTableCell("0");
+            }
+
+            if (metaClass?.@equals(_FormAndFields.TheOne.__EvalTextFieldData) == true)
+            {
+                var cellInformation = InMemoryObject.CreateEmpty();
+
+                var evalProperties = field.getOrDefault<string>(_FormAndFields._EvalTextFieldData.evalCellProperties);
+                if (evalProperties != null)
+                {
+                    TextTemplateEngine.Parse(
+                        "{{" + evalProperties + "}}",
+                        new Dictionary<string, object>
+                        {
+                            ["i"] = listElement,
+                            ["c"] = cellInformation
+                        });
+                }
+
+                var cssClassName = cellInformation.getOrDefault<string>("cssClass") ?? string.Empty;
+                return new HtmlTableCell(listElement.getOrDefault<string>(property), cssClassName);
             }
 
             if (isPropertySet)

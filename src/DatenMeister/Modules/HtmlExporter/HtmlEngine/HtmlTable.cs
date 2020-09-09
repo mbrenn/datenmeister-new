@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
+namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
 {
     public class HtmlTable : HtmlElement
     {

@@ -18,7 +18,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Modules\HtmlReporter\Css\default_report.css" />
+    <EmbeddedResource Include="Modules\HtmlExporter\Css\default_report.css" />
     <None Remove="XmiFiles\Types\DatenMeister.xml" />
     <EmbeddedResource Include="XmiFiles\Types\DatenMeister.xmi" />
   </ItemGroup>

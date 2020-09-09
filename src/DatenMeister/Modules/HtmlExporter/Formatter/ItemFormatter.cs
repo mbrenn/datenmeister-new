@@ -6,12 +6,12 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
-using DatenMeister.Modules.HtmlReporter.HtmlEngine;
+using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
-namespace DatenMeister.Modules.HtmlReporter.Formatter
+namespace DatenMeister.Modules.HtmlExporter.Formatter
 {
     public class ItemFormatter
     {

@@ -94,6 +94,16 @@ namespace DatenMeister.Models
         public _ActionSet @ActionSet = new _ActionSet();
         public IElement @__ActionSet = new MofObjectShadow("dm:///_internal/types/internal#Actions.ActionSet");
 
+        public class _LoggingWriterAction
+        {
+            public static string @message = "message";
+            public IElement? _message = null;
+
+        }
+
+        public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
+        public IElement @__LoggingWriterAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.LoggingWriterAction");
+
         public static _Actions TheOne = new _Actions();
 
     }

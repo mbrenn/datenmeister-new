@@ -12,7 +12,7 @@ namespace DatenMeister.WPF.Modules.UserInteractions
         /// <summary>
         /// Gets or sets the class name of the elements that are in scópe of the BaseElementInteractionHandler
         /// </summary>
-        private string OnlyElementsOfType { get; set; } = string.Empty;
+        protected IElement? OnlyElementsOfType { get; set; }
 
         /// <inheritdoc />
         public abstract IEnumerable<IElementInteraction> GetInteractions(IObject element);
@@ -26,9 +26,15 @@ namespace DatenMeister.WPF.Modules.UserInteractions
         /// <returns>true, if relevant</returns>
         protected bool IsRelevant(IObject element)
         {
-            if (!string.IsNullOrEmpty(OnlyElementsOfType) && element is IElement elementAsElement)
+            if (OnlyElementsOfType != null && element is IElement elementAsElement)
             {
-                if (!ClassifierMethods.IsSpecializedClassifierOf(elementAsElement, OnlyElementsOfType))
+                var metaClassElement = elementAsElement.getMetaClass();
+                if (metaClassElement == null)
+                {
+                    return false;
+                }
+                
+                if (!ClassifierMethods.IsSpecializedClassifierOf(elementAsElement.getMetaClass(), OnlyElementsOfType))
                 {
                     return false;
                 }

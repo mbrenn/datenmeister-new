@@ -33,8 +33,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
             var type = viewNode.getOrDefault<IElement>(_DataViews._FilterTypeNode.type);
             if (type == null)
             {
-                Logger.Warn("Type is not given");
-                return new PureReflectiveSequence();
+                return new TemporaryReflectiveSequence(input.WhenMetaClassIsNotSet());
             }
 
             return new TemporaryReflectiveSequence(

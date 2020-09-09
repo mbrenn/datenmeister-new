@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace DatenMeister.Modules.HtmlReporter.HtmlEngine
+namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
 {
     /// <summary>
     /// Defines a small helper class to be sure that only well-defined types avoiding

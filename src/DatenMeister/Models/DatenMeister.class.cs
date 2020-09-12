@@ -107,6 +107,22 @@ namespace DatenMeister.Models
         public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
         public IElement @__LoggingWriterAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.LoggingWriterAction");
 
+        public class _ConsoleExecutionAction
+        {
+            public static string @command = "command";
+            public IElement? @_command = null;
+
+            public static string @arguments = "arguments";
+            public IElement? @_arguments = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _ConsoleExecutionAction @ConsoleExecutionAction = new _ConsoleExecutionAction();
+        public IElement @__ConsoleExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
+
         public static _Actions TheOne = new _Actions();
 
     }

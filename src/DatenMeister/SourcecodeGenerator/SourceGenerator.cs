@@ -63,7 +63,7 @@ namespace DatenMeister.SourcecodeGenerator
 
 
             /*
-             * No filler, no .Net
+             * No filler
              *
             ////////////////////////////////////////
             // Creates now the filler
@@ -78,6 +78,7 @@ namespace DatenMeister.SourcecodeGenerator
             var pathOfFillerTree = GetPath(options, ".filler.cs");
             fileContent = fillerGenerator.Result.ToString();
             File.WriteAllText(pathOfFillerTree, fileContent);
+            */
 
             ////////////////////////////////////////
             // Creates the Dot Net Integration Parser
@@ -89,7 +90,6 @@ namespace DatenMeister.SourcecodeGenerator
 
             var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");
             File.WriteAllText(pathOfDotNetIntegration, dotNetGenerator.Result.ToString());
-            */
         }
 
         /// <summary>

@@ -39,7 +39,7 @@ namespace DatenMeister.Models.EMOF
             public class _Tag
             {
                 public static string @tagOwner = "tagOwner";
-                public IElement? _tagOwner = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag-tagOwner");
+                public IElement @_tagOwner = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFExtension-Tag-tagOwner");
 
             }
 
@@ -55,16 +55,16 @@ namespace DatenMeister.Models.EMOF
             public class _Tag
             {
                 public static string @name = "name";
-                public IElement? _name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-name");
+                public IElement @_name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-name");
 
                 public static string @value = "value";
-                public IElement? _value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-value");
+                public IElement @_value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-value");
 
                 public static string @element = "element";
-                public IElement? _element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-element");
+                public IElement @_element = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Extension-Tag-element");
 
                 public static string @metaclass = "metaclass";
-                public IElement? _metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
+                public IElement @_metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
 
             }
 
@@ -120,10 +120,10 @@ namespace DatenMeister.Models.EMOF
             public class _Argument
             {
                 public static string @name = "name";
-                public IElement? _name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-name");
+                public IElement @_name = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-name");
 
                 public static string @value = "value";
-                public IElement? _value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-value");
+                public IElement @_value = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Argument-value");
 
             }
 
@@ -140,13 +140,13 @@ namespace DatenMeister.Models.EMOF
             public class _Link
             {
                 public static string @firstElement = "firstElement";
-                public IElement? _firstElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-firstElement");
+                public IElement @_firstElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-firstElement");
 
                 public static string @secondElement = "secondElement";
-                public IElement? _secondElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-secondElement");
+                public IElement @_secondElement = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-secondElement");
 
                 public static string @association = "association";
-                public IElement? _association = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-association");
+                public IElement @_association = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Link-association");
 
             }
 
@@ -156,13 +156,13 @@ namespace DatenMeister.Models.EMOF
             public class _Exception
             {
                 public static string @objectInError = "objectInError";
-                public IElement? _objectInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-objectInError");
+                public IElement @_objectInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-objectInError");
 
                 public static string @elementInError = "elementInError";
-                public IElement? _elementInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-elementInError");
+                public IElement @_elementInError = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-elementInError");
 
                 public static string @description = "description";
-                public IElement? _description = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-description");
+                public IElement @_description = new MofObjectShadow("dm:///_internal/model/mof#_MOF-CMOFReflection-Exception-description");
 
             }
 
@@ -178,10 +178,10 @@ namespace DatenMeister.Models.EMOF
             public class _Factory
             {
                 public static string @package = "package";
-                public IElement? _package = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory-package");
+                public IElement @_package = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Factory-package");
 
                 public static string @metaclass = "metaclass";
-                public IElement? _metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
+                public IElement @_metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
 
             }
 
@@ -205,7 +205,7 @@ namespace DatenMeister.Models.EMOF
             public class _Element
             {
                 public static string @metaclass = "metaclass";
-                public IElement? _metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
+                public IElement @_metaclass = new MofObjectShadow("dm:///_internal/model/mof#_MOF-Reflection-Element-metaclass");
 
             }
 

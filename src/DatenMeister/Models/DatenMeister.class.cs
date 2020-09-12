@@ -13,16 +13,16 @@ namespace DatenMeister.Models
             public class _Package
             {
                 public static string @name = "name";
-                public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#1f901e57-0e10-488e-9ab6-c58e21f38f2a");
+                public IElement? @_name = null;
 
                 public static string @packagedElement = "packagedElement";
-                public IElement? _packagedElement = new MofObjectShadow("dm:///_internal/types/internal#f59bd4b9-ea44-4dc4-bee9-ba5274ccd299");
+                public IElement? @_packagedElement = null;
 
                 public static string @preferredType = "preferredType";
-                public IElement? _preferredType = new MofObjectShadow("dm:///_internal/types/internal#92047310-19b3-4177-9fab-1ffcba5f9dd0");
+                public IElement? @_preferredType = null;
 
                 public static string @preferredPackage = "preferredPackage";
-                public IElement? _preferredPackage = new MofObjectShadow("dm:///_internal/types/internal#eb9214a4-ddc6-4d78-b866-78cf88ec1115");
+                public IElement? @_preferredPackage = null;
 
             }
 
@@ -38,13 +38,13 @@ namespace DatenMeister.Models
             public class _ImportSettings
             {
                 public static string @filePath = "filePath";
-                public IElement? _filePath = new MofObjectShadow("dm:///_internal/types/internal#07f34b89-8ccc-4aea-a003-2c3a75b4a3b7");
+                public IElement? @_filePath = null;
 
                 public static string @extentUri = "extentUri";
-                public IElement? _extentUri = new MofObjectShadow("dm:///_internal/types/internal#19a9d20f-710f-4865-99af-daf571f9cdcb");
+                public IElement? @_extentUri = null;
 
                 public static string @workspace = "workspace";
-                public IElement? _workspace = new MofObjectShadow("dm:///_internal/types/internal#419416e6-ac3f-493f-a7bc-4cc0fde3fed1");
+                public IElement? @_workspace = null;
 
             }
 
@@ -54,7 +54,7 @@ namespace DatenMeister.Models
             public class _ImportException
             {
                 public static string @message = "message";
-                public IElement? _message = new MofObjectShadow("dm:///_internal/types/internal#da1d7009-925f-438a-96ac-eecb9e8a4f4c");
+                public IElement? @_message = null;
 
             }
 
@@ -74,7 +74,7 @@ namespace DatenMeister.Models
         public class _Action
         {
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#df67302d-ae6c-4842-b1f2-ab2129b0fb7e");
+            public IElement? @_name = null;
 
         }
 
@@ -84,10 +84,10 @@ namespace DatenMeister.Models
         public class _ActionSet
         {
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#431b1911-9660-48ba-a014-e4c44a74b2a6");
+            public IElement? @_name = null;
 
             public static string @action = "action";
-            public IElement? _action = new MofObjectShadow("dm:///_internal/types/internal#d688f145-d02e-4052-be12-0d06cec9853b");
+            public IElement? @_action = null;
 
         }
 
@@ -97,10 +97,10 @@ namespace DatenMeister.Models
         public class _LoggingWriterAction
         {
             public static string @message = "message";
-            public IElement? _message = new MofObjectShadow("dm:///_internal/types/internal#5506180f-2158-423f-a290-ef929e4f956c");
+            public IElement? @_message = null;
 
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#df67302d-ae6c-4842-b1f2-ab2129b0fb7e");
+            public IElement? @_name = null;
 
         }
 

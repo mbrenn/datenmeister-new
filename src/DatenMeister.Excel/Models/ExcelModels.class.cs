@@ -11,7 +11,7 @@ namespace DatenMeister.Excel.Models
         public class _Workbook
         {
             public static string @tables = "tables";
-            public IElement? _tables = new MofObjectShadow("dm:///_internal/types/internal#c13f6b26-a548-456b-bacd-367488b983dd");
+            public IElement? @_tables = null;
 
         }
 
@@ -21,10 +21,10 @@ namespace DatenMeister.Excel.Models
         public class _Table
         {
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#dfa2cae6-8e9e-4795-b6c7-3b5969f8ef5f");
+            public IElement? @_name = null;
 
             public static string @items = "items";
-            public IElement? _items = new MofObjectShadow("dm:///_internal/types/internal#e005d736-96b8-44fc-9572-a8b0b24f401e");
+            public IElement? @_items = null;
 
         }
 

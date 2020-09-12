@@ -47,13 +47,21 @@ namespace DatenMeister.SourceGeneration.Console
             File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Models/EMOF/uml.cs", true);
             
             File.Copy($"./FormAndFields.class.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
+            File.Copy($"./FormAndFields.dotnet.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.dotnet.cs", true);
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
+            File.Copy($"./ExcelModels.dotnet.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
             File.Copy($"./ManagementProvider.class.cs",
                 $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
+            File.Copy($"./ManagementProvider.dotnet.cs",
+                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
             File.Copy($"./FastViewFilters.class.cs",
                 $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
+            File.Copy($"./FastViewFilters.dotnet.cs",
+                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
             File.Copy($"./DataViews.class.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.class.cs", true);
+            File.Copy($"./DataViews.dotnet.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
             File.Copy($"./Reports.class.cs", $"{R}/../DatenMeister/Models/Reports/Reports.class.cs", true);
+            File.Copy($"./Reports.dotnet.cs", $"{R}/../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 #endif
         }

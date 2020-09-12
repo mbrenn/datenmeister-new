@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -12,6 +13,11 @@ namespace DatenMeister.Provider.DotNet
 {
     public static class DotNetProviderExtensions
     {
+        /// <summary>
+        /// Defines the class logger being used for messages
+        /// </summary>
+        private static readonly ILogger ClassLogger = new ClassLogger(typeof(DotNetProviderExtensions));
+
         /// <summary>
         /// Creates a Mof Element reflecting the .Net Element out of the given extent.
         /// </summary>
@@ -51,6 +57,10 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var metaclass = provider.TypeLookup.ToElement(value.GetType());
+            if (metaclass == null)
+            {
+                ClassLogger.Warn("MetaClass for type: " + value.GetType().FullName + " not found");
+            }
 
             var result = new DotNetProviderObject(provider, value, metaclass ?? string.Empty);
             if (!string.IsNullOrEmpty(id))

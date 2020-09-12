@@ -29,13 +29,13 @@ namespace DatenMeister.Models.FastViewFilter
         public class _PropertyComparisonFilter
         {
             public static string @Property = "Property";
-            public IElement? _Property = new MofObjectShadow("dm:///_internal/types/internal#4b87e214-17f2-4156-ba96-9772db46ef8b");
+            public IElement? @_Property = null;
 
             public static string @ComparisonType = "ComparisonType";
-            public IElement? _ComparisonType = new MofObjectShadow("dm:///_internal/types/internal#0beb0441-f106-4bcb-bd66-44d8142a613b");
+            public IElement? @_ComparisonType = null;
 
             public static string @Value = "Value";
-            public IElement? _Value = new MofObjectShadow("dm:///_internal/types/internal#30fa5174-37b9-4d2f-b748-7b33cfa0e8d4");
+            public IElement? @_Value = null;
 
         }
 
@@ -45,10 +45,10 @@ namespace DatenMeister.Models.FastViewFilter
         public class _PropertyContainsFilter
         {
             public static string @Property = "Property";
-            public IElement? _Property = new MofObjectShadow("dm:///_internal/types/internal#26b61368-9a09-403f-a39f-31d39b242c95");
+            public IElement? @_Property = null;
 
             public static string @Value = "Value";
-            public IElement? _Value = new MofObjectShadow("dm:///_internal/types/internal#9cdbcb77-be1f-415e-ace8-2083a7faa877");
+            public IElement? @_Value = null;
 
         }
 

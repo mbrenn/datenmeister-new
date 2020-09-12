@@ -117,7 +117,19 @@ namespace DatenMeister.SourcecodeGenerator
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject?.ToString() ?? string.Empty;
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
-            Result.AppendLine($"{stack.Indentation}public IElement? _{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
+
+            var id = (asElement as IHasId)?.Id ?? string.Empty;
+            if (DotNetHelper.IsGuid(id))
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement? @_{name} = null;");
+            }
+            else
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement @_{name} = new MofObjectShadow(\"{asElement.GetUri() ?? string.Empty}\");");
+            }
+
             Result.AppendLine();
         }
 
@@ -155,8 +167,17 @@ namespace DatenMeister.SourcecodeGenerator
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
 
-            Result.AppendLine(
-                $"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement?.GetUri() ?? string.Empty}\");");
+            var id = (asElement as IHasId)?.Id ?? string.Empty;
+            if (DotNetHelper.IsGuid(id))
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement? @__{name} = null;");
+            }
+            else
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement?.GetUri() ?? string.Empty}\");");
+            }
         }
     }
 }

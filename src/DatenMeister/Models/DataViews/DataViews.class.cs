@@ -11,16 +11,16 @@ namespace DatenMeister.Models.DataViews
         public class _DataView
         {
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#e1ada3ca-28d4-4d13-9c15-6d4c52e39c35");
+            public IElement? @_name = null;
 
             public static string @workspace = "workspace";
-            public IElement? _workspace = new MofObjectShadow("dm:///_internal/types/internal#33979609-c766-43ec-96fe-96cf77117149");
+            public IElement? @_workspace = null;
 
             public static string @uri = "uri";
-            public IElement? _uri = new MofObjectShadow("dm:///_internal/types/internal#8df840c5-3b69-40f4-9480-8f020f916640");
+            public IElement? @_uri = null;
 
             public static string @viewNode = "viewNode";
-            public IElement? _viewNode = new MofObjectShadow("dm:///_internal/types/internal#853b581a-df3c-47b5-a029-f3a45ff48ab7");
+            public IElement? @_viewNode = null;
 
         }
 
@@ -30,7 +30,7 @@ namespace DatenMeister.Models.DataViews
         public class _ViewNode
         {
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#ddbc89e7-ff5e-4a1a-acaf-dbeeeb653c90");
+            public IElement? @_name = null;
 
         }
 
@@ -40,13 +40,13 @@ namespace DatenMeister.Models.DataViews
         public class _SourceExtentNode
         {
             public static string @extentUri = "extentUri";
-            public IElement? _extentUri = new MofObjectShadow("dm:///_internal/types/internal#3539b63c-87a4-462c-b461-2b7de460b89a");
+            public IElement? @_extentUri = null;
 
             public static string @workspace = "workspace";
-            public IElement? _workspace = new MofObjectShadow("dm:///_internal/types/internal#753672d7-f3e0-4cd0-8a55-3ee34892988b");
+            public IElement? @_workspace = null;
 
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#f7a547eb-6500-423e-8140-68e6d8d57ff2");
+            public IElement? @_name = null;
 
         }
 
@@ -56,10 +56,10 @@ namespace DatenMeister.Models.DataViews
         public class _FlattenNode
         {
             public static string @input = "input";
-            public IElement? _input = new MofObjectShadow("dm:///_internal/types/internal#dc23f353-364c-4ebd-addb-3485c76625cc");
+            public IElement? @_input = null;
 
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#7650fa20-5dc3-4dd9-ba7e-5413030858c1");
+            public IElement? @_name = null;
 
         }
 
@@ -69,19 +69,19 @@ namespace DatenMeister.Models.DataViews
         public class _FilterPropertyNode
         {
             public static string @input = "input";
-            public IElement? _input = new MofObjectShadow("dm:///_internal/types/internal#4f5f1ac1-67c3-4794-a04b-ed4890c3db76");
+            public IElement? @_input = null;
 
             public static string @property = "property";
-            public IElement? _property = new MofObjectShadow("dm:///_internal/types/internal#b850db4c-26a0-46c6-a85a-e0b287c17d85");
+            public IElement? @_property = null;
 
             public static string @value = "value";
-            public IElement? _value = new MofObjectShadow("dm:///_internal/types/internal#1278600c-6643-4379-9b5f-cf66b4023a18");
+            public IElement? @_value = null;
 
             public static string @comparisonMode = "comparisonMode";
-            public IElement? _comparisonMode = new MofObjectShadow("dm:///_internal/types/internal#1e4c6606-4906-48b9-a6d6-cff805365b65");
+            public IElement? @_comparisonMode = null;
 
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#508a8fc3-354c-46a7-a92b-e215d49b374f");
+            public IElement? @_name = null;
 
         }
 
@@ -91,16 +91,16 @@ namespace DatenMeister.Models.DataViews
         public class _FilterTypeNode
         {
             public static string @input = "input";
-            public IElement? _input = new MofObjectShadow("dm:///_internal/types/internal#86b6c67b-0f83-43d7-bb8d-8a19c14d0f44");
+            public IElement? @_input = null;
 
             public static string @type = "type";
-            public IElement? _type = new MofObjectShadow("dm:///_internal/types/internal#e2dd3806-f39b-4267-ada7-593330e46a7a");
+            public IElement? @_type = null;
 
             public static string @includeInherits = "includeInherits";
-            public IElement? _includeInherits = new MofObjectShadow("dm:///_internal/types/internal#ade8fbe1-d45c-4acf-be45-bd9596a2d005");
+            public IElement? @_includeInherits = null;
 
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#a55971f3-47bf-4e93-923c-252cabbdfe9f");
+            public IElement? @_name = null;
 
         }
 
@@ -134,13 +134,13 @@ namespace DatenMeister.Models.DataViews
         public class _SelectByFullNameNode
         {
             public static string @input = "input";
-            public IElement? _input = new MofObjectShadow("dm:///_internal/types/internal#f40704d5-e765-41dc-8e30-b37662eaa7bf");
+            public IElement? @_input = null;
 
             public static string @path = "path";
-            public IElement? _path = new MofObjectShadow("dm:///_internal/types/internal#31103c8a-a205-4202-ab54-86878aed155d");
+            public IElement? @_path = null;
 
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#ac95639b-1e20-4626-b026-4bca7d055e3b");
+            public IElement? @_name = null;
 
         }
 
@@ -150,7 +150,7 @@ namespace DatenMeister.Models.DataViews
         public class _DynamicSourceNode
         {
             public static string @name = "name";
-            public IElement? _name = new MofObjectShadow("dm:///_internal/types/internal#46b405d8-992b-4e2d-86f3-d8e2d0a9d340");
+            public IElement? @_name = null;
 
         }
 

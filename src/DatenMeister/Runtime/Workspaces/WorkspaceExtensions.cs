@@ -22,6 +22,19 @@ namespace DatenMeister.Runtime.Workspaces
 
     public static class WorkspaceExtensions
     {
+        /// <summary>
+        /// Resolves the element of the workspace, if an object shadow extent is given.
+        /// Otherwise, just returns the element itself
+        /// </summary>
+        public static IElement? ResolveElement(this Workspace workspace, IElement element)
+        {
+            if (element is MofObjectShadow shadowObject)
+            {
+                return workspace.Resolve(shadowObject.Uri, ResolveType.NoMetaWorkspaces) as IElement;
+            }
+
+            return element;
+        }
         public static IObject? FindElementByUri(this Workspace workspace, string uri)
         {
             return FindElementByUri(
@@ -323,10 +336,10 @@ namespace DatenMeister.Runtime.Workspaces
 
         public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>
             logic.GetWorkspace(WorkspaceNames.WorkspaceUml) ??
-            throw new InvalidOperationException("Uml Workspace not foudn");
+            throw new InvalidOperationException("Uml Workspace not found");
 
         public static Workspace GetMofWorkspace(this IWorkspaceLogic logic) =>
             logic.GetWorkspace(WorkspaceNames.WorkspaceMof) ??
-            throw new InvalidOperationException("Mof Workspace not foudn");
+            throw new InvalidOperationException("Mof Workspace not found");
     }
 }

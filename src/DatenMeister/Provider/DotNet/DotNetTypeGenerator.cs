@@ -52,17 +52,9 @@ namespace DatenMeister.Provider.DotNet
             _targetExtent = targetExtent ?? (factoryForTypes as MofFactory)?.Extent;
         }
 
-        [Obsolete]
-        public DotNetTypeGenerator(IFactory factoryForTypes, _UML uml, IExtent? targetExtent = null)
-            : this(factoryForTypes, targetExtent)
-        {
-
-        }
-
         /// <summary>
         /// Initializes a new instance of the DotNetTypeGenerator class
         /// </summary>
-        /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
         public DotNetTypeGenerator(IExtent targetExtent)
         {

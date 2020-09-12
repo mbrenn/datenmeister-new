@@ -170,25 +170,6 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
-        [Obsolete]
-        public TFilledType? Get<TFilledType>()
-            where TFilledType : class, new()
-        {
-            lock (_syncObject)
-            {
-                // Looks into the cache for the filledtypes
-                foreach (var value in FilledTypeCache)
-                {
-                    if (value is TFilledType filledType)
-                    {
-                        return filledType;
-                    }
-                }
-
-                return null;
-            }
-        }
-
         public override string ToString() =>
             !string.IsNullOrEmpty(annotation)
                 ? $"({id}) {annotation}"

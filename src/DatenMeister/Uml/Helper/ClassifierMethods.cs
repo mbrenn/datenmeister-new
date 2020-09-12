@@ -120,6 +120,15 @@ namespace DatenMeister.Uml.Helper
                     var general = generalization.getOrDefault<IElement>(propertyGeneral);
                     if (general == null)
                     {
+                        var generalAsString = generalization.getOrDefault<string>(propertyGeneral);
+                        if (!string.IsNullOrEmpty(generalAsString))
+                        {
+                            general = classifier.GetUriExtentOf()?.element("#" + generalAsString);
+                        }
+                    }
+
+                    if (general == null)
+                    {
                         throw new InvalidOperationException(
                             "Somehow I got a null.... Generalizations needs to be verified");
                     }

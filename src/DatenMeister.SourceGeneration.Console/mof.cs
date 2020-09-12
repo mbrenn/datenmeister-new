@@ -63,6 +63,9 @@ namespace DatenMeister.Models.EMOF
                 public static string @element = "element";
                 public IElement? _element = null;
 
+                public static string @metaclass = "metaclass";
+                public IElement? _metaclass = null;
+
             }
 
             public _Tag @Tag = new _Tag();
@@ -176,6 +179,9 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @package = "package";
                 public IElement? _package = null;
+
+                public static string @metaclass = "metaclass";
+                public IElement? _metaclass = null;
 
             }
 

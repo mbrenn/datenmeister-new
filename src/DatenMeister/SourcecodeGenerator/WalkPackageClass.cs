@@ -8,6 +8,7 @@ using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.XMI.UmlBootstrap;
 using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.SourcecodeGenerator
 {
@@ -207,8 +208,17 @@ namespace DatenMeister.SourcecodeGenerator
             var name = GetNameOfElement(classInstance);
             innerStack.Fullname += $".{name}";
 
+            /*
             // Needs to be updated
             foreach (var propertyObject in Helper.GetSubProperties(classInstance))
+            {
+                if (_parser.IsProperty(propertyObject))
+                {
+                    WalkProperty(propertyObject, innerStack);
+                }
+            }*/
+
+            foreach (var propertyObject in ClassifierMethods.GetPropertiesOfClassifier(classInstance))
             {
                 if (_parser.IsProperty(propertyObject))
                 {

@@ -133,6 +133,10 @@ namespace DatenMeister.Models.EMOF
                                         {
                                             tree.Extension.Tag._element = value;
                                         }
+                                        if(name == "metaclass") // Looking for property
+                                        {
+                                            tree.Extension.Tag._metaclass = value;
+                                        }
                                     }
                                 }
                             }
@@ -307,6 +311,10 @@ namespace DatenMeister.Models.EMOF
                                         if(name == "package") // Looking for property
                                         {
                                             tree.Reflection.Factory._package = value;
+                                        }
+                                        if(name == "metaclass") // Looking for property
+                                        {
+                                            tree.Reflection.Factory._metaclass = value;
                                         }
                                     }
                                 }

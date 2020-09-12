@@ -36,6 +36,183 @@ namespace DatenMeister.Models.EMOF
                 public static string @variable = "variable";
                 public IElement? _variable = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @isReentrant = "isReentrant";
+                public IElement? _isReentrant = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @postcondition = "postcondition";
+                public IElement? _postcondition = null;
+
+                public static string @precondition = "precondition";
+                public IElement? _precondition = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @redefinedBehavior = "redefinedBehavior";
+                public IElement? _redefinedBehavior = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
             }
 
             public _Activity @Activity = new _Activity();
@@ -73,6 +250,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @weight = "weight";
                 public IElement? _weight = null;
 
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ActivityEdge @ActivityEdge = new _ActivityEdge();
@@ -80,6 +293,66 @@ namespace DatenMeister.Models.EMOF
 
             public class _ActivityFinalNode
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ActivityFinalNode @ActivityFinalNode = new _ActivityFinalNode();
@@ -101,6 +374,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @superGroup = "superGroup";
                 public IElement? _superGroup = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -133,6 +433,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @redefinedNode = "redefinedNode";
                 public IElement? _redefinedNode = null;
 
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ActivityNode @ActivityNode = new _ActivityNode();
@@ -142,6 +478,84 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @parameter = "parameter";
                 public IElement? _parameter = null;
+
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -171,6 +585,48 @@ namespace DatenMeister.Models.EMOF
                 public static string @superPartition = "superPartition";
                 public IElement? _superPartition = null;
 
+                public static string @containedEdge = "containedEdge";
+                public IElement? _containedEdge = null;
+
+                public static string @containedNode = "containedNode";
+                public IElement? _containedNode = null;
+
+                public static string @inActivity = "inActivity";
+                public IElement? _inActivity = null;
+
+                public static string @subgroup = "subgroup";
+                public IElement? _subgroup = null;
+
+                public static string @superGroup = "superGroup";
+                public IElement? _superGroup = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ActivityPartition @ActivityPartition = new _ActivityPartition();
@@ -178,6 +634,84 @@ namespace DatenMeister.Models.EMOF
 
             public class _CentralBufferNode
             {
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _CentralBufferNode @CentralBufferNode = new _CentralBufferNode();
@@ -185,6 +719,72 @@ namespace DatenMeister.Models.EMOF
 
             public class _ControlFlow
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @guard = "guard";
+                public IElement? _guard = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @interrupts = "interrupts";
+                public IElement? _interrupts = null;
+
+                public static string @redefinedEdge = "redefinedEdge";
+                public IElement? _redefinedEdge = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @weight = "weight";
+                public IElement? _weight = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ControlFlow @ControlFlow = new _ControlFlow();
@@ -192,6 +792,66 @@ namespace DatenMeister.Models.EMOF
 
             public class _ControlNode
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ControlNode @ControlNode = new _ControlNode();
@@ -199,6 +859,84 @@ namespace DatenMeister.Models.EMOF
 
             public class _DataStoreNode
             {
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _DataStoreNode @DataStoreNode = new _DataStoreNode();
@@ -211,6 +949,66 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @decisionInputFlow = "decisionInputFlow";
                 public IElement? _decisionInputFlow = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -231,6 +1029,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @protectedNode = "protectedNode";
                 public IElement? _protectedNode = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ExceptionHandler @ExceptionHandler = new _ExceptionHandler();
@@ -241,6 +1048,66 @@ namespace DatenMeister.Models.EMOF
                 public static string @handler = "handler";
                 public IElement? _handler = null;
 
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ExecutableNode @ExecutableNode = new _ExecutableNode();
@@ -248,6 +1115,66 @@ namespace DatenMeister.Models.EMOF
 
             public class _FinalNode
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _FinalNode @FinalNode = new _FinalNode();
@@ -255,6 +1182,66 @@ namespace DatenMeister.Models.EMOF
 
             public class _FlowFinalNode
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _FlowFinalNode @FlowFinalNode = new _FlowFinalNode();
@@ -262,6 +1249,66 @@ namespace DatenMeister.Models.EMOF
 
             public class _ForkNode
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ForkNode @ForkNode = new _ForkNode();
@@ -269,6 +1316,66 @@ namespace DatenMeister.Models.EMOF
 
             public class _InitialNode
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _InitialNode @InitialNode = new _InitialNode();
@@ -281,6 +1388,48 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @node = "node";
                 public IElement? _node = null;
+
+                public static string @containedEdge = "containedEdge";
+                public IElement? _containedEdge = null;
+
+                public static string @containedNode = "containedNode";
+                public IElement? _containedNode = null;
+
+                public static string @inActivity = "inActivity";
+                public IElement? _inActivity = null;
+
+                public static string @subgroup = "subgroup";
+                public IElement? _subgroup = null;
+
+                public static string @superGroup = "superGroup";
+                public IElement? _superGroup = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -295,6 +1444,66 @@ namespace DatenMeister.Models.EMOF
                 public static string @joinSpec = "joinSpec";
                 public IElement? _joinSpec = null;
 
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _JoinNode @JoinNode = new _JoinNode();
@@ -302,6 +1511,66 @@ namespace DatenMeister.Models.EMOF
 
             public class _MergeNode
             {
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _MergeNode @MergeNode = new _MergeNode();
@@ -320,6 +1589,72 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @transformation = "transformation";
                 public IElement? _transformation = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @guard = "guard";
+                public IElement? _guard = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @interrupts = "interrupts";
+                public IElement? _interrupts = null;
+
+                public static string @redefinedEdge = "redefinedEdge";
+                public IElement? _redefinedEdge = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @weight = "weight";
+                public IElement? _weight = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -343,6 +1678,69 @@ namespace DatenMeister.Models.EMOF
                 public static string @upperBound = "upperBound";
                 public IElement? _upperBound = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _ObjectNode @ObjectNode = new _ObjectNode();
@@ -355,6 +1753,63 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @scope = "scope";
                 public IElement? _scope = null;
+
+                public static string @end = "end";
+                public IElement? _end = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
 
             }
 
@@ -391,6 +1846,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @observation = "observation";
                 public IElement? _observation = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _Duration @Duration = new _Duration();
@@ -403,6 +1894,45 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @specification = "specification";
                 public IElement? _specification = null;
+
+                public static string @constrainedElement = "constrainedElement";
+                public IElement? _constrainedElement = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -417,6 +1947,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @min = "min";
                 public IElement? _min = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _DurationInterval @DurationInterval = new _DurationInterval();
@@ -429,6 +1995,39 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @firstEvent = "firstEvent";
                 public IElement? _firstEvent = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -443,6 +2042,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @symbol = "symbol";
                 public IElement? _symbol = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _Expression @Expression = new _Expression();
@@ -456,6 +2091,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @min = "min";
                 public IElement? _min = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _Interval @Interval = new _Interval();
@@ -465,6 +2136,45 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @specification = "specification";
                 public IElement? _specification = null;
+
+                public static string @constrainedElement = "constrainedElement";
+                public IElement? _constrainedElement = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -476,6 +2186,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _LiteralBoolean @LiteralBoolean = new _LiteralBoolean();
@@ -486,6 +2232,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _LiteralInteger @LiteralInteger = new _LiteralInteger();
@@ -493,6 +2275,42 @@ namespace DatenMeister.Models.EMOF
 
             public class _LiteralNull
             {
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _LiteralNull @LiteralNull = new _LiteralNull();
@@ -503,6 +2321,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _LiteralReal @LiteralReal = new _LiteralReal();
@@ -510,6 +2364,42 @@ namespace DatenMeister.Models.EMOF
 
             public class _LiteralSpecification
             {
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _LiteralSpecification @LiteralSpecification = new _LiteralSpecification();
@@ -519,6 +2409,42 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @value = "value";
                 public IElement? _value = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
 
             }
 
@@ -530,6 +2456,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _LiteralUnlimitedNatural @LiteralUnlimitedNatural = new _LiteralUnlimitedNatural();
@@ -537,6 +2499,39 @@ namespace DatenMeister.Models.EMOF
 
             public class _Observation
             {
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Observation @Observation = new _Observation();
@@ -556,6 +2551,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _OpaqueExpression @OpaqueExpression = new _OpaqueExpression();
@@ -568,6 +2599,54 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @subExpression = "subExpression";
                 public IElement? _subExpression = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @operand = "operand";
+                public IElement? _operand = null;
+
+                public static string @symbol = "symbol";
+                public IElement? _symbol = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
 
             }
 
@@ -582,6 +2661,45 @@ namespace DatenMeister.Models.EMOF
                 public static string @specification = "specification";
                 public IElement? _specification = null;
 
+                public static string @constrainedElement = "constrainedElement";
+                public IElement? _constrainedElement = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _TimeConstraint @TimeConstraint = new _TimeConstraint();
@@ -594,6 +2712,42 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @observation = "observation";
                 public IElement? _observation = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
 
             }
 
@@ -608,6 +2762,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @min = "min";
                 public IElement? _min = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _TimeInterval @TimeInterval = new _TimeInterval();
@@ -621,6 +2811,39 @@ namespace DatenMeister.Models.EMOF
                 public static string @firstEvent = "firstEvent";
                 public IElement? _firstEvent = null;
 
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _TimeObservation @TimeObservation = new _TimeObservation();
@@ -628,6 +2851,42 @@ namespace DatenMeister.Models.EMOF
 
             public class _ValueSpecification
             {
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _ValueSpecification @ValueSpecification = new _ValueSpecification();
@@ -641,6 +2900,126 @@ namespace DatenMeister.Models.EMOF
         {
             public class _Actor
             {
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Actor @Actor = new _Actor();
@@ -660,6 +3039,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @extensionLocation = "extensionLocation";
                 public IElement? _extensionLocation = null;
 
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
             }
 
             public _Extend @Extend = new _Extend();
@@ -669,6 +3084,42 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @useCase = "useCase";
                 public IElement? _useCase = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -682,6 +3133,42 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @includingCase = "includingCase";
                 public IElement? _includingCase = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
 
             }
 
@@ -701,6 +3188,126 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @subject = "subject";
                 public IElement? _subject = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -730,6 +3337,120 @@ namespace DatenMeister.Models.EMOF
                 public static string @ownedEnd = "ownedEnd";
                 public IElement? _ownedEnd = null;
 
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Association @Association = new _Association();
@@ -737,6 +3458,177 @@ namespace DatenMeister.Models.EMOF
 
             public class _AssociationClass
             {
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
+                public static string @endType = "endType";
+                public IElement? _endType = null;
+
+                public static string @isDerived = "isDerived";
+                public IElement? _isDerived = null;
+
+                public static string @memberEnd = "memberEnd";
+                public IElement? _memberEnd = null;
+
+                public static string @navigableOwnedEnd = "navigableOwnedEnd";
+                public IElement? _navigableOwnedEnd = null;
+
+                public static string @ownedEnd = "ownedEnd";
+                public IElement? _ownedEnd = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
             }
 
             public _AssociationClass @AssociationClass = new _AssociationClass();
@@ -768,6 +3660,135 @@ namespace DatenMeister.Models.EMOF
                 public static string @superClass = "superClass";
                 public IElement? _superClass = null;
 
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
             }
 
             public _Class @Class = new _Class();
@@ -777,6 +3798,138 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @collaborationRole = "collaborationRole";
                 public IElement? _collaborationRole = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
 
             }
 
@@ -790,6 +3943,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @type = "type";
                 public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -813,6 +3993,159 @@ namespace DatenMeister.Models.EMOF
                 public static string @required = "required";
                 public IElement? _required = null;
 
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
             }
 
             public _Component @Component = new _Component();
@@ -825,6 +4158,57 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @realizingClassifier = "realizingClassifier";
                 public IElement? _realizingClassifier = null;
+
+                public static string @mapping = "mapping";
+                public IElement? _mapping = null;
+
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -839,6 +4223,39 @@ namespace DatenMeister.Models.EMOF
                 public static string @templateParameter = "templateParameter";
                 public IElement? _templateParameter = null;
 
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
             }
 
             public _ConnectableElement @ConnectableElement = new _ConnectableElement();
@@ -848,6 +4265,27 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @parameteredElement = "parameteredElement";
                 public IElement? _parameteredElement = null;
+
+                public static string @default = "default";
+                public IElement? _default = null;
+
+                public static string @ownedDefault = "ownedDefault";
+                public IElement? _ownedDefault = null;
+
+                public static string @ownedParameteredElement = "ownedParameteredElement";
+                public IElement? _ownedParameteredElement = null;
+
+                public static string @signature = "signature";
+                public IElement? _signature = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -871,6 +4309,48 @@ namespace DatenMeister.Models.EMOF
                 public static string @type = "type";
                 public IElement? _type = null;
 
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Connector @Connector = new _Connector();
@@ -887,6 +4367,33 @@ namespace DatenMeister.Models.EMOF
                 public static string @role = "role";
                 public IElement? _role = null;
 
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ConnectorEnd @ConnectorEnd = new _ConnectorEnd();
@@ -896,6 +4403,129 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @ownedPort = "ownedPort";
                 public IElement? _ownedPort = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -925,6 +4555,135 @@ namespace DatenMeister.Models.EMOF
                 public static string @required = "required";
                 public IElement? _required = null;
 
+                public static string @aggregation = "aggregation";
+                public IElement? _aggregation = null;
+
+                public static string @association = "association";
+                public IElement? _association = null;
+
+                public static string @associationEnd = "associationEnd";
+                public IElement? _associationEnd = null;
+
+                public static string @class = "class";
+                public IElement? _class = null;
+
+                public static string @datatype = "datatype";
+                public IElement? _datatype = null;
+
+                public static string @defaultValue = "defaultValue";
+                public IElement? _defaultValue = null;
+
+                public static string @interface = "interface";
+                public IElement? _interface = null;
+
+                public static string @isComposite = "isComposite";
+                public IElement? _isComposite = null;
+
+                public static string @isDerived = "isDerived";
+                public IElement? _isDerived = null;
+
+                public static string @isDerivedUnion = "isDerivedUnion";
+                public IElement? _isDerivedUnion = null;
+
+                public static string @isID = "isID";
+                public IElement? _isID = null;
+
+                public static string @opposite = "opposite";
+                public IElement? _opposite = null;
+
+                public static string @owningAssociation = "owningAssociation";
+                public IElement? _owningAssociation = null;
+
+                public static string @qualifier = "qualifier";
+                public IElement? _qualifier = null;
+
+                public static string @redefinedProperty = "redefinedProperty";
+                public IElement? _redefinedProperty = null;
+
+                public static string @subsettedProperty = "subsettedProperty";
+                public IElement? _subsettedProperty = null;
+
+                public static string @end = "end";
+                public IElement? _end = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
+
+                public static string @isReadOnly = "isReadOnly";
+                public IElement? _isReadOnly = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Port @Port = new _Port();
@@ -943,6 +4702,117 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @role = "role";
                 public IElement? _role = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -978,6 +4848,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @state = "state";
                 public IElement? _state = null;
 
+                public static string @container = "container";
+                public IElement? _container = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ConnectionPointReference @ConnectionPointReference = new _ConnectionPointReference();
@@ -985,6 +4891,111 @@ namespace DatenMeister.Models.EMOF
 
             public class _FinalState
             {
+                public static string @connection = "connection";
+                public IElement? _connection = null;
+
+                public static string @connectionPoint = "connectionPoint";
+                public IElement? _connectionPoint = null;
+
+                public static string @deferrableTrigger = "deferrableTrigger";
+                public IElement? _deferrableTrigger = null;
+
+                public static string @doActivity = "doActivity";
+                public IElement? _doActivity = null;
+
+                public static string @entry = "entry";
+                public IElement? _entry = null;
+
+                public static string @exit = "exit";
+                public IElement? _exit = null;
+
+                public static string @isComposite = "isComposite";
+                public IElement? _isComposite = null;
+
+                public static string @isOrthogonal = "isOrthogonal";
+                public IElement? _isOrthogonal = null;
+
+                public static string @isSimple = "isSimple";
+                public IElement? _isSimple = null;
+
+                public static string @isSubmachineState = "isSubmachineState";
+                public IElement? _isSubmachineState = null;
+
+                public static string @redefinedState = "redefinedState";
+                public IElement? _redefinedState = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @region = "region";
+                public IElement? _region = null;
+
+                public static string @stateInvariant = "stateInvariant";
+                public IElement? _stateInvariant = null;
+
+                public static string @submachine = "submachine";
+                public IElement? _submachine = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @container = "container";
+                public IElement? _container = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
             }
 
             public _FinalState @FinalState = new _FinalState();
@@ -998,6 +5009,24 @@ namespace DatenMeister.Models.EMOF
                 public static string @specificMachine = "specificMachine";
                 public IElement? _specificMachine = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ProtocolConformance @ProtocolConformance = new _ProtocolConformance();
@@ -1007,6 +5036,195 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @conformance = "conformance";
                 public IElement? _conformance = null;
+
+                public static string @connectionPoint = "connectionPoint";
+                public IElement? _connectionPoint = null;
+
+                public static string @extendedStateMachine = "extendedStateMachine";
+                public IElement? _extendedStateMachine = null;
+
+                public static string @region = "region";
+                public IElement? _region = null;
+
+                public static string @submachineState = "submachineState";
+                public IElement? _submachineState = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @isReentrant = "isReentrant";
+                public IElement? _isReentrant = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @postcondition = "postcondition";
+                public IElement? _postcondition = null;
+
+                public static string @precondition = "precondition";
+                public IElement? _precondition = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @redefinedBehavior = "redefinedBehavior";
+                public IElement? _redefinedBehavior = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
 
             }
 
@@ -1024,6 +5242,84 @@ namespace DatenMeister.Models.EMOF
                 public static string @referred = "referred";
                 public IElement? _referred = null;
 
+                public static string @container = "container";
+                public IElement? _container = null;
+
+                public static string @effect = "effect";
+                public IElement? _effect = null;
+
+                public static string @guard = "guard";
+                public IElement? _guard = null;
+
+                public static string @kind = "kind";
+                public IElement? _kind = null;
+
+                public static string @redefinedTransition = "redefinedTransition";
+                public IElement? _redefinedTransition = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @trigger = "trigger";
+                public IElement? _trigger = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
             }
 
             public _ProtocolTransition @ProtocolTransition = new _ProtocolTransition();
@@ -1039,6 +5335,42 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @stateMachine = "stateMachine";
                 public IElement? _stateMachine = null;
+
+                public static string @container = "container";
+                public IElement? _container = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1064,6 +5396,57 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @transition = "transition";
                 public IElement? _transition = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
 
             }
 
@@ -1117,6 +5500,66 @@ namespace DatenMeister.Models.EMOF
                 public static string @submachine = "submachine";
                 public IElement? _submachine = null;
 
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @container = "container";
+                public IElement? _container = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
             }
 
             public _State @State = new _State();
@@ -1135,6 +5578,183 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @submachineState = "submachineState";
                 public IElement? _submachineState = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @isReentrant = "isReentrant";
+                public IElement? _isReentrant = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @postcondition = "postcondition";
+                public IElement? _postcondition = null;
+
+                public static string @precondition = "precondition";
+                public IElement? _precondition = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @redefinedBehavior = "redefinedBehavior";
+                public IElement? _redefinedBehavior = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
 
             }
 
@@ -1170,6 +5790,57 @@ namespace DatenMeister.Models.EMOF
                 public static string @trigger = "trigger";
                 public IElement? _trigger = null;
 
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
             }
 
             public _Transition @Transition = new _Transition();
@@ -1185,6 +5856,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @outgoing = "outgoing";
                 public IElement? _outgoing = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1250,6 +5948,117 @@ namespace DatenMeister.Models.EMOF
                 public static string @ownedBehavior = "ownedBehavior";
                 public IElement? _ownedBehavior = null;
 
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _BehavioredClassifier @BehavioredClassifier = new _BehavioredClassifier();
@@ -1263,6 +6072,117 @@ namespace DatenMeister.Models.EMOF
                 public static string @ownedOperation = "ownedOperation";
                 public IElement? _ownedOperation = null;
 
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _DataType @DataType = new _DataType();
@@ -1272,6 +6192,123 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @ownedLiteral = "ownedLiteral";
                 public IElement? _ownedLiteral = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -1285,6 +6322,51 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @enumeration = "enumeration";
                 public IElement? _enumeration = null;
+
+                public static string @slot = "slot";
+                public IElement? _slot = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
 
             }
 
@@ -1311,6 +6393,117 @@ namespace DatenMeister.Models.EMOF
                 public static string @redefinedInterface = "redefinedInterface";
                 public IElement? _redefinedInterface = null;
 
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Interface @Interface = new _Interface();
@@ -1324,6 +6517,57 @@ namespace DatenMeister.Models.EMOF
                 public static string @implementingClassifier = "implementingClassifier";
                 public IElement? _implementingClassifier = null;
 
+                public static string @mapping = "mapping";
+                public IElement? _mapping = null;
+
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _InterfaceRealization @InterfaceRealization = new _InterfaceRealization();
@@ -1331,6 +6575,123 @@ namespace DatenMeister.Models.EMOF
 
             public class _PrimitiveType
             {
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _PrimitiveType @PrimitiveType = new _PrimitiveType();
@@ -1341,6 +6702,84 @@ namespace DatenMeister.Models.EMOF
                 public static string @signal = "signal";
                 public IElement? _signal = null;
 
+                public static string @concurrency = "concurrency";
+                public IElement? _concurrency = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @method = "method";
+                public IElement? _method = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @raisedException = "raisedException";
+                public IElement? _raisedException = null;
+
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
             }
 
             public _Reception @Reception = new _Reception();
@@ -1350,6 +6789,117 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @ownedAttribute = "ownedAttribute";
                 public IElement? _ownedAttribute = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -1373,6 +6923,132 @@ namespace DatenMeister.Models.EMOF
                 public static string @ownedEnd = "ownedEnd";
                 public IElement? _ownedEnd = null;
 
+                public static string @endType = "endType";
+                public IElement? _endType = null;
+
+                public static string @isDerived = "isDerived";
+                public IElement? _isDerived = null;
+
+                public static string @memberEnd = "memberEnd";
+                public IElement? _memberEnd = null;
+
+                public static string @navigableOwnedEnd = "navigableOwnedEnd";
+                public IElement? _navigableOwnedEnd = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Extension @Extension = new _Extension();
@@ -1385,6 +7061,129 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @type = "type";
                 public IElement? _type = null;
+
+                public static string @aggregation = "aggregation";
+                public IElement? _aggregation = null;
+
+                public static string @association = "association";
+                public IElement? _association = null;
+
+                public static string @associationEnd = "associationEnd";
+                public IElement? _associationEnd = null;
+
+                public static string @class = "class";
+                public IElement? _class = null;
+
+                public static string @datatype = "datatype";
+                public IElement? _datatype = null;
+
+                public static string @defaultValue = "defaultValue";
+                public IElement? _defaultValue = null;
+
+                public static string @interface = "interface";
+                public IElement? _interface = null;
+
+                public static string @isComposite = "isComposite";
+                public IElement? _isComposite = null;
+
+                public static string @isDerived = "isDerived";
+                public IElement? _isDerived = null;
+
+                public static string @isDerivedUnion = "isDerivedUnion";
+                public IElement? _isDerivedUnion = null;
+
+                public static string @isID = "isID";
+                public IElement? _isID = null;
+
+                public static string @opposite = "opposite";
+                public IElement? _opposite = null;
+
+                public static string @owningAssociation = "owningAssociation";
+                public IElement? _owningAssociation = null;
+
+                public static string @qualifier = "qualifier";
+                public IElement? _qualifier = null;
+
+                public static string @redefinedProperty = "redefinedProperty";
+                public IElement? _redefinedProperty = null;
+
+                public static string @subsettedProperty = "subsettedProperty";
+                public IElement? _subsettedProperty = null;
+
+                public static string @end = "end";
+                public IElement? _end = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
+
+                public static string @isReadOnly = "isReadOnly";
+                public IElement? _isReadOnly = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -1402,6 +7201,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @location = "location";
                 public IElement? _location = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Image @Image = new _Image();
@@ -1411,6 +7219,87 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @viewpoint = "viewpoint";
                 public IElement? _viewpoint = null;
+
+                public static string @URI = "URI";
+                public IElement? _URI = null;
+
+                public static string @nestedPackage = "nestedPackage";
+                public IElement? _nestedPackage = null;
+
+                public static string @nestingPackage = "nestingPackage";
+                public IElement? _nestingPackage = null;
+
+                public static string @ownedStereotype = "ownedStereotype";
+                public IElement? _ownedStereotype = null;
+
+                public static string @ownedType = "ownedType";
+                public IElement? _ownedType = null;
+
+                public static string @packageMerge = "packageMerge";
+                public IElement? _packageMerge = null;
+
+                public static string @packagedElement = "packagedElement";
+                public IElement? _packagedElement = null;
+
+                public static string @profileApplication = "profileApplication";
+                public IElement? _profileApplication = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
 
             }
 
@@ -1443,6 +7332,63 @@ namespace DatenMeister.Models.EMOF
                 public static string @profileApplication = "profileApplication";
                 public IElement? _profileApplication = null;
 
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
             }
 
             public _Package @Package = new _Package();
@@ -1456,6 +7402,24 @@ namespace DatenMeister.Models.EMOF
                 public static string @receivingPackage = "receivingPackage";
                 public IElement? _receivingPackage = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _PackageMerge @PackageMerge = new _PackageMerge();
@@ -1468,6 +7432,87 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @metamodelReference = "metamodelReference";
                 public IElement? _metamodelReference = null;
+
+                public static string @URI = "URI";
+                public IElement? _URI = null;
+
+                public static string @nestedPackage = "nestedPackage";
+                public IElement? _nestedPackage = null;
+
+                public static string @nestingPackage = "nestingPackage";
+                public IElement? _nestingPackage = null;
+
+                public static string @ownedStereotype = "ownedStereotype";
+                public IElement? _ownedStereotype = null;
+
+                public static string @ownedType = "ownedType";
+                public IElement? _ownedType = null;
+
+                public static string @packageMerge = "packageMerge";
+                public IElement? _packageMerge = null;
+
+                public static string @packagedElement = "packagedElement";
+                public IElement? _packagedElement = null;
+
+                public static string @profileApplication = "profileApplication";
+                public IElement? _profileApplication = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
 
             }
 
@@ -1485,6 +7530,24 @@ namespace DatenMeister.Models.EMOF
                 public static string @isStrict = "isStrict";
                 public IElement? _isStrict = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ProfileApplication @ProfileApplication = new _ProfileApplication();
@@ -1497,6 +7560,159 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @profile = "profile";
                 public IElement? _profile = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
 
             }
 
@@ -1514,6 +7730,51 @@ namespace DatenMeister.Models.EMOF
                 public static string @action = "action";
                 public IElement? _action = null;
 
+                public static string @finish = "finish";
+                public IElement? _finish = null;
+
+                public static string @start = "start";
+                public IElement? _start = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ActionExecutionSpecification @ActionExecutionSpecification = new _ActionExecutionSpecification();
@@ -1523,6 +7784,51 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @behavior = "behavior";
                 public IElement? _behavior = null;
+
+                public static string @finish = "finish";
+                public IElement? _finish = null;
+
+                public static string @start = "start";
+                public IElement? _start = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1540,6 +7846,45 @@ namespace DatenMeister.Models.EMOF
                 public static string @operand = "operand";
                 public IElement? _operand = null;
 
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _CombinedFragment @CombinedFragment = new _CombinedFragment();
@@ -1549,6 +7894,54 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @message = "message";
                 public IElement? _message = null;
+
+                public static string @cfragmentGate = "cfragmentGate";
+                public IElement? _cfragmentGate = null;
+
+                public static string @interactionOperator = "interactionOperator";
+                public IElement? _interactionOperator = null;
+
+                public static string @operand = "operand";
+                public IElement? _operand = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1560,6 +7953,45 @@ namespace DatenMeister.Models.EMOF
                 public static string @setting = "setting";
                 public IElement? _setting = null;
 
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Continuation @Continuation = new _Continuation();
@@ -1567,6 +7999,54 @@ namespace DatenMeister.Models.EMOF
 
             public class _DestructionOccurrenceSpecification
             {
+                public static string @message = "message";
+                public IElement? _message = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @toAfter = "toAfter";
+                public IElement? _toAfter = null;
+
+                public static string @toBefore = "toBefore";
+                public IElement? _toBefore = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
             }
 
             public _DestructionOccurrenceSpecification @DestructionOccurrenceSpecification = new _DestructionOccurrenceSpecification();
@@ -1576,6 +8056,51 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @execution = "execution";
                 public IElement? _execution = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @toAfter = "toAfter";
+                public IElement? _toAfter = null;
+
+                public static string @toBefore = "toBefore";
+                public IElement? _toBefore = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1590,6 +8115,45 @@ namespace DatenMeister.Models.EMOF
                 public static string @start = "start";
                 public IElement? _start = null;
 
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ExecutionSpecification @ExecutionSpecification = new _ExecutionSpecification();
@@ -1597,6 +8161,36 @@ namespace DatenMeister.Models.EMOF
 
             public class _Gate
             {
+                public static string @message = "message";
+                public IElement? _message = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Gate @Gate = new _Gate();
@@ -1609,6 +8203,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @before = "before";
                 public IElement? _before = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1632,6 +8253,195 @@ namespace DatenMeister.Models.EMOF
                 public static string @message = "message";
                 public IElement? _message = null;
 
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @isReentrant = "isReentrant";
+                public IElement? _isReentrant = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @postcondition = "postcondition";
+                public IElement? _postcondition = null;
+
+                public static string @precondition = "precondition";
+                public IElement? _precondition = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @redefinedBehavior = "redefinedBehavior";
+                public IElement? _redefinedBehavior = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
             }
 
             public _Interaction @Interaction = new _Interaction();
@@ -1644,6 +8454,48 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @minint = "minint";
                 public IElement? _minint = null;
+
+                public static string @constrainedElement = "constrainedElement";
+                public IElement? _constrainedElement = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -1664,6 +8516,33 @@ namespace DatenMeister.Models.EMOF
                 public static string @generalOrdering = "generalOrdering";
                 public IElement? _generalOrdering = null;
 
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _InteractionFragment @InteractionFragment = new _InteractionFragment();
@@ -1676,6 +8555,63 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @guard = "guard";
                 public IElement? _guard = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
 
             }
 
@@ -1699,6 +8635,45 @@ namespace DatenMeister.Models.EMOF
                 public static string @returnValueRecipient = "returnValueRecipient";
                 public IElement? _returnValueRecipient = null;
 
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _InteractionUse @InteractionUse = new _InteractionUse();
@@ -1720,6 +8695,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @selector = "selector";
                 public IElement? _selector = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1752,6 +8754,33 @@ namespace DatenMeister.Models.EMOF
                 public static string @signature = "signature";
                 public IElement? _signature = null;
 
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Message @Message = new _Message();
@@ -1762,6 +8791,33 @@ namespace DatenMeister.Models.EMOF
                 public static string @message = "message";
                 public IElement? _message = null;
 
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _MessageEnd @MessageEnd = new _MessageEnd();
@@ -1769,6 +8825,54 @@ namespace DatenMeister.Models.EMOF
 
             public class _MessageOccurrenceSpecification
             {
+                public static string @message = "message";
+                public IElement? _message = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @toAfter = "toAfter";
+                public IElement? _toAfter = null;
+
+                public static string @toBefore = "toBefore";
+                public IElement? _toBefore = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
             }
 
             public _MessageOccurrenceSpecification @MessageOccurrenceSpecification = new _MessageOccurrenceSpecification();
@@ -1785,6 +8889,42 @@ namespace DatenMeister.Models.EMOF
                 public static string @toBefore = "toBefore";
                 public IElement? _toBefore = null;
 
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _OccurrenceSpecification @OccurrenceSpecification = new _OccurrenceSpecification();
@@ -1792,6 +8932,60 @@ namespace DatenMeister.Models.EMOF
 
             public class _PartDecomposition
             {
+                public static string @actualGate = "actualGate";
+                public IElement? _actualGate = null;
+
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @refersTo = "refersTo";
+                public IElement? _refersTo = null;
+
+                public static string @returnValue = "returnValue";
+                public IElement? _returnValue = null;
+
+                public static string @returnValueRecipient = "returnValueRecipient";
+                public IElement? _returnValueRecipient = null;
+
+                public static string @covered = "covered";
+                public IElement? _covered = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _PartDecomposition @PartDecomposition = new _PartDecomposition();
@@ -1804,6 +8998,42 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @invariant = "invariant";
                 public IElement? _invariant = null;
+
+                public static string @enclosingInteraction = "enclosingInteraction";
+                public IElement? _enclosingInteraction = null;
+
+                public static string @enclosingOperand = "enclosingOperand";
+                public IElement? _enclosingOperand = null;
+
+                public static string @generalOrdering = "generalOrdering";
+                public IElement? _generalOrdering = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -1907,6 +9137,48 @@ namespace DatenMeister.Models.EMOF
                 public static string @realizingMessage = "realizingMessage";
                 public IElement? _realizingMessage = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _InformationFlow @InformationFlow = new _InformationFlow();
@@ -1916,6 +9188,117 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @represented = "represented";
                 public IElement? _represented = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -1945,6 +9328,117 @@ namespace DatenMeister.Models.EMOF
                 public static string @ownedOperation = "ownedOperation";
                 public IElement? _ownedOperation = null;
 
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Artifact @Artifact = new _Artifact();
@@ -1952,6 +9446,135 @@ namespace DatenMeister.Models.EMOF
 
             public class _CommunicationPath
             {
+                public static string @endType = "endType";
+                public IElement? _endType = null;
+
+                public static string @isDerived = "isDerived";
+                public IElement? _isDerived = null;
+
+                public static string @memberEnd = "memberEnd";
+                public IElement? _memberEnd = null;
+
+                public static string @navigableOwnedEnd = "navigableOwnedEnd";
+                public IElement? _navigableOwnedEnd = null;
+
+                public static string @ownedEnd = "ownedEnd";
+                public IElement? _ownedEnd = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _CommunicationPath @CommunicationPath = new _CommunicationPath();
@@ -1959,6 +9582,33 @@ namespace DatenMeister.Models.EMOF
 
             public class _DeployedArtifact
             {
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _DeployedArtifact @DeployedArtifact = new _DeployedArtifact();
@@ -1974,6 +9624,54 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @location = "location";
                 public IElement? _location = null;
+
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -1991,6 +9689,132 @@ namespace DatenMeister.Models.EMOF
                 public static string @executionLocation = "executionLocation";
                 public IElement? _executionLocation = null;
 
+                public static string @fileName = "fileName";
+                public IElement? _fileName = null;
+
+                public static string @manifestation = "manifestation";
+                public IElement? _manifestation = null;
+
+                public static string @nestedArtifact = "nestedArtifact";
+                public IElement? _nestedArtifact = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _DeploymentSpecification @DeploymentSpecification = new _DeploymentSpecification();
@@ -2004,6 +9828,33 @@ namespace DatenMeister.Models.EMOF
                 public static string @deployment = "deployment";
                 public IElement? _deployment = null;
 
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _DeploymentTarget @DeploymentTarget = new _DeploymentTarget();
@@ -2011,6 +9862,168 @@ namespace DatenMeister.Models.EMOF
 
             public class _Device
             {
+                public static string @nestedNode = "nestedNode";
+                public IElement? _nestedNode = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
+
             }
 
             public _Device @Device = new _Device();
@@ -2018,6 +10031,168 @@ namespace DatenMeister.Models.EMOF
 
             public class _ExecutionEnvironment
             {
+                public static string @nestedNode = "nestedNode";
+                public IElement? _nestedNode = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
+
             }
 
             public _ExecutionEnvironment @ExecutionEnvironment = new _ExecutionEnvironment();
@@ -2028,6 +10203,57 @@ namespace DatenMeister.Models.EMOF
                 public static string @utilizedElement = "utilizedElement";
                 public IElement? _utilizedElement = null;
 
+                public static string @mapping = "mapping";
+                public IElement? _mapping = null;
+
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Manifestation @Manifestation = new _Manifestation();
@@ -2037,6 +10263,165 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @nestedNode = "nestedNode";
                 public IElement? _nestedNode = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
 
             }
 
@@ -2054,6 +10439,54 @@ namespace DatenMeister.Models.EMOF
                 public static string @mapping = "mapping";
                 public IElement? _mapping = null;
 
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Abstraction @Abstraction = new _Abstraction();
@@ -2066,6 +10499,15 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @body = "body";
                 public IElement? _body = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2083,6 +10525,39 @@ namespace DatenMeister.Models.EMOF
                 public static string @specification = "specification";
                 public IElement? _specification = null;
 
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Constraint @Constraint = new _Constraint();
@@ -2096,6 +10571,48 @@ namespace DatenMeister.Models.EMOF
                 public static string @supplier = "supplier";
                 public IElement? _supplier = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Dependency @Dependency = new _Dependency();
@@ -2108,6 +10625,18 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @target = "target";
                 public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2144,6 +10673,24 @@ namespace DatenMeister.Models.EMOF
                 public static string @visibility = "visibility";
                 public IElement? _visibility = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ElementImport @ElementImport = new _ElementImport();
@@ -2168,6 +10715,15 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @upperValue = "upperValue";
                 public IElement? _upperValue = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2194,6 +10750,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @visibility = "visibility";
                 public IElement? _visibility = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _NamedElement @NamedElement = new _NamedElement();
@@ -2219,6 +10784,33 @@ namespace DatenMeister.Models.EMOF
                 public static string @packageImport = "packageImport";
                 public IElement? _packageImport = null;
 
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Namespace @Namespace = new _Namespace();
@@ -2228,6 +10820,36 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @visibility = "visibility";
                 public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -2245,6 +10867,24 @@ namespace DatenMeister.Models.EMOF
                 public static string @visibility = "visibility";
                 public IElement? _visibility = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _PackageImport @PackageImport = new _PackageImport();
@@ -2258,6 +10898,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @templateParameter = "templateParameter";
                 public IElement? _templateParameter = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ParameterableElement @ParameterableElement = new _ParameterableElement();
@@ -2265,6 +10914,57 @@ namespace DatenMeister.Models.EMOF
 
             public class _Realization
             {
+                public static string @mapping = "mapping";
+                public IElement? _mapping = null;
+
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Realization @Realization = new _Realization();
@@ -2274,6 +10974,15 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @relatedElement = "relatedElement";
                 public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2287,6 +10996,15 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @templateBinding = "templateBinding";
                 public IElement? _templateBinding = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2303,6 +11021,24 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @signature = "signature";
                 public IElement? _signature = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2326,6 +11062,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @signature = "signature";
                 public IElement? _signature = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _TemplateParameter @TemplateParameter = new _TemplateParameter();
@@ -2345,6 +11090,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @templateBinding = "templateBinding";
                 public IElement? _templateBinding = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _TemplateParameterSubstitution @TemplateParameterSubstitution = new _TemplateParameterSubstitution();
@@ -2361,6 +11115,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @template = "template";
                 public IElement? _template = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _TemplateSignature @TemplateSignature = new _TemplateSignature();
@@ -2370,6 +11133,39 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @package = "package";
                 public IElement? _package = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -2381,6 +11177,33 @@ namespace DatenMeister.Models.EMOF
                 public static string @type = "type";
                 public IElement? _type = null;
 
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _TypedElement @TypedElement = new _TypedElement();
@@ -2388,6 +11211,54 @@ namespace DatenMeister.Models.EMOF
 
             public class _Usage
             {
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Usage @Usage = new _Usage();
@@ -2417,6 +11288,39 @@ namespace DatenMeister.Models.EMOF
         {
             public class _AnyReceiveEvent
             {
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _AnyReceiveEvent @AnyReceiveEvent = new _AnyReceiveEvent();
@@ -2448,6 +11352,159 @@ namespace DatenMeister.Models.EMOF
                 public static string @redefinedBehavior = "redefinedBehavior";
                 public IElement? _redefinedBehavior = null;
 
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
             }
 
             public _Behavior @Behavior = new _Behavior();
@@ -2457,6 +11514,39 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @operation = "operation";
                 public IElement? _operation = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -2468,6 +11558,39 @@ namespace DatenMeister.Models.EMOF
                 public static string @changeExpression = "changeExpression";
                 public IElement? _changeExpression = null;
 
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _ChangeEvent @ChangeEvent = new _ChangeEvent();
@@ -2475,6 +11598,39 @@ namespace DatenMeister.Models.EMOF
 
             public class _Event
             {
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _Event @Event = new _Event();
@@ -2482,6 +11638,189 @@ namespace DatenMeister.Models.EMOF
 
             public class _FunctionBehavior
             {
+                public static string @body = "body";
+                public IElement? _body = null;
+
+                public static string @language = "language";
+                public IElement? _language = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @isReentrant = "isReentrant";
+                public IElement? _isReentrant = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @postcondition = "postcondition";
+                public IElement? _postcondition = null;
+
+                public static string @precondition = "precondition";
+                public IElement? _precondition = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @redefinedBehavior = "redefinedBehavior";
+                public IElement? _redefinedBehavior = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
             }
 
             public _FunctionBehavior @FunctionBehavior = new _FunctionBehavior();
@@ -2489,6 +11828,39 @@ namespace DatenMeister.Models.EMOF
 
             public class _MessageEvent
             {
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _MessageEvent @MessageEvent = new _MessageEvent();
@@ -2502,6 +11874,183 @@ namespace DatenMeister.Models.EMOF
                 public static string @language = "language";
                 public IElement? _language = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @isReentrant = "isReentrant";
+                public IElement? _isReentrant = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @postcondition = "postcondition";
+                public IElement? _postcondition = null;
+
+                public static string @precondition = "precondition";
+                public IElement? _precondition = null;
+
+                public static string @specification = "specification";
+                public IElement? _specification = null;
+
+                public static string @redefinedBehavior = "redefinedBehavior";
+                public IElement? _redefinedBehavior = null;
+
+                public static string @extension = "extension";
+                public IElement? _extension = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @isActive = "isActive";
+                public IElement? _isActive = null;
+
+                public static string @nestedClassifier = "nestedClassifier";
+                public IElement? _nestedClassifier = null;
+
+                public static string @ownedAttribute = "ownedAttribute";
+                public IElement? _ownedAttribute = null;
+
+                public static string @ownedOperation = "ownedOperation";
+                public IElement? _ownedOperation = null;
+
+                public static string @ownedReception = "ownedReception";
+                public IElement? _ownedReception = null;
+
+                public static string @superClass = "superClass";
+                public IElement? _superClass = null;
+
+                public static string @classifierBehavior = "classifierBehavior";
+                public IElement? _classifierBehavior = null;
+
+                public static string @interfaceRealization = "interfaceRealization";
+                public IElement? _interfaceRealization = null;
+
+                public static string @ownedBehavior = "ownedBehavior";
+                public IElement? _ownedBehavior = null;
+
+                public static string @attribute = "attribute";
+                public IElement? _attribute = null;
+
+                public static string @collaborationUse = "collaborationUse";
+                public IElement? _collaborationUse = null;
+
+                public static string @feature = "feature";
+                public IElement? _feature = null;
+
+                public static string @general = "general";
+                public IElement? _general = null;
+
+                public static string @generalization = "generalization";
+                public IElement? _generalization = null;
+
+                public static string @inheritedMember = "inheritedMember";
+                public IElement? _inheritedMember = null;
+
+                public static string @isFinalSpecialization = "isFinalSpecialization";
+                public IElement? _isFinalSpecialization = null;
+
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @ownedUseCase = "ownedUseCase";
+                public IElement? _ownedUseCase = null;
+
+                public static string @powertypeExtent = "powertypeExtent";
+                public IElement? _powertypeExtent = null;
+
+                public static string @redefinedClassifier = "redefinedClassifier";
+                public IElement? _redefinedClassifier = null;
+
+                public static string @representation = "representation";
+                public IElement? _representation = null;
+
+                public static string @substitution = "substitution";
+                public IElement? _substitution = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @useCase = "useCase";
+                public IElement? _useCase = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @ownedPort = "ownedPort";
+                public IElement? _ownedPort = null;
+
+                public static string @ownedConnector = "ownedConnector";
+                public IElement? _ownedConnector = null;
+
+                public static string @part = "part";
+                public IElement? _part = null;
+
+                public static string @role = "role";
+                public IElement? _role = null;
+
             }
 
             public _OpaqueBehavior @OpaqueBehavior = new _OpaqueBehavior();
@@ -2511,6 +12060,39 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @signal = "signal";
                 public IElement? _signal = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -2525,6 +12107,39 @@ namespace DatenMeister.Models.EMOF
                 public static string @when = "when";
                 public IElement? _when = null;
 
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _TimeEvent @TimeEvent = new _TimeEvent();
@@ -2537,6 +12152,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @port = "port";
                 public IElement? _port = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2556,6 +12198,57 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @substitutingClassifier = "substitutingClassifier";
                 public IElement? _substitutingClassifier = null;
+
+                public static string @mapping = "mapping";
+                public IElement? _mapping = null;
+
+                public static string @client = "client";
+                public IElement? _client = null;
+
+                public static string @supplier = "supplier";
+                public IElement? _supplier = null;
+
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
 
             }
 
@@ -2581,6 +12274,66 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @raisedException = "raisedException";
                 public IElement? _raisedException = null;
+
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
 
             }
 
@@ -2637,6 +12390,69 @@ namespace DatenMeister.Models.EMOF
                 public static string @useCase = "useCase";
                 public IElement? _useCase = null;
 
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @package = "package";
+                public IElement? _package = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Classifier @Classifier = new _Classifier();
@@ -2653,6 +12469,27 @@ namespace DatenMeister.Models.EMOF
                 public static string @parameteredElement = "parameteredElement";
                 public IElement? _parameteredElement = null;
 
+                public static string @default = "default";
+                public IElement? _default = null;
+
+                public static string @ownedDefault = "ownedDefault";
+                public IElement? _ownedDefault = null;
+
+                public static string @ownedParameteredElement = "ownedParameteredElement";
+                public IElement? _ownedParameteredElement = null;
+
+                public static string @signature = "signature";
+                public IElement? _signature = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ClassifierTemplateParameter @ClassifierTemplateParameter = new _ClassifierTemplateParameter();
@@ -2665,6 +12502,42 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @isStatic = "isStatic";
                 public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2685,6 +12558,24 @@ namespace DatenMeister.Models.EMOF
                 public static string @specific = "specific";
                 public IElement? _specific = null;
 
+                public static string @source = "source";
+                public IElement? _source = null;
+
+                public static string @target = "target";
+                public IElement? _target = null;
+
+                public static string @relatedElement = "relatedElement";
+                public IElement? _relatedElement = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Generalization @Generalization = new _Generalization();
@@ -2704,6 +12595,39 @@ namespace DatenMeister.Models.EMOF
                 public static string @powertype = "powertype";
                 public IElement? _powertype = null;
 
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
             }
 
             public _GeneralizationSet @GeneralizationSet = new _GeneralizationSet();
@@ -2720,6 +12644,45 @@ namespace DatenMeister.Models.EMOF
                 public static string @specification = "specification";
                 public IElement? _specification = null;
 
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
             }
 
             public _InstanceSpecification @InstanceSpecification = new _InstanceSpecification();
@@ -2729,6 +12692,42 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @instance = "instance";
                 public IElement? _instance = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
 
             }
 
@@ -2785,6 +12784,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @upper = "upper";
                 public IElement? _upper = null;
 
+                public static string @ownedTemplateSignature = "ownedTemplateSignature";
+                public IElement? _ownedTemplateSignature = null;
+
+                public static string @templateBinding = "templateBinding";
+                public IElement? _templateBinding = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @concurrency = "concurrency";
+                public IElement? _concurrency = null;
+
+                public static string @isAbstract = "isAbstract";
+                public IElement? _isAbstract = null;
+
+                public static string @method = "method";
+                public IElement? _method = null;
+
+                public static string @ownedParameterSet = "ownedParameterSet";
+                public IElement? _ownedParameterSet = null;
+
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
             }
 
             public _Operation @Operation = new _Operation();
@@ -2794,6 +12874,27 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @parameteredElement = "parameteredElement";
                 public IElement? _parameteredElement = null;
+
+                public static string @default = "default";
+                public IElement? _default = null;
+
+                public static string @ownedDefault = "ownedDefault";
+                public IElement? _ownedDefault = null;
+
+                public static string @ownedParameteredElement = "ownedParameteredElement";
+                public IElement? _ownedParameteredElement = null;
+
+                public static string @signature = "signature";
+                public IElement? _signature = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2826,6 +12927,63 @@ namespace DatenMeister.Models.EMOF
                 public static string @parameterSet = "parameterSet";
                 public IElement? _parameterSet = null;
 
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @end = "end";
+                public IElement? _end = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
             }
 
             public _Parameter @Parameter = new _Parameter();
@@ -2838,6 +12996,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @parameter = "parameter";
                 public IElement? _parameter = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2894,6 +13079,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @subsettedProperty = "subsettedProperty";
                 public IElement? _subsettedProperty = null;
 
+                public static string @end = "end";
+                public IElement? _end = null;
+
+                public static string @templateParameter = "templateParameter";
+                public IElement? _templateParameter = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @owningTemplateParameter = "owningTemplateParameter";
+                public IElement? _owningTemplateParameter = null;
+
+                public static string @deployedElement = "deployedElement";
+                public IElement? _deployedElement = null;
+
+                public static string @deployment = "deployment";
+                public IElement? _deployment = null;
+
+                public static string @isReadOnly = "isReadOnly";
+                public IElement? _isReadOnly = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _Property @Property = new _Property();
@@ -2909,6 +13175,33 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @redefinitionContext = "redefinitionContext";
                 public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -2926,6 +13219,51 @@ namespace DatenMeister.Models.EMOF
                 public static string @inheritedParameter = "inheritedParameter";
                 public IElement? _inheritedParameter = null;
 
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @ownedParameter = "ownedParameter";
+                public IElement? _ownedParameter = null;
+
+                public static string @parameter = "parameter";
+                public IElement? _parameter = null;
+
+                public static string @template = "template";
+                public IElement? _template = null;
+
             }
 
             public _RedefinableTemplateSignature @RedefinableTemplateSignature = new _RedefinableTemplateSignature();
@@ -2942,6 +13280,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Slot @Slot = new _Slot();
@@ -2951,6 +13298,69 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @isReadOnly = "isReadOnly";
                 public IElement? _isReadOnly = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @featuringClassifier = "featuringClassifier";
+                public IElement? _featuringClassifier = null;
+
+                public static string @isStatic = "isStatic";
+                public IElement? _isStatic = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -3031,6 +13441,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ValueSpecificationAction @ValueSpecificationAction = new _ValueSpecificationAction();
@@ -3041,6 +13532,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @variable = "variable";
                 public IElement? _variable = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _VariableAction @VariableAction = new _VariableAction();
@@ -3048,6 +13620,93 @@ namespace DatenMeister.Models.EMOF
 
             public class _WriteLinkAction
             {
+                public static string @endData = "endData";
+                public IElement? _endData = null;
+
+                public static string @inputValue = "inputValue";
+                public IElement? _inputValue = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _WriteLinkAction @WriteLinkAction = new _WriteLinkAction();
@@ -3061,6 +13720,93 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @object = "object";
+                public IElement? _object = null;
+
+                public static string @structuralFeature = "structuralFeature";
+                public IElement? _structuralFeature = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _WriteStructuralFeatureAction @WriteStructuralFeatureAction = new _WriteStructuralFeatureAction();
@@ -3070,6 +13816,90 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @value = "value";
                 public IElement? _value = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3095,6 +13925,96 @@ namespace DatenMeister.Models.EMOF
                 public static string @returnInformation = "returnInformation";
                 public IElement? _returnInformation = null;
 
+                public static string @isUnmarshall = "isUnmarshall";
+                public IElement? _isUnmarshall = null;
+
+                public static string @result = "result";
+                public IElement? _result = null;
+
+                public static string @trigger = "trigger";
+                public IElement? _trigger = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _AcceptCallAction @AcceptCallAction = new _AcceptCallAction();
@@ -3110,6 +14030,87 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @trigger = "trigger";
                 public IElement? _trigger = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3136,6 +14137,69 @@ namespace DatenMeister.Models.EMOF
                 public static string @output = "output";
                 public IElement? _output = null;
 
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Action @Action = new _Action();
@@ -3145,6 +14209,105 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @fromAction = "fromAction";
                 public IElement? _fromAction = null;
+
+                public static string @isControl = "isControl";
+                public IElement? _isControl = null;
+
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
 
             }
 
@@ -3159,6 +14322,99 @@ namespace DatenMeister.Models.EMOF
                 public static string @isReplaceAll = "isReplaceAll";
                 public IElement? _isReplaceAll = null;
 
+                public static string @result = "result";
+                public IElement? _result = null;
+
+                public static string @value = "value";
+                public IElement? _value = null;
+
+                public static string @object = "object";
+                public IElement? _object = null;
+
+                public static string @structuralFeature = "structuralFeature";
+                public IElement? _structuralFeature = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _AddStructuralFeatureValueAction @AddStructuralFeatureValueAction = new _AddStructuralFeatureValueAction();
@@ -3172,6 +14428,93 @@ namespace DatenMeister.Models.EMOF
                 public static string @isReplaceAll = "isReplaceAll";
                 public IElement? _isReplaceAll = null;
 
+                public static string @value = "value";
+                public IElement? _value = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _AddVariableValueAction @AddVariableValueAction = new _AddVariableValueAction();
@@ -3181,6 +14524,93 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @signal = "signal";
                 public IElement? _signal = null;
+
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @onPort = "onPort";
+                public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3195,6 +14625,93 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @onPort = "onPort";
+                public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _CallAction @CallAction = new _CallAction();
@@ -3204,6 +14721,99 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @behavior = "behavior";
                 public IElement? _behavior = null;
+
+                public static string @isSynchronous = "isSynchronous";
+                public IElement? _isSynchronous = null;
+
+                public static string @result = "result";
+                public IElement? _result = null;
+
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @onPort = "onPort";
+                public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3217,6 +14827,99 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @target = "target";
                 public IElement? _target = null;
+
+                public static string @isSynchronous = "isSynchronous";
+                public IElement? _isSynchronous = null;
+
+                public static string @result = "result";
+                public IElement? _result = null;
+
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @onPort = "onPort";
+                public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3243,6 +14946,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @test = "test";
                 public IElement? _test = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _Clause @Clause = new _Clause();
@@ -3256,6 +14968,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @object = "object";
                 public IElement? _object = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ClearAssociationAction @ClearAssociationAction = new _ClearAssociationAction();
@@ -3266,6 +15059,93 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @object = "object";
+                public IElement? _object = null;
+
+                public static string @structuralFeature = "structuralFeature";
+                public IElement? _structuralFeature = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ClearStructuralFeatureAction @ClearStructuralFeatureAction = new _ClearStructuralFeatureAction();
@@ -3273,6 +15153,90 @@ namespace DatenMeister.Models.EMOF
 
             public class _ClearVariableAction
             {
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ClearVariableAction @ClearVariableAction = new _ClearVariableAction();
@@ -3292,6 +15256,138 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @edge = "edge";
+                public IElement? _edge = null;
+
+                public static string @mustIsolate = "mustIsolate";
+                public IElement? _mustIsolate = null;
+
+                public static string @node = "node";
+                public IElement? _node = null;
+
+                public static string @structuredNodeInput = "structuredNodeInput";
+                public IElement? _structuredNodeInput = null;
+
+                public static string @structuredNodeOutput = "structuredNodeOutput";
+                public IElement? _structuredNodeOutput = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @containedEdge = "containedEdge";
+                public IElement? _containedEdge = null;
+
+                public static string @containedNode = "containedNode";
+                public IElement? _containedNode = null;
+
+                public static string @inActivity = "inActivity";
+                public IElement? _inActivity = null;
+
+                public static string @subgroup = "subgroup";
+                public IElement? _subgroup = null;
+
+                public static string @superGroup = "superGroup";
+                public IElement? _superGroup = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _ConditionalNode @ConditionalNode = new _ConditionalNode();
@@ -3302,6 +15398,90 @@ namespace DatenMeister.Models.EMOF
                 public static string @endData = "endData";
                 public IElement? _endData = null;
 
+                public static string @inputValue = "inputValue";
+                public IElement? _inputValue = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _CreateLinkAction @CreateLinkAction = new _CreateLinkAction();
@@ -3311,6 +15491,93 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @result = "result";
                 public IElement? _result = null;
+
+                public static string @endData = "endData";
+                public IElement? _endData = null;
+
+                public static string @inputValue = "inputValue";
+                public IElement? _inputValue = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3325,6 +15592,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _CreateObjectAction @CreateObjectAction = new _CreateObjectAction();
@@ -3334,6 +15682,90 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @endData = "endData";
                 public IElement? _endData = null;
+
+                public static string @inputValue = "inputValue";
+                public IElement? _inputValue = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3351,6 +15783,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @target = "target";
                 public IElement? _target = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _DestroyObjectAction @DestroyObjectAction = new _DestroyObjectAction();
@@ -3363,6 +15876,84 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @regionAsOutput = "regionAsOutput";
                 public IElement? _regionAsOutput = null;
+
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -3380,6 +15971,138 @@ namespace DatenMeister.Models.EMOF
                 public static string @outputElement = "outputElement";
                 public IElement? _outputElement = null;
 
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @edge = "edge";
+                public IElement? _edge = null;
+
+                public static string @mustIsolate = "mustIsolate";
+                public IElement? _mustIsolate = null;
+
+                public static string @node = "node";
+                public IElement? _node = null;
+
+                public static string @structuredNodeInput = "structuredNodeInput";
+                public IElement? _structuredNodeInput = null;
+
+                public static string @structuredNodeOutput = "structuredNodeOutput";
+                public IElement? _structuredNodeOutput = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @containedEdge = "containedEdge";
+                public IElement? _containedEdge = null;
+
+                public static string @containedNode = "containedNode";
+                public IElement? _containedNode = null;
+
+                public static string @inActivity = "inActivity";
+                public IElement? _inActivity = null;
+
+                public static string @subgroup = "subgroup";
+                public IElement? _subgroup = null;
+
+                public static string @superGroup = "superGroup";
+                public IElement? _superGroup = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _ExpansionRegion @ExpansionRegion = new _ExpansionRegion();
@@ -3387,6 +16110,105 @@ namespace DatenMeister.Models.EMOF
 
             public class _InputPin
             {
+                public static string @isControl = "isControl";
+                public IElement? _isControl = null;
+
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
             }
 
             public _InputPin @InputPin = new _InputPin();
@@ -3399,6 +16221,87 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @onPort = "onPort";
                 public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3413,6 +16316,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @inputValue = "inputValue";
                 public IElement? _inputValue = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _LinkAction @LinkAction = new _LinkAction();
@@ -3425,6 +16409,24 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @isReplaceAll = "isReplaceAll";
                 public IElement? _isReplaceAll = null;
+
+                public static string @end = "end";
+                public IElement? _end = null;
+
+                public static string @qualifier = "qualifier";
+                public IElement? _qualifier = null;
+
+                public static string @value = "value";
+                public IElement? _value = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3442,6 +16444,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _LinkEndData @LinkEndData = new _LinkEndData();
@@ -3454,6 +16465,24 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @isDestroyDuplicates = "isDestroyDuplicates";
                 public IElement? _isDestroyDuplicates = null;
+
+                public static string @end = "end";
+                public IElement? _end = null;
+
+                public static string @qualifier = "qualifier";
+                public IElement? _qualifier = null;
+
+                public static string @value = "value";
+                public IElement? _value = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3489,6 +16518,138 @@ namespace DatenMeister.Models.EMOF
                 public static string @test = "test";
                 public IElement? _test = null;
 
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @edge = "edge";
+                public IElement? _edge = null;
+
+                public static string @mustIsolate = "mustIsolate";
+                public IElement? _mustIsolate = null;
+
+                public static string @node = "node";
+                public IElement? _node = null;
+
+                public static string @structuredNodeInput = "structuredNodeInput";
+                public IElement? _structuredNodeInput = null;
+
+                public static string @structuredNodeOutput = "structuredNodeOutput";
+                public IElement? _structuredNodeOutput = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @containedEdge = "containedEdge";
+                public IElement? _containedEdge = null;
+
+                public static string @containedNode = "containedNode";
+                public IElement? _containedNode = null;
+
+                public static string @inActivity = "inActivity";
+                public IElement? _inActivity = null;
+
+                public static string @subgroup = "subgroup";
+                public IElement? _subgroup = null;
+
+                public static string @superGroup = "superGroup";
+                public IElement? _superGroup = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _LoopNode @LoopNode = new _LoopNode();
@@ -3508,6 +16669,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @outputValue = "outputValue";
                 public IElement? _outputValue = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _OpaqueAction @OpaqueAction = new _OpaqueAction();
@@ -3515,6 +16757,105 @@ namespace DatenMeister.Models.EMOF
 
             public class _OutputPin
             {
+                public static string @isControl = "isControl";
+                public IElement? _isControl = null;
+
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
+
             }
 
             public _OutputPin @OutputPin = new _OutputPin();
@@ -3524,6 +16865,102 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @isControl = "isControl";
                 public IElement? _isControl = null;
+
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
 
             }
 
@@ -3538,6 +16975,15 @@ namespace DatenMeister.Models.EMOF
                 public static string @value = "value";
                 public IElement? _value = null;
 
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _QualifierValue @QualifierValue = new _QualifierValue();
@@ -3547,6 +16993,87 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @exception = "exception";
                 public IElement? _exception = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3560,6 +17087,87 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @result = "result";
                 public IElement? _result = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3580,6 +17188,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ReadIsClassifiedObjectAction @ReadIsClassifiedObjectAction = new _ReadIsClassifiedObjectAction();
@@ -3589,6 +17278,93 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @result = "result";
                 public IElement? _result = null;
+
+                public static string @endData = "endData";
+                public IElement? _endData = null;
+
+                public static string @inputValue = "inputValue";
+                public IElement? _inputValue = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3606,6 +17382,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ReadLinkObjectEndAction @ReadLinkObjectEndAction = new _ReadLinkObjectEndAction();
@@ -3622,6 +17479,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ReadLinkObjectEndQualifierAction @ReadLinkObjectEndQualifierAction = new _ReadLinkObjectEndQualifierAction();
@@ -3631,6 +17569,87 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @result = "result";
                 public IElement? _result = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3642,6 +17661,93 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @object = "object";
+                public IElement? _object = null;
+
+                public static string @structuralFeature = "structuralFeature";
+                public IElement? _structuralFeature = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ReadStructuralFeatureAction @ReadStructuralFeatureAction = new _ReadStructuralFeatureAction();
@@ -3651,6 +17757,90 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @result = "result";
                 public IElement? _result = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3671,6 +17861,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @oldClassifier = "oldClassifier";
                 public IElement? _oldClassifier = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ReclassifyObjectAction @ReclassifyObjectAction = new _ReclassifyObjectAction();
@@ -3690,6 +17961,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @result = "result";
                 public IElement? _result = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ReduceAction @ReduceAction = new _ReduceAction();
@@ -3703,6 +18055,99 @@ namespace DatenMeister.Models.EMOF
                 public static string @removeAt = "removeAt";
                 public IElement? _removeAt = null;
 
+                public static string @result = "result";
+                public IElement? _result = null;
+
+                public static string @value = "value";
+                public IElement? _value = null;
+
+                public static string @object = "object";
+                public IElement? _object = null;
+
+                public static string @structuralFeature = "structuralFeature";
+                public IElement? _structuralFeature = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _RemoveStructuralFeatureValueAction @RemoveStructuralFeatureValueAction = new _RemoveStructuralFeatureValueAction();
@@ -3715,6 +18160,93 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @removeAt = "removeAt";
                 public IElement? _removeAt = null;
+
+                public static string @value = "value";
+                public IElement? _value = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3732,6 +18264,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @returnInformation = "returnInformation";
                 public IElement? _returnInformation = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _ReplyAction @ReplyAction = new _ReplyAction();
@@ -3744,6 +18357,93 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @target = "target";
                 public IElement? _target = null;
+
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @onPort = "onPort";
+                public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3758,6 +18458,93 @@ namespace DatenMeister.Models.EMOF
                 public static string @target = "target";
                 public IElement? _target = null;
 
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @onPort = "onPort";
+                public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _SendSignalAction @SendSignalAction = new _SendSignalAction();
@@ -3767,6 +18554,138 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @executableNode = "executableNode";
                 public IElement? _executableNode = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @edge = "edge";
+                public IElement? _edge = null;
+
+                public static string @mustIsolate = "mustIsolate";
+                public IElement? _mustIsolate = null;
+
+                public static string @node = "node";
+                public IElement? _node = null;
+
+                public static string @structuredNodeInput = "structuredNodeInput";
+                public IElement? _structuredNodeInput = null;
+
+                public static string @structuredNodeOutput = "structuredNodeOutput";
+                public IElement? _structuredNodeOutput = null;
+
+                public static string @variable = "variable";
+                public IElement? _variable = null;
+
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @containedEdge = "containedEdge";
+                public IElement? _containedEdge = null;
+
+                public static string @containedNode = "containedNode";
+                public IElement? _containedNode = null;
+
+                public static string @inActivity = "inActivity";
+                public IElement? _inActivity = null;
+
+                public static string @subgroup = "subgroup";
+                public IElement? _subgroup = null;
+
+                public static string @superGroup = "superGroup";
+                public IElement? _superGroup = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
 
             }
 
@@ -3778,6 +18697,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @object = "object";
                 public IElement? _object = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _StartClassifierBehaviorAction @StartClassifierBehaviorAction = new _StartClassifierBehaviorAction();
@@ -3787,6 +18787,99 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @object = "object";
                 public IElement? _object = null;
+
+                public static string @isSynchronous = "isSynchronous";
+                public IElement? _isSynchronous = null;
+
+                public static string @result = "result";
+                public IElement? _result = null;
+
+                public static string @argument = "argument";
+                public IElement? _argument = null;
+
+                public static string @onPort = "onPort";
+                public IElement? _onPort = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3800,6 +18893,87 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @structuralFeature = "structuralFeature";
                 public IElement? _structuralFeature = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3829,6 +19003,117 @@ namespace DatenMeister.Models.EMOF
                 public static string @variable = "variable";
                 public IElement? _variable = null;
 
+                public static string @elementImport = "elementImport";
+                public IElement? _elementImport = null;
+
+                public static string @importedMember = "importedMember";
+                public IElement? _importedMember = null;
+
+                public static string @member = "member";
+                public IElement? _member = null;
+
+                public static string @ownedMember = "ownedMember";
+                public IElement? _ownedMember = null;
+
+                public static string @ownedRule = "ownedRule";
+                public IElement? _ownedRule = null;
+
+                public static string @packageImport = "packageImport";
+                public IElement? _packageImport = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @containedEdge = "containedEdge";
+                public IElement? _containedEdge = null;
+
+                public static string @containedNode = "containedNode";
+                public IElement? _containedNode = null;
+
+                public static string @inActivity = "inActivity";
+                public IElement? _inActivity = null;
+
+                public static string @subgroup = "subgroup";
+                public IElement? _subgroup = null;
+
+                public static string @superGroup = "superGroup";
+                public IElement? _superGroup = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
             }
 
             public _StructuredActivityNode @StructuredActivityNode = new _StructuredActivityNode();
@@ -3844,6 +19129,87 @@ namespace DatenMeister.Models.EMOF
 
                 public static string @second = "second";
                 public IElement? _second = null;
+
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
 
             }
 
@@ -3861,6 +19227,87 @@ namespace DatenMeister.Models.EMOF
                 public static string @unmarshallType = "unmarshallType";
                 public IElement? _unmarshallType = null;
 
+                public static string @context = "context";
+                public IElement? _context = null;
+
+                public static string @input = "input";
+                public IElement? _input = null;
+
+                public static string @isLocallyReentrant = "isLocallyReentrant";
+                public IElement? _isLocallyReentrant = null;
+
+                public static string @localPostcondition = "localPostcondition";
+                public IElement? _localPostcondition = null;
+
+                public static string @localPrecondition = "localPrecondition";
+                public IElement? _localPrecondition = null;
+
+                public static string @output = "output";
+                public IElement? _output = null;
+
+                public static string @handler = "handler";
+                public IElement? _handler = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
             }
 
             public _UnmarshallAction @UnmarshallAction = new _UnmarshallAction();
@@ -3870,6 +19317,105 @@ namespace DatenMeister.Models.EMOF
             {
                 public static string @value = "value";
                 public IElement? _value = null;
+
+                public static string @isControl = "isControl";
+                public IElement? _isControl = null;
+
+                public static string @inState = "inState";
+                public IElement? _inState = null;
+
+                public static string @isControlType = "isControlType";
+                public IElement? _isControlType = null;
+
+                public static string @ordering = "ordering";
+                public IElement? _ordering = null;
+
+                public static string @selection = "selection";
+                public IElement? _selection = null;
+
+                public static string @upperBound = "upperBound";
+                public IElement? _upperBound = null;
+
+                public static string @type = "type";
+                public IElement? _type = null;
+
+                public static string @clientDependency = "clientDependency";
+                public IElement? _clientDependency = null;
+
+                public static string @name = "name";
+                public IElement? _name = null;
+
+                public static string @nameExpression = "nameExpression";
+                public IElement? _nameExpression = null;
+
+                public static string @namespace = "namespace";
+                public IElement? _namespace = null;
+
+                public static string @qualifiedName = "qualifiedName";
+                public IElement? _qualifiedName = null;
+
+                public static string @visibility = "visibility";
+                public IElement? _visibility = null;
+
+                public static string @ownedComment = "ownedComment";
+                public IElement? _ownedComment = null;
+
+                public static string @ownedElement = "ownedElement";
+                public IElement? _ownedElement = null;
+
+                public static string @owner = "owner";
+                public IElement? _owner = null;
+
+                public static string @activity = "activity";
+                public IElement? _activity = null;
+
+                public static string @inGroup = "inGroup";
+                public IElement? _inGroup = null;
+
+                public static string @inInterruptibleRegion = "inInterruptibleRegion";
+                public IElement? _inInterruptibleRegion = null;
+
+                public static string @inPartition = "inPartition";
+                public IElement? _inPartition = null;
+
+                public static string @inStructuredNode = "inStructuredNode";
+                public IElement? _inStructuredNode = null;
+
+                public static string @incoming = "incoming";
+                public IElement? _incoming = null;
+
+                public static string @outgoing = "outgoing";
+                public IElement? _outgoing = null;
+
+                public static string @redefinedNode = "redefinedNode";
+                public IElement? _redefinedNode = null;
+
+                public static string @isLeaf = "isLeaf";
+                public IElement? _isLeaf = null;
+
+                public static string @redefinedElement = "redefinedElement";
+                public IElement? _redefinedElement = null;
+
+                public static string @redefinitionContext = "redefinitionContext";
+                public IElement? _redefinitionContext = null;
+
+                public static string @isOrdered = "isOrdered";
+                public IElement? _isOrdered = null;
+
+                public static string @isUnique = "isUnique";
+                public IElement? _isUnique = null;
+
+                public static string @lower = "lower";
+                public IElement? _lower = null;
+
+                public static string @lowerValue = "lowerValue";
+                public IElement? _lowerValue = null;
+
+                public static string @upper = "upper";
+                public IElement? _upper = null;
+
+                public static string @upperValue = "upperValue";
+                public IElement? _upperValue = null;
 
             }
 

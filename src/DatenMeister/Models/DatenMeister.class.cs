@@ -99,6 +99,9 @@ namespace DatenMeister.Models
             public static string @message = "message";
             public IElement? _message = null;
 
+            public static string @name = "name";
+            public IElement? _name = null;
+
         }
 
         public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();

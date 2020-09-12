@@ -120,7 +120,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                         _isItemCountRunning = true;
                         Task.Run(() =>
                         {
-                            _itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
+                            //_itemCountCached = elements().GetAllCompositesIncludingThemselves().size();
                             ChangeEventManager?.SendChangeEvent(this);
                         });
                     }

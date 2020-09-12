@@ -49,13 +49,13 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}/// <param name=\"filledStructure\">The form and fields structure</param>");
             Result.AppendLine($"{stack.Indentation}/// <param name=\"extent\">And finally extent to which the types shall be registered</param>");
             Result.AppendLine(
-                $"{stack.Indentation}public static void Assign(" +
-                "_UML uml, IFactory factory, IReflectiveCollection collection, " +
+                $"{stack.Indentation}[Obsolete]\r\npublic static void Assign(" +
+                "IFactory factory, IReflectiveCollection collection, " +
                 $"_{packageName} filledStructure, MofExtent extent)");
             Result.AppendLine($"{stack.Indentation}{{");
 
             stack = stack.Next;
-            Result.AppendLine($"{stack.Indentation}var generator = new DotNetTypeGenerator(factory, uml, extent);");
+            Result.AppendLine($"{stack.Indentation}var generator = new DotNetTypeGenerator(factory, extent);");
 
             foreach (var type in types)
             {

@@ -100,7 +100,7 @@ namespace DatenMeister.SourceGeneration.Console
             // Creates the class tree
 
             // Creates the source parser which is needed to navigate through the package
-            var sourceParser = new ElementSourceParser(_UML.TheOne);
+            var sourceParser = new ElementSourceParser();
             var classTreeGenerator = new ClassTreeGenerator(sourceParser)
             {
                 Namespace = "DatenMeister.Models"

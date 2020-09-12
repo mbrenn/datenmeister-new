@@ -31,7 +31,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
             }
 
-            var result = _factory.create(_formAndFields.__ListForm);
+            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
             var propertyName = property != null ? realPropertyName : "List";
             
@@ -48,7 +48,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             {
                 AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
                 
-                var defaultType = _factory.create(_formAndFields.__DefaultTypeForNewElement);
+                var defaultType = _factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
                 defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
                 defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
                 result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
@@ -56,7 +56,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             else
             {
                 // Ok, we have no metaclass, but let's add at least the columns for the property 'name'
-                var nameProperty = _uml?.CommonStructure.NamedElement._name;
+                var nameProperty = _UML.TheOne.CommonStructure.NamedElement._name;
                 if (nameProperty != null)
                 {
                     AddToFormByUmlElement(result, nameProperty, CreationMode.ForListForms | CreationMode.ByMetaClass);
@@ -80,7 +80,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             IObject? firstElementMetaClass = null;
             var metaClassAdded = false;
-            var result = _factory.create(_formAndFields.__ListForm);
+            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
             var onlyCommonProperties = creationMode.HasFlagFast(CreationMode.OnlyCommonProperties);
             
             // Figure out only the elements which have common properties
@@ -116,7 +116,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     cache.MetaClassAlreadyAdded = true;
 
                     // Create the metaclass as a field
-                    var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                    var metaClassField = _factory.create(_FormAndFields.TheOne.__MetaClassElementFieldData);
                     metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
                     metaClassField.set(_FormAndFields._MetaClassElementFieldData.title, "Metaclass");
                     result.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
@@ -250,7 +250,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
             }
 
-            var result = _factory.create(_formAndFields.__ListForm);
+            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
             AddToFormByMetaclass(result, metaClass, creationMode);
             result.set(_FormAndFields._ListForm.property, propertyName);
             result.set(_FormAndFields._ListForm.metaClass, metaClass);
@@ -275,7 +275,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var propertyName = property.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
             var propertyType = PropertyMethods.GetPropertyType(property);
 
-            var result = _factory.create(_formAndFields.__ListForm);
+            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
             if (propertyType != null)
             {
                 AddToFormByMetaclass(result, propertyType, creationMode);

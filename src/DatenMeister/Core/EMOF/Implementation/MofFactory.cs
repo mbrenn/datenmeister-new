@@ -199,42 +199,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             => new MofFactory(loadedExtent);
 
         /// <summary>
-        /// Creates an element within the same extent as the given
-        /// element 'value' and finds the metaclass via
-        /// the metaclass finder.
-        /// </summary>
-        /// <typeparam name="TFilledType">Type filler being used to find the element</typeparam>
-        /// <param name="value">Value which is used to find the associated extent</param>
-        /// <param name="metaClassFinder">The function to derive the metaclass out of the filler</param>
-        /// <returns>Created element</returns>
-        public static IElement CreateElementFor<TFilledType>(
-            IObject value,
-            Func<TFilledType, IElement> metaClassFinder)
-            where TFilledType : class, new()
-        {
-            var factory = new MofFactory(value);
-            return factory.Create(metaClassFinder);
-        }
-
-        /// <summary>
-        /// Creates an element within the same extent as the given
-        /// element 'value' and finds the metaclass via
-        /// the metaclass finder.
-        /// </summary>
-        /// <typeparam name="TFilledType">Type filler being used to find the element</typeparam>
-        /// <param name="value">Extent being used for the factory</param>
-        /// <param name="metaClassFinder">The function to derive the metaclass out of the filler</param>
-        /// <returns>Created element</returns>
-        public static IElement CreateElementFor<TFilledType>(
-            IExtent value,
-            Func<TFilledType, IElement> metaClassFinder)
-            where TFilledType : class, new()
-        {
-            var factory = new MofFactory(value);
-            return factory.Create(metaClassFinder);
-        }
-
-        /// <summary>
         /// Just a short call to create a new mof factory instance and call the create method
         /// </summary>
         /// <param name="extent">Extent for which the element will be created. The element will not be included

@@ -69,10 +69,8 @@ namespace DatenMeister.Modules.TypeSupport
                     _packageMethods.GetOrCreatePackageStructure(internalUserExtent.elements(), "PrimitiveTypes");
                 if (package == null)
                     throw new InvalidOperationException("PrimitiveTypes could not be created");
-                
-                var umlData = _workspaceLogic.GetUmlData();
 
-                var dateTime = factory.create(umlData.SimpleClassifiers.__PrimitiveType);
+                var dateTime = factory.create(_UML.TheOne.SimpleClassifiers.__PrimitiveType);
                 ((ICanSetId) dateTime).Id = "PrimitiveTypes.DateTime";
                 dateTime.set(_UML._CommonStructure._NamedElement.name, "DateTime");
                 PackageMethods.AddObjectToPackage(package, dateTime);

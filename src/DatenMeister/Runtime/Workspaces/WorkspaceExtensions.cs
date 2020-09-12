@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -52,59 +50,6 @@ namespace DatenMeister.Runtime.Workspaces
         public static Workspace FindWorkspace(this IEnumerable<Workspace> workspaces, IUriExtent extent)
         {
             return workspaces.FirstOrDefault(x => x.extent.Contains(extent));
-        }
-
-        /// <summary>
-        /// Gets the given class from the metalayer to the datalayer
-        /// </summary>
-        /// <typeparam name="TFilledType">Type that is queried</typeparam>
-        /// <param name="logic">The logic being used fby this method</param>
-        /// <param name="dataLayer">The datalayer that is requested</param>
-        /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
-        /// <returns>The instance of the type</returns>
-        public static TFilledType? GetFromMetaLayer<TFilledType>(
-            this IWorkspaceLogic logic,
-            Workspace dataLayer,
-            MetaRecursive metaRecursive = MetaRecursive.JustOne)
-            where TFilledType : class, new()
-            =>
-                dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
-
-        /// <summary>
-        /// Gets the given class from the metalayer to the datalayer
-        /// </summary>
-        /// <typeparam name="TFilledType">Type that is queried</typeparam>
-        /// <param name="logic">The logic being used fby this method</param>
-        /// <param name="extent">The extent that is requested</param>
-        /// <param name="metaRecursive">Defines the flags which define which meta levels shall be recursed</param>
-        /// <returns>The instance of the type</returns>
-        public static TFilledType? GetFromMetaLayer<TFilledType>(
-            this IWorkspaceLogic logic,
-            IExtent extent,
-            MetaRecursive metaRecursive = MetaRecursive.JustOne)
-            where TFilledType : class, new()
-        {
-            var dataLayer = logic.GetWorkspaceOfExtent(extent);
-            if (dataLayer == null)
-            {
-                throw new InvalidOperationException("Workspace is not found");
-            }
-            
-            return dataLayer.GetFromMetaWorkspace<TFilledType>(metaRecursive);
-        }
-
-        public static TFilledType Require<TFilledType>(
-            this IWorkspace logic)
-        
-            where TFilledType : class, new()
-        {
-            var found = logic.Get<TFilledType>();
-            if (found == null)
-            {
-                throw new InvalidOperationException($"The filled Type {typeof(TFilledType)} was not found");
-            }
-
-            return found;
         }
 
         /// <summary>
@@ -374,39 +319,6 @@ namespace DatenMeister.Runtime.Workspaces
         {
             var mgmt = GetManagementWorkspace(logic);
             return mgmt.FindExtent(WorkspaceNames.UriExtentInternalForm);
-        }
-
-        /// <summary>
-        /// Gets the data
-        /// </summary>
-        /// <param name="scope">Scope of dependency container</param>
-        /// <returns>The Uml instance being used</returns>
-        public static _UML GetUmlData(this ILifetimeScope scope)
-        {
-            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            return GetUmlData(workspaceLogic);
-        }
-
-        /// <summary>
-        /// Gets the uml data from the workspace
-        /// </summary>
-        /// <param name="workspaceLogic">Workspace logic being used</param>
-        /// <returns>The UML Data</returns>
-        public static _UML GetUmlData(this IWorkspaceLogic workspaceLogic)
-        {
-            var uml = workspaceLogic.GetUmlWorkspace();
-            return uml.Get<_UML>() ?? throw new InvalidOperationException("Uml not found");
-        }
-
-        /// <summary>
-        /// Gets the primitive data from the workspace
-        /// </summary>
-        /// <param name="workspaceLogic">Workspace logic being used</param>
-        /// <returns>The Primitive data</returns>
-        public static _PrimitiveTypes GetPrimitiveData(this IWorkspaceLogic workspaceLogic)
-        {
-            var uml = workspaceLogic.GetUmlWorkspace();
-            return uml.Get<_PrimitiveTypes>() ?? throw new InvalidOperationException("PrimitiveTypes not found");
         }
 
         public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>

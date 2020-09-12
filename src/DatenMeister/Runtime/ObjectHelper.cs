@@ -245,25 +245,6 @@ namespace DatenMeister.Runtime
         #nullable enable
 
         /// <summary>
-        /// Gets the value of a property if the property is set.
-        /// If the property is no set, then null will be returned
-        /// </summary>
-        /// <param name="value">Object being queried</param>
-        /// <param name="property">Property of the object</param>
-        /// <param name="noReferences">true, if the references shall not resolved</param>
-        /// <returns>The value of the object or null, if not existing</returns>
-        [Obsolete]
-        public static object? getOrDefault(this IObject value, string property, bool noReferences = false)
-        {
-            if (value.isSet(property))
-            {
-                return value.get<object>(property, noReferences);
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Gets the value of a property if the property is set and is not an enumeration.
         /// If the property is an enumeration, the first element will be returned
         /// If the property is no set, then null will be returned

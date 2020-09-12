@@ -40,12 +40,6 @@ namespace DatenMeister.Tests.Xmi
         }
 
         [Test]
-        public void TestBootstrap()
-        {
-            CreateUmlAndMofInstance(out _, out _);
-        }
-
-        [Test]
         public void TestIdValidity()
         {
             var document = XDocument.Load("Xmi/MOF.xmi");
@@ -76,16 +70,21 @@ namespace DatenMeister.Tests.Xmi
                     PathMof = "Xmi/MOF.xmi"
                 });
             var umlExtent = strapper.UmlInfrastructure;
+            Assert.That(umlExtent, Is.Not.Null);
             var element = umlExtent.elements().ElementAt(0) as IElement;
+            Assert.That(element, Is.Not.Null);
 
             var elementUri = umlExtent.uri(element);
+            Assert.That(elementUri, Is.Not.Null);
             var foundElement = umlExtent.element(elementUri);
             Assert.That(foundElement, Is.Not.Null);
             Assert.That(foundElement, Is.EqualTo(element));
 
             // Retrieve another element
             element = AllDescendentsQuery.GetDescendents(umlExtent).ElementAt(300) as IElement;
+            Assert.That(element, Is.Not.Null);
             elementUri = umlExtent.uri(element);
+            Assert.That(elementUri, Is.Not.Null);
             foundElement = umlExtent.element(elementUri);
             Assert.That(foundElement, Is.Not.Null);
             Assert.That(foundElement, Is.EqualTo(element));
@@ -94,19 +93,25 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestThatPropertyIsIElement()
         {
-            var uml = GetFilledUml();
+            var dm = DatenMeisterTests.GetDatenMeisterScope();
+            
+            var comment = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.CommonStructure.__Comment.GetUri()!, ResolveType.Default)
+                as IElement;
+            Assert.That(_UML.TheOne.CommonStructure.Comment._body, Is.Not.Null);
 
-            Assert.That(uml.CommonStructure.__Comment, Is.InstanceOf<IElement>());
+            var commentBody = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.CommonStructure.Comment._body.GetUri()!, ResolveType.Default)
+                as IElement;
+            Assert.That(comment, Is.InstanceOf<IElement>());
             Assert.That(_UML._CommonStructure._Comment.body, Is.InstanceOf<string>());
-            Assert.That(uml.CommonStructure.Comment._body, Is.InstanceOf<IElement>());
+            Assert.That(commentBody, Is.InstanceOf<IElement>());
 
             Assert.That(
-                uml.CommonStructure.Comment._body
+                commentBody
                     .isSet(_UML._CommonStructure._NamedElement.name),
                 Is.True);
 
             Assert.That(
-                uml.CommonStructure.Comment._body
+                commentBody
                     .get(_UML._CommonStructure._NamedElement.name),
                 Is.Not.Null);
         }
@@ -114,9 +119,10 @@ namespace DatenMeister.Tests.Xmi
         [Test]
         public void TestThatGeneralizationsAreOk()
         {
-            var uml = GetFilledUml();
-            var package = uml.Packages.__Package;
+            var dm = DatenMeisterTests.GetDatenMeisterScope();
 
+            var package = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Packages.__Package.GetUri()!, ResolveType.Default)
+                as IElement;
             // Old behavior
             IEnumerable<object> generalizedElements;
             string generalProperty;
@@ -138,15 +144,12 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(firstElement,Is.Not.Null);
             var generalContent = firstElement.getOrDefault<IElement>(generalProperty);
             Assert.That(generalContent,Is.InstanceOf<IElement>());
-            Assert.That(generalContent,Is.EqualTo(uml.CommonStructure.__PackageableElement));
+            Assert.That(generalContent.@equals(_UML.TheOne.CommonStructure.__PackageableElement));
         }
-
         /// <summary>
         /// Creates a filled MOF and UML instance which can be used for further testing
         /// </summary>
-        /// <param name="mof">Mof instance to be returned</param>
-        /// <param name="uml">Uml instance to be returned</param>
-        public static Bootstrapper CreateUmlAndMofInstance(out _MOF mof, out _UML uml)
+        public static Bootstrapper CreateUmlAndMofInstance()
         {
             var data = WorkspaceLogic.InitDefault();
             var dataLayerLogic =  WorkspaceLogic.Create(data);
@@ -161,25 +164,7 @@ namespace DatenMeister.Tests.Xmi
                 AllDescendentsQuery.GetDescendents(strapper.UmlInfrastructure).Count(),
                 Is.GreaterThan(500));
 
-            // Check, if the filled classes are working
-            mof = data.Mof.Get<_MOF>();
-            uml = data.Mof.Get<_UML>();
-            Assert.That(mof, Is.Not.Null);
-            Assert.That(uml, Is.Not.Null);
-
             return strapper;
-        }
-
-        private static _UML GetFilledUml()
-        {
-            var data = WorkspaceLogic.InitDefault();
-            var dataLayerLogic = WorkspaceLogic.Create(data);
-            Bootstrapper.PerformFullBootstrap(
-                dataLayerLogic,
-                data.Mof,
-                BootstrapMode.Mof);
-
-            return data.Mof.Get<_UML>();
         }
     }
 }

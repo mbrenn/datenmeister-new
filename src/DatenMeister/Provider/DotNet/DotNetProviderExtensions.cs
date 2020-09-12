@@ -6,7 +6,6 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.DotNet
@@ -52,13 +51,8 @@ namespace DatenMeister.Provider.DotNet
             }
 
             var metaclass = provider.TypeLookup.ToElement(value.GetType());
-            if (metaclass == null)
-            {
-                throw new InvalidOperationException(
-                    $"The type '{value.GetType().FullName}' is not known to the DotNetTypeLookup");
-            }
 
-            var result = new DotNetProviderObject(provider, value, metaclass);
+            var result = new DotNetProviderObject(provider, value, metaclass ?? string.Empty);
             if (!string.IsNullOrEmpty(id))
             {
                 result.Id = id!;
@@ -148,14 +142,13 @@ namespace DatenMeister.Provider.DotNet
         /// <summary>
         /// Generates the mof element out of the given type and adds it to the .Net Type Lookup
         /// </summary>
-        /// <param name="uml">Uml instance being used to create all necessary instances</param>
         /// <param name="extent">Extent to which the generated element will be added</param>
         /// <param name="dotNetType">And finally the .Net type that is converted and adde</param>
         /// <returns>The created type specification</returns>
-        public static IElement CreateTypeSpecification(this MofUriExtent extent, _UML uml, Type dotNetType)
+        public static IElement CreateTypeSpecification(this MofUriExtent extent, Type dotNetType)
         {
             var factory = new MofFactory(extent);
-            var dotNetTypeCreator = new DotNetTypeGenerator(factory, uml);
+            var dotNetTypeCreator = new DotNetTypeGenerator(factory);
             var element = dotNetTypeCreator.CreateTypeFor(dotNetType);
             extent.elements().add(element);
 

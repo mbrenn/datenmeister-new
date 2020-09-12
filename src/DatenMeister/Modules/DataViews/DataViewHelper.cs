@@ -15,17 +15,10 @@ namespace DatenMeister.Modules.DataViews
             _workspaceLogic = workspaceLogic;
         }
 
-        /// <summary>
-        /// Gets the model
-        /// </summary>
-        /// <returns></returns>
-        public _DataViews GetModel() =>
-            _workspaceLogic.GetTypesWorkspace().Create<FillTheDataViews, _DataViews>();
-
         public IElement CreateDataview(string name, string extentUri)
         {
             var viewExtent = _workspaceLogic.GetUserFormsExtent();
-            var metaClass = GetModel().__DataView;
+            var metaClass = _DataViews.TheOne.__DataView;
             var createdElement = new MofFactory(viewExtent).create(metaClass);
 
             createdElement.set(_DataViews._DataView.name, name);

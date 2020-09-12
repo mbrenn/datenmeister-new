@@ -11,7 +11,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DefaultTypes
@@ -27,12 +26,8 @@ namespace DatenMeister.Modules.DefaultTypes
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(DefaultClassifierHints));
 
-        private readonly _UML _uml;
-
-        public DefaultClassifierHints(IWorkspaceLogic workspaceLogic)
+        public DefaultClassifierHints()
         {
-            _uml = workspaceLogic.GetUmlWorkspace().Get<_UML>() ??
-                   throw new InvalidOperationException("Uml Workspace does not have uml");
         }
 
         /// <summary>
@@ -70,14 +65,6 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <returns>The defined packages</returns>
         public static IEnumerable<IElement> GetDefaultPackageClassifiers(IExtent extent)
         {
-            // First look into the standard uml meta classes
-            var findByUrl = extent.FindInMeta<_UML>(x => x.Packages.__Package);
-            if (findByUrl != null)
-            {
-                yield return findByUrl;
-            }
-
-            // If not found, check for the default package model in the types workspace
             yield return _CommonTypes.TheOne.Default.__Package;
         }
 
@@ -150,7 +137,7 @@ namespace DatenMeister.Modules.DefaultTypes
             var metaClass = (item as IElement)?.getMetaClass();
 
             // Hard coded at the moment, will be replaced by composite property identification
-            if (metaClass?.Equals(_uml.StructuredClassifiers.__Class) == true)
+            if (metaClass?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
             {
                 yield return _UML._StructuredClassifiers._Class.ownedAttribute;
                 yield return _UML._StructuredClassifiers._Class.ownedOperation;

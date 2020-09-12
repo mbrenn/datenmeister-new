@@ -23,7 +23,6 @@ namespace DatenMeister.Tests.Runtime.Extents
                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 "testing/datenmeister/data2");
 
-
             using (var dm = DatenMeisterTests.GetDatenMeisterScope(true, settings))
             {
                 using (var dm2 = DatenMeisterTests.GetDatenMeisterScope(true, settings2))

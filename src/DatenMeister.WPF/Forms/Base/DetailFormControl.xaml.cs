@@ -672,9 +672,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var fieldValue = new TextboxField();
                     var flags = new FieldParameter();
 
-                    var fieldData = MofFactory.CreateElementFor<_FormAndFields>(
-                        EffectiveForm,
-                        x => x.__TextFieldData);
+                    var fieldData = _FormAndFields.TheOne.__TextFieldData;
 
                     var fieldUiElement = fieldValue.CreateElement(
                         DetailElement,

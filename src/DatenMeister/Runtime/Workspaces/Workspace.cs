@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Filler;
 using DatenMeister.Runtime.DynamicFunctions;
 
 // ReSharper disable InconsistentNaming
@@ -99,34 +98,6 @@ namespace DatenMeister.Runtime.Workspaces
             this.annotation = annotation;
         }
 
-        public TFilledType Create<TFiller, TFilledType>()
-            where TFiller : IFiller<TFilledType>, new()
-            where TFilledType : class, new()
-        {
-            lock (_syncObject)
-            {
-                var filledType = Get<TFilledType>();
-                if (filledType != null)
-                {
-                    return filledType;
-                }
-
-                // Not found, we need to fill it on our own... Congratulation
-                var filler = new TFiller();
-                filledType = new TFilledType();
-
-                // Go through all extents of this datalayer
-                foreach (var oneExtent in extent)
-                {
-                    filler.Fill(oneExtent.elements(), filledType);
-                }
-
-                // Adds it to the database
-                FilledTypeCache.Add(filledType);
-                return filledType;
-            }
-        }
-
         public void ClearCache()
         {
             lock (_syncObject)
@@ -199,6 +170,7 @@ namespace DatenMeister.Runtime.Workspaces
             }
         }
 
+        [Obsolete]
         public TFilledType? Get<TFilledType>()
             where TFilledType : class, new()
         {
@@ -214,94 +186,6 @@ namespace DatenMeister.Runtime.Workspaces
                 }
 
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets the element of the current workspace and performs in addition a conversion function
-        /// </summary>
-        /// <typeparam name="TFilledType">Class to be looked after</typeparam>
-        /// <param name="function"></param>
-        /// <returns>Found function</returns>
-        public IElement? Get<TFilledType>(Func<TFilledType, IElement> function)
-            where TFilledType : class, new()
-        {
-            var result = Get<TFilledType>();
-            if (result == null)
-            {
-                return null;
-            }
-
-            return function(result);
-        }
-
-        /// <summary>
-        /// Creates the element of the current workspace and performs in addition a conversion function.
-        /// The elements are cached for performancewise improved handling
-        /// </summary>
-        /// <typeparam name="TFilledType">Class to be looked after</typeparam>
-        /// <param name="function"></param>
-        /// <returns>Found function</returns>
-        public IElement? Create<TFilledType>(Func<TFilledType, IElement> function)
-            where TFilledType : class, new()
-        {
-            var result = Get<TFilledType>();
-            if (result == null)
-            {
-                return null;
-            }
-
-            return function(result);
-        }
-
-        /// <summary>
-        /// Gets a property by querying all meta workspaces
-        /// </summary>
-        /// <typeparam name="TFilledType">Property to be queried</typeparam>
-        /// <returns>The property being queried</returns>
-        public TFilledType? GetFromMetaWorkspace<TFilledType>(
-            MetaRecursive metaRecursive = MetaRecursive.JustOne)
-            where TFilledType : class, new()
-        {
-            lock (_syncObject)
-            {
-                var open = new List<Workspace>(MetaWorkspaces);
-                var visited = new List<Workspace>();
-                while (open.Count > 0)
-                {
-                    var meta = open[0];
-                    open.RemoveAt(0);
-                    visited.Add(meta);
-
-                    var result = meta.Get<TFilledType>();
-                    if (result != null)
-                    {
-                        return result;
-                    }
-
-                    // Adds the meta workspaces of the meta workspace to the list to be analyzed
-                    if (metaRecursive == MetaRecursive.Recursively)
-                    {
-                        var newMetaWorkspaces = meta.MetaWorkspaces;
-                        foreach (var newMeta in newMetaWorkspaces)
-                        {
-                            if (!visited.Contains(newMeta))
-                            {
-                                open.Add(newMeta);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return default;
-        }
-
-        public void Set<TFilledType>(TFilledType value) where TFilledType : class, new()
-        {
-            lock (_syncObject)
-            {
-                FilledTypeCache.Add(value);
             }
         }
 

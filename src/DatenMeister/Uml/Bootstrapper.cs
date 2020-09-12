@@ -509,19 +509,19 @@ namespace DatenMeister.Uml
         /// Performs a full bootstrap by reading in the uml class
         /// </summary>
         /// <param name="workspaceLogic">The datalayer logic to be used</param>
-        /// <param name="dataLayer">The datalayer to be filled before the bootstrap itself</param>
+        /// <param name="workspace">The datalayer to be filled before the bootstrap itself</param>
         /// <param name="mode">The mode being used to load the information</param>
         /// <param name="paths">Paths storing the uml information</param>
         /// <returns>The instance of the bootstrapper</returns>
         public static Bootstrapper PerformFullBootstrap(
             IWorkspaceLogic workspaceLogic,
-            Workspace dataLayer,
+            Workspace workspace,
             BootstrapMode mode,
             FilePaths? paths = null)
         {
             var isSlim = mode == BootstrapMode.SlimMof || mode == BootstrapMode.SlimUml;
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
-            if (dataLayer == null) throw new ArgumentNullException(nameof(dataLayer));
+            if (workspace == null) throw new ArgumentNullException(nameof(workspace));
 
             string xmlPrimitiveTypes;
             string xmlMof;
@@ -563,11 +563,11 @@ namespace DatenMeister.Uml
             mofExtent.SlimUmlEvaluation = true;
 
             // Assigns the extents to the datalayer
-            workspaceLogic.AddExtent(dataLayer, umlExtent);
-            workspaceLogic.AddExtent(dataLayer, primitiveExtent);
+            workspaceLogic.AddExtent(workspace, umlExtent);
+            workspaceLogic.AddExtent(workspace, primitiveExtent);
             if (mode == BootstrapMode.Mof || mode == BootstrapMode.SlimMof)
             {
-                workspaceLogic.AddExtent(dataLayer, mofExtent);
+                workspaceLogic.AddExtent(workspace, mofExtent);
             }
 
             var bootStrapper = new Bootstrapper(workspaceLogic)
@@ -577,7 +577,7 @@ namespace DatenMeister.Uml
                 PrimitiveTypesInfrastructure = primitiveExtent
             };
 
-            if (isSlim)
+            /*if (isSlim)
             {
                 dataLayer.Set(new _UML());
                 dataLayer.Set(new _PrimitiveTypes());
@@ -591,7 +591,7 @@ namespace DatenMeister.Uml
                 {
                     dataLayer.Create<FillTheMOF, _MOF>();
                 }
-            }
+            }*/
 
             return bootStrapper;
         }

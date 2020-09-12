@@ -40,16 +40,15 @@ namespace DatenMeister.Tests.Modules
 
             var helper = dm.Resolve<DataViewHelper>();
             var dataView = helper.CreateDataview("Test", "dm:///view/test");
-            var model = helper.GetModel();
 
             var userViewExtent = helper.GetUserFormExtent();
 
             var factory = new MofFactory(userViewExtent);
-            var extentSource = factory.create(model.__SourceExtentNode);
+            var extentSource = factory.create(_DataViews.TheOne.__SourceExtentNode);
             extentSource.set(_DataViews._SourceExtentNode.extentUri, "dm:///testdata");
             userViewExtent.elements().add(extentSource);
 
-            var propertyFilter = factory.create(model.__FilterPropertyNode);
+            var propertyFilter = factory.create(_DataViews.TheOne.__FilterPropertyNode);
             userViewExtent.elements().add(propertyFilter);
             propertyFilter.set(_DataViews._FilterPropertyNode.property, "name");
             propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
@@ -84,13 +83,12 @@ namespace DatenMeister.Tests.Modules
 
             var helper = dm.Resolve<DataViewHelper>();
             var factory = InMemoryObject.TemporaryFactory;
-            var model = helper.GetModel();
             
             // Creates the dataview
-            var extentSource = factory.create(model.__DynamicSourceNode);
+            var extentSource = factory.create(_DataViews.TheOne.__DynamicSourceNode);
             extentSource.set(_DataViews._DynamicSourceNode.name, "input");
             
-            var propertyFilter = factory.create(model.__FilterPropertyNode);
+            var propertyFilter = factory.create(_DataViews.TheOne.__FilterPropertyNode);
             propertyFilter.set(_DataViews._FilterPropertyNode.property, "name");
             propertyFilter.set(_DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
             propertyFilter.set(_DataViews._FilterPropertyNode.value, "ai");
@@ -113,15 +111,14 @@ namespace DatenMeister.Tests.Modules
         {
             var localTypeSupport = dm.Resolve<LocalTypeSupport>();
             var userTypeExtent = localTypeSupport.GetUserTypeExtent();
-            var uml = dm.Resolve<IWorkspaceLogic>().GetUmlData();
 
             // Create two example types
             var userTypeFactory = new MofFactory(userTypeExtent);
-            var createdClass = userTypeFactory.create(uml.StructuredClassifiers.__Class);
+            var createdClass = userTypeFactory.create(_UML.TheOne.StructuredClassifiers.__Class);
             createdClass.set(_UML._CommonStructure._NamedElement.name, "First Class");
             userTypeExtent.elements().add(createdClass);
 
-            var secondClass = userTypeFactory.create(uml.StructuredClassifiers.__Class);
+            var secondClass = userTypeFactory.create(_UML.TheOne.StructuredClassifiers.__Class);
             secondClass.set(_UML._CommonStructure._NamedElement.name, "Second Class");
             userTypeExtent.elements().add(secondClass);
 

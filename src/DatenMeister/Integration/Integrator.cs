@@ -219,32 +219,6 @@ namespace DatenMeister.Integration
                 internalUserExtent,
                 "DatenMeister");
 
-            // Adds the module for form and fields
-            var fields = new _FormAndFields();
-            var uml = workspaceData.Uml.Get<_UML>() ??
-                      throw new InvalidOperationException("Workspace does not have uml");
-            typeWorkspace.Set(fields);
-            IntegrateFormAndFields.Assign(
-                uml,
-                mofFactory,
-                packageMethods.GetPackagedObjects(
-                    localTypeSupport.InternalTypes.elements(),
-                    "DatenMeister::Forms") ?? throw new InvalidOperationException("DatenMeister::Forms not found"),
-                fields,
-                (MofUriExtent) localTypeSupport.InternalTypes);
-
-            // Adds the module for managementprovider
-            var managementProvider = new _ManagementProvider();
-            typeWorkspace.Set(managementProvider);
-            IntegrateManagementProvider.Assign(
-                workspaceData.Uml.Get<_UML>() ?? throw new InvalidOperationException("Uml not found"),
-                mofFactory,
-                packageMethods.GetPackagedObjects(
-                    localTypeSupport.InternalTypes.elements(),
-                    "DatenMeister::Management") ??
-                throw new InvalidOperationException("DatenMeister::Management not found"),
-                managementProvider,
-                (MofUriExtent) localTypeSupport.InternalTypes);
 
             var formsPlugin = scope.Resolve<FormsPlugin>();
             packageMethods.ImportByManifest(

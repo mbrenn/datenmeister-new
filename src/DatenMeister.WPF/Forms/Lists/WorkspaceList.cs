@@ -46,7 +46,6 @@ namespace DatenMeister.WPF.Forms.Lists
         protected override void OnRecreateForms()
         {
             FormDefinition? form = null;
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
 
             if (OverridingViewDefinition?.Mode == FormDefinitionMode.Specific)
             {
@@ -55,7 +54,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 // Checks, if the given form is correct
                 if (!ClassifierMethods.IsSpecializedClassifierOf(
                     (OverridingViewDefinition.Element as IElement)?.getMetaClass(), 
-                    formAndFields.__ExtentForm))
+                    _FormAndFields.TheOne.__ExtentForm))
                 {
                     MessageBox.Show("Overriding form is not of type ExtentForm.");
                     form = null;

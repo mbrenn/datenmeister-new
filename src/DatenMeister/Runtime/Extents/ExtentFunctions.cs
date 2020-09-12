@@ -64,10 +64,7 @@ namespace DatenMeister.Runtime.Extents
             var typeLayer = dataLayer.MetaWorkspaces.FirstOrDefault() 
                             ?? _workspaceLogic.GetTypesWorkspace();
 
-            var umlLayer = typeLayer?.MetaWorkspaces.FirstOrDefault();
-
-            var uml = umlLayer?.Get<_UML>();
-            var classType = uml?.StructuredClassifiers.__Class;
+            var classType = _UML.TheOne.StructuredClassifiers.__Class;
 
             if (classType == null)
             {

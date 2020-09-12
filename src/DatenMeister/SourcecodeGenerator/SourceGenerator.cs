@@ -12,22 +12,20 @@ namespace DatenMeister.SourcecodeGenerator
 {
     public static class SourceGenerator
     {
-        public static void GenerateSourceFor(SourceGeneratorOptions options, _UML? uml = null)
+        public static void GenerateSourceFor(SourceGeneratorOptions options)
         {
-            uml ??= new _UML(); // Verifies that a uml is existing
-
             ////////////////////////////////////////
             // First of all, create all Mof types, representing the objects under concern
             var extent = new MofUriExtent(new InMemoryProvider(), options.ExtentUrl);
             var factory = new MofFactory(extent);
 
             // Creates the package
-            var package = factory.create(uml.Packages.__Package);
+            var package = factory.create(_UML.TheOne.Packages.__Package);
             package.set("name", options.Name);
             extent.elements().add(package);
 
             // Do the conversion from dotnet types to real MOF Types
-            var dotNetProvider = new DotNetTypeGenerator(factory, uml, extent);
+            var dotNetProvider = new DotNetTypeGenerator(factory, extent);
             foreach (var type in options.Types)
             {
                 var typeObject = dotNetProvider.CreateTypeFor(
@@ -48,7 +46,7 @@ namespace DatenMeister.SourcecodeGenerator
             }
 
             // Creates the source parser which is needed to navigate through the package
-            var sourceParser = new ElementSourceParser(uml);
+            var sourceParser = new ElementSourceParser();
 
             ////////////////////////////////////////
             // Creates the class tree

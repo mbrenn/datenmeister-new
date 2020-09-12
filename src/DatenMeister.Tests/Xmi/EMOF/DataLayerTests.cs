@@ -55,25 +55,5 @@ namespace DatenMeister.Tests.Xmi.EMOF
             logicLayer = logic.GetWorkspaceOfObject(value);
             Assert.That(logicLayer, Is.SameAs(data.Uml));
         }
-
-        [Test]
-        public void TestClassTreeUsage()
-        {
-            var data = WorkspaceLogic.InitDefault();
-            var dataLayerLogic = WorkspaceLogic.Create(data);
-
-            Bootstrapper.PerformFullBootstrap(
-                dataLayerLogic,
-                data.Uml,
-                BootstrapMode.Mof);
-
-            var primitiveTypes = data.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
-            Assert.That(primitiveTypes, Is.Not.Null );
-            Assert.That(primitiveTypes.__Real, Is.Not.Null);
-            Assert.That(primitiveTypes.__Real, Is.Not.TypeOf<object>());
-            
-            var primitiveTypes2 = data.Uml.Create<FillThePrimitiveTypes, _PrimitiveTypes>();
-            Assert.That(primitiveTypes2, Is.SameAs(primitiveTypes));
-        }
     }
 }

@@ -47,9 +47,6 @@ namespace DatenMeister.WPF.Modules.FormManager
                 yield break;
             }
             
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>()
-                                ?? throw new InvalidOperationException("No _FormAndFields in Type Workspace");
-            
             // Checks for specific elements
             var detailAsElement = detailWindow.DetailElement as IElement;
             var metaClassOfDetailElement = detailAsElement?.getMetaClass();
@@ -166,7 +163,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
 
             // The currently selected element is a form
-            if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, formAndFields.__Form)
+            if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, _FormAndFields.TheOne.__Form)
                 && detailAsElement != null)
             {
                 yield return new ApplicationMenuButtonDefinition(
@@ -257,7 +254,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass);
 
-                var formAssociation = factory.create(formAndFields.__FormAssociation);
+                var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
                 formAssociation.set(_FormAndFields._FormAssociation.metaClass, metaClass);
                 formAssociation.set(_FormAndFields._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
                 formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
@@ -299,7 +296,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var container = detailAsElement.container();
                 var isPackage = container != null && DefaultClassifierHints.IsPackageLike(container);
 
-                var formAssociation = factory.create(formAndFields.__FormAssociation);
+                var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
 
                 DefaultClassifierHints.AddToExtentOrElement(
                     isPackage && container != null ? container : (IObject) extent,
@@ -310,8 +307,8 @@ namespace DatenMeister.WPF.Modules.FormManager
                     "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
 
                 var formMetaClass = detailAsElement.metaclass;
-                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, formAndFields.__DetailForm);
-                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, formAndFields.__ExtentForm);
+                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _FormAndFields.TheOne.__DetailForm);
+                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _FormAndFields.TheOne.__ExtentForm);
                 var formType = 
                     isExtentForm ? FormType.TreeItemDetail :
                     isDetailForm ? FormType.Detail :

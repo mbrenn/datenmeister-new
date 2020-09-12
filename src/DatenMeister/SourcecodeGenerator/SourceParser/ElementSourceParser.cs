@@ -6,13 +6,6 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
 {
     public class ElementSourceParser : ISourceParser
     {
-        private readonly _UML _uml;
-
-        public ElementSourceParser(_UML uml)
-        {
-            _uml = uml;
-        }
-
         public bool IsPackage(IObject element)
         {
             var asElement = element as IElement;
@@ -22,38 +15,38 @@ namespace DatenMeister.SourcecodeGenerator.SourceParser
                 return false;
             }
 
-            return metaClass.equals(_uml.Packages.__Package)
+            return metaClass.equals(_UML.TheOne.Packages.__Package)
                    || metaClass.@equals(_CommonTypes.TheOne.Default.__Package);
         }
 
         public bool IsClass(IObject element)
         {
             var asElement = element as IElement;
-            return asElement?.getMetaClass()?.equals(_uml.StructuredClassifiers.__Class) == true;
+            return asElement?.getMetaClass()?.equals(_UML.TheOne.StructuredClassifiers.__Class) == true;
         }
 
         public bool IsEnum(IObject element)
         {
             var asElement = element as IElement;
-            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__Enumeration) == true;
+            return asElement?.getMetaClass()?.equals(_UML.TheOne.SimpleClassifiers.__Enumeration) == true;
         }
 
         public bool IsEnumLiteral(IObject element)
         {
             var asElement = element as IElement;
-            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__EnumerationLiteral) == true;
+            return asElement?.getMetaClass()?.equals(_UML.TheOne.SimpleClassifiers.__EnumerationLiteral) == true;
         }
 
         public bool IsProperty(IObject element)
         {
             var asElement = element as IElement;
-            return asElement?.getMetaClass()?.equals(_uml.Classification.__Property) == true;
+            return asElement?.getMetaClass()?.equals(_UML.TheOne.Classification.__Property) == true;
         }
 
         public bool IsPrimitiveType(IObject element)
         {
             var asElement = element as IElement;
-            return asElement?.getMetaClass()?.equals(_uml.SimpleClassifiers.__PrimitiveType) == true;
+            return asElement?.getMetaClass()?.equals(_UML.TheOne.SimpleClassifiers.__PrimitiveType) == true;
         }
     }
 }

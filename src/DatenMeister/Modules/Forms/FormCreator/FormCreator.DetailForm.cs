@@ -19,7 +19,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         public IElement CreateDetailForm(IObject element, CreationMode creationMode = CreationMode.All)
         {
             var cache = new FormCreatorCache();
-            var createdForm = _factory.create(_formAndFields.__DetailForm);
+            var createdForm = _factory.create(_FormAndFields.TheOne.__DetailForm);
             createdForm.set(_FormAndFields._DetailForm.name, "Item");
 
             if (creationMode.HasFlag(CreationMode.AddMetaClass))
@@ -39,7 +39,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <returns>The created form for the metaclass</returns>
         public IElement CreateDetailFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
         {
-            var createdForm = _factory.create(_formAndFields.__DetailForm);
+            var createdForm = _factory.create(_FormAndFields.TheOne.__DetailForm);
             var name = NamedElementMethods.GetName(metaClass);
             createdForm.set(_FormAndFields._DetailForm.name, $"{name} - Detail");
 

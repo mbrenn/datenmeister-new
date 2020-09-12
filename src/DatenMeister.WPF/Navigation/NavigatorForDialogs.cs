@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -134,28 +133,6 @@ namespace DatenMeister.WPF.Navigation
             public IList<IElement>? FilteredMetaClasses { get; set; } = new List<IElement>();
         }
 
-        /// <summary>
-        /// Locates a certain item
-        /// </summary>
-        /// <param name="navigationHost">Navigation host to be used</param>
-        /// <param name="workspace">Defines the workspace to which shall be navigated</param>
-        /// <param name="defaultExtent">Extent that shall be opened per default</param>
-        /// <returns></returns>
-        [Obsolete]
-        public static async Task<IObject?> Locate(
-            INavigationHost navigationHost,
-            IWorkspace? workspace = null,
-            IExtent? defaultExtent = null)
-        {
-            return await Locate(
-                navigationHost,
-                new NavigatorForDialogConfiguration
-                {
-                    DefaultWorkspace = workspace,
-                    DefaultExtent = defaultExtent
-                });
-        }
-        
         /// <summary>
         /// Opens a dialog and asks the user to locate an item 
         /// </summary>

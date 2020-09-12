@@ -35,8 +35,6 @@ namespace DatenMeister.Provider.DotNet
     {
         private readonly IFactory _factoryForTypes;
 
-        private readonly _UML _umlHost;
-
         private readonly IExtent? _targetExtent;
 
         public IUriResolver? UriResolver => _targetExtent as IUriResolver;
@@ -48,11 +46,17 @@ namespace DatenMeister.Provider.DotNet
         /// class, properties and other MOF elements</param>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
-        public DotNetTypeGenerator(IFactory factoryForTypes, _UML umlHost, IExtent? targetExtent = null)
+        public DotNetTypeGenerator(IFactory factoryForTypes, IExtent? targetExtent = null)
         {
             _factoryForTypes = factoryForTypes ?? throw new ArgumentNullException(nameof(factoryForTypes));
-            _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
             _targetExtent = targetExtent ?? (factoryForTypes as MofFactory)?.Extent;
+        }
+
+        [Obsolete]
+        public DotNetTypeGenerator(IFactory factoryForTypes, _UML uml, IExtent? targetExtent = null)
+            : this(factoryForTypes, targetExtent)
+        {
+
         }
 
         /// <summary>
@@ -60,11 +64,10 @@ namespace DatenMeister.Provider.DotNet
         /// </summary>
         /// <param name="umlHost">The UML reference storing the metaclass for class, properties, etc. </param>
         /// <param name="targetExtent">Stores the extent into which the elements will be added</param>
-        public DotNetTypeGenerator(IExtent targetExtent, _UML umlHost)
+        public DotNetTypeGenerator(IExtent targetExtent)
         {
             _targetExtent = targetExtent ?? throw new ArgumentNullException(nameof(targetExtent));
             _factoryForTypes = new MofFactory(_targetExtent);
-            _umlHost = umlHost ?? throw new ArgumentNullException(nameof(umlHost));
         }
 
 
@@ -93,7 +96,7 @@ namespace DatenMeister.Provider.DotNet
 
             if (type.IsClass)
             {
-                var umlClass = _factoryForTypes.create(_umlHost.StructuredClassifiers.__Class);
+                var umlClass = _factoryForTypes.create(_UML.TheOne.StructuredClassifiers.__Class);
                 if (umlClass is ICanSetId umlClassAsSet)
                 {
                     umlClassAsSet.Id = type.FullName;
@@ -116,7 +119,7 @@ namespace DatenMeister.Provider.DotNet
                         }
 
                         // We got a generalization
-                        ClassifierMethods.AddGeneralization(_umlHost, umlClass, generalizedClass);
+                        ClassifierMethods.AddGeneralization(umlClass, generalizedClass);
                     }
                 }
 
@@ -128,7 +131,7 @@ namespace DatenMeister.Provider.DotNet
                     if (property.DeclaringType != type && options.IntegrateInheritedProperties)
                         continue;
 
-                    var umlProperty = _factoryForTypes.create(_umlHost.Classification.__Property);
+                    var umlProperty = _factoryForTypes.create(_UML.TheOne.Classification.__Property);
                     if (umlProperty is MofElement propertyAsElement)
                     {
                         propertyAsElement.Container = umlClass;
@@ -152,7 +155,7 @@ namespace DatenMeister.Provider.DotNet
 
             if (type.IsEnum)
             {
-                var enumClass = _factoryForTypes.create(_umlHost.SimpleClassifiers.__Enumeration);
+                var enumClass = _factoryForTypes.create(_UML.TheOne.SimpleClassifiers.__Enumeration);
                 if (enumClass is ICanSetId umlClassAsSet)
                 {
                     umlClassAsSet.Id = type.FullName ?? type.ToString();
@@ -163,7 +166,7 @@ namespace DatenMeister.Provider.DotNet
                 var enumValues = new List<IObject>();
                 foreach (var enumValue in type.GetEnumValues())
                 {
-                    var enumValueClass = _factoryForTypes.create(_umlHost.SimpleClassifiers.__EnumerationLiteral);
+                    var enumValueClass = _factoryForTypes.create(_UML.TheOne.SimpleClassifiers.__EnumerationLiteral);
                     if (enumValueClass is ICanSetId umlValueClassAsSet)
                     {
                         umlValueClassAsSet.Id = $"{type.FullName}-{enumValue}";

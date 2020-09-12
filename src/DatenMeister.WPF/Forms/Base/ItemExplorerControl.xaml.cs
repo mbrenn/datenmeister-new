@@ -437,15 +437,14 @@ namespace DatenMeister.WPF.Forms.Base
             // Gets the default view for the given tab
             var name = tabForm.getOrDefault<string>(_FormAndFields._Form.title) ??
                        tabForm.getOrDefault<string>(_FormAndFields._Form.name);
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
             var usedViewExtensions = viewExtensions.ToList();
 
             UserControl? createdUserControl = null;
-            if (tabForm.getMetaClass()?.equals(formAndFields.__DetailForm) == true)
+            if (tabForm.getMetaClass()?.equals(_FormAndFields.TheOne.__DetailForm) == true)
             {
                 createdUserControl = CreateDetailForm(value, tabForm, container);
             }
-            else if (tabForm.getMetaClass()?.equals(formAndFields.__ListForm) == true)
+            else if (tabForm.getMetaClass()?.equals(_FormAndFields.TheOne.__ListForm) == true)
             {
                 createdUserControl = CreateListControl(value, tabForm, usedViewExtensions);
             }
@@ -673,8 +672,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     // Check if type is a directly type or the DefaultTypeForNewElement
                     if (type.metaclass?.equals(
-                        GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Create<_FormAndFields>(
-                            x => x.__DefaultTypeForNewElement)) == true)
+                        _FormAndFields.TheOne.__DefaultTypeForNewElement) == true)
                     {
                         var newType =
                             type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
@@ -922,9 +920,7 @@ namespace DatenMeister.WPF.Forms.Base
         private void btnViewMode_OnClick(object sender, RoutedEventArgs e)
         {
             var managementWorkspace = GiveMe.Scope.WorkspaceLogic.GetManagementWorkspace();
-            var form = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>() ??
-                       throw new InvalidOperationException("FormAndFields not found");
-            var viewModes = managementWorkspace.GetAllDescendentsOfType(form.__ViewMode);
+            var viewModes = managementWorkspace.GetAllDescendentsOfType(_FormAndFields.TheOne.__ViewMode);
             var contextMenu = new ContextMenu();
 
             var list = new List<MenuItem>();

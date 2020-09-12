@@ -45,7 +45,7 @@ namespace DatenMeister.Modules.Reports.Simple
         {
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>( element);
-            _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
+            _defaultClassifierHints = new DefaultClassifierHints();
             _formCreator = FormCreator.Create(workspaceLogic, null);
         }
 
@@ -58,7 +58,7 @@ namespace DatenMeister.Modules.Reports.Simple
         {
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = reportConfiguration;
-            _defaultClassifierHints = new DefaultClassifierHints(workspaceLogic);
+            _defaultClassifierHints = new DefaultClassifierHints();
             _formCreator = FormCreator.Create(workspaceLogic, null);
         }
 
@@ -165,12 +165,9 @@ namespace DatenMeister.Modules.Reports.Simple
         {
             if (_reportConfiguration.showFullName)
             {
-                var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>()
-                                    ?? throw new InvalidOperationException(
-                                        "FormAndFields are not found");
 
                 // Create the metaclass as a field
-                var fullNamefield = MofFactory.Create(foundForm, formAndFields.__FullNameFieldData);
+                var fullNamefield = MofFactory.Create(foundForm, _FormAndFields.TheOne.__FullNameFieldData);
                 fullNamefield.set(_FormAndFields._MetaClassElementFieldData.name, "Path");
                 fullNamefield.set(_FormAndFields._MetaClassElementFieldData.title, "Path");
                 foundForm.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(fullNamefield);

@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models.DataViews;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
@@ -33,16 +34,8 @@ namespace DatenMeister.Modules.DataViews
 
         public IEnumerable<IElement> GetDataViewElements()
         {
-            var metaClass = (IElement?)
-                (_workspaceLogic.GetTypesWorkspace()
-                    .FindElementByUri("dm:///_internal/types/internal?fn=" + PackagePathTypesDataView + "::DataView"));
+            var metaClass = _DataViews.TheOne.__DataView;
             
-            if (metaClass == null)
-            {
-                Logger.Warn("DataView MetaClass was not found");
-                yield break;
-            }
-                 
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
             foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()
                 .Where(extent => extent.contextURI() != WorkspaceNames.UriExtentWorkspaces)

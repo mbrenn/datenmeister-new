@@ -22,8 +22,6 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(ItemFormatter));
 
-        private readonly _FormAndFields _formAndFields;
-
         /// <summary>
         /// Initializes a new instance of the ItemFormatter class
         /// </summary>
@@ -32,8 +30,6 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
         public ItemFormatter(HtmlReport htmlEngine, IWorkspaceLogic workspaceLogic)
         {
             _htmlEngine = htmlEngine;
-            _formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>()
-                             ?? throw new InvalidOperationException("FormAndFields not found");
         }
 
         /// <summary>
@@ -97,13 +93,13 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
                     }
                     
                     HtmlElement value;
-                    if (field.metaclass?.@equals(_formAndFields.__MetaClassElementFieldData) == true)
+                    if (field.metaclass?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
                     {
                         value = item is IElement element && element.metaclass != null
                             ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
                             : new HtmlRawString("<i>unset</i>");
                     } 
-                    else if (field.metaclass?.@equals(_formAndFields.__FullNameFieldData) == true)
+                    else if (field.metaclass?.@equals(_FormAndFields.TheOne.__FullNameFieldData) == true)
                     {
                         var result = NamedElementMethods.GetFullNameWithoutElementId(item);
                         if (result == null || string.IsNullOrEmpty(result))

@@ -92,8 +92,7 @@ namespace DatenMeister.SourcecodeGenerator
         /// <param name="stack">Stack being used to walk through</param>
         protected override void WalkClass(IObject classInstance, CallStack stack)
         {
-            var asElement = classInstance as IElement;
-            if (asElement == null) return;
+            if (!(classInstance is IElement asElement)) return;
             var name = GetNameOfElement(classInstance);
 
             Result.AppendLine($"{stack.Indentation}public class _{name}");
@@ -113,10 +112,24 @@ namespace DatenMeister.SourcecodeGenerator
         {
             base.WalkProperty(propertyObject, stack);
 
+            if (!(propertyObject is IElement asElement)) return;
+
             var nameAsObject = propertyObject.get("name");
             var name = nameAsObject?.ToString() ?? string.Empty;
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
-            Result.AppendLine($"{stack.Indentation}public IElement? _{name} = null;");
+
+            var id = (asElement as IHasId)?.Id ?? string.Empty;
+            if (DotNetHelper.IsGuid(id))
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement? @_{name} = null;");
+            }
+            else
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement @_{name} = new MofObjectShadow(\"{asElement.GetUri() ?? string.Empty}\");");
+            }
+
             Result.AppendLine();
         }
 
@@ -154,8 +167,17 @@ namespace DatenMeister.SourcecodeGenerator
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
 
-            Result.AppendLine(
-                $"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement?.GetUri() ?? string.Empty}\");");
+            var id = (asElement as IHasId)?.Id ?? string.Empty;
+            if (DotNetHelper.IsGuid(id))
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement? @__{name} = null;");
+            }
+            else
+            {
+                Result.AppendLine(
+                    $"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement?.GetUri() ?? string.Empty}\");");
+            }
         }
     }
 }

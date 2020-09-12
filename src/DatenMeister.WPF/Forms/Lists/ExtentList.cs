@@ -63,14 +63,11 @@ namespace DatenMeister.WPF.Forms.Lists
             if (SelectedItem == null)
                 return;
 
-            var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_ManagementProvider>()
-                                     ?? throw new InvalidOperationException("_ManagementProvider == null");
-
             var overridingDefinition = OverridingViewDefinition;
 
             if (IsExtentSelectedInTreeview ||
                 SelectedItem is IElement selectedElement &&
-                selectedElement.metaclass?.@equals(managementProvider.__Workspace) == true)
+                selectedElement.metaclass?.@equals(_ManagementProvider.TheOne.__Workspace) == true)
             {
                 var formDefinition = overridingDefinition ??
                                      WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,

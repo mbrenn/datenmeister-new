@@ -120,6 +120,15 @@ namespace DatenMeister.Uml.Helper
                     var general = generalization.getOrDefault<IElement>(propertyGeneral);
                     if (general == null)
                     {
+                        var generalAsString = generalization.getOrDefault<string>(propertyGeneral);
+                        if (!string.IsNullOrEmpty(generalAsString))
+                        {
+                            general = classifier.GetUriExtentOf()?.element("#" + generalAsString);
+                        }
+                    }
+
+                    if (general == null)
+                    {
                         throw new InvalidOperationException(
                             "Somehow I got a null.... Generalizations needs to be verified");
                     }
@@ -164,7 +173,7 @@ namespace DatenMeister.Uml.Helper
                 yield break;
             }
             
-            var classInstance = extent.FindInMeta<_UML>(x => x.StructuredClassifiers.__Class);
+            var classInstance = _UML.TheOne.StructuredClassifiers.__Class;
             if (classInstance == null)
             {
                 throw new InvalidOperationException("Classifier is not known in metaextent");
@@ -253,20 +262,6 @@ namespace DatenMeister.Uml.Helper
         /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
         public static IElement? AddGeneralization(IElement specializedClassifier, IElement generalizedClassifier)
         {
-            var uml = GiveMe.Scope.WorkspaceLogic.GetUmlData();
-            return AddGeneralization(uml, specializedClassifier, generalizedClassifier);
-        }
-
-        /// <summary>
-        /// Adds a new generalization to the specialized classifier mapping to the
-        /// generalizedClassifier
-        /// </summary>
-        /// <param name="uml">Unml being used</param>
-        /// <param name="specializedClassifier">The classifier which will have a new generalization
-        /// and consequently will get the properties of the generalization attached</param>
-        /// <param name="generalizedClassifier">Generalized class being used as base for specialized one</param>
-        public static IElement? AddGeneralization(_UML uml, IElement specializedClassifier, IElement generalizedClassifier)
-        {
             if (specializedClassifier == null) throw new ArgumentNullException(nameof(specializedClassifier));
             if (generalizedClassifier == null) throw new ArgumentNullException(nameof(generalizedClassifier));
 
@@ -278,7 +273,7 @@ namespace DatenMeister.Uml.Helper
 
             var factory = new MofFactory(specializedClassifier);
 
-            var newGeneralization = factory.create(uml.Classification.__Generalization);
+            var newGeneralization = factory.create(_UML.TheOne.Classification.__Generalization);
             specializedClassifier.AddCollectionItem(
                 _UML._Classification._Classifier.generalization,
                 newGeneralization);

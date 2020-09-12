@@ -19,65 +19,56 @@ namespace DatenMeister.Models.ManagementProviders
         /// <param name="uml">The uml metamodel to be used</param>
         /// <param name="factory">Factory being used for creation</param>
         /// <param name="collection">Collection that shall be filled</param>
-        /// <param name="filledStructure">The form and fields structure</param>
         /// <param name="extent">And finally extent to which the types shall be registered</param>
-        public static void Assign(_UML uml, IFactory factory, IReflectiveCollection collection, _ManagementProvider filledStructure, MofExtent extent)
+        public static void Assign(IFactory factory, IReflectiveCollection collection, MofExtent extent)
         {
-            var generator = new DotNetTypeGenerator(factory, uml, extent);
+            var generator = new DotNetTypeGenerator(factory, extent);
             {
                 var type = typeof(DatenMeister.Runtime.ExtentStorage.ExtentLoadingState);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ExtentLoadingState = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.ManagementProvider.Extent);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__Extent = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.ManagementProvider.Workspace);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__Workspace = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.ManagementProvider.FormViewModels.CreateNewWorkspaceModel);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__CreateNewWorkspaceModel = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Runtime.ExtentTypeSetting);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ExtentTypeSetting = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Runtime.ExtentProperties);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ExtentProperties = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Runtime.ExtentPropertyDefinition);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ExtentPropertyDefinition = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
                 var type = typeof(DatenMeister.Models.Runtime.ExtentSettings);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
-                filledStructure.__ExtentSettings = typeAsElement;
                 extent.TypeLookup.Add(typeAsElement, type);
             }
         }

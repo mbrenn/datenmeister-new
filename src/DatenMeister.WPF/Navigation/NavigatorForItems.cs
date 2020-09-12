@@ -359,7 +359,7 @@ namespace DatenMeister.WPF.Navigation
                             if (containerProperty == null) // ParentProperty is not given, so user gives property
                             {
                                 // Parent property is already given by function call
-                                var dropField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__DropDownFieldData);
+                                var dropField = formFactory.create(_FormAndFields.TheOne.__DropDownFieldData);
 
                                 //dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
                                 dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
@@ -371,7 +371,7 @@ namespace DatenMeister.WPF.Navigation
                                     .OrderBy(z => z).Distinct();
                                 foreach (var property in properties)
                                 {
-                                    var valuePair = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__ValuePair);
+                                    var valuePair = formFactory.create(_FormAndFields.TheOne.__ValuePair);
                                     valuePair.set(_FormAndFields._ValuePair.name, property);
                                     valuePair.set(_FormAndFields._ValuePair.value, property);
                                     list.Add(valuePair);
@@ -381,7 +381,7 @@ namespace DatenMeister.WPF.Navigation
                                 fields.add(0, dropField);
 
                                 // Adds the line to separate it from the other side
-                                var lineField = formFactory.Create<_FormAndFields>(typeWorkspace, f => f.__SeparatorLineFieldData);
+                                var lineField = formFactory.create(_FormAndFields.TheOne.__SeparatorLineFieldData);
                                 fields.add(1, lineField);
                             }
                         },

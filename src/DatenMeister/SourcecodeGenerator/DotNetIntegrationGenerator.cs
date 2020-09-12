@@ -46,16 +46,14 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}/// <param name=\"uml\">The uml metamodel to be used</param>");
             Result.AppendLine($"{stack.Indentation}/// <param name=\"factory\">Factory being used for creation</param>");
             Result.AppendLine($"{stack.Indentation}/// <param name=\"collection\">Collection that shall be filled</param>");
-            Result.AppendLine($"{stack.Indentation}/// <param name=\"filledStructure\">The form and fields structure</param>");
             Result.AppendLine($"{stack.Indentation}/// <param name=\"extent\">And finally extent to which the types shall be registered</param>");
             Result.AppendLine(
                 $"{stack.Indentation}public static void Assign(" +
-                "_UML uml, IFactory factory, IReflectiveCollection collection, " +
-                $"_{packageName} filledStructure, MofExtent extent)");
+                "IFactory factory, IReflectiveCollection collection, MofExtent extent)");
             Result.AppendLine($"{stack.Indentation}{{");
 
             stack = stack.Next;
-            Result.AppendLine($"{stack.Indentation}var generator = new DotNetTypeGenerator(factory, uml, extent);");
+            Result.AppendLine($"{stack.Indentation}var generator = new DotNetTypeGenerator(factory, extent);");
 
             foreach (var type in types)
             {
@@ -67,9 +65,7 @@ namespace DatenMeister.SourcecodeGenerator
                 Result.AppendLine($"{stack.Indentation}var type = typeof({fullName});");
                 Result.AppendLine($"{stack.Indentation}var typeAsElement = generator.CreateTypeFor(type);");
                 Result.AppendLine($"{stack.Indentation}collection.add(typeAsElement);");
-                Result.AppendLine($"{stack.Indentation}filledStructure.__{type.Name} = typeAsElement;");
                 Result.AppendLine($"{stack.Indentation}extent.TypeLookup.Add(typeAsElement, type);");
-
 
                 stack = stack.Owner!;
                 Result.AppendLine($"{stack.Indentation}}}"); // Inner scope

@@ -433,6 +433,16 @@ namespace DatenMeister.Runtime
         public static bool IsUriReference(object? value) => value is UriReference;
 
         /// <summary>
+        /// Gets the information whether the given text is a Guid or whether it is some other text
+        /// </summary>
+        /// <param name="text">Text to be evaluated</param>
+        /// <returns>true, if the text is a guid</returns>
+        public static bool IsGuid(string text)
+        {
+            return Guid.TryParse(text, out _);
+        }
+
+        /// <summary>
         /// Creates the process 
         /// </summary>
         /// <param name="filePath"></param>

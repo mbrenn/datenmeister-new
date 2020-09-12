@@ -120,7 +120,6 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             var formPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             var isRootItem = Equals(RootItem, SelectedItem) || SelectedItem == null;
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_FormAndFields>();
                 
             IElement? form = null;
 
@@ -137,7 +136,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     
                     if (!ClassifierMethods.IsSpecializedClassifierOf(
                         formMetaClass, 
-                        formAndFields.__ExtentForm))
+                        _FormAndFields.TheOne.__ExtentForm))
                     {
                         var formType = formMetaClass?.ToString() ?? "Unclassified";
                         

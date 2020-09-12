@@ -94,8 +94,7 @@ namespace DatenMeister.Modules.Forms
         /// <returns>true, if the form already contains a metaclass form</returns>
         public static bool HasMetaClassFieldInForm(IObject form)
         {
-            var formAndFields = form.GetExtentOf()?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>()
-                                ?? _FormAndFields.TheOne;
+            var formAndFields = _FormAndFields.TheOne;
             return form
                 .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
                 .OfType<IElement>()
@@ -111,12 +110,10 @@ namespace DatenMeister.Modules.Forms
         public bool HasMetaClassFieldInForm(IExtent extent, IEnumerable<object> fields)
         {
             var typesWorkspace = _workspaceLogic.GetTypesWorkspace();
-            var formAndFields = typesWorkspace.Get<_FormAndFields>()
-                                ?? _FormAndFields.TheOne;
 
             return fields
                 .OfType<IElement>()
-                .Any(x => x.getMetaClass()?.@equals(formAndFields.__MetaClassElementFieldData) ?? false);
+                .Any(x => x.getMetaClass()?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) ?? false);
         }
         
         /// <summary>
@@ -149,12 +146,10 @@ namespace DatenMeister.Modules.Forms
                 throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
             var tabs = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
-            var formAndFields = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Get<_FormAndFields>();
-            if (formAndFields == null) throw new InvalidOperationException("_FormAndFields were not found");
 
             foreach (var tab in tabs.OfType<IElement>())
             {
-                if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(), formAndFields.__ListForm))
+                if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(), _FormAndFields.TheOne.__ListForm))
                 {
                     var property = tab.getOrDefault<string>(_FormAndFields._ListForm.property);
                     if (property == propertyName)
@@ -176,8 +171,6 @@ namespace DatenMeister.Modules.Forms
         public IElement? GetDefaultViewMode(IExtent? extent)
         {
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
-            var formAndFields = managementWorkspace.GetFromMetaWorkspace<_FormAndFields>()
-                                ?? throw new InvalidOperationException("_FormAndFields are empty");
             
             var extentTypes = extent?.GetConfiguration()?.ExtentTypes;
             if (extentTypes != null)
@@ -185,7 +178,7 @@ namespace DatenMeister.Modules.Forms
                 foreach (var extentType in extentTypes)
                 {
                     var result = managementWorkspace
-                        .GetAllDescendentsOfType(formAndFields.__ViewMode)
+                        .GetAllDescendentsOfType(_FormAndFields.TheOne.__ViewMode)
                         .WhenPropertyHasValue(_FormAndFields._ViewMode.defaultExtentType, extentType)
                         .OfType<IElement>()
                         .FirstOrDefault();
@@ -197,7 +190,7 @@ namespace DatenMeister.Modules.Forms
             }
 
             return managementWorkspace
-                .GetAllDescendentsOfType(formAndFields.__ViewMode)
+                .GetAllDescendentsOfType(_FormAndFields.TheOne.__ViewMode)
                 .WhenPropertyHasValue(_FormAndFields._ViewMode.id, "Default")
                 .OfType<IElement>()
                 .FirstOrDefault();

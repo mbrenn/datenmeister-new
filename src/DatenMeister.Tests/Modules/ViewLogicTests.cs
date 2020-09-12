@@ -22,7 +22,7 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestAvailabiltyOfUserViews()
+        public void TestAvailabilityOfUserViews()
         {
             var datenMeister = DatenMeisterTests.GetDatenMeisterScope();
             var viewLogic = datenMeister.Resolve<FormsPlugin>();
@@ -39,7 +39,7 @@ namespace DatenMeister.Tests.Modules
             var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             
-            var listForm = viewExtent.FindInMeta<_FormAndFields>(x => x.__ListForm);
+            var listForm = _FormAndFields.TheOne.__ListForm;
             
             var n = 0;
             foreach (var _ in viewLogic.GetAllForms())

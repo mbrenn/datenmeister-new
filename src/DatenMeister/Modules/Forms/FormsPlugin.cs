@@ -48,11 +48,6 @@ namespace DatenMeister.Modules.Forms
         private readonly ExtentSettings _extentSettings;
 
         /// <summary>
-        /// Stores the cached form and fields
-        /// </summary>
-        private _FormAndFields? _cachedFormAndField;
-
-        /// <summary>
         /// Defines the state for the form plugin
         /// </summary>
         private FormsPluginState _formPluginState;
@@ -112,11 +107,8 @@ namespace DatenMeister.Modules.Forms
                     if (extent == null)
                         throw new InvalidOperationException("Extent for users is not found");
 
-                    var formAndFields = _workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
-                                        throw new InvalidOperationException("FormAndFields not found");
-
                     extent.GetConfiguration()
-                        .AddDefaultTypePackages(new[] {formAndFields.__Form, formAndFields.__FormAssociation});
+                        .AddDefaultTypePackages(new[] {_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__FormAssociation});
 
                     // Includes the default view modes
                     var packageMethods = new PackageMethods(_workspaceLogic);
@@ -125,7 +117,7 @@ namespace DatenMeister.Modules.Forms
                         packageMethods.GetOrCreatePackageStructure(
                             internalFormExtent.elements(), "DatenMeister::ViewModes");
                     var created = MofFactory.Create(internalFormExtent,
-                        GetFormAndFieldInstance(internalFormExtent).__ViewMode);
+                        _FormAndFields.TheOne.__ViewMode);
                     created.set(_FormAndFields._ViewMode.id, "Default");
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
@@ -238,12 +230,11 @@ namespace DatenMeister.Modules.Forms
         {
             var internalViewExtent = GetInternalFormExtent();
             var userViewExtent = GetUserFormExtent();
-            var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
             return internalViewExtent.elements()
                 .Union(userViewExtent.elements())
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(formAndFields.__Form, formAndFields.__DetailForm, formAndFields.__ListForm);
+                .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__DetailForm, _FormAndFields.TheOne.__ListForm);
         }
 
         /// <summary>
@@ -256,9 +247,8 @@ namespace DatenMeister.Modules.Forms
         public IElement AddFormAssociationForMetaclass(IElement form, IElement metaClass, FormType formType)
         {
             var factory = new MofFactory(form);
-            var formAndFields = GetFormAndFieldInstance();
             
-            var formAssociation = factory.create(formAndFields.__FormAssociation);
+            var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
             var name = NamedElementMethods.GetName(form);
             
             formAssociation.set(_FormAndFields._FormAssociation.formType, formType);
@@ -277,12 +267,11 @@ namespace DatenMeister.Modules.Forms
         {
             var internalViewExtent = GetInternalFormExtent();
             var userViewExtent = GetUserFormExtent();
-            var formAndFields = GetFormAndFieldInstance(internalViewExtent);
 
             return internalViewExtent.elements()
                 .Union(userViewExtent.elements())
                 .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(formAndFields.__FormAssociation);
+                .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__FormAssociation);
         }
         
         /// <summary>
@@ -295,11 +284,10 @@ namespace DatenMeister.Modules.Forms
             var result = false;
             viewExtent ??= GetUserFormExtent();
             
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
             foreach (var foundElement in viewExtent
                 .elements()
                 .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(formAndFields.__FormAssociation)
+                .WhenMetaClassIs(_FormAndFields.TheOne.__FormAssociation)
                 .WhenPropertyHasValue(_FormAndFields._FormAssociation.extentType, selectedExtentType)
                 .OfType<IElement>())
             {
@@ -321,11 +309,10 @@ namespace DatenMeister.Modules.Forms
             var result = false;
             viewExtent ??= GetUserFormExtent();
             
-            var formAndFields = GetFormAndFieldInstance(viewExtent);
             foreach (var foundElement in viewExtent
                 .elements()
                 .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(formAndFields.__FormAssociation)
+                .WhenMetaClassIs(_FormAndFields.TheOne.__FormAssociation)
                 .WhenPropertyHasValue(_FormAndFields._FormAssociation.metaClass, metaClass)
                 .WhenPropertyHasValue(_FormAndFields._FormAssociation.formType, FormType.Detail)
                 .OfType<IElement>())
@@ -356,25 +343,6 @@ namespace DatenMeister.Modules.Forms
             {
                 viewExtent.elements().remove(foundElement);
             }
-        }
-
-        /// <summary>
-        /// Gets the form and field instance which contains the references to
-        /// the metaclasses
-        /// </summary>
-        /// <param name="viewExtent">Extent of the view</param>
-        /// <returns></returns>
-        public _FormAndFields GetFormAndFieldInstance(IExtent? viewExtent = null)
-        {
-            if (_cachedFormAndField != null)
-            {
-                return _cachedFormAndField;
-            }
-
-            viewExtent ??= GetUserFormExtent();
-            _cachedFormAndField =
-                _workspaceLogic.GetWorkspaceOfExtent(viewExtent)?.GetFromMetaWorkspace<_FormAndFields>();
-            return _cachedFormAndField ?? throw new InvalidOperationException("FormAndFields could not be found");
         }
 
         public IElement? GetDetailForm(IObject? element, IExtent? extent, FormDefinitionMode formDefinitionMode)

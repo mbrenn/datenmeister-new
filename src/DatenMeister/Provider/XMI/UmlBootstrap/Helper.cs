@@ -142,8 +142,12 @@ namespace DatenMeister.Provider.XMI.UmlBootstrap
             foreach (var property in elementAsExt.getPropertiesBeingSet())
             {
                 var propertyValue = element.get(property);
-                if (propertyValue is IEnumerable propertyAsEnumerable)
+
+                if (DotNetHelper.IsOfEnumeration(propertyValue))
                 {
+                    var propertyAsEnumerable = propertyValue as IEnumerable
+                                               ?? throw new InvalidOperationException("Something obscure happened");
+
                     foreach (var innerValue in propertyAsEnumerable)
                     {
                         if (innerValue is IObject innerValueAsObject)

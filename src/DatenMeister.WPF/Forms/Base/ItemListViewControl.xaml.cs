@@ -378,7 +378,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (_formsPlugin == null) throw new InvalidOperationException("_formlogic == null");
             
             var fieldMetaClass = field.getMetaClass();
-            if (fieldMetaClass?.equals(_formsPlugin.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+            if (fieldMetaClass?.equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -631,7 +631,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 bool isReadOnly;
 
-                if (fieldMetaClass?.equals(_formsPlugin.GetFormAndFieldInstance().__MetaClassElementFieldData) == true)
+                if (fieldMetaClass?.equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";
@@ -924,10 +924,8 @@ namespace DatenMeister.WPF.Forms.Base
                                 if (propertyField != null) fields.remove(propertyField);
 
                                 // Now, create the replacement
-                                var formAndFields =
-                                    GiveMe.Scope.Resolve<IWorkspaceLogic>().GetTypesWorkspace().Require<_FormAndFields>();
                                 var factory = new MofFactory(b.View);
-                                var element = factory.create(formAndFields.__DropDownFieldData);
+                                var element = factory.create(_FormAndFields.TheOne.__DropDownFieldData);
                                 element.set(_FormAndFields._DropDownFieldData.name,
                                     nameof(PropertyComparisonFilter.Property));
                                 element.set(_FormAndFields._DropDownFieldData.title,
@@ -940,7 +938,7 @@ namespace DatenMeister.WPF.Forms.Base
                                 {
                                     if (!field.isSet(_FormAndFields._FieldData.name)) continue;
 
-                                    var pair = factory.create(formAndFields.__ValuePair);
+                                    var pair = factory.create(_FormAndFields.TheOne.__ValuePair);
 
                                     pair.set(_FormAndFields._ValuePair.name,
                                         field.get<string>(_FormAndFields._FieldData.title));

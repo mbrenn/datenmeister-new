@@ -197,11 +197,10 @@ namespace DatenMeister.WPF.Modules.FormManager
                         var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                         var userViewExtent = viewLogic.GetUserFormExtent();
                         var factory = new MofFactory(userViewExtent);
-                        var formAndFields = viewLogic.GetFormAndFieldInstance();
 
                         viewLogic.RemoveFormAssociationForExtentType(selectedExtentType);
 
-                        var formAssociation = factory.create(formAndFields.__FormAssociation);
+                        var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
                         formAssociation.set(_FormAndFields._FormAssociation.extentType, selectedExtentType);
                         formAssociation.set(_FormAndFields._FormAssociation.form, itemExplorerControl.EffectiveForm);
                         formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.TreeItemExtent);

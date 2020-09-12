@@ -177,20 +177,6 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
-        /// Finds in the meta extents and meta workspaces the metaclass
-        /// </summary>
-        /// <typeparam name="TFilledType">Filled Type to be evaluated</typeparam>
-        /// <param name="extent">Extent to be evaluated</param>
-        /// <param name="type">Type converter finding the requested type</param>
-        /// <returns>The found element</returns>
-        public static IElement? FindInMeta<TFilledType>(this IExtent extent, Func<TFilledType, IElement> type)
-            where TFilledType : class, new()
-        {
-            var filledType = ((MofExtent) extent).Workspace?.GetFromMetaWorkspace<TFilledType>();
-            return filledType == null ? null : type(filledType);
-        }
-
-        /// <summary>
         /// Checks whether the requested id is still available in the extent.
         /// If that's the case, the element receives the given id, otherwise, the id will get a unique suffix
         /// </summary>

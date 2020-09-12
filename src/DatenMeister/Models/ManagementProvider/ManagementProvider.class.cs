@@ -27,31 +27,31 @@ namespace DatenMeister.Models.ManagementProviders
         public class _Extent
         {
             public static string @uri = "uri";
-            public IElement? _uri = null;
+            public IElement? @_uri = null;
 
             public static string @count = "count";
-            public IElement? _count = null;
+            public IElement? @_count = null;
 
             public static string @totalCount = "totalCount";
-            public IElement? _totalCount = null;
+            public IElement? @_totalCount = null;
 
             public static string @type = "type";
-            public IElement? _type = null;
+            public IElement? @_type = null;
 
             public static string @extentType = "extentType";
-            public IElement? _extentType = null;
+            public IElement? @_extentType = null;
 
             public static string @isModified = "isModified";
-            public IElement? _isModified = null;
+            public IElement? @_isModified = null;
 
             public static string @alternativeUris = "alternativeUris";
-            public IElement? _alternativeUris = null;
+            public IElement? @_alternativeUris = null;
 
             public static string @state = "state";
-            public IElement? _state = null;
+            public IElement? @_state = null;
 
             public static string @failMessage = "failMessage";
-            public IElement? _failMessage = null;
+            public IElement? @_failMessage = null;
 
         }
 
@@ -61,13 +61,13 @@ namespace DatenMeister.Models.ManagementProviders
         public class _Workspace
         {
             public static string @id = "id";
-            public IElement? _id = null;
+            public IElement? @_id = null;
 
             public static string @annotation = "annotation";
-            public IElement? _annotation = null;
+            public IElement? @_annotation = null;
 
             public static string @extents = "extents";
-            public IElement? _extents = null;
+            public IElement? @_extents = null;
 
         }
 
@@ -77,10 +77,10 @@ namespace DatenMeister.Models.ManagementProviders
         public class _CreateNewWorkspaceModel
         {
             public static string @id = "id";
-            public IElement? _id = null;
+            public IElement? @_id = null;
 
             public static string @annotation = "annotation";
-            public IElement? _annotation = null;
+            public IElement? @_annotation = null;
 
         }
 
@@ -90,10 +90,10 @@ namespace DatenMeister.Models.ManagementProviders
         public class _ExtentTypeSetting
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @rootElementMetaClasses = "rootElementMetaClasses";
-            public IElement? _rootElementMetaClasses = null;
+            public IElement? @_rootElementMetaClasses = null;
 
         }
 
@@ -103,31 +103,31 @@ namespace DatenMeister.Models.ManagementProviders
         public class _ExtentProperties
         {
             public static string @uri = "uri";
-            public IElement? _uri = null;
+            public IElement? @_uri = null;
 
             public static string @count = "count";
-            public IElement? _count = null;
+            public IElement? @_count = null;
 
             public static string @totalCount = "totalCount";
-            public IElement? _totalCount = null;
+            public IElement? @_totalCount = null;
 
             public static string @type = "type";
-            public IElement? _type = null;
+            public IElement? @_type = null;
 
             public static string @extentType = "extentType";
-            public IElement? _extentType = null;
+            public IElement? @_extentType = null;
 
             public static string @isModified = "isModified";
-            public IElement? _isModified = null;
+            public IElement? @_isModified = null;
 
             public static string @alternativeUris = "alternativeUris";
-            public IElement? _alternativeUris = null;
+            public IElement? @_alternativeUris = null;
 
             public static string @state = "state";
-            public IElement? _state = null;
+            public IElement? @_state = null;
 
             public static string @failMessage = "failMessage";
-            public IElement? _failMessage = null;
+            public IElement? @_failMessage = null;
 
         }
 
@@ -137,13 +137,13 @@ namespace DatenMeister.Models.ManagementProviders
         public class _ExtentPropertyDefinition
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @metaClass = "metaClass";
-            public IElement? _metaClass = null;
+            public IElement? @_metaClass = null;
 
         }
 
@@ -153,10 +153,10 @@ namespace DatenMeister.Models.ManagementProviders
         public class _ExtentSettings
         {
             public static string @extentTypeSettings = "extentTypeSettings";
-            public IElement? _extentTypeSettings = null;
+            public IElement? @_extentTypeSettings = null;
 
             public static string @propertyDefinitions = "propertyDefinitions";
-            public IElement? _propertyDefinitions = null;
+            public IElement? @_propertyDefinitions = null;
 
         }
 

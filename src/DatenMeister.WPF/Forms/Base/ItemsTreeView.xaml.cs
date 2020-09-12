@@ -12,7 +12,6 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
@@ -178,7 +177,7 @@ namespace DatenMeister.WPF.Forms.Base
         public ItemsTreeView()
         {
             InitializeComponent();
-            _defaultClassifierHints = new DefaultClassifierHints(GiveMe.Scope.WorkspaceLogic);
+            _defaultClassifierHints = new DefaultClassifierHints();
         }
 
         public IObject? ItemsSource

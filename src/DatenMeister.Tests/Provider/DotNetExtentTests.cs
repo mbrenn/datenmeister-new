@@ -366,11 +366,11 @@ namespace DatenMeister.Tests.Provider
             var uml = new _UML();
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
 
-            extent.CreateTypeSpecification(uml, typeof(DotNetTests.TestClass));
-            extent.CreateTypeSpecification(uml, typeof(DotNetTests.Person));
-            extent.CreateTypeSpecification(uml, typeof(DotNetTests.PersonWithParent));
-            extent.CreateTypeSpecification(uml, typeof(DotNetTests.TestClassWithList));
-            extent.CreateTypeSpecification(uml, typeof(DotNetTests.PersonWithAnotherPersonPerElement));
+            extent.CreateTypeSpecification(typeof(DotNetTests.TestClass));
+            extent.CreateTypeSpecification(typeof(DotNetTests.Person));
+            extent.CreateTypeSpecification(typeof(DotNetTests.PersonWithParent));
+            extent.CreateTypeSpecification(typeof(DotNetTests.TestClassWithList));
+            extent.CreateTypeSpecification(typeof(DotNetTests.PersonWithAnotherPersonPerElement));
             return extent;
         }
 

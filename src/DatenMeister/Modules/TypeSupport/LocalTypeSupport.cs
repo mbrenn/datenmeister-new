@@ -135,7 +135,7 @@ namespace DatenMeister.Modules.TypeSupport
                 new MofFactory(internalTypeExtent),
                 packageName,
                 "name",
-                _workspaceLogic.GetUmlData().Packages.__Package);
+                _UML.TheOne.Packages.__Package);
             if (package == null)
                 throw new InvalidOperationException("package == null");
 
@@ -188,8 +188,7 @@ namespace DatenMeister.Modules.TypeSupport
             var result = new List<IElement>();
             var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
             var generator = new DotNetTypeGenerator(
-                internalTypeExtent,
-                _workspaceLogic.GetUmlData());
+                internalTypeExtent);
 
             foreach (var type in types)
             {
@@ -349,26 +348,6 @@ namespace DatenMeister.Modules.TypeSupport
         public static IUriExtent GetUserTypeExtent(IWorkspace workspace) =>
             workspace.FindExtent(WorkspaceNames.UriExtentUserTypes);
 
-        public void ImportTypes<T>(string packageName,
-            T type,
-            Action<_UML, IFactory, IReflectiveCollection, T, MofExtent> parseMethods)
-        {
-            var internalTypeExtent = (MofExtent) GetInternalTypeExtent();
-            IReflectiveCollection? rootElements = internalTypeExtent.elements();
-            if (packageName != null)
-            {
-                rootElements = _packageMethods.GetPackagedObjects(rootElements, packageName);
-            }
-
-            if (rootElements == null)
-                throw new InvalidOperationException("rootElements == null");
-
-            var uml = _workspaceLogic.GetUmlData();
-            var factory = new MofFactory(internalTypeExtent);
-
-            parseMethods(uml, factory, rootElements, type, internalTypeExtent);
-        }
-        
         /// <summary>
         /// Creates a new instance of the metaclass by looking through the internal extent
         /// </summary>

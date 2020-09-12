@@ -42,11 +42,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// </summary>
         private readonly IFactory _factory;
 
-        /// <summary>
-        /// Stores the information for form and fields including all metaclasses
-        /// </summary>
-        private readonly _FormAndFields _formAndFields;
-
         private readonly ExtentSettings _extentSettings;
 
         private IElement? _stringType;
@@ -54,8 +49,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
         private IElement? _booleanType;
         private IElement? _realType;
         private IElement? _dateTimeType;
-        private _UML? _uml;
-        private _PrimitiveTypes? _primitiveTypes;
         private Workspace? _uriResolver;
 
         /// <summary>
@@ -92,14 +85,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
             _factory = userExtent != null
                 ? new MofFactory(userExtent)
                 : InMemoryObject.TemporaryFactory;
-            _formAndFields = userExtent?.GetWorkspace()?.GetFromMetaWorkspace<_FormAndFields>() ??
-                             _workspaceLogic?.GetTypesWorkspace()?.Get<_FormAndFields>() ??
-                             _FormAndFields.TheOne ??
-                             throw new InvalidOperationException("FormAndFields not found");
-
-            _uml = _workspaceLogic?.GetUmlData() ??
-                   _UML.TheOne ??
-                   throw new InvalidOperationException("UML not found");
         }
         
         /// <summary>
@@ -178,7 +163,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 && !FormMethods.HasMetaClassFieldInForm(form))
             {
                 // Add the element itself
-                var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                var metaClassField = _factory.create(_FormAndFields.TheOne.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
 
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(metaClassField);
@@ -254,17 +239,17 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                     if (DotNetHelper.IsPrimitiveType(propertyType) || creationMode.HasFlag(CreationMode.ForListForms))
                     {
-                        column = _factory.create(_formAndFields.__TextFieldData);
+                        column = _factory.create(_FormAndFields.TheOne.__TextFieldData);
                     }
                     else
                     {
                         if (DotNetHelper.IsEnumeration(propertyType))
                         {
-                            column = _factory.create(_formAndFields.__SubElementFieldData);
+                            column = _factory.create(_FormAndFields.TheOne.__SubElementFieldData);
                         }
                         else
                         {
-                            column = _factory.create(_formAndFields.__ReferenceFieldData);
+                            column = _factory.create(_FormAndFields.TheOne.__ReferenceFieldData);
                             column.set(_FormAndFields._ReferenceFieldData.isSelectionInline, false);
                         }
                     }
@@ -343,7 +328,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 && creationMode.HasFlagFast(CreationMode.AddMetaClass)
                 && !FormMethods.HasMetaClassFieldInForm(form))
             {
-                var metaClassField = _factory.create(_formAndFields.__MetaClassElementFieldData);
+                var metaClassField = _factory.create(_FormAndFields.TheOne.__MetaClassElementFieldData);
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
                 metaClassField.set(_FormAndFields._MetaClassElementFieldData.title, "Metaclass");
                 form.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(metaClassField);
@@ -378,11 +363,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
             
             // First, select the type of the form
             var isDetailForm = 
-                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _formAndFields.__DetailForm);
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _FormAndFields.TheOne.__DetailForm);
             var isListForm = 
-                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _formAndFields.__ListForm);
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _FormAndFields.TheOne.__ListForm);
             var isExtentForm = 
-                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _formAndFields.__ExtentForm);
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _FormAndFields.TheOne.__ExtentForm);
             var isNoneOfTheForms = !(isDetailForm || isListForm || isExtentForm);
             if (isNoneOfTheForms)
             {
@@ -390,13 +375,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             // Second, select the type of the umlElement
-            var uml = GiveMe.Scope.GetUmlData();
             var isPropertyUml =
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), uml.Classification.__Property);
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), _UML.TheOne.Classification.__Property);
             var isClassUml =
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), uml.StructuredClassifiers.__Class);
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), _UML.TheOne.StructuredClassifiers.__Class);
             var isEnumerationUml =
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), uml.SimpleClassifiers.__Enumeration);
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), _UML.TheOne.SimpleClassifiers.__Enumeration);
             var isNoneOfTheUml = !(isPropertyUml || isClassUml || isEnumerationUml);
             if (isNoneOfTheUml)
             {
@@ -501,21 +485,19 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
 
             // Check, if field property is an enumeration
-            _uml ??= _workspaceLogic?.GetUmlData();
-            _primitiveTypes ??= _workspaceLogic?.GetPrimitiveData();
             _uriResolver ??= _workspaceLogic?.GetTypesWorkspace();
 
-            _stringType ??= _primitiveTypes?.__String;
-            _integerType ??= _primitiveTypes?.__Integer;
-            _booleanType ??= _primitiveTypes?.__Boolean;
-            _realType ??= _primitiveTypes?.__Real;
+            _stringType ??= _PrimitiveTypes.TheOne.__String;
+            _integerType ??= _PrimitiveTypes.TheOne.__Integer;
+            _booleanType ??= _PrimitiveTypes.TheOne.__Boolean;
+            _realType ??= _PrimitiveTypes.TheOne.__Real;
             _dateTimeType ??= _uriResolver?.ResolveElement(CoreTypeNames.DateTimeType, ResolveType.Default, false);
 
             // Checks, if the property is an enumeration.
             var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)
-            if (propertyTypeMetaClass != null && propertyType != null && _uml != null)
+            if (propertyTypeMetaClass != null && propertyType != null)
             {
-                if (propertyTypeMetaClass.@equals(_uml.SimpleClassifiers.__Enumeration) && !isForListForm)
+                if (propertyTypeMetaClass.@equals(_UML.TheOne.SimpleClassifiers.__Enumeration) && !isForListForm)
                 {
                     return CreateFieldForEnumeration(propertyName, propertyType, creationMode);
                 }
@@ -523,7 +505,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (propertyType.@equals(_booleanType) && !isForListForm)
                 {
                     // If we have a boolean and the field is not for a list form
-                    var checkbox = _factory.create(_formAndFields.__CheckboxFieldData);
+                    var checkbox = _factory.create(_FormAndFields.TheOne.__CheckboxFieldData);
                     checkbox.set(_FormAndFields._CheckboxFieldData.name, propertyName);
                     checkbox.set(_FormAndFields._CheckboxFieldData.title, propertyName);
                     checkbox.set(_FormAndFields._CheckboxFieldData.isReadOnly, isReadOnly);
@@ -532,7 +514,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
                 if (propertyType.@equals(_dateTimeType) && !isForListForm)
                 {
-                    var dateTimeField= _factory.create(_formAndFields.__DateTimeFieldData);
+                    var dateTimeField= _factory.create(_FormAndFields.TheOne.__DateTimeFieldData);
                     dateTimeField.set(_FormAndFields._CheckboxFieldData.name, propertyName);
                     dateTimeField.set(_FormAndFields._CheckboxFieldData.title, propertyName);
                     dateTimeField.set(_FormAndFields._CheckboxFieldData.isReadOnly, isReadOnly);
@@ -550,7 +532,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     if (propertyIsEnumeration)
                     {
                         // It can contain multiple elements
-                        var elements = _factory.create(_formAndFields.__SubElementFieldData);
+                        var elements = _factory.create(_FormAndFields.TheOne.__SubElementFieldData);
                         elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
@@ -567,7 +549,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
 
                     // It can just contain one element
-                    var reference = _factory.create(_formAndFields.__ReferenceFieldData);
+                    var reference = _factory.create(_FormAndFields.TheOne.__ReferenceFieldData);
                     reference.set(_FormAndFields._ReferenceFieldData.name, propertyName);
                     reference.set(_FormAndFields._ReferenceFieldData.title, propertyName);
                     reference.set(_FormAndFields._ReferenceFieldData.isReadOnly, isReadOnly);
@@ -586,8 +568,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
             {
                 // If we have something else than a primitive type and it is not for a list form
                 var element = _factory.create(propertyIsEnumeration
-                    ? _formAndFields.__SubElementFieldData
-                    : _formAndFields.__AnyDataFieldData);
+                    ? _FormAndFields.TheOne.__SubElementFieldData
+                    : _FormAndFields.TheOne.__AnyDataFieldData);
 
                 // It can just contain one element
                 element.set(_FormAndFields._SubElementFieldData.name, propertyName);
@@ -605,7 +587,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
             }
 
             // Per default, assume some kind of text
-            var column = _factory.create(_formAndFields.__TextFieldData);
+            var column = _factory.create(_FormAndFields.TheOne.__TextFieldData);
             column.set(_FormAndFields._TextFieldData.name, propertyName);
             column.set(_FormAndFields._TextFieldData.title, propertyName);
             column.set(_FormAndFields._TextFieldData.isReadOnly, isReadOnly);
@@ -630,7 +612,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         {
             var isReadOnly = creationMode.HasFlagFast(CreationMode.ReadOnly);
             // If we have an enumeration (C#: Enum) and the field is not for a list form
-            var comboBox = _factory.create(_formAndFields.__DropDownFieldData);
+            var comboBox = _factory.create(_FormAndFields.TheOne.__DropDownFieldData);
             comboBox.set(_FormAndFields._DropDownFieldData.name, propertyName);
             comboBox.set(_FormAndFields._DropDownFieldData.title, propertyName);
             comboBox.set(_FormAndFields._DropDownFieldData.isReadOnly, isReadOnly);
@@ -640,7 +622,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 _FormAndFields._DropDownFieldData.values,
                 values.Select(x =>
                 {
-                    var data = _factory.create(_formAndFields.__ValuePair);
+                    var data = _factory.create(_FormAndFields.TheOne.__ValuePair);
                     data.set(_FormAndFields._ValuePair.name, x);
                     data.set(_FormAndFields._ValuePair.value, x);
                     return data;

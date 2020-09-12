@@ -11,22 +11,22 @@ namespace DatenMeister.Models.Forms
         public class _FieldData
         {
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -36,10 +36,10 @@ namespace DatenMeister.Models.Forms
         public class _SortingOrder
         {
             public static string @field = "field";
-            public IElement? _field = null;
+            public IElement? @_field = null;
 
             public static string @isDescending = "isDescending";
-            public IElement? _isDescending = null;
+            public IElement? @_isDescending = null;
 
         }
 
@@ -49,22 +49,22 @@ namespace DatenMeister.Models.Forms
         public class _AnyDataFieldData
         {
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -74,25 +74,25 @@ namespace DatenMeister.Models.Forms
         public class _CheckboxFieldData
         {
             public static string @lineHeight = "lineHeight";
-            public IElement? _lineHeight = null;
+            public IElement? @_lineHeight = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -102,31 +102,31 @@ namespace DatenMeister.Models.Forms
         public class _DateTimeFieldData
         {
             public static string @hideDate = "hideDate";
-            public IElement? _hideDate = null;
+            public IElement? @_hideDate = null;
 
             public static string @hideTime = "hideTime";
-            public IElement? _hideTime = null;
+            public IElement? @_hideTime = null;
 
             public static string @showOffsetButtons = "showOffsetButtons";
-            public IElement? _showOffsetButtons = null;
+            public IElement? @_showOffsetButtons = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -136,28 +136,28 @@ namespace DatenMeister.Models.Forms
         public class _FormAssociation
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @formType = "formType";
-            public IElement? _formType = null;
+            public IElement? @_formType = null;
 
             public static string @metaClass = "metaClass";
-            public IElement? _metaClass = null;
+            public IElement? @_metaClass = null;
 
             public static string @extentType = "extentType";
-            public IElement? _extentType = null;
+            public IElement? @_extentType = null;
 
             public static string @viewModeId = "viewModeId";
-            public IElement? _viewModeId = null;
+            public IElement? @_viewModeId = null;
 
             public static string @parentMetaClass = "parentMetaClass";
-            public IElement? _parentMetaClass = null;
+            public IElement? @_parentMetaClass = null;
 
             public static string @parentProperty = "parentProperty";
-            public IElement? _parentProperty = null;
+            public IElement? @_parentProperty = null;
 
             public static string @form = "form";
-            public IElement? _form = null;
+            public IElement? @_form = null;
 
         }
 
@@ -167,28 +167,28 @@ namespace DatenMeister.Models.Forms
         public class _DropDownFieldData
         {
             public static string @values = "values";
-            public IElement? _values = null;
+            public IElement? @_values = null;
 
             public static string @valuesByEnumeration = "valuesByEnumeration";
-            public IElement? _valuesByEnumeration = null;
+            public IElement? @_valuesByEnumeration = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -198,10 +198,10 @@ namespace DatenMeister.Models.Forms
         public class _ValuePair
         {
             public static string @value = "value";
-            public IElement? _value = null;
+            public IElement? @_value = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
         }
 
@@ -211,22 +211,22 @@ namespace DatenMeister.Models.Forms
         public class _MetaClassElementFieldData
         {
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -236,43 +236,43 @@ namespace DatenMeister.Models.Forms
         public class _ReferenceFieldData
         {
             public static string @isSelectionInline = "isSelectionInline";
-            public IElement? _isSelectionInline = null;
+            public IElement? @_isSelectionInline = null;
 
             public static string @defaultExtentUri = "defaultExtentUri";
-            public IElement? _defaultExtentUri = null;
+            public IElement? @_defaultExtentUri = null;
 
             public static string @defaultWorkspace = "defaultWorkspace";
-            public IElement? _defaultWorkspace = null;
+            public IElement? @_defaultWorkspace = null;
 
             public static string @showAllChildren = "showAllChildren";
-            public IElement? _showAllChildren = null;
+            public IElement? @_showAllChildren = null;
 
             public static string @showWorkspaceSelection = "showWorkspaceSelection";
-            public IElement? _showWorkspaceSelection = null;
+            public IElement? @_showWorkspaceSelection = null;
 
             public static string @showExtentSelection = "showExtentSelection";
-            public IElement? _showExtentSelection = null;
+            public IElement? @_showExtentSelection = null;
 
             public static string @metaClassFilter = "metaClassFilter";
-            public IElement? _metaClassFilter = null;
+            public IElement? @_metaClassFilter = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -282,37 +282,37 @@ namespace DatenMeister.Models.Forms
         public class _SubElementFieldData
         {
             public static string @metaClass = "metaClass";
-            public IElement? _metaClass = null;
+            public IElement? @_metaClass = null;
 
             public static string @form = "form";
-            public IElement? _form = null;
+            public IElement? @_form = null;
 
             public static string @allowOnlyExistingElements = "allowOnlyExistingElements";
-            public IElement? _allowOnlyExistingElements = null;
+            public IElement? @_allowOnlyExistingElements = null;
 
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
-            public IElement? _defaultTypesForNewElements = null;
+            public IElement? @_defaultTypesForNewElements = null;
 
             public static string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
-            public IElement? _includeSpecializationsForDefaultTypes = null;
+            public IElement? @_includeSpecializationsForDefaultTypes = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -322,28 +322,28 @@ namespace DatenMeister.Models.Forms
         public class _TextFieldData
         {
             public static string @lineHeight = "lineHeight";
-            public IElement? _lineHeight = null;
+            public IElement? @_lineHeight = null;
 
             public static string @width = "width";
-            public IElement? _width = null;
+            public IElement? @_width = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -353,31 +353,31 @@ namespace DatenMeister.Models.Forms
         public class _EvalTextFieldData
         {
             public static string @evalCellProperties = "evalCellProperties";
-            public IElement? _evalCellProperties = null;
+            public IElement? @_evalCellProperties = null;
 
             public static string @lineHeight = "lineHeight";
-            public IElement? _lineHeight = null;
+            public IElement? @_lineHeight = null;
 
             public static string @width = "width";
-            public IElement? _width = null;
+            public IElement? @_width = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -387,7 +387,7 @@ namespace DatenMeister.Models.Forms
         public class _SeparatorLineFieldData
         {
             public static string @Height = "Height";
-            public IElement? _Height = null;
+            public IElement? @_Height = null;
 
         }
 
@@ -397,31 +397,31 @@ namespace DatenMeister.Models.Forms
         public class _FileSelectionFieldData
         {
             public static string @defaultExtension = "defaultExtension";
-            public IElement? _defaultExtension = null;
+            public IElement? @_defaultExtension = null;
 
             public static string @isSaving = "isSaving";
-            public IElement? _isSaving = null;
+            public IElement? @_isSaving = null;
 
             public static string @initialPathToDirectory = "initialPathToDirectory";
-            public IElement? _initialPathToDirectory = null;
+            public IElement? @_initialPathToDirectory = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -431,13 +431,13 @@ namespace DatenMeister.Models.Forms
         public class _DefaultTypeForNewElement
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @metaClass = "metaClass";
-            public IElement? _metaClass = null;
+            public IElement? @_metaClass = null;
 
             public static string @parentProperty = "parentProperty";
-            public IElement? _parentProperty = null;
+            public IElement? @_parentProperty = null;
 
         }
 
@@ -447,22 +447,22 @@ namespace DatenMeister.Models.Forms
         public class _FullNameFieldData
         {
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -472,31 +472,31 @@ namespace DatenMeister.Models.Forms
         public class _CheckboxListTaggingFieldData
         {
             public static string @values = "values";
-            public IElement? _values = null;
+            public IElement? @_values = null;
 
             public static string @separator = "separator";
-            public IElement? _separator = null;
+            public IElement? @_separator = null;
 
             public static string @containsFreeText = "containsFreeText";
-            public IElement? _containsFreeText = null;
+            public IElement? @_containsFreeText = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -506,28 +506,28 @@ namespace DatenMeister.Models.Forms
         public class _NumberFieldData
         {
             public static string @format = "format";
-            public IElement? _format = null;
+            public IElement? @_format = null;
 
             public static string @isInteger = "isInteger";
-            public IElement? _isInteger = null;
+            public IElement? @_isInteger = null;
 
             public static string @isAttached = "isAttached";
-            public IElement? _isAttached = null;
+            public IElement? @_isAttached = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isEnumeration = "isEnumeration";
-            public IElement? _isEnumeration = null;
+            public IElement? @_isEnumeration = null;
 
             public static string @defaultValue = "defaultValue";
-            public IElement? _defaultValue = null;
+            public IElement? @_defaultValue = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
         }
 
@@ -553,19 +553,19 @@ namespace DatenMeister.Models.Forms
         public class _Form
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
-            public IElement? _hideMetaInformation = null;
+            public IElement? @_hideMetaInformation = null;
 
             public static string @originalUri = "originalUri";
-            public IElement? _originalUri = null;
+            public IElement? @_originalUri = null;
 
         }
 
@@ -575,37 +575,37 @@ namespace DatenMeister.Models.Forms
         public class _DetailForm
         {
             public static string @buttonApplyText = "buttonApplyText";
-            public IElement? _buttonApplyText = null;
+            public IElement? @_buttonApplyText = null;
 
             public static string @allowNewProperties = "allowNewProperties";
-            public IElement? _allowNewProperties = null;
+            public IElement? @_allowNewProperties = null;
 
             public static string @defaultWidth = "defaultWidth";
-            public IElement? _defaultWidth = null;
+            public IElement? @_defaultWidth = null;
 
             public static string @defaultHeight = "defaultHeight";
-            public IElement? _defaultHeight = null;
+            public IElement? @_defaultHeight = null;
 
             public static string @tab = "tab";
-            public IElement? _tab = null;
+            public IElement? @_tab = null;
 
             public static string @field = "field";
-            public IElement? _field = null;
+            public IElement? @_field = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
-            public IElement? _hideMetaInformation = null;
+            public IElement? @_hideMetaInformation = null;
 
             public static string @originalUri = "originalUri";
-            public IElement? _originalUri = null;
+            public IElement? @_originalUri = null;
 
         }
 
@@ -615,52 +615,52 @@ namespace DatenMeister.Models.Forms
         public class _ListForm
         {
             public static string @property = "property";
-            public IElement? _property = null;
+            public IElement? @_property = null;
 
             public static string @metaClass = "metaClass";
-            public IElement? _metaClass = null;
+            public IElement? @_metaClass = null;
 
             public static string @includeDescendents = "includeDescendents";
-            public IElement? _includeDescendents = null;
+            public IElement? @_includeDescendents = null;
 
             public static string @noItemsWithMetaClass = "noItemsWithMetaClass";
-            public IElement? _noItemsWithMetaClass = null;
+            public IElement? @_noItemsWithMetaClass = null;
 
             public static string @inhibitNewItems = "inhibitNewItems";
-            public IElement? _inhibitNewItems = null;
+            public IElement? @_inhibitNewItems = null;
 
             public static string @inhibitDeleteItems = "inhibitDeleteItems";
-            public IElement? _inhibitDeleteItems = null;
+            public IElement? @_inhibitDeleteItems = null;
 
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
-            public IElement? _defaultTypesForNewElements = null;
+            public IElement? @_defaultTypesForNewElements = null;
 
             public static string @fastViewFilters = "fastViewFilters";
-            public IElement? _fastViewFilters = null;
+            public IElement? @_fastViewFilters = null;
 
             public static string @field = "field";
-            public IElement? _field = null;
+            public IElement? @_field = null;
 
             public static string @sortingOrder = "sortingOrder";
-            public IElement? _sortingOrder = null;
+            public IElement? @_sortingOrder = null;
 
             public static string @viewNode = "viewNode";
-            public IElement? _viewNode = null;
+            public IElement? @_viewNode = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
-            public IElement? _hideMetaInformation = null;
+            public IElement? @_hideMetaInformation = null;
 
             public static string @originalUri = "originalUri";
-            public IElement? _originalUri = null;
+            public IElement? @_originalUri = null;
 
         }
 
@@ -670,25 +670,25 @@ namespace DatenMeister.Models.Forms
         public class _ExtentForm
         {
             public static string @tab = "tab";
-            public IElement? _tab = null;
+            public IElement? @_tab = null;
 
             public static string @autoTabs = "autoTabs";
-            public IElement? _autoTabs = null;
+            public IElement? @_autoTabs = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @isReadOnly = "isReadOnly";
-            public IElement? _isReadOnly = null;
+            public IElement? @_isReadOnly = null;
 
             public static string @hideMetaInformation = "hideMetaInformation";
-            public IElement? _hideMetaInformation = null;
+            public IElement? @_hideMetaInformation = null;
 
             public static string @originalUri = "originalUri";
-            public IElement? _originalUri = null;
+            public IElement? @_originalUri = null;
 
         }
 
@@ -698,13 +698,13 @@ namespace DatenMeister.Models.Forms
         public class _ViewMode
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @id = "id";
-            public IElement? _id = null;
+            public IElement? @_id = null;
 
             public static string @defaultExtentType = "defaultExtentType";
-            public IElement? _defaultExtentType = null;
+            public IElement? @_defaultExtentType = null;
 
         }
 

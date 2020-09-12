@@ -38,11 +38,6 @@ namespace DatenMeister.Uml.Helper
             IReflectiveCollection rootElements,
             string packagePath)
         {
-            var extent = ((IHasExtent) rootElements).Extent  ?? throw new InvalidOperationException("extent is not set");
-
-            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively) ?? _UML.TheOne;
-            if (uml == null) return null;
-            
             var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
                 (rootElements as IHasExtent)?.GetExtentOf() ??
                 throw new InvalidOperationException("No Extent connected"));
@@ -86,9 +81,6 @@ namespace DatenMeister.Uml.Helper
         {
             var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
             
-            var uml = _workspaceLogic.GetFromMetaLayer<_UML>(extent, MetaRecursive.Recursively);
-            if (uml == null) return null;
-
             var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
                 (rootElements as IHasExtent)?.GetExtentOf() ??
                 throw new InvalidOperationException("No Extent connected"));

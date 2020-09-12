@@ -59,8 +59,7 @@ namespace DatenMeister.WPF.Navigation
             if (formElement == null)
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
-                var managementProvider = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().Require<_ManagementProvider>();
-                formElement = creator.CreateDetailFormByMetaClass(managementProvider.__CreateNewWorkspaceModel);
+                formElement = creator.CreateDetailFormByMetaClass(_ManagementProvider.TheOne.__CreateNewWorkspaceModel);
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailView(

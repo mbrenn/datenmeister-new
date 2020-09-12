@@ -25,13 +25,13 @@ namespace DatenMeister.Tests.Provider
             var provider = new DotNetProvider(typeExtent.TypeLookup);
             var extent = new MofUriExtent(provider, "dm:///test");
             extent.AddMetaExtent(typeExtent);
-            var strapper = XmiTests.CreateUmlAndMofInstance(out _, out var uml);
+            var strapper = XmiTests.CreateUmlAndMofInstance();
             extent.AddMetaExtent(strapper.UmlInfrastructure!);
             extent.AddMetaExtent(strapper.MofInfrastructure!);
             extent.AddMetaExtent(strapper.PrimitiveTypesInfrastructure!);
 
             var mofFactory = new MofFactory(typeExtent);
-            var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory, uml);
+            var dotNetTypeCreator = new DotNetTypeGenerator(mofFactory);
             var dotNetClass = dotNetTypeCreator.CreateTypeFor(typeof(TestClass));
 
             Assert.That(dotNetClass.get(_UML._CommonStructure._NamedElement.name), Is.EqualTo("TestClass"));

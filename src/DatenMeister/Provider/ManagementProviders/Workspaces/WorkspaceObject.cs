@@ -36,8 +36,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 _ManagementProvider._Workspace.extents,
                 w => w.extent.Select(x =>
                 {
-                    var asUriExtent = x as IUriExtent;
-                    if (asUriExtent == null)
+                    if (!(x is IUriExtent asUriExtent))
                     {
                         return null;
 

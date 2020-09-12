@@ -419,22 +419,21 @@ namespace DatenMeister.Tests.Runtime.Extents
 
         private static MofExtent CreateType(IDatenMeisterScope dm, out IElement type)
         {
-            var uml = dm.WorkspaceLogic.GetUmlData();
             var localTypeSupport = dm.Resolve<LocalTypeSupport>();
             var userTypes = localTypeSupport.GetUserTypeExtent();
             var factory = new MofFactory(userTypes);
 
             var extent = new MofUriExtent(new InMemoryProvider());
 
-            type = factory.create(uml.StructuredClassifiers.__Class);
-            var property1 = factory.create(uml.Classification.__Property);
+            type = factory.create(_UML.TheOne.StructuredClassifiers.__Class);
+            var property1 = factory.create(_UML.TheOne.Classification.__Property);
             property1.set(_UML._Classification._Property.isID, true);
             property1.set(_UML._CommonStructure._NamedElement.name, "id");
             
-            var property2 = factory.create(uml.Classification.__Property);
+            var property2 = factory.create(_UML.TheOne.Classification.__Property);
             property2.set(_UML._CommonStructure._NamedElement.name, "name");
             
-            var property3 = factory.create(uml.Classification.__Property);
+            var property3 = factory.create(_UML.TheOne.Classification.__Property);
             property3.set(_UML._CommonStructure._NamedElement.name, "age");
             property3.set(_UML._Classification._Property.defaultValue, 18);
 

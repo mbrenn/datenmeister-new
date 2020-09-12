@@ -59,12 +59,6 @@ namespace DatenMeister.Modules.DataViews
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_dataViewLogic));
                     break;
                 case PluginLoadingPosition.AfterLoadingOfExtents:
-                    _localTypeSupport.ImportTypes(
-                        DataViewLogic.PackagePathTypesDataView,
-                        _DataViews.TheOne,
-                        IntegrateDataViews.Assign
-                    );
-                    
                     var factories = GetDefaultViewNodeFactories();
                     _scopeStorage.Add(factories);
                     

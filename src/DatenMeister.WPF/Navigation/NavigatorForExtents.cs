@@ -85,8 +85,6 @@ namespace DatenMeister.WPF.Navigation
                 var resolvedForm = managementWorkspace.ResolveElement(
                     $"{WorkspaceNames.UriExtentInternalForm}#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
                 var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
-                var formAndFields = workspaceLogic.GetTypesWorkspace().Get<_FormAndFields>() ??
-                                    throw new InvalidOperationException("FormAndFields not found");
 
                 // Look for the checkbox item list for the possible extent types
                 if (resolvedForm != null)
@@ -107,7 +105,7 @@ namespace DatenMeister.WPF.Navigation
                         var factory = new MofFactory(foundExtentType);
                         foreach (var setting in extentSettings.extentTypeSettings)
                         {
-                            var pair = factory.create(formAndFields.__ValuePair);
+                            var pair = factory.create(_FormAndFields.TheOne.__ValuePair);
                             pair.set(_FormAndFields._ValuePair.name, setting.name);
                             pair.set(_FormAndFields._ValuePair.value, setting.name);
 

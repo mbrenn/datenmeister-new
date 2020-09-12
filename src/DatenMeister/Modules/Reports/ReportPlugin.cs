@@ -22,12 +22,6 @@ namespace DatenMeister.Modules.Reports
         
         public void Start(PluginLoadingPosition position)
         {
-            _localTypeSupport.ImportTypes(
-                ReportLogic.PackagePathTypesReport,
-                _Reports.TheOne,
-                IntegrateReports.Assign
-            );
-            
             _scopeStorage.Add(CreateEvaluators());
         }
 

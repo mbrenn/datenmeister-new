@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using NUnit.Framework;
@@ -12,20 +14,20 @@ namespace DatenMeister.Tests.Uml
     [TestFixture]
     public class TestClassifierMethods
     {
-
         [Test]
         public void TestCompositeProperties()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-            var uml = workspaceLogic.GetUmlData();
+            var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
+                as IElement;
+            
 
-            var properties = ClassifierMethods.GetCompositingProperties(uml.Classification.__Classifier).ToList();
+            var properties = ClassifierMethods.GetCompositingProperties(classifier).ToList();
             Assert.That(properties, Is.Not.Null);
             var propertyList = properties.ToList();
             Assert.That(propertyList.Count(), Is.GreaterThan(0));
             
-            var allProperties = ClassifierMethods.GetPropertiesOfClassifier(uml.Classification.__Classifier).ToList();
+            var allProperties = ClassifierMethods.GetPropertiesOfClassifier(classifier).ToList();
             Assert.That(allProperties, Is.Not.Null);
             var allPropertyList = allProperties.ToList();
             Assert.That(allPropertyList.Count, Is.GreaterThan(propertyList.Count));
@@ -37,11 +39,12 @@ namespace DatenMeister.Tests.Uml
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-            var uml = workspaceLogic.GetUmlData();
+            var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
+                as IElement;
             var extent = dm.CreateXmiExtent("dm:///test");
             var factory = new MofFactory(extent);
-            var classSpecialized = factory.create(uml.Classification.__Classifier);
-            var classGeneralized = factory.create(uml.Classification.__Classifier);
+            var classSpecialized = factory.create(classifier);
+            var classGeneralized = factory.create(classifier);
 
             extent.elements().add(classSpecialized);
             extent.elements().add(classGeneralized);
@@ -63,12 +66,11 @@ namespace DatenMeister.Tests.Uml
         {
             using var builder = DatenMeisterTests.GetDatenMeisterScope();
             using var scope = builder.BeginLifetimeScope();
-            var dataLayerLogic = scope.Resolve<WorkspaceLogic>();
 
             // Gets the logic
-            var uml = dataLayerLogic.GetUmlWorkspace().Get<_UML>();
-            var feature = uml.Classification.__Feature;
-            var properties = ClassifierMethods.GetPropertyNamesOfClassifier(feature).ToList();
+            var feature = builder.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Feature.GetUri()!, ResolveType.Default)
+                as IElement;
+            var properties = ClassifierMethods.GetPropertyNamesOfClassifier(feature!).ToList();
 
             Assert.That(properties.Contains(_UML._Classification._Feature.isStatic), Is.True,
                 "isStatic");
@@ -84,16 +86,22 @@ namespace DatenMeister.Tests.Uml
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-            var uml = workspaceLogic.GetUmlData();
+            
+            var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
+                as IElement;
+            var class2 = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.StructuredClassifiers.__Class.GetUri()!, ResolveType.Default)
+                as IElement;
+            var comment = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.CommonStructure.__Comment.GetUri()!, ResolveType.Default)
+                as IElement;
 
             var isSpecialized = ClassifierMethods.IsSpecializedClassifierOf(
-                uml.StructuredClassifiers.__Class,
-                uml.Classification.__Classifier);
+                class2,
+                classifier);
             Assert.That(isSpecialized, Is.True);
 
             isSpecialized = ClassifierMethods.IsSpecializedClassifierOf(
-                uml.CommonStructure.__Comment,
-                uml.Classification.__Classifier);
+                comment,
+                classifier);
             Assert.That(isSpecialized, Is.False);
         }
 
@@ -101,14 +109,15 @@ namespace DatenMeister.Tests.Uml
         public void TestIsOfPrimitiveType()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-            var uml = workspaceLogic.GetUmlData();
-            var primitiveTypes = workspaceLogic.GetPrimitiveData();
+            
+            var activity = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Activities.__Activity.GetUri()!, ResolveType.Default)
+                as IElement;
+            var integer = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_PrimitiveTypes.TheOne.__Integer.GetUri()!, ResolveType.Default)
+                as IElement;
 
-            Assert.That(ClassifierMethods.IsOfPrimitiveType(uml.Activities.__Activity), Is.False);
+            Assert.That(ClassifierMethods.IsOfPrimitiveType(activity!), Is.False);
 
-            Assert.That(ClassifierMethods.IsOfPrimitiveType(primitiveTypes.__Integer), Is.True,
-                primitiveTypes.__Integer + ": " + (primitiveTypes.__Integer.metaclass?.ToString() ?? "NONE"));
+            Assert.That(ClassifierMethods.IsOfPrimitiveType(integer!), Is.True);
         }
     }
 }

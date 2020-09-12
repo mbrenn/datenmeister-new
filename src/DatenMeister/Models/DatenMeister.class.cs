@@ -13,16 +13,16 @@ namespace DatenMeister.Models
             public class _Package
             {
                 public static string @name = "name";
-                public IElement? _name = null;
+                public IElement? @_name = null;
 
                 public static string @packagedElement = "packagedElement";
-                public IElement? _packagedElement = null;
+                public IElement? @_packagedElement = null;
 
                 public static string @preferredType = "preferredType";
-                public IElement? _preferredType = null;
+                public IElement? @_preferredType = null;
 
                 public static string @preferredPackage = "preferredPackage";
-                public IElement? _preferredPackage = null;
+                public IElement? @_preferredPackage = null;
 
             }
 
@@ -38,13 +38,13 @@ namespace DatenMeister.Models
             public class _ImportSettings
             {
                 public static string @filePath = "filePath";
-                public IElement? _filePath = null;
+                public IElement? @_filePath = null;
 
                 public static string @extentUri = "extentUri";
-                public IElement? _extentUri = null;
+                public IElement? @_extentUri = null;
 
                 public static string @workspace = "workspace";
-                public IElement? _workspace = null;
+                public IElement? @_workspace = null;
 
             }
 
@@ -54,7 +54,7 @@ namespace DatenMeister.Models
             public class _ImportException
             {
                 public static string @message = "message";
-                public IElement? _message = null;
+                public IElement? @_message = null;
 
             }
 
@@ -74,7 +74,7 @@ namespace DatenMeister.Models
         public class _Action
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
         }
 
@@ -84,10 +84,10 @@ namespace DatenMeister.Models
         public class _ActionSet
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @action = "action";
-            public IElement? _action = null;
+            public IElement? @_action = null;
 
         }
 
@@ -97,7 +97,10 @@ namespace DatenMeister.Models
         public class _LoggingWriterAction
         {
             public static string @message = "message";
-            public IElement? _message = null;
+            public IElement? @_message = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
 
         }
 

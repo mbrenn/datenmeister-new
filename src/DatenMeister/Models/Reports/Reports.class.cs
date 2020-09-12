@@ -11,13 +11,13 @@ namespace DatenMeister.Models.Reports
         public class _ReportDefinition
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @elements = "elements";
-            public IElement? _elements = null;
+            public IElement? @_elements = null;
 
         }
 
@@ -27,7 +27,7 @@ namespace DatenMeister.Models.Reports
         public class _ReportElement
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
         }
 
@@ -37,10 +37,10 @@ namespace DatenMeister.Models.Reports
         public class _ReportHeadline
         {
             public static string @title = "title";
-            public IElement? _title = null;
+            public IElement? @_title = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
         }
 
@@ -50,22 +50,22 @@ namespace DatenMeister.Models.Reports
         public class _ReportParagraph
         {
             public static string @paragraph = "paragraph";
-            public IElement? _paragraph = null;
+            public IElement? @_paragraph = null;
 
             public static string @cssClass = "cssClass";
-            public IElement? _cssClass = null;
+            public IElement? @_cssClass = null;
 
             public static string @evalParagraph = "evalParagraph";
-            public IElement? _evalParagraph = null;
+            public IElement? @_evalParagraph = null;
 
             public static string @viewNode = "viewNode";
-            public IElement? _viewNode = null;
+            public IElement? @_viewNode = null;
 
             public static string @evalProperties = "evalProperties";
-            public IElement? _evalProperties = null;
+            public IElement? @_evalProperties = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
         }
 
@@ -75,19 +75,19 @@ namespace DatenMeister.Models.Reports
         public class _ReportTable
         {
             public static string @cssClass = "cssClass";
-            public IElement? _cssClass = null;
+            public IElement? @_cssClass = null;
 
             public static string @viewNode = "viewNode";
-            public IElement? _viewNode = null;
+            public IElement? @_viewNode = null;
 
             public static string @form = "form";
-            public IElement? _form = null;
+            public IElement? @_form = null;
 
             public static string @evalProperties = "evalProperties";
-            public IElement? _evalProperties = null;
+            public IElement? @_evalProperties = null;
 
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
         }
 
@@ -97,13 +97,13 @@ namespace DatenMeister.Models.Reports
         public class _ReportInstanceSource
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @workspaceId = "workspaceId";
-            public IElement? _workspaceId = null;
+            public IElement? @_workspaceId = null;
 
             public static string @source = "source";
-            public IElement? _source = null;
+            public IElement? @_source = null;
 
         }
 
@@ -113,13 +113,13 @@ namespace DatenMeister.Models.Reports
         public class _HtmlReportInstance
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @reportDefinition = "reportDefinition";
-            public IElement? _reportDefinition = null;
+            public IElement? @_reportDefinition = null;
 
             public static string @sources = "sources";
-            public IElement? _sources = null;
+            public IElement? @_sources = null;
 
         }
 
@@ -155,31 +155,31 @@ namespace DatenMeister.Models.Reports
         public class _SimpleReportConfiguration
         {
             public static string @name = "name";
-            public IElement? _name = null;
+            public IElement? @_name = null;
 
             public static string @showDescendents = "showDescendents";
-            public IElement? _showDescendents = null;
+            public IElement? @_showDescendents = null;
 
             public static string @rootElement = "rootElement";
-            public IElement? _rootElement = null;
+            public IElement? @_rootElement = null;
 
             public static string @showRootElement = "showRootElement";
-            public IElement? _showRootElement = null;
+            public IElement? @_showRootElement = null;
 
             public static string @showMetaClasses = "showMetaClasses";
-            public IElement? _showMetaClasses = null;
+            public IElement? @_showMetaClasses = null;
 
             public static string @showFullName = "showFullName";
-            public IElement? _showFullName = null;
+            public IElement? @_showFullName = null;
 
             public static string @form = "form";
-            public IElement? _form = null;
+            public IElement? @_form = null;
 
             public static string @descendentMode = "descendentMode";
-            public IElement? _descendentMode = null;
+            public IElement? @_descendentMode = null;
 
             public static string @typeMode = "typeMode";
-            public IElement? _typeMode = null;
+            public IElement? @_typeMode = null;
 
         }
 

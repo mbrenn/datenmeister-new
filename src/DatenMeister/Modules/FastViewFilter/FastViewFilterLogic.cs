@@ -17,14 +17,12 @@ namespace DatenMeister.Modules.FastViewFilter
 
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly PackageMethods _packageMethods;
-        private readonly _UML _uml;
 
         public FastViewFilterLogic(LocalTypeSupport localTypeSupport, PackageMethods packageMethods,
             IWorkspaceLogic workspaceLogic)
         {
             _localTypeSupport = localTypeSupport;
             _packageMethods = packageMethods;
-            _uml = workspaceLogic.GetUmlData();
         }
 
         /// <summary>
@@ -34,6 +32,6 @@ namespace DatenMeister.Modules.FastViewFilter
             (_packageMethods.GetPackagedObjects(
                  _localTypeSupport.InternalTypes.elements(), PackagePathTypesFastViewFilters)
              ?? throw new InvalidOperationException("Fast View Filters not found"))
-            .WhenMetaClassIs(_uml.StructuredClassifiers.__Class);
+            .WhenMetaClassIs(_UML.TheOne.StructuredClassifiers.__Class);
     }
 }

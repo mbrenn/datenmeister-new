@@ -219,6 +219,23 @@ namespace DatenMeister.Integration
                 internalUserExtent,
                 "DatenMeister");
 
+            // Performs the assignments for the DotNetProvider
+            IntegrateFormAndFields.Assign(
+                mofFactory,
+                packageMethods.GetPackagedObjects(
+                    localTypeSupport.InternalTypes.elements(),
+                    "DatenMeister::Forms") ?? throw new InvalidOperationException("DatenMeister::Forms not found"),
+                (MofUriExtent)localTypeSupport.InternalTypes);
+
+            // Adds the module for managementprovider
+            var managementProvider = new _ManagementProvider();
+            IntegrateManagementProvider.Assign(
+                mofFactory,
+                packageMethods.GetPackagedObjects(
+                    localTypeSupport.InternalTypes.elements(),
+                    "DatenMeister::Management") ??
+                throw new InvalidOperationException("DatenMeister::Management not found"),
+                (MofUriExtent)localTypeSupport.InternalTypes);
 
             var formsPlugin = scope.Resolve<FormsPlugin>();
             packageMethods.ImportByManifest(

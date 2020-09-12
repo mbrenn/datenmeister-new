@@ -41,17 +41,6 @@ namespace DatenMeister.Modules.Forms.FormFinder
             _formsPlugin = formsPlugin;
         }
 
-        /// <summary>
-        /// Finds the list form for the properties of the clicked item.
-        /// This method is called by the automatic generator for each metaclass in the property of the item
-        /// </summary>
-        /// <param name="element">Element whose property is queried</param>
-        /// <param name="property">Property which contains the collection</param>
-        /// <param name="metaClass">Metaclass which is currently in interest</param>
-        /// <returns>Found list form for the properties of the item</returns>
-        public IElement FindListFormForTreeItemDetailView(IObject element, string property, IElement metaClass)
-            => throw new InvalidOperationException();
-
         private class FoundForm
         {
             public int Points { get; set; }

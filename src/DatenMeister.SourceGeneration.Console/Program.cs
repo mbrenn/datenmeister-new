@@ -43,45 +43,17 @@ namespace DatenMeister.SourceGeneration.Console
 
 #if !DEBUG
             File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Models/EMOF/primitivetypes.cs", true);
-            File.Copy($"{R}/FillThePrimitiveTypes.cs", $"{R}/../DatenMeister/Models/EMOF/FillThePrimitiveTypes.cs",
-                true);
             File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister/Models/EMOF/mof.cs", true);
-            File.Copy($"{R}/FillTheMOF.cs", $"{R}/../DatenMeister/Models/EMOF/FillTheMOF.cs", true);
             File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Models/EMOF/uml.cs", true);
-            File.Copy($"{R}/FillTheUML.cs", $"{R}/../DatenMeister/Models/EMOF/FillTheUML.cs", true);
-
-            File.Copy($"./FormAndFields.filler.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.filler.cs",
-                true);
+            
             File.Copy($"./FormAndFields.class.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.class.cs", true);
-            File.Copy($"./FormAndFields.dotnet.cs", $"{R}/../DatenMeister/Models/Forms/FormAndFields.dotnet.cs",
-                true);
-
-            File.Copy($"./ExcelModels.filler.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.filler.cs", true);
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
-            File.Copy($"./ExcelModels.dotnet.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
-
-            File.Copy($"./ManagementProvider.filler.cs",
-                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.filler.cs", true);
             File.Copy($"./ManagementProvider.class.cs",
                 $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
-            File.Copy($"./ManagementProvider.dotnet.cs",
-                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
-
-            File.Copy($"./FastViewFilters.filler.cs",
-                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.filler.cs", true);
             File.Copy($"./FastViewFilters.class.cs",
                 $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
-            File.Copy($"./FastViewFilters.dotnet.cs",
-                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
-
-            File.Copy($"./DataViews.filler.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.filler.cs", true);
             File.Copy($"./DataViews.class.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.class.cs", true);
-            File.Copy($"./DataViews.dotnet.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
-
-            File.Copy($"./Reports.filler.cs", $"{R}/../DatenMeister/Models/Reports/Reports.filler.cs", true);
             File.Copy($"./Reports.class.cs", $"{R}/../DatenMeister/Models/Reports/Reports.class.cs", true);
-            File.Copy($"./Reports.dotnet.cs", $"{R}/../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
-            
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 #endif
         }
@@ -224,14 +196,14 @@ namespace DatenMeister.SourceGeneration.Console
 
             generator.Walk(umlExtent);
 
-            var extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._UML")
+            /*var extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._UML")
             {
                 Namespace = "DatenMeister.Models.EMOF"
             };
-            extentCreator.Walk(umlExtent);
+            extentCreator.Walk(umlExtent);*/
 
             File.WriteAllText($"{R}/uml.cs", generator.Result.ToString());
-            File.WriteAllText($"{R}/FillTheUML.cs", extentCreator.Result.ToString());
+            // File.WriteAllText($"{R}/FillTheUML.cs", extentCreator.Result.ToString());
             System.Console.WriteLine("C# Code for UML written");
 
             // Generates tree for MOF
@@ -241,15 +213,15 @@ namespace DatenMeister.SourceGeneration.Console
             };
             generator.Walk(mofExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._MOF")
+            /*7extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._MOF")
             {
                 Namespace = "DatenMeister.Models.EMOF"
             };
 
-            extentCreator.Walk(mofExtent);
+            extentCreator.Walk(mofExtent);*/
 
             File.WriteAllText($"{R}/mof.cs", generator.Result.ToString());
-            File.WriteAllText($"{R}/FillTheMOF.cs", extentCreator.Result.ToString());
+            // File.WriteAllText($"{R}/FillTheMOF.cs", extentCreator.Result.ToString());
             System.Console.WriteLine("C# Code for MOF written");
 
             // Generates tree for PrimitiveTypes
@@ -259,15 +231,15 @@ namespace DatenMeister.SourceGeneration.Console
             };
             generator.Walk(primitiveTypeExtent);
 
-            extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._PrimitiveTypes")
+            /*extentCreator = new FillClassTreeByExtentCreator("DatenMeister.Models.EMOF._PrimitiveTypes")
             {
                 Namespace = "DatenMeister.Models.EMOF"
             };
 
-            extentCreator.Walk(primitiveTypeExtent);
+            extentCreator.Walk(primitiveTypeExtent);*/
 
             File.WriteAllText($"{R}/primitivetypes.cs", generator.Result.ToString());
-            File.WriteAllText($"{R}/FillThePrimitiveTypes.cs", extentCreator.Result.ToString());
+            // File.WriteAllText($"{R}/FillThePrimitiveTypes.cs", extentCreator.Result.ToString());
             System.Console.WriteLine("C# Code for PrimitiveTypes written");
         }
     }

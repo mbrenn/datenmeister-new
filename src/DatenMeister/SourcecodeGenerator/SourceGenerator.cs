@@ -61,6 +61,10 @@ namespace DatenMeister.SourcecodeGenerator
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
 
+
+            /*
+             * No filler, no .Net
+             *
             ////////////////////////////////////////
             // Creates now the filler
             var fillerGenerator = new FillClassTreeByExtentCreator(options.Name + "Filler", sourceParser)
@@ -85,6 +89,7 @@ namespace DatenMeister.SourcecodeGenerator
 
             var pathOfDotNetIntegration = GetPath(options, ".dotnet.cs");
             File.WriteAllText(pathOfDotNetIntegration, dotNetGenerator.Result.ToString());
+            */
         }
 
         /// <summary>

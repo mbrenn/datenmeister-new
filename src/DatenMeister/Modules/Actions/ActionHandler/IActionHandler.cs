@@ -17,8 +17,8 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         /// <summary>
         /// Evaluates the action
         /// </summary>
-        /// <param name="actionsLogic">Actionplugin to be handled</param>
+        /// <param name="actionLogic">Actionplugin to be handled</param>
         /// <param name="action">Action to be handled</param>
-        public void Evaluate(ActionLogic actionsLogic, IElement action);
+        public void Evaluate(ActionLogic actionLogic, IElement action);
     }
 }

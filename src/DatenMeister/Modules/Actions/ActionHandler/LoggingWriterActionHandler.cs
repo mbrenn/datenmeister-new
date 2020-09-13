@@ -30,9 +30,9 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         /// <summary>
         /// Evaluates the plugin 
         /// </summary>
-        /// <param name="actionsLogic">Action plugin to be added</param>
+        /// <param name="actionLogic">Action plugin to be added</param>
         /// <param name="action">Action to be executed</param>
-        public void Evaluate(ActionLogic actionsLogic, IElement action)
+        public void Evaluate(ActionLogic actionLogic, IElement action)
         {
             var message = action.getOrDefault<string>(_Actions._LoggingWriterAction.message);
             if (message != null)

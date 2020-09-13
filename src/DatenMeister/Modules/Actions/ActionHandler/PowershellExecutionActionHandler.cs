@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using BurnSystems;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
@@ -7,36 +9,37 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
-    public class CommandExecutionActionHandler : IActionHandler
+    public class PowershellExecutionActionHandler : IActionHandler
     {
         /// <summary>
         /// Defines the logger 
         /// </summary>
         private readonly ClassLogger Logger = new ClassLogger(typeof(CommandExecutionActionHandler));
-            
+        
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _Actions.TheOne.__CommandExecutionAction) == true;
+                _Actions.TheOne.__PowershellExecutionAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var command = action.getOrDefault<string>(_Actions._CommandExecutionAction.command);
-            var arguments = action.getOrDefault<string>(_Actions._CommandExecutionAction.arguments);
-            var workingDirectory = action.getOrDefault<string>(_Actions._CommandExecutionAction.workingDirectory);
+            var script = action.getOrDefault<string>(_Actions._PowershellExecutionAction.script);
+            var workingDirectory = action.getOrDefault<string>(_Actions._PowershellExecutionAction.workingDirectory);
 
-            Logger.Info($"Process started: {command} {arguments}");
+            var tempPath = Path.Combine(Path.GetTempPath(),
+                StringManipulation.RandomString(16) + ".ps1");
+            
+            
+            File.WriteAllText(tempPath, script);
+
+            Logger.Info($"Powershell started");
             var startInfo = new ProcessStartInfo
             {
-                FileName = command,
-                UseShellExecute = true
+                FileName = "powershell.exe", 
+                UseShellExecute = true, 
+                Arguments = tempPath
             };
-
-            if (!string.IsNullOrEmpty(arguments))
-            {
-                startInfo.Arguments = arguments;
-            }
 
             if (!string.IsNullOrEmpty(workingDirectory))
             {
@@ -46,8 +49,10 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             var process = Process.Start(startInfo)
                           ?? throw new InvalidOperationException("Process was not created");
             process.WaitForExit();
+            
+            File.Delete(tempPath);
 
-            Logger.Info($"Process exited: {command} {arguments}");
+            Logger.Info($"Powershell exited");
         }
     }
 }

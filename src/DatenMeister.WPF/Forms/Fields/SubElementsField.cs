@@ -410,6 +410,7 @@ namespace DatenMeister.WPF.Forms.Fields
 
                 // Creates the button for the specializations
                 var getAllSpecializations = _includeSpecializationsForDefaultTypes;
+                
                 // Gets the buttons for specific types
                 if (!_fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements))
                 {
@@ -419,16 +420,21 @@ namespace DatenMeister.WPF.Forms.Fields
                     {
                         IEnumerable<IElement> specializedTypes;
 
+                        var typeList = 
+                            defaultTypesForNewItems.OfType<IElement>().Select(
+                                innerType => 
+                                    innerType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass));
+
                         if (getAllSpecializations)
                         {
                             specializedTypes =
-                                (from type in defaultTypesForNewItems.OfType<IElement>()
+                                (from type in typeList
                                     from newSpecializationType in ClassifierMethods.GetSpecializations(type)
                                     select newSpecializationType).Distinct();
                         }
                         else
                         {
-                            specializedTypes = defaultTypesForNewItems.OfType<IElement>();
+                            specializedTypes = typeList;
                         }
 
                         listItems.AddRange(

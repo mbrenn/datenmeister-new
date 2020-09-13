@@ -135,5 +135,59 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="4090ce13-6718-466c-96df-52d51024aadb" name="PowershellExecutionAction">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="03921ba2-05c4-40bc-96d0-74c25c2061f7" name="script" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="220f8111-03cd-4b19-aa8c-a260bca9c320" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+      </generalization>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="d054662d-cd63-42b3-915c-59ea623152d8" name="workingDirectory" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="241b550d-835a-41ea-a32a-bea5d388c6ee" name="LoadExtentAction">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="da06a7c7-86a6-44a6-9075-9e7a5f9d58ab" name="configuration" type-ref="dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="abe39d1e-e793-4f46-9410-3eed2615ee08" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+      </generalization>
+    </packagedElement>
   </item>
 </item>

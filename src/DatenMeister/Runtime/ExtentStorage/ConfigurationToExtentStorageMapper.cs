@@ -22,14 +22,14 @@ namespace DatenMeister.Runtime.ExtentStorage
             /// <summary>
             /// The function to create the provider loader
             /// </summary>
-            public Func<ILifetimeScope?, IProviderLoader?> Function { get; set; }
+            public Func<ExtentManager, IProviderLoader> Function { get; set; }
 
             /// <summary>
             /// The connected type
             /// </summary>
             public Type ConnectedType { get; set; }
 
-            public ConfigurationInfo(Func<ILifetimeScope?, IProviderLoader?> function, Type connectedType)
+            public ConfigurationInfo(Func<ExtentManager, IProviderLoader> function, Type connectedType)
             {
                 Function = function;
                 ConnectedType = connectedType;
@@ -43,42 +43,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly Dictionary<string, ConfigurationInfo> _mapping = new Dictionary<string, ConfigurationInfo>();
 
-        /// <summary>
-        /// Checks, if a mapping for the given configuration type exists which configures a specific extet loader
-        /// </summary>
-        /// <param name="typeConfiguration">Type of the configuration object, inheriting the <c>ExtentLoaderConfig</c></param>
-        /// <returns>true, if mapping exists</returns>
-        public bool HasMappingFor(Type typeConfiguration)
-        {
-            lock (_mapping)
-            {
-                return _mapping.ContainsKey(typeConfiguration.FullName ??
-                                            throw new ArgumentNullException(nameof(typeConfiguration) + ".FullName"));
-            }
-        }
-
-        /// <summary>
-        /// Adds the mapping by defining the type of the configuration object and the corresponding ExtentStorageLoader
-        /// </summary>
-        /// <param name="typeConfiguration">Type of the configuration</param>
-        /// <param name="typeExtentStorage">Type of the Extent</param>
-        public void AddMapping(Type typeConfiguration, Type typeExtentStorage)
-        {
-            lock (_mapping)
-            {
-                var fullName = typeConfiguration.FullName;
-                if (fullName == null) return;
-                _mapping[fullName] =
-                    new ConfigurationInfo(scope =>
-                        {
-                            if (scope == null) throw new ArgumentException(nameof(scope));
-                            return scope.Resolve(typeExtentStorage) as IProviderLoader;
-                        },
-                        typeConfiguration);
-            }
-        }
-
-        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope?, IProviderLoader?> factoryExtentStorage)
+        public void AddMapping(Type typeConfiguration, Func<ExtentManager, IProviderLoader> factoryExtentStorage)
         {
             lock (_mapping)
             {
@@ -89,7 +54,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
-        public IProviderLoader CreateFor(ILifetimeScope? scope, ExtentLoaderConfig configuration)
+        public IProviderLoader CreateFor(ExtentManager extentManager, ExtentLoaderConfig configuration)
         {
             lock (_mapping)
             {
@@ -101,12 +66,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                         $"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
                 }
 
-                var result = foundType.Function(scope);
-                if (result == null)
-                {
-                    throw new InvalidOperationException("Converter return a null provider");
-                }
-
+                var result = foundType.Function(extentManager);
+                result.WorkspaceLogic = extentManager.WorkspaceLogic;
+                result.ScopeStorage = extentManager.ScopeStorage;
+                
                 return result;
             }
         }

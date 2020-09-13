@@ -1,5 +1,7 @@
-﻿using DatenMeister.Provider;
+﻿using DatenMeister.Integration;
+using DatenMeister.Provider;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
@@ -11,6 +13,16 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
     /// </summary>
     public interface IProviderLoader
     {
+        /// <summary>
+        /// Gets or sets the workspace logic
+        /// </summary>
+        IWorkspaceLogic WorkspaceLogic { get; set;  }
+        
+        /// <summary>
+        /// Gets or sets the scope storage
+        /// </summary>
+        IScopeStorage ScopeStorage { get; set;  }
+        
         /// <summary>
         /// Loads the extent according to the given configuration
         /// </summary>

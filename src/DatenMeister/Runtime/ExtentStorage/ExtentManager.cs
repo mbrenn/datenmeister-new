@@ -59,7 +59,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly ConfigurationToExtentStorageMapper _map;
 
         private readonly ILifetimeScope? _diScope;
-        private readonly IScopeStorage _scopeStorage;
+
+        public IScopeStorage ScopeStorage { get; }
 
         /// <summary>
         /// Gets the workspace logic for the extent manager
@@ -74,19 +75,16 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly LockingLogic? _lockingHandler;
 
         public ExtentManager(
-            ConfigurationToExtentStorageMapper map,
-            ILifetimeScope? diScope,
             IWorkspaceLogic workspaceLogic,
             IScopeStorage scopeStorage)
         {
-            _scopeStorage = scopeStorage ?? throw new ArgumentNullException(nameof(scopeStorage));
+            ScopeStorage = scopeStorage ?? throw new ArgumentNullException(nameof(scopeStorage));
             _extentStorageData = scopeStorage?.Get<ExtentStorageData>() ?? throw new InvalidOperationException("Extent Storage Data not found");
             _integrationSettings = scopeStorage.Get<IntegrationSettings>() ?? throw new InvalidOperationException("IntegrationSettings not found");
             _lockingHandler = _integrationSettings.IsLockingActivated ? new LockingLogic(scopeStorage) : null;
 
-            _map = map ?? throw new ArgumentNullException(nameof(map));
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
-            _diScope = diScope;
+            _map = ScopeStorage.Get<ConfigurationToExtentStorageMapper>();
         }
 
         /// <summary>
@@ -102,8 +100,9 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             lock (_extentStorageData.LoadedExtents)
             {
-                if ( _extentStorageData.LoadedExtents.Any( x=>configuration.workspaceId == x.Configuration.workspaceId
-                                                              && configuration.extentUri == x.Configuration.extentUri))
+                if (_extentStorageData.LoadedExtents.Any(
+                    x => configuration.workspaceId == x.Configuration.workspaceId
+                         && configuration.extentUri == x.Configuration.extentUri))
                 {
                     throw new InvalidOperationException(
                         $"There is already the extent loaded with extenturi: {configuration.extentUri}");
@@ -259,7 +258,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         private IProviderLoader CreateProviderLoader(ExtentLoaderConfig configuration)
         {
             // Creates the extent loader, being capable to load or store an extent
-            var extentLoader = _map.CreateFor(_diScope, configuration);
+            var extentLoader = _map.CreateFor(this, configuration);
             return extentLoader;
         }
 
@@ -391,7 +390,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             Logger.Info($"Writing extent: {information.Configuration}");
 
-            var extentStorage = _map.CreateFor(_diScope, information.Configuration);
+            var extentStorage = _map.CreateFor(this, information.Configuration);
             extentStorage.StoreProvider(
                 (information.Extent as MofUriExtent ?? throw new InvalidOperationException("Extent was not set")).Provider,
                 information.Configuration);
@@ -534,7 +533,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 // Stores the last the exception
                 Exception? lastException = null;
                 
-                var configurationLoader = new ExtentConfigurationLoader(_scopeStorage, this, _map);
+                var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
                 List<Tuple<ExtentLoaderConfig, XElement>>? loaded = null;
                 try
                 {
@@ -743,7 +742,7 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 if (_extentStorageData.IsRegistrationOpen)
                 {
-                    var configurationLoader = new ExtentConfigurationLoader(_scopeStorage, this, _map);
+                    var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
                     configurationLoader.StoreConfiguration();
 
                     _extentStorageData.LoadedExtents.Clear();

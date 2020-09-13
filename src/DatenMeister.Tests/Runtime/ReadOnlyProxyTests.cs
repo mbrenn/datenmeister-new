@@ -53,7 +53,7 @@ namespace DatenMeister.Tests.Runtime
 
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(workspaceData), scopeStorage);
+            var logic = new ExtentManager(WorkspaceLogic.Create(workspaceData), scopeStorage);
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,

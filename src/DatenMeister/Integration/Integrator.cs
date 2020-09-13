@@ -110,7 +110,7 @@ namespace DatenMeister.Integration
 
             // Finds the loader for a certain extent type
             var storageMap = new ConfigurationToExtentStorageMapper();
-            kernel.RegisterInstance(storageMap).As<ConfigurationToExtentStorageMapper>();
+            scopeStorage.Add(storageMap);
 
             // Defines the extent storage data
             var extentStorageData = new ExtentStorageData

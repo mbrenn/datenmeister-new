@@ -38,10 +38,9 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         public ExtentConfigurationLoader(
             IScopeStorage scopeStorage,
-            ExtentManager extentManager,
-            ConfigurationToExtentStorageMapper mapper)
+            ExtentManager extentManager)
         {
-            _mapper = mapper;
+            _mapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
             ExtentManager = extentManager;
             ExtentStorageData = scopeStorage.Get<ExtentStorageData>();
         }

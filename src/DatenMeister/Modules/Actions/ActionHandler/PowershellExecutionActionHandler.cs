@@ -29,8 +29,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
 
             var tempPath = Path.Combine(Path.GetTempPath(),
                 StringManipulation.RandomString(16) + ".ps1");
-            
-            
+
             File.WriteAllText(tempPath, script);
 
             Logger.Info($"Powershell started");

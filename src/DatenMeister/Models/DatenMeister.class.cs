@@ -115,6 +115,9 @@ namespace DatenMeister.Models
             public static string @arguments = "arguments";
             public IElement? @_arguments = null;
 
+            public static string @workingDirectory = "workingDirectory";
+            public IElement? @_workingDirectory = null;
+
             public static string @name = "name";
             public IElement? @_name = null;
 

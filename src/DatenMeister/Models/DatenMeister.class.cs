@@ -65,7 +65,7 @@ namespace DatenMeister.Models
 
         public _ExtentManager ExtentManager = new _ExtentManager();
 
-        public static _CommonTypes TheOne = new _CommonTypes();
+        public static readonly _CommonTypes TheOne = new _CommonTypes();
 
     }
 
@@ -107,7 +107,7 @@ namespace DatenMeister.Models
         public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
         public IElement @__LoggingWriterAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.LoggingWriterAction");
 
-        public class _ConsoleExecutionAction
+        public class _CommandExecutionAction
         {
             public static string @command = "command";
             public IElement? @_command = null;
@@ -120,10 +120,10 @@ namespace DatenMeister.Models
 
         }
 
-        public _ConsoleExecutionAction @ConsoleExecutionAction = new _ConsoleExecutionAction();
-        public IElement @__ConsoleExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
+        public _CommandExecutionAction @CommandExecutionAction = new _CommandExecutionAction();
+        public IElement @__CommandExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
 
-        public static _Actions TheOne = new _Actions();
+        public static readonly _Actions TheOne = new _Actions();
 
     }
 

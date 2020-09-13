@@ -447,7 +447,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="arguments">Arguments being used to create the process</param>
-        public static void CreateProcess(string filePath, string? arguments = null)
+        public static Process CreateProcess(string filePath, string? arguments = null)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -460,7 +460,7 @@ namespace DatenMeister.Runtime
                 startInfo.Arguments = arguments;
             }
 
-            Process.Start(startInfo);
+            return Process.Start(startInfo);
         }
 
         /// <summary>

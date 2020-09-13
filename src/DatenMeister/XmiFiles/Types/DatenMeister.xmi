@@ -90,7 +90,7 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="6f2ea2cd-6218-483c-90a3-4db255e84e82" name="ConsoleExecutionAction">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="6f2ea2cd-6218-483c-90a3-4db255e84e82" name="CommandExecutionAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
       <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />

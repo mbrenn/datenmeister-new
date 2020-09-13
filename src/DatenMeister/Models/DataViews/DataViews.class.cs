@@ -157,7 +157,7 @@ namespace DatenMeister.Models.DataViews
         public _DynamicSourceNode @DynamicSourceNode = new _DynamicSourceNode();
         public IElement @__DynamicSourceNode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode");
 
-        public static _DataViews TheOne = new _DataViews();
+        public static readonly _DataViews TheOne = new _DataViews();
 
     }
 

@@ -711,7 +711,7 @@ namespace DatenMeister.Models.Forms
         public _ViewMode @ViewMode = new _ViewMode();
         public IElement @__ViewMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
-        public static _FormAndFields TheOne = new _FormAndFields();
+        public static readonly _FormAndFields TheOne = new _FormAndFields();
 
     }
 

@@ -31,7 +31,7 @@ namespace DatenMeister.Excel.Models
         public _Table @Table = new _Table();
         public IElement @__Table = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Excel.Models.Table");
 
-        public static _ExcelModels TheOne = new _ExcelModels();
+        public static readonly _ExcelModels TheOne = new _ExcelModels();
 
     }
 

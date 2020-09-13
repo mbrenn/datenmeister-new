@@ -19426,7 +19426,7 @@ namespace DatenMeister.Models.EMOF
 
         public _Actions Actions = new _Actions();
 
-        public static _UML TheOne = new _UML();
+        public static readonly _UML TheOne = new _UML();
 
     }
 

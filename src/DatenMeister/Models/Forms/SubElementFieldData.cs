@@ -53,5 +53,16 @@ namespace DatenMeister.Models.Forms
         /// to the user as option to get directly created
         /// </summary>
         public bool includeSpecializationsForDefaultTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the workspace that shall be preselected, if the user clicks on 'New Type'
+        /// </summary>
+        public string defaultWorkspaceOfNewElements { get; set; } = string.Empty;
+        
+
+        /// <summary>
+        /// Gets or sets the name of the extent that shall be preselected, if the user clicks on 'New Type'
+        /// </summary>
+        public string defaultExtentOfNewElements { get; set; } = string.Empty;
     }
 }

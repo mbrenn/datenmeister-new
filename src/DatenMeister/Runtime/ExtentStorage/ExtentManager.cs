@@ -58,8 +58,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private readonly ConfigurationToExtentStorageMapper _map;
 
-        private readonly ILifetimeScope? _diScope;
-
         public IScopeStorage ScopeStorage { get; }
 
         /// <summary>
@@ -330,8 +328,6 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void CreateStorageTypeDefinitions()
         {
-            if (_diScope == null) throw new InvalidOperationException("diScope == null");
-
             lock (_extentStorageData.LoadedExtents)
             {
                 var list = new List<Type>();
@@ -359,8 +355,9 @@ namespace DatenMeister.Runtime.ExtentStorage
                     distinctList.Add(item);
                     fullNameSet.Add(item.FullName);
                 }
-
-                _diScope.Resolve<LocalTypeSupport>().AddInternalTypes(
+                
+                var localTypeSupport = new LocalTypeSupport(WorkspaceLogic, ScopeStorage);
+                localTypeSupport.AddInternalTypes(
                     distinctList, 
                     PackagePathTypesExtentLoaderConfig);
             }

@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.CSV
@@ -38,7 +39,10 @@ namespace DatenMeister.Tests.CSV
                 }
             };
 
-            var storage = new CsvProviderLoader(null);
+            var storage = new CsvProviderLoader
+            {
+                WorkspaceLogic = WorkspaceLogic.GetEmptyLogic()
+            };
             var provider = storage.LoadProvider(storageConfiguration, ExtentCreationFlags.LoadOnly);
             var extent = new MofUriExtent(provider.Provider, "dm:////test/");
 

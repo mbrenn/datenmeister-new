@@ -16,12 +16,12 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <summary>
         /// Gets or sets the workspace logic
         /// </summary>
-        IWorkspaceLogic WorkspaceLogic { get; set;  }
+        IWorkspaceLogic? WorkspaceLogic { get; set;  }
         
         /// <summary>
         /// Gets or sets the scope storage
         /// </summary>
-        IScopeStorage ScopeStorage { get; set;  }
+        IScopeStorage? ScopeStorage { get; set;  }
         
         /// <summary>
         /// Loads the extent according to the given configuration

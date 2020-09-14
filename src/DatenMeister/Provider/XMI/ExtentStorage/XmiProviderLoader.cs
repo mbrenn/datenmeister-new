@@ -8,31 +8,21 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Locking;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
     [ConfiguredBy(typeof(XmiStorageLoaderConfig))]
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
-        private readonly LockingLogic _lockingLogic;
-
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
 
-        public XmiProviderLoader(IScopeStorage scopeStorage, LockingLogic lockingLogic)
-        {
-            _lockingLogic = lockingLogic;
-            scopeStorage.Get<ExtentStorageData>();
-        }
-        
-        private XmiProviderLoader(LockingLogic lockingLogic)
-        {
-            _lockingLogic = lockingLogic;
-        }
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
 
-        public XmiProviderLoader Create(LockingLogic lockingLogic) =>
-            new XmiProviderLoader(lockingLogic);
-        
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
+        public IScopeStorage? ScopeStorage { get; set; }
+
+        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration,
+            ExtentCreationFlags extentCreationFlags)
         {
             var xmiConfiguration = (XmiStorageLoaderConfig) configuration;
 
@@ -130,41 +120,50 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 throw new InvalidOperationException(
                     "The locking path could not be retrieved because the configuration is empty. ");
             }
-            
+
             return config.filePath + ".lock";
         }
 
         public bool IsLocked(ExtentLoaderConfig configuration)
         {
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+
             if (!(configuration is XmiStorageLoaderConfig xmiConfiguration))
             {
                 return false;
             }
 
             var path = GetLockFilePath(xmiConfiguration);
-            return _lockingLogic.IsLocked(path);
+            return lockingLogic.IsLocked(path);
         }
 
         public void Lock(ExtentLoaderConfig configuration)
         {
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+
             if (!(configuration is XmiStorageLoaderConfig xmiConfiguration))
             {
                 return;
             }
-            
+
             var path = GetLockFilePath(xmiConfiguration);
-            _lockingLogic.Lock(path);
+            lockingLogic.Lock(path);
         }
 
         public void Unlock(ExtentLoaderConfig configuration)
         {
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+
             if (!(configuration is XmiStorageLoaderConfig xmiConfiguration))
             {
                 return;
             }
-            
+
             var path = GetLockFilePath(xmiConfiguration);
-            _lockingLogic.Unlock(path);
+            lockingLogic.Unlock(path);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using DatenMeister.Integration;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -15,17 +16,13 @@ namespace DatenMeister.Provider.CSV.Runtime
     // ReSharper disable once InconsistentNaming
     public class CsvProviderLoader : IProviderLoader
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
-
-        public CsvProviderLoader(IWorkspaceLogic workspaceLogic)
-        {
-            _workspaceLogic = workspaceLogic;
-        }
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
+        public IScopeStorage? ScopeStorage { get; set; }
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             var csvConfiguration = (CsvExtentLoaderConfig) configuration;
-            var dataProvider = new CsvLoader(_workspaceLogic);
+            var dataProvider = new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
 
             var provider = new InMemoryProvider();
 
@@ -56,7 +53,7 @@ namespace DatenMeister.Provider.CSV.Runtime
             if (csvConfiguration.filePath == null)
                 throw new InvalidOperationException("csvConfiguration.filePath == null");
             
-            var provider = new CsvLoader(_workspaceLogic);
+            var provider = new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
             provider.Save(extent, csvConfiguration.filePath, csvConfiguration.Settings);
         }
     }

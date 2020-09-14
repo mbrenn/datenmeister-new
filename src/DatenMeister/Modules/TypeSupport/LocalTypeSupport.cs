@@ -44,6 +44,17 @@ namespace DatenMeister.Modules.TypeSupport
 
         public IUriExtent UserTypeExtent => GetUserTypeExtent();
 
+        public LocalTypeSupport(
+            IWorkspaceLogic workspaceLogic,
+            IScopeStorage scopeStorage)
+        {
+            _workspaceLogic = workspaceLogic;
+            _scopeStorage = scopeStorage;
+            
+            _packageMethods = new PackageMethods(workspaceLogic);
+            _extentCreator = new ExtentCreator(workspaceLogic, scopeStorage);
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
+        }
         /// <summary>
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>
@@ -58,9 +69,10 @@ namespace DatenMeister.Modules.TypeSupport
             IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
-            _extentCreator = extentCreator;
-            _packageMethods = packageMethods;
             _scopeStorage = scopeStorage;
+            
+            _packageMethods = packageMethods;
+            _extentCreator = extentCreator;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
 

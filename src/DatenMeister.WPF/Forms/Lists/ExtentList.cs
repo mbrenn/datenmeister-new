@@ -10,7 +10,6 @@ using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;

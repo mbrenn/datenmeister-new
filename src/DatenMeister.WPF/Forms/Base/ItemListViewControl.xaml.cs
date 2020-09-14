@@ -21,7 +21,6 @@ using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -53,7 +52,8 @@ namespace DatenMeister.WPF.Forms.Base
     /// <summary>
     ///     Interaktionslogik für ItemListViewControl.xaml
     /// </summary>
-    public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest, ICollectionNavigationGuest
+    public partial class ItemListViewControl : UserControl, IHasSelectedItems, INavigationGuest,
+        ICollectionNavigationGuest
     {
         /// <summary>
         ///     Defines the possible position of the row button compared to the data
@@ -94,7 +94,7 @@ namespace DatenMeister.WPF.Forms.Base
         private readonly FormsPlugin _formsPlugin;
 
         private INavigationHost? _navigationHost;
-        
+
         /// <summary>
         /// Stores a cached instance of the change event manager
         /// </summary>
@@ -127,7 +127,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _effectiveForm = value;
 #if DEBUG
-                if (value != null && !FormMethods.ValidateForm(value)) 
+                if (value != null && !FormMethods.ValidateForm(value))
                     throw new InvalidOperationException("The form did not pass validation");
 #endif
             }
@@ -158,17 +158,20 @@ namespace DatenMeister.WPF.Forms.Base
                 // If no item is selected, get no item
                 yield break;
 
-            foreach (var item in selectedItems)
-                if (item is ExpandoObject selectedItem)
-                    if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
-                        yield return foundItem;
+            lock (_itemMapping)
+            {
+                foreach (var item in selectedItems)
+                    if (item is ExpandoObject selectedItem)
+                        if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
+                            yield return foundItem;
+            }
         }
 
         /// <summary>
         ///     Gets the currently selected item
         /// </summary>
         /// <returns>Item being selected</returns>
-        public IObject? GetSelectedItem() 
+        public IObject? GetSelectedItem()
             => GetSelectedItems().FirstOrDefault();
 
         /// <summary>
@@ -203,7 +206,7 @@ namespace DatenMeister.WPF.Forms.Base
                 try
                 {
                     if (Items == null) throw new InvalidOperationException("Items == null");
-                    
+
                     var dlg = new SaveFileDialog
                     {
                         DefaultExt = "csv",
@@ -247,24 +250,28 @@ namespace DatenMeister.WPF.Forms.Base
                     "Edit",
                     NavigateToElement,
                     ButtonPosition.Before);
-            
-            yield return
-                new RowItemButtonDefinition(
-                    "Delete",
-                    (guest, item) =>
-                    {
-                        if (Items != null)
-                        {               var name = NamedElementMethods.GetName(item);
-                            if (MessageBox.Show(
-                                    $"Are you sure to delete the item '{name}'?",
-                                    "Confirmation",
-                                    MessageBoxButton.YesNo) ==
-                                MessageBoxResult.Yes)
+
+            if (EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) == false)
+            {
+                yield return
+                    new RowItemButtonDefinition(
+                        "Delete",
+                        (guest, item) =>
+                        {
+                            if (Items != null)
                             {
-                                Items?.remove(item);
+                                var name = NamedElementMethods.GetName(item);
+                                if (MessageBox.Show(
+                                        $"Are you sure to delete the item '{name}'?",
+                                        "Confirmation",
+                                        MessageBoxButton.YesNo) ==
+                                    MessageBoxResult.Yes)
+                                {
+                                    Items?.remove(item);
+                                }
                             }
-                        }
-                    });
+                        });
+            }
 
             yield return
                 new CollectionMenuButtonDefinition(
@@ -334,7 +341,7 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         _changeEventManager.Unregister(_changeEventHandle);
                     }
-                    
+
                     _changeEventHandle = _changeEventManager.RegisterFor(
                         extent,
                         (innerExtent, element) => _delayedDispatcher.RequestRefresh());
@@ -344,7 +351,8 @@ namespace DatenMeister.WPF.Forms.Base
             // If form defines constraints upon metaclass, then the filtering will occur here
             Items = items;
             EffectiveForm = formDefinition;
-            ViewExtensions = viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
+            ViewExtensions =
+                viewExtensions.ToList(); // ViewExtensions are stored to be used later in UpdateColumnDefinitions
             UpdateForm();
         }
 
@@ -376,7 +384,7 @@ namespace DatenMeister.WPF.Forms.Base
         private object? GetValueOfElement(IObject element, IElement field)
         {
             if (_formsPlugin == null) throw new InvalidOperationException("_formlogic == null");
-            
+
             var fieldMetaClass = field.getMetaClass();
             if (fieldMetaClass?.equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
             {
@@ -401,19 +409,22 @@ namespace DatenMeister.WPF.Forms.Base
         public void UpdateForm()
         {
             if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
-            
+
             var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
             var listItems = new ObservableCollection<ExpandoObject>();
 
             var selectedItem = GetSelectedItem();
             var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
             ExpandoObject? selectedExpandoObject = null;
-            
+
             SupportNewItems =
                 !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
-            
-            _itemMapping.Clear();
+
+            lock (_itemMapping)
+            {
+                _itemMapping.Clear();
+            }
 
             // Updates all columns and returns the fieldnames and fields
             var (fieldDataNames, fields) = UpdateColumnDefinitions();
@@ -422,13 +433,11 @@ namespace DatenMeister.WPF.Forms.Base
                 Logger.Warn("UpdateColumnDefinitions did not return any fields.");
                 return;
             }
-            
+
             watch.IntermediateLog("UpdateColumnDefinitions done");
 
             Task.Run(() =>
             {
-                if (fieldDataNames == null) return;
-
                 // Creates the rows
                 if (Items != null)
                 {
@@ -460,19 +469,22 @@ namespace DatenMeister.WPF.Forms.Base
 
                         items = items.WhenFiltered(x => converter.IsFiltered(x));
                     }
-                    
+
                     // Checks, if we have a view node
-                    var viewNode = _effectiveForm.getOrDefault<IElement>(_FormAndFields._ListForm.viewNode); 
+                    var viewNode = _effectiveForm.getOrDefault<IElement>(_FormAndFields._ListForm.viewNode);
                     if (viewNode != null)
                     {
-                        var dataviewHandler = new DataViewEvaluation(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+                        var dataviewHandler =
+                            new DataViewEvaluation(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
                         dataviewHandler.AddDynamicSource("input", items);
 
                         items = dataviewHandler.GetElementsForViewNode(viewNode);
                     }
-                    
+
                     // Now performs the sorting
-                    var sortingOrder = _effectiveForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.sortingOrder);
+                    var sortingOrder =
+                        _effectiveForm.getOrDefault<IReflectiveCollection>(
+                            _FormAndFields._ListForm.sortingOrder);
                     if (sortingOrder != null)
                     {
                         var sortingColumnNames =
@@ -488,84 +500,90 @@ namespace DatenMeister.WPF.Forms.Base
                         items = items.OrderElementsBy(sortingColumnNames);
                     }
 
-                    // Go through the items and build up the list of elements
-                    foreach (var item in items.OfType<IObject>())
+                    lock (_itemMapping)
                     {
-                        var itemObject = new ExpandoObject();
-                        var asDictionary = (IDictionary<string, object?>) itemObject;
-
-                        var n = 0;
-                        foreach (var field in fields.Cast<IElement>())
+                        // Go through the items and build up the list of elements
+                        foreach (var item in items.OfType<IObject>())
                         {
-                            var columnName = fieldDataNames[n];
-                            if (asDictionary.ContainsKey(columnName))
-                            {
-                                Logger.Warn($"Column {columnName} skipped because it is given multiple times");
-                                continue;
-                            }
-                            
-                            var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
-                            var value = GetValueOfElement(item, field);
+                            var itemObject = new ExpandoObject();
+                            var asDictionary = (IDictionary<string, object?>) itemObject;
 
-                            if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                            var n = 0;
+                            foreach (var field in fields.Cast<IElement>())
                             {
-                                var result = new StringBuilder();
-                                var valueAsList = DotNetHelper.AsEnumeration(value);
-                                if (valueAsList != null)
+                                var columnName = fieldDataNames[n];
+                                if (asDictionary.ContainsKey(columnName))
                                 {
-                                    var elementCount = 0;
-                                    var nr = string.Empty;
-                                    foreach (var valueElement in valueAsList)
-                                    {
-                                        result.Append(nr + NamedElementMethods.GetName(valueElement));
-                                        nr = "\r\n";
-
-                                        elementCount++;
-                                        if (elementCount > 10)
-                                        {
-                                            result.Append("\r\n... (more)");
-                                            break;
-                                        }
-                                    }
+                                    Logger.Warn($"Column {columnName} skipped because it is given multiple times");
+                                    continue;
                                 }
 
-                                asDictionary.Add(columnName, result.ToString());
-                            }
-                            else
-                            {
-                                asDictionary.Add(columnName, value);
+                                var isEnumeration =
+                                    field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
+                                var value = GetValueOfElement(item, field);
+
+                                if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                                {
+                                    var result = new StringBuilder();
+                                    var valueAsList = DotNetHelper.AsEnumeration(value);
+                                    if (valueAsList != null)
+                                    {
+                                        var elementCount = 0;
+                                        var nr = string.Empty;
+                                        foreach (var valueElement in valueAsList)
+                                        {
+                                            result.Append(nr + NamedElementMethods.GetName(valueElement));
+                                            nr = "\r\n";
+
+                                            elementCount++;
+                                            if (elementCount > 10)
+                                            {
+                                                result.Append("\r\n... (more)");
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    asDictionary.Add(columnName, result.ToString());
+                                }
+                                else
+                                {
+                                    asDictionary.Add(columnName, value);
+                                }
+
+                                n++;
                             }
 
-                            n++;
+                            _itemMapping[itemObject] = item;
+                            listItems.Add(itemObject);
+
+                            if (item.Equals(selectedItem))
+                            {
+                                selectedExpandoObject = itemObject;
+                            }
+
+                            // Adds the notification for the property
+                            var noMessageBox = false;
+                            (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
+                            {
+                                try
+                                {
+                                    var newPropertyValue =
+                                        (itemObject as IDictionary<string, object>)[y.PropertyName];
+                                    item.set(y.PropertyName, newPropertyValue);
+                                }
+                                catch (Exception exc)
+                                {
+                                    if (!noMessageBox) MessageBox.Show(exc.Message);
+
+                                    // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
+                                    noMessageBox = true;
+                                    (itemObject as IDictionary<string, object?>)[y.PropertyName] =
+                                        item.get(y.PropertyName);
+                                    noMessageBox = false;
+                                }
+                            };
                         }
-
-                        _itemMapping[itemObject] = item;
-                        listItems.Add(itemObject);
-                        
-                        if (item.Equals(selectedItem))
-                        {
-                            selectedExpandoObject = itemObject;
-                        }
-
-                        // Adds the notification for the property
-                        var noMessageBox = false;
-                        (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
-                        {
-                            try
-                            {
-                                var newPropertyValue = (itemObject as IDictionary<string, object>)[y.PropertyName];
-                                item.set(y.PropertyName, newPropertyValue);
-                            }
-                            catch (Exception exc)
-                            {
-                                if (!noMessageBox) MessageBox.Show(exc.Message);
-
-                                // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
-                                noMessageBox = true;
-                                (itemObject as IDictionary<string, object?>)[y.PropertyName] = item.get(y.PropertyName);
-                                noMessageBox = false;
-                            }
-                        };
                     }
                 }
             }).ContinueWith((x) =>
@@ -808,7 +826,11 @@ namespace DatenMeister.WPF.Forms.Base
 
             if (!(content is ExpandoObject expandoObject)) return (null, null);
 
-            if (!_itemMapping.TryGetValue(expandoObject, out var foundItem)) return (null, null);
+            IObject? foundItem;
+            lock (_itemMapping)
+            {
+                if (!_itemMapping.TryGetValue(expandoObject, out foundItem)) return (null, null);
+            }
 
             var button = (Button) e.Source;
             var contentPresenter = (ContentPresenter) button.TemplatedParent;
@@ -854,9 +876,12 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (!(DataGrid.SelectedItem is ExpandoObject selectedItem)) return;
 
-            if (_itemMapping.TryGetValue(selectedItem, out _))
+            lock (_itemMapping)
             {
-                // OnMouseDoubleClick(foundItem);
+                if (_itemMapping.TryGetValue(selectedItem, out _))
+                {
+                    // OnMouseDoubleClick(foundItem);
+                }
             }
         }
 

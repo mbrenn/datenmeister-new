@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -14,7 +13,6 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -25,7 +23,6 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using Org.BouncyCastle.Bcpg.OpenPgp;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.FormManager

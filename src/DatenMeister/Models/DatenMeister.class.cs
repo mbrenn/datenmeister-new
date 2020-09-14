@@ -65,7 +65,7 @@ namespace DatenMeister.Models
 
         public _ExtentManager ExtentManager = new _ExtentManager();
 
-        public static _CommonTypes TheOne = new _CommonTypes();
+        public static readonly _CommonTypes TheOne = new _CommonTypes();
 
     }
 
@@ -107,7 +107,55 @@ namespace DatenMeister.Models
         public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
         public IElement @__LoggingWriterAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.LoggingWriterAction");
 
-        public static _Actions TheOne = new _Actions();
+        public class _CommandExecutionAction
+        {
+            public static string @command = "command";
+            public IElement? @_command = null;
+
+            public static string @arguments = "arguments";
+            public IElement? @_arguments = null;
+
+            public static string @workingDirectory = "workingDirectory";
+            public IElement? @_workingDirectory = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _CommandExecutionAction @CommandExecutionAction = new _CommandExecutionAction();
+        public IElement @__CommandExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#6f2ea2cd-6218-483c-90a3-4db255e84e82");
+
+        public class _PowershellExecutionAction
+        {
+            public static string @script = "script";
+            public IElement? @_script = null;
+
+            public static string @workingDirectory = "workingDirectory";
+            public IElement? @_workingDirectory = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _PowershellExecutionAction @PowershellExecutionAction = new _PowershellExecutionAction();
+        public IElement @__PowershellExecutionAction = new MofObjectShadow("dm:///_internal/types/internal#4090ce13-6718-466c-96df-52d51024aadb");
+
+        public class _LoadExtentAction
+        {
+            public static string @configuration = "configuration";
+            public IElement? @_configuration = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _LoadExtentAction @LoadExtentAction = new _LoadExtentAction();
+        public IElement @__LoadExtentAction = new MofObjectShadow("dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee");
+
+        public static readonly _Actions TheOne = new _Actions();
 
     }
 

@@ -1,11 +1,13 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Helper;
+using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Excel.ProviderLoader
 {
@@ -16,6 +18,10 @@ namespace DatenMeister.Excel.ProviderLoader
     [ConfiguredBy(typeof(ExcelReferenceLoaderConfig))]
     public class ExcelReferenceLoader : IProviderLoader
     {
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
+        
+        public IScopeStorage? ScopeStorage { get; set; }
+
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             if (!(configuration is ExcelReferenceLoaderConfig settings))

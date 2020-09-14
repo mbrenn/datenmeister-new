@@ -43,7 +43,7 @@ namespace DatenMeister.Models.EMOF
         public _UnlimitedNatural @UnlimitedNatural = new _UnlimitedNatural();
         public IElement @__UnlimitedNatural = new MofObjectShadow("dm:///_internal/model/primitivetypes#UnlimitedNatural");
 
-        public static _PrimitiveTypes TheOne = new _PrimitiveTypes();
+        public static readonly _PrimitiveTypes TheOne = new _PrimitiveTypes();
 
     }
 

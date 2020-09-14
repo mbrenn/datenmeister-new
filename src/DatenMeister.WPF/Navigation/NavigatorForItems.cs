@@ -432,7 +432,6 @@ namespace DatenMeister.WPF.Navigation
             IExtent extent,
             IElement? metaclass)
         {
-            
             var factory = new MofFactory(extent);
 
             if (metaclass == null)

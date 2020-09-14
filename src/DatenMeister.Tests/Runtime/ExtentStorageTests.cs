@@ -23,12 +23,13 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
             
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null!));
+            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader());
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
-            var extentManager = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            scopeStorage.Add(mapper);
+            var extentManager = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
             extentManager.OpenDecoupled();
 
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
@@ -65,12 +66,13 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
 
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader(null!));
+            mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader());
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(mapper);
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var logic = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {
                 filePath = CSVExtentTests.PathForTemporaryDataFile,

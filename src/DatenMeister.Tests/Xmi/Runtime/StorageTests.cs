@@ -30,7 +30,7 @@ namespace DatenMeister.Tests.Xmi.Runtime
             mofObject2.set("name", "Martina");
             mofObject3.set("name", "Martini");
             var lockingState = new LockingState();
-            var lockingLogic = LockingLogic.Create(lockingState);
+            LockingLogic.Create(lockingState);
 
             Assert.That(extent.contextURI(), Is.EqualTo("dm:///test/"));
 
@@ -43,9 +43,12 @@ namespace DatenMeister.Tests.Xmi.Runtime
                 filePath = DatenMeisterTests.GetPathForTemporaryStorage("data.xml")
             };
 
-            var xmiStorage = new XmiProviderLoader(
-                new ScopeStorage().Add(new ExtentStorageData()), 
-                lockingLogic);
+
+
+            var xmiStorage = new XmiProviderLoader
+            {
+                ScopeStorage = new ScopeStorage().Add(new ExtentStorageData())
+            };
 
             xmiStorage.StoreProvider(extent.Provider, xmiStorageConfiguration);
 

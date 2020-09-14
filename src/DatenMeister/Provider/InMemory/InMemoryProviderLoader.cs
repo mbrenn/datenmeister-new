@@ -2,9 +2,11 @@
 
 using System;
 using BurnSystems.Logging;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -15,14 +17,15 @@ namespace DatenMeister.Provider.InMemory
         /// Sores the logger
         /// </summary>
         private static readonly ClassLogger Logger = new ClassLogger(typeof(InMemoryLoaderConfig));
+
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
         
+        public IScopeStorage? ScopeStorage { get; set; }
+
         /// <summary>
         /// Just creates the provider for the memory
         /// </summary>
-        /// <param name="configuration">Configuration to be used</param>
-        /// <param name="extentCreationFlags"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <returns>The new InMemoryProvider</returns>
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
         {
             Logger.Info("InMemoryProvider is created");

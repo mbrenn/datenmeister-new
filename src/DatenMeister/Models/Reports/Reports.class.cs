@@ -186,7 +186,7 @@ namespace DatenMeister.Models.Reports
         public _SimpleReportConfiguration @SimpleReportConfiguration = new _SimpleReportConfiguration();
         public IElement @__SimpleReportConfiguration = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration");
 
-        public static _Reports TheOne = new _Reports();
+        public static readonly _Reports TheOne = new _Reports();
 
     }
 

@@ -70,7 +70,7 @@ namespace DatenMeister.Provider.CSV
                 metaClass = _workspaceLogic.FindItem(settings.MetaclassUri);
             }
 
-            using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding)))
+            using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding ?? "UTF-8")))
             {
                 if (columns == null)
                 {
@@ -93,7 +93,7 @@ namespace DatenMeister.Provider.CSV
                 }
 
                 // Reads the data itself
-                string line;
+                string? line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
                     var values = SplitLine(line, settings);

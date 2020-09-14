@@ -30,6 +30,7 @@ namespace DatenMeister.Modules.Actions
         {
             var logicState = new ActionLogicState();
             logicState.AddActionHandler(new LoggingWriterActionHandler());
+            logicState.AddActionHandler(new CommandExecutionActionHandler());
 
             return logicState;
         }

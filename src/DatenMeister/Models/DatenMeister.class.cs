@@ -155,6 +155,51 @@ namespace DatenMeister.Models
         public _LoadExtentAction @LoadExtentAction = new _LoadExtentAction();
         public IElement @__LoadExtentAction = new MofObjectShadow("dm:///_internal/types/internal#241b550d-835a-41ea-a32a-bea5d388c6ee");
 
+        public class _DropExtentAction
+        {
+            public static string @workspace = "workspace";
+            public IElement? @_workspace = null;
+
+            public static string @extentUri = "extentUri";
+            public IElement? @_extentUri = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _DropExtentAction @DropExtentAction = new _DropExtentAction();
+        public IElement @__DropExtentAction = new MofObjectShadow("dm:///_internal/types/internal#c870f6e8-2b70-415c-afaf-b78776b42a09");
+
+        public class _CreateWorkspaceAction
+        {
+            public static string @workspace = "workspace";
+            public IElement? @_workspace = null;
+
+            public static string @annotation = "annotation";
+            public IElement? @_annotation = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _CreateWorkspaceAction @CreateWorkspaceAction = new _CreateWorkspaceAction();
+        public IElement @__CreateWorkspaceAction = new MofObjectShadow("dm:///_internal/types/internal#1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe");
+
+        public class _DropWorkspaceAction
+        {
+            public static string @workspace = "workspace";
+            public IElement? @_workspace = null;
+
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+        }
+
+        public _DropWorkspaceAction @DropWorkspaceAction = new _DropWorkspaceAction();
+        public IElement @__DropWorkspaceAction = new MofObjectShadow("dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8");
+
         public static readonly _Actions TheOne = new _Actions();
 
     }

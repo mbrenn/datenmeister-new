@@ -70,5 +70,37 @@ namespace DatenMeister.Tests.Modules
             Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.False);
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.False);
         }
+
+        [Test]
+        public void TestCreateWorkspace()
+        {
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
+            scopeStorage.Add(WorkspaceLogic.InitDefault());
+
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+
+            var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
+            
+            
+            var createWorkspaceAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__CreateWorkspaceAction) as IElement;
+            Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
+            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.workspace, "ws");
+            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
+
+            actionLogic.ExecuteAction(createWorkspaceAction).Wait();
+
+            Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.True);
+            Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
+            
+            
+            var loadExtentAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__LoadExtentAction) as IElement;
+            Debug.Assert(loadExtentAction != null, nameof(createWorkspaceAction) + " != null");
+            //var loadExtentAction = InMemoryObject.CreateEmpty() as IElement;
+
+            actionLogic.ExecuteAction(loadExtentAction).Wait();
+            
+            
+        }
     }
 }

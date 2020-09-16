@@ -96,6 +96,7 @@ namespace DatenMeister.SourceGeneration.Console
             var pathOfClassTree = "DatenMeister.class.cs";
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
+            System.Console.WriteLine(" Done");
         }
 
         private static void CreateSourceCodeForDatenMeisterAllTypes()
@@ -121,6 +122,7 @@ namespace DatenMeister.SourceGeneration.Console
             var pathOfClassTree = "DatenMeister.class.cs";
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
+            System.Console.WriteLine(" Done");
         }
 
 
@@ -184,6 +186,7 @@ namespace DatenMeister.SourceGeneration.Console
                     Namespace = "DatenMeister.Models.ManagementProviders",
                     Types = ManagementProviderModel.AllTypes
                 });
+            System.Console.WriteLine(" Done");
         }
 
         private static void CreateSourceForExcel()

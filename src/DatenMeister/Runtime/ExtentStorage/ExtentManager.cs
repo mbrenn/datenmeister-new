@@ -47,7 +47,7 @@ namespace DatenMeister.Runtime.ExtentStorage
     // ReSharper disable once ClassNeverInstantiated.Global
     public class ExtentManager
     {
-        public const string PackagePathTypesExtentLoaderConfig = "DatenMeister::ExtentLoaderConfig";
+        public const string PackagePathTypesExtentLoaderConfig = "DatenMeister::ExtentLoaderConfigs";
 
         private readonly ExtentStorageData _extentStorageData;
 

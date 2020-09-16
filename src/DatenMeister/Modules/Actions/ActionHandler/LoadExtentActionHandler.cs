@@ -11,13 +11,13 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _Actions.TheOne.__LoadExtentAction) == true;
+                _DatenMeister.TheOne.Actions.__LoadExtentAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
             var configuration =
-                action.getOrDefault<IElement>(_Actions._LoadExtentAction.configuration);
+                action.getOrDefault<IElement>(_DatenMeister._Actions._LoadExtentAction.configuration);
 
             if (configuration == null)
             {

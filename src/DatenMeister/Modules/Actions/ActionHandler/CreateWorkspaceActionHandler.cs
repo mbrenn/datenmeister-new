@@ -11,13 +11,13 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _Actions.TheOne.__CreateWorkspaceAction) == true;
+                _DatenMeister.TheOne.Actions.__CreateWorkspaceAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var workspace = action.getOrDefault<string>(_Actions._CreateWorkspaceAction.workspace);
-            var annotation = action.getOrDefault<string>(_Actions._CreateWorkspaceAction.annotation);
+            var workspace = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.workspace);
+            var annotation = action.getOrDefault<string>(_DatenMeister._Actions._CreateWorkspaceAction.annotation);
             if (string.IsNullOrEmpty(workspace))
             {
                 throw new InvalidOperationException("workspace is not set");

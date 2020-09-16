@@ -10,12 +10,12 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _Actions.TheOne.__DropWorkspaceAction) == true;
+                _DatenMeister.TheOne.Actions.__DropWorkspaceAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var workspace = action.getOrDefault<string>(_Actions._DropWorkspaceAction.workspace);
+            var workspace = action.getOrDefault<string>(_DatenMeister._Actions._DropWorkspaceAction.workspace);
             if (string.IsNullOrEmpty(workspace))
             {
                 throw new InvalidOperationException("workspace is not set");

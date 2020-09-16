@@ -28,12 +28,12 @@ namespace DatenMeister.Tests.Modules
 
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
 
-            var actionSet = InMemoryObject.CreateEmpty(_Actions.TheOne.__ActionSet) as IElement;
-            var action = InMemoryObject.CreateEmpty(_Actions.TheOne.__LoggingWriterAction) as IElement;
+            var actionSet = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionSet) as IElement;
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoggingWriterAction) as IElement;
             if (actionSet == null || action == null) throw new InvalidOperationException("null");
             
-            action.set(_Actions._LoggingWriterAction.message, "zyx");
-            actionSet.get<IReflectiveCollection>(_Actions._ActionSet.action).add(action);
+            action.set(_DatenMeister._Actions._LoggingWriterAction.message, "zyx");
+            actionSet.get<IReflectiveCollection>(_DatenMeister._Actions._ActionSet.action).add(action);
 
             actionLogic.ExecuteActionSet(actionSet).Wait();
 
@@ -52,10 +52,10 @@ namespace DatenMeister.Tests.Modules
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             
             
-            var createWorkspaceAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__CreateWorkspaceAction) as IElement;
+            var createWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction) as IElement;
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.workspace, "ws");
-            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
+            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
+            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
 
             actionLogic.ExecuteAction(createWorkspaceAction).Wait();
 
@@ -63,9 +63,9 @@ namespace DatenMeister.Tests.Modules
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
             
             
-            var dropWorkspaceAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__DropWorkspaceAction) as IElement;
+            var dropWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DropWorkspaceAction) as IElement;
             Debug.Assert(dropWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-            dropWorkspaceAction.set(_Actions._DropWorkspaceAction.workspace, "ws");
+            dropWorkspaceAction.set(_DatenMeister._Actions._DropWorkspaceAction.workspace, "ws");
             actionLogic.ExecuteAction(dropWorkspaceAction).Wait();
             Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.False);
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.False);
@@ -83,10 +83,10 @@ namespace DatenMeister.Tests.Modules
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             
             
-            var createWorkspaceAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__CreateWorkspaceAction) as IElement;
+            var createWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction) as IElement;
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
-            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.workspace, "ws");
-            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
+            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
+            createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
 
             actionLogic.ExecuteAction(createWorkspaceAction).Wait();
 
@@ -94,7 +94,7 @@ namespace DatenMeister.Tests.Modules
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
             
             
-            var loadExtentAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__LoadExtentAction) as IElement;
+            var loadExtentAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoadExtentAction) as IElement;
             Debug.Assert(loadExtentAction != null, nameof(createWorkspaceAction) + " != null");
             //var loadExtentAction = InMemoryObject.CreateEmpty() as IElement;
 

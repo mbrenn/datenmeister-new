@@ -8,7 +8,7 @@ namespace DatenMeister.Modules.ZipExample
         /// <summary>
         /// Stores the path for the packages
         /// </summary>
-        public const string PackagePath = "Apps::ZipCode";
+        public const string PackagePath = "Apps::ZipCodes";
 
         /// <summary>
         /// Gets or sets the type for the zipcode

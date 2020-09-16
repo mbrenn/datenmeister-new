@@ -24,7 +24,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _Actions.TheOne.__LoggingWriterAction) == true;
+                _DatenMeister.TheOne.Actions.__LoggingWriterAction) == true;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         /// <param name="action">Action to be executed</param>
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var message = action.getOrDefault<string>(_Actions._LoggingWriterAction.message);
+            var message = action.getOrDefault<string>(_DatenMeister._Actions._LoggingWriterAction.message);
             if (message != null)
             {
                 LastMessage = message;

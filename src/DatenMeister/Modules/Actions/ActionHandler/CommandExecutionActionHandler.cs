@@ -17,14 +17,14 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _Actions.TheOne.__CommandExecutionAction) == true;
+                _DatenMeister.TheOne.Actions.__CommandExecutionAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var command = action.getOrDefault<string>(_Actions._CommandExecutionAction.command);
-            var arguments = action.getOrDefault<string>(_Actions._CommandExecutionAction.arguments);
-            var workingDirectory = action.getOrDefault<string>(_Actions._CommandExecutionAction.workingDirectory);
+            var command = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.command);
+            var arguments = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.arguments);
+            var workingDirectory = action.getOrDefault<string>(_DatenMeister._Actions._CommandExecutionAction.workingDirectory);
 
             Logger.Info($"Process started: {command} {arguments}");
             var startInfo = new ProcessStartInfo

@@ -14,7 +14,7 @@ namespace DatenMeister.WPF.Modules.Actions
         /// </summary>
         public ActionInteractionHandler()
         {
-            OnlyElementsOfType = _Actions.TheOne.__ActionSet;
+            OnlyElementsOfType = _DatenMeister.TheOne.Actions.__ActionSet;
         }
         
         public override IEnumerable<IElementInteraction> GetInteractions(IObject element)

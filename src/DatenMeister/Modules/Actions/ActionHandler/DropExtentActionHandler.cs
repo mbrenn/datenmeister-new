@@ -9,7 +9,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _Actions.TheOne.__DropExtentAction) == true;
+                _DatenMeister.TheOne.Actions.__DropExtentAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)

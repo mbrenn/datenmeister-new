@@ -1,6 +1,8 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
@@ -14,7 +16,18 @@ namespace DatenMeister.Modules.Actions.ActionHandler
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            throw new InvalidOperationException();
+            var workspace = action.getOrDefault<string>(_Actions._CreateWorkspaceAction.workspace);
+            var annotation = action.getOrDefault<string>(_Actions._CreateWorkspaceAction.annotation);
+            if (string.IsNullOrEmpty(workspace))
+            {
+                throw new InvalidOperationException("workspace is not set");
+            }
+            
+            actionLogic.WorkspaceLogic.AddWorkspace(
+                new Workspace(workspace)
+                {
+                    annotation = annotation
+                });
         }
     }
 }

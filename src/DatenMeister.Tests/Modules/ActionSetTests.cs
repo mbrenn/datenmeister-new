@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -36,6 +38,37 @@ namespace DatenMeister.Tests.Modules
             actionLogic.ExecuteActionSet(actionSet).Wait();
 
             Assert.That(LoggingWriterActionHandler.LastMessage.Contains("zyx"), Is.True);
+        }
+
+        [Test]
+        public void TestCreationAndDroppingOfWorkspaceByAction()
+        {
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
+            scopeStorage.Add(WorkspaceLogic.InitDefault());
+
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+
+            var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
+            
+            
+            var createWorkspaceAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__CreateWorkspaceAction) as IElement;
+            Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
+            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.workspace, "ws");
+            createWorkspaceAction.set(_Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
+
+            actionLogic.ExecuteAction(createWorkspaceAction).Wait();
+
+            Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.True);
+            Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
+            
+            
+            var dropWorkspaceAction = InMemoryObject.CreateEmpty(_Actions.TheOne.__DropWorkspaceAction) as IElement;
+            Debug.Assert(dropWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
+            dropWorkspaceAction.set(_Actions._DropWorkspaceAction.workspace, "ws");
+            actionLogic.ExecuteAction(dropWorkspaceAction).Wait();
+            Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.False);
+            Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.False);
         }
     }
 }

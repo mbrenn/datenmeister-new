@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 
@@ -27,12 +28,12 @@ namespace DatenMeister.Runtime.ExtentStorage
             /// <summary>
             /// The connected type
             /// </summary>
-            public Type ConnectedType { get; set; }
+            public IElement ConnectedMetaClass { get; set; }
 
-            public ConfigurationInfo(Func<ExtentManager, IProviderLoader> function, Type connectedType)
+            public ConfigurationInfo(Func<ExtentManager, IProviderLoader> function, IElement connectedMetaClass)
             {
                 Function = function;
-                ConnectedType = connectedType;
+                ConnectedMetaClass = connectedMetaClass;
             }
         }
 
@@ -41,24 +42,27 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the types being used for the mapping
         /// </summary>
-        private readonly Dictionary<string, ConfigurationInfo> _mapping = new Dictionary<string, ConfigurationInfo>();
+        private readonly List<ConfigurationInfo> _mapping = new List<ConfigurationInfo>();
 
-        public void AddMapping(Type typeConfiguration, Func<ExtentManager, IProviderLoader> factoryExtentStorage)
+        public void AddMapping(IElement typeConfigurationClass, Func<ExtentManager, IProviderLoader> factoryExtentStorage)
         {
             lock (_mapping)
             {
-                var fullName = typeConfiguration.FullName;
-                if (fullName == null) return;
-                _mapping[fullName] =
-                    new ConfigurationInfo(factoryExtentStorage, typeConfiguration);
+                _mapping.Add(
+                    new ConfigurationInfo(factoryExtentStorage, typeConfigurationClass));
             }
         }
 
-        public IProviderLoader CreateFor(ExtentManager extentManager, ExtentLoaderConfig configuration)
+        public IProviderLoader CreateFor(ExtentManager extentManager, IElement configuration)
         {
             lock (_mapping)
             {
-                if (!_mapping.TryGetValue(configuration.GetType().FullName, out var foundType))
+                var metaClass = configuration.getMetaClass()
+                                ?? throw new InvalidOperationException("MetaClass of configuration is not set");
+
+                var found = _mapping.FirstOrDefault(x => x.ConnectedMetaClass.@equals(metaClass));
+                
+                if (found == null)
                 {
                     Logger.Error(
                         $"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
@@ -66,7 +70,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                         $"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
                 }
 
-                var result = foundType.Function(extentManager);
+                var result = found.Function(extentManager);
                 result.WorkspaceLogic = extentManager.WorkspaceLogic;
                 result.ScopeStorage = extentManager.ScopeStorage;
                 
@@ -74,21 +78,21 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
         }
 
-        public bool ContainsConfigurationFor(Type typeConfiguration)
+        public bool ContainsConfigurationFor(IElement typeConfiguration)
         {
             lock (_mapping)
             {
-                return _mapping.ContainsKey(typeConfiguration.FullName);
+                return _mapping.Any(x=>x.ConnectedMetaClass.@equals(typeConfiguration));
             }
         }
 
-        public IEnumerable<Type> ConfigurationTypes
+        public IEnumerable<IElement> ConfigurationMetaClasses
         {
             get
             {
                 lock (_mapping)
                 {
-                    return _mapping.Values.Select(x => x.ConnectedType);
+                    return _mapping.ToList();
                 }
             }
         }

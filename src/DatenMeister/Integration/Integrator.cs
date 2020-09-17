@@ -279,9 +279,6 @@ namespace DatenMeister.Integration
             // Finally loads the plugin
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
 
-            // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
-            extentManager.CreateStorageTypeDefinitions();
-
             ResetUpdateFlagsOfExtent(workspaceLogic);
             watch.Stop();
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");

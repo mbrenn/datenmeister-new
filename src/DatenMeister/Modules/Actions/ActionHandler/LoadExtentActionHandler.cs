@@ -24,7 +24,10 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 throw new InvalidOperationException("No configuration is set");
             }
             
-            throw new NotImplementedException("Not possible to load extent manager up to now");
+            var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+            extentManager.LoadExtent(
+                configuration, 
+                ExtentCreationFlags.LoadOrCreate);
         }
     }
 }

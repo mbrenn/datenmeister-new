@@ -17,6 +17,7 @@ namespace DatenMeister.Excel.ProviderLoader
     public class ExcelImportLoader : IProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
+        
         public IScopeStorage? ScopeStorage { get; set; }
 
         public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)

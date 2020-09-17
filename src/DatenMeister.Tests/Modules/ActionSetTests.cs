@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
+using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.Actions;
 using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.InMemory;
@@ -72,7 +73,7 @@ namespace DatenMeister.Tests.Modules
         }
 
         [Test]
-        public void TestCreateWorkspace()
+        public void TestCreateExtent()
         {
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
@@ -81,26 +82,35 @@ namespace DatenMeister.Tests.Modules
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
 
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
-            
-            
-            var createWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction) as IElement;
+
+
+            var createWorkspaceAction =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction) as IElement;
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
 
             actionLogic.ExecuteAction(createWorkspaceAction).Wait();
 
-            Assert.That(workspaceLogic.Workspaces.Any(x => x.id == "ws"), Is.True);
-            Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
-            
-            
-            var loadExtentAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoadExtentAction) as IElement;
+            var foundExtent = workspaceLogic.FindExtent("ws", "dm:///");
+            Assert.That(foundExtent, Is.Null);
+
+            var loadExtentAction =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoadExtentAction) as IElement;
             Debug.Assert(loadExtentAction != null, nameof(createWorkspaceAction) + " != null");
+            var configuration =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig) as IElement;
+            Debug.Assert(configuration != null, nameof(configuration) + " != null");
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "ws");
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///");
+            loadExtentAction.set(_DatenMeister._Actions._LoadExtentAction.configuration, configuration);
+
             //var loadExtentAction = InMemoryObject.CreateEmpty() as IElement;
 
             actionLogic.ExecuteAction(loadExtentAction).Wait();
-            
-            
+
+            foundExtent = workspaceLogic.FindExtent("ws", "dm:///");
+            Assert.That(foundExtent, Is.Not.Null);
         }
     }
 }

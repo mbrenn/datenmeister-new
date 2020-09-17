@@ -6,7 +6,9 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -50,7 +52,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <returns>A touple of the extentloader config element
         /// and the xml node to the metaclass</returns>
-        public List<Tuple<ExtentLoaderConfig, XElement>> GetConfigurationFromFile()
+        public List<Tuple<IElement, XElement>> GetConfigurationFromFile()
         {
             var path = ExtentStorageData.FilePath;
             var loaded = new List<Tuple<ExtentLoaderConfig, XElement>>();
@@ -106,11 +108,11 @@ namespace DatenMeister.Runtime.ExtentStorage
                     "No extents are stored due to the failure during loading. This prevents unwanted data loss due to a missing extent.");
                 return;
             }
+            
+            var extentConfigurations = new MofUriExtent(new XmiProvider(), ScopeStorage);
+            var factory = new MofFactory(extentConfigurations);
 
             var path = ExtentStorageData.FilePath;
-            var document = new XDocument();
-            var rootNode = new XElement("extents");
-            document.Add(rootNode);
 
             foreach (var loadingInformation in ExtentStorageData.LoadedExtents)
             {

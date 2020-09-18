@@ -1,8 +1,10 @@
 ﻿
 using System;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
@@ -20,7 +22,7 @@ namespace DatenMeister.Excel.ProviderLoader
         
         public IScopeStorage? ScopeStorage { get; set; }
 
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
+        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             var extentManager = new ExtentManager(
                 WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"),
@@ -33,11 +35,14 @@ namespace DatenMeister.Excel.ProviderLoader
             }
 
             // Creates the XMI being used as a target
-            var xmiConfiguration = new XmiStorageLoaderConfig(settings.extentUri)
-            {
-                filePath = settings.extentPath,
-                workspaceId = settings.workspaceId
-            };
+            var factory = new MofFactory(configuration);
+            var xmiConfiguration = factory.create(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            xmiConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                configuration.get(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath));
+            xmiConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                configuration.get(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
 
             var loadedInfo = extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
             if (loadedInfo.LoadingState == ExtentLoadingState.Failed || loadedInfo.Extent == null)
@@ -56,7 +61,7 @@ namespace DatenMeister.Excel.ProviderLoader
                 {IsExtentAlreadyAddedToWorkspace = true};
         }
 
-        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, IElement configuration)
         {
             throw new NotImplementedException();
         }

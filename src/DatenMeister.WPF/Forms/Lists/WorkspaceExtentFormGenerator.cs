@@ -364,7 +364,7 @@ namespace DatenMeister.WPF.Forms.Lists
             }
         }
 
-        public static async Task<ExtentLoaderConfig?> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
+        public static async Task<IElement?> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
         {
             // Let user select the type of the extent
             var dlg = new LocateItemDialog
@@ -410,9 +410,7 @@ namespace DatenMeister.WPF.Forms.Lists
             if (detailControl != null && detailControl.Result == NavigationResult.Saved)
             {
                 // Convert back to instance
-                var extentLoaderConfig =
-                    DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
-                return extentLoaderConfig;
+                return createdElement;
             }
 
             return null;

@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -33,6 +34,8 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         private ExtentStorageData ExtentStorageData { get; }
 
+        private IScopeStorage _scopeStorage;
+
         /// <summary>
         /// Gets the extent manager being used to actual load an extent
         /// </summary>
@@ -42,6 +45,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             IScopeStorage scopeStorage,
             ExtentManager extentManager)
         {
+            _scopeStorage = scopeStorage;
             _mapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
             ExtentManager = extentManager;
             ExtentStorageData = scopeStorage.Get<ExtentStorageData>();
@@ -52,10 +56,10 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <returns>A touple of the extentloader config element
         /// and the xml node to the metaclass</returns>
-        public List<Tuple<IElement, XElement>> GetConfigurationFromFile()
+        public List<IElement> GetConfigurationFromFile()
         {
             var path = ExtentStorageData.FilePath;
-            var loaded = new List<Tuple<ExtentLoaderConfig, XElement>>();
+            var loaded = new List<IElement>();
             if (!File.Exists(path))
             {
                 Logger.Info($"File for Extent not found: {path}");
@@ -63,33 +67,15 @@ namespace DatenMeister.Runtime.ExtentStorage
             else
             {
                 Logger.Info($"Loading extent configuration from file: {path}");
+                
+                
                 var document = XDocument.Load(path);
+                var xmiProvider = new XmiProvider(document);
+                var extent = new MofUriExtent(xmiProvider);
 
-                foreach (var xmlExtent in document.Elements("extents").Elements("extent"))
+                foreach (var element in extent.elements().OfType<IElement>())
                 {
-                    var xmlConfig = xmlExtent.Element("config") ??
-                                    throw new InvalidOperationException("extents::extent::config Xml node not found");
-                    var configType = xmlConfig.Attribute("configType")?.Value ??
-                                     throw new InvalidOperationException("configType not found");
-                    configType = Migration.TranslateLegacyConfigurationType(configType);
-
-                    // Gets the type of the configuration in the white list to avoid any unwanted security issue
-                    var found = _mapper.ConfigurationTypes.FirstOrDefault(x =>
-                        x.FullName?.ToLower() == configType.ToLower());
-                    if (found == null)
-                    {
-                        Logger.Fatal($"Unknown Configuration Type: {configType}");
-                        ExtentStorageData.FailedLoading = true;
-                        throw new InvalidOperationException($"Unknown Configuration Type: {configType}");
-                    }
-
-                    xmlConfig.Name = found.Name; // We need to rename the element, so XmlSerializer can work with it
-                    var serializer = new XmlSerializer(found);
-                    var config = serializer.Deserialize(xmlConfig.CreateReader());
-
-                    var xmlMeta = xmlExtent.Element("metadata");
-
-                    loaded.Add(new Tuple<ExtentLoaderConfig, XElement>((ExtentLoaderConfig) config, xmlMeta));
+                    loaded.Add(element);
                 }
             }
 
@@ -109,60 +95,29 @@ namespace DatenMeister.Runtime.ExtentStorage
                 return;
             }
             
-            var extentConfigurations = new MofUriExtent(new XmiProvider(), ScopeStorage);
+            var xmiProvider = new XmiProvider();
+            var extentConfigurations = new MofUriExtent(xmiProvider, _scopeStorage);
             var factory = new MofFactory(extentConfigurations);
 
             var path = ExtentStorageData.FilePath;
 
             foreach (var loadingInformation in ExtentStorageData.LoadedExtents)
             {
-                var xmlExtent = new XElement("extent");
-
-                // Stores the configuration
-                var xmlData = SerializeToXElement(loadingInformation.Configuration ??
-                                                  throw new InvalidOperationException("Configuration is not set"));
-
-                xmlData.Name = "config";
+                var copiedConfiguration = ObjectCopier.Copy(factory, loadingInformation.Configuration);
+                extentConfigurations.elements().add(
+                    copiedConfiguration
+                    ?? throw new InvalidOperationException("Configuration is not set"));
+                
 
                 // Stores the .Net datatype to allow restore of the right element
-                var fullName = loadingInformation.Configuration?.GetType().FullName;
-                if (fullName == null) continue;
-
-                xmlData.Add(new XAttribute("configType", fullName));
-                xmlExtent.Add(xmlData);
 
                 if (loadingInformation.Extent is MofExtent loadedExtent)
                 {
-                    // Stores the metadata
-                    var xmlMetaData = new XElement(loadedExtent.LocalMetaElementXmlNode)
-                    {
-                        Name = "metadata"
-                    };
-
-                    xmlExtent.Add(xmlMetaData);
+                    copiedConfiguration.set("metadata", loadedExtent.GetMetaObject());
                 }
-
-                rootNode.Add(xmlExtent);
             }
 
-            document.Save(path);
-        }
-
-        /// <summary>
-        /// Helper class to convert the given element into an Xml Element... Unfortunately, there is no direct way to create an Xml Element without using the XDocument
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
-        private static XElement SerializeToXElement(object o)
-        {
-            var doc = new XDocument();
-            using (var writer = doc.CreateWriter())
-            {
-                var serializer = new XmlSerializer(o.GetType());
-                serializer.Serialize(writer, o);
-            }
-
-            return doc.Root;
+            xmiProvider.Document.Save(path);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DatenMeister.Runtime.ExtentStorage
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+
+namespace DatenMeister.Runtime.ExtentStorage
 {
     /// <summary>
     /// This loader is used to store and load the extent storage out of a file.
@@ -10,28 +12,16 @@
         /// <summary>
         /// Just a namespace for the migration things
         /// </summary>
-        public class Migration
+        private static class Migration
         {
             /// <summary>
             /// Performs the translation of the configuration type
             /// </summary>
             /// <param name="oldName">Old name of the configuration</param>
             /// <returns>Translated name</returns>
-            public static string TranslateLegacyConfigurationType(string oldName)
+            public static IElement TranslateLegacyConfigurationType(IElement oldName)
             {
-                return oldName switch
-                {
-                    "DatenMeister.Provider.Xml.XmlReferenceSettings" =>
-                    "DatenMeister.Provider.Xml.XmlReferenceLoaderConfig",
-                    "DatenMeister.Provider.XMI.ExtentStorage.XmiStorageConfiguration" =>
-                    "DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig",
-                    "DatenMeister.Excel.Helper.ExcelImportSettings" =>
-                    "DatenMeister.Excel.Helper.ExcelImportLoaderConfig",
-                    "DatenMeister.Excel.Helper.ExcelReferenceSettings" =>
-                    "DatenMeister.Excel.Helper.ExcelReferenceLoaderConfig",
-                    "DatenMeister.Excel.Helper.ExcelSettings" => "DatenMeister.Excel.Helper.ExcelLoaderConfig",
-                    _ => oldName
-                };
+                return oldName;
             }
         }
     }

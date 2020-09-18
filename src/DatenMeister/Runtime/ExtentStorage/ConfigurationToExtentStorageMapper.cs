@@ -30,6 +30,11 @@ namespace DatenMeister.Runtime.ExtentStorage
             /// </summary>
             public IElement ConnectedMetaClass { get; set; }
 
+            /// <summary>
+            /// Initializes a new instance of the ConfigurationInfo class
+            /// </summary>
+            /// <param name="function">Function to be hadnled</param>
+            /// <param name="connectedMetaClass">Connected meta class</param>
             public ConfigurationInfo(Func<ExtentManager, IProviderLoader> function, IElement connectedMetaClass)
             {
                 Function = function;
@@ -92,7 +97,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 lock (_mapping)
                 {
-                    return _mapping.ToList();
+                    return _mapping.Select(x=>x.ConnectedMetaClass).ToList();
                 }
             }
         }

@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Excel.Properties;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Spreadsheet;
+using DatenMeister.Models;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Excel.Helper
 {
     public class ExcelImporter
     {
         /// <summary>
-        /// Gets or sets the settings to be used for the excel importer
+        /// Gets or sets the settings to be used for the excel importer.
+        /// Of Type ExcelLoaderConfig
         /// </summary>
-        public ExcelLoaderConfig LoaderConfig { get; set; }
+        public IElement LoaderConfig { get; set; }
 
-        private SSDocument _excelDocument;
+        private SSDocument? _excelDocument;
 
-        public ExcelImporter([NotNull] ExcelLoaderConfig loaderConfig)
+        public ExcelImporter(IElement loaderConfig)
         {
             LoaderConfig = loaderConfig ?? throw new ArgumentNullException(nameof(loaderConfig));
         }
@@ -25,8 +28,10 @@ namespace DatenMeister.Excel.Helper
         /// </summary>
         public void LoadExcel()
         {
-            _excelDocument = SSDocument.LoadFromFile(LoaderConfig.filePath);
-            LoaderConfig.sheetName = _excelDocument.Tables.FirstOrDefault()?.Name;
+            _excelDocument = SSDocument.LoadFromFile(LoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.filePath));
+            LoaderConfig.set(
+                _DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName,
+                _excelDocument.Tables.FirstOrDefault()?.Name);
         }
 
         /// <summary>
@@ -34,7 +39,11 @@ namespace DatenMeister.Excel.Helper
         /// </summary>
         public IEnumerable<string> SheetNames
         {
-            get { return _excelDocument.Tables.Select(sheets => sheets.Name); }
+            get
+            {
+                return _excelDocument?.Tables.Select(sheets => sheets.Name) ??
+                       throw new InvalidOperationException("Excel Document is not loaded");
+            }
         }
 
         /// <summary>
@@ -44,19 +53,20 @@ namespace DatenMeister.Excel.Helper
         /// <returns></returns>
         private SsTable? GetSheet(string sheet)
         {
-            if (sheet == null || !IsExcelLoaded)
+            if (!IsExcelLoaded)
             {
                 return null;
             }
 
-            return _excelDocument.Tables.FirstOrDefault(x => x.Name == sheet);
+            return _excelDocument?.Tables.FirstOrDefault(x => x.Name == sheet) ??
+                   throw new InvalidOperationException("Excel Document is not loaded");
         }
 
         private SsTable? GetSelectedSheet()
         {
             if (IsExcelLoaded)
             {
-                return GetSheet(LoaderConfig.sheetName);
+                return GetSheet(LoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName));
             }
 
             return null;
@@ -78,9 +88,15 @@ namespace DatenMeister.Excel.Helper
         public string GetCellContent(int row, int column)
         {
             var foundSheet = GetSelectedSheet();
+            var offsetRow =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            var offsetColumn =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            var hasHeader =
+                LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
             return foundSheet?.GetCellContent(
-                row + LoaderConfig.offsetRow + (LoaderConfig.hasHeader ? 1 : 0),
-                column + LoaderConfig.offsetColumn);
+                row + offsetRow + (hasHeader ? 1 : 0),
+                column + offsetColumn) ?? string.Empty;
         }
 
         /// <summary>
@@ -90,12 +106,20 @@ namespace DatenMeister.Excel.Helper
         public List<string> GetColumnNames()
         {
             var selectedSheet = GetSelectedSheet();
+            
+            var offsetRow =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            var offsetColumn =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            var hasHeader =
+                LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
 
-            if (selectedSheet == null) return null;
+            if (selectedSheet == null) return new List<string>();
+            
             // Get Header Rows
             var columnNames = new List<string>();
             var columnCount = GuessColumnCount();
-            if (!LoaderConfig.hasHeader)
+            if (!hasHeader)
             {
                 for (var c = 0; c < columnCount; c++)
                 {
@@ -106,7 +130,7 @@ namespace DatenMeister.Excel.Helper
             {
                 for (var c = 0; c < columnCount; c++)
                 {
-                    var columnName = selectedSheet.GetCellContent(LoaderConfig.offsetRow, c + LoaderConfig.offsetColumn);
+                    var columnName = selectedSheet.GetCellContent(offsetRow, c + offsetColumn);
                     if (string.IsNullOrEmpty(columnName) || columnNames.Contains(columnName))
                     {
                         columnNames.Add(null);
@@ -122,16 +146,27 @@ namespace DatenMeister.Excel.Helper
 
         public int GuessRowCount()
         {
-            var hasHeaderRows = LoaderConfig.hasHeader;
+            var xOffsetRow =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            var xOffsetColumn =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            var xHasHeader =
+                LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
+            var xCountRows =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countRows);
+            var xFitRowCount =
+                LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.fixRowCount);
+            
+            var hasHeaderRows = xHasHeader;
             var foundSheet = GetSelectedSheet();
             if (foundSheet == null) return -1;
-            if (LoaderConfig.fixRowCount) return LoaderConfig.countRows;
+            if (xFitRowCount) return xCountRows;
 
-            var offsetRow = hasHeaderRows ? LoaderConfig.offsetRow + 1 : LoaderConfig.offsetRow;
+            var offsetRow = hasHeaderRows ? xOffsetRow + 1 : xOffsetRow;
             var n = 0;
             while (true)
             {
-                var content = foundSheet.GetCellContent(offsetRow + n, LoaderConfig.offsetColumn);
+                var content = foundSheet.GetCellContent(offsetRow + n, xOffsetColumn);
                 if (string.IsNullOrEmpty(content))
                 {
                     break;
@@ -140,7 +175,7 @@ namespace DatenMeister.Excel.Helper
                 n++;
             }
 
-            LoaderConfig.countRows = n;
+            LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countRows, n);
             return n;
         }
 
@@ -151,14 +186,23 @@ namespace DatenMeister.Excel.Helper
         {
             var foundSheet = GetSelectedSheet();
             if (foundSheet == null) return -1;
+            
+            var xOffsetRow =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetRow);
+            var xOffsetColumn =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
+            var xCountColumns =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countColumns);
+            var xFitRowCount =
+                LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.fixRowCount);
 
-            if (LoaderConfig.fixColumnCount) return LoaderConfig.countColumns;
+            if (xFitRowCount) return xCountColumns;
 
 
             var n = 0;
             while (true)
             {
-                var content = foundSheet.GetCellContent(LoaderConfig.offsetRow, LoaderConfig.offsetColumn + n);
+                var content = foundSheet.GetCellContent(xOffsetRow, xOffsetColumn + n);
                 if (string.IsNullOrEmpty(content))
                 {
                     break;
@@ -167,7 +211,7 @@ namespace DatenMeister.Excel.Helper
                 n++;
             }
 
-            LoaderConfig.countColumns = n;
+            LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countColumns, n);
             return n;
         }
     }

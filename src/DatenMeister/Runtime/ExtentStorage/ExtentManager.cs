@@ -499,15 +499,15 @@ namespace DatenMeister.Runtime.ExtentStorage
                 {
                     _lockingHandler?.Lock(_extentStorageData.GetLockPath());
                 }
-                
+
                 _extentStorageData.IsOpened = true;
                 _extentStorageData.IsRegistrationOpen = true;
 
                 // Stores the last the exception
                 Exception? lastException = null;
-                
+
                 var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
-                List<Tuple<IElement, XElement>>? loaded = null;
+                List<IElement>? loaded = null;
                 try
                 {
                     loaded = configurationLoader.GetConfigurationFromFile();
@@ -526,53 +526,66 @@ namespace DatenMeister.Runtime.ExtentStorage
                 var failedExtents = new List<string>();
                 while (loaded.Count > 0)
                 {
-                    var tuple = loaded[0];
-                    var (extentLoaderConfig, xElement) = tuple;
+                    var configuration = loaded[0];
                     loaded.RemoveAt(0);
 
                     // Check, if given workspace can be loaded or whether references are still in list
-                    if (IsMetaWorkspaceInLoaderList(extentLoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId), loaded))
+                    if (IsMetaWorkspaceInLoaderList(
+                        configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
+                            .workspaceId), loaded))
                     {
                         // If yes, put current workspace to the end
-                        loaded.Add(tuple);
+                        loaded.Add(configuration);
                     }
                     else
                     {
                         try
                         {
-                            var extent = LoadExtent(extentLoaderConfig);
-                            if (xElement != null && extent.Extent != null)
+                            var extent = LoadExtent(configuration);
+
+                            var element =
+                                ((configuration.getOrDefault<IElement>("metadata") as MofElement)?.ProviderObject as
+                                    XmiProviderObject)?.XmlNode;
+
+                            if (element != null && extent.Extent != null)
                             {
-                                ((MofExtent) extent.Extent).LocalMetaElementXmlNode = xElement;
+                                ((MofExtent) extent.Extent).LocalMetaElementXmlNode = element;
                             }
                         }
                         catch (Exception exc)
                         {
                             Logger.Warn(
                                 $"Loading extent of " +
-                                $"{extentLoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)} " +
+                                $"{configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)} " +
                                 $"failed: {exc.Message}");
-                            failedExtents.Add(extentLoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                            failedExtents.Add(configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
                                 ._ExtentLoaderConfig.extentUri));
                             lastException = exc;
                         }
                     }
                 }
 
-                foreach (var (extentLoaderConfig, xElement) in loaded)
+                foreach (var configuration in loaded)
                 {
                     try
                     {
-                        var extent = LoadExtent(extentLoaderConfig);
-                        if (xElement != null && extent.Extent != null)
+                        var extent = LoadExtent(configuration);
+
+                        var element =
+                            ((configuration.getOrDefault<IElement>("metadata") as MofElement)?.ProviderObject as
+                                XmiProviderObject)?.XmlNode;
+
+                        if (element != null && extent.Extent != null)
                         {
-                            ((MofExtent) extent.Extent).LocalMetaElementXmlNode = xElement;
+                            ((MofExtent) extent.Extent).LocalMetaElementXmlNode = element;
                         }
                     }
                     catch (Exception exc)
                     {
-                        Logger.Warn($"Loading extent of {extentLoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)} failed: {exc.Message}");
-                        failedExtents.Add(extentLoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri));
+                        Logger.Warn(
+                            $"Loading extent of {configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)} failed: {exc.Message}");
+                        failedExtents.Add(configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                            ._ExtentLoaderConfig.extentUri));
                         lastException = exc;
                     }
                 }
@@ -588,7 +601,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     throw new LoadingExtentsFailedException(failedExtents);
                 }
             }
-            
+
             VerifyDatabaseContent();
         }
 
@@ -598,14 +611,14 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// the type definitions are loaded before the actual data
         /// </summary>
         /// <param name="workspaceId">Id of the workspace to be checked</param>
-        /// <param name="loaded">List of items still to be loaded</param>
+        /// <param name="configuration">Configuration being used</param>
         /// <returns>True, if the loading should be inhibited because one
         /// of the metaitems are still in</returns>
-        private bool IsMetaWorkspaceInLoaderList(string workspaceId, List<Tuple<IElement, XElement>> loaded)
+        private bool IsMetaWorkspaceInLoaderList(string workspaceId, IEnumerable<IElement> configuration)
         {
             return IsMetaWorkspaceInList(
                 workspaceId,
-                loaded.Select(x => x.Item1.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId))
+                configuration.Select(x => x.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId))
                     .ToArray());
         }
 

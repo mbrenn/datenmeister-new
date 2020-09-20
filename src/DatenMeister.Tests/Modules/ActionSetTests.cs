@@ -105,8 +105,6 @@ namespace DatenMeister.Tests.Modules
             configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///");
             loadExtentAction.set(_DatenMeister._Actions._LoadExtentAction.configuration, configuration);
 
-            //var loadExtentAction = InMemoryObject.CreateEmpty() as IElement;
-
             actionLogic.ExecuteAction(loadExtentAction).Wait();
 
             foundExtent = workspaceLogic.FindExtent("ws", "dm:///");

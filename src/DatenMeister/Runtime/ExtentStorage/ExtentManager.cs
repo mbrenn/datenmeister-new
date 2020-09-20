@@ -151,10 +151,16 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="configuration">Configuration being used for the loading</param>
         /// <param name="extentCreationFlags">The flags describing the loading profile</param>
         /// <returns>The configuration information</returns>
-        private ExtentStorageData.LoadedExtentInformation LoadExtentWithoutAddingInternal(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        private ExtentStorageData.LoadedExtentInformation LoadExtentWithoutAddingInternal(
+            IElement configuration,
+            ExtentCreationFlags extentCreationFlags)
         {
             var extentUri =
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri);
+            if (extentUri == null || string.IsNullOrEmpty(extentUri))
+            {
+                throw new InvalidOperationException("No extent uri is given");
+            }
             
             var loadedExtentInformation = new ExtentStorageData.LoadedExtentInformation(configuration)
             {
@@ -318,7 +324,6 @@ namespace DatenMeister.Runtime.ExtentStorage
 
             return information;
         }
-
 
         /// <summary>
         /// Gets the loading configuration for the given extent or null, if

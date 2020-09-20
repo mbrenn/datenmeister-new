@@ -278,12 +278,12 @@
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" >
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixRowCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixColumnCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -295,36 +295,43 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelReferenceLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Excel.Helper.ExcelLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelImportLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Excel.Helper.ExcelLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelImportLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentPath" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelExtentLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="InMemoryLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="InMemoryLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmlReferenceLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmlReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="keepNamespaces" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentFileLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentFileLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmiStorageLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentFileLoaderConfig" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmiStorageLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig" />
     </packagedElement>
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvExtentLoaderConfig">
-      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentFileLoaderConfig" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="Settings" type-ref="#DatenMeister.Provider.CSV.CsvSettings" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="settings" type-ref="#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvSettings" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvSettings">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="encoding" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="separator" type-ref="#System.Char" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="columns" type-ref="dm:///_internal/model/primitivetypes#String" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="metaclassUri" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
   </item>
 </item>

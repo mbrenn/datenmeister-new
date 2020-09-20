@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using Autofac;
+using DatenMeister.Models;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using NUnit.Framework;
@@ -28,15 +30,18 @@ namespace DatenMeister.Tests.Runtime.Extents
                 using (var dm2 = DatenMeisterTests.GetDatenMeisterScope(true, settings2))
                 {
                     try
-                    {
-                        var extentSettings = new XmiStorageLoaderConfig
-                        {
-                            extentUri = "dm:///test",
-                            filePath = Path.Combine(
+                    {    
+                        
+                        var extentSettings =
+                            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+                        extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                            "dm:///test");
+                        extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                            Path.Combine(
                                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                                "testing/datenmeister/x.xmi"),
-                            workspaceId = "Data"
-                        };
+                                "testing/datenmeister/x.xmi"));
+                        extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                            "Data");
 
                         var extentManager = dm.Resolve<ExtentManager>();
                         extentManager.UnlockProvider(extentSettings);

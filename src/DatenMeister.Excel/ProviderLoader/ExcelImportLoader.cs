@@ -28,11 +28,6 @@ namespace DatenMeister.Excel.ProviderLoader
                 WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"),
                 ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
             
-            if (!(configuration is ExcelImportLoaderConfig settings))
-            {
-                throw new InvalidOperationException(
-                    $"Given configuration is not of type {typeof(ExcelImportLoaderConfig)}, is of {configuration.GetType().FullName}");
-            }
 
             // Creates the XMI being used as a target
             var factory = new MofFactory(configuration);
@@ -54,7 +49,7 @@ namespace DatenMeister.Excel.ProviderLoader
             extent.elements().RemoveAll();
 
             // Loads the excelinformation into the extent
-            ExcelReferenceLoader.ImportExcelIntoExtent(extent, settings);
+            ExcelReferenceLoader.ImportExcelIntoExtent(extent, configuration);
 
             // Returns the values
             return new LoadedProviderInfo(extent.Provider, xmiConfiguration)

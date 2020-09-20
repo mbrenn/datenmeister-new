@@ -5,8 +5,10 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -92,11 +94,26 @@ namespace DatenMeister.Modules.ZipExample
             File.Copy(originalFilename, filename);
 
             // Creates the configuration
-            var defaultConfiguration = new CsvExtentLoaderConfig($"dm:///zipcodes/{randomNumber}")
+            
+
+            var defaultConfiguration =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            defaultConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                "dm:///zipcodes/{randomNumber}");
+            defaultConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                filename);
+            defaultConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                workspaceId);
+            
+            /*
+            var defaultConfiguration2 = new CsvExtentLoaderConfig($"dm:///zipcodes/{randomNumber}")
             {
                 filePath = filename,
                 workspaceId = workspaceId,
-                Settings =
+                settings =
                 {
                     HasHeader = false,
                     Separator = '\t',
@@ -111,7 +128,9 @@ namespace DatenMeister.Modules.ZipExample
                     }.ToList(),
                     MetaclassUri = _zipCodeModel.ZipCodeUri ?? string.Empty
                 }
-            };
+            };*/
+            
+            throw new InvalidOperationException();
 
             var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
                                ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");

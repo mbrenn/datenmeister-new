@@ -3,6 +3,7 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
@@ -38,12 +39,13 @@ namespace DatenMeister.Tests.Xmi.Runtime
             extent.elements().add(mofObject2);
             extent.elements().add(mofObject3);
 
-            var xmiStorageConfiguration = new XmiStorageLoaderConfig("dm:///test/")
-            {
-                filePath = DatenMeisterTests.GetPathForTemporaryStorage("data.xml")
-            };
 
-
+            var xmiStorageConfiguration = InMemoryObject.CreateEmpty(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            xmiStorageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                "dm:///test");
+            xmiStorageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                DatenMeisterTests.GetPathForTemporaryStorage("data.xml"));
 
             var xmiStorage = new XmiProviderLoader
             {

@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
@@ -29,16 +32,25 @@ namespace DatenMeister.Tests.CSV
             var csvOtherFile = "eens 1 one\r\nzwei 2 two\r\ndrei 3 three\r\nvier 4 four\r\n";
             File.WriteAllText(PathForTemporaryDataFile, csvFile);
 
-            var storageConfiguration = new CsvExtentLoaderConfig("dm:///test")
+            var storageConfiguration = InMemoryObject.CreateEmpty(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///test");
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath, PathForTemporaryDataFile);
+            /*configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///test");*/
+            
+            throw new NotImplementedException();
+
+            var storageConfiguration2 = new CsvExtentLoaderConfig("dm:///test")
             {
                 filePath = PathForTemporaryDataFile,
-                Settings =
+                settings =
                 {
                     HasHeader = false,
                     Separator = ' '
                 }
             };
-
+            
+            /*            
             var storage = new CsvProviderLoader
             {
                 WorkspaceLogic = WorkspaceLogic.GetEmptyLogic()
@@ -46,7 +58,7 @@ namespace DatenMeister.Tests.CSV
             var provider = storage.LoadProvider(storageConfiguration, ExtentCreationFlags.LoadOnly);
             var extent = new MofUriExtent(provider.Provider, "dm:////test/");
 
-            Assert.That(storageConfiguration.Settings.Columns.Count, Is.EqualTo(3));
+            Assert.That(storageConfiguration.settings.Columns.Count, Is.EqualTo(3));
             Assert.That(extent.elements().Count(), Is.EqualTo(4));
 
             // Stores the csv file
@@ -57,12 +69,12 @@ namespace DatenMeister.Tests.CSV
 
             var firstElement = extent.elements().ElementAt(0) as IObject;
             Assert.That(firstElement, Is.Not.Null);
-            firstElement.set(storageConfiguration.Settings.Columns[0], "eens");
+            firstElement.set(storageConfiguration.settings.Columns[0], "eens");
             storage.StoreProvider(provider.Provider, storageConfiguration);
             readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
             Assert.That(readCsvFile, Is.EqualTo(csvOtherFile));
 
-            File.Delete(PathForTemporaryDataFile);
+            File.Delete(PathForTemporaryDataFile);*/
         }
     }
 }

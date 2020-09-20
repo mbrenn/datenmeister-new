@@ -2,6 +2,7 @@
 
 using System;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
@@ -26,7 +27,7 @@ namespace DatenMeister.Provider.InMemory
         /// Just creates the provider for the memory
         /// </summary>
         /// <returns>The new InMemoryProvider</returns>
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
+        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             Logger.Info("InMemoryProvider is created");
             
@@ -34,7 +35,7 @@ namespace DatenMeister.Provider.InMemory
             return new LoadedProviderInfo(provider);
         }
 
-        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, IElement configuration)
         {
             Logger.Info("Storing of in Memory Object is not possible");
         }

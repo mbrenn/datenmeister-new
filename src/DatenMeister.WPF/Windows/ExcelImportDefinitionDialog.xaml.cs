@@ -263,7 +263,7 @@ namespace DatenMeister.WPF.Windows
         /// Gets the configuration as an item
         /// </summary>
         /// <returns>The configuration object describing the elements</returns>
-        public IObject? GetConfigurationObject()
+        public IElement? GetConfigurationObject()
             => _importer?.LoaderConfig;
 
         private void OnClosed(object sender, EventArgs e)

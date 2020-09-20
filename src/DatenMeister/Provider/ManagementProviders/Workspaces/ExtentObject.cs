@@ -1,6 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Models;
 using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -23,12 +24,13 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             : base(
                 new Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>(uriExtent, loadedExtentInformation), 
                 provider, 
-                loadedExtentInformation?.Configuration.extentUri ?? uriExtent?.contextURI() ?? throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"), 
+                loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
+                ?? uriExtent?.contextURI() ?? throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"), 
                 MetaclassUriPath)
         {
             AddMapping(
                 _ManagementProvider._Extent.uri,
-                e => loadedExtentInformation?.Configuration.extentUri ?? uriExtent?.contextURI() ?? "Invalid Uri",
+                e => loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri) ?? uriExtent?.contextURI() ?? "Invalid Uri",
                 (e, v) =>
                 {
                     if (v == null)
@@ -45,7 +47,9 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                     // But we also need to update the extentmanager's configuration
                     if (loadedExtentInformation != null)
                     {
-                        loadedExtentInformation.Configuration.extentUri = v.ToString();
+                        loadedExtentInformation.Configuration.set(
+                            _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri,
+                            v.ToString());
                     }
                 });
 

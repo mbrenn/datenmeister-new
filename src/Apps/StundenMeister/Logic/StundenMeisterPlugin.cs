@@ -3,6 +3,7 @@ using System.IO;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.InMemory;
@@ -90,10 +91,12 @@ namespace StundenMeister.Logic
                 "StundenMeister");
             var filePath = Path.Combine(directory, "StundenMeister.xmi");
 
-            var storageData = new XmiStorageLoaderConfig("dm:///stundenmeister/")
-            {
-                filePath = filePath
-            };
+            var storageData = InMemoryObject.CreateEmpty(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            storageData.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                "dm:///stundenmeister/");
+            storageData.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                filePath);
 
             StundenMeisterData.TheOne.Extent =
                 _extentManager.LoadExtentIfNotAlreadyLoaded(

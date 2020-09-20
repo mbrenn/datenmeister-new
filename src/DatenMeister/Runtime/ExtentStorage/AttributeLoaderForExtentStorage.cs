@@ -9,6 +9,7 @@ using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
+    /*
     public static class AttributeLoaderForExtentStorage
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(AttributeLoaderForExtentStorage));
@@ -57,5 +58,5 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
             }
         }
-    }
+    }*/
 }

@@ -4,11 +4,13 @@ using System.Runtime.CompilerServices;
 using Autofac;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.NetCore;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -42,12 +44,15 @@ namespace ScriptTests
                 if (doIssues)
                 {
                     var extentManager = dm.Resolve<ExtentManager>();
-                    var loaderConfig = new XmiStorageLoaderConfig
-                    {
-                        extentUri = "dm:///",
-                        filePath = "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi"
-                    };
-
+                    
+                    
+                    var loaderConfig =
+                        InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+                    loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///");
+                    loaderConfig.set(
+                        _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, 
+                        "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi");
+                    
                     testExtent = extentManager.LoadExtent(loaderConfig).Extent;
                 }
                 else

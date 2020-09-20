@@ -63,7 +63,7 @@ namespace DatenMeister.Provider.InMemory
         /// </summary>
         /// <param name="type">Type of the element to be created</param>
         /// <returns>Returned element to be created</returns>
-        public static IObject CreateEmpty(IElement type)
+        public static IElement CreateEmpty(IElement type)
         {
             var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
             var element= mofFactory.create(type);

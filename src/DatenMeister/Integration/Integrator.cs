@@ -202,9 +202,6 @@ namespace DatenMeister.Integration
 
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
 
-            // Now goes through all classes and add the configuration support
-            var loadConfigurationTask = Task.Run(() => storageMap.LoadAllExtentStorageConfigurationsFromAssembly());
-
             // Creates the workspace and extent for the types layer which are belonging to the types
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
             var typeWorkspace = workspaceLogic.GetTypesWorkspace();
@@ -247,7 +244,6 @@ namespace DatenMeister.Integration
 
             // Includes the extent for the helping extents
             ManagementProviderHelper.Initialize(dmScope);
-            loadConfigurationTask.Wait();
 
             // Finally loads the plugin
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);

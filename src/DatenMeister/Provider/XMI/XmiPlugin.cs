@@ -1,4 +1,5 @@
-﻿using DatenMeister.Provider.XMI.ExtentStorage;
+﻿using DatenMeister.Models;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 
@@ -22,7 +23,8 @@ namespace DatenMeister.Provider.XMI
 
         public void Start(PluginLoadingPosition position)
         {
-            _storageMapper.MapExtentLoaderType(typeof(XmiProviderLoader));
+            _storageMapper.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig, 
+                extentManager => new XmiProviderLoader());
         }
     }
 }

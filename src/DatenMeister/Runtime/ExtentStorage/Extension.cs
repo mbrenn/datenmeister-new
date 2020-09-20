@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.Workspaces;
@@ -18,13 +21,13 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <returns></returns>
         public static ExtentStorageData.LoadedExtentInformation CreateAndAddXmiExtent(this ExtentManager extentManager, string uri, string filename)
         {
-            var xmiConfiguration = new XmiStorageLoaderConfig(uri)
-            {
-                workspaceId = WorkspaceNames.WorkspaceData,
-                filePath = filename
-            };
+            var configuration = InMemoryObject.CreateEmpty(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, uri);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filename);
 
-            return extentManager.LoadExtent(xmiConfiguration, ExtentCreationFlags.LoadOrCreate);
+            return extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);
         }
 
         /// <summary>
@@ -33,21 +36,26 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// If the extent is not loaded, the extent will be loaded according the configuration
         /// </summary>
         /// <param name="extentManager">The extent manager to be used</param>
-        /// <param name="loaderConfiguration">The loader configuration being used to load the extent</param>
+        /// <param name="loaderConfiguration">The loader configuration being used to load the extent
+        /// Of Type ExtentLoaderConfig</param>
         /// <param name="flags">The extent creation flags being used to load the extent</param>
         /// <returns>The found or loaded extent</returns>
         public static IUriExtent? LoadExtentIfNotAlreadyLoaded(
             this ExtentManager extentManager,
-            ExtentLoaderConfig loaderConfiguration,
+            IElement loaderConfiguration,
             ExtentCreationFlags flags = ExtentCreationFlags.LoadOnly)
         {
             var asExtentManager = extentManager
                                   ?? throw new InvalidOperationException("extentManager is not ExtentManager");
             var workspaceLogic = asExtentManager.WorkspaceLogic;
-            var workspace = workspaceLogic.GetWorkspace(loaderConfiguration.workspaceId);
+            var workspace = workspaceLogic.GetWorkspace(
+                loaderConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
+                    .workspaceId));
 
             var foundExtent = workspace?.extent.OfType<IUriExtent>().FirstOrDefault(
-                x => x.contextURI() == loaderConfiguration.extentUri);
+                x => x.contextURI() ==
+                     loaderConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
+                         .extentUri));
 
             return foundExtent ?? extentManager.LoadExtent(loaderConfiguration, flags).Extent;
         }

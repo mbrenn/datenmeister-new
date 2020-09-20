@@ -1,4 +1,5 @@
-﻿using DatenMeister.Provider.CSV.Runtime;
+﻿using DatenMeister.Models;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 
@@ -21,7 +22,8 @@ namespace DatenMeister.Provider.CSV
 
         public void Start(PluginLoadingPosition position)
         {
-            _configurationToExtentStorageMapper.MapExtentLoaderType(typeof(CsvProviderLoader));
+            _configurationToExtentStorageMapper.AddMapping(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig, manager => new CsvProviderLoader());
         }
     }
 }

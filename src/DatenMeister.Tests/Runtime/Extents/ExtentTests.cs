@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms;
@@ -62,12 +63,13 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestMetaDataInExtent()
         {
             var path = "./test.xmi";
-            var loaderConfig = new XmiStorageLoaderConfig("dm:///data")
-            {
-                filePath = path,
-                workspaceId = WorkspaceNames.WorkspaceData
-            };
-
+            
+            var loaderConfig =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
+            
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
@@ -136,12 +138,13 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestAutoEnumerateType()
         {
             var path = "./test.xmi";
-            var loaderConfig = new XmiStorageLoaderConfig("dm:///data")
-            {
-                filePath = path,
-                workspaceId = WorkspaceNames.WorkspaceData
-            };
-
+            
+            var loaderConfig =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///data");
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
+            loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
+            
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 if (File.Exists(path))
@@ -244,49 +247,6 @@ namespace DatenMeister.Tests.Runtime.Extents
             Assert.That(list.Count, Is.EqualTo(2));
             Assert.That(list[0], Is.EqualTo("abc"));
             Assert.That(list[1], Is.EqualTo("def"));
-        }
-
-        [Test]
-        public void TestStoringOfExtentTypes()
-        {
-            const string csvExtentUri = "dm:///csvtest";
-            const string xmiExtentUri = "dm:///moftest";
-
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope())
-            {
-                var extentManager = dm.Resolve<ExtentManager>();
-                var csvExtent = extentManager.LoadExtent(
-                    new CsvExtentLoaderConfig(csvExtentUri)
-                    {
-                        filePath = "./test.csv"
-                    }, ExtentCreationFlags.LoadOrCreate);
-
-                var mofExtent = extentManager.LoadExtent(
-                    new XmiStorageLoaderConfig(xmiExtentUri)
-                    {
-                        filePath = "./test.xmi"
-                    }, ExtentCreationFlags.LoadOrCreate);
-
-                csvExtent.Extent!.GetConfiguration().ExtentType = "CSVExtent";
-                mofExtent.Extent!.GetConfiguration().ExtentType = "XMIExtent";
-
-                dm.UnuseDatenMeister();
-            }
-
-            using (var dm = DatenMeisterTests.GetDatenMeisterScope(false))
-            {
-                var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
-                var csvExtent = workspaceLogic.FindExtent(csvExtentUri);
-                var xmiExtent = workspaceLogic.FindExtent(xmiExtentUri);
-
-                Assert.That(csvExtent, Is.Not.Null);
-                Assert.That(xmiExtent, Is.Not.Null);
-
-                Assert.That(csvExtent.GetConfiguration().ExtentType, Is.EqualTo("CSVExtent"));
-                Assert.That(xmiExtent.GetConfiguration().ExtentType, Is.EqualTo("XMIExtent"));
-
-                dm.UnuseDatenMeister();
-            }
         }
 
         [Test]

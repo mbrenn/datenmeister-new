@@ -219,6 +219,281 @@ namespace DatenMeister.Models
 
         public _Actions Actions = new _Actions();
 
+        public class _ExtentLoaderConfigs
+        {
+            public class _ExtentLoaderConfig
+            {
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _ExtentLoaderConfig @ExtentLoaderConfig = new _ExtentLoaderConfig();
+            public IElement @__ExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig");
+
+            public class _ExcelLoaderConfig
+            {
+                public static string @fixRowCount = "fixRowCount";
+                public IElement? @_fixRowCount = null;
+
+                public static string @fixColumnCount = "fixColumnCount";
+                public IElement? @_fixColumnCount = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @sheetName = "sheetName";
+                public IElement? @_sheetName = null;
+
+                public static string @offsetRow = "offsetRow";
+                public IElement? @_offsetRow = null;
+
+                public static string @offsetColumn = "offsetColumn";
+                public IElement? @_offsetColumn = null;
+
+                public static string @countRows = "countRows";
+                public IElement? @_countRows = null;
+
+                public static string @countColumns = "countColumns";
+                public IElement? @_countColumns = null;
+
+                public static string @hasHeader = "hasHeader";
+                public IElement? @_hasHeader = null;
+
+                public static string @idColumnName = "idColumnName";
+                public IElement? @_idColumnName = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _ExcelLoaderConfig @ExcelLoaderConfig = new _ExcelLoaderConfig();
+            public IElement @__ExcelLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig");
+
+            public class _ExcelReferenceLoaderConfig
+            {
+                public static string @fixRowCount = "fixRowCount";
+                public IElement? @_fixRowCount = null;
+
+                public static string @fixColumnCount = "fixColumnCount";
+                public IElement? @_fixColumnCount = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @sheetName = "sheetName";
+                public IElement? @_sheetName = null;
+
+                public static string @offsetRow = "offsetRow";
+                public IElement? @_offsetRow = null;
+
+                public static string @offsetColumn = "offsetColumn";
+                public IElement? @_offsetColumn = null;
+
+                public static string @countRows = "countRows";
+                public IElement? @_countRows = null;
+
+                public static string @countColumns = "countColumns";
+                public IElement? @_countColumns = null;
+
+                public static string @hasHeader = "hasHeader";
+                public IElement? @_hasHeader = null;
+
+                public static string @idColumnName = "idColumnName";
+                public IElement? @_idColumnName = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _ExcelReferenceLoaderConfig @ExcelReferenceLoaderConfig = new _ExcelReferenceLoaderConfig();
+            public IElement @__ExcelReferenceLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig");
+
+            public class _ExcelImportLoaderConfig
+            {
+                public static string @extentPath = "extentPath";
+                public IElement? @_extentPath = null;
+
+                public static string @fixRowCount = "fixRowCount";
+                public IElement? @_fixRowCount = null;
+
+                public static string @fixColumnCount = "fixColumnCount";
+                public IElement? @_fixColumnCount = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @sheetName = "sheetName";
+                public IElement? @_sheetName = null;
+
+                public static string @offsetRow = "offsetRow";
+                public IElement? @_offsetRow = null;
+
+                public static string @offsetColumn = "offsetColumn";
+                public IElement? @_offsetColumn = null;
+
+                public static string @countRows = "countRows";
+                public IElement? @_countRows = null;
+
+                public static string @countColumns = "countColumns";
+                public IElement? @_countColumns = null;
+
+                public static string @hasHeader = "hasHeader";
+                public IElement? @_hasHeader = null;
+
+                public static string @idColumnName = "idColumnName";
+                public IElement? @_idColumnName = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _ExcelImportLoaderConfig @ExcelImportLoaderConfig = new _ExcelImportLoaderConfig();
+            public IElement @__ExcelImportLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig");
+
+            public class _ExcelExtentLoaderConfig
+            {
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @idColumnName = "idColumnName";
+                public IElement? @_idColumnName = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _ExcelExtentLoaderConfig @ExcelExtentLoaderConfig = new _ExcelExtentLoaderConfig();
+            public IElement @__ExcelExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig");
+
+            public class _InMemoryLoaderConfig
+            {
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _InMemoryLoaderConfig @InMemoryLoaderConfig = new _InMemoryLoaderConfig();
+            public IElement @__InMemoryLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig");
+
+            public class _XmlReferenceLoaderConfig
+            {
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @keepNamespaces = "keepNamespaces";
+                public IElement? @_keepNamespaces = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _XmlReferenceLoaderConfig @XmlReferenceLoaderConfig = new _XmlReferenceLoaderConfig();
+            public IElement @__XmlReferenceLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig");
+
+            public class _ExtentFileLoaderConfig
+            {
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _ExtentFileLoaderConfig @ExtentFileLoaderConfig = new _ExtentFileLoaderConfig();
+            public IElement @__ExtentFileLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig");
+
+            public class _XmiStorageLoaderConfig
+            {
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _XmiStorageLoaderConfig @XmiStorageLoaderConfig = new _XmiStorageLoaderConfig();
+            public IElement @__XmiStorageLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
+
+            public class _CsvExtentLoaderConfig
+            {
+                public static string @settings = "settings";
+                public IElement? @_settings = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _CsvExtentLoaderConfig @CsvExtentLoaderConfig = new _CsvExtentLoaderConfig();
+            public IElement @__CsvExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig");
+
+            public class _CsvSettings
+            {
+                public static string @encoding = "encoding";
+                public IElement? @_encoding = null;
+
+                public static string @hasHeader = "hasHeader";
+                public IElement? @_hasHeader = null;
+
+                public static string @separator = "separator";
+                public IElement? @_separator = null;
+
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
+
+                public static string @metaclassUri = "metaclassUri";
+                public IElement? @_metaclassUri = null;
+
+            }
+
+            public _CsvSettings @CsvSettings = new _CsvSettings();
+            public IElement @__CsvSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings");
+
+        }
+
+        public _ExtentLoaderConfigs ExtentLoaderConfigs = new _ExtentLoaderConfigs();
+
         public class _Forms
         {
             public class _FieldData
@@ -1204,259 +1479,6 @@ namespace DatenMeister.Models
         }
 
         public _FastViewFilters FastViewFilters = new _FastViewFilters();
-
-        public class _ExtentLoaderConfigs
-        {
-            public class _ExtentLoaderConfig
-            {
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _ExtentLoaderConfig @ExtentLoaderConfig = new _ExtentLoaderConfig();
-            public IElement @__ExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentLoaderConfig");
-
-            public class _ExcelLoaderConfig
-            {
-                public static string @fixRowCount = "fixRowCount";
-                public IElement? @_fixRowCount = null;
-
-                public static string @fixColumnCount = "fixColumnCount";
-                public IElement? @_fixColumnCount = null;
-
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @sheetName = "sheetName";
-                public IElement? @_sheetName = null;
-
-                public static string @offsetRow = "offsetRow";
-                public IElement? @_offsetRow = null;
-
-                public static string @offsetColumn = "offsetColumn";
-                public IElement? @_offsetColumn = null;
-
-                public static string @countRows = "countRows";
-                public IElement? @_countRows = null;
-
-                public static string @countColumns = "countColumns";
-                public IElement? @_countColumns = null;
-
-                public static string @hasHeader = "hasHeader";
-                public IElement? @_hasHeader = null;
-
-                public static string @idColumnName = "idColumnName";
-                public IElement? @_idColumnName = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _ExcelLoaderConfig @ExcelLoaderConfig = new _ExcelLoaderConfig();
-            public IElement @__ExcelLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Excel.Helper.ExcelLoaderConfig");
-
-            public class _ExcelReferenceLoaderConfig
-            {
-                public static string @fixRowCount = "fixRowCount";
-                public IElement? @_fixRowCount = null;
-
-                public static string @fixColumnCount = "fixColumnCount";
-                public IElement? @_fixColumnCount = null;
-
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @sheetName = "sheetName";
-                public IElement? @_sheetName = null;
-
-                public static string @offsetRow = "offsetRow";
-                public IElement? @_offsetRow = null;
-
-                public static string @offsetColumn = "offsetColumn";
-                public IElement? @_offsetColumn = null;
-
-                public static string @countRows = "countRows";
-                public IElement? @_countRows = null;
-
-                public static string @countColumns = "countColumns";
-                public IElement? @_countColumns = null;
-
-                public static string @hasHeader = "hasHeader";
-                public IElement? @_hasHeader = null;
-
-                public static string @idColumnName = "idColumnName";
-                public IElement? @_idColumnName = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _ExcelReferenceLoaderConfig @ExcelReferenceLoaderConfig = new _ExcelReferenceLoaderConfig();
-            public IElement @__ExcelReferenceLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Excel.Helper.ExcelReferenceLoaderConfig");
-
-            public class _ExcelImportLoaderConfig
-            {
-                public static string @extentPath = "extentPath";
-                public IElement? @_extentPath = null;
-
-                public static string @fixRowCount = "fixRowCount";
-                public IElement? @_fixRowCount = null;
-
-                public static string @fixColumnCount = "fixColumnCount";
-                public IElement? @_fixColumnCount = null;
-
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @sheetName = "sheetName";
-                public IElement? @_sheetName = null;
-
-                public static string @offsetRow = "offsetRow";
-                public IElement? @_offsetRow = null;
-
-                public static string @offsetColumn = "offsetColumn";
-                public IElement? @_offsetColumn = null;
-
-                public static string @countRows = "countRows";
-                public IElement? @_countRows = null;
-
-                public static string @countColumns = "countColumns";
-                public IElement? @_countColumns = null;
-
-                public static string @hasHeader = "hasHeader";
-                public IElement? @_hasHeader = null;
-
-                public static string @idColumnName = "idColumnName";
-                public IElement? @_idColumnName = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _ExcelImportLoaderConfig @ExcelImportLoaderConfig = new _ExcelImportLoaderConfig();
-            public IElement @__ExcelImportLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Excel.Helper.ExcelImportLoaderConfig");
-
-            public class _ExcelExtentLoaderConfig
-            {
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @idColumnName = "idColumnName";
-                public IElement? @_idColumnName = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _ExcelExtentLoaderConfig @ExcelExtentLoaderConfig = new _ExcelExtentLoaderConfig();
-            public IElement @__ExcelExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Excel.Helper.ExcelExtentLoaderConfig");
-
-            public class _ExtentFileLoaderConfig
-            {
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _ExtentFileLoaderConfig @ExtentFileLoaderConfig = new _ExtentFileLoaderConfig();
-            public IElement @__ExtentFileLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.Configuration.ExtentFileLoaderConfig");
-
-            public class _CsvExtentLoaderConfig
-            {
-                public static string @Settings = "Settings";
-                public IElement? @_Settings = null;
-
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _CsvExtentLoaderConfig @CsvExtentLoaderConfig = new _CsvExtentLoaderConfig();
-            public IElement @__CsvExtentLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Provider.CSV.Runtime.CsvExtentLoaderConfig");
-
-            public class _InMemoryLoaderConfig
-            {
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _InMemoryLoaderConfig @InMemoryLoaderConfig = new _InMemoryLoaderConfig();
-            public IElement @__InMemoryLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Provider.InMemory.InMemoryLoaderConfig");
-
-            public class _XmiStorageLoaderConfig
-            {
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _XmiStorageLoaderConfig @XmiStorageLoaderConfig = new _XmiStorageLoaderConfig();
-            public IElement @__XmiStorageLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig");
-
-            public class _XmlReferenceLoaderConfig
-            {
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @keepNamespaces = "keepNamespaces";
-                public IElement? @_keepNamespaces = null;
-
-                public static string @extentUri = "extentUri";
-                public IElement? @_extentUri = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-            }
-
-            public _XmlReferenceLoaderConfig @XmlReferenceLoaderConfig = new _XmlReferenceLoaderConfig();
-            public IElement @__XmlReferenceLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Provider.Xml.XmlReferenceLoaderConfig");
-
-        }
-
-        public _ExtentLoaderConfigs ExtentLoaderConfigs = new _ExtentLoaderConfigs();
 
         public static readonly _DatenMeister TheOne = new _DatenMeister();
 

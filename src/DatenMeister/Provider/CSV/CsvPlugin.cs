@@ -1,4 +1,5 @@
-﻿using DatenMeister.Models;
+﻿using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
@@ -15,9 +16,9 @@ namespace DatenMeister.Provider.CSV
     {
         private readonly ConfigurationToExtentStorageMapper _configurationToExtentStorageMapper;
 
-        public CsvPlugin(ConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
+        public CsvPlugin(IScopeStorage scopeStorage)
         {
-            _configurationToExtentStorageMapper = configurationToExtentStorageMapper;
+            _configurationToExtentStorageMapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
         }
 
         public void Start(PluginLoadingPosition position)

@@ -38,8 +38,7 @@ namespace DatenMeister.Excel.ProviderLoader
 
             var workbook = new XSSFWorkbook(filePath);
             
-            throw new NotImplementedException();
-            // return new ExcelProvider(workbook, settings);
+            return new ExcelProvider(workbook, settings);
         }
 
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)

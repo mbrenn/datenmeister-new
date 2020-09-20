@@ -61,13 +61,19 @@ namespace DatenMeister.Tests.Runtime
             scopeStorage.Add(new IntegrationSettings());
             var logic = new ExtentManager(WorkspaceLogic.Create(workspaceData), scopeStorage);
             
+            
+            var settings =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
+            settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+            settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+            
             var configuration =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
             configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath, CSVExtentTests.PathForTemporaryDataFile);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
             
-            throw new InvalidOperationException();
             /*
             var configuration = new CsvExtentLoaderConfig("dm:///local/")
             {

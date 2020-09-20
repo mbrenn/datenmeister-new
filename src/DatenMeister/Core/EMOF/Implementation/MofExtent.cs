@@ -618,7 +618,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>Enumeration of strings</returns>
         public IEnumerable<string> getPropertiesBeingSet()
         {
-            
             if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??

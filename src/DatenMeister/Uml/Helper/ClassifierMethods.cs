@@ -33,7 +33,7 @@ namespace DatenMeister.Uml.Helper
             if (classifier.isSet(propertyOwnedAttribute))
             {
                 var result = (IEnumerable) (classifier.get(propertyOwnedAttribute) ??
-                                            throw new NotImplementedException(
+                                            throw new InvalidOperationException(
                                                 "classifier.get did not include 'ownedAttribute'"));
                 
                 foreach (var item in result.OfType<IElement>())

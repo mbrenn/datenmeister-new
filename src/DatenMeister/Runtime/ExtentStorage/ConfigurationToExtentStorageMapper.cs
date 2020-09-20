@@ -41,6 +41,16 @@ namespace DatenMeister.Runtime.ExtentStorage
                 Function = function;
                 ConnectedMetaClass = connectedMetaClass;
             }
+
+            public override string ToString()
+            {
+                if (ConnectedMetaClass == null)
+                {
+                    return base.ToString();
+                }
+
+                return NamedElementMethods.GetFullName(ConnectedMetaClass);
+            }
         }
 
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ConfigurationToExtentStorageMapper));

@@ -94,43 +94,35 @@ namespace DatenMeister.Modules.ZipExample
             File.Copy(originalFilename, filename);
 
             // Creates the configuration
-            
+            var csvSettings =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
+            csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+            csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, '\t');
+            csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding, "UTF-8");
+            csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri, _zipCodeModel.ZipCode);
+            csvSettings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns,  new[]
+            {
+                nameof(ZipCode.id),
+                nameof(ZipCode.zip),
+                nameof(ZipCode.positionLong),
+                nameof(ZipCode.positionLat),
+                nameof(ZipCode.name)
+            }.ToList());   
 
             var defaultConfiguration =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
             defaultConfiguration.set(
-                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
-                "dm:///zipcodes/{randomNumber}");
+                _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri,
+                $"dm:///zipcodes/{randomNumber}");
             defaultConfiguration.set(
-                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath,
                 filename);
             defaultConfiguration.set(
-                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId,
                 workspaceId);
-            
-            /*
-            var defaultConfiguration2 = new CsvExtentLoaderConfig($"dm:///zipcodes/{randomNumber}")
-            {
-                filePath = filename,
-                workspaceId = workspaceId,
-                settings =
-                {
-                    HasHeader = false,
-                    Separator = '\t',
-                    Encoding = "UTF-8",
-                    Columns = new[]
-                    {
-                        nameof(ZipCode.id),
-                        nameof(ZipCode.zip),
-                        nameof(ZipCode.positionLong),
-                        nameof(ZipCode.positionLat),
-                        nameof(ZipCode.name)
-                    }.ToList(),
-                    MetaclassUri = _zipCodeModel.ZipCodeUri ?? string.Empty
-                }
-            };*/
-            
-            throw new InvalidOperationException();
+            defaultConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings,
+                csvSettings);
 
             var loadedExtent = _extentManager.LoadExtent(defaultConfiguration)
                                ?? throw new InvalidOperationException("defaultConfiguration could not be loaded");

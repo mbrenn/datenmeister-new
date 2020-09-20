@@ -652,7 +652,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void AddDefaultButtons(string? saveText = null)
         {
             if (DetailElement == null)
-                throw new NotImplementedException("DetailElement == null");
+                throw new InvalidOperationException("DetailElement == null");
             if (EffectiveForm == null)
                 throw new InvalidOperationException("EffectiveForm == null");
             
@@ -665,7 +665,7 @@ namespace DatenMeister.WPF.Forms.Base
                 AddGenericButton("New Property", () =>
                 {
                     if (EffectiveForm == null)
-                        throw new NotImplementedException("EffectiveForm == null");
+                        throw new InvalidOperationException("EffectiveForm == null");
                     
                     var fieldKey = new TextBox();
                     var fieldValue = new TextboxField();

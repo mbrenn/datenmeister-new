@@ -6,6 +6,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -70,15 +71,14 @@ namespace DatenMeister.Runtime.ExtentStorage
                 if (found == null)
                 {
                     Logger.Error(
-                        $"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
+                        $"ExtentStorage for the given type was not found:  {NamedElementMethods.GetFullName(metaClass)}");
                     throw new InvalidOperationException(
-                        $"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
+                        $"ExtentStorage for the given type was not found:  {NamedElementMethods.GetFullName(metaClass)}");
                 }
 
                 var result = found.Function(extentManager);
                 result.WorkspaceLogic = extentManager.WorkspaceLogic;
                 result.ScopeStorage = extentManager.ScopeStorage;
-                
                 return result;
             }
         }

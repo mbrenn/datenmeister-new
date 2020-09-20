@@ -107,11 +107,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                 extentConfigurations.elements().add(
                     copiedConfiguration
                     ?? throw new InvalidOperationException("Configuration is not set"));
-                
 
                 // Stores the .Net datatype to allow restore of the right element
-
-                if (loadingInformation.Extent is MofExtent loadedExtent)
+                if (loadingInformation.Extent is MofExtent loadedExtent && 
+                    !loadedExtent.Provider.GetCapabilities().StoreMetaDataInExtent)
                 {
                     copiedConfiguration.set("metadata", loadedExtent.GetMetaObject());
                 }

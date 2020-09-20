@@ -6,13 +6,11 @@ namespace DatenMeister.Excel.Helper
     /// Defines the configuration settings for using the excel sheet as configuration structure for
     /// the extent
     /// </summary>
-    public class ExcelExtentLoaderConfig : ExtentLoaderConfig
+    public class ExcelExtentLoaderConfig : ExtentFileLoaderConfig
     {
         public ExcelExtentLoaderConfig()
         {
         }
-        
-        public string? filePath { get; set; }
         public string? idColumnName { get; set; }
 
         public ExcelExtentLoaderConfig(string extentUri) : base(extentUri)

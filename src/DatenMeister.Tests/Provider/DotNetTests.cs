@@ -205,7 +205,7 @@ namespace DatenMeister.Tests.Provider
         }
 
         [Test]
-        public void TestDotNetConversionWithoutExplicitType()
+        public void TestFindingXmiStorageLoaderConfig()
         {
             using var datenMeister  = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
@@ -215,20 +215,9 @@ namespace DatenMeister.Tests.Provider
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var csvLoaderType = workspaceLogic.FindItem(
-                WorkspaceNames.UriExtentInternalTypes + "#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig");
+                WorkspaceNames.UriExtentInternalTypes + "#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
 
             Assert.That(csvLoaderType, Is.Not.Null);
-            var memoryObject = new MofFactory(extent).create(csvLoaderType);
-            memoryObject.set(nameof(XmiStorageLoaderConfig.workspaceId), "TEST");
-            memoryObject.set(nameof(XmiStorageLoaderConfig.filePath), "path");
-            memoryObject.set(nameof(XmiStorageLoaderConfig.extentUri), "dm:///");
-
-            var asDotNetType = DotNetConverter.ConvertToDotNetObject(memoryObject);
-            Assert.That(asDotNetType, Is.TypeOf<XmiStorageLoaderConfig>());
-            var typed = (XmiStorageLoaderConfig) asDotNetType;
-            Assert.That(typed.workspaceId, Is.EqualTo("TEST"));
-            Assert.That(typed.filePath, Is.EqualTo("path"));
-            Assert.That(typed.extentUri, Is.EqualTo("dm:///"));
         }
     }
 }

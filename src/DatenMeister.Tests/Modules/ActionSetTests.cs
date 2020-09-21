@@ -10,6 +10,7 @@ using DatenMeister.Modules.Actions;
 using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
@@ -77,6 +78,7 @@ namespace DatenMeister.Tests.Modules
         {
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
+            scopeStorage.Add(ConfigurationToExtentStorageMapper.GetDefaultMapper());
             scopeStorage.Add(WorkspaceLogic.InitDefault());
 
             var workspaceLogic = new WorkspaceLogic(scopeStorage);

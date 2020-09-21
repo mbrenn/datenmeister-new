@@ -179,6 +179,8 @@ namespace DatenMeister.Runtime.ExtentStorage
                     filePath = Path.Combine(_integrationSettings.DatabasePath, filePath);
                 }
 
+                configuration.set(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath, filePath);
+
                 if (Directory.Exists(filePath))
                 {
                     throw new InvalidOperationException("Given file is a directory name. ");

@@ -47,14 +47,14 @@ namespace DatenMeister.Provider.CSV.Runtime
             var doesFileExist = File.Exists(filePath);
             if (doesFileExist)
             {
-                var csvSettings = DotNetConverter.ConvertToDotNetObject<CsvSettings>(
+                var settings =
                     configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig
-                        .settings));
-
+                        .settings) ?? throw new InvalidOperationException("Settings are not set");
+                
                 dataProvider.Load(
                     provider,
                     filePath,
-                    csvSettings);
+                    settings);
             }
             else if (extentCreationFlags == ExtentCreationFlags.LoadOnly)
             {

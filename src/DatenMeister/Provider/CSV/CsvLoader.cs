@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -26,9 +28,9 @@ namespace DatenMeister.Provider.CSV
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
         /// <param name="path">Path being used to load the extent</param>
-        /// <param name="settings">Settings to load the extent</param>
+        /// <param name="settings">Settings to load the extent. Of Type CsvSettings</param>
         /// <returns>The loaded extent</returns>
-        public void Load(IProvider extent, string path, CsvSettings settings)
+        public void Load(IProvider extent, string path, IElement? settings)
         {
             using (var fileStream = new FileStream(path, FileMode.Open))
             {
@@ -41,9 +43,9 @@ namespace DatenMeister.Provider.CSV
         /// </summary>
         /// <param name="extent">The uri being used for an extent</param>
         /// <param name="stream">Path being used to load the extent</param>
-        /// <param name="settings">Settings to load the extent</param>
+        /// <param name="settings">Settings to load the extent. Of Type CsvSettings</param>
         /// <returns>The loaded extent</returns>
-        public void Load(IProvider extent, Stream stream, CsvSettings settings)
+        public void Load(IProvider extent, Stream stream, IElement? settings)
         {
             ReadFromStream(extent, stream, settings);
         }
@@ -54,41 +56,44 @@ namespace DatenMeister.Provider.CSV
         /// <param name="extent">Extet being stored</param>
         /// <param name="stream">Stream being used to read in</param>
         /// <param name="settings">Settings being used to store it.</param>
-        private void ReadFromStream(IProvider extent, Stream stream, CsvSettings settings)
+        private void ReadFromStream(IProvider extent, Stream stream, IElement? settings)
         {
-            if (settings == null)
-            {
-                settings = new CsvSettings();
-            }
-
-            var columns = settings.Columns;
+            var columns =
+                settings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+            var hasHeader =
+                settings.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader);
             var createColumns = false;
 
             IElement? metaClass = null;
-            if (!string.IsNullOrEmpty(settings.MetaclassUri))
+            var metaClassUri =
+                settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.metaclassUri);
+            if (!string.IsNullOrEmpty(metaClassUri))
             {
-                metaClass = _workspaceLogic.FindItem(settings.MetaclassUri);
+                metaClass = _workspaceLogic.FindItem(metaClassUri);
             }
 
-            using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(settings.Encoding ?? "UTF-8")))
+            using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(
+                settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8")))
             {
-                if (columns == null)
+                var tempColumns = columns?.OfType<string>().ToList();
+                
+                if (tempColumns == null)
                 {
                     createColumns = true;
-                    columns = new List<string>();
+                    tempColumns = new List<string>();
                 }
 
                 // Reads header, if necessary
-                if (settings.HasHeader)
+                if (hasHeader)
                 {
-                    columns.Clear();
+                    tempColumns.Clear();
 
                     // Creates the column names for the headline
                     var ignoredLine = streamReader.ReadLine();
                     var columnNames = SplitLine(ignoredLine, settings);
                     foreach (var columnName in columnNames)
                     {
-                        columns.Add(columnName);
+                        tempColumns.Add(columnName);
                     }
                 }
 
@@ -107,21 +112,21 @@ namespace DatenMeister.Provider.CSV
                         string foundColumn;
 
                         // Check, if we have enough columns, if we don't have enough columns, create one
-                        if (columns.Count <= n && (createColumns || !settings.HasHeader))
+                        if (tempColumns.Count <= n && (createColumns || !hasHeader))
                         {
                             // Create new column
                             foundColumn = $"Column {n + 1}";
-                            columns.Add(foundColumn);
+                            tempColumns.Add(foundColumn);
                         }
                         else
                         {
-                            foundColumn = columns[n];
+                            foundColumn = tempColumns[n];
                         }
 
                         csvObject.SetProperty(foundColumn, values[n]);
                     }
 
-
+                    settings?.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
                     extent.AddElement(csvObject);
                 }
             }
@@ -131,9 +136,17 @@ namespace DatenMeister.Provider.CSV
         ///     Splits a CSV line into columns
         /// </summary>
         /// <returns>List of column values</returns>
-        private static IList<string> SplitLine(string line, CsvSettings settings)
+        private static IList<string> SplitLine(string line, IElement? settings)
         {
-            return line.Split(new[] {settings.Separator}, StringSplitOptions.None);
+            char separator = ' ';
+            if (settings != null)
+            {
+                separator = settings.getOrDefault<char>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator);
+            }
+            
+            return line.Split(
+                new[] {separator},
+                StringSplitOptions.None);
         }
 
         /// <summary>

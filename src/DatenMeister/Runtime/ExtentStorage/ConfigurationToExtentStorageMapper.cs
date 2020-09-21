@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Models;
+using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Provider.Xml;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Uml.Helper;
 
@@ -110,6 +113,16 @@ namespace DatenMeister.Runtime.ExtentStorage
                     return _mapping.Select(x=>x.ConnectedMetaClass).ToList();
                 }
             }
+        }
+
+        public static ConfigurationToExtentStorageMapper GetDefaultMapper()
+        {
+            var result = new ConfigurationToExtentStorageMapper();
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig, manager => new InMemoryProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig, manager => new CsvProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig, manager => new XmiProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig, manager => new XmlReferenceLoader());
+            return result;
         }
     }
 }

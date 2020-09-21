@@ -34,10 +34,10 @@ namespace DatenMeister.Excel.ProviderLoader
             var xmiConfiguration = factory.create(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
             xmiConfiguration.set(
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
-                configuration.get(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath));
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath));
             xmiConfiguration.set(
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
-                configuration.get(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
 
             var loadedInfo = extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
             if (loadedInfo.LoadingState == ExtentLoadingState.Failed || loadedInfo.Extent == null)

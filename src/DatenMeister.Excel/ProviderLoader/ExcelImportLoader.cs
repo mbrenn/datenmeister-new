@@ -6,10 +6,8 @@ using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Provider;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -35,6 +33,9 @@ namespace DatenMeister.Excel.ProviderLoader
             xmiConfiguration.set(
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath));
+            xmiConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri));
             xmiConfiguration.set(
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));

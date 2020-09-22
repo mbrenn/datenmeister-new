@@ -74,12 +74,11 @@ namespace DatenMeister.Provider.CSV.Runtime
                 throw new InvalidOperationException("csvConfiguration.filePath == null");
             
             var provider = new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
+
+            var settings = configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs
+                ._CsvExtentLoaderConfig.settings);
             
-            var csvSettings = DotNetConverter.ConvertToDotNetObject<CsvSettings>(
-                configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig
-                    .settings));
-            
-            provider.Save(extent, filePath, csvSettings);
+            provider.Save(extent, filePath, settings);
         }
     }
 }

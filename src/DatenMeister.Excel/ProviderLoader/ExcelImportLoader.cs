@@ -25,14 +25,13 @@ namespace DatenMeister.Excel.ProviderLoader
             var extentManager = new ExtentManager(
                 WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"),
                 ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
-            
 
             // Creates the XMI being used as a target
             var factory = new MofFactory(configuration);
             var xmiConfiguration = factory.create(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
             xmiConfiguration.set(
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
-                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath));
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath));
             xmiConfiguration.set(
                 _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri));

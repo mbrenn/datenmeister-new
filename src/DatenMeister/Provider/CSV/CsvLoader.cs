@@ -32,10 +32,9 @@ namespace DatenMeister.Provider.CSV
         /// <returns>The loaded extent</returns>
         public void Load(IProvider extent, string path, IElement? settings)
         {
-            using (var fileStream = new FileStream(path, FileMode.Open))
-            {
-                Load(extent, fileStream, settings);
-            }
+            using var fileStream = new FileStream(path, FileMode.Open);
+
+            Load(extent, fileStream, settings);
         }
 
         /// <summary>
@@ -126,9 +125,10 @@ namespace DatenMeister.Provider.CSV
                         csvObject.SetProperty(foundColumn, values[n]);
                     }
 
-                    settings?.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
                     extent.AddElement(csvObject);
                 }
+                
+                settings?.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
             }
         }
 
@@ -154,11 +154,12 @@ namespace DatenMeister.Provider.CSV
         /// </summary>
         /// <param name="extent">Extent to be stored</param>
         /// <param name="path">Path, where file shall be stored</param>
-        /// <param name="settings">Settings being used</param>
-        public void Save(IProvider extent, string path, CsvSettings settings)
+        /// <param name="settings">Settings being used. Of type CSV Settings</param>
+        public void Save(IProvider extent, string path, IElement settings)
         {
+            var encoding = settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8";
             // Open File
-            using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(settings.Encoding)))
+            using (var streamWriter = new StreamWriter(File.OpenWrite(path), Encoding.GetEncoding(encoding)))
             {
                 SaveToStream(streamWriter, extent, settings);
             }
@@ -170,15 +171,20 @@ namespace DatenMeister.Provider.CSV
         /// <param name="streamWriter">Stream, where data will be stored</param>
         /// <param name="extent">Extent being stored</param>
         /// <param name="settings">Settings of the csv</param>
-        public void SaveToStream(TextWriter streamWriter, IProvider extent, CsvSettings settings)
+        public void SaveToStream(TextWriter streamWriter, IProvider extent, IElement settings)
         {
+            var csvColumns =
+                settings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+            var hasHeader =
+                settings.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader);
+
             var columns = new List<string>();
 
             // Retrieve the column headers
-            if (settings.HasHeader && settings.Columns.Any())
+            if (hasHeader && csvColumns.Any())
             {
                 // Column headers given by old extent
-                columns.AddRange(settings.Columns);
+                columns.AddRange(csvColumns.OfType<string>().ToList());
             }
             else
             {
@@ -189,7 +195,7 @@ namespace DatenMeister.Provider.CSV
             }
 
             // Writes the header
-            if (settings.HasHeader)
+            if (hasHeader)
             {
                 WriteRow(streamWriter, settings, columns, x => x.ToString());
             }
@@ -216,21 +222,22 @@ namespace DatenMeister.Provider.CSV
         /// <param name="conversion">Converter to be used, to show the content</param>
         private void WriteRow(
             TextWriter streamWriter,
-            CsvSettings settings,
+            IElement settings,
             IEnumerable<string> values,
             Func<string, object> conversion)
         {
+            var separator = settings.getOrDefault<char>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator);
             var builder = new StringBuilder();
             var first = true;
             foreach (var value in values)
             {
                 if (!first)
                 {
-                    builder.Append(settings.Separator);
+                    builder.Append(separator);
                 }
 
                 var cellValue = DotNetHelper.AsString(conversion(value));
-                if (cellValue != null && cellValue.Contains(settings.Separator))
+                if (cellValue != null && cellValue.Contains(separator))
                 {
                     cellValue = $"\"{cellValue.Replace("\"", "\"\"")}\"";
                 }

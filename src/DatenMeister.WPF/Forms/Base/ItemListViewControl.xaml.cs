@@ -15,6 +15,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
@@ -224,7 +225,7 @@ namespace DatenMeister.WPF.Forms.Base
                         loader.Save(
                             memoryProvider,
                             dlg.FileName,
-                            new CsvSettings());
+                            InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings));
 
                         MessageBox.Show($"CSV Export completed. \r\n{temporary.elements().Count()} Items exported.");
                     }

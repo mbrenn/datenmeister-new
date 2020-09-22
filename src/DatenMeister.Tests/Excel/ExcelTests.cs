@@ -108,24 +108,23 @@ namespace DatenMeister.Tests.Excel
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                
-                
-                var excelReferenceSettings =
+
+                var excelImportLoaderConfig =
                     InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig);
                 
-                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri,
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri,
                     "dm:///excel2");
-                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath,
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath,
                     Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
-                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath,
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath,
                     Path.Combine(currentDirectory, "test.xmi"));
-                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader,
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader,
                     true);
-                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.sheetName,
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.sheetName,
                     "Tabelle1");
                 
                 var extentManager = dm.Resolve<ExtentManager>();
-                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
+                var loadedExtent = extentManager.LoadExtent(excelImportLoaderConfig, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
                 Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));
 

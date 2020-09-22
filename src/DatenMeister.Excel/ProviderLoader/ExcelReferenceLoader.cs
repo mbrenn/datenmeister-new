@@ -69,8 +69,8 @@ namespace DatenMeister.Excel.ProviderLoader
             excelImporter.LoadExcel();
 
             var columnNames = excelImporter.GetColumnNames();
-            if (!fixColumnCount) excelImporter.GuessRowCount();
-            if (!fixRowCount) excelImporter.GuessColumnCount();
+            if (!fixColumnCount) countRows = excelImporter.GuessRowCount();
+            if (!fixRowCount) countColumns = excelImporter.GuessColumnCount();
 
             for (var r = 0; r < countRows; r++)
             {

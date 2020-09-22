@@ -88,7 +88,6 @@ namespace DatenMeister.Runtime.ExtentStorage
             ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly)
         {
             // First, check, if there is already an extent loaded in the internal database with that uri and workspace
-
             var workspaceId =
                 configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId);
             var extentUri =
@@ -503,6 +502,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     _lockingHandler?.Lock(_extentStorageData.GetLockPath());
                 }
 
+                var failedExtents = new List<string>();
                 _extentStorageData.IsOpened = true;
                 _extentStorageData.IsRegistrationOpen = true;
 
@@ -517,16 +517,21 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
                 catch (Exception exc)
                 {
-                    Logger.Warn("Exception during loading of Extents: " + exc.Message);
-                    lastException = exc;
+                    Logger.Fatal("Exception during loading of Extents: " + exc.Message);
+
+                    failedExtents.Add("Extent Configuration Database");
+                    _extentStorageData.FailedLoading = true;
+                    _extentStorageData.FailedLoadingException = exc;
+                    _extentStorageData.FailedLoadingExtents = failedExtents;
+
+                    throw new LoadingExtentsFailedException(failedExtents);
+
                 }
 
                 if (loaded == null)
                 {
                     return;
                 }
-
-                var failedExtents = new List<string>();
                 while (loaded.Count > 0)
                 {
                     var configuration = loaded[0];

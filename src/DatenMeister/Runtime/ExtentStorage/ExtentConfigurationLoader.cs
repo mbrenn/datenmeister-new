@@ -68,6 +68,12 @@ namespace DatenMeister.Runtime.ExtentStorage
                 
                 
                 var document = XDocument.Load(path);
+                var version = document.Root?.Attribute("Version")?.Value;
+                if (string.IsNullOrEmpty(version))
+                {
+                    throw new InvalidOperationException($"Unfortunately, we have an old version and need to rebuild the extent configuration: {path}");
+                }
+
                 var xmiProvider = new XmiProvider(document);
                 var extent = new MofUriExtent(xmiProvider);
 
@@ -114,6 +120,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
             }
 
+            xmiProvider.Document.Root!.Add(new XAttribute("Version", "1.0"));
             xmiProvider.Document.Save(path);
         }
     }

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Helper;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
 using DatenMeister.Models;

@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.Actions;
 using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.InMemory;

@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Exceptions;
 using DatenMeister.Runtime.ExtentStorage;
 

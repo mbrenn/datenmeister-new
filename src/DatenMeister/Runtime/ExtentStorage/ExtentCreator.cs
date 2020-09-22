@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage

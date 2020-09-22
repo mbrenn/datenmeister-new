@@ -8,7 +8,6 @@ using DatenMeister.Models.EMOF;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;

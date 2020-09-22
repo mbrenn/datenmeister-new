@@ -7,7 +7,6 @@ using DatenMeister.Models;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;

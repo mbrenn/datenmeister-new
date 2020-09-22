@@ -4,7 +4,6 @@ using System.Reflection;
 using Autofac;
 using DatenMeister.Models;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using NUnit.Framework;
 

@@ -11,7 +11,6 @@ using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;

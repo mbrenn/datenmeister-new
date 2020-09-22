@@ -15,7 +15,6 @@ using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.View;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;

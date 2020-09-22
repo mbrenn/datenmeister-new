@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {

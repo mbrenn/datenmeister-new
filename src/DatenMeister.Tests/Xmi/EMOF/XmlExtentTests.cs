@@ -10,7 +10,6 @@ using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;

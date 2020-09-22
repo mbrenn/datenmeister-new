@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Excel.Helper;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using NPOI.XSSF.UserModel;
 
@@ -10,9 +10,9 @@ namespace DatenMeister.Excel.EMOF
     {
         private readonly XSSFWorkbook _workbook;
         
-        public ExcelExtentLoaderConfig Settings { get; }
+        public IElement Settings { get; }
 
-        public ExcelProvider(XSSFWorkbook workbook, ExcelExtentLoaderConfig settings)
+        public ExcelProvider(XSSFWorkbook workbook, IElement settings)
         {
             _workbook = workbook;
             Settings = settings;

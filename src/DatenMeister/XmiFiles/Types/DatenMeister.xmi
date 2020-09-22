@@ -189,5 +189,149 @@
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
     </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="c870f6e8-2b70-415c-afaf-b78776b42a09" name="DropExtentAction">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="69194c8c-afba-43c4-b471-4744cd4cb0c0" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+      </generalization>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="403d30e2-0477-4e2b-a691-acbef368536c" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="95e1aa96-e6c9-46cb-9b57-bdbd5c173df1" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="1be0dfb0-be9c-4cb0-b2e5-aaab17118bfe" name="CreateWorkspaceAction">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="331c6772-2852-4796-a690-1d9be6255d75" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+      </generalization>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="5985c8d8-29c0-4639-9933-a425f17b47cb" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="0ac63fa8-2259-4d25-8752-786457a59a9d" name="annotation" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="db6cc8eb-011c-43e5-b966-cc0e3a1855e8" name="DropWorkspaceAction">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="194d3e9b-a47f-4b10-96a7-17c13c8cfe79" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="922772b6-055f-40ed-a19a-f744bd7b5ffa" general-ref="dm:///_internal/types/internal#Actions.Action">
+        <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
+      </generalization>
+    </packagedElement>
+  </item>
+  <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" >
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixRowCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixColumnCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="sheetName" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="offsetRow" type-ref="dm:///_internal/model/primitivetypes#Integer" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="offsetColumn" type-ref="dm:///_internal/model/primitivetypes#Integer" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countRows" type-ref="dm:///_internal/model/primitivetypes#Integer" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countColumns" type-ref="dm:///_internal/model/primitivetypes#Integer" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelImportLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentPath" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="InMemoryLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmlReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="keepNamespaces" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentFileLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmiStorageLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="settings" type-ref="#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvSettings" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvSettings">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="encoding" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="separator" type-ref="#System.Char" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="columns" type-ref="dm:///_internal/model/primitivetypes#String" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="metaclassUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
   </item>
 </item>

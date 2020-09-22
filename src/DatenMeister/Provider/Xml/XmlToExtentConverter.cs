@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 
@@ -14,13 +15,16 @@ namespace DatenMeister.Provider.Xml
     /// </summary>
     public class XmlToExtentConverter
     {
-        private readonly XmlReferenceLoaderConfig _loaderConfig;
+        /// <summary>
+        /// Of type XmlReferenceLoaderConfig
+        /// </summary>
+        private readonly IElement _loaderConfig;
 
         /// <summary>
         /// Initializes a new instance of the XmlToExtentConverter
         /// </summary>
         /// <param name="loaderConfig">Settings to be used</param>
-        public XmlToExtentConverter(XmlReferenceLoaderConfig loaderConfig)
+        public XmlToExtentConverter(IElement loaderConfig)
         {
             _loaderConfig = loaderConfig;
         }
@@ -180,8 +184,12 @@ namespace DatenMeister.Provider.Xml
 
         private string GetNameNormalized(XName xname)
         {
+            var keepNamespaces =
+                _loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._XmlReferenceLoaderConfig
+                    .keepNamespaces);
+            
             var name = xname.ToString();
-            if (!_loaderConfig.keepNamespaces)
+            if (!keepNamespaces)
             {
                 name = xname.LocalName;
 

@@ -501,15 +501,6 @@ namespace DatenMeister.WPF.Forms.Base
                     ?.ToList()
                 ?? new List<object?>();
 
-            // Allows the deletion of an item
-            if (tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) != true)
-            {
-                usedViewExtensions.Add(
-                    new RowItemButtonDefinition(
-                        "Delete",
-                        (guest, item) => { DeleteItem(item); }));
-            }
-
             var createdUserControl = control;
             
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
@@ -609,33 +600,6 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             return createdUserControl;
-        }
-
-        /// <summary>
-        /// Deletes the item from the current extent
-        /// </summary>
-        /// <param name="item">Item to be deleted</param>
-        private void DeleteItem(IObject item)
-        {
-            if (Extent != null)
-            {
-                var name = NamedElementMethods.GetName(item);
-                if (MessageBox.Show(
-                        $"Are you sure to delete the item '{name}'?",
-                        "Confirmation",
-                        MessageBoxButton.YesNo) ==
-                    MessageBoxResult.Yes)
-                {
-                    // TODO: Will not work with selected item and its properties
-                    // Only with the the items of the extent
-                    Extent.elements().remove(item);
-                }
-            }
-            else
-            {
-                MessageBox.Show("For whatever reason, deletion is not possible" +
-                                "because the Extent is not given.");
-            }
         }
 
         /// <summary>

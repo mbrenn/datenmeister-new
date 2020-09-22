@@ -18,7 +18,6 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.DynamicFunctions;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -618,7 +617,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>Enumeration of strings</returns>
         public IEnumerable<string> getPropertiesBeingSet()
         {
-            
             if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??

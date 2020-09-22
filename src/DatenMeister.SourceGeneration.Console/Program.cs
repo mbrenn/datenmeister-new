@@ -3,12 +3,13 @@ using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
-using DatenMeister.Models.EMOF;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
+using DatenMeister.Modules.TypeSupport;
+using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
@@ -39,7 +40,9 @@ namespace DatenMeister.SourceGeneration.Console
 
             CreateSourceForReports();
             
-            CreateSourceCodeForDatenMeister();
+            //CreateSourceCodeForDatenMeister();
+
+            CreateSourceCodeForDatenMeisterAllTypes();
 
 #if !DEBUG
             File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Models/EMOF/primitivetypes.cs", true);
@@ -91,7 +94,35 @@ namespace DatenMeister.SourceGeneration.Console
             var pathOfClassTree = "DatenMeister.class.cs";
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
+            System.Console.WriteLine(" Done");
         }
+
+        private static void CreateSourceCodeForDatenMeisterAllTypes()
+        {
+            var dm = GiveMeDotNetCore.DatenMeister();
+            
+            System.Console.Write("Create Sourcecode for DatenMeister...");
+
+            var pseudoExtent = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage).InternalTypes;
+
+            ////////////////////////////////////////
+            // Creates the class tree
+
+            // Creates the source parser which is needed to navigate through the package
+            var sourceParser = new ElementSourceParser();
+            var classTreeGenerator = new ClassTreeGenerator(sourceParser)
+            {
+                Namespace = "DatenMeister.Models"
+            };
+
+            classTreeGenerator.Walk(pseudoExtent);
+
+            var pathOfClassTree = "DatenMeister.class.cs";
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
+            System.Console.WriteLine(" Done");
+        }
+
 
         private static void CreateSourceForReports()
         {
@@ -153,6 +184,7 @@ namespace DatenMeister.SourceGeneration.Console
                     Namespace = "DatenMeister.Models.ManagementProviders",
                     Types = ManagementProviderModel.AllTypes
                 });
+            System.Console.WriteLine(" Done");
         }
 
         private static void CreateSourceForExcel()

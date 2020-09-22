@@ -6,7 +6,6 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -33,7 +32,7 @@ namespace DatenMeister.Uml.Helper
             if (classifier.isSet(propertyOwnedAttribute))
             {
                 var result = (IEnumerable) (classifier.get(propertyOwnedAttribute) ??
-                                            throw new NotImplementedException(
+                                            throw new InvalidOperationException(
                                                 "classifier.get did not include 'ownedAttribute'"));
                 
                 foreach (var item in result.OfType<IElement>())

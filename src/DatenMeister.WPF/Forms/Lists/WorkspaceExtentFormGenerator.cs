@@ -7,7 +7,6 @@ using System.Windows.Documents;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -23,7 +22,6 @@ using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
@@ -364,7 +362,7 @@ namespace DatenMeister.WPF.Forms.Lists
             }
         }
 
-        public static async Task<ExtentLoaderConfig?> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
+        public static async Task<IElement?> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
         {
             // Let user select the type of the extent
             var dlg = new LocateItemDialog
@@ -410,9 +408,7 @@ namespace DatenMeister.WPF.Forms.Lists
             if (detailControl != null && detailControl.Result == NavigationResult.Saved)
             {
                 // Convert back to instance
-                var extentLoaderConfig =
-                    DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
-                return extentLoaderConfig;
+                return createdElement;
             }
 
             return null;

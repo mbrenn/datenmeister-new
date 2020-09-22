@@ -9,10 +9,8 @@ namespace DatenMeister.Provider.Xml
     /// Loads the Xmi file and stores the result into an InMemoryObject Extent. Changes in the reference will not lead to modification
     /// of the stored and referenced file
     /// </summary>
-    public class XmlReferenceLoaderConfig : ExtentLoaderConfig
+    public class XmlReferenceLoaderConfig : ExtentFileLoaderConfig
     {
-        public string? filePath { get; set; }
-
         public bool keepNamespaces { get; set; }
 
         public XmlReferenceLoaderConfig()

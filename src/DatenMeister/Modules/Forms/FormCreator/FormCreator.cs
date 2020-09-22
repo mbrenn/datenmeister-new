@@ -11,7 +11,6 @@ using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -535,8 +534,16 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         var elements = _factory.create(_FormAndFields.TheOne.__SubElementFieldData);
                         elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
+
+                        var defaultTypeForNewElement =
+                            _factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
+                        defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.name,
+                            NamedElementMethods.GetName(propertyType));
+                        defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass,
+                            propertyType);
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                            new[] {propertyType});
+                            new[] {defaultTypeForNewElement});
+                        
                         elements.set(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
                         
@@ -579,10 +586,16 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 
                 if (propertyType != null)
                 {
-                    element.set(
-                        _FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                        new[] {propertyType});
+                    var defaultTypeForNewElement =
+                        _factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
+                    defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.name,
+                        NamedElementMethods.GetName(propertyType));
+                    defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass,
+                        propertyType);
+                    element.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
+                        new[] {defaultTypeForNewElement});
                 }
+                
                 return element;
             }
 

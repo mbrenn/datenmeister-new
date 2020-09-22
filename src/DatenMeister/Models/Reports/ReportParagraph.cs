@@ -1,5 +1,4 @@
-﻿using System;
-using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Models.Reports
 {

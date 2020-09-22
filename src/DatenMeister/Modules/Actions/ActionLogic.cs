@@ -31,7 +31,7 @@ namespace DatenMeister.Modules.Actions
         public async Task ExecuteActionSet(IElement actionSet)
         {
             var actions = actionSet.getOrDefault<IReflectiveCollection>(
-                _Actions._ActionSet.action);
+                _DatenMeister._Actions._ActionSet.action);
             foreach (var action in actions.OfType<IElement>())
             {
                 await ExecuteAction(action);

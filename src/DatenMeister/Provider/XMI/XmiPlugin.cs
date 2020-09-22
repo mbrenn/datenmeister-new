@@ -1,4 +1,6 @@
-﻿using DatenMeister.Provider.XMI.ExtentStorage;
+﻿using DatenMeister.Integration;
+using DatenMeister.Models;
+using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 
@@ -9,20 +11,25 @@ namespace DatenMeister.Provider.XMI
     /// </summary>
     // ReSharper disable once UnusedMember.Global
     // ReSharper disable once InconsistentNaming
-    [PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
-    // ReSharper disable once UnusedMember.Global
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
     public class XmiPlugin : IDatenMeisterPlugin
     {
         private readonly ConfigurationToExtentStorageMapper _storageMapper;
 
-        public XmiPlugin(ConfigurationToExtentStorageMapper storageMapper)
+        public XmiPlugin(IScopeStorage scopeStorage)
         {
-            _storageMapper = storageMapper;
+            _storageMapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
         }
 
         public void Start(PluginLoadingPosition position)
         {
-            _storageMapper.MapExtentLoaderType(typeof(XmiProviderLoader));
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterBootstrapping:
+                    _storageMapper.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig,
+                        extentManager => new XmiProviderLoader());
+                    break;
+            }
         }
     }
 }

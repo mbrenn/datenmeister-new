@@ -5,10 +5,11 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Helper;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -55,12 +56,16 @@ namespace DatenMeister.Tests.Excel
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var excelReferenceSettings = new ExcelReferenceLoaderConfig("dm:///excel2")
-                {
-                    filePath = Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"),
-                    hasHeader = true,
-                    sheetName = "Tabelle1"
-                };
+                var excelReferenceSettings =
+                    InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelReferenceLoaderConfig);
+                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+                    "dm:///excel2");
+                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.filePath,
+                    Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
+                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.hasHeader,
+                    true);
+                excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
+                    "Tabelle1");
 
                 var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
@@ -102,16 +107,23 @@ namespace DatenMeister.Tests.Excel
             using (var dm = DatenMeisterTests.GetDatenMeisterScope())
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var excelReferenceSettings = new ExcelImportLoaderConfig("dm:///excel2")
-                {
-                    filePath = Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"),
-                    extentPath = Path.Combine(currentDirectory, "test.xmi"),
-                    hasHeader = true,
-                    sheetName = "Tabelle1"
-                };
 
+                var excelImportLoaderConfig =
+                    InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig);
+                
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri,
+                    "dm:///excel2");
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath,
+                    Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath,
+                    Path.Combine(currentDirectory, "test.xmi"));
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader,
+                    true);
+                excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.sheetName,
+                    "Tabelle1");
+                
                 var extentManager = dm.Resolve<ExtentManager>();
-                var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
+                var loadedExtent = extentManager.LoadExtent(excelImportLoaderConfig, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
                 Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));
 

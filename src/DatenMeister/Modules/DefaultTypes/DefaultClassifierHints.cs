@@ -65,7 +65,7 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <returns>The defined packages</returns>
         public static IEnumerable<IElement> GetDefaultPackageClassifiers(IExtent extent)
         {
-            yield return _CommonTypes.TheOne.Default.__Package;
+            yield return _DatenMeister.TheOne.CommonTypes.Default.__Package;
         }
 
         /// <summary>

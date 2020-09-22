@@ -2,8 +2,9 @@
 using System.IO;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Exceptions;
 using DatenMeister.Runtime.ExtentStorage;
 
@@ -38,11 +39,13 @@ namespace DatenMeister.Runtime.Extents
             var pathExtension = Path.GetExtension(filePath).ToLower();
             if (pathExtension == ".xmi" || pathExtension == ".xml")
             {
-                var resultingExtent = _extentManager.LoadExtent(new XmiStorageLoaderConfig(extentUri)
-                {
-                    filePath = filePath,
-                    workspaceId = workspaceId
-                });
+                var configuration =
+                    InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+                configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, extentUri);
+                configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filePath);
+                configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspaceId);
+                
+                var resultingExtent = _extentManager.LoadExtent(configuration);
 
                 if (resultingExtent.LoadingState == ExtentLoadingState.Failed)
                 {

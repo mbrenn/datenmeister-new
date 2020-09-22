@@ -6,7 +6,7 @@ namespace DatenMeister.Provider.CSV
     {
         public string? Encoding { get; set; } = "UTF-8";
 
-        public bool HasHeader { get; set; } = true;
+        public bool HasHeader { get; set; } = false;
 
         public char Separator { get; set; } = ',';
 

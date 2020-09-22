@@ -122,6 +122,17 @@ namespace DatenMeister.Runtime
                 return ((T) (object) DotNetHelper.AsBoolean(value.GetAsSingle(property, noReferences, ObjectType.Boolean)))!;
             }
 
+            if (typeof(T) == typeof(char))
+            {
+                var asString = DotNetHelper.AsString(value.GetAsSingle(property, noReferences, ObjectType.String)!)!;
+                if (string.IsNullOrEmpty(asString))
+                {
+                    return (T) (object)' ';
+                }
+                
+                return (T) (object) asString[0];
+            }
+
             if (typeof(T) == typeof(IObject))
             {
                 var asSingle = (value.GetAsSingle(property, noReferences, ObjectType.Element) as IObject)!;

@@ -202,6 +202,11 @@ namespace DatenMeister.Provider.XMI.EMOF
                 return value.ToString();
             }
 
+            if (DotNetHelper.IsOfChar(value))
+            {
+                return value.ToString();
+            }
+
             if (value is DateTime propertyAsDateTime)
             {
                 return propertyAsDateTime.ToString(CultureInfo.InvariantCulture);

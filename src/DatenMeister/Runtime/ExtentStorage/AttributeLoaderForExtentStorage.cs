@@ -1,14 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Autofac;
-using BurnSystems.Logging;
-using DatenMeister.Provider;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Plugins;
-
-namespace DatenMeister.Runtime.ExtentStorage
+﻿namespace DatenMeister.Runtime.ExtentStorage
 {
+    /*
     public static class AttributeLoaderForExtentStorage
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(AttributeLoaderForExtentStorage));
@@ -57,5 +49,5 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
             }
         }
-    }
+    }*/
 }

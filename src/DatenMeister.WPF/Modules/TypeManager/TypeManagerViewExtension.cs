@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using BurnSystems.Logging;
-using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime.Workspaces;
@@ -43,7 +42,7 @@ namespace DatenMeister.WPF.Modules.TypeManager
             var enumerationMetaClass = _UML.TheOne.SimpleClassifiers.__Enumeration;
             var enumerationLiteralMetaClass = _UML.TheOne.SimpleClassifiers.__EnumerationLiteral;
             var propertyMetaClass = _UML.TheOne.Classification.__Property;
-            var packageInternalClass = _CommonTypes.TheOne.Default.__Package;
+            var packageInternalClass = _DatenMeister.TheOne.CommonTypes.Default.__Package;
             
             var isExtentInListView = viewExtensionInfo.IsExtentInListViewControl(UmlPlugin.ExtentType);
             var isInPackage = viewExtensionInfo.IsItemOfExtentTypeInListViewControl(

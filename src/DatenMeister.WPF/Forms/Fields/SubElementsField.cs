@@ -12,7 +12,6 @@ using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -94,9 +93,11 @@ namespace DatenMeister.WPF.Forms.Fields
             var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
             var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly)
                 || _fieldFlags?.IsReadOnly == true;
+            
             _includeSpecializationsForDefaultTypes =
-                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData
-                    .includeSpecializationsForDefaultTypes);
+                !_fieldData.isSet(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes)
+                || _fieldData.getOrDefault<bool>(
+                    _FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes);
 
             valueOfElement ??= _element.get<IReflectiveCollection>(_propertyName);
             var valueCount = valueOfElement.Count();
@@ -349,7 +350,10 @@ namespace DatenMeister.WPF.Forms.Fields
             _ = _panel ?? throw new InvalidOperationException("_panel == null");
 
             var createItemButton = new Button
-                {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
+            {
+                Content = "Create new item",
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
 
             SetNewButton(createItemButton);
 
@@ -420,10 +424,13 @@ namespace DatenMeister.WPF.Forms.Fields
                     {
                         IEnumerable<IElement> specializedTypes;
 
-                        var typeList = 
+                        var typeList =
                             defaultTypesForNewItems.OfType<IElement>().Select(
-                                innerType => 
-                                    innerType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass));
+                                innerType =>
+                                    innerType.isSet(_FormAndFields._DefaultTypeForNewElement.metaClass)
+                                        ? innerType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement
+                                            .metaClass)
+                                        : innerType);
 
                         if (getAllSpecializations)
                         {
@@ -485,9 +492,16 @@ namespace DatenMeister.WPF.Forms.Fields
                     var referencedExtent = (_element as MofObject)?.ReferencedExtent
                                            ?? throw new InvalidOperationException("referencedExtent == null");
 
+                    var defaultWorkspace =
+                        _fieldData.getOrDefault<string>(_FormAndFields._SubElementFieldData
+                            .defaultWorkspaceOfNewElements);
+                    var defaultExtent =
+                        _fieldData.getOrDefault<string>(_FormAndFields._SubElementFieldData.defaultExtentOfNewElements);
+
                     var elements =
                         await NavigatorForItems.NavigateToCreateNewItem(
-                            _navigationHost, referencedExtent, type);
+                            _navigationHost, referencedExtent, type, defaultWorkspace, defaultExtent);
+                    
                     if (elements?.IsNewObjectCreated == true && elements.NewObject != null)
                     {
                         var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 

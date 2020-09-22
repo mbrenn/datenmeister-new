@@ -10,7 +10,7 @@ using Autofac;
 using Autofac.Features.ResolveAnything;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Models.Runtime;
@@ -20,7 +20,9 @@ using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.UserManagement;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
+using DatenMeister.Provider.Xml;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
@@ -127,6 +129,16 @@ namespace DatenMeister.Integration
             
             var extentSettings = new ExtentSettings();
             scopeStorage.Add(extentSettings);
+            
+            // Extent Manager
+            var mapper = new ConfigurationToExtentStorageMapper();
+            scopeStorage.Add(mapper);
+            mapper.AddMapping(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig,
+                manager => new InMemoryProviderLoader());
+            mapper.AddMapping(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig,
+                manager => new XmlReferenceLoader());
 
             // Create the change manager
             var changeEventManager = new ChangeEventManager();
@@ -202,12 +214,8 @@ namespace DatenMeister.Integration
 
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterBootstrapping);
 
-            // Now goes through all classes and add the configuration support
-            var loadConfigurationTask = Task.Run(() => storageMap.LoadAllExtentStorageConfigurationsFromAssembly());
-
             // Creates the workspace and extent for the types layer which are belonging to the types
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-            var typeWorkspace = workspaceLogic.GetTypesWorkspace();
             var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
             var packageMethods = scope.Resolve<PackageMethods>();
             var internalUserExtent = localTypeSupport.InternalTypes;
@@ -247,8 +255,7 @@ namespace DatenMeister.Integration
 
             // Includes the extent for the helping extents
             ManagementProviderHelper.Initialize(dmScope);
-            loadConfigurationTask.Wait();
-
+            
             // Finally loads the plugin
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
@@ -278,9 +285,6 @@ namespace DatenMeister.Integration
 
             // Finally loads the plugin
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterLoadingOfExtents);
-
-            // After the plugins are loaded, check the extent storage types and create the corresponding internal management types
-            extentManager.CreateStorageTypeDefinitions();
 
             ResetUpdateFlagsOfExtent(workspaceLogic);
             watch.Stop();

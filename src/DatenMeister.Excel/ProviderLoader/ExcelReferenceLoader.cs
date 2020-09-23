@@ -17,7 +17,6 @@ namespace DatenMeister.Excel.ProviderLoader
     /// Implements the loader which creates an InMemoryExtent out of an excel file
     /// If DatenMeister will be rebooted, the excel file will be loaded again
     /// </summary>
-    [ConfiguredBy(typeof(ExcelReferenceLoaderConfig))]
     public class ExcelReferenceLoader : IProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }

@@ -40,6 +40,7 @@
     <Folder Include="Models\EMOF" />
     <Folder Include="Models\Example" />
     <Folder Include="Models\ManagementProvider\" />
+    <Folder Include="Runtime\ExtentStorage\Configuration\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />

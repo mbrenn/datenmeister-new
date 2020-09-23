@@ -11,7 +11,6 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.Xml
 {
-    [ConfiguredBy(typeof(XmlReferenceLoaderConfig))]
     public class XmlReferenceLoader : IProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }

@@ -10,6 +10,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms;
@@ -17,7 +18,6 @@ using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
@@ -274,10 +274,10 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 var uriExtent = Extent as IUriExtent ?? throw new InvalidOperationException("Extent as IUriExtent");
-                if (extentManager.GetLoadConfigurationFor(uriExtent) is ExtentFileLoaderConfig
-                        loadConfiguration && loadConfiguration.filePath != null)
+                var loadConfiguration = extentManager.GetLoadConfigurationFor(uriExtent);
+                if (loadConfiguration != null && loadConfiguration.isSet(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath) == true)
                 {
-                    var filePath = loadConfiguration.filePath;
+                    var filePath = loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
                     
                     //Clean up file path so it can be navigated OK
                     filePath = Path.GetFullPath(filePath);

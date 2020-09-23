@@ -172,10 +172,24 @@ namespace DatenMeister.Tests.Provider
             Assert.That(typed.ComparisonType, Is.EqualTo(ComparisonType.GreaterThan));
         }
 
+        public class TestClassForConversion 
+        {
+            public bool fixRowCount { get; set; }
+            public bool fixColumnCount { get; set; }
+            public string filePath { get; set; }
+            public string sheetName { get; set; }
+            public int offsetRow { get; set; }
+            public int offsetColumn { get; set; }
+            public int countRows { get; set; }
+            public int countColumns { get; set; }
+            public bool hasHeader { get; set; } = true;
+            public string idColumnName { get; set; }
+        }
+
         [Test]
         public void TestDotNetConversion()
         {
-            var settings = new ExcelImportLoaderConfig("dm:///test")
+            var settings = new TestClassForConversion
             {
                 countColumns = 1,
                 countRows = 5,
@@ -190,7 +204,7 @@ namespace DatenMeister.Tests.Provider
 
             var asMof = DotNetConverter.ConvertFromDotNetObject(settings);
 
-            var copy = DotNetConverter.ConvertToDotNetObject<ExcelImportLoaderConfig>(asMof);
+            var copy = DotNetConverter.ConvertToDotNetObject<TestClassForConversion>(asMof);
 
             Assert.That(copy.countColumns, Is.EqualTo(1));
             Assert.That(copy.countRows, Is.EqualTo(5));

@@ -14,7 +14,6 @@ namespace DatenMeister.Provider.CSV.Runtime
     /// <summary>
     /// The engine being used to load and store the extent into a csv file
     /// </summary>
-    [ConfiguredBy(typeof(CsvExtentLoaderConfig))]
     // ReSharper disable once InconsistentNaming
     public class CsvProviderLoader : IProviderLoader
     {

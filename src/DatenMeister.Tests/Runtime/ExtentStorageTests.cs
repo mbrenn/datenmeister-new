@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -90,17 +92,16 @@ namespace DatenMeister.Tests.Runtime
             scopeStorage.Add(mapper);
             scopeStorage.Add(new IntegrationSettings());
             var logic = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
-            var configuration = new CsvExtentLoaderConfig("dm:///local/")
-            {
-                filePath = CSVExtentTests.PathForTemporaryDataFile,
-                settings =
-                {
-                    HasHeader = false,
-                    Separator = ' '
-                }
-            };
-
-            /*
+            var settings = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
+            settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+            settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+            var configuration =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath, CSVExtentTests.PathForTemporaryDataFile);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
+            
             var csvExtent = logic.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
             Assert.That(csvExtent.Extent, Is.Not.Null);
@@ -114,7 +115,6 @@ namespace DatenMeister.Tests.Runtime
 
             foundConfiguration = logic.GetLoadConfigurationFor(new MofUriExtent(new InMemoryProvider(), "dm:///temp"));
             Assert.That(foundConfiguration, Is.Null);
-            */
         }
     }
 }

@@ -14,7 +14,6 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
-    [ConfiguredBy(typeof(XmiStorageLoaderConfig))]
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));

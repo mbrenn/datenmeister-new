@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
@@ -114,8 +114,10 @@ namespace DatenMeister.WPF.Navigation
 
                 foreach (var extent in workspaceLogic.GetExtentsForWorkspace(workspace))
                 {
-                    var loadConfiguration = extentManager.GetLoadConfigurationFor(extent) as ExtentFileLoaderConfig;
-                    var extentStoragePath = loadConfiguration?.filePath;
+                    var loadConfiguration = extentManager.GetLoadConfigurationFor(extent);
+                    var extentStoragePath =
+                        loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                            ._ExtentFileLoaderConfig.filePath);
                     
                     if (extentStoragePath != null)
                     {

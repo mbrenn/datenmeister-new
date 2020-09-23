@@ -9,13 +9,12 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.InMemory
 {
-    [ConfiguredBy(typeof(InMemoryLoaderConfig))]
     public class InMemoryProviderLoader : IProviderLoader
     {
         /// <summary>
         /// Sores the logger
         /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(InMemoryLoaderConfig));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(InMemoryProviderLoader));
 
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
         

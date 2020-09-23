@@ -14,7 +14,6 @@ using NPOI.XSSF.UserModel;
 
 namespace DatenMeister.Excel.ProviderLoader
 {
-    [ConfiguredBy(typeof(ExcelExtentLoaderConfig))]
     public class ExcelFileProviderLoader : IProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }

@@ -13,7 +13,6 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Excel.ProviderLoader
 {
-    [ConfiguredBy(typeof(ExcelImportLoaderConfig))]
     public class ExcelImportLoader : IProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }

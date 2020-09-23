@@ -31,5 +31,11 @@
         /// Gets or sets the path to the directory
         /// </summary>
         public string? initialPathToDirectory { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the filter for the save dialog
+        /// See https://docs.microsoft.com/de-de/dotnet/api/microsoft.win32.filedialog.filter?view=netcore-3.1#Microsoft_Win32_FileDialog_Filter
+        /// </summary>
+        public string? filter { get; set; }
     }
 }

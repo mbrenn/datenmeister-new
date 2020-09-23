@@ -81,6 +81,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.defaultExtension);
                 var initialDirectory =
                     fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.initialPathToDirectory);
+                var filter =
+                    fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.filter);
 
                 if (isSaving)
                 {
@@ -89,10 +91,11 @@ namespace DatenMeister.WPF.Forms.Fields
                         DefaultExt = defaultExtension,
                         InitialDirectory = _valueText ?? initialDirectory ?? string.Empty,
                         OverwritePrompt = true,
-                        RestoreDirectory = true
+                        RestoreDirectory = true,
+                        Filter = filter
                     };
 
-                    if (!string.IsNullOrEmpty(defaultExtension))
+                    if (!string.IsNullOrEmpty(defaultExtension) && string.IsNullOrEmpty(filter))
                     {
                         dlg.Filter = $"({defaultExtension})|{defaultExtension}|All Files (*.*)|*.*";
                     }
@@ -108,10 +111,11 @@ namespace DatenMeister.WPF.Forms.Fields
                     {
                         DefaultExt = defaultExtension,
                         InitialDirectory = _valueText ?? string.Empty,
-                        RestoreDirectory = true
+                        RestoreDirectory = true,
+                        Filter = filter
                     };
 
-                    if (!string.IsNullOrEmpty(defaultExtension))
+                    if (!string.IsNullOrEmpty(defaultExtension) && string.IsNullOrEmpty(filter))
                     {
                         dlg.Filter = $"({defaultExtension})|{defaultExtension}|All Files (*.*)|*.*";
                     }

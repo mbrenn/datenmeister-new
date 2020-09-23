@@ -899,6 +899,9 @@ namespace DatenMeister.Models
                 public static string @initialPathToDirectory = "initialPathToDirectory";
                 public IElement? @_initialPathToDirectory = null;
 
+                public static string @filter = "filter";
+                public IElement? @_filter = null;
+
                 public static string @isAttached = "isAttached";
                 public IElement? @_isAttached = null;
 

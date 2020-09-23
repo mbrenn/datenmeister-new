@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -134,6 +135,56 @@ namespace DatenMeister.Tests.Provider
             collection.remove(element2);
             Assert.That(collection.Count(), Is.EqualTo(0));
             Assert.That(element1.get<IReflectiveCollection>("queue").Count(), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestStringsInReflectiveCollection()
+        {
+            var provider = new XmiProvider();
+            var mofExtent = new MofUriExtent(provider, "dm:///test");
+
+            var element = MofFactory.Create(mofExtent, null);
+            mofExtent.elements().add(element);
+
+            var list = new List<string> { "ABC", "DEF", "GHI", "JKL" };
+            element.set("test", list);
+
+            var result = element.getOrDefault<IReflectiveCollection>("test");
+            Assert.That(result, Is.Not.Null);
+
+            Assert.That(result.Count(), Is.EqualTo(4));
+            Assert.That(result.ElementAt(0), Is.EqualTo("ABC"));
+            Assert.That(result.ElementAt(1), Is.EqualTo("DEF"));
+            Assert.That(result.ElementAt(2), Is.EqualTo("GHI"));
+            Assert.That(result.ElementAt(3), Is.EqualTo("JKL"));
+        }
+
+        [Test]
+        public void TestStringsInReflectiveCollectionByCml()
+        {
+            var document = XDocument.Parse(
+                "<item>" +
+                "  <element>" +
+                "    <test>ABC</test>" +
+                "    <test>DEF</test>" +
+                "    <test>GHI</test>" +
+                "    <test>JKL</test>" +
+                "  </element>" +
+                "</item>");
+            var provider = new XmiProvider(document);
+            var mofExtent = new MofUriExtent(provider, "dm:///test");
+
+            var element = mofExtent.elements().First() as IElement;
+            Assert.That(element, Is.Not.Null);
+
+            var result = element.getOrDefault<IReflectiveCollection>("test");
+            Assert.That(result, Is.Not.Null);
+
+            Assert.That(result.Count(), Is.EqualTo(4));
+            Assert.That(result.ElementAt(0), Is.EqualTo("ABC"));
+            Assert.That(result.ElementAt(1), Is.EqualTo("DEF"));
+            Assert.That(result.ElementAt(2), Is.EqualTo("GHI"));
+            Assert.That(result.ElementAt(3), Is.EqualTo("JKL"));
         }
     }
 }

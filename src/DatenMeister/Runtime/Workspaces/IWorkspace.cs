@@ -27,5 +27,10 @@ namespace DatenMeister.Runtime.Workspaces
         /// Gets the dynamic function manager
         /// </summary>
         DynamicFunctionManager DynamicFunctionManager { get; }
+
+        /// <summary>
+        /// Gets a list of workspaces which contain the types of the workspace
+        /// </summary>
+        List<Workspace> MetaWorkspaces { get; }
     }
 }

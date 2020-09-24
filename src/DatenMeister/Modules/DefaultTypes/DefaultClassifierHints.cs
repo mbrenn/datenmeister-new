@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DefaultTypes
@@ -65,6 +66,12 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <returns>The defined packages</returns>
         public static IEnumerable<IElement> GetDefaultPackageClassifiers(IExtent extent)
         {
+            var workspace = extent.GetWorkspace();
+            if (workspace != null && workspace.MetaWorkspaces.Any(x => x.id == WorkspaceNames.WorkspaceUml || x.id == WorkspaceNames.WorkspaceMof))
+            {
+                yield return _UML.TheOne.Packages.__Package;
+            }
+
             yield return _DatenMeister.TheOne.CommonTypes.Default.__Package;
         }
 

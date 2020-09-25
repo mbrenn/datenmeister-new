@@ -301,7 +301,7 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 var typesWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
                 var internalTypes = typesWorkspace.FindExtent(WorkspaceNames.UriExtentInternalTypes);
-                
+
                 var result = await NavigatorForDialogs.Locate(
                     _navigationHost ?? throw new InvalidOperationException("Navigation Host"),
                     new NavigatorForDialogs.NavigatorForDialogConfiguration

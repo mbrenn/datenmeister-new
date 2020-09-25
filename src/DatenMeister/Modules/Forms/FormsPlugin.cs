@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -36,7 +37,7 @@ namespace DatenMeister.Modules.Forms
         /// Defines the logger
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(FormsPlugin));
-        
+
         /// <summary>
         /// Stores the type of the extent containing the views
         /// </summary>
@@ -63,7 +64,7 @@ namespace DatenMeister.Modules.Forms
         /// <param name="workspaceLogic">The workspace being used</param>
         /// <param name="extentCreator">The support class to create extents</param>
         /// <param name="scopeStorage">The settings that had been used for integration</param>
-        public FormsPlugin(IWorkspaceLogic workspaceLogic, 
+        public FormsPlugin(IWorkspaceLogic workspaceLogic,
             ExtentCreator extentCreator,
             IScopeStorage scopeStorage)
         {
@@ -108,7 +109,8 @@ namespace DatenMeister.Modules.Forms
                         throw new InvalidOperationException("Extent for users is not found");
 
                     extent.GetConfiguration()
-                        .AddDefaultTypePackages(new[] {_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__FormAssociation});
+                        .AddDefaultTypePackages(new[]
+                            {_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__FormAssociation});
 
                     // Includes the default view modes
                     var packageMethods = new PackageMethods(_workspaceLogic);
@@ -121,7 +123,7 @@ namespace DatenMeister.Modules.Forms
                     created.set(_FormAndFields._ViewMode.id, "Default");
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
-                    
+
                     break;
             }
         }
@@ -228,14 +230,17 @@ namespace DatenMeister.Modules.Forms
         /// <returns>Enumeration of forms</returns>
         public IReflectiveCollection GetAllForms()
         {
-            var internalViewExtent = GetInternalFormExtent();
-            var userViewExtent = GetUserFormExtent();
-
-            return internalViewExtent.elements()
-                .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__DetailForm, _FormAndFields.TheOne.__ListForm);
+            return
+                new TemporaryReflectiveCollection(
+                    GetAllFormExtents()
+                        .SelectMany(x => x.elements()
+                            .GetAllDescendants(new[]
+                                {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                            .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__DetailForm,
+                                _FormAndFields.TheOne.__ListForm)),
+                    true);
         }
+
 
         /// <summary>
         /// Adds a new form association between the form and the metaclass
@@ -260,18 +265,47 @@ namespace DatenMeister.Modules.Forms
         }
 
         /// <summary>
+        /// Gets an enumeration of all form extents. The form extents have
+        /// to be in the Management Workspace and be of type "DatenMeister.Forms"
+        /// </summary>
+        /// <returns>Enumeration of form extents</returns>
+        public IEnumerable<IExtent> GetAllFormExtents()
+        {
+            var result = _workspaceLogic.GetManagementWorkspace().extent
+                .Where(x => x.GetConfiguration().ContainsExtentType(FormsPlugin.FormExtentType))
+                .OfType<IUriExtent>()
+                .ToList();
+
+            // Even if internal extent or user form extent does not have the the flag
+            var internalFormExtent = GetInternalFormExtent();
+            if (result.All(x => x.contextURI() != internalFormExtent.contextURI()))
+            {
+                result.Add(internalFormExtent);    
+            }
+            
+            var userFormExtent = GetInternalFormExtent();
+            if (result.All(x => x.contextURI() != userFormExtent.contextURI()))
+            {
+                result.Add(userFormExtent);    
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets all view associations and returns them as an enumeration
         /// </summary>
         /// <returns>Enumeration of associations</returns>
         public IReflectiveCollection GetAllFormAssociations()
         {
-            var internalViewExtent = GetInternalFormExtent();
-            var userViewExtent = GetUserFormExtent();
-
-            return internalViewExtent.elements()
-                .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__FormAssociation);
+            return new TemporaryReflectiveCollection(
+                GetAllFormExtents()
+                    .SelectMany(x =>
+                        x.elements()
+                            .GetAllDescendants(new[]
+                                {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                            .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__FormAssociation)),
+                true);
         }
         
         /// <summary>

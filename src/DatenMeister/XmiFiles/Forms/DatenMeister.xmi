@@ -185,18 +185,18 @@
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.SimpleClassifiers.Enumeration" name="Enumeration" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="UML.SimpleClassifiers.EnumerationFormDetail" name="Enumeration - Detail" hideMetaInformation="True">
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="e1337c5a-759f-43bb-973d-e51ee87cf102" />
-        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" name="ownedAttribute" title="ownedLiteral" p1:id="79ed2367-121c-41ea-8431-34e360ef40e1">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SubElementFieldData" title="ownedLiteral" p1:id="79ed2367-121c-41ea-8431-34e360ef40e1" name="ownedLiteral">
           <defaultTypesForNewElements href="dm:///_internal/model/uml#EnumerationLiteral" />
         </field>
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="f588b2a1-fac5-46d4-b54e-4cd929e3c63e" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.SimpleClassifiers.EnumerationFormList" name="Enumeration - List">
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail" p1:id="e5c98725-369e-4c6c-bcf0-657ed1ba5c57">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="e1d424a7-29d3-483d-b328-358874b5602e" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="4bf1ddba-ce71-48d2-9beb-1087fc94f5bd" />
         </tab>
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedLiteral" name="ownedLiteral" property="ownedLiteral">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="ownedLiteral" name="ownedLiteral" property="ownedLiteral" p1:id="d95350ea-c5c9-4df4-905b-9591973beb2a">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="8c99059d-e989-4a6f-914b-05e915c9a866" />
         </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.SimpleClassifiers.EnumerationAssociationDetail" formType="Detail" form-ref="#UML.SimpleClassifiers.EnumerationFormDetail" metaClass-ref="dm:///_internal/model/uml#Enumeration" name="Association for Enumeration - Detail" />

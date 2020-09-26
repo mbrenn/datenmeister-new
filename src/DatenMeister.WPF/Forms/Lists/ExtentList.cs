@@ -45,6 +45,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
+            
             if (Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() is IElement workspace)
             {
                 SetRootItem(workspace);
@@ -68,9 +69,10 @@ namespace DatenMeister.WPF.Forms.Lists
                 SelectedItem is IElement selectedElement &&
                 selectedElement.metaclass?.@equals(_ManagementProvider.TheOne.__Workspace) == true)
             {
-                var formDefinition = overridingDefinition ??
-                                     WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,
-                                         NavigationHost);
+                var formDefinition =
+                    overridingDefinition ??
+                    WorkspaceExtentFormGenerator.RequestFormForExtents(Extent, WorkspaceId,
+                        NavigationHost);
 
                 EvaluateForm(
                     SelectedItem,

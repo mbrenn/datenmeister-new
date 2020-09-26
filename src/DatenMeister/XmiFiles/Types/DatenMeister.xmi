@@ -277,8 +277,8 @@
       </generalization>
     </packagedElement>
   </item>
-  <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" >
+  <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="277cc881-eab8-4457-88d6-09f89f2f1bbc">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>

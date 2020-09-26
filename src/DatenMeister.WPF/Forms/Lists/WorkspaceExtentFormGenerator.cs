@@ -151,25 +151,27 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <param name="navigationHost">Defines the navigation host being used for the window</param>
         /// <returns>The created form</returns>
-        internal static FormDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
+        internal static FormDefinition RequestFormForExtents(
+            IExtent extent, 
+            string workspaceId,
+            INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewExtent = viewLogic.GetInternalFormExtent();
-            var result =
-                NamedElementMethods.GetByFullName(
-                    viewExtent,
-                    ManagementViewDefinitions.PathExtentListView);
-
+            var result = 
+                viewExtent.GetUriResolver().ResolveById("Workspaces.ListOfExtents");
+            
             if (result == null)
             {
                 // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
-                var listForm = viewLogic.GetListFormForExtent(
-                                   extent,
-                                   GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
-                                       _ManagementProvider.TheOne.__Extent)
-                                   ?? throw new InvalidOperationException("Did not found extent"),
-                                   FormDefinitionMode.Default) ??
-                               throw new InvalidOperationException("listForm == null");
+                var listForm =
+                    viewLogic.GetListFormForExtent(
+                        extent,
+                        GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
+                            _ManagementProvider.TheOne.__Extent)
+                        ?? throw new InvalidOperationException("Did not found extent"),
+                        FormDefinitionMode.Default) ??
+                    throw new InvalidOperationException("listForm == null");
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
                 listForm.set(_FormAndFields._ListForm.inhibitNewItems, true);
                 listForm.set(_FormAndFields._ListForm.property, nameof(_ManagementProvider._Workspace.extents));

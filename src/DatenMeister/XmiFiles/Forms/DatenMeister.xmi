@@ -82,6 +82,22 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" p1:id="43aad002-0aab-441b-865c-ef56e8c884ec" name="Metaclass" title="Metaclass" />
       </packagedElement>
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="7fe103c7-9648-47fe-ae41-3c0530fa30be" name="ExtentList">
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="Workspaces.ListOfExtents">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="9ac10d63-d08e-41dd-ba08-ff537828ea53" title="Extent" name="List" property="extents" inhibitDeleteItems="True" inhibitNewItems="True">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="4435a1fe-2fd7-4af9-ad4f-739ab77eab9a" name="uri" title="URI" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="94fd4faa-6f65-47a5-a256-f5c29429110a" name="count" title="count" width="10" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="32eca7c7-5314-415d-99be-76b6d9698245" name="totalCount" title="totalCount" width="10" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="4ab62c41-55cd-4a0c-8b31-9e98e8ca8468" name="type" title="Type" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="d002e384-9d4e-4789-a9ea-8cd8781da2be" name="extentType" title="extentType" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="80c6edc8-20f3-4131-8954-390421690ffd" name="isModified" title="isModified" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="658f8f07-e93a-4f9e-b645-7e3caf17c64b" name="alternativeUris" title="alternativeUris" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="41a0886b-66d4-4bea-bea6-ee058dd4c891" name="state" title="state" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="09868d03-b1cc-4c01-9781-7d8c561c3e79" name="failMessage" title="failMessage" />
+          <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="79c61308-1982-4daa-b42b-bec4c2f22c41" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent" name="Extent" />
+        </tab>
+      </packagedElement>
+    </packagedElement>
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e0d85e06-1168-4840-b757-eef4e0a9baf3" name="DefaultTypes" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="Package-UML.Packages.Package" name="Package" xmlns:p1="http://www.omg.org/spec/XMI/20131001">

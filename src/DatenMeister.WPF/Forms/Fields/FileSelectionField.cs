@@ -8,7 +8,7 @@ using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
-    public class FileSelectionField : IDetailField
+    public class FileSelectionField : IDetailField, IPropertyValueChangeable
     {
         private string _name = string.Empty;
         private TextBox? _textField;
@@ -126,6 +126,19 @@ namespace DatenMeister.WPF.Forms.Fields
                     }
                 }
             };
+
+            _textField.TextChanged += (x, y) =>
+            {
+                var ev = PropertyValueChanged;
+                if (ev != null)
+                {
+                    ev(this,
+                        new PropertyValueChangedEventArgs(_name)
+                        {
+                            NewValue = _textField.Text
+                        });
+                }
+            };
             
             fieldFlags.CanBeFocused = true;
 
@@ -139,5 +152,10 @@ namespace DatenMeister.WPF.Forms.Fields
                 element.set(_name, _textField.Text);
             }
         }
+
+        /// <summary>
+        /// Defines the event that will be called when the property value is changed
+        /// </summary>
+        public event EventHandler<PropertyValueChangedEventArgs>? PropertyValueChanged;
     }
 }

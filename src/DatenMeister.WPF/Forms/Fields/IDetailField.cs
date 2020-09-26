@@ -26,6 +26,5 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         /// <param name="element"> Element to be set</param>
         void CallSetAction(IObject element);
-
     }
 }

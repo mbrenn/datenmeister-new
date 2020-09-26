@@ -69,6 +69,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public FormParameter? FormParameter { get; private set; }
 
+        /// <summary>
+        /// Defines the event that will be called whenever the property value has changed
+        /// </summary>
+        public event EventHandler<PropertyValueChangedEventArgs>? PropertyValueChanged;
+
         public DetailFormControl()
         {
             InitializeComponent();
@@ -451,6 +456,18 @@ namespace DatenMeister.WPF.Forms.Base
                         this,
                         flags);
 
+                if (detailElement is IPropertyValueChangeable propertyValueChangeable)
+                {
+                    var ev = PropertyValueChanged;
+                    if (ev != null)
+                    {
+                        propertyValueChangeable.PropertyValueChanged += (x, y) =>
+                        {
+                            ev(x, y);
+                        };
+                    }
+                }
+                
                 if (contentBlock != null)
                 {
                     if (!flags.IsSpanned)

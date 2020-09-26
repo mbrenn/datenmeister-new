@@ -282,11 +282,13 @@ namespace DatenMeister.WPF.Forms.Lists
                     var userResult = InMemoryObject.CreateEmpty(foundType);
                     var foundForm = viewExtent.element("#OpenExtentAsFile")
                                     ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
-                    var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig
-                    {
-                        DetailElement = userResult,
-                        Form = new FormDefinition(foundForm)
-                    });
+                    var navigationResult =
+                        await Navigator.CreateDetailWindow(navigationHost,
+                            new NavigateToItemConfig
+                            {
+                                DetailElement = userResult,
+                                Form = new FormDefinition(foundForm)
+                            });
 
                     if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
                     {

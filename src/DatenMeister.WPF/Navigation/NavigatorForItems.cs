@@ -90,6 +90,12 @@ namespace DatenMeister.WPF.Navigation
         public FormDefinition? Form { get; set; }
         
         public IElement? AttachedElement { get; set; }
+
+        /// <summary>
+        /// This event is called whenever the user has changed a value.
+        /// The implementation is currently only valid for detailform
+        /// </summary>
+        public Action<PropertyValueChangedEventArgs>? PropertyValueChanged;
     }
 
     /// <summary>

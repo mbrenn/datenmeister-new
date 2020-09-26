@@ -211,7 +211,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Load Extent",
-                    LoadExtentFromXmi,
+                    async (x) => await LoadExtentFromXmi(workspaceId, navigationHost, viewExtent),
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));
 
@@ -272,65 +272,6 @@ namespace DatenMeister.WPF.Forms.Lists
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
             }
 
-            async void LoadExtentFromXmi(IObject item)
-            {
-                try
-                {
-                    var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
-                    var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.Models.ExtentManager.ImportSettings")
-                                    ?? throw new InvalidOperationException(
-                                        "DatenMeister.Models.ExtentManager.ImportSettings is not found");
-
-                    var userResult = InMemoryObject.CreateEmpty(foundType);
-                    var foundForm = viewExtent.element("#OpenExtentAsFile")
-                                    ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
-                    var navigationResult =
-                        await Navigator.CreateDetailWindow(navigationHost,
-                            new NavigateToItemConfig
-                            {
-                                DetailElement = userResult,
-                                Form = new FormDefinition(foundForm),
-                                PropertyValueChanged = prop =>
-                                {
-                                    if (prop.PropertyName == "filePath")
-                                    {
-                                        var filePath = prop.NewValue?.ToString();
-                                        try
-                                        {
-                                            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-                                            {
-                                                return;
-                                            }
-
-                                            var metaNode = XmiProvider.GetMetaNodeFromFile(filePath);
-                                            var uri = metaNode.Attribute("__uri")?.Value;
-                                            if (!string.IsNullOrEmpty(uri))
-                                            {
-                                                prop.FormControl.InjectPropertyValue("extentUri", uri);
-                                            }
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Logger.Warn("Error after selecting an extent: " + e.Message);
-                                        }
-                                    }
-                                }
-                                    
-                            });
-
-                    if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
-                    {
-                        // Load from extent import class
-                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
-                        extentImport.ImportExtent(navigationResult.DetailElement);
-                    }
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(exc.ToString());
-                }
-            }
-
             return viewDefinition;
 
             void ShowItems(INavigationGuest navigationGuest, IObject extentElement)
@@ -388,6 +329,70 @@ namespace DatenMeister.WPF.Forms.Lists
 
                     MessageBox.Show("Extent saved");
                     navigationGuest.UpdateForm();
+                }
+            }
+        }
+
+        private static async Task LoadExtentFromXmi(string workspaceId, INavigationHost navigationHost,
+            IUriExtent viewExtent)
+        {
+            try
+            {
+                var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
+                var foundType =
+                    localTypeSupport.InternalTypes.element("#DatenMeister.Models.ExtentManager.ImportSettings")
+                    ?? throw new InvalidOperationException(
+                        "DatenMeister.Models.ExtentManager.ImportSettings is not found");
+
+                var userResult = InMemoryObject.CreateEmpty(foundType);
+                userResult.set("workspace", workspaceId);
+                var foundForm = viewExtent.element("#OpenExtentAsFile")
+                                ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
+                var navigationResult =
+                    await Navigator.CreateDetailWindow(navigationHost,
+                        new NavigateToItemConfig
+                        {
+                            DetailElement = userResult,
+                            Form = new FormDefinition(foundForm),
+                            PropertyValueChanged = OnPropertyValueChanged
+                        });
+
+                if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
+                {
+                    // Load from extent import class
+                    var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
+                    extentImport.ImportExtent(navigationResult.DetailElement);
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
+
+            // Defines the method to be called when the property value of 
+            // the item within the detail form has been changed
+            static void OnPropertyValueChanged(PropertyValueChangedEventArgs prop)
+            {
+                if (prop.PropertyName != "filePath") return;
+                
+                var filePath = prop.NewValue?.ToString();
+                try
+                {
+                    if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                    {
+                        return;
+                    }
+
+                    var metaNode = XmiProvider.GetMetaNodeFromFile(filePath);
+                    var uri = metaNode.Attribute("__uri")?.Value;
+                    if (!string.IsNullOrEmpty(uri))
+                    {
+                        prop.FormControl.InjectPropertyValue("extentUri", uri);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Warn("Error after selecting an extent: " + e.Message);
                 }
             }
         }

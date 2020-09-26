@@ -53,7 +53,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 if (ev != null)
                 {
                     ev(this,
-                        new PropertyValueChangedEventArgs(_name)
+                        new PropertyValueChangedEventArgs(detailForm, _name)
                         {
                             NewValue = _checkbox.IsChecked
                         });

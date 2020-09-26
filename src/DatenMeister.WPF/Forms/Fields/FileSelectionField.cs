@@ -131,7 +131,7 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 var ev = PropertyValueChanged;
                 ev?.Invoke(this,
-                    new PropertyValueChangedEventArgs(_name)
+                    new PropertyValueChangedEventArgs(detailForm, _name)
                     {
                         NewValue = _textField.Text
                     });

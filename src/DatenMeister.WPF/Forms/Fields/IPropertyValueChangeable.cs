@@ -14,4 +14,17 @@ namespace DatenMeister.WPF.Forms.Fields
         /// </summary>
         public event EventHandler<PropertyValueChangedEventArgs>? PropertyValueChanged;
     }
+
+    /// <summary>
+    /// To be implemented by all fields in which a property value can be injected
+    /// </summary>
+    public interface IInjectPropertyValue
+    {
+        /// <summary>
+        /// Called if an value shall be injected
+        /// </summary>
+        /// <param name="propertyName">Name of the property</param>
+        /// <param name="value">Value of the property</param>
+        public void InjectValue(string propertyName, object value);
+    }
 }

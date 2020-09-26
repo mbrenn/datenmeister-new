@@ -932,5 +932,20 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         public IObject Item => DetailElement;
+
+        /// <summary>
+        /// Injects a new property value by parsing through all fields and
+        /// inject property Vaue 
+        /// </summary>
+        /// <param name="property">Property to be injected</param>
+        /// <param name="value">Value to be injected</param>
+        public void InjectPropertyValue(string property, object value)
+        {
+            foreach (var field in ItemFields.OfType<IInjectPropertyValue>())
+            {
+                field.InjectValue(property, value);
+            }
+
+        }
     }
 }

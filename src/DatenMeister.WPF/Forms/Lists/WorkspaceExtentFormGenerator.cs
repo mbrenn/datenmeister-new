@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,7 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.View;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
@@ -290,7 +292,28 @@ namespace DatenMeister.WPF.Forms.Lists
                                 Form = new FormDefinition(foundForm),
                                 PropertyValueChanged = prop =>
                                 {
-                                    MessageBox.Show(prop.PropertyName);
+                                    if (prop.PropertyName == "filePath")
+                                    {
+                                        var filePath = prop.NewValue?.ToString();
+                                        try
+                                        {
+                                            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                                            {
+                                                return;
+                                            }
+
+                                            var metaNode = XmiProvider.GetMetaNodeFromFile(filePath);
+                                            var uri = metaNode.Attribute("__uri")?.Value;
+                                            if (!string.IsNullOrEmpty(uri))
+                                            {
+                                                prop.FormControl.InjectPropertyValue("extentUri", uri);
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Logger.Warn("Error after selecting an extent: " + e.Message);
+                                        }
+                                    }
                                 }
                                     
                             });

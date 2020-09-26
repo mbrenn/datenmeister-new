@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider.XMI.Standards;
 
 namespace DatenMeister.Provider.XMI.EMOF
@@ -296,5 +297,12 @@ namespace DatenMeister.Provider.XMI.EMOF
         public ProviderSupportFunctions ProviderSupportFunctions => _supportFunctions
                                                                     ?? throw new NotSupportedException(
                                                                         "Should not happen");
+
+        public static XElement GetMetaNodeFromFile(string filePath)
+        {
+            var document = XDocument.Load(filePath);
+            var provider = new XmiProvider(document);
+            return provider.GetMetaNode();
+        }
     }
 }

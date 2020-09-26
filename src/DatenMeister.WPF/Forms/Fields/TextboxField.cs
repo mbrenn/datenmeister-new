@@ -12,7 +12,7 @@ using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
-    public class TextboxField : IDetailField, IPropertyValueChangeable
+    public class TextboxField : IDetailField, IPropertyValueChangeable, IInjectPropertyValue
     {
         private string _name = string.Empty;
         private TextBox? _contentBlock;
@@ -103,14 +103,11 @@ namespace DatenMeister.WPF.Forms.Fields
                 _contentBlock.TextChanged += (x, y) =>
                 {
                     var ev = PropertyValueChanged;
-                    if (ev != null)
-                    {
-                        ev(this,
-                            new PropertyValueChangedEventArgs(_name)
-                            {
-                                NewValue = _contentBlock.Text
-                            });
-                    }
+                    ev?.Invoke(this,
+                        new PropertyValueChangedEventArgs(detailForm, _name)
+                        {
+                            NewValue = _contentBlock.Text
+                        });
                 };
 
                 fieldFlags.CanBeFocused = true;
@@ -131,5 +128,13 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Defines the event that will be called when the property value is changed
         /// </summary>
         public event EventHandler<PropertyValueChangedEventArgs>? PropertyValueChanged;
+
+        public void InjectValue(string propertyName, object value)
+        {
+            if (_name == propertyName && _contentBlock != null)
+            {
+                _contentBlock.Text = value.ToString();
+            }
+        }
     }
 }

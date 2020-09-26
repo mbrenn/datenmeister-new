@@ -458,14 +458,11 @@ namespace DatenMeister.WPF.Forms.Base
 
                 if (detailElement is IPropertyValueChangeable propertyValueChangeable)
                 {
-                    var ev = PropertyValueChanged;
-                    if (ev != null)
+                    propertyValueChangeable.PropertyValueChanged += (x, y) =>
                     {
-                        propertyValueChangeable.PropertyValueChanged += (x, y) =>
-                        {
-                            ev(x, y);
-                        };
-                    }
+                        var ev = PropertyValueChanged;
+                        ev?.Invoke(x, y);
+                    };
                 }
                 
                 if (contentBlock != null)

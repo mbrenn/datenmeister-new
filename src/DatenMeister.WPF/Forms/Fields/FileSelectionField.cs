@@ -130,14 +130,11 @@ namespace DatenMeister.WPF.Forms.Fields
             _textField.TextChanged += (x, y) =>
             {
                 var ev = PropertyValueChanged;
-                if (ev != null)
-                {
-                    ev(this,
-                        new PropertyValueChangedEventArgs(_name)
-                        {
-                            NewValue = _textField.Text
-                        });
-                }
+                ev?.Invoke(this,
+                    new PropertyValueChangedEventArgs(_name)
+                    {
+                        NewValue = _textField.Text
+                    });
             };
             
             fieldFlags.CanBeFocused = true;

@@ -209,7 +209,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Load Extent",
-                    ImportFromXmi,
+                    LoadExtentFromXmi,
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));
 
@@ -270,7 +270,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
             }
 
-            async void ImportFromXmi(IObject item)
+            async void LoadExtentFromXmi(IObject item)
             {
                 try
                 {
@@ -287,7 +287,12 @@ namespace DatenMeister.WPF.Forms.Lists
                             new NavigateToItemConfig
                             {
                                 DetailElement = userResult,
-                                Form = new FormDefinition(foundForm)
+                                Form = new FormDefinition(foundForm),
+                                PropertyValueChanged = prop =>
+                                {
+                                    MessageBox.Show(prop.PropertyName);
+                                }
+                                    
                             });
 
                     if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)

@@ -110,6 +110,38 @@ namespace DatenMeister.Models.Reports
         public _ReportInstanceSource @ReportInstanceSource = new _ReportInstanceSource();
         public IElement @__ReportInstanceSource = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource");
 
+        public class _ReportInstance
+        {
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+            public static string @reportDefinition = "reportDefinition";
+            public IElement? @_reportDefinition = null;
+
+            public static string @sources = "sources";
+            public IElement? @_sources = null;
+
+        }
+
+        public _ReportInstance @ReportInstance = new _ReportInstance();
+        public IElement @__ReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstance");
+
+        public class _AdocReportInstance
+        {
+            public static string @name = "name";
+            public IElement? @_name = null;
+
+            public static string @reportDefinition = "reportDefinition";
+            public IElement? @_reportDefinition = null;
+
+            public static string @sources = "sources";
+            public IElement? @_sources = null;
+
+        }
+
+        public _AdocReportInstance @AdocReportInstance = new _AdocReportInstance();
+        public IElement @__AdocReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Adoc.AdocReportInstance");
+
         public class _HtmlReportInstance
         {
             public static string @name = "name";
@@ -124,7 +156,7 @@ namespace DatenMeister.Models.Reports
         }
 
         public _HtmlReportInstance @HtmlReportInstance = new _HtmlReportInstance();
-        public IElement @__HtmlReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.HtmlReportInstance");
+        public IElement @__HtmlReportInstance = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance");
 
         public class _DescendentMode
         {

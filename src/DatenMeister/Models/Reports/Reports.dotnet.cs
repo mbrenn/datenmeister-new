@@ -60,7 +60,19 @@ namespace DatenMeister.Models.Reports
                 extent.TypeLookup.Add(typeAsElement, type);
             }
             {
-                var type = typeof(DatenMeister.Models.Reports.HtmlReportInstance);
+                var type = typeof(DatenMeister.Models.Reports.ReportInstance);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Reports.Adoc.AdocReportInstance);
+                var typeAsElement = generator.CreateTypeFor(type);
+                collection.add(typeAsElement);
+                extent.TypeLookup.Add(typeAsElement, type);
+            }
+            {
+                var type = typeof(DatenMeister.Models.Reports.Html.HtmlReportInstance);
                 var typeAsElement = generator.CreateTypeFor(type);
                 collection.add(typeAsElement);
                 extent.TypeLookup.Add(typeAsElement, type);

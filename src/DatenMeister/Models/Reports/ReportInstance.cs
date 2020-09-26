@@ -2,7 +2,7 @@
 
 namespace DatenMeister.Models.Reports
 {
-    public class HtmlReportInstance
+    public class ReportInstance
     {
         public string? name { get; set; }
 

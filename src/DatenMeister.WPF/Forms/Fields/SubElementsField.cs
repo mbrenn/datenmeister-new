@@ -114,7 +114,7 @@ namespace DatenMeister.WPF.Forms.Fields
             if (form == null)
             {
                 // otherwise, we have to automatically create a form
-                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+                var formsLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 IElement? propertyType = null;
                 var property = ClassifierMethods.GetPropertyOfClassifier(_element, _propertyName);
                 if (property != null)
@@ -122,7 +122,10 @@ namespace DatenMeister.WPF.Forms.Fields
                     propertyType = PropertyMethods.GetPropertyType(property);
                 }
                 
-                form = viewLogic.GetListFormForElementsProperty(_element, _propertyName, propertyType) ??
+                form = formsLogic.GetListFormForElementsProperty(
+                           _element, 
+                           _propertyName, 
+                           propertyType) ??
                        throw new InvalidOperationException("Form could not be created");
             }
 

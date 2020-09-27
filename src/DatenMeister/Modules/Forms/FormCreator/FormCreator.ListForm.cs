@@ -59,7 +59,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 var nameProperty = _UML.TheOne.CommonStructure.NamedElement._name;
                 if (nameProperty != null)
                 {
-                    AddToFormByUmlElement(result, nameProperty, CreationMode.ForListForms | CreationMode.ByMetaClass);
+                    AddToFormByUmlElement(
+                        result, 
+                        nameProperty, 
+                        CreationMode.ForListForms | CreationMode.ByMetaClass);
                 }
             }
 

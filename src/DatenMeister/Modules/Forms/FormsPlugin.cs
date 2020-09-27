@@ -532,17 +532,17 @@ namespace DatenMeister.Modules.Forms
 
             return foundForm;
         }
-
+        
         /// <summary>
         /// Gets the list form for an elements property to be shown in sub item view or other views
         /// </summary>
-        /// <param name="element">Element whose property is enumerated</param>
+        /// <param name="parentElement">Element whose property is enumerated</param>
         /// <param name="parentProperty">Name of the property to be enumeration</param>
         /// <param name="propertyType">Type of the property</param>
         /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns>The list form for the list</returns>
         public IElement? GetListFormForElementsProperty(
-            IObject element,
+            IObject? parentElement,
             string parentProperty,
             IElement? propertyType,
             FormDefinitionMode formDefinitionMode = FormDefinitionMode.Default)
@@ -555,8 +555,8 @@ namespace DatenMeister.Modules.Forms
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
-                        extentType = (element as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
-                        parentMetaClass = (element as IElement)?.metaclass,
+                        extentType = (parentElement as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
+                        parentMetaClass = (parentElement as IElement)?.metaclass,
                         metaClass = propertyType,
                         FormType = FormType.ObjectList,
                         parentProperty = parentProperty
@@ -572,7 +572,7 @@ namespace DatenMeister.Modules.Forms
             {
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateListFormForElements(
-                    element.get<IReflectiveCollection>(parentProperty),
+                    parentElement.get<IReflectiveCollection>(parentProperty),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
             }
 
@@ -582,9 +582,9 @@ namespace DatenMeister.Modules.Forms
                     {
                         DefinitionMode = formDefinitionMode,
                         FormType = FormType.ObjectList,
-                        MetaClass = (element as IElement)?.metaclass,
+                        MetaClass = (parentElement as IElement)?.metaclass,
                         ParentPropertyName = parentProperty,
-                        DetailElement = element
+                        DetailElement = parentElement
                     },
                     ref foundForm);
             }

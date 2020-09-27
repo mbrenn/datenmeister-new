@@ -272,6 +272,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 foreach (var property in propertiesWithoutCollection)
                 {
                     var field = GetFieldForProperty(
+                        metaClass,
                         property.property, 
                         CreationMode.All | CreationMode.ReadOnly);
                     fields.Add(field);
@@ -435,6 +436,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         if (property != null)
                         {
                             var field = GetFieldForProperty(
+                                objectMetaClass,
                                 property, 
                                 CreationMode.All | CreationMode.ReadOnly);
                             fields.Add(field);

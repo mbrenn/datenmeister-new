@@ -1,5 +1,4 @@
 ﻿using DatenMeister.Integration;
-using DatenMeister.Modules.Reports.Evaluators;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
@@ -32,7 +31,7 @@ namespace DatenMeister.Modules.Reports
         public static HtmlReportEvaluators CreateEvaluators()
         {
             var evaluator = new HtmlReportEvaluators();
-            evaluator.AddEvaluator(new HtmlReportHeadline());
+            evaluator.AddEvaluator(new HtmlEvalReportHeadline());
             evaluator.AddEvaluator(new HtmlReportParagraph());
             evaluator.AddEvaluator(new HtmlReportTable());
             return evaluator;

@@ -1,12 +1,11 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
-using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Runtime;
 
-namespace DatenMeister.Modules.Reports.Evaluators
+namespace DatenMeister.Modules.Reports.Html
 {
-    public class HtmlReportHeadline : IHtmlReportEvaluator
+    public class HtmlEvalReportHeadline : IHtmlReportEvaluator
     {
         public bool IsRelevant(IElement element)
         {

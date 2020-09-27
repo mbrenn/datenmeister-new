@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports;
-using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;

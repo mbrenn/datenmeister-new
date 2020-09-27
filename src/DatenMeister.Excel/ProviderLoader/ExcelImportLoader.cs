@@ -2,7 +2,6 @@
 using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Provider;

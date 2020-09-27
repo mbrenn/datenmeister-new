@@ -6,26 +6,64 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models.Reports;
+using DatenMeister.Modules.DataViews;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Reports
 {
-    /// <summary>
-    /// Includes additional helper methods for the reports like evaluation of sources
-    /// </summary>
-    public class ReportLogic
+    public class ReportCreator
     {
-        private ClassLogger Logger = new ClassLogger(typeof(ReportLogic));
-        
-        private readonly IWorkspaceLogic _workspaceLogic;
-        
-        public const string PackagePathTypesReport = "DatenMeister::Reports";
+        private readonly ClassLogger Logger = new ClassLogger(typeof(ReportCreator));
 
-        public ReportLogic(IWorkspaceLogic workspaceLogic)
+        /// <summary>
+        /// Stores the possible source of the report
+        /// </summary>
+        private readonly Dictionary<string, IReflectiveCollection> _sources 
+            = new Dictionary<string, IReflectiveCollection>();
+        
+        public IWorkspaceLogic WorkspaceLogic { get; }
+
+        public IScopeStorage ScopeStorage { get; }
+
+        /// <summary>
+        /// Stores the possible source of the report
+        /// </summary>
+        public Dictionary<string, IReflectiveCollection> Sources => _sources;
+
+        public ReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
-            _workspaceLogic = workspaceLogic;
+            WorkspaceLogic = workspaceLogic;
+            ScopeStorage = scopeStorage;
+        }
+
+        /// <summary>
+        /// Adds the source to the report
+        /// </summary>
+        /// <param name="id">Id of the source</param>
+        /// <param name="collection">Collection to be evaluated</param>
+        public void AddSource(string id, IReflectiveCollection collection)
+        {
+            _sources[id] = collection;
+        }
+
+        /// <summary>
+        /// Gets the dataview evaluation for the given context with associated sources
+        /// </summary>
+        /// <returns>The dataview evaluation</returns>
+        public DataViewEvaluation GetDataViewEvaluation()
+        {
+            // Gets the elements for the table
+            var dataviewEvaluation =
+                new DataViewEvaluation(WorkspaceLogic, ScopeStorage);
+            foreach (var source in Sources)
+            {
+                dataviewEvaluation.AddDynamicSource(source.Key, source.Value);
+            }
+
+            return dataviewEvaluation;
         }
 
         /// <summary>
@@ -54,7 +92,7 @@ namespace DatenMeister.Modules.Reports
                 var sourceRef = source.getOrDefault<string>(_Reports._ReportInstanceSource.source);
 
                 IReflectiveCollection? sourceItems = null;
-                var workspace = _workspaceLogic.GetWorkspace(workspaceId) ?? _workspaceLogic.GetDataWorkspace();
+                var workspace = WorkspaceLogic.GetWorkspace(workspaceId) ?? WorkspaceLogic.GetDataWorkspace();
                 
                 var foundSource = workspace.Resolve(sourceRef, ResolveType.Default);
                 if (foundSource is IExtent extent)
@@ -78,27 +116,5 @@ namespace DatenMeister.Modules.Reports
                 yield return new ReportSource(name, sourceItems);
             }
         }
-    }
-
-    /// <summary>
-    /// Defines the report source, consisting of name and collection
-    /// </summary>
-    public class ReportSource
-    {
-        public ReportSource(string name, IReflectiveCollection collection)
-        {
-            Name = name;
-            Collection = collection;
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the source
-        /// </summary>
-        public string Name { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the collection
-        /// </summary>
-        public IReflectiveCollection Collection { get; set; }
     }
 }

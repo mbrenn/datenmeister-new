@@ -125,8 +125,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         {
                             var reportGenerator =
                                 new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                            var reportLogic = GiveMe.Scope.Resolve<ReportLogic>();
-                            var sources = reportLogic.EvaluateSources(y);
+                            var sources = reportGenerator.EvaluateSources(y);
                             foreach (var source in sources)
                             {
                                 reportGenerator.AddSource(source.Name, source.Collection);

@@ -7,7 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Reports;
-using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -17,11 +16,9 @@ namespace DatenMeister.Modules.Reports.Html
     /// <summary>
     /// Creates the report
     /// </summary>
-    public class HtmlReportCreator
+    public class HtmlReportCreator : ReportCreator
     {
         private readonly ClassLogger Logger = new ClassLogger(typeof(HtmlReportCreator));
-        private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly IScopeStorage _scopeStorage;
 
         /// <summary>
         /// Stores the possible source of the report
@@ -32,32 +29,12 @@ namespace DatenMeister.Modules.Reports.Html
         private HtmlReport? _htmlReporter;
 
         public HtmlReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        : base(workspaceLogic, scopeStorage)
         {
-            _workspaceLogic = workspaceLogic;
-            _scopeStorage = scopeStorage;
         }
 
         public HtmlReport HtmlReporter => 
             _htmlReporter ?? throw new InvalidOperationException("_htmlReporter is null");
-
-        /// <summary>
-        /// Stores the possible source of the report
-        /// </summary>
-        public Dictionary<string, IReflectiveCollection> Sources => _sources;
-
-        public IWorkspaceLogic WorkspaceLogic => _workspaceLogic;
-
-        public IScopeStorage ScopeStorage => _scopeStorage;
-
-        /// <summary>
-        /// Adds the source to the report
-        /// </summary>
-        /// <param name="id">Id of the source</param>
-        /// <param name="collection">Collection to be evaluated</param>
-        public void AddSource(string id, IReflectiveCollection collection)
-        {
-            _sources[id] = collection;
-        }
 
         /// <summary>
         /// Generates a full html report by using the instance
@@ -66,8 +43,7 @@ namespace DatenMeister.Modules.Reports.Html
         /// <param name="writer">The writer being used</param>
         public void GenerateReportByInstance(IElement reportInstance, TextWriter writer)
         {
-            var reportLogic = new ReportLogic(_workspaceLogic);
-            foreach (var scope in reportLogic.EvaluateSources(reportInstance))
+            foreach (var scope in EvaluateSources(reportInstance))
             {
                 AddSource(scope.Name, scope.Collection);
             }
@@ -96,7 +72,7 @@ namespace DatenMeister.Modules.Reports.Html
             _htmlReporter.SetDefaultCssStyle();
             _htmlReporter.StartReport(title);
 
-            var evaluators = _scopeStorage.Get<HtmlReportEvaluators>();
+            var evaluators = ScopeStorage.Get<HtmlReportEvaluators>();
 
             var elements = reportDefinition.getOrDefault<IReflectiveCollection>(_Reports._ReportDefinition.elements);
             foreach (var element in elements.OfType<IElement>())
@@ -117,23 +93,6 @@ namespace DatenMeister.Modules.Reports.Html
             }
             
             _htmlReporter.EndReport();
-        }
-
-        /// <summary>
-        /// Gets the dataview evaluation for the given context with associated sources
-        /// </summary>
-        /// <returns>The dataview evaluation</returns>
-        public DataViewEvaluation GetDataViewEvaluation()
-        {
-            // Gets the elements for the table
-            var dataviewEvaluation =
-                new DataViewEvaluation(WorkspaceLogic, ScopeStorage);
-            foreach (var source in Sources)
-            {
-                dataviewEvaluation.AddDynamicSource(source.Key, source.Value);
-            }
-
-            return dataviewEvaluation;
         }
     }
 }

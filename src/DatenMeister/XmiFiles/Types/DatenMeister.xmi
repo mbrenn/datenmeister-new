@@ -279,59 +279,59 @@
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="277cc881-eab8-4457-88d6-09f89f2f1bbc">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig">
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="d272160f-f807-4131-8b7b-906df1530269" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="c6a6fb84-9688-472c-99cf-daa9db2906ce" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixRowCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixColumnCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="sheetName" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="offsetRow" type-ref="dm:///_internal/model/primitivetypes#Integer" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="offsetColumn" type-ref="dm:///_internal/model/primitivetypes#Integer" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countRows" type-ref="dm:///_internal/model/primitivetypes#Integer" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countColumns" type-ref="dm:///_internal/model/primitivetypes#Integer" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixRowCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="114e0504-94ed-45de-86b9-ac4dbd3f8748" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="fixColumnCount" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="3ef3e487-a264-4235-b2dc-f8ff3c0e7a78" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="7d009190-26da-45dd-8a3e-b5bb833b9b8a" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="sheetName" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="555764cc-7764-4daa-a50b-cc7e3e04da78" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="offsetRow" type-ref="dm:///_internal/model/primitivetypes#Integer" p1:id="e14921cd-c59c-4033-ad28-c74d8a2e13b3" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="offsetColumn" type-ref="dm:///_internal/model/primitivetypes#Integer" p1:id="f9cc5c6d-7322-49ea-9ac6-a123ee08f147" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countRows" type-ref="dm:///_internal/model/primitivetypes#Integer" p1:id="ec3b4a93-19db-4a59-9103-b711a714154e" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countColumns" type-ref="dm:///_internal/model/primitivetypes#Integer" p1:id="efabc4fa-73b6-469a-b73e-40fe051325ea" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="c009b374-b6cc-4fb9-b3ee-7b2bc1ef9cc2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3f3be2dc-3f46-414d-bfe4-9c3403c32d36" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelReferenceLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelImportLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelImportLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentPath" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentPath" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="710a182d-3852-4c17-beac-b50d4254813d" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelExtentLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="34eaecf3-d138-4ff1-9416-cb1fca886698" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="518886e9-44f1-4edb-8d34-c732e6aecb9f" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="InMemoryLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.InMemoryLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmlReferenceLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.XmlReferenceLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="keepNamespaces" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="0044cec7-876a-4c2b-bfbc-b40a997ceba2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="keepNamespaces" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="fa76eeb6-998d-445c-9a58-6ad9b25f3ef8" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentFileLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="filePath" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3cb59d49-5355-43ce-aae3-135cf4cf6509" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="XmiStorageLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvExtentLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentFileLoaderConfig" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="settings" type-ref="#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="settings" type-ref="#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings" p1:id="1ca9d5fb-cf1c-4041-8665-a65dcd865516" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="CsvSettings" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="DatenMeister.Models.ExtentLoaderConfigs.CsvSettings">
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="encoding" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="separator" type-ref="#System.Char" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="columns" type-ref="dm:///_internal/model/primitivetypes#String" upper="2" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="metaclassUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="encoding" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="0b45f120-58cf-4f36-8611-0ec06fcff84a" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="51b2e404-b5ac-422a-9cf7-4cdd3e3b1c2d" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="separator" type-ref="#System.Char" p1:id="ff80eba2-94fb-4175-9b13-6e608a225c23" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="columns" type-ref="dm:///_internal/model/primitivetypes#String" upper="2" p1:id="572ae828-0ad8-4b5c-9710-bf4fd44103ec" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="metaclassUri" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="2bec6d90-f843-4f14-b59f-614b0dfa2766" />
     </packagedElement>
   </item>
 </item>

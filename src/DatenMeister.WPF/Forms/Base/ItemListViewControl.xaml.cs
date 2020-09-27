@@ -246,11 +246,14 @@ namespace DatenMeister.WPF.Forms.Base
                 CopyToClipboardCommand.Execute(this, CopyType.AsXmi);
             }
 
-            yield return
-                new RowItemButtonDefinition(
-                    "Edit",
-                    NavigateToElement,
-                    ButtonPosition.Before);
+            if (EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitEditItems) == false)
+            {
+                yield return
+                    new RowItemButtonDefinition(
+                        "Edit",
+                        NavigateToElement,
+                        ButtonPosition.Before);
+            }
 
             if (EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) == false)
             {

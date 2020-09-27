@@ -84,7 +84,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="7fe103c7-9648-47fe-ae41-3c0530fa30be" name="ExtentList">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="Workspaces.ListOfExtents">
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="9ac10d63-d08e-41dd-ba08-ff537828ea53" title="Extent" name="List" property="extents" inhibitDeleteItems="True" inhibitNewItems="True">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="9ac10d63-d08e-41dd-ba08-ff537828ea53" title="Extent" name="List" property="extents" inhibitDeleteItems="True" inhibitNewItems="True" inhibitEditItems="True">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="4435a1fe-2fd7-4af9-ad4f-739ab77eab9a" name="uri" title="URI" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="94fd4faa-6f65-47a5-a256-f5c29429110a" name="count" title="count" width="10" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="32eca7c7-5314-415d-99be-76b6d9698245" name="totalCount" title="totalCount" width="10" />

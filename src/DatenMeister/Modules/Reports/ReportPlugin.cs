@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Integration;
 using DatenMeister.Modules.Reports.Evaluators;
+using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 

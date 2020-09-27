@@ -12,7 +12,7 @@ using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.Reports
+namespace DatenMeister.Modules.Reports.Html
 {
     /// <summary>
     /// Creates the report

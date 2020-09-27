@@ -14,6 +14,7 @@ using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -40,7 +41,10 @@ namespace DatenMeister.WPF.Modules.ReportManager
             foreach (var viewExtension in OfferHtmlReport(viewExtensionInfo)) 
                 yield return viewExtension;
 
-            foreach (var viewExtension in OfferHtmlReportsInExplorer(viewExtensionInfo)) 
+            foreach (var viewExtension in OfferAdocReport(viewExtensionInfo)) 
+                yield return viewExtension;
+
+            foreach (var viewExtension in OfferSimpleReportsInExplorer(viewExtensionInfo)) 
                 yield return viewExtension;
         }
 
@@ -144,7 +148,24 @@ namespace DatenMeister.WPF.Modules.ReportManager
             }
         }
 
-        private IEnumerable<ViewExtension> OfferHtmlReportsInExplorer(ViewExtensionInfo viewExtensionInfo)
+        private static IEnumerable<ViewExtension> OfferAdocReport(ViewExtensionInfo viewExtensionInfo)
+        {
+            // Creates a html report
+            var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
+                _Reports.TheOne.__AdocReportInstance);
+            if (reportInstance != null)
+            {
+                yield return
+                    new RowItemButtonDefinition(
+                        "Create Report",
+                        (x, y) =>
+                        {
+                            MessageBox.Show("ADOC");
+                        });
+            }
+        }
+
+        private IEnumerable<ViewExtension> OfferSimpleReportsInExplorer(ViewExtensionInfo viewExtensionInfo)
         {
             var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
             if (itemExplorerControl != null)

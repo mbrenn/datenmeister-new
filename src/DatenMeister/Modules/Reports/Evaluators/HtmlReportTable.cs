@@ -8,6 +8,7 @@ using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;

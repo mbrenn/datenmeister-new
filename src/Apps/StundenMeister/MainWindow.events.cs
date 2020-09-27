@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;

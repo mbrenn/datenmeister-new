@@ -1129,6 +1129,9 @@ namespace DatenMeister.Models
                 public static string @inhibitDeleteItems = "inhibitDeleteItems";
                 public IElement? @_inhibitDeleteItems = null;
 
+                public static string @inhibitEditItems = "inhibitEditItems";
+                public IElement? @_inhibitEditItems = null;
+
                 public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
                 public IElement? @_defaultTypesForNewElements = null;
 

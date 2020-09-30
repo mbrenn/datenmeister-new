@@ -9,7 +9,9 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
+using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Reports
@@ -115,6 +117,50 @@ namespace DatenMeister.Modules.Reports
                 
                 yield return new ReportSource(name, sourceItems);
             }
+        }
+        public bool GetDataEvaluation(IElement reportNodeOrigin, out IElement? element)
+        {
+            var viewNode = reportNodeOrigin.getOrDefault<IElement>(_Reports._ReportParagraph.viewNode);
+            if (viewNode == null)
+            {
+                Logger.Info("No Viewnode found");
+                element = null;
+                return false;
+            }
+
+            var dataViewEvaluation = this.GetDataViewEvaluation();
+            element = dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
+            if (element == null)
+            {
+                Logger.Info("No Element found");
+                return false;
+            }
+
+            return true;
+        }
+        
+        
+
+        public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin)
+        {
+            var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
+            if (reportNode.isSet(_Reports._ReportParagraph.evalProperties))
+            {
+                GetDataEvaluation(reportNodeOrigin, out var element);
+                var evalProperties = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalProperties);
+
+                var dict = new Dictionary<string, object> {["v"] = reportNode};
+                if (element != null)
+                {
+                    dict["i"] = element;
+                }
+
+                TextTemplateEngine.Parse(
+                    "{{" + evalProperties + "}}",
+                    dict);
+            }
+
+            return reportNode;
         }
     }
 }

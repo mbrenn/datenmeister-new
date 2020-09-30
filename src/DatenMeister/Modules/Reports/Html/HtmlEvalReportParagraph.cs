@@ -19,22 +19,7 @@ namespace DatenMeister.Modules.Reports.Html
 
         public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNodeOrigin)
         {
-            var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
-            if (reportNode.isSet(_Reports._ReportParagraph.evalProperties))
-            {
-                GetDataEvaluation(out var element);
-                var evalProperties = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalProperties);
-
-                var dict = new Dictionary<string, object> {["v"] = reportNode};
-                if (element != null)
-                {
-                    dict["i"] = element;
-                }
-                
-                TextTemplateEngine.Parse(
-                    "{{" + evalProperties + "}}",
-                    dict);
-            }
+            var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin);
 
             HtmlParagraph htmlParagraph;
 
@@ -42,7 +27,7 @@ namespace DatenMeister.Modules.Reports.Html
             if (reportNode.isSet(_Reports._ReportParagraph.evalParagraph))
             {
                 // Dynamic evaluation
-                if (GetDataEvaluation(out var element) || element == null) return;
+                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element) || element == null) return;
 
                 var evalParagraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalParagraph);
                 var evalResult = TextTemplateEngine.Parse(
@@ -66,26 +51,7 @@ namespace DatenMeister.Modules.Reports.Html
             // Creates the paragraph
             htmlReportCreator.HtmlReporter.Add(htmlParagraph);
             
-            bool GetDataEvaluation(out IElement? element)
-            {
-                var viewNode = reportNodeOrigin.getOrDefault<IElement>(_Reports._ReportParagraph.viewNode);
-                if (viewNode == null)
-                {
-                    htmlReportCreator.HtmlReporter.Add(new HtmlParagraph("No Viewnode found"));
-                    element = null;
-                    return true;
-                }
-
-                var dataViewEvaluation = htmlReportCreator.GetDataViewEvaluation();
-                element = dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
-                if (element == null)
-                {
-                    htmlReportCreator.HtmlReporter.Add(new HtmlParagraph("No Element found"));
-                    return true;
-                }
-
-                return false;
-            }
+            
         }
     }
 }

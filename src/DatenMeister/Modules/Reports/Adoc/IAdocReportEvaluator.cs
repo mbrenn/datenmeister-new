@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System.IO;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Modules.Reports.Adoc
 {
@@ -15,8 +16,8 @@ namespace DatenMeister.Modules.Reports.Adoc
         /// <summary>
         /// Performs the evaluation
         /// </summary>
-        /// <param name="htmlReportCreator">Report creator</param>
+        /// <param name="adocReportCreator">Report creator</param>
         /// <param name="reportNode">The report node</param>
-        public void Evaluate(AdocReportCreator htmlReportCreator, IElement reportNode);
+        public void Evaluate(AdocReportCreator adocReportCreator, IElement reportNode, TextWriter writer);
     }
 }

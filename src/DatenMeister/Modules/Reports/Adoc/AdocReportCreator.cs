@@ -28,9 +28,11 @@ namespace DatenMeister.Modules.Reports.Adoc
         /// <param name="writer">The writer being used</param>
         public void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
         {
-            
             var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
-            
+            if (!string.IsNullOrEmpty(title))
+            {
+                writer.WriteLine($"= {title}");
+            }
 
             var evaluators = ScopeStorage.Get<AdocReportEvaluators>();
 
@@ -44,7 +46,7 @@ namespace DatenMeister.Modules.Reports.Adoc
                     .FirstOrDefault();
                 if (foundItem != null)
                 {
-                    foundItem.Evaluate(this, element);
+                    foundItem.Evaluate(this, element, writer);
                 }
                 else
                 {

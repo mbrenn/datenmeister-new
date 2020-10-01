@@ -187,7 +187,6 @@ namespace DatenMeister.Modules.Reports.Html
             }
 
             return new HtmlTableCell(new HtmlRawString("<i>Null</i>"));
-
         }
     }
 }

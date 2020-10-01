@@ -55,9 +55,6 @@ namespace DatenMeister.Models.Reports
             public static string @cssClass = "cssClass";
             public IElement? @_cssClass = null;
 
-            public static string @evalParagraph = "evalParagraph";
-            public IElement? @_evalParagraph = null;
-
             public static string @viewNode = "viewNode";
             public IElement? @_viewNode = null;
 

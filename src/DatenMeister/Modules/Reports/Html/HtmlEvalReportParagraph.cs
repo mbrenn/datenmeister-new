@@ -21,37 +21,20 @@ namespace DatenMeister.Modules.Reports.Html
         {
             var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin);
 
-            HtmlParagraph htmlParagraph;
+            var paragraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.paragraph);
+            var htmlParagraph = new HtmlParagraph(paragraph);
 
-            // Gets the htmlParagraph
-            if (reportNode.isSet(_Reports._ReportParagraph.evalParagraph))
-            {
-                // Dynamic evaluation
-                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element) || element == null) return;
-
-                var evalParagraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalParagraph);
-                var evalResult = TextTemplateEngine.Parse(
-                    evalParagraph,
-                    new Dictionary<string, object> {["i"] = element});
-                htmlParagraph = new HtmlParagraph(evalResult);
-            }
-            else
-            {
-                var paragraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.paragraph);
-                htmlParagraph = new HtmlParagraph(paragraph);
-            }
-            
             // Gets the cssClass
             var cssClass = reportNode.getOrDefault<string>(_Reports._ReportParagraph.cssClass);
             if (!string.IsNullOrEmpty(cssClass) && cssClass != null)
             {
                 htmlParagraph.CssClass = cssClass;
             }
-            
+
             // Creates the paragraph
             htmlReportCreator.HtmlReporter.Add(htmlParagraph);
-            
-            
+
+
         }
     }
 }

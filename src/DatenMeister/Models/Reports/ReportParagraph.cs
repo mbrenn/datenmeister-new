@@ -10,11 +10,6 @@ namespace DatenMeister.Models.Reports
         /// Gets or sets the cssClass
         /// </summary>
         public string? cssClass { get; set; }
-
-        /// <summary>
-        /// Gets or sets the evaluation of Paragraphs
-        /// </summary>
-        public string evalParagraph { get; set; } = string.Empty;
         
         /// <summary>
         /// Gets or sets the viewnode being used to evaluate the paragraph

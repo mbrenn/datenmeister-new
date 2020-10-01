@@ -15,7 +15,9 @@ namespace DatenMeister.Modules.Reports.Adoc
 
         public void Evaluate(AdocReportCreator adocReportCreator, IElement reportNode, TextWriter writer)
         {
-            var paragraph = reportNode.getOrDefault<string>(_Reports._ReportParagraph.paragraph);
+            var newReportNode = adocReportCreator.GetNodeWithEvaluatedProperties(reportNode);
+            
+            var paragraph = newReportNode.getOrDefault<string>(_Reports._ReportParagraph.paragraph);
             writer.WriteLine($"\r\n{paragraph}\r\n");
         }
     }

@@ -1,42 +1,43 @@
 ﻿
 using System;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Excel.Helper;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Excel.ProviderLoader
 {
-    [ConfiguredBy(typeof(ExcelImportLoaderConfig))]
     public class ExcelImportLoader : IProviderLoader
     {
-        private readonly ExtentManager _extentManager;
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
+        
+        public IScopeStorage? ScopeStorage { get; set; }
 
-        public ExcelImportLoader(ExtentManager extentManager)
+        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
-            _extentManager = extentManager;
-        }
-
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
-        {
-            if (!(configuration is ExcelImportLoaderConfig settings))
-            {
-                throw new InvalidOperationException(
-                    $"Given configuration is not of type {typeof(ExcelImportLoaderConfig)}, is of {configuration.GetType().FullName}");
-            }
+            var extentManager = new ExtentManager(
+                WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"),
+                ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
 
             // Creates the XMI being used as a target
-            var xmiConfiguration = new XmiStorageLoaderConfig(settings.extentUri)
-            {
-                filePath = settings.extentPath,
-                workspaceId = settings.workspaceId
-            };
+            var factory = new MofFactory(configuration);
+            var xmiConfiguration = factory.create(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            xmiConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentPath));
+            xmiConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri));
+            xmiConfiguration.set(
+                _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.workspaceId));
 
-            var loadedInfo = _extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
+            var loadedInfo = extentManager.LoadExtent(xmiConfiguration, extentCreationFlags);
             if (loadedInfo.LoadingState == ExtentLoadingState.Failed || loadedInfo.Extent == null)
             {
                 throw new InvalidOperationException("Loading of the extent has failed");
@@ -46,14 +47,14 @@ namespace DatenMeister.Excel.ProviderLoader
             extent.elements().RemoveAll();
 
             // Loads the excelinformation into the extent
-            ExcelReferenceLoader.ImportExcelIntoExtent(extent, settings);
+            ExcelReferenceLoader.ImportExcelIntoExtent(extent, configuration);
 
             // Returns the values
             return new LoadedProviderInfo(extent.Provider, xmiConfiguration)
                 {IsExtentAlreadyAddedToWorkspace = true};
         }
 
-        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, IElement configuration)
         {
             throw new NotImplementedException();
         }

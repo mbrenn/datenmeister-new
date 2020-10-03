@@ -131,11 +131,22 @@ namespace DatenMeister.WPF.Navigation
                 Title = navigateToItemConfig.Title ?? string.Empty
             };
 
-            detailFormWindow.SetContent(
+            var resultingUserControl = detailFormWindow.SetContent(
                 navigateToItemConfig.DetailElement,
                 navigateToItemConfig.Form,
                 navigateToItemConfig.ContainerCollection,
                 navigateToItemConfig.AttachedElement);
+            if (resultingUserControl is DetailFormControl detailFormControl)
+            {
+                if (navigateToItemConfig.PropertyValueChanged != null)
+                {
+                    detailFormControl.PropertyValueChanged +=
+                        (x, y) =>
+                        {
+                            navigateToItemConfig.PropertyValueChanged(y);
+                        };
+                }
+            }
 
             detailFormWindow.Cancelled += (x, y) =>
             {

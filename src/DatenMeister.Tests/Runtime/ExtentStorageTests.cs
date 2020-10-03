@@ -1,10 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.CSV;
@@ -23,23 +27,28 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
             
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof (CsvExtentLoaderConfig), scope => new CsvProviderLoader(null!));
+            mapper.AddMapping(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig, 
+                scope => new CsvProviderLoader());
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
-            var extentManager = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
+            scopeStorage.Add(mapper);
+            var extentManager = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
             extentManager.OpenDecoupled();
-
-            var configuration = new CsvExtentLoaderConfig("dm:///local/")
-            {
-                filePath = CSVExtentTests.PathForTemporaryDataFile,
-                Settings =
-                {
-                    HasHeader = false,
-                    Separator = ' '
-                }
-            };
+            
+            var setting =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            setting.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+            setting.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+            
+            var configuration =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath, CSVExtentTests.PathForTemporaryDataFile);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, setting);
 
             var csvExtent = extentManager.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
@@ -49,7 +58,15 @@ namespace DatenMeister.Tests.Runtime
             extentManager.StoreExtent(csvExtent.Extent);
 
             // Changes content, store it and check, if stored
-            ((IObject) csvExtent.Extent.elements().ElementAt(0)).set(configuration.Settings.Columns[0], "eens");
+            var settings = configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings);
+            Assert.That(settings, Is.Not.Null);
+            var columns =
+                settings.getOrDefault<IReflectiveCollection>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns);
+            Assert.That(columns, Is.Not.Null);
+
+            ((IObject) csvExtent.Extent.elements().ElementAt(0))
+                .set(columns.ElementAt(0) as string ?? throw new InvalidOperationException(
+                    "Exception"), "eens");
             extentManager.UnloadManager(true);
 
             var read = File.ReadAllText(CSVExtentTests.PathForTemporaryDataFile);
@@ -65,22 +82,25 @@ namespace DatenMeister.Tests.Runtime
             File.WriteAllText(fullPath, csvFile);
 
             var mapper = new ConfigurationToExtentStorageMapper();
-            mapper.AddMapping(typeof(CsvExtentLoaderConfig), scope => new CsvProviderLoader(null!));
+            mapper.AddMapping(
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig, 
+                scope => new CsvProviderLoader());
             var dataLayers = WorkspaceLogic.InitDefault();
 
             var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(mapper);
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(mapper, null, WorkspaceLogic.Create(dataLayers), scopeStorage);
-            var configuration = new CsvExtentLoaderConfig("dm:///local/")
-            {
-                filePath = CSVExtentTests.PathForTemporaryDataFile,
-                Settings =
-                {
-                    HasHeader = false,
-                    Separator = ' '
-                }
-            };
-
+            var logic = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var settings = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
+            settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
+            settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');
+            var configuration =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig);
+            
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.extentUri, "dm:///local/");
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath, CSVExtentTests.PathForTemporaryDataFile);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings, settings);
+            
             var csvExtent = logic.LoadExtent(configuration);
             Assert.That(csvExtent, Is.Not.Null);
             Assert.That(csvExtent.Extent, Is.Not.Null);

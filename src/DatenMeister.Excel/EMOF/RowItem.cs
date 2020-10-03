@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Excel.Helper;
+using DatenMeister.Models;
 using DatenMeister.Provider;
+using DatenMeister.Runtime;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF
@@ -171,17 +173,18 @@ namespace DatenMeister.Excel.EMOF
         {
             get
             {
+                var idColumnName = SheetItem.ExcelProvider.Settings.getOrDefault<string>(
+                    _DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.idColumnName);
+                
                 var firstPart = SheetItem.Sheet.SheetName;
                 string secondPart;
-                if (string.IsNullOrEmpty(SheetItem.ExcelProvider.Settings.idColumnName))
+                if (string.IsNullOrEmpty(idColumnName))
                 {
                     secondPart = Row.ToString();
                 }
                 else
                 {
-                    secondPart =
-                        GetProperty(SheetItem.ExcelProvider.Settings.idColumnName, ObjectType.String)?.ToString() ??
-                        string.Empty;
+                    secondPart = idColumnName;
                 }
 
                 return $"{firstPart}.{secondPart}";

@@ -1,22 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Autofac;
 using BurnSystems;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Reports;
 using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -34,6 +33,25 @@ namespace DatenMeister.WPF.Modules.ReportManager
     {
         public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
+            foreach (var viewExtension in OfferReportForDetailForm(viewExtensionInfo)) 
+                yield return viewExtension;
+
+            foreach (var viewExtension in OfferSimpleReports(viewExtensionInfo)) 
+                yield return viewExtension;
+
+            foreach (var viewExtension in OfferHtmlReport(viewExtensionInfo)) 
+                yield return viewExtension;
+
+            foreach (var viewExtension in OfferAdocReport(viewExtensionInfo)) 
+                yield return viewExtension;
+
+            foreach (var viewExtension in OfferSimpleReportsInExplorer(viewExtensionInfo)) 
+                yield return viewExtension;
+        }
+
+        private IEnumerable<ViewExtension> OfferReportForDetailForm(ViewExtensionInfo viewExtensionInfo)
+        {
+            // Offers the creation of a report in every item
             // Check if the current query is about the detail form
             var detailFormControl = viewExtensionInfo.GetDetailFormControlOfDetailWindow();
             if (detailFormControl != null)
@@ -48,9 +66,14 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         "Item"
                     );
             }
+        }
 
-            var simpleReportInfo = viewExtensionInfo.IsItemInDetailWindowOfType(
-                _Reports.TheOne.__SimpleReportConfiguration);
+        private static IEnumerable<ViewExtension> OfferSimpleReports(ViewExtensionInfo viewExtensionInfo)
+        {
+            // Handles the simple report
+            var simpleReportInfo =
+                viewExtensionInfo.IsItemInDetailWindowOfType(
+                    _DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
             if (simpleReportInfo != null)
             {
                 yield return
@@ -75,7 +98,8 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
                             if (result != null)
                             {
-                                var configuration = DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(tempObject);
+                                var configuration =
+                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(tempObject);
                                 configuration.rootElement = result;
                                 var simpleReport = new SimpleReportCreator(workspaceLogic, configuration);
 
@@ -86,9 +110,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
                             }
                         });
             }
-            
+        }
+
+        private static IEnumerable<ViewExtension> OfferHtmlReport(ViewExtensionInfo viewExtensionInfo)
+        {
+            // Creates a html report
             var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
-                _Reports.TheOne.__HtmlReportInstance);
+                _DatenMeister.TheOne.Reports.__HtmlReportInstance);
             if (reportInstance != null)
             {
                 yield return
@@ -98,15 +126,14 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         {
                             var reportGenerator =
                                 new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                            var reportLogic = GiveMe.Scope.Resolve<ReportLogic>();
-                            var sources = reportLogic.EvaluateSources(y);
+                            var sources = reportGenerator.EvaluateSources(y);
                             foreach (var source in sources)
                             {
                                 reportGenerator.AddSource(source.Name, source.Collection);
                             }
 
                             var reportDefinition =
-                                y.getOrDefault<IElement>(_Reports._HtmlReportInstance.reportDefinition);
+                                y.getOrDefault<IElement>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
                             if (reportDefinition == null)
                             {
                                 MessageBox.Show("The report is not found");
@@ -119,23 +146,27 @@ namespace DatenMeister.WPF.Modules.ReportManager
                             DotNetHelper.CreateProcess(filePath);
                         });
             }
+        }
 
-            // Check if the the query is about the current view
-            /*var listViewControl = viewExtensionInfo.GetListViewControl();
-            if (listViewControl != null)
+        private static IEnumerable<ViewExtension> OfferAdocReport(ViewExtensionInfo viewExtensionInfo)
+        {
+            // Creates a html report
+            var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
+                _DatenMeister.TheOne.Reports.__AdocReportInstance);
+            if (reportInstance != null)
             {
-                var effectiveForm = listViewControl.EffectiveForm ??
-                                    throw new InvalidOperationException("effectiveForm == null");
-                yield return new CollectionMenuButtonDefinition(
-                    "As Html",
-                    (x) => CreateReportForExplorerView(effectiveForm, x),
-                    null,
-                    "Collection")
-                {
-                    IsTopCategoryFixed = true
-                };
-            }*/
+                yield return
+                    new RowItemButtonDefinition(
+                        "Create Report",
+                        (x, y) =>
+                        {
+                            MessageBox.Show("ADOC");
+                        });
+            }
+        }
 
+        private IEnumerable<ViewExtension> OfferSimpleReportsInExplorer(ViewExtensionInfo viewExtensionInfo)
+        {
             var itemExplorerControl = viewExtensionInfo.GetItemExplorerControl();
             if (itemExplorerControl != null)
             {
@@ -166,7 +197,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                                 .ResolveById(
                                     "DatenMeister.Models.Reports.Simple.SimpleReportConfiguration")
                             ?? throw new InvalidOperationException("SimpleReportConfiguration not found");
-                        
+
                         var form = workspaceLogic.GetInternalFormsExtent().element("#Form.Report.SimpleConfiguration");
 
                         var simpleConfiguration = InMemoryObject.TemporaryFactory.create(simpleConfigurationType);
@@ -177,7 +208,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                                 Title = "Configure simple report",
                                 Form = new FormDefinition(form)
                             });
-                        
+
                         if (result?.Result == NavigationResult.Saved)
                         {
                             if (x is IExtent asExtent)
@@ -202,7 +233,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         }
 
         /// <summary>
-        /// Creates the report for the currently selected element
+        /// Creates the report for the currently selected element.
         /// </summary>
         /// <param name="rootElement">Defines the item that is selected</param>
         /// <param name="simpleReportConfiguration">Describes the configuration to be used, otherwise a default
@@ -235,6 +266,11 @@ namespace DatenMeister.WPF.Modules.ReportManager
             return tmpPath;
         }
 
+        /// <summary>
+        /// Creates the report for a certain detail html element
+        /// </summary>
+        /// <param name="effectiveForm">Defines the effective form</param>
+        /// <param name="selectedItem">The item being selected</param>
         private void CreateReportForDetailElement(IObject effectiveForm, IObject selectedItem)
         {
             var id = StringManipulation.RandomString(10);

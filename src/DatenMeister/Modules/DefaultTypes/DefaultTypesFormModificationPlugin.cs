@@ -19,13 +19,13 @@ namespace DatenMeister.Modules.DefaultTypes
     {
         public void ModifyForm(FormCreationContext context, IElement form)
         {
-            if (context.MetaClass?.Equals(_CommonTypes.TheOne.Default.__Package) == true
+            if (context.MetaClass?.Equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true
                 && context.FormType == FormType.TreeItemDetail
                 && context.ParentPropertyName == string.Empty
                 && context.DetailElement != null)
             {
                 var tabPackagedElement =
-                    FormMethods.GetListTabForPropertyName(form, _CommonTypes._Default._Package.packagedElement);
+                    FormMethods.GetListTabForPropertyName(form, _DatenMeister._CommonTypes._Default._Package.packagedElement);
 
                 if (tabPackagedElement != null)
                 {
@@ -37,7 +37,7 @@ namespace DatenMeister.Modules.DefaultTypes
                     // Checks the preferred types
                     var preferredTypes =
                         context.DetailElement.getOrDefault<IReflectiveCollection>(
-                            _CommonTypes._Default._Package.preferredType);
+                            _DatenMeister._CommonTypes._Default._Package.preferredType);
 
                     AddPreferredTypes(factory, preferredTypes, defaultTypes);
                     
@@ -45,7 +45,7 @@ namespace DatenMeister.Modules.DefaultTypes
                     // If a preferred package is set, then all containing classes will be added
                     var preferredPackages =
                         context.DetailElement.getOrDefault<IReflectiveCollection>(
-                            _CommonTypes._Default._Package.preferredPackage);
+                            _DatenMeister._CommonTypes._Default._Package.preferredPackage);
 
                     if (preferredPackages != null)
                     {

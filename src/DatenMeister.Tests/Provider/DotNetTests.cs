@@ -3,12 +3,10 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Helper;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
@@ -173,10 +171,24 @@ namespace DatenMeister.Tests.Provider
             Assert.That(typed.ComparisonType, Is.EqualTo(ComparisonType.GreaterThan));
         }
 
+        public class TestClassForConversion 
+        {
+            public bool fixRowCount { get; set; }
+            public bool fixColumnCount { get; set; }
+            public string filePath { get; set; }
+            public string sheetName { get; set; }
+            public int offsetRow { get; set; }
+            public int offsetColumn { get; set; }
+            public int countRows { get; set; }
+            public int countColumns { get; set; }
+            public bool hasHeader { get; set; } = true;
+            public string idColumnName { get; set; }
+        }
+
         [Test]
         public void TestDotNetConversion()
         {
-            var settings = new ExcelImportLoaderConfig("dm:///test")
+            var settings = new TestClassForConversion
             {
                 countColumns = 1,
                 countRows = 5,
@@ -191,7 +203,7 @@ namespace DatenMeister.Tests.Provider
 
             var asMof = DotNetConverter.ConvertFromDotNetObject(settings);
 
-            var copy = DotNetConverter.ConvertToDotNetObject<ExcelImportLoaderConfig>(asMof);
+            var copy = DotNetConverter.ConvertToDotNetObject<TestClassForConversion>(asMof);
 
             Assert.That(copy.countColumns, Is.EqualTo(1));
             Assert.That(copy.countRows, Is.EqualTo(5));
@@ -205,7 +217,7 @@ namespace DatenMeister.Tests.Provider
         }
 
         [Test]
-        public void TestDotNetConversionWithoutExplicitType()
+        public void TestFindingXmiStorageLoaderConfig()
         {
             using var datenMeister  = DatenMeisterTests.GetDatenMeisterScope();
             var workspaceLogic = datenMeister.Resolve<IWorkspaceLogic>();
@@ -215,20 +227,9 @@ namespace DatenMeister.Tests.Provider
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var csvLoaderType = workspaceLogic.FindItem(
-                WorkspaceNames.UriExtentInternalTypes + "#DatenMeister.Provider.XMI.ExtentStorage.XmiStorageLoaderConfig");
+                WorkspaceNames.UriExtentInternalTypes + "#DatenMeister.Models.ExtentLoaderConfigs.XmiStorageLoaderConfig");
 
             Assert.That(csvLoaderType, Is.Not.Null);
-            var memoryObject = new MofFactory(extent).create(csvLoaderType);
-            memoryObject.set(nameof(XmiStorageLoaderConfig.workspaceId), "TEST");
-            memoryObject.set(nameof(XmiStorageLoaderConfig.filePath), "path");
-            memoryObject.set(nameof(XmiStorageLoaderConfig.extentUri), "dm:///");
-
-            var asDotNetType = DotNetConverter.ConvertToDotNetObject(memoryObject);
-            Assert.That(asDotNetType, Is.TypeOf<XmiStorageLoaderConfig>());
-            var typed = (XmiStorageLoaderConfig) asDotNetType;
-            Assert.That(typed.workspaceId, Is.EqualTo("TEST"));
-            Assert.That(typed.filePath, Is.EqualTo("path"));
-            Assert.That(typed.extentUri, Is.EqualTo("dm:///"));
         }
     }
 }

@@ -90,6 +90,12 @@ namespace DatenMeister.WPF.Navigation
         public FormDefinition? Form { get; set; }
         
         public IElement? AttachedElement { get; set; }
+
+        /// <summary>
+        /// This event is called whenever the user has changed a value.
+        /// The implementation is currently only valid for detailform
+        /// </summary>
+        public Action<PropertyValueChangedEventArgs>? PropertyValueChanged;
     }
 
     /// <summary>
@@ -426,13 +432,16 @@ namespace DatenMeister.WPF.Navigation
         /// The item itself will NOT be added to the extent
         /// </param>
         /// <param name="metaclass">Metaclass, whose instance will be created</param>
+        /// <param name="defaultWorkspace">Defines the default workspace</param>
+        /// /// <param name="defaultExtent">Defines the default extent</param>
         /// <returns>The control element that can be used to receive events from the dialog</returns>
         public static async Task<IControlNavigationNewObject?> NavigateToCreateNewItem(
             INavigationHost window,
             IExtent extent,
-            IElement? metaclass)
+            IElement? metaclass,
+            string? defaultWorkspace = null,
+            string? defaultExtent = null)
         {
-            
             var factory = new MofFactory(extent);
 
             if (metaclass == null)

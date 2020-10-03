@@ -55,7 +55,7 @@ namespace DatenMeister.Models.FastViewFilter
         public _PropertyContainsFilter @PropertyContainsFilter = new _PropertyContainsFilter();
         public IElement @__PropertyContainsFilter = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.PropertyContainsFilter");
 
-        public static _FastViewFilters TheOne = new _FastViewFilters();
+        public static readonly _FastViewFilters TheOne = new _FastViewFilters();
 
     }
 

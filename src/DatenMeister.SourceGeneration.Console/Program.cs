@@ -3,12 +3,12 @@ using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
-using DatenMeister.Models.EMOF;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
-using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
+using DatenMeister.Modules.TypeSupport;
+using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Provider.XMI.EMOF;
@@ -36,10 +36,10 @@ namespace DatenMeister.SourceGeneration.Console
             CreateSourceForFastFilter();
 
             CreateSourceForDataViews();
-
-            CreateSourceForReports();
             
-            CreateSourceCodeForDatenMeister();
+            //CreateSourceCodeForDatenMeister();
+
+            CreateSourceCodeForDatenMeisterAllTypes();
 
 #if !DEBUG
             File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Models/EMOF/primitivetypes.cs", true);
@@ -60,8 +60,6 @@ namespace DatenMeister.SourceGeneration.Console
                 $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
             File.Copy($"./DataViews.class.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.class.cs", true);
             File.Copy($"./DataViews.dotnet.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
-            File.Copy($"./Reports.class.cs", $"{R}/../DatenMeister/Models/Reports/Reports.class.cs", true);
-            File.Copy($"./Reports.dotnet.cs", $"{R}/../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 #endif
         }
@@ -91,21 +89,32 @@ namespace DatenMeister.SourceGeneration.Console
             var pathOfClassTree = "DatenMeister.class.cs";
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
+            System.Console.WriteLine(" Done");
         }
 
-        private static void CreateSourceForReports()
+        private static void CreateSourceCodeForDatenMeisterAllTypes()
         {
-            System.Console.Write("Create Sourcecode for Reports...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "Reports",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.Reports",
-                    Types = ReportTypes.GetTypes()
-                });
+            var dm = GiveMeDotNetCore.DatenMeister();
+            
+            System.Console.Write("Create Sourcecode for DatenMeister...");
 
+            var pseudoExtent = new LocalTypeSupport(dm.WorkspaceLogic, dm.ScopeStorage).InternalTypes;
+
+            ////////////////////////////////////////
+            // Creates the class tree
+
+            // Creates the source parser which is needed to navigate through the package
+            var sourceParser = new ElementSourceParser();
+            var classTreeGenerator = new ClassTreeGenerator(sourceParser)
+            {
+                Namespace = "DatenMeister.Models"
+            };
+
+            classTreeGenerator.Walk(pseudoExtent);
+
+            var pathOfClassTree = "DatenMeister.class.cs";
+            var fileContent = classTreeGenerator.Result.ToString();
+            File.WriteAllText(pathOfClassTree, fileContent);
             System.Console.WriteLine(" Done");
         }
 
@@ -153,6 +162,7 @@ namespace DatenMeister.SourceGeneration.Console
                     Namespace = "DatenMeister.Models.ManagementProviders",
                     Types = ManagementProviderModel.AllTypes
                 });
+            System.Console.WriteLine(" Done");
         }
 
         private static void CreateSourceForExcel()

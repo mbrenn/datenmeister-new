@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
+using DatenMeister.Models;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using Path = System.IO.Path;
 
@@ -29,7 +31,10 @@ namespace DatenMeister.WPF.Windows
 
         public ExcelImportType ImportType { get; set; } = ExcelImportType.AsCopy;
 
-        public ExcelImportLoaderConfig? ExcelSettings => _importer?.LoaderConfig as ExcelImportLoaderConfig;
+        /// <summary>
+        /// Defines the excel settings
+        /// </summary>
+        public IElement? ExcelSettings => _importer?.LoaderConfig;
 
         public ExcelImportDefinitionDialog()
         {
@@ -43,10 +48,13 @@ namespace DatenMeister.WPF.Windows
         public async Task<ExcelImporter> LoadFile(string filePath)
         {
             txtFileName.Text = Path.GetFileName(filePath);
-
-            _importer = new ExcelImporter(
-                new ExcelImportLoaderConfig("dm:///dm_temp") {filePath = filePath}
-            );
+            var importConfig =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig) as IElement
+                ?? throw new InvalidOperationException("Not an IElement");
+            importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///dm_temp");
+            importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath, filePath);
+            
+            _importer = new ExcelImporter(importConfig);
 
             await Task.Run(() => _importer.LoadExcel());
 
@@ -74,15 +82,23 @@ namespace DatenMeister.WPF.Windows
 
             // Gets the columns names
             var columnNames = _importer.GetColumnNames();
+            var countRows = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countRows);
+            var countColumns = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countColumns);
 
             // Now create the items
             dgrExcelDataGrid.Columns.Clear();
             var items = new List<object>();
-            for (var r = 0; r < _importer.LoaderConfig.countRows; r++)
+            for (
+                var r = 0; 
+                r < countRows; 
+                r++)
             {
                 var item = (IDictionary<string, object>) new ExpandoObject();
 
-                for (var c = 0; c < _importer.LoaderConfig.countColumns; c++)
+                for (
+                    var c = 0;
+                    c < countColumns;
+                    c++)
                 {
                     var internalColumnName = "_ " + c;
                     var columnName = columnNames[c];
@@ -156,7 +172,7 @@ namespace DatenMeister.WPF.Windows
 
             if (IsExcelNotLoaded()) return;
 
-            _importer.LoaderConfig.offsetRow = DotNetHelper.AsInteger(txtOffsetRow.Text);
+            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetRow, DotNetHelper.AsInteger(txtOffsetRow.Text));
             _importer.GuessRowCount();
             UpdateDataPreview();
         }
@@ -168,7 +184,8 @@ namespace DatenMeister.WPF.Windows
 
             if (IsExcelNotLoaded()) return;
 
-            _importer.LoaderConfig.offsetColumn = DotNetHelper.AsInteger(txtOffsetColumn.Text);
+            
+            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.offsetColumn, DotNetHelper.AsInteger(txtOffsetColumn.Text));
             _importer.GuessColumnCount();
             UpdateDataPreview();
         }
@@ -190,7 +207,7 @@ namespace DatenMeister.WPF.Windows
 
             if (IsExcelNotLoaded()) return;
 
-            _importer.LoaderConfig.hasHeader = chkHeaderRow.IsChecked == true;
+            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.hasHeader, chkHeaderRow.IsChecked == true);
             _importer.GuessRowCount();
             UpdateDataPreview();
         }
@@ -202,8 +219,8 @@ namespace DatenMeister.WPF.Windows
 
             if (IsExcelNotLoaded()) return;
 
-            _importer.LoaderConfig.fixRowCount = chkAutoCount.IsChecked == false;
-            _importer.LoaderConfig.fixColumnCount = chkAutoCount.IsChecked == false;
+            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixRowCount, chkAutoCount.IsChecked == true);
+            _importer.LoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.fixColumnCount, chkAutoCount.IsChecked == true);
 
             _importer.GuessColumnCount();
             _importer.GuessRowCount();
@@ -245,8 +262,8 @@ namespace DatenMeister.WPF.Windows
         /// Gets the configuration as an item
         /// </summary>
         /// <returns>The configuration object describing the elements</returns>
-        public IObject? GetConfigurationObject()
-            => _importer?.LoaderConfig?.GetSettingsAsMofObject();
+        public IElement? GetConfigurationObject()
+            => _importer?.LoaderConfig;
 
         private void OnClosed(object sender, EventArgs e)
         {

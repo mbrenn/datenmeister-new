@@ -8,7 +8,7 @@ using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
-    public class CheckboxField : IDetailField
+    public class CheckboxField : IDetailField, IPropertyValueChangeable
     {
         private bool? _propertyValue;
         
@@ -47,6 +47,19 @@ namespace DatenMeister.WPF.Forms.Fields
                 IsEnabled = !isReadOnly
             };
 
+            _checkbox.Click += (x, y) =>
+            {
+                var ev = PropertyValueChanged;
+                if (ev != null)
+                {
+                    ev(this,
+                        new PropertyValueChangedEventArgs(detailForm, _name)
+                        {
+                            NewValue = _checkbox.IsChecked
+                        });
+                }
+            };
+
             fieldFlags.CanBeFocused = true;
             return _checkbox;
         }
@@ -58,5 +71,10 @@ namespace DatenMeister.WPF.Forms.Fields
                 element.set(_name, _checkbox.IsChecked);
             }
         }
+        
+        /// <summary>
+        /// Defines the event that will be called when the property value is changed
+        /// </summary>
+        public event EventHandler<PropertyValueChangedEventArgs>? PropertyValueChanged;
     }
 }

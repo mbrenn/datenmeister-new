@@ -1,11 +1,15 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
+using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Excel.ProviderLoader
 {
@@ -13,21 +17,26 @@ namespace DatenMeister.Excel.ProviderLoader
     /// Implements the loader which creates an InMemoryExtent out of an excel file
     /// If DatenMeister will be rebooted, the excel file will be loaded again
     /// </summary>
-    [ConfiguredBy(typeof(ExcelReferenceLoaderConfig))]
     public class ExcelReferenceLoader : IProviderLoader
     {
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
-        {
-            if (!(configuration is ExcelReferenceLoaderConfig settings))
-            {
-                throw new InvalidOperationException("Given configuration is not of type ExcelReferenceSettings");
-            }
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
+        
+        public IScopeStorage? ScopeStorage { get; set; }
 
+        /// <summary>
+        /// Of Type ExcelReferenceLoaderConfig
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="extentCreationFlags"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
+        {
             // Now load the stuff
             var provider = new InMemoryProvider();
             var extent = new MofUriExtent(provider);
 
-            ImportExcelIntoExtent(extent, settings);
+            ImportExcelIntoExtent(extent, configuration);
 
             // Returns the provider
             return new LoadedProviderInfo(provider);
@@ -37,22 +46,34 @@ namespace DatenMeister.Excel.ProviderLoader
         /// Imports the excel into the extent
         /// </summary>
         /// <param name="extent"></param>
-        /// <param name="loaderConfig"></param>
-        internal static void ImportExcelIntoExtent(MofExtent extent, ExcelLoaderConfig loaderConfig)
+        /// <param name="loaderConfig">Element of ExcelLoaderConfig</param>
+        internal static void ImportExcelIntoExtent(MofExtent extent, IElement loaderConfig)
         {
             var factory = new MofFactory(extent);
-
+            var fixColumnCount =
+                loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+                    .fixColumnCount);
+            var fixRowCount =
+                loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+                    .fixRowCount);
+            var countRows =
+                loaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+                    .countRows);
+            var countColumns =
+                loaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+                    .countColumns);
+            
             var excelImporter = new ExcelImporter(loaderConfig);
             excelImporter.LoadExcel();
 
             var columnNames = excelImporter.GetColumnNames();
-            if (!loaderConfig.fixColumnCount) excelImporter.GuessRowCount();
-            if (!loaderConfig.fixRowCount) excelImporter.GuessColumnCount();
+            if (!fixColumnCount) countRows = excelImporter.GuessRowCount();
+            if (!fixRowCount) countColumns = excelImporter.GuessColumnCount();
 
-            for (var r = 0; r < loaderConfig.countRows; r++)
+            for (var r = 0; r < countRows; r++)
             {
                 var item = factory.create(null);
-                for (var c = 0; c < loaderConfig.countColumns; c++)
+                for (var c = 0; c < countColumns; c++)
                 {
                     var columnName = columnNames[c];
                     if (columnName == null)
@@ -68,7 +89,7 @@ namespace DatenMeister.Excel.ProviderLoader
             }
         }
 
-        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, IElement configuration)
         {
             // Nothing to store, since the Excel Reference Provider is just a read-only thing
         }

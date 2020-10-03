@@ -15,7 +15,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
         public string extentType { get; set; } = string.Empty;
 
-        public IElement? parentMetaClass { get; set; }
+        public IObject? parentMetaClass { get; set; }
 
         public string parentProperty { get; set; } = string.Empty;
 

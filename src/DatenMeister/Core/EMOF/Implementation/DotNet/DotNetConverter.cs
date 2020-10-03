@@ -179,7 +179,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="element">MOF element to be converted</param>
         /// <param name="lookup">Lookup table to find the .Net type of the MOF element</param>
         /// <returns></returns>
-        public static object ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
+        public static object? ConvertToDotNetObject(IElement element, IDotNetTypeLookup lookup)
         {
             var uri = element.metaclass?.GetUri() ?? throw new InvalidOperationException("Uri is not set");
             var type = lookup.ToType(uri);
@@ -197,7 +197,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// </summary>
         /// <param name="element">Element to be converted</param>
         /// <returns>The converted .Net Type</returns>
-        public static object ConvertToDotNetObject(IElement element)
+        public static object? ConvertToDotNetObject(IElement element)
         {
             var mofElement = (MofElement) element;
             var metaClassUri = mofElement.metaclass?.GetUri();
@@ -222,7 +222,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="value">Value to be converted</param>
         /// <returns>The converted object</returns>
         public static T ConvertToDotNetObject<T>(IObject value)
-            => (T) ConvertToDotNetObject(value, typeof(T));
+            => (T) ConvertToDotNetObject(value, typeof(T))!;
 
         /// <summary>
         /// Converts the given MOF Object into a .Net Object
@@ -230,8 +230,9 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         /// <param name="value">Value to be converted</param>
         /// <param name="type">Type of the element to be converted</param>
         /// <returns>The converted object</returns>
-        public static object ConvertToDotNetObject(IObject value, Type type)
+        public static object? ConvertToDotNetObject(IObject value, Type type)
         {
+            if (value == null) return null;
             var result = Activator.CreateInstance(type);
             foreach (var reflectedProperty in type.GetProperties(
                 BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))

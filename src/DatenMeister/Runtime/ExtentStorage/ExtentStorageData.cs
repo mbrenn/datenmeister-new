@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -71,7 +71,7 @@ namespace DatenMeister.Runtime.ExtentStorage
         {
             public IUriExtent? Extent { get; set; }
             
-            public ExtentLoaderConfig Configuration { get; set; }
+            public IElement Configuration { get; set; }
             
             public ExtentLoadingState LoadingState { get; set; }
 
@@ -86,7 +86,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             /// Initializes a new instance of the  LoadedExtentInformation class
             /// </summary>
             /// <param name="configuration">Configuration of the loading extent</param>
-            public LoadedExtentInformation(ExtentLoaderConfig configuration)
+            public LoadedExtentInformation(IElement configuration)
             {
                 Configuration = configuration;
             }

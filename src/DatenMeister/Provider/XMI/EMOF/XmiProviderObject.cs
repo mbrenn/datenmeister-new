@@ -151,7 +151,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// </summary>
         /// <param name="node">Node to be used</param>
         /// <param name="provider">Provider to be set</param>
-        private XmiProviderObject(XElement node, XmiProvider provider)
+        public XmiProviderObject(XElement node, XmiProvider provider)
         {
             XmlNode = node ?? throw new ArgumentNullException(nameof(node));
             Provider = provider ?? throw new ArgumentNullException(nameof(provider));
@@ -198,6 +198,11 @@ namespace DatenMeister.Provider.XMI.EMOF
             }
 
             if (DotNetHelper.IsOfNumber(value))
+            {
+                return value.ToString();
+            }
+
+            if (DotNetHelper.IsOfChar(value))
             {
                 return value.ToString();
             }

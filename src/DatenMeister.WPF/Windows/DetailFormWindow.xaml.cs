@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using Autofac;
 using BurnSystems.Logging;
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -17,7 +16,6 @@ using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
@@ -346,7 +344,7 @@ namespace DatenMeister.WPF.Windows
         /// <param name="formDefinition"></param>
         /// <param name="container">Container being used when the item is added</param>
         /// <param name="attachedElement">The attached element that can retrieve additional information</param>
-        public void SetContent(
+        public UserControl? SetContent(
             IObject? element, 
             FormDefinition? formDefinition,
             IReflectiveCollection? container = null,
@@ -354,7 +352,7 @@ namespace DatenMeister.WPF.Windows
         {
             element ??= InMemoryObject.CreateEmpty();
             AttachedElement = attachedElement;
-            CreateDetailForm(element, formDefinition, container);
+            return CreateDetailForm(element, formDefinition, container);
         }
 
         /// <summary>
@@ -371,7 +369,7 @@ namespace DatenMeister.WPF.Windows
         /// <summary>
         /// Creates the detailform matching to the given effective form as set by the effective Form
         /// </summary>
-        private void CreateDetailForm(
+        UserControl? CreateDetailForm(
             IObject detailElement,
             FormDefinition? formDefinition,
             IReflectiveCollection? container = null)
@@ -380,10 +378,10 @@ namespace DatenMeister.WPF.Windows
             ContainerCollection = container;
             RequestedFormDefinition = formDefinition;
             
-            RecreateView();
+            return RecreateView();
         }
 
-        private void RecreateView()
+        UserControl? RecreateView()
         {
             if (DetailElement == null)
                 throw new InvalidOperationException("DetailElement == null");
@@ -468,7 +466,11 @@ namespace DatenMeister.WPF.Windows
                 }
                 
                 RebuildNavigation();
+
+                return control;
             }
+
+            return null;
         }
 
         private void DetailFormWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)

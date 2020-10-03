@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -30,7 +31,7 @@ namespace DatenMeister.Modules.Actions
         public async Task ExecuteActionSet(IElement actionSet)
         {
             var actions = actionSet.getOrDefault<IReflectiveCollection>(
-                _Actions._ActionSet.action);
+                _DatenMeister._Actions._ActionSet.action);
             foreach (var action in actions.OfType<IElement>())
             {
                 await ExecuteAction(action);
@@ -43,20 +44,22 @@ namespace DatenMeister.Modules.Actions
         /// <param name="action">Action to be executed</param>
         public async Task ExecuteAction(IElement action)
         {
+            var found = false;
             foreach (var actionHandler in ScopeStorage.Get<ActionLogicState>().ActionHandlers)
             {
-                var found = false;
                 if (actionHandler.IsResponsible(action))
                 {
                     await Task.Run(() =>
                         actionHandler.Evaluate(this, action));
-                    found = false;
+                    found = true;
                 }
+            }
 
-                if (!found)
-                {
-                    ClassLogger.Warn($"Did not found action handler for {action}");
-                }
+            if (!found)
+            {
+                var message = $"Did not found action handler for {action}";
+                ClassLogger.Warn(message);
+                throw new InvalidOperationException(message);
             }
         }
     }

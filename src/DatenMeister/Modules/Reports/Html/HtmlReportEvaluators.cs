@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DatenMeister.Modules.Reports
+namespace DatenMeister.Modules.Reports.Html
 {
     /// <summary>
     /// The report factories

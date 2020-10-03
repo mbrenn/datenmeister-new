@@ -319,7 +319,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     continue;
                 }
 
-                var column = GetFieldForProperty(property, creationMode);
+                var column = GetFieldForProperty(metaClass, property, creationMode);
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
             }
 
@@ -404,7 +404,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     return false;
                 }
 
-                var column = GetFieldForProperty(umlElement, creationMode);
+                var column = GetFieldForProperty(umlElement.container(), umlElement, creationMode);
                 form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field).add(column);
                 return true;
             }
@@ -476,7 +476,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="property">Uml-Property which is requesting a field</param>
         /// <param name="creationMode">Defines the mode how to create the fields</param>
         /// <returns>The field data</returns>
-        private IElement GetFieldForProperty(IObject property, CreationMode creationMode)
+        private IElement GetFieldForProperty(IObject? parentMetaClass, IObject property, CreationMode creationMode)
         {
             var propertyType = PropertyMethods.GetPropertyType(property);
             var isForListForm = creationMode.HasFlagFast(CreationMode.ForListForms);
@@ -535,15 +535,47 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         var elements = _factory.create(_FormAndFields.TheOne.__SubElementFieldData);
                         elements.set(_FormAndFields._SubElementFieldData.name, propertyName);
                         elements.set(_FormAndFields._SubElementFieldData.title, propertyName);
+
+                        var defaultTypeForNewElement =
+                            _factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
+                        defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.name,
+                            NamedElementMethods.GetName(propertyType));
+                        defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass,
+                            propertyType);
                         elements.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                            new[] {propertyType});
+                            new[] {defaultTypeForNewElement});
+                        
                         elements.set(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes, true);
                         elements.set(_FormAndFields._SubElementFieldData.isReadOnly, isReadOnly);
-                        
+
+                        IElement? enumerationListForm = null;
+                        if (_formLogic != null)
+                        {
+                            var formFinder = new FormFinder.FormFinder(_formLogic);
+                            enumerationListForm = formFinder.FindFormsFor(
+                                new FindFormQuery
+                                {
+                                    parentMetaClass = parentMetaClass,
+                                    parentProperty = propertyName,
+                                    metaClass = propertyType,
+                                    FormType = FormType.ObjectList
+                                }).FirstOrDefault();
+                        }
                         // Create the internal form out of the metaclass
-                        var enumerationListForm 
-                            = CreateListFormForMetaClass(propertyType, CreationMode.All, property as IElement);
-                        elements.set(_FormAndFields._SubElementFieldData.form, enumerationListForm);
+                        if (enumerationListForm == null 
+                            && creationMode.HasFlag(CreationMode.ByMetaClass))
+                        {
+                            enumerationListForm =
+                                CreateListFormForMetaClass(
+                                    propertyType,
+                                    CreationMode.All,
+                                    property as IElement);
+                        }
+
+                        if (enumerationListForm != null)
+                        {
+                            elements.set(_FormAndFields._SubElementFieldData.form, enumerationListForm);
+                        }
 
                         return elements;
                     }
@@ -579,10 +611,16 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 
                 if (propertyType != null)
                 {
-                    element.set(
-                        _FormAndFields._SubElementFieldData.defaultTypesForNewElements,
-                        new[] {propertyType});
+                    var defaultTypeForNewElement =
+                        _factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
+                    defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.name,
+                        NamedElementMethods.GetName(propertyType));
+                    defaultTypeForNewElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass,
+                        propertyType);
+                    element.set(_FormAndFields._SubElementFieldData.defaultTypesForNewElements,
+                        new[] {defaultTypeForNewElement});
                 }
+                
                 return element;
             }
 

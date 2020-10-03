@@ -216,7 +216,7 @@ namespace DatenMeister.Models.EMOF
 
         public _Reflection Reflection = new _Reflection();
 
-        public static _MOF TheOne = new _MOF();
+        public static readonly _MOF TheOne = new _MOF();
 
     }
 

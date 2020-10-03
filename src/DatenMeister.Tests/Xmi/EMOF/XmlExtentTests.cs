@@ -6,10 +6,10 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -248,11 +248,11 @@ namespace DatenMeister.Tests.Xmi.EMOF
                 File.Delete(path);
             }
 
-            var storageConfiguration = new XmiStorageLoaderConfig("dm:///test")
-            {
-                filePath = path,
-                workspaceId = "Data"
-            };
+            var storageConfiguration =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///test");
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, path);
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
 
             // Creates the extent
             var loader = scope.Resolve<ExtentManager>();
@@ -274,7 +274,8 @@ namespace DatenMeister.Tests.Xmi.EMOF
             loader.DetachExtent(loadedExtent.Extent);
 
             // Reloads it
-            storageConfiguration.extentUri = "dm:///test_new";
+            
+            storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///test_new");
 
             var newExtent = loader.LoadExtent(storageConfiguration);
             Assert.That(newExtent, Is.Not.Null);

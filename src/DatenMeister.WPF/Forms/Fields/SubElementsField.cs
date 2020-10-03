@@ -12,7 +12,6 @@ using DatenMeister.Integration;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
@@ -94,9 +93,11 @@ namespace DatenMeister.WPF.Forms.Fields
             var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
             var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly)
                 || _fieldFlags?.IsReadOnly == true;
+            
             _includeSpecializationsForDefaultTypes =
-                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData
-                    .includeSpecializationsForDefaultTypes);
+                !_fieldData.isSet(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes)
+                || _fieldData.getOrDefault<bool>(
+                    _FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes);
 
             valueOfElement ??= _element.get<IReflectiveCollection>(_propertyName);
             var valueCount = valueOfElement.Count();
@@ -113,7 +114,7 @@ namespace DatenMeister.WPF.Forms.Fields
             if (form == null)
             {
                 // otherwise, we have to automatically create a form
-                var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
+                var formsLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 IElement? propertyType = null;
                 var property = ClassifierMethods.GetPropertyOfClassifier(_element, _propertyName);
                 if (property != null)
@@ -121,7 +122,10 @@ namespace DatenMeister.WPF.Forms.Fields
                     propertyType = PropertyMethods.GetPropertyType(property);
                 }
                 
-                form = viewLogic.GetListFormForElementsProperty(_element, _propertyName, propertyType) ??
+                form = formsLogic.GetListFormForElementsProperty(
+                           _element, 
+                           _propertyName, 
+                           propertyType) ??
                        throw new InvalidOperationException("Form could not be created");
             }
 
@@ -300,7 +304,7 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 var typesWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
                 var internalTypes = typesWorkspace.FindExtent(WorkspaceNames.UriExtentInternalTypes);
-                
+
                 var result = await NavigatorForDialogs.Locate(
                     _navigationHost ?? throw new InvalidOperationException("Navigation Host"),
                     new NavigatorForDialogs.NavigatorForDialogConfiguration
@@ -349,7 +353,10 @@ namespace DatenMeister.WPF.Forms.Fields
             _ = _panel ?? throw new InvalidOperationException("_panel == null");
 
             var createItemButton = new Button
-                {Content = "Create new item", HorizontalAlignment = HorizontalAlignment.Right};
+            {
+                Content = "Create new item",
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
 
             SetNewButton(createItemButton);
 
@@ -410,6 +417,7 @@ namespace DatenMeister.WPF.Forms.Fields
 
                 // Creates the button for the specializations
                 var getAllSpecializations = _includeSpecializationsForDefaultTypes;
+                
                 // Gets the buttons for specific types
                 if (!_fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements))
                 {
@@ -419,16 +427,24 @@ namespace DatenMeister.WPF.Forms.Fields
                     {
                         IEnumerable<IElement> specializedTypes;
 
+                        var typeList =
+                            defaultTypesForNewItems.OfType<IElement>().Select(
+                                innerType =>
+                                    innerType.isSet(_FormAndFields._DefaultTypeForNewElement.metaClass)
+                                        ? innerType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement
+                                            .metaClass)
+                                        : innerType);
+
                         if (getAllSpecializations)
                         {
                             specializedTypes =
-                                (from type in defaultTypesForNewItems.OfType<IElement>()
+                                (from type in typeList
                                     from newSpecializationType in ClassifierMethods.GetSpecializations(type)
                                     select newSpecializationType).Distinct();
                         }
                         else
                         {
-                            specializedTypes = defaultTypesForNewItems.OfType<IElement>();
+                            specializedTypes = typeList;
                         }
 
                         listItems.AddRange(
@@ -479,9 +495,16 @@ namespace DatenMeister.WPF.Forms.Fields
                     var referencedExtent = (_element as MofObject)?.ReferencedExtent
                                            ?? throw new InvalidOperationException("referencedExtent == null");
 
+                    var defaultWorkspace =
+                        _fieldData.getOrDefault<string>(_FormAndFields._SubElementFieldData
+                            .defaultWorkspaceOfNewElements);
+                    var defaultExtent =
+                        _fieldData.getOrDefault<string>(_FormAndFields._SubElementFieldData.defaultExtentOfNewElements);
+
                     var elements =
                         await NavigatorForItems.NavigateToCreateNewItem(
-                            _navigationHost, referencedExtent, type);
+                            _navigationHost, referencedExtent, type, defaultWorkspace, defaultExtent);
+                    
                     if (elements?.IsNewObjectCreated == true && elements.NewObject != null)
                     {
                         var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 

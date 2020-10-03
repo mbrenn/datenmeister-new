@@ -70,7 +70,7 @@ namespace DatenMeister.SourcecodeGenerator
             if (stack.Level == 0)
             {
                 UsedClassName = $"_{name}";
-                Result.AppendLine($"{innerStack.Indentation}public static _{name} TheOne = new _{name}();");
+                Result.AppendLine($"{innerStack.Indentation}public static readonly _{name} TheOne = new _{name}();");
                 Result.AppendLine();
             }
 
@@ -172,7 +172,7 @@ namespace DatenMeister.SourcecodeGenerator
             {
                 Result.AppendLine(
                     $"{stack.Indentation}public IElement? @__{name} = null;");
-            }
+            }        
             else
             {
                 Result.AppendLine(

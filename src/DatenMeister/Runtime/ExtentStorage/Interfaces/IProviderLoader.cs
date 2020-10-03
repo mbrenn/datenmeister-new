@@ -1,5 +1,7 @@
-﻿using DatenMeister.Provider;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Provider;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage.Interfaces
 {
@@ -12,6 +14,16 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
     public interface IProviderLoader
     {
         /// <summary>
+        /// Gets or sets the workspace logic
+        /// </summary>
+        IWorkspaceLogic? WorkspaceLogic { get; set;  }
+        
+        /// <summary>
+        /// Gets or sets the scope storage
+        /// </summary>
+        IScopeStorage? ScopeStorage { get; set;  }
+        
+        /// <summary>
         /// Loads the extent according to the given configuration
         /// </summary>
         /// <param name="configuration">Configuration to be used to retrieve the information.
@@ -20,13 +32,13 @@ namespace DatenMeister.Runtime.ExtentStorage.Interfaces
         /// <param name="extentCreationFlags">true, if the extent shall also be created, if it is empty.
         /// Can be used to create an empty extent. </param>
         /// <returns>Loaded extent</returns>
-        LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags);
+        LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags);
 
         /// <summary>
         /// Sores the extent according to the given configuration
         /// </summary>
         /// <param name="extent">Extent to be stored</param>
         /// <param name="configuration">Configuration to be added</param>
-        void StoreProvider(IProvider extent, ExtentLoaderConfig configuration);
+        void StoreProvider(IProvider extent, IElement configuration);
     }
 }

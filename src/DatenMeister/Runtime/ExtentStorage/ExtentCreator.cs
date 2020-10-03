@@ -3,7 +3,8 @@ using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
-using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Models;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
@@ -18,6 +19,12 @@ namespace DatenMeister.Runtime.ExtentStorage
         private readonly ExtentManager _extentManager;
         private readonly IntegrationSettings _integrationSettings;
 
+        public ExtentCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        {
+            _workspaceLogic = workspaceLogic;
+            _extentManager = new ExtentManager(workspaceLogic, scopeStorage);
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>();
+        }
         public ExtentCreator(IWorkspaceLogic workspaceLogic, ExtentManager extentManager, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
@@ -55,11 +62,15 @@ namespace DatenMeister.Runtime.ExtentStorage
                 Logger.Debug("Creates the extent for the " + name);
 
                 // Creates the extent for user types
-                var storageConfiguration = new XmiStorageLoaderConfig(uri)
-                {
-                    filePath = Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")),
-                    workspaceId = workspace
-                };
+                
+                var storageConfiguration = InMemoryObject.CreateEmpty(
+                    _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+                storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                    uri);
+                storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                    Path.Combine(_integrationSettings.DatabasePath, Path.Combine("extents/", name + ".xml")));
+                storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                    workspace);
 
                 foundExtent = _extentManager.LoadExtent(storageConfiguration, extentCreationFlags).Extent;
 

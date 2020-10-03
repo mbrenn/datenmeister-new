@@ -36,7 +36,8 @@ namespace DatenMeister.Runtime
             || type == typeof(long)
             || type == typeof(string)
             || type == typeof(TimeSpan)
-            || type == typeof(DateTime);
+            || type == typeof(DateTime)
+            || type == typeof(char);
 
         /// <summary>
         /// Evaluates whether the given type is a primitive type.
@@ -120,7 +121,6 @@ namespace DatenMeister.Runtime
             var type = property.GetType();
             return IsNumber(type);
         }
-
         private static bool IsNumber(Type type) =>
             type == typeof(short)
             || type == typeof(int)
@@ -128,6 +128,16 @@ namespace DatenMeister.Runtime
             || type == typeof(float)
             || type == typeof(double)
             || type == typeof(decimal);
+
+        /// <summary>
+        /// Gets or sets the information whether the given value is of type char
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsOfChar(object? value)
+        {
+            return value?.GetType() == typeof(char);
+        }
 
         /// <summary>
         /// True, if the given element is a boolean
@@ -447,7 +457,7 @@ namespace DatenMeister.Runtime
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="arguments">Arguments being used to create the process</param>
-        public static void CreateProcess(string filePath, string? arguments = null)
+        public static Process? CreateProcess(string filePath, string? arguments = null)
         {
             var startInfo = new ProcessStartInfo
             {
@@ -460,7 +470,7 @@ namespace DatenMeister.Runtime
                 startInfo.Arguments = arguments;
             }
 
-            Process.Start(startInfo);
+            return Process.Start(startInfo);
         }
 
         /// <summary>

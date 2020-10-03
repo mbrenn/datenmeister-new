@@ -1,13 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Autofac;
-using BurnSystems.Logging;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Plugins;
-
-namespace DatenMeister.Runtime.ExtentStorage
+﻿namespace DatenMeister.Runtime.ExtentStorage
 {
+    /*
     public static class AttributeLoaderForExtentStorage
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(AttributeLoaderForExtentStorage));
@@ -40,7 +33,15 @@ namespace DatenMeister.Runtime.ExtentStorage
                         scope =>
                         {
                             if (scope == null) throw new ArgumentException(nameof(scope));
-                            return (IProviderLoader) scope.Resolve(type);
+                            if (!(Activator.CreateInstance(type) is IProviderLoader result))
+                            {
+                                throw new InvalidOperationException(
+                                    $"Activated Type is not of Type IProviderLoader: {type.FullName}");
+                            }
+                            
+                            result.WorkspaceLogic = scope.WorkspaceLogic;
+                            result.ScopeStorage = scope.ScopeStorage;
+                            return result;
                         });
 
                     Logger.Trace(
@@ -48,5 +49,5 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
             }
         }
-    }
+    }*/
 }

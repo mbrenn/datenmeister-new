@@ -4,16 +4,15 @@ using System.Globalization;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.Reports;
-using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 
-namespace DatenMeister.Modules.Reports.Evaluators
+namespace DatenMeister.Modules.Reports.Html
 {
     public class HtmlReportTable : IHtmlReportEvaluator
     {
@@ -21,7 +20,7 @@ namespace DatenMeister.Modules.Reports.Evaluators
         {
             
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_Reports.TheOne.__ReportTable) == true;
+            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
         }
 
         /// <summary>
@@ -32,13 +31,13 @@ namespace DatenMeister.Modules.Reports.Evaluators
         /// The form should be of type ListForm</param>
         public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNode)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportTable.viewNode);
+            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
             if (viewNode == null)
             {
                 throw new InvalidOperationException("The viewNode is null");
             }
             
-            var form = reportNode.getOrDefault<IElement>(_Reports._ReportTable.form);
+            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
 
             var dataviewEvaluation = htmlReportCreator.GetDataViewEvaluation();
             var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
@@ -55,7 +54,7 @@ namespace DatenMeister.Modules.Reports.Evaluators
             
             // Creates the table
             var table = new HtmlTable();
-            var cssClass = reportNode.getOrDefault<string>(_Reports._ReportTable.cssClass);
+            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportTable.cssClass);
             if (!string.IsNullOrEmpty(cssClass) && cssClass != null)
             {
                 table.CssClass = cssClass;
@@ -165,6 +164,8 @@ namespace DatenMeister.Modules.Reports.Evaluators
             if (metaClass?.@equals(_FormAndFields.TheOne.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
+                var defaultText = listElement.getOrDefault<string>(property);
+                cellInformation.set("text", defaultText);
 
                 var evalProperties = field.getOrDefault<string>(_FormAndFields._EvalTextFieldData.evalCellProperties);
                 if (evalProperties != null)
@@ -179,7 +180,12 @@ namespace DatenMeister.Modules.Reports.Evaluators
                 }
 
                 var cssClassName = cellInformation.getOrDefault<string>("cssClass") ?? string.Empty;
-                return new HtmlTableCell(listElement.getOrDefault<string>(property), cssClassName);
+
+                var text= cellInformation.isSet("text") 
+                    ? cellInformation.getOrDefault<string>("text") 
+                    : defaultText;
+                
+                return new HtmlTableCell(text, cssClassName);
             }
 
             if (isPropertySet)
@@ -188,7 +194,6 @@ namespace DatenMeister.Modules.Reports.Evaluators
             }
 
             return new HtmlTableCell(new HtmlRawString("<i>Null</i>"));
-
         }
     }
 }

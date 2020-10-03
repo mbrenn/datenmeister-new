@@ -9,12 +9,12 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.View;
-using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
@@ -183,14 +183,17 @@ namespace DatenMeister.WPF.Navigation
                 var uri = detailElement.isSet("uri")
                     ? detailElement.getOrDefault<string>("uri")
                     : string.Empty;
-                
-                var configuration = new XmiStorageLoaderConfig(uri)
-                {
-                    filePath = detailElement.isSet("filepath")
+
+                var configuration =
+                    InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+                configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri,
+                    uri);
+                configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath,
+                    detailElement.isSet("filepath")
                         ? detailElement.getOrDefault<string>("filepath")
-                        : string.Empty,
-                    workspaceId = workspaceId
-                };
+                        : string.Empty);
+                configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
+                    workspaceId);
 
                 var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 try

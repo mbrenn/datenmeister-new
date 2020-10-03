@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -36,7 +37,7 @@ namespace DatenMeister.Modules.Forms
         /// Defines the logger
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(FormsPlugin));
-        
+
         /// <summary>
         /// Stores the type of the extent containing the views
         /// </summary>
@@ -63,7 +64,7 @@ namespace DatenMeister.Modules.Forms
         /// <param name="workspaceLogic">The workspace being used</param>
         /// <param name="extentCreator">The support class to create extents</param>
         /// <param name="scopeStorage">The settings that had been used for integration</param>
-        public FormsPlugin(IWorkspaceLogic workspaceLogic, 
+        public FormsPlugin(IWorkspaceLogic workspaceLogic,
             ExtentCreator extentCreator,
             IScopeStorage scopeStorage)
         {
@@ -108,7 +109,8 @@ namespace DatenMeister.Modules.Forms
                         throw new InvalidOperationException("Extent for users is not found");
 
                     extent.GetConfiguration()
-                        .AddDefaultTypePackages(new[] {_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__FormAssociation});
+                        .AddDefaultTypePackages(new[]
+                            {_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__FormAssociation});
 
                     // Includes the default view modes
                     var packageMethods = new PackageMethods(_workspaceLogic);
@@ -121,7 +123,7 @@ namespace DatenMeister.Modules.Forms
                     created.set(_FormAndFields._ViewMode.id, "Default");
                     created.set(_FormAndFields._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
-                    
+
                     break;
             }
         }
@@ -228,14 +230,17 @@ namespace DatenMeister.Modules.Forms
         /// <returns>Enumeration of forms</returns>
         public IReflectiveCollection GetAllForms()
         {
-            var internalViewExtent = GetInternalFormExtent();
-            var userViewExtent = GetUserFormExtent();
-
-            return internalViewExtent.elements()
-                .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__DetailForm, _FormAndFields.TheOne.__ListForm);
+            return
+                new TemporaryReflectiveCollection(
+                    GetAllFormExtents()
+                        .SelectMany(x => x.elements()
+                            .GetAllDescendants(new[]
+                                {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                            .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__DetailForm,
+                                _FormAndFields.TheOne.__ListForm)),
+                    true);
         }
+
 
         /// <summary>
         /// Adds a new form association between the form and the metaclass
@@ -260,18 +265,47 @@ namespace DatenMeister.Modules.Forms
         }
 
         /// <summary>
+        /// Gets an enumeration of all form extents. The form extents have
+        /// to be in the Management Workspace and be of type "DatenMeister.Forms"
+        /// </summary>
+        /// <returns>Enumeration of form extents</returns>
+        public IEnumerable<IExtent> GetAllFormExtents()
+        {
+            var result = _workspaceLogic.GetManagementWorkspace().extent
+                .Where(x => x.GetConfiguration().ContainsExtentType(FormsPlugin.FormExtentType))
+                .OfType<IUriExtent>()
+                .ToList();
+
+            // Even if internal extent or user form extent does not have the the flag
+            var internalFormExtent = GetInternalFormExtent();
+            if (result.All(x => x.contextURI() != internalFormExtent.contextURI()))
+            {
+                result.Add(internalFormExtent);    
+            }
+            
+            var userFormExtent = GetInternalFormExtent();
+            if (result.All(x => x.contextURI() != userFormExtent.contextURI()))
+            {
+                result.Add(userFormExtent);    
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets all view associations and returns them as an enumeration
         /// </summary>
         /// <returns>Enumeration of associations</returns>
         public IReflectiveCollection GetAllFormAssociations()
         {
-            var internalViewExtent = GetInternalFormExtent();
-            var userViewExtent = GetUserFormExtent();
-
-            return internalViewExtent.elements()
-                .Union(userViewExtent.elements())
-                .GetAllDescendants(new[] {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__FormAssociation);
+            return new TemporaryReflectiveCollection(
+                GetAllFormExtents()
+                    .SelectMany(x =>
+                        x.elements()
+                            .GetAllDescendants(new[]
+                                {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
+                            .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__FormAssociation)),
+                true);
         }
         
         /// <summary>
@@ -498,17 +532,17 @@ namespace DatenMeister.Modules.Forms
 
             return foundForm;
         }
-
+        
         /// <summary>
         /// Gets the list form for an elements property to be shown in sub item view or other views
         /// </summary>
-        /// <param name="element">Element whose property is enumerated</param>
+        /// <param name="parentElement">Element whose property is enumerated</param>
         /// <param name="parentProperty">Name of the property to be enumeration</param>
         /// <param name="propertyType">Type of the property</param>
         /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns>The list form for the list</returns>
         public IElement? GetListFormForElementsProperty(
-            IObject element,
+            IObject? parentElement,
             string parentProperty,
             IElement? propertyType,
             FormDefinitionMode formDefinitionMode = FormDefinitionMode.Default)
@@ -521,8 +555,8 @@ namespace DatenMeister.Modules.Forms
                 foundForm = viewFinder.FindFormsFor(
                     new FindFormQuery
                     {
-                        extentType = (element as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
-                        parentMetaClass = (element as IElement)?.metaclass,
+                        extentType = (parentElement as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
+                        parentMetaClass = (parentElement as IElement)?.metaclass,
                         metaClass = propertyType,
                         FormType = FormType.ObjectList,
                         parentProperty = parentProperty
@@ -538,7 +572,7 @@ namespace DatenMeister.Modules.Forms
             {
                 var formCreator = CreateFormCreator();
                 foundForm = formCreator.CreateListFormForElements(
-                    element.get<IReflectiveCollection>(parentProperty),
+                    parentElement.get<IReflectiveCollection>(parentProperty),
                     CreationMode.All | CreationMode.OnlyCommonProperties);
             }
 
@@ -548,9 +582,9 @@ namespace DatenMeister.Modules.Forms
                     {
                         DefinitionMode = formDefinitionMode,
                         FormType = FormType.ObjectList,
-                        MetaClass = (element as IElement)?.metaclass,
+                        MetaClass = (parentElement as IElement)?.metaclass,
                         ParentPropertyName = parentProperty,
-                        DetailElement = element
+                        DetailElement = parentElement
                     },
                     ref foundForm);
             }

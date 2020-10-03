@@ -296,6 +296,12 @@ namespace DatenMeister.Models.Forms
             public static string @includeSpecializationsForDefaultTypes = "includeSpecializationsForDefaultTypes";
             public IElement? @_includeSpecializationsForDefaultTypes = null;
 
+            public static string @defaultWorkspaceOfNewElements = "defaultWorkspaceOfNewElements";
+            public IElement? @_defaultWorkspaceOfNewElements = null;
+
+            public static string @defaultExtentOfNewElements = "defaultExtentOfNewElements";
+            public IElement? @_defaultExtentOfNewElements = null;
+
             public static string @isAttached = "isAttached";
             public IElement? @_isAttached = null;
 
@@ -404,6 +410,9 @@ namespace DatenMeister.Models.Forms
 
             public static string @initialPathToDirectory = "initialPathToDirectory";
             public IElement? @_initialPathToDirectory = null;
+
+            public static string @filter = "filter";
+            public IElement? @_filter = null;
 
             public static string @isAttached = "isAttached";
             public IElement? @_isAttached = null;
@@ -632,6 +641,9 @@ namespace DatenMeister.Models.Forms
             public static string @inhibitDeleteItems = "inhibitDeleteItems";
             public IElement? @_inhibitDeleteItems = null;
 
+            public static string @inhibitEditItems = "inhibitEditItems";
+            public IElement? @_inhibitEditItems = null;
+
             public static string @defaultTypesForNewElements = "defaultTypesForNewElements";
             public IElement? @_defaultTypesForNewElements = null;
 
@@ -711,7 +723,7 @@ namespace DatenMeister.Models.Forms
         public _ViewMode @ViewMode = new _ViewMode();
         public IElement @__ViewMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode");
 
-        public static _FormAndFields TheOne = new _FormAndFields();
+        public static readonly _FormAndFields TheOne = new _FormAndFields();
 
     }
 

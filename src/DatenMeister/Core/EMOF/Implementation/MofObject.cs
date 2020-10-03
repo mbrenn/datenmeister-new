@@ -84,9 +84,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                 throw new ArgumentNullException("providedObject.Provider");
             }
 
-            ReferencedExtent = referencedExtent
-                               ?? ((referenceElement as MofObject)?.ReferencedExtent 
-                                   ?? throw new InvalidOperationException("Referenced extent could not be set"));
+            ReferencedExtent =
+                referencedExtent
+                ?? ((referenceElement as MofObject)?.ReferencedExtent
+                    ?? throw new InvalidOperationException("Referenced extent could not be set"));
         }
 
         /// <inheritdoc />

@@ -18,7 +18,6 @@ using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.DynamicFunctions;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
@@ -99,7 +98,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// STores the object for synchronization issues
         /// </summary>
-        private object _syncObject = new object();
+        private readonly object _syncObject = new object();
 
         /// <summary>
         /// Stores the information whether the evaluation about the item count is currently
@@ -618,7 +617,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>Enumeration of strings</returns>
         public IEnumerable<string> getPropertiesBeingSet()
         {
-            
             if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??

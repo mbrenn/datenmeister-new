@@ -25,6 +25,12 @@ namespace DatenMeister.Core.EMOF.Implementation
             Values = values;
         }
 
+        public TemporaryReflectiveCollection(IEnumerable<object?> values, bool isReadOnly)
+        {
+            Values = values;
+            IsReadOnly = isReadOnly;
+        }
+
         /// <inheritdoc />
         public IEnumerator<object?> GetEnumerator()
             => Values.GetEnumerator();

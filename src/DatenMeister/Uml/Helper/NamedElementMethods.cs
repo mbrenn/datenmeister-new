@@ -33,6 +33,8 @@ namespace DatenMeister.Uml.Helper
             {
                 case null:
                     throw new ArgumentNullException(nameof(value));
+                case MofObjectShadow shadow:
+                    return shadow.Uri;
                 case IElement valueAsElement:
                     var current = valueAsElement.container();
                     var result = GetName(value);

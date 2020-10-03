@@ -23,23 +23,18 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         
         public bool IsResponsible(IElement node)
         {
-            if (node.getMetaClass()?.@equals(
-                _Actions.TheOne.__LoggingWriterAction) == true)
-            {
-                return true;
-            }
-
-            return false;
+            return node.getMetaClass()?.@equals(
+                _DatenMeister.TheOne.Actions.__LoggingWriterAction) == true;
         }
 
         /// <summary>
         /// Evaluates the plugin 
         /// </summary>
-        /// <param name="actionsPlugin">Action plugin to be added</param>
+        /// <param name="actionLogic">Action plugin to be added</param>
         /// <param name="action">Action to be executed</param>
-        public void Evaluate(ActionLogic actionsPlugin, IElement action)
+        public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var message = action.getOrDefault<string>(_Actions._LoggingWriterAction.message);
+            var message = action.getOrDefault<string>(_DatenMeister._Actions._LoggingWriterAction.message);
             if (message != null)
             {
                 LastMessage = message;

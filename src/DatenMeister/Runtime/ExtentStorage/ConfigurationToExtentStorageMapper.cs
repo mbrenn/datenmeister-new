@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Autofac;
 using BurnSystems.Logging;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
+using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Provider.Xml;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -22,17 +27,32 @@ namespace DatenMeister.Runtime.ExtentStorage
             /// <summary>
             /// The function to create the provider loader
             /// </summary>
-            public Func<ILifetimeScope?, IProviderLoader?> Function { get; set; }
+            public Func<ExtentManager, IProviderLoader> Function { get; set; }
 
             /// <summary>
             /// The connected type
             /// </summary>
-            public Type ConnectedType { get; set; }
+            public IElement ConnectedMetaClass { get; set; }
 
-            public ConfigurationInfo(Func<ILifetimeScope?, IProviderLoader?> function, Type connectedType)
+            /// <summary>
+            /// Initializes a new instance of the ConfigurationInfo class
+            /// </summary>
+            /// <param name="function">Function to be hadnled</param>
+            /// <param name="connectedMetaClass">Connected meta class</param>
+            public ConfigurationInfo(Func<ExtentManager, IProviderLoader> function, IElement connectedMetaClass)
             {
                 Function = function;
-                ConnectedType = connectedType;
+                ConnectedMetaClass = connectedMetaClass;
+            }
+
+            public override string ToString()
+            {
+                if (ConnectedMetaClass == null)
+                {
+                    return base.ToString();
+                }
+
+                return NamedElementMethods.GetFullName(ConnectedMetaClass);
             }
         }
 
@@ -41,93 +61,68 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// Stores the types being used for the mapping
         /// </summary>
-        private readonly Dictionary<string, ConfigurationInfo> _mapping = new Dictionary<string, ConfigurationInfo>();
+        private readonly List<ConfigurationInfo> _mapping = new List<ConfigurationInfo>();
 
-        /// <summary>
-        /// Checks, if a mapping for the given configuration type exists which configures a specific extet loader
-        /// </summary>
-        /// <param name="typeConfiguration">Type of the configuration object, inheriting the <c>ExtentLoaderConfig</c></param>
-        /// <returns>true, if mapping exists</returns>
-        public bool HasMappingFor(Type typeConfiguration)
+        public void AddMapping(IElement typeConfigurationClass, Func<ExtentManager, IProviderLoader> factoryExtentStorage)
         {
             lock (_mapping)
             {
-                return _mapping.ContainsKey(typeConfiguration.FullName ??
-                                            throw new ArgumentNullException(nameof(typeConfiguration) + ".FullName"));
+                _mapping.Add(
+                    new ConfigurationInfo(factoryExtentStorage, typeConfigurationClass));
             }
         }
 
-        /// <summary>
-        /// Adds the mapping by defining the type of the configuration object and the corresponding ExtentStorageLoader
-        /// </summary>
-        /// <param name="typeConfiguration">Type of the configuration</param>
-        /// <param name="typeExtentStorage">Type of the Extent</param>
-        public void AddMapping(Type typeConfiguration, Type typeExtentStorage)
+        public IProviderLoader CreateFor(ExtentManager extentManager, IElement configuration)
         {
             lock (_mapping)
             {
-                var fullName = typeConfiguration.FullName;
-                if (fullName == null) return;
-                _mapping[fullName] =
-                    new ConfigurationInfo(scope =>
-                        {
-                            if (scope == null) throw new ArgumentException(nameof(scope));
-                            return scope.Resolve(typeExtentStorage) as IProviderLoader;
-                        },
-                        typeConfiguration);
-            }
-        }
+                var metaClass = configuration.getMetaClass()
+                                ?? throw new InvalidOperationException("MetaClass of configuration is not set");
 
-        public void AddMapping(Type typeConfiguration, Func<ILifetimeScope?, IProviderLoader?> factoryExtentStorage)
-        {
-            lock (_mapping)
-            {
-                var fullName = typeConfiguration.FullName;
-                if (fullName == null) return;
-                _mapping[fullName] =
-                    new ConfigurationInfo(factoryExtentStorage, typeConfiguration);
-            }
-        }
-
-        public IProviderLoader CreateFor(ILifetimeScope? scope, ExtentLoaderConfig configuration)
-        {
-            lock (_mapping)
-            {
-                if (!_mapping.TryGetValue(configuration.GetType().FullName, out var foundType))
+                var found = _mapping.FirstOrDefault(x => x.ConnectedMetaClass.@equals(metaClass));
+                
+                if (found == null)
                 {
                     Logger.Error(
-                        $"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
+                        $"ExtentStorage for the given type was not found:  {NamedElementMethods.GetFullName(metaClass)}");
                     throw new InvalidOperationException(
-                        $"ExtentStorage for the given type was not found:  {configuration.GetType().FullName}");
+                        $"ExtentStorage for the given type was not found:  {NamedElementMethods.GetFullName(metaClass)}");
                 }
 
-                var result = foundType.Function(scope);
-                if (result == null)
-                {
-                    throw new InvalidOperationException("Converter return a null provider");
-                }
-
+                var result = found.Function(extentManager);
+                result.WorkspaceLogic = extentManager.WorkspaceLogic;
+                result.ScopeStorage = extentManager.ScopeStorage;
                 return result;
             }
         }
 
-        public bool ContainsConfigurationFor(Type typeConfiguration)
+        public bool ContainsConfigurationFor(IElement typeConfiguration)
         {
             lock (_mapping)
             {
-                return _mapping.ContainsKey(typeConfiguration.FullName);
+                return _mapping.Any(x=>x.ConnectedMetaClass.@equals(typeConfiguration));
             }
         }
 
-        public IEnumerable<Type> ConfigurationTypes
+        public IEnumerable<IElement> ConfigurationMetaClasses
         {
             get
             {
                 lock (_mapping)
                 {
-                    return _mapping.Values.Select(x => x.ConnectedType);
+                    return _mapping.Select(x=>x.ConnectedMetaClass).ToList();
                 }
             }
+        }
+
+        public static ConfigurationToExtentStorageMapper GetDefaultMapper()
+        {
+            var result = new ConfigurationToExtentStorageMapper();
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig, manager => new InMemoryProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig, manager => new CsvProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig, manager => new XmiProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig, manager => new XmlReferenceLoader());
+            return result;
         }
     }
 }

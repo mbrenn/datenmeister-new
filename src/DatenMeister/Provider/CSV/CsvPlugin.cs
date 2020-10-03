@@ -1,4 +1,6 @@
-﻿using DatenMeister.Provider.CSV.Runtime;
+﻿using DatenMeister.Integration;
+using DatenMeister.Models;
+using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 
@@ -9,19 +11,26 @@ namespace DatenMeister.Provider.CSV
     /// </summary>
     // ReSharper disable once UnusedMember.Global
     // ReSharper disable once InconsistentNaming
-    [PluginLoading(PluginLoadingPosition.BeforeBootstrapping)]
+    [PluginLoading(PluginLoadingPosition.AfterBootstrapping)]
     public class CsvPlugin : IDatenMeisterPlugin
     {
         private readonly ConfigurationToExtentStorageMapper _configurationToExtentStorageMapper;
 
-        public CsvPlugin(ConfigurationToExtentStorageMapper configurationToExtentStorageMapper)
+        public CsvPlugin(IScopeStorage scopeStorage)
         {
-            _configurationToExtentStorageMapper = configurationToExtentStorageMapper;
+            _configurationToExtentStorageMapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
         }
 
         public void Start(PluginLoadingPosition position)
         {
-            _configurationToExtentStorageMapper.MapExtentLoaderType(typeof(CsvProviderLoader));
+            switch (position)
+            {
+                case PluginLoadingPosition.AfterBootstrapping:
+                    _configurationToExtentStorageMapper.AddMapping(
+                        _DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig,
+                        manager => new CsvProviderLoader());
+                    break;
+            }
         }
     }
 }

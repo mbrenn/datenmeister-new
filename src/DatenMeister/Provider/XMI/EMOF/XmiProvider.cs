@@ -296,5 +296,12 @@ namespace DatenMeister.Provider.XMI.EMOF
         public ProviderSupportFunctions ProviderSupportFunctions => _supportFunctions
                                                                     ?? throw new NotSupportedException(
                                                                         "Should not happen");
+
+        public static XElement GetMetaNodeFromFile(string filePath)
+        {
+            var document = XDocument.Load(filePath);
+            var provider = new XmiProvider(document);
+            return provider.GetMetaNode();
+        }
     }
 }

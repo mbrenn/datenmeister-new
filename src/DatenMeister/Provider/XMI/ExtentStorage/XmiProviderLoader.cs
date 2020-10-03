@@ -2,63 +2,63 @@
 using System.IO;
 using System.Xml.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Locking;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {
-    [ConfiguredBy(typeof(XmiStorageLoaderConfig))]
     public class XmiProviderLoader : IProviderLoader, IProviderLocking
     {
-        private readonly LockingLogic _lockingLogic;
-
         private static readonly ClassLogger Logger = new ClassLogger(typeof(XmiProviderLoader));
 
-        public XmiProviderLoader(IScopeStorage scopeStorage, LockingLogic lockingLogic)
-        {
-            _lockingLogic = lockingLogic;
-            scopeStorage.Get<ExtentStorageData>();
-        }
-        
-        private XmiProviderLoader(LockingLogic lockingLogic)
-        {
-            _lockingLogic = lockingLogic;
-        }
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
 
-        public XmiProviderLoader Create(LockingLogic lockingLogic) =>
-            new XmiProviderLoader(lockingLogic);
-        
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
+        public IScopeStorage? ScopeStorage { get; set; }
+
+        /// <summary>
+        /// XmiStorageLoaderConfig
+        /// </summary>
+        /// <param name="configuration">XmiStorageLoaderConfig</param>
+        /// <param name="extentCreationFlags"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public LoadedProviderInfo LoadProvider(
+            IElement configuration,
+            ExtentCreationFlags extentCreationFlags)
         {
-            var xmiConfiguration = (XmiStorageLoaderConfig) configuration;
+            var filePath =
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
 
             XDocument xmlDocument;
-            if (!File.Exists(xmiConfiguration.filePath) || extentCreationFlags == ExtentCreationFlags.CreateOnly)
+            if (!File.Exists(filePath) || extentCreationFlags == ExtentCreationFlags.CreateOnly)
             {
                 if (extentCreationFlags != ExtentCreationFlags.LoadOnly)
                 {
-                    xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
+                    xmlDocument = CreateEmptyXmiDocument(configuration);
                 }
                 else
                 {
                     throw new InvalidOperationException(
-                        $"File not found: {xmiConfiguration.filePath}");
+                        $"File not found: {filePath}");
                 }
             }
             else
             {
                 try
                 {
-                    xmlDocument = XDocument.Load(xmiConfiguration.filePath);
+                    xmlDocument = XDocument.Load(filePath);
                 }
                 catch (Exception exc)
                 {
                     Logger.Warn(exc.ToString());
-                    xmlDocument = CreateEmptyXmiDocument(xmiConfiguration);
+                    xmlDocument = CreateEmptyXmiDocument(configuration);
                 }
             }
 
@@ -68,25 +68,35 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
         /// <summary>
         /// Creates an empty Xmi document as given by the configuration
         /// </summary>
-        /// <param name="xmiLoaderConfig">Xmi Configuration being used</param>
+        /// <param name="configuration">Xmi Configuration being used. XmiStorageLoaderConfig</param>
         /// <returns>Found XDocument</returns>
-        private static XDocument CreateEmptyXmiDocument(XmiStorageLoaderConfig xmiLoaderConfig)
+        private static XDocument CreateEmptyXmiDocument(IElement configuration)
         {
-            CreateDirectoryIfNecessary(xmiLoaderConfig);
+            var filePath = 
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+            
+            CreateDirectoryIfNecessary(configuration);
 
             // We need to create an empty Xmi file... Not the best thing at the moment, but we try it.
             var xmlDocument = new XDocument(
                 new XElement(XmiProvider.DefaultRootNodeName));
 
             // Try to create file, to verify that file access and other activities are given
-            xmlDocument.Save(xmiLoaderConfig.filePath);
+            xmlDocument.Save(filePath);
             return xmlDocument;
         }
 
-        private static void CreateDirectoryIfNecessary(XmiStorageLoaderConfig xmiLoaderConfig)
+        
+        /// <summary>
+        /// XmiStorageLoaderConfig
+        /// </summary>
+        /// <param name="configuration">configuration as XmiStorage </param>
+        private static void CreateDirectoryIfNecessary(IElement configuration)
         {
+            var filePath = 
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
             // Creates directory if necessary
-            var directoryPath = Path.GetDirectoryName(xmiLoaderConfig.filePath)
+            var directoryPath = Path.GetDirectoryName(filePath)
                                 ?? throw new InvalidOperationException("directoryPath is null");
 
             if (!Directory.Exists(directoryPath))
@@ -95,26 +105,22 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
             }
         }
 
-        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, IElement configuration)
         {
-            if (configuration is XmiStorageLoaderConfig xmiConfiguration)
-            {
-                if (!(extent is XmiProvider xmlExtent))
-                    throw new InvalidOperationException("Only XmlUriExtents are supported");
+            var filePath =
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
 
-                // Deletes existing file
-                if (File.Exists(xmiConfiguration.filePath))
-                    File.Delete(xmiConfiguration.filePath);
+            if (!(extent is XmiProvider xmlExtent))
+                throw new InvalidOperationException("Only XmlUriExtents are supported");
 
-                // Loads existing file
-                using (var fileStream = File.OpenWrite(xmiConfiguration.filePath))
-                {
-                    xmlExtent.Document.Save(fileStream);
-                }
-            }
-            else
+            // Deletes existing file
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            // Loads existing file
+            using (var fileStream = File.OpenWrite(filePath))
             {
-                throw new ArgumentException("Configuration is of an unknown type");
+                xmlExtent.Document.Save(fileStream);
             }
         }
 
@@ -123,48 +129,45 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
         /// </summary>
         /// <param name="config">Configuration storing the locking path</param>
         /// <returns></returns>
-        public string GetLockFilePath(XmiStorageLoaderConfig config)
+        public string GetLockFilePath(IElement config)
         {
-            if (string.IsNullOrEmpty(config.filePath))
+            var filePath =
+                config.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath);
+            if (string.IsNullOrEmpty(filePath))
             {
                 throw new InvalidOperationException(
                     "The locking path could not be retrieved because the configuration is empty. ");
             }
-            
-            return config.filePath + ".lock";
+
+            return filePath + ".lock";
         }
 
-        public bool IsLocked(ExtentLoaderConfig configuration)
+        public bool IsLocked(IElement configuration)
         {
-            if (!(configuration is XmiStorageLoaderConfig xmiConfiguration))
-            {
-                return false;
-            }
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
 
-            var path = GetLockFilePath(xmiConfiguration);
-            return _lockingLogic.IsLocked(path);
+            var path = GetLockFilePath(configuration);
+            return lockingLogic.IsLocked(path);
         }
 
-        public void Lock(ExtentLoaderConfig configuration)
+        public void Lock(IElement configuration)
         {
-            if (!(configuration is XmiStorageLoaderConfig xmiConfiguration))
-            {
-                return;
-            }
-            
-            var path = GetLockFilePath(xmiConfiguration);
-            _lockingLogic.Lock(path);
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+           
+
+            var path = GetLockFilePath(configuration);
+            lockingLogic.Lock(path);
         }
 
-        public void Unlock(ExtentLoaderConfig configuration)
+        public void Unlock(IElement configuration)
         {
-            if (!(configuration is XmiStorageLoaderConfig xmiConfiguration))
-            {
-                return;
-            }
-            
-            var path = GetLockFilePath(xmiConfiguration);
-            _lockingLogic.Unlock(path);
+            var lockingLogic =
+                new LockingLogic(ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));
+
+            var path = GetLockFilePath(configuration);
+            lockingLogic.Unlock(path);
         }
     }
 }

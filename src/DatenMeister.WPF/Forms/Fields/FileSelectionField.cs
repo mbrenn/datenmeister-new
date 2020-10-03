@@ -8,7 +8,7 @@ using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
-    public class FileSelectionField : IDetailField
+    public class FileSelectionField : IDetailField, IPropertyValueChangeable
     {
         private string _name = string.Empty;
         private TextBox? _textField;
@@ -81,6 +81,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.defaultExtension);
                 var initialDirectory =
                     fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.initialPathToDirectory);
+                var filter =
+                    fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.filter);
 
                 if (isSaving)
                 {
@@ -89,10 +91,11 @@ namespace DatenMeister.WPF.Forms.Fields
                         DefaultExt = defaultExtension,
                         InitialDirectory = _valueText ?? initialDirectory ?? string.Empty,
                         OverwritePrompt = true,
-                        RestoreDirectory = true
+                        RestoreDirectory = true,
+                        Filter = filter
                     };
 
-                    if (!string.IsNullOrEmpty(defaultExtension))
+                    if (!string.IsNullOrEmpty(defaultExtension) && string.IsNullOrEmpty(filter))
                     {
                         dlg.Filter = $"({defaultExtension})|{defaultExtension}|All Files (*.*)|*.*";
                     }
@@ -108,10 +111,11 @@ namespace DatenMeister.WPF.Forms.Fields
                     {
                         DefaultExt = defaultExtension,
                         InitialDirectory = _valueText ?? string.Empty,
-                        RestoreDirectory = true
+                        RestoreDirectory = true,
+                        Filter = filter
                     };
 
-                    if (!string.IsNullOrEmpty(defaultExtension))
+                    if (!string.IsNullOrEmpty(defaultExtension) && string.IsNullOrEmpty(filter))
                     {
                         dlg.Filter = $"({defaultExtension})|{defaultExtension}|All Files (*.*)|*.*";
                     }
@@ -121,6 +125,16 @@ namespace DatenMeister.WPF.Forms.Fields
                         _textField.Text = dlg.FileName;
                     }
                 }
+            };
+
+            _textField.TextChanged += (x, y) =>
+            {
+                var ev = PropertyValueChanged;
+                ev?.Invoke(this,
+                    new PropertyValueChangedEventArgs(detailForm, _name)
+                    {
+                        NewValue = _textField.Text
+                    });
             };
             
             fieldFlags.CanBeFocused = true;
@@ -135,5 +149,10 @@ namespace DatenMeister.WPF.Forms.Fields
                 element.set(_name, _textField.Text);
             }
         }
+
+        /// <summary>
+        /// Defines the event that will be called when the property value is changed
+        /// </summary>
+        public event EventHandler<PropertyValueChangedEventArgs>? PropertyValueChanged;
     }
 }

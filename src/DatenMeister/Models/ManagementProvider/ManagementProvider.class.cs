@@ -163,7 +163,7 @@ namespace DatenMeister.Models.ManagementProviders
         public _ExtentSettings @ExtentSettings = new _ExtentSettings();
         public IElement @__ExtentSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentSettings");
 
-        public static _ManagementProvider TheOne = new _ManagementProvider();
+        public static readonly _ManagementProvider TheOne = new _ManagementProvider();
 
     }
 

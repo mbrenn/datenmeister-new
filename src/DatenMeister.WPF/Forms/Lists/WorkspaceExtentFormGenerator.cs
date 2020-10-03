@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,7 +8,6 @@ using System.Windows.Documents;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -20,10 +20,10 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.View;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
@@ -151,25 +151,27 @@ namespace DatenMeister.WPF.Forms.Lists
         /// <param name="workspaceId">The Id of the workspace</param>
         /// <param name="navigationHost">Defines the navigation host being used for the window</param>
         /// <returns>The created form</returns>
-        internal static FormDefinition RequestFormForExtents(IExtent extent, string workspaceId, INavigationHost navigationHost)
+        internal static FormDefinition RequestFormForExtents(
+            IExtent extent, 
+            string workspaceId,
+            INavigationHost navigationHost)
         {
             var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewExtent = viewLogic.GetInternalFormExtent();
-            var result =
-                NamedElementMethods.GetByFullName(
-                    viewExtent,
-                    ManagementViewDefinitions.PathExtentListView);
-
+            var result = 
+                viewExtent.GetUriResolver().ResolveById("Workspaces.ListOfExtents");
+            
             if (result == null)
             {
                 // result = viewLogic.GetExtentForm(control.Items, ViewDefinitionMode.Default);
-                var listForm = viewLogic.GetListFormForExtent(
-                                   extent,
-                                   GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
-                                       _ManagementProvider.TheOne.__Extent)
-                                   ?? throw new InvalidOperationException("Did not found extent"),
-                                   FormDefinitionMode.Default) ??
-                               throw new InvalidOperationException("listForm == null");
+                var listForm =
+                    viewLogic.GetListFormForExtent(
+                        extent,
+                        GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
+                            _ManagementProvider.TheOne.__Extent)
+                        ?? throw new InvalidOperationException("Did not found extent"),
+                        FormDefinitionMode.Default) ??
+                    throw new InvalidOperationException("listForm == null");
                 listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
                 listForm.set(_FormAndFields._ListForm.inhibitNewItems, true);
                 listForm.set(_FormAndFields._ListForm.property, nameof(_ManagementProvider._Workspace.extents));
@@ -211,7 +213,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Load Extent",
-                    ImportFromXmi,
+                    async (x) => await LoadExtentFromXmi(workspaceId, navigationHost, viewExtent),
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));
 
@@ -270,37 +272,6 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var zipCodeExampleManager = GiveMe.Scope.Resolve<ZipCodeExampleManager>();
                 zipCodeExampleManager.AddZipCodeExample(workspaceId);
-            }
-
-            async void ImportFromXmi(IObject item)
-            {
-                try
-                {
-                    var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
-                    var foundType = localTypeSupport.InternalTypes.element("#DatenMeister.Models.ExtentManager.ImportSettings")
-                                    ?? throw new InvalidOperationException(
-                                        "DatenMeister.Models.ExtentManager.ImportSettings is not found");
-
-                    var userResult = InMemoryObject.CreateEmpty(foundType);
-                    var foundForm = viewExtent.element("#OpenExtentAsFile")
-                                    ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
-                    var navigationResult = await Navigator.CreateDetailWindow(navigationHost, new NavigateToItemConfig
-                    {
-                        DetailElement = userResult,
-                        Form = new FormDefinition(foundForm)
-                    });
-
-                    if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
-                    {
-                        // Load from extent import class
-                        var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
-                        extentImport.ImportExtent(navigationResult.DetailElement);
-                    }
-                }
-                catch (Exception exc)
-                {
-                    MessageBox.Show(exc.ToString());
-                }
             }
 
             return viewDefinition;
@@ -364,7 +335,71 @@ namespace DatenMeister.WPF.Forms.Lists
             }
         }
 
-        public static async Task<ExtentLoaderConfig?> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
+        private static async Task LoadExtentFromXmi(string workspaceId, INavigationHost navigationHost,
+            IUriExtent viewExtent)
+        {
+            try
+            {
+                var localTypeSupport = GiveMe.Scope.Resolve<LocalTypeSupport>();
+                var foundType =
+                    localTypeSupport.InternalTypes.element("#DatenMeister.Models.ExtentManager.ImportSettings")
+                    ?? throw new InvalidOperationException(
+                        "DatenMeister.Models.ExtentManager.ImportSettings is not found");
+
+                var userResult = InMemoryObject.CreateEmpty(foundType);
+                userResult.set("workspace", workspaceId);
+                var foundForm = viewExtent.element("#OpenExtentAsFile")
+                                ?? throw new InvalidOperationException("#OpenExtentAsFile not found");
+                var navigationResult =
+                    await Navigator.CreateDetailWindow(navigationHost,
+                        new NavigateToItemConfig
+                        {
+                            DetailElement = userResult,
+                            Form = new FormDefinition(foundForm),
+                            PropertyValueChanged = OnPropertyValueChanged
+                        });
+
+                if (navigationResult?.Result == NavigationResult.Saved && navigationResult.DetailElement != null)
+                {
+                    // Load from extent import class
+                    var extentImport = GiveMe.Scope.Resolve<ExtentImport>();
+                    extentImport.ImportExtent(navigationResult.DetailElement);
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.ToString());
+            }
+
+            // Defines the method to be called when the property value of 
+            // the item within the detail form has been changed
+            static void OnPropertyValueChanged(PropertyValueChangedEventArgs prop)
+            {
+                if (prop.PropertyName != "filePath") return;
+                
+                var filePath = prop.NewValue?.ToString();
+                try
+                {
+                    if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                    {
+                        return;
+                    }
+
+                    var metaNode = XmiProvider.GetMetaNodeFromFile(filePath);
+                    var uri = metaNode.Attribute("__uri")?.Value;
+                    if (!string.IsNullOrEmpty(uri))
+                    {
+                        prop.FormControl.InjectPropertyValue("extentUri", uri);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Warn("Error after selecting an extent: " + e.Message);
+                }
+            }
+        }
+
+        public static async Task<IElement?> QueryExtentConfigurationByUserAsync(INavigationHost navigationHost)
         {
             // Let user select the type of the extent
             var dlg = new LocateItemDialog
@@ -410,9 +445,7 @@ namespace DatenMeister.WPF.Forms.Lists
             if (detailControl != null && detailControl.Result == NavigationResult.Saved)
             {
                 // Convert back to instance
-                var extentLoaderConfig =
-                    DotNetConverter.ConvertToDotNetObject(createdElement) as ExtentLoaderConfig;
-                return extentLoaderConfig;
+                return createdElement;
             }
 
             return null;

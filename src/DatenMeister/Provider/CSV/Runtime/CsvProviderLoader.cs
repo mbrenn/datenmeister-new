@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Configuration;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
 
@@ -11,53 +14,68 @@ namespace DatenMeister.Provider.CSV.Runtime
     /// <summary>
     /// The engine being used to load and store the extent into a csv file
     /// </summary>
-    [ConfiguredBy(typeof(CsvExtentLoaderConfig))]
     // ReSharper disable once InconsistentNaming
     public class CsvProviderLoader : IProviderLoader
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
+        public IWorkspaceLogic? WorkspaceLogic { get; set; }
+        public IScopeStorage? ScopeStorage { get; set; }
 
-        public CsvProviderLoader(IWorkspaceLogic workspaceLogic)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration">CsvExtentLoaderConfig</param>
+        /// <param name="extentCreationFlags"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
-            _workspaceLogic = workspaceLogic;
-        }
-
-        public LoadedProviderInfo LoadProvider(ExtentLoaderConfig configuration, ExtentCreationFlags extentCreationFlags)
-        {
-            var csvConfiguration = (CsvExtentLoaderConfig) configuration;
-            var dataProvider = new CsvLoader(_workspaceLogic);
+            var dataProvider =
+                new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
 
             var provider = new InMemoryProvider();
 
-            var filePath = csvConfiguration.filePath;
+            var filePath =
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath);
             if (filePath == null || string.IsNullOrEmpty(filePath))
             {
-                throw new InvalidOperationException("FilePath is empty");    
+                throw new InvalidOperationException("FilePath is empty");
             }
-            
+
             var doesFileExist = File.Exists(filePath);
             if (doesFileExist)
             {
-                dataProvider.Load(provider, filePath, csvConfiguration.Settings);
+                var settings =
+                    configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig
+                        .settings) ?? throw new InvalidOperationException("Settings are not set");
+                
+                dataProvider.Load(
+                    provider,
+                    filePath,
+                    settings);
             }
             else if (extentCreationFlags == ExtentCreationFlags.LoadOnly)
             {
                 throw new InvalidOperationException(
-                    $"File '{csvConfiguration.filePath}' does not exist and creation of extents is not granted via extentCreationFlags. Real Path: {Path.Combine(Environment.CurrentDirectory, csvConfiguration.filePath)}");
+                    $"File '{filePath}' does not exist and creation of extents is not granted via extentCreationFlags. Real Path: " +
+                    $"{Path.Combine(Environment.CurrentDirectory, configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath))}");
             }
 
             return new LoadedProviderInfo(provider);
         }
 
-        public void StoreProvider(IProvider extent, ExtentLoaderConfig configuration)
+        public void StoreProvider(IProvider extent, IElement configuration)
         {
-            var csvConfiguration = (CsvExtentLoaderConfig) configuration;
+            var filePath = configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.filePath);
 
-            if (csvConfiguration.filePath == null)
+            if (filePath == null)
                 throw new InvalidOperationException("csvConfiguration.filePath == null");
             
-            var provider = new CsvLoader(_workspaceLogic);
-            provider.Save(extent, csvConfiguration.filePath, csvConfiguration.Settings);
+            var provider = new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
+
+            var settings = configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs
+                ._CsvExtentLoaderConfig.settings);
+            
+            provider.Save(extent, filePath, settings);
         }
     }
 }

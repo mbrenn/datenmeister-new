@@ -17,7 +17,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Validators;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -69,6 +68,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// Gets the form parameter for the detail form
         /// </summary>
         public FormParameter? FormParameter { get; private set; }
+
+        /// <summary>
+        /// Defines the event that will be called whenever the property value has changed
+        /// </summary>
+        public event EventHandler<PropertyValueChangedEventArgs>? PropertyValueChanged;
 
         public DetailFormControl()
         {
@@ -452,6 +456,15 @@ namespace DatenMeister.WPF.Forms.Base
                         this,
                         flags);
 
+                if (detailElement is IPropertyValueChangeable propertyValueChangeable)
+                {
+                    propertyValueChangeable.PropertyValueChanged += (x, y) =>
+                    {
+                        var ev = PropertyValueChanged;
+                        ev?.Invoke(x, y);
+                    };
+                }
+                
                 if (contentBlock != null)
                 {
                     if (!flags.IsSpanned)
@@ -653,7 +666,7 @@ namespace DatenMeister.WPF.Forms.Base
         public void AddDefaultButtons(string? saveText = null)
         {
             if (DetailElement == null)
-                throw new NotImplementedException("DetailElement == null");
+                throw new InvalidOperationException("DetailElement == null");
             if (EffectiveForm == null)
                 throw new InvalidOperationException("EffectiveForm == null");
             
@@ -666,7 +679,7 @@ namespace DatenMeister.WPF.Forms.Base
                 AddGenericButton("New Property", () =>
                 {
                     if (EffectiveForm == null)
-                        throw new NotImplementedException("EffectiveForm == null");
+                        throw new InvalidOperationException("EffectiveForm == null");
                     
                     var fieldKey = new TextBox();
                     var fieldValue = new TextboxField();
@@ -919,5 +932,20 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         public IObject Item => DetailElement;
+
+        /// <summary>
+        /// Injects a new property value by parsing through all fields and
+        /// inject property Vaue 
+        /// </summary>
+        /// <param name="property">Property to be injected</param>
+        /// <param name="value">Value to be injected</param>
+        public void InjectPropertyValue(string property, object value)
+        {
+            foreach (var field in ItemFields.OfType<IInjectPropertyValue>())
+            {
+                field.InjectValue(property, value);
+            }
+
+        }
     }
 }

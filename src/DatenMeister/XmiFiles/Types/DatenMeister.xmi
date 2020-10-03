@@ -277,6 +277,57 @@
       </generalization>
     </packagedElement>
   </item>
+  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="ViewNodes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="27f753a7-a663-48cb-8c17-dbd01edf3f08" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9dd52986-06da-47dc-a68d-e17af43c5257" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="13c68864-ab59-4aae-bbc4-c42684b1056a" name="uri" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f6774c84-ac34-473a-98d2-d4cdceda0073" name="viewNode" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.ViewNode" name="ViewNode">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="240fcd1f-cca6-426a-b845-8b780a178d8b" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SourceExtentNode" name="SourceExtentNode">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="fa637685-7051-4c12-8fd1-dcfe7eec729b" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cf43d462-4efa-40ba-8d85-4cb5b33b860b" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a93e4d0b-d9cf-4b55-ac8f-a3d08713d0d1" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FlattenNode" name="FlattenNode">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="59886420-a68c-4a3d-937c-2c168b128127" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b3262eeb-1bd2-45cf-b30e-5a9a93a5ba7d" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterPropertyNode" name="FilterPropertyNode">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b08ec0ba-93c0-45ec-a75f-e2b76db2be85" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="248423b3-6df8-476e-8f0d-42fd2ede4df1" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7bf90409-330b-4c2c-8eaf-587b9a858820" name="property" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d761ff6b-d3c5-4089-ab72-0d6451250d09" name="value" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="d4911f0d-61d9-401e-9afb-bcc667a6dfa1" name="comparisonMode" type-ref="#DatenMeister.Models.DataViews.ComparisonMode" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.FilterTypeNode" name="FilterTypeNode">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="307ae9ff-38c4-48bb-bec7-40be26c5d81f" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="24eaa825-980c-434c-a853-7825f1a2d2b2" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7e4e02f7-36ae-48d6-8d91-fd48b0a435a1" name="type" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1df4e655-eb85-4fa2-bec6-adc7383adb2b" name="includeInherits" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.DataViews.ComparisonMode" name="ComparisonMode">
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-Equal" name="Equal" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-NotEqual" name="NotEqual" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-Contains" name="Contains" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-DoesNotContain" name="DoesNotContain" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-GreaterThan" name="GreaterThan" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-GreaterOrEqualThan" name="GreaterOrEqualThan" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-LighterThan" name="LighterThan" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.DataViews.ComparisonMode-LighterOrEqualThan" name="LighterOrEqualThan" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.SelectByFullNameNode" name="SelectByFullNameNode">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="316f207a-81a5-446c-8518-94c5ded9b8c7" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="fcf82b7e-3c93-4b19-88b3-76d48812268b" name="input" type-ref="#DatenMeister.Models.DataViews.ViewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0d85a5b6-d71f-4711-bab9-25a9fce5e444" name="path" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DynamicSourceNode" name="DynamicSourceNode">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="7a7379b1-0d1f-4993-b7f5-03a8af47ffe8" general-ref="#DatenMeister.Models.DataViews.ViewNode" />
+    </packagedElement>
+  </item>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed96b77c-79f3-4762-a583-3326a094e512" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />

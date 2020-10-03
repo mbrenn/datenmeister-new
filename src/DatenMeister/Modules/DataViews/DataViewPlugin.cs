@@ -61,6 +61,8 @@ namespace DatenMeister.Modules.DataViews
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var factories = GetDefaultViewNodeFactories();
                     _scopeStorage.Add(factories);
+                    _localTypeSupport.AddInternalTypes(
+                        GetTypes(), "ViewNodes");
                     
                     break;
             }

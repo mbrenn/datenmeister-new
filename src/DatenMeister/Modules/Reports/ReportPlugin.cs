@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Integration;
+using DatenMeister.Models.Reports;
 using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.TypeSupport;

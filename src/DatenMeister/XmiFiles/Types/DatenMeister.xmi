@@ -277,6 +277,70 @@
       </generalization>
     </packagedElement>
   </item>
+  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Reports" name="Reports" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportDefinition" name="ReportDefinition">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ed96b77c-79f3-4762-a583-3326a094e512" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b5e5b4fb-a5c8-4c2d-9a9a-8314e15536c5" name="title" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45926fb0-671a-4620-af63-e8816cd5afee" name="elements" type-ref="#DatenMeister.Models.Reports.ReportElement" upper="2" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportElement" name="ReportElement">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45e54372-377c-4cba-9416-696c1476dde2" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportHeadline" name="ReportHeadline">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="9ef02ce3-e2f2-4a74-817d-14402e05f03b" general-ref="#DatenMeister.Models.Reports.ReportElement" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="6d7d80ba-1f4c-47f4-a5e2-559a3ebc6049" name="title" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportParagraph" name="ReportParagraph">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="5d842cb6-bb8f-450d-b334-5aad32b781d0" general-ref="#DatenMeister.Models.Reports.ReportElement" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e5b9d51b-edbc-416f-9d8f-210a5805a4f7" name="paragraph" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="73fe848d-d1b9-4a0b-bd8f-86e0436bc657" name="cssClass" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="278b6464-f6b6-41a5-8e7e-829e05e92036" name="viewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3dfd616d-2252-4fba-b9a8-295b12f95e5f" name="evalProperties" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportTable" name="ReportTable">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="a2ecfa1b-bbbe-4a4d-b0e0-26fbd27e03a1" general-ref="#DatenMeister.Models.Reports.ReportElement" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b05d1f04-e0f7-4663-8df6-af177ed1292e" name="cssClass" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f4839848-ce7a-44f7-8422-1c780e57f63f" name="viewNode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3278a8b3-8c6a-4545-bab0-9920ad8cf11c" name="form" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9f05554b-60df-4063-8d94-d63f191cb32a" name="evalProperties" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportInstanceSource" name="ReportInstanceSource">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eb054fbc-1f1a-4e0d-bf61-225bfb9b0c9f" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b23963e3-9230-4c38-b2e2-67ca0e9e5e33" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="49f1137a-d0d6-4629-a1bb-3ef06206ac21" name="source" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportInstance" name="ReportInstance">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="20cd683f-6e41-4f2a-9ff3-4d25ad9dc912" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="df44cce6-b81d-4eb4-a9cc-7fbea8c0066b" name="reportDefinition" type-ref="#DatenMeister.Models.Reports.ReportDefinition" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="6085e2b8-b239-46c8-8bfc-c9bb21d77ca6" name="sources" type-ref="#DatenMeister.Models.Reports.ReportInstanceSource" upper="2" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.Adoc.AdocReportInstance" name="AdocReportInstance">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="1a45f30e-9c81-4085-a5d4-1736d07533f5" general-ref="#DatenMeister.Models.Reports.ReportInstance" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.Html.HtmlReportInstance" name="HtmlReportInstance">
+      <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b026c0a6-2cb8-4a5f-88cc-144481aeddaa" general-ref="#DatenMeister.Models.Reports.ReportInstance" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode" name="DescendentMode">
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode-None" name="None" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode-Inline" name="Inline" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Reports.Simple.DescendentMode-PerPackage" name="PerPackage" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.Reports.Simple.ReportTableForTypeMode" name="ReportTableForTypeMode">
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Reports.Simple.ReportTableForTypeMode-PerType" name="PerType" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.Reports.Simple.ReportTableForTypeMode-AllTypes" name="AllTypes" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.Simple.SimpleReportConfiguration" name="SimpleReportConfiguration">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="acc59dae-1597-4c1b-bb26-df392719d4b6" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0cc895c6-3e43-4823-8c28-3cfbba78480f" name="showDescendents" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a151f306-0733-4eb2-bc67-972d6225d2ea" name="rootElement" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="29f81646-01ef-4bc3-8e01-f84591c3d1ca" name="showRootElement" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1597d8e4-dd8b-4b9a-a41f-af68d8d0fafb" name="showMetaClasses" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3a96fd3c-5f38-4783-8465-611e77cd9e1c" name="showFullName" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cde7ab37-eeb1-4c01-84fa-abbfc3ad62c7" name="form" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f48cf6aa-77a6-466e-bd23-40bc02e9a6ba" name="descendentMode" type-ref="#DatenMeister.Models.Reports.Simple.DescendentMode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e027e9e1-1b86-4071-a972-dfa369e6d077" name="typeMode" type-ref="#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode" />
+    </packagedElement>
+  </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="277cc881-eab8-4457-88d6-09f89f2f1bbc">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="d272160f-f807-4131-8b7b-906df1530269" />

@@ -119,7 +119,6 @@ namespace DatenMeister.Tests.Modules.Reports
             Assert.That(asString.Contains("Child3"), Is.True);
             Assert.That(asString.Contains("34"), Is.True);
             Assert.That(asString.Contains("over18"), Is.True);
-
         }
     }
 }

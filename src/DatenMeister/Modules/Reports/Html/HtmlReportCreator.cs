@@ -6,7 +6,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.Reports;
+using DatenMeister.Models;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -48,13 +48,13 @@ namespace DatenMeister.Modules.Reports.Html
         {
             _htmlReporter = new HtmlReport(writer);
             
-            var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
+            var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
             _htmlReporter.SetDefaultCssStyle();
             _htmlReporter.StartReport(title);
 
             var evaluators = ScopeStorage.Get<HtmlReportEvaluators>();
 
-            var elements = reportDefinition.getOrDefault<IReflectiveCollection>(_Reports._ReportDefinition.elements);
+            var elements = reportDefinition.getOrDefault<IReflectiveCollection>(_DatenMeister._Reports._ReportDefinition.elements);
             foreach (var element in elements.OfType<IElement>())
             {
                 var foundItem =

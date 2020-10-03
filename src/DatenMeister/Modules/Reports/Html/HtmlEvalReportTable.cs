@@ -4,8 +4,8 @@ using System.Globalization;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.Reports;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
@@ -20,7 +20,7 @@ namespace DatenMeister.Modules.Reports.Html
         {
             
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_Reports.TheOne.__ReportTable) == true;
+            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
         }
 
         /// <summary>
@@ -31,13 +31,13 @@ namespace DatenMeister.Modules.Reports.Html
         /// The form should be of type ListForm</param>
         public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNode)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportTable.viewNode);
+            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
             if (viewNode == null)
             {
                 throw new InvalidOperationException("The viewNode is null");
             }
             
-            var form = reportNode.getOrDefault<IElement>(_Reports._ReportTable.form);
+            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
 
             var dataviewEvaluation = htmlReportCreator.GetDataViewEvaluation();
             var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
@@ -54,7 +54,7 @@ namespace DatenMeister.Modules.Reports.Html
             
             // Creates the table
             var table = new HtmlTable();
-            var cssClass = reportNode.getOrDefault<string>(_Reports._ReportTable.cssClass);
+            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportTable.cssClass);
             if (!string.IsNullOrEmpty(cssClass) && cssClass != null)
             {
                 table.CssClass = cssClass;

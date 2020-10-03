@@ -3,8 +3,8 @@ using System.Text;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.DataViews;
-using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
@@ -49,33 +49,33 @@ namespace DatenMeister.Tests.Modules.Reports
             extent.elements().add(element);
 
             /* Creates the report definition */
-            var reportDefinition = factory.create(_Reports.TheOne.__ReportDefinition);
-            reportDefinition.set(_Reports._ReportDefinition.name, "Report Definition");
+            var reportDefinition = factory.create(_DatenMeister.TheOne.Reports.__ReportDefinition);
+            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.name, "Report Definition");
             extent.elements().add(reportDefinition);
 
             /* Create the report paragraph and its corresponding view node */
-            var reportParagraph = factory.create(_Reports.TheOne.__ReportParagraph);
-            reportParagraph.set(_Reports._ReportParagraph.evalProperties, "if (i.age>18)\r\n v.paragraph=\"over18\"\r\n else\r\n v.paragraph=\"under18\"\r\n end");
+            var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.__ReportParagraph);
+            reportParagraph.set(_DatenMeister._Reports._ReportParagraph.evalProperties, "if (i.age>18)\r\n v.paragraph=\"over18\"\r\n else\r\n v.paragraph=\"under18\"\r\n end");
 
             var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
             dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
             extent.elements().add(dynamicViewNode);
-            reportParagraph.set(_Reports._ReportParagraph.viewNode, dynamicViewNode);
+            reportParagraph.set(_DatenMeister._Reports._ReportParagraph.viewNode, dynamicViewNode);
             
             /* Attached it to the report definition */
-            reportDefinition.set(_Reports._ReportDefinition.elements, new[]{reportParagraph});
+            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements, new[]{reportParagraph});
             
             /* Creates the report instance */
-            var reportInstance = factory.create(_Reports.TheOne.__HtmlReportInstance);
+            var reportInstance = factory.create(_DatenMeister.TheOne.Reports.__HtmlReportInstance);
             extent.elements().add(reportInstance);
-            reportInstance.set(_Reports._HtmlReportInstance.name, "Report");
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.name, "Report");
 
-            var source = factory.create(_Reports.TheOne.__ReportInstanceSource);
-            source.set(_Reports._ReportInstanceSource.name, "input");
-            source.set(_Reports._ReportInstanceSource.source, "dm:///test#TheOne");
-            source.set(_Reports._ReportInstanceSource.workspaceId,"Data");
-            reportInstance.set(_Reports._HtmlReportInstance.sources, new[] {source});
-            reportInstance.set(_Reports._HtmlReportInstance.reportDefinition, reportDefinition);
+            var source = factory.create(_DatenMeister.TheOne.Reports.__ReportInstanceSource);
+            source.set(_DatenMeister._Reports._ReportInstanceSource.name, "input");
+            source.set(_DatenMeister._Reports._ReportInstanceSource.source, "dm:///test#TheOne");
+            source.set(_DatenMeister._Reports._ReportInstanceSource.workspaceId,"Data");
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.sources, new[] {source});
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.reportDefinition, reportDefinition);
             
             /* Now create the report over 18 */
             var writer = new StringWriter();

@@ -1,5 +1,4 @@
 ﻿using DatenMeister.Integration;
-using DatenMeister.Models.Reports;
 using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.TypeSupport;
@@ -10,14 +9,11 @@ namespace DatenMeister.Modules.Reports
     [PluginLoading]
     public class ReportPlugin : IDatenMeisterPlugin
     {
-        private readonly LocalTypeSupport _localTypeSupport;
         private readonly IScopeStorage _scopeStorage;
 
         public ReportPlugin(
-            LocalTypeSupport localTypeSupport,
             IScopeStorage scopeStorage)
         {
-            _localTypeSupport = localTypeSupport;
             _scopeStorage = scopeStorage;
         }
         

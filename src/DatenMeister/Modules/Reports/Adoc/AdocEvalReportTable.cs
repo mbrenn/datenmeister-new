@@ -6,8 +6,8 @@ using System.Linq;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.Reports;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
@@ -20,18 +20,18 @@ namespace DatenMeister.Modules.Reports.Adoc
         public bool IsRelevant(IElement element)
         {
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_Reports.TheOne.__ReportTable) == true;
+            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
         }
 
         public void Evaluate(AdocReportCreator adocReportCreator, IElement reportNode, TextWriter writer)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_Reports._ReportTable.viewNode);
+            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
             if (viewNode == null)
             {
                 throw new InvalidOperationException("The viewNode is null");
             }
             
-            var form = reportNode.getOrDefault<IElement>(_Reports._ReportTable.form);
+            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
 
             var dataviewEvaluation = adocReportCreator.GetDataViewEvaluation();
             var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);

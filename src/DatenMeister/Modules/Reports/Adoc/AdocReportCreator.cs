@@ -4,7 +4,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.Reports;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -28,7 +28,7 @@ namespace DatenMeister.Modules.Reports.Adoc
         /// <param name="writer">The writer being used</param>
         public override void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
         {
-            var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
+            var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
             if (!string.IsNullOrEmpty(title))
             {
                 writer.WriteLine($"= {title}");
@@ -36,7 +36,7 @@ namespace DatenMeister.Modules.Reports.Adoc
 
             var evaluators = ScopeStorage.Get<AdocReportEvaluators>();
 
-            var elements = reportDefinition.getOrDefault<IReflectiveCollection>(_Reports._ReportDefinition.elements);
+            var elements = reportDefinition.getOrDefault<IReflectiveCollection>(_DatenMeister._Reports._ReportDefinition.elements);
             foreach (var element in elements.OfType<IElement>())
             {
                 var foundItem =

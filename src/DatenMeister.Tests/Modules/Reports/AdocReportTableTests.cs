@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Models;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Models.Forms;
-using DatenMeister.Models.Reports;
 using DatenMeister.Modules.Reports.Adoc;
-using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -31,8 +29,8 @@ namespace DatenMeister.Tests.Modules.Reports
             HtmlReportTableTests.AddData(extent, factory);
 
             /* Creates the report definition */
-            var reportDefinition = factory.create(_Reports.TheOne.__ReportDefinition);
-            reportDefinition.set(_Reports._ReportDefinition.name, "Report Definition");
+            var reportDefinition = factory.create(_DatenMeister.TheOne.Reports.__ReportDefinition);
+            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.name, "Report Definition");
             extent.elements().add(reportDefinition);
 
             /* Sets the viewnode */
@@ -47,15 +45,15 @@ namespace DatenMeister.Tests.Modules.Reports
             extent.elements().add(filterMetaClass);
             
             /* Create the report paragraph and its corresponding view node */
-            var reportHeadline = factory.create(_Reports.TheOne.__ReportHeadline);
-            reportHeadline.set(_Reports._ReportHeadline.title, "This is a headline");
+            var reportHeadline = factory.create(_DatenMeister.TheOne.Reports.__ReportHeadline);
+            reportHeadline.set(_DatenMeister._Reports._ReportHeadline.title, "This is a headline");
             
             /* Create the report paragraph and its corresponding view node */
-            var reportParagraph = factory.create(_Reports.TheOne.__ReportParagraph);
-            reportParagraph.set(_Reports._ReportParagraph.paragraph, "This is a paragraph");
+            var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.__ReportParagraph);
+            reportParagraph.set(_DatenMeister._Reports._ReportParagraph.paragraph, "This is a paragraph");
 
             /* Create the report paragraph and its corresponding view node */
-            var reportTable = factory.create(_Reports.TheOne.__ReportTable);
+            var reportTable = factory.create(_DatenMeister.TheOne.Reports.__ReportTable);
 
             var form = factory.create(_FormAndFields.TheOne.__ListForm);
             var field1 = factory.create(_FormAndFields.TheOne.__EvalTextFieldData)
@@ -84,25 +82,25 @@ namespace DatenMeister.Tests.Modules.Reports
             reportTable.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_Reports._ReportTable.name] = "Table",
-                    [_Reports._ReportTable.form] = form,
-                    [_Reports._ReportTable.viewNode] = filterMetaClass
+                    [_DatenMeister._Reports._ReportTable.name] = "Table",
+                    [_DatenMeister._Reports._ReportTable.form] = form,
+                    [_DatenMeister._Reports._ReportTable.viewNode] = filterMetaClass
                 });
 
             /* Attached it to the report definition */
-            reportDefinition.set(_Reports._ReportDefinition.elements, new[] {reportHeadline, reportParagraph, reportTable});
+            reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements, new[] {reportHeadline, reportParagraph, reportTable});
 
             /* Creates the report instance */
-            var reportInstance = factory.create(_Reports.TheOne.__AdocReportInstance);
+            var reportInstance = factory.create(_DatenMeister.TheOne.Reports.__AdocReportInstance);
             extent.elements().add(reportInstance);
-            reportInstance.set(_Reports._HtmlReportInstance.name, "Report");
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.name, "Report");
 
-            var source = factory.create(_Reports.TheOne.__ReportInstanceSource);
-            source.set(_Reports._ReportInstanceSource.name, "input");
-            source.set(_Reports._ReportInstanceSource.source, "dm:///test");
-            source.set(_Reports._ReportInstanceSource.workspaceId, "Data");
-            reportInstance.set(_Reports._HtmlReportInstance.sources, new[] {source});
-            reportInstance.set(_Reports._HtmlReportInstance.reportDefinition, reportDefinition);
+            var source = factory.create(_DatenMeister.TheOne.Reports.__ReportInstanceSource);
+            source.set(_DatenMeister._Reports._ReportInstanceSource.name, "input");
+            source.set(_DatenMeister._Reports._ReportInstanceSource.source, "dm:///test");
+            source.set(_DatenMeister._Reports._ReportInstanceSource.workspaceId, "Data");
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.sources, new[] {source});
+            reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.reportDefinition, reportDefinition);
 
             /* Now create the report */
             var writer = new StringWriter();

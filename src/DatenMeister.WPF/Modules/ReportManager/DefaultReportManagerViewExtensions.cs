@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Reports;
 using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlExporter.Formatter;
@@ -72,7 +73,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
             // Handles the simple report
             var simpleReportInfo =
                 viewExtensionInfo.IsItemInDetailWindowOfType(
-                    _Reports.TheOne.__SimpleReportConfiguration);
+                    _DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
             if (simpleReportInfo != null)
             {
                 yield return
@@ -115,7 +116,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         {
             // Creates a html report
             var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
-                _Reports.TheOne.__HtmlReportInstance);
+                _DatenMeister.TheOne.Reports.__HtmlReportInstance);
             if (reportInstance != null)
             {
                 yield return
@@ -132,7 +133,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                             }
 
                             var reportDefinition =
-                                y.getOrDefault<IElement>(_Reports._HtmlReportInstance.reportDefinition);
+                                y.getOrDefault<IElement>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
                             if (reportDefinition == null)
                             {
                                 MessageBox.Show("The report is not found");
@@ -151,7 +152,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         {
             // Creates a html report
             var reportInstance = viewExtensionInfo.IsItemInDetailWindowOfType(
-                _Reports.TheOne.__AdocReportInstance);
+                _DatenMeister.TheOne.Reports.__AdocReportInstance);
             if (reportInstance != null)
             {
                 yield return

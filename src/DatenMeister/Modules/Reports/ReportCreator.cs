@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.Reports;
+using DatenMeister.Models;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Runtime;
@@ -81,7 +81,7 @@ namespace DatenMeister.Modules.Reports
                 AddSource(scope.Name, scope.Collection);
             }
 
-            var definition = reportInstance.getOrDefault<IObject>(_Reports._HtmlReportInstance.reportDefinition);
+            var definition = reportInstance.getOrDefault<IObject>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
             if (definition == null)
             {
                 throw new InvalidOperationException("There is no report definition set.");
@@ -100,22 +100,22 @@ namespace DatenMeister.Modules.Reports
         /// <returns>Enumeration of report sources</returns>
         public IEnumerable<ReportSource> EvaluateSources(IObject reportInstance)
         {                       
-            var sources = reportInstance.getOrDefault<IReflectiveCollection>(_Reports._HtmlReportInstance.sources);
+            var sources = reportInstance.getOrDefault<IReflectiveCollection>(_DatenMeister._Reports._HtmlReportInstance.sources);
             foreach (var source in sources.OfType<IObject>())
             {
-                var name = source.getOrDefault<string>(_Reports._ReportInstanceSource.name);
+                var name = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.name);
                 if (string.IsNullOrEmpty(name))
                 {
                     throw new InvalidOperationException("name of ReportInstanceSource is not set");
                 }
                 
-                var workspaceId = source.getOrDefault<string>(_Reports._ReportInstanceSource.workspaceId);
+                var workspaceId = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.workspaceId);
                 if (string.IsNullOrEmpty(workspaceId))
                 {
                     workspaceId = WorkspaceNames.WorkspaceData;
                 }
                 
-                var sourceRef = source.getOrDefault<string>(_Reports._ReportInstanceSource.source);
+                var sourceRef = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.source);
 
                 IReflectiveCollection? sourceItems = null;
                 var workspace = WorkspaceLogic.GetWorkspace(workspaceId) ?? WorkspaceLogic.GetDataWorkspace();
@@ -144,7 +144,7 @@ namespace DatenMeister.Modules.Reports
         }
         public bool GetDataEvaluation(IElement reportNodeOrigin, out IElement? element)
         {
-            var viewNode = reportNodeOrigin.getOrDefault<IElement>(_Reports._ReportParagraph.viewNode);
+            var viewNode = reportNodeOrigin.getOrDefault<IElement>(_DatenMeister._Reports._ReportParagraph.viewNode);
             if (viewNode == null)
             {
                 Logger.Info("No Viewnode found");
@@ -166,10 +166,10 @@ namespace DatenMeister.Modules.Reports
         public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin)
         {
             var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
-            if (reportNode.isSet(_Reports._ReportParagraph.evalProperties))
+            if (reportNode.isSet(_DatenMeister._Reports._ReportParagraph.evalProperties))
             {
                 GetDataEvaluation(reportNodeOrigin, out var element);
-                var evalProperties = reportNode.getOrDefault<string>(_Reports._ReportParagraph.evalProperties);
+                var evalProperties = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.evalProperties);
 
                 var dict = new Dictionary<string, object> {["v"] = reportNode};
                 if (element != null)

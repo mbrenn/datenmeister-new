@@ -6,7 +6,6 @@ using DatenMeister.Excel.Models;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
-using DatenMeister.Models.Reports;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.NetCore;
@@ -37,8 +36,6 @@ namespace DatenMeister.SourceGeneration.Console
             CreateSourceForFastFilter();
 
             CreateSourceForDataViews();
-
-            CreateSourceForReports();
             
             //CreateSourceCodeForDatenMeister();
 
@@ -63,8 +60,6 @@ namespace DatenMeister.SourceGeneration.Console
                 $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
             File.Copy($"./DataViews.class.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.class.cs", true);
             File.Copy($"./DataViews.dotnet.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
-            File.Copy($"./Reports.class.cs", $"{R}/../DatenMeister/Models/Reports/Reports.class.cs", true);
-            File.Copy($"./Reports.dotnet.cs", $"{R}/../DatenMeister/Models/Reports/Reports.dotnet.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 #endif
         }
@@ -120,23 +115,6 @@ namespace DatenMeister.SourceGeneration.Console
             var pathOfClassTree = "DatenMeister.class.cs";
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
-            System.Console.WriteLine(" Done");
-        }
-
-
-        private static void CreateSourceForReports()
-        {
-            System.Console.Write("Create Sourcecode for Reports...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "Reports",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.Reports",
-                    Types = ReportTypes.GetTypes()
-                });
-
             System.Console.WriteLine(" Done");
         }
 

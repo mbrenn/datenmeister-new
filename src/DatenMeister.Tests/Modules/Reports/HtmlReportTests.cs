@@ -13,7 +13,7 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Modules.HtmlReports
+namespace DatenMeister.Tests.Modules.Reports
 {
     [TestFixture]
     public class HtmlReportTests
@@ -97,7 +97,8 @@ namespace DatenMeister.Tests.Modules.HtmlReports
         {
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(WorkspaceLogic.InitDefault());
-            scopeStorage.Add(ReportPlugin.CreateEvaluators());
+            scopeStorage.Add(ReportPlugin.CreateHtmlEvaluators());
+            scopeStorage.Add(ReportPlugin.CreateAdocEvaluators());
             scopeStorage.Add(DataViewPlugin.GetDefaultViewNodeFactories());
             var workspaceLogic = new WorkspaceLogic(scopeStorage);
             return (scopeStorage, workspaceLogic);

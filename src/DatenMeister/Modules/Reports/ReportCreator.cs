@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -16,7 +17,7 @@ using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Reports
 {
-    public class ReportCreator
+    public abstract class ReportCreator
     {
         private readonly ClassLogger Logger = new ClassLogger(typeof(ReportCreator));
 
@@ -67,6 +68,29 @@ namespace DatenMeister.Modules.Reports
 
             return dataviewEvaluation;
         }
+        
+        /// <summary>
+        /// Generates a full html report by using the instance
+        /// </summary>
+        /// <param name="reportInstance">Report instance to be used</param>
+        /// <param name="writer">The writer being used</param>
+        public void GenerateReportByInstance(IElement reportInstance, TextWriter writer)
+        {
+            foreach (var scope in EvaluateSources(reportInstance))
+            {
+                AddSource(scope.Name, scope.Collection);
+            }
+
+            var definition = reportInstance.getOrDefault<IObject>(_Reports._HtmlReportInstance.reportDefinition);
+            if (definition == null)
+            {
+                throw new InvalidOperationException("There is no report definition set.");
+            }
+            
+            GenerateReportByDefinition(definition, writer);
+        }
+
+        public abstract void GenerateReportByDefinition(IObject definition, TextWriter writer);
 
         /// <summary>
         /// Reads the report instance and returns all report data sources with
@@ -138,8 +162,6 @@ namespace DatenMeister.Modules.Reports
 
             return true;
         }
-        
-        
 
         public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin)
         {

@@ -26,7 +26,7 @@ namespace DatenMeister.Modules.Reports.Adoc
         /// </summary>
         /// <param name="reportDefinition">The report definition to be used</param>
         /// <param name="writer">The writer being used</param>
-        public void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
+        public override void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
         {
             var title = reportDefinition.getOrDefault<string>(_Reports._ReportDefinition.title);
             if (!string.IsNullOrEmpty(title))

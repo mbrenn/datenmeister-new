@@ -5,19 +5,20 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports;
+using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Modules.HtmlReports
+namespace DatenMeister.Tests.Modules.Reports
 {
     [TestFixture]
-    public class HtmlReportTableTests
+    public class AdocReportTableTests
     {
         [Test]
-        public void TestHtmlTableCreationWithCellEvaluation()
+        public void TestHeadlineParagraphAndTable()
         {
             var (scopeStorage, workspaceLogic) = HtmlReportTests.PrepareWorkspaceLogic();
 
@@ -27,36 +28,7 @@ namespace DatenMeister.Tests.Modules.HtmlReports
 
             /* Creates the working object */
             var factory = new MofFactory(extent);
-            extent.elements().add(factory.create(null)
-                .SetProperties(new Dictionary<string, object>
-                {
-                    ["name"] = "Father",
-                    ["age"] = 34
-                }));
-            extent.elements().add(factory.create(null)
-                .SetProperties(new Dictionary<string, object>
-                {
-                    ["name"] = "Mother",
-                    ["age"] = 32
-                }));
-            extent.elements().add(factory.create(null)
-                .SetProperties(new Dictionary<string, object>
-                {
-                    ["name"] = "Child1",
-                    ["age"] = 8
-                }));
-            extent.elements().add(factory.create(null)
-                .SetProperties(new Dictionary<string, object>
-                {
-                    ["name"] = "Child2",
-                    ["age"] = 9
-                }));
-            extent.elements().add(factory.create(null)
-                .SetProperties(new Dictionary<string, object>
-                {
-                    ["name"] = "Child3",
-                    ["age"] = 15
-                }));
+            HtmlReportTableTests.AddData(extent, factory);
 
             /* Creates the report definition */
             var reportDefinition = factory.create(_Reports.TheOne.__ReportDefinition);
@@ -67,18 +39,26 @@ namespace DatenMeister.Tests.Modules.HtmlReports
             var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
             dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
             extent.elements().add(dynamicViewNode);
-            
+
             var filterMetaClass = factory.create(_DataViews.TheOne.__FilterTypeNode);
             filterMetaClass.set(_DataViews._FilterTypeNode.name, "filter");
             filterMetaClass.set(_DataViews._FilterTypeNode.type, null);
             filterMetaClass.set(_DataViews._FilterTypeNode.input, dynamicViewNode);
             extent.elements().add(filterMetaClass);
+            
+            /* Create the report paragraph and its corresponding view node */
+            var reportHeadline = factory.create(_Reports.TheOne.__ReportHeadline);
+            reportHeadline.set(_Reports._ReportHeadline.title, "This is a headline");
+            
+            /* Create the report paragraph and its corresponding view node */
+            var reportParagraph = factory.create(_Reports.TheOne.__ReportParagraph);
+            reportParagraph.set(_Reports._ReportParagraph.paragraph, "This is a paragraph");
 
             /* Create the report paragraph and its corresponding view node */
             var reportTable = factory.create(_Reports.TheOne.__ReportTable);
 
             var form = factory.create(_FormAndFields.TheOne.__ListForm);
-            var field = factory.create(_FormAndFields.TheOne.__EvalTextFieldData)
+            var field1 = factory.create(_FormAndFields.TheOne.__EvalTextFieldData)
                 .SetProperties(
                     new Dictionary<string, object>
                     {
@@ -86,12 +66,20 @@ namespace DatenMeister.Tests.Modules.HtmlReports
                         [_FormAndFields._EvalTextFieldData.title] = "Name",
                         [_FormAndFields._EvalTextFieldData.evalCellProperties] =
                             "if(i.age>18)\r\n" +
-                            " c.cssClass=\"over18\"\r\n" +
+                            " c.text = c.text + \" (over18)\"\r\n" +
                             "else\r\n" +
-                            " c.cssClass=\"under18\"\r\n" +
+                            " c.text = c.text\r\n" +
                             "end"
                     });
-            form.set(_FormAndFields._ListForm.field, new[] {field});
+            
+            var field2 = factory.create(_FormAndFields.TheOne.__TextFieldData)
+                .SetProperties(
+                    new Dictionary<string, object>
+                    {
+                        [_FormAndFields._TextFieldData.name] = "age",
+                        [_FormAndFields._TextFieldData.title] = "age"
+                    });
+            form.set(_FormAndFields._ListForm.field, new[] {field1, field2});
 
             reportTable.SetProperties(
                 new Dictionary<string, object>
@@ -102,10 +90,10 @@ namespace DatenMeister.Tests.Modules.HtmlReports
                 });
 
             /* Attached it to the report definition */
-            reportDefinition.set(_Reports._ReportDefinition.elements, new[] {reportTable});
+            reportDefinition.set(_Reports._ReportDefinition.elements, new[] {reportHeadline, reportParagraph, reportTable});
 
             /* Creates the report instance */
-            var reportInstance = factory.create(_Reports.TheOne.__HtmlReportInstance);
+            var reportInstance = factory.create(_Reports.TheOne.__AdocReportInstance);
             extent.elements().add(reportInstance);
             reportInstance.set(_Reports._HtmlReportInstance.name, "Report");
 
@@ -118,20 +106,20 @@ namespace DatenMeister.Tests.Modules.HtmlReports
 
             /* Now create the report */
             var writer = new StringWriter();
-            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
+            var htmlReport = new AdocReportCreator(workspaceLogic, scopeStorage);
             htmlReport.GenerateReportByInstance(reportInstance, writer);
 
             var asString = writer.ToString();
+            Assert.That(asString.Contains("headline"), Is.True);
+            Assert.That(asString.Contains("paragraph"), Is.True);
             Assert.That(asString.Contains("Father"), Is.True);
             Assert.That(asString.Contains("Mother"), Is.True);
             Assert.That(asString.Contains("Child1"), Is.True);
             Assert.That(asString.Contains("Child2"), Is.True);
             Assert.That(asString.Contains("Child3"), Is.True);
+            Assert.That(asString.Contains("34"), Is.True);
             Assert.That(asString.Contains("over18"), Is.True);
-            Assert.That(asString.Contains("under18"), Is.True);
 
-            Assert.That(Regex.Matches(asString, "over18").Count, Is.EqualTo(2));
-            Assert.That(Regex.Matches(asString, "under18").Count, Is.EqualTo(3));
         }
     }
 }

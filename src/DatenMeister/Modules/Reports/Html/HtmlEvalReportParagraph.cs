@@ -33,8 +33,6 @@ namespace DatenMeister.Modules.Reports.Html
 
             // Creates the paragraph
             htmlReportCreator.HtmlReporter.Add(htmlParagraph);
-
-
         }
     }
 }

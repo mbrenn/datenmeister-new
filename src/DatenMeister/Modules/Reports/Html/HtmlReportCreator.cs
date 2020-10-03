@@ -36,26 +36,6 @@ namespace DatenMeister.Modules.Reports.Html
         public HtmlReport HtmlReporter => 
             _htmlReporter ?? throw new InvalidOperationException("_htmlReporter is null");
 
-        /// <summary>
-        /// Generates a full html report by using the instance
-        /// </summary>
-        /// <param name="reportInstance">Report instance to be used</param>
-        /// <param name="writer">The writer being used</param>
-        public void GenerateReportByInstance(IElement reportInstance, TextWriter writer)
-        {
-            foreach (var scope in EvaluateSources(reportInstance))
-            {
-                AddSource(scope.Name, scope.Collection);
-            }
-
-            var definition = reportInstance.getOrDefault<IObject>(_Reports._HtmlReportInstance.reportDefinition);
-            if (definition == null)
-            {
-                throw new InvalidOperationException("There is no report definition set.");
-            }
-            
-            GenerateReportByDefinition(definition, writer);
-        }
 
         /// <summary>
         /// Generates a report after the sources has been manually attached
@@ -64,7 +44,7 @@ namespace DatenMeister.Modules.Reports.Html
         /// </summary>
         /// <param name="reportDefinition">The report definition to be used</param>
         /// <param name="writer">The writer being used</param>
-        public void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
+        public override void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
         {
             _htmlReporter = new HtmlReport(writer);
             

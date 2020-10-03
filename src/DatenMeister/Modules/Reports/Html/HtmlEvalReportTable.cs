@@ -164,6 +164,8 @@ namespace DatenMeister.Modules.Reports.Html
             if (metaClass?.@equals(_FormAndFields.TheOne.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
+                var defaultText = listElement.getOrDefault<string>(property);
+                cellInformation.set("text", defaultText);
 
                 var evalProperties = field.getOrDefault<string>(_FormAndFields._EvalTextFieldData.evalCellProperties);
                 if (evalProperties != null)
@@ -178,7 +180,12 @@ namespace DatenMeister.Modules.Reports.Html
                 }
 
                 var cssClassName = cellInformation.getOrDefault<string>("cssClass") ?? string.Empty;
-                return new HtmlTableCell(listElement.getOrDefault<string>(property), cssClassName);
+
+                var text= cellInformation.isSet("text") 
+                    ? cellInformation.getOrDefault<string>("text") 
+                    : defaultText;
+                
+                return new HtmlTableCell(text, cssClassName);
             }
 
             if (isPropertySet)

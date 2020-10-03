@@ -9,7 +9,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports;
 using DatenMeister.Modules.Forms.FormCreator;
-using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -49,7 +48,8 @@ namespace DatenMeister.Modules.Reports.Adoc
             
             // Creates the table
             var table = new StringBuilder();
-            table.AppendLine("|---");
+            table.AppendLine("[%header]");
+            table.AppendLine("|===");
             
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
             foreach (var field in fields.OfType<IElement>())
@@ -70,7 +70,7 @@ namespace DatenMeister.Modules.Reports.Adoc
 
             }
 
-            table.AppendLine("|---");
+            table.AppendLine("|===");
             writer.Write(table.ToString());
         }
         /// <summary>
@@ -149,6 +149,8 @@ namespace DatenMeister.Modules.Reports.Adoc
             if (metaClass?.@equals(_FormAndFields.TheOne.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
+                var defaultText = listElement.getOrDefault<string>(property);
+                cellInformation.set("text", defaultText);
 
                 var evalProperties = field.getOrDefault<string>(_FormAndFields._EvalTextFieldData.evalCellProperties);
                 if (evalProperties != null)
@@ -162,7 +164,9 @@ namespace DatenMeister.Modules.Reports.Adoc
                         });
                 }
 
-                return listElement.getOrDefault<string>(property);
+                return cellInformation.isSet("text") 
+                    ? cellInformation.getOrDefault<string>("text") 
+                    : defaultText;
             }
 
             if (isPropertySet)

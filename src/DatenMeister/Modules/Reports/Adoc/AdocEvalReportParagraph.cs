@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.Reports;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports.Adoc

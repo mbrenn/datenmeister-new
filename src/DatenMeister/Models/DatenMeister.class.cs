@@ -219,7 +219,7 @@ namespace DatenMeister.Models
 
         public _Actions Actions = new _Actions();
 
-        public class _ViewNodes
+        public class _DataViews
         {
             public class _DataView
             {
@@ -372,7 +372,7 @@ namespace DatenMeister.Models
 
         }
 
-        public _ViewNodes ViewNodes = new _ViewNodes();
+        public _DataViews DataViews = new _DataViews();
 
         public class _Reports
         {

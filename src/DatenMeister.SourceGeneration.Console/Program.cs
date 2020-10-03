@@ -35,7 +35,7 @@ namespace DatenMeister.SourceGeneration.Console
 
             CreateSourceForFastFilter();
 
-            CreateSourceForDataViews();
+            // CreateSourceForDataViews();
             
             //CreateSourceCodeForDatenMeister();
 
@@ -115,22 +115,6 @@ namespace DatenMeister.SourceGeneration.Console
             var pathOfClassTree = "DatenMeister.class.cs";
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
-            System.Console.WriteLine(" Done");
-        }
-
-        private static void CreateSourceForDataViews()
-        {
-            System.Console.Write("Create Sourcecode for DataViews...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "DataViews",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.DataViews",
-                    Types = DataViewPlugin.GetTypes()
-                });
-
             System.Console.WriteLine(" Done");
         }
 

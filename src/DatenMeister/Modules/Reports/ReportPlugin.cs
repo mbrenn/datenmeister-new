@@ -1,7 +1,6 @@
 ﻿using DatenMeister.Integration;
 using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Html;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.Reports

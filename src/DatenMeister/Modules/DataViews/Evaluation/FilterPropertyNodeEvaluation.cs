@@ -5,6 +5,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.DataViews;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
@@ -18,12 +19,12 @@ namespace DatenMeister.Modules.DataViews.Evaluation
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DataViews.TheOne.__FilterPropertyNode);
+                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__FilterPropertyNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FlattenNode.input);
+            var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FlattenNode.input);
             if (inputNode == null)
             {
                 Logger.Warn($"Input node not found");
@@ -32,21 +33,21 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
             var input = evaluation.GetElementsForViewNode(inputNode);
 
-            var property = viewNode.getOrDefault<string>(_DataViews._FilterPropertyNode.property);
+            var property = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterPropertyNode.property);
             if (property == null)
             {
                 Logger.Warn("Property not found");
                 return new PureReflectiveSequence();
             }
 
-            var propertyValue = viewNode.getOrDefault<string>(_DataViews._FilterPropertyNode.value);
+            var propertyValue = viewNode.getOrDefault<string>(_DatenMeister._DataViews._FilterPropertyNode.value);
             if (propertyValue == null)
             {
                 Logger.Warn("Property Value not found");
                 return new PureReflectiveSequence();
             }
 
-            var comparisonMode = viewNode.getOrNull<ComparisonMode>(_DataViews._FilterPropertyNode.comparisonMode);
+            var comparisonMode = viewNode.getOrNull<ComparisonMode>(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode);
             if (comparisonMode == null)
             {
                 Logger.Warn("Comparison not found");

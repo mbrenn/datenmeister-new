@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DataViews;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Proxies.ReadOnly;
@@ -48,7 +48,7 @@ namespace DatenMeister.Modules.DataViews
         {
             var itemResult = new PureReflectiveSequence();
             var result = new ReadOnlyReflectiveSequence(itemResult);
-            var viewNode = _dataViewElement.getOrDefault<IElement>(_DataViews._DataView.viewNode);
+            var viewNode = _dataViewElement.getOrDefault<IElement>(_DatenMeister._DataViews._DataView.viewNode);
             if (viewNode == null)
             {
                 return result;
@@ -60,7 +60,7 @@ namespace DatenMeister.Modules.DataViews
         }
 
         public string contextURI() =>
-            _dataViewElement.getOrDefault<string>(_DataViews._DataView.uri);
+            _dataViewElement.getOrDefault<string>(_DatenMeister._DataViews._DataView.uri);
 
         public string? uri(IElement element) =>
             element.GetUri();

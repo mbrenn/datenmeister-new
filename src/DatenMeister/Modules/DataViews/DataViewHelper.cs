@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DataViews;
+using DatenMeister.Models;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.DataViews
@@ -18,11 +18,11 @@ namespace DatenMeister.Modules.DataViews
         public IElement CreateDataview(string name, string extentUri)
         {
             var viewExtent = _workspaceLogic.GetUserFormsExtent();
-            var metaClass = _DataViews.TheOne.__DataView;
+            var metaClass = _DatenMeister.TheOne.DataViews.__DataView;
             var createdElement = new MofFactory(viewExtent).create(metaClass);
 
-            createdElement.set(_DataViews._DataView.name, name);
-            createdElement.set(_DataViews._DataView.uri, extentUri);
+            createdElement.set(_DatenMeister._DataViews._DataView.name, name);
+            createdElement.set(_DatenMeister._DataViews._DataView.uri, extentUri);
 
             viewExtent.elements().add(createdElement);
 

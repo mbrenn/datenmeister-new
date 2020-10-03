@@ -277,7 +277,7 @@
       </generalization>
     </packagedElement>
   </item>
-  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="ViewNodes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_ViewNodes" name="DataViews" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DataViews.DataView" name="DataView">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="27f753a7-a663-48cb-8c17-dbd01edf3f08" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9dd52986-06da-47dc-a68d-e17af43c5257" name="workspace" type-ref="dm:///_internal/model/primitivetypes#String" />

@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DataViews;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using DatenMeister.Uml.Helper;
@@ -17,12 +17,12 @@ namespace DatenMeister.Modules.DataViews.Evaluation
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DataViews.TheOne.__SelectByFullNameNode);
+                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__SelectByFullNameNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._SelectByFullNameNode.input);
+            var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._SelectByFullNameNode.input);
             if (inputNode == null)
             {
                 Logger.Warn($"Input node not found");
@@ -31,7 +31,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
             var input = evaluation.GetElementsForViewNode(inputNode);
 
-            var pathNode = viewNode.getOrDefault<string>(_DataViews._SelectByFullNameNode.path);
+            var pathNode = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByFullNameNode.path);
             if (pathNode == null)
             {
                 Logger.Warn($"Path is not set");

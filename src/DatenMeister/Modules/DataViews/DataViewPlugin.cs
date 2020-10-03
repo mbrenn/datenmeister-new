@@ -16,26 +16,6 @@ namespace DatenMeister.Modules.DataViews
         private readonly DataViewLogic _dataViewLogic;
         private readonly IScopeStorage _scopeStorage;
 
-        /// <summary>
-        /// Gets a list of types which need to be transferred as a MofType
-        /// </summary>
-        /// <returns></returns>
-        public static Type[] GetTypes()
-        {
-            return new[]
-            {
-                typeof(DataView),
-                typeof(ViewNode),
-                typeof(SourceExtentNode),
-                typeof(FlattenNode),
-                typeof(FilterPropertyNode),
-                typeof(FilterTypeNode),
-                typeof(ComparisonMode),
-                typeof(SelectByFullNameNode),
-                typeof(DynamicSourceNode)
-            };
-        }
-
         public DataViewPlugin(LocalTypeSupport localTypeSupport, IWorkspaceLogic workspaceLogic,
             DataViewLogic dataViewLogic, IScopeStorage scopeStorage)
         {
@@ -61,9 +41,6 @@ namespace DatenMeister.Modules.DataViews
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     var factories = GetDefaultViewNodeFactories();
                     _scopeStorage.Add(factories);
-                    _localTypeSupport.AddInternalTypes(
-                        GetTypes(), "ViewNodes");
-                    
                     break;
             }
         }

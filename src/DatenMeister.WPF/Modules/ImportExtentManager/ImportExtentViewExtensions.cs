@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
+using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -18,6 +18,7 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.ImportExtentManager
 {
@@ -173,16 +174,33 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
         private static IEnumerable<ViewExtension> OfferExtentLoadingForDetail(ViewExtensionInfo viewExtensionInfo)
         {
             // Creates a html report
-            var reportInstance =
+            var reportInstance = 
                 viewExtensionInfo.IsItemInDetailWindowOfType(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__ExtentLoaderConfig,
-                    true);
+                _DatenMeister.TheOne.ExtentLoaderConfigs.__ExtentLoaderConfig,
+                true);
             if (reportInstance != null)
             {
                 yield return
                     new RowItemButtonDefinition(
                         "Load Extent",
-                        (x, y) => { MessageBox.Show("Import Extent"); });
+                        (x, y) =>
+                        {
+                            var asElement = y as IElement ?? throw new InvalidOperationException("Not an Element");
+                            var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
+                            var scopeStorage = GiveMe.Scope.ScopeStorage;
+                            
+                            var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
+                            var result = extentManager.LoadExtent(asElement, ExtentCreationFlags.LoadOrCreate);
+
+                            if (result.LoadingState == ExtentLoadingState.Loaded)
+                            {
+                                MessageBox.Show("The loader config has been executed");
+                            }
+                            else if (result.LoadingState == ExtentLoadingState.Failed)
+                            {
+                                MessageBox.Show("The loading has failed: " + result.FailLoadingMessage);
+                            }
+                        });
             }
         }
     }

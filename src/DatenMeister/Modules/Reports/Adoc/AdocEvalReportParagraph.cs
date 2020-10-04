@@ -33,7 +33,8 @@ namespace DatenMeister.Modules.Reports.Adoc
                     new Dictionary<string, object> {["i"] = element});
             }
             
-            writer.WriteLine($"\r\n{paragraph}\r\n");
+            writer.WriteLine($"{paragraph}");
+            writer.WriteLine(string.Empty);
         }
     }
 }

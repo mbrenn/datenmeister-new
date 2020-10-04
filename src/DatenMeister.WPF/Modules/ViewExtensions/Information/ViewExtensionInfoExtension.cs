@@ -149,7 +149,9 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
         /// <param name="metaclass">The Metaclass against which the value is queried</param>
         /// <param name="followGeneralizations">true, if the generalizations shall also be followed</param>
         /// <returns>The found detail form window and the retrieved element or null, if not found</returns>
-        public static (DetailFormControl, IElement)? IsItemInDetailWindowOfType(this ViewExtensionInfo info, IElement metaclass,
+        public static (DetailFormControl, IElement)? IsItemInDetailWindowOfType(
+            this ViewExtensionInfo info,
+            IElement metaclass,
             bool followGeneralizations = false)
         {
             var detailFormControl = info.GetDetailFormControl();

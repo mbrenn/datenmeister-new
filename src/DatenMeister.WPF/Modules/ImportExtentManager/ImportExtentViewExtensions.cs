@@ -6,6 +6,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
@@ -34,6 +35,15 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
         public IEnumerable<ViewExtension> GetViewExtensions(ViewExtensionInfo viewExtensionInfo)
         {
+            foreach (var viewExtension in OfferExtentLoadingForDetail(viewExtensionInfo)) 
+                yield return viewExtension;
+
+            foreach (var viewExtension in OfferForExtentOverview(viewExtensionInfo)) 
+                yield return viewExtension;
+        }
+
+        private IEnumerable<ViewExtension> OfferForExtentOverview(ViewExtensionInfo viewExtensionInfo)
+        {
             var itemsInExtentList = viewExtensionInfo.GetItemsInExtentExplorerControl();
             if (itemsInExtentList != null)
             {
@@ -61,11 +71,11 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             async void ImportExistingExtent(IExtent extent)
             {
                 if (itemsInExtentList == null)
-                    return ;
-                
+                    return;
+
                 var navigationHost = viewExtensionInfo.NavigationHost
-                    ?? throw new InvalidOperationException("navigationHost == null");
-                
+                                     ?? throw new InvalidOperationException("navigationHost == null");
+
                 var controlNavigation = await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,
                     new NavigateToItemConfig
@@ -82,7 +92,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
 
                     if (detailElement == null)
                         return;
-                    
+
                     var selectedExtent = detailElement.getOrDefault<IElement>("selectedExtent");
                     if (selectedExtent == null)
                     {
@@ -121,7 +131,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     _plugin.PerformImport(sourceExtent, elements);
                     var itemCountAfter = sourceExtent.elements().Count();
 
-                    MessageBox.Show($"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
+                    MessageBox.Show(
+                        $"Import has been performed. {itemCountAfter - itemCountBefore} root elements have been added.");
                 }
             }
 
@@ -129,7 +140,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
             {
                 if (itemsInExtentList == null)
                     return;
-                
+
                 var navigationHost = viewExtensionInfo.NavigationHost
                                      ?? throw new InvalidOperationException("navigationHost == null");
                 var result = await WorkspaceExtentFormGenerator.QueryExtentConfigurationByUserAsync(
@@ -139,7 +150,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     // Now, we got the item extent...
                     var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                     var loadedExtent = extentManager.LoadExtentWithoutAdding(result);
-                    if (loadedExtent != null && loadedExtent.Extent != null && loadedExtent.LoadingState == ExtentLoadingState.Loaded)
+                    if (loadedExtent != null && loadedExtent.Extent != null &&
+                        loadedExtent.LoadingState == ExtentLoadingState.Loaded)
                     {
                         var itemCountBefore = loadedExtent.Extent.elements().Count();
                         var elements = (itemsInExtentList.RootItem as IExtent)?.elements()
@@ -155,6 +167,22 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                         MessageBox.Show("Extent could not be loaded");
                     }
                 }
+            }
+        }
+
+        private static IEnumerable<ViewExtension> OfferExtentLoadingForDetail(ViewExtensionInfo viewExtensionInfo)
+        {
+            // Creates a html report
+            var reportInstance =
+                viewExtensionInfo.IsItemInDetailWindowOfType(
+                    _DatenMeister.TheOne.ExtentLoaderConfigs.__ExtentLoaderConfig,
+                    true);
+            if (reportInstance != null)
+            {
+                yield return
+                    new RowItemButtonDefinition(
+                        "Load Extent",
+                        (x, y) => { MessageBox.Show("Import Extent"); });
             }
         }
     }

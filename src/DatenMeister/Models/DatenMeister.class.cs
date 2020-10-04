@@ -880,6 +880,65 @@ namespace DatenMeister.Models
             public _CsvSettings @CsvSettings = new _CsvSettings();
             public IElement @__CsvSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.CsvSettings");
 
+            public class _ExcelHierarchicalColumnDefinition
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @metaClass = "metaClass";
+                public IElement? @_metaClass = null;
+
+            }
+
+            public _ExcelHierarchicalColumnDefinition @ExcelHierarchicalColumnDefinition = new _ExcelHierarchicalColumnDefinition();
+            public IElement @__ExcelHierarchicalColumnDefinition = new MofObjectShadow("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition");
+
+            public class _ExcelHierarchicalLoaderConfig
+            {
+                public static string @hierarchicalcolumns = "hierarchicalcolumns";
+                public IElement? @_hierarchicalcolumns = null;
+
+                public static string @fixRowCount = "fixRowCount";
+                public IElement? @_fixRowCount = null;
+
+                public static string @fixColumnCount = "fixColumnCount";
+                public IElement? @_fixColumnCount = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @sheetName = "sheetName";
+                public IElement? @_sheetName = null;
+
+                public static string @offsetRow = "offsetRow";
+                public IElement? @_offsetRow = null;
+
+                public static string @offsetColumn = "offsetColumn";
+                public IElement? @_offsetColumn = null;
+
+                public static string @countRows = "countRows";
+                public IElement? @_countRows = null;
+
+                public static string @countColumns = "countColumns";
+                public IElement? @_countColumns = null;
+
+                public static string @hasHeader = "hasHeader";
+                public IElement? @_hasHeader = null;
+
+                public static string @idColumnName = "idColumnName";
+                public IElement? @_idColumnName = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+            }
+
+            public _ExcelHierarchicalLoaderConfig @ExcelHierarchicalLoaderConfig = new _ExcelHierarchicalLoaderConfig();
+            public IElement @__ExcelHierarchicalLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig");
+
         }
 
         public _ExtentLoaderConfigs ExtentLoaderConfigs = new _ExtentLoaderConfigs();

@@ -1,7 +1,7 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DataViews;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 using DatenMeister.Runtime.Workspaces;
@@ -16,7 +16,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
             
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DataViews.TheOne.__SourceExtentNode);
+                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__SourceExtentNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
@@ -30,13 +30,13 @@ namespace DatenMeister.Modules.DataViews.Evaluation
                 return new PureReflectiveSequence();
             }
             
-            var workspaceName = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.workspace);
+            var workspaceName = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SourceExtentNode.workspace);
             if (string.IsNullOrEmpty(workspaceName))
             {
                 workspaceName = WorkspaceNames.WorkspaceData;
             }
 
-            var extentUri = viewNode.getOrDefault<string>(_DataViews._SourceExtentNode.extentUri);
+            var extentUri = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SourceExtentNode.extentUri);
             var workspace = workspaceLogic.GetWorkspace(workspaceName);
             if (workspace == null)
             {

@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DataViews;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Proxies;
@@ -16,12 +16,12 @@ namespace DatenMeister.Modules.DataViews.Evaluation
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DataViews.TheOne.__FilterTypeNode);
+                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__FilterTypeNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {
-            var inputNode = viewNode.getOrDefault<IElement>(_DataViews._FilterTypeNode.input);
+            var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterTypeNode.input);
             if (inputNode == null)
             {
                 Logger.Warn($"Input node not found");
@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
             var input = evaluation.GetElementsForViewNode(inputNode);
 
-            var type = viewNode.getOrDefault<IElement>(_DataViews._FilterTypeNode.type);
+            var type = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FilterTypeNode.type);
             if (type == null)
             {
                 return new TemporaryReflectiveSequence(input.WhenMetaClassIsNotSet());

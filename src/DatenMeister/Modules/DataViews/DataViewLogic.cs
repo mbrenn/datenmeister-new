@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.DataViews;
+using DatenMeister.Models;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
@@ -34,7 +34,7 @@ namespace DatenMeister.Modules.DataViews
 
         public IEnumerable<IElement> GetDataViewElements()
         {
-            var metaClass = _DataViews.TheOne.__DataView;
+            var metaClass = _DatenMeister.TheOne.DataViews.__DataView;
             
             var managementWorkspace = _workspaceLogic.GetManagementWorkspace();
             foreach (var dataView in managementWorkspace.extent.OfType<IUriExtent>()

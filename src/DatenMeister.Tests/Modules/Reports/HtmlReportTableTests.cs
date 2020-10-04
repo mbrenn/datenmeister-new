@@ -35,14 +35,14 @@ namespace DatenMeister.Tests.Modules.Reports
             extent.elements().add(reportDefinition);
 
             /* Sets the viewnode */
-            var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
-            dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
+            var dynamicViewNode = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
+            dynamicViewNode.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
             extent.elements().add(dynamicViewNode);
             
-            var filterMetaClass = factory.create(_DataViews.TheOne.__FilterTypeNode);
-            filterMetaClass.set(_DataViews._FilterTypeNode.name, "filter");
-            filterMetaClass.set(_DataViews._FilterTypeNode.type, null);
-            filterMetaClass.set(_DataViews._FilterTypeNode.input, dynamicViewNode);
+            var filterMetaClass = factory.create(_DatenMeister.TheOne.DataViews.__FilterTypeNode);
+            filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.name, "filter");
+            filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.type, null);
+            filterMetaClass.set(_DatenMeister._DataViews._FilterTypeNode.input, dynamicViewNode);
             extent.elements().add(filterMetaClass);
 
             /* Create the report paragraph and its corresponding view node */

@@ -1,7 +1,7 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.DataViews;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 
@@ -15,12 +15,12 @@ namespace DatenMeister.Modules.DataViews.Evaluation
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DataViews.TheOne.__DynamicSourceNode);
+                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {          
-            var name = viewNode.getOrDefault<string>(_DataViews._DynamicSourceNode.name);
+            var name = viewNode.getOrDefault<string>(_DatenMeister._DataViews._DynamicSourceNode.name);
             if (name == null)
             {
                 Logger.Warn($"Input node not found");

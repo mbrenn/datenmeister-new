@@ -57,8 +57,8 @@ namespace DatenMeister.Tests.Modules.Reports
             var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.__ReportParagraph);
             reportParagraph.set(_DatenMeister._Reports._ReportParagraph.evalProperties, "if (i.age>18)\r\n v.paragraph=\"over18\"\r\n else\r\n v.paragraph=\"under18\"\r\n end");
 
-            var dynamicViewNode = factory.create(_DataViews.TheOne.__DynamicSourceNode);
-            dynamicViewNode.set(_DataViews._DynamicSourceNode.name, "input");
+            var dynamicViewNode = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
+            dynamicViewNode.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
             extent.elements().add(dynamicViewNode);
             reportParagraph.set(_DatenMeister._Reports._ReportParagraph.viewNode, dynamicViewNode);
             

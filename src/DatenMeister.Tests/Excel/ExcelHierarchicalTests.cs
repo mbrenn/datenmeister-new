@@ -78,7 +78,7 @@ namespace DatenMeister.Tests.Excel
                 );
             */
 
-            loaderConfig.set(_ExcelHierarchicalLoaderConfig.hierarchicalcolumns,
+            loaderConfig.set(_ExcelHierarchicalLoaderConfig.hierarchicalColumns,
                 new[] {definition1, definition2});
             
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);

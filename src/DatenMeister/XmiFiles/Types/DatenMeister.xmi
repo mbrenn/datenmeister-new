@@ -438,6 +438,18 @@
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="ExtentLoaderConfigs" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="277cc881-eab8-4457-88d6-09f89f2f1bbc">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExtentLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9f928238-ab4d-46f4-bcd4-2605fa66edda" name="name" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="d272160f-f807-4131-8b7b-906df1530269" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="c6a6fb84-9688-472c-99cf-daa9db2906ce" />
     </packagedElement>
@@ -542,7 +554,7 @@
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="5b9a3c7e-54bd-4e11-95d0-45a2d31250ab" general-ref="dm:///_internal/types/internal#DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
-      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="12101546-3319-4151-9dc6-d3f73171ac1a" name="hierarchicalcolumns" type-ref="dm:///_internal/types/internal#CommonTypes.ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition" upper="*">
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="12101546-3319-4151-9dc6-d3f73171ac1a" upper="*" name="hierarchicalColumns" type-ref="dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalColumnDefinition">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
         <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
         <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />

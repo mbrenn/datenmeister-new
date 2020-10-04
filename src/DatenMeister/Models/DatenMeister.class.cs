@@ -613,6 +613,9 @@ namespace DatenMeister.Models
         {
             public class _ExtentLoaderConfig
             {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
@@ -656,6 +659,9 @@ namespace DatenMeister.Models
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
 
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
@@ -698,6 +704,9 @@ namespace DatenMeister.Models
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
 
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
@@ -745,6 +754,9 @@ namespace DatenMeister.Models
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
 
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
@@ -764,6 +776,9 @@ namespace DatenMeister.Models
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
 
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
@@ -777,6 +792,9 @@ namespace DatenMeister.Models
 
             public class _InMemoryLoaderConfig
             {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
@@ -796,6 +814,9 @@ namespace DatenMeister.Models
                 public static string @keepNamespaces = "keepNamespaces";
                 public IElement? @_keepNamespaces = null;
 
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
@@ -812,6 +833,9 @@ namespace DatenMeister.Models
                 public static string @filePath = "filePath";
                 public IElement? @_filePath = null;
 
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
 
@@ -827,6 +851,9 @@ namespace DatenMeister.Models
             {
                 public static string @filePath = "filePath";
                 public IElement? @_filePath = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
 
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
@@ -846,6 +873,9 @@ namespace DatenMeister.Models
 
                 public static string @filePath = "filePath";
                 public IElement? @_filePath = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
 
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;
@@ -898,8 +928,8 @@ namespace DatenMeister.Models
 
             public class _ExcelHierarchicalLoaderConfig
             {
-                public static string @hierarchicalcolumns = "hierarchicalcolumns";
-                public IElement? @_hierarchicalcolumns = null;
+                public static string @hierarchicalColumns = "hierarchicalColumns";
+                public IElement? @_hierarchicalColumns = null;
 
                 public static string @fixRowCount = "fixRowCount";
                 public IElement? @_fixRowCount = null;
@@ -930,6 +960,9 @@ namespace DatenMeister.Models
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
 
                 public static string @extentUri = "extentUri";
                 public IElement? @_extentUri = null;

@@ -56,7 +56,7 @@ namespace DatenMeister.Excel.ProviderLoader
 
             /* Gets the definitions */
             var definitions = configuration.getOrDefault<IReflectiveCollection>(
-                    _ExcelHierarchicalLoaderConfig.hierarchicalcolumns)
+                    _ExcelHierarchicalLoaderConfig.hierarchicalColumns)
                 .OfType<IElement>()
                 .ToList();
             

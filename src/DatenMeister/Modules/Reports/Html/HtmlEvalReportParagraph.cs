@@ -1,6 +1,8 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports.Html
@@ -18,6 +20,19 @@ namespace DatenMeister.Modules.Reports.Html
             var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin);
 
             var paragraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.paragraph);
+            
+            // Evaluates the paragraph if required
+            if (reportNode.isSet(_DatenMeister._Reports._ReportParagraph.evalParagraph))
+            {
+                // Dynamic evaluation
+                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element) || element == null) return;
+
+                var evalParagraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.evalParagraph);
+                paragraph = TextTemplateEngine.Parse(
+                    evalParagraph,
+                    new Dictionary<string, object> {["i"] = element});
+            }
+            
             var htmlParagraph = new HtmlParagraph(paragraph);
 
             // Gets the cssClass

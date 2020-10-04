@@ -58,8 +58,6 @@ namespace DatenMeister.SourceGeneration.Console
                 $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
             File.Copy($"./FastViewFilters.dotnet.cs",
                 $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
-            File.Copy($"./DataViews.class.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.class.cs", true);
-            File.Copy($"./DataViews.dotnet.cs", $"{R}/../DatenMeister/Models/DataViews/DataViews.dotnet.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 #endif
         }

@@ -31,6 +31,9 @@ namespace DatenMeister.Excel.Integration
                     mapper.AddMapping(
                         _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig,
                         manager => new ExcelImportLoader());
+                    mapper.AddMapping(
+                        _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalLoaderConfig,
+                        manager => new ExcelHierarchicalLoader());
                     break;
             }
         }

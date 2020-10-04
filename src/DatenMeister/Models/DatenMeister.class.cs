@@ -888,6 +888,9 @@ namespace DatenMeister.Models
                 public static string @metaClass = "metaClass";
                 public IElement? @_metaClass = null;
 
+                public static string @property = "property";
+                public IElement? @_property = null;
+
             }
 
             public _ExcelHierarchicalColumnDefinition @ExcelHierarchicalColumnDefinition = new _ExcelHierarchicalColumnDefinition();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
@@ -12,6 +11,7 @@ using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Reports.Adoc
 {
@@ -28,7 +28,8 @@ namespace DatenMeister.Modules.Reports.Adoc
             var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
             if (viewNode == null)
             {
-                throw new InvalidOperationException("The viewNode is null");
+                throw new InvalidOperationException(
+                    $"The viewNode of the listForm '{NamedElementMethods.GetName(reportNode)}' is null");
             }
             
             var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
@@ -47,31 +48,29 @@ namespace DatenMeister.Modules.Reports.Adoc
             }
             
             // Creates the table
-            var table = new StringBuilder();
-            table.AppendLine("[%header]");
-            table.AppendLine("|===");
+            writer.WriteLine("[%header]");
+            writer.WriteLine("|===");
             
             var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
             foreach (var field in fields.OfType<IElement>())
             {
-                table.Append("|" + field.getOrDefault<string>(_FormAndFields._FieldData.title));
+                writer.Write("|" + field.getOrDefault<string>(_FormAndFields._FieldData.title));
             }
 
-            table.AppendLine(string.Empty);
+            writer.WriteLine(string.Empty);
 
             foreach (var listElement in elements.OfType<IElement>())
             {
                 foreach (var field in fields.OfType<IElement>())
                 {
-                    table.Append("|" + CreateCellForField(listElement, field));
+                    writer.Write("|" + CreateCellForField(listElement, field));
                 }
 
-                table.AppendLine(string.Empty);
-
+                writer.WriteLine(string.Empty);
             }
 
-            table.AppendLine("|===");
-            writer.Write(table.ToString());
+            writer.WriteLine("|===");
+            writer.WriteLine(string.Empty);
         }
         /// <summary>
         /// Creates the cell for a specific element and field

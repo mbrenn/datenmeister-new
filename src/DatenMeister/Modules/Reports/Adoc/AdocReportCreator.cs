@@ -32,6 +32,7 @@ namespace DatenMeister.Modules.Reports.Adoc
             if (!string.IsNullOrEmpty(title))
             {
                 writer.WriteLine($"= {title}");
+                writer.WriteLine(string.Empty);
             }
 
             var evaluators = ScopeStorage.Get<AdocReportEvaluators>();

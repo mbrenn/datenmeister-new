@@ -12,11 +12,14 @@ using DatenMeister.Models;
 using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -100,8 +103,11 @@ namespace DatenMeister.WPF.Modules.ReportManager
                                 configuration.rootElement = result;
                                 var simpleReport = new SimpleReportCreator(workspaceLogic, configuration);
 
-                                var tmpPath = GetRandomWriter(out var streamWriter);
-                                simpleReport.CreateReport(streamWriter);
+                                string tmpPath;
+                                using (var streamWriter = GetRandomWriter(out tmpPath))
+                                {
+                                    simpleReport.CreateReport(streamWriter);
+                                }
 
                                 DotNetHelper.CreateProcess(tmpPath);
                             }
@@ -123,24 +129,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         {
                             var reportGenerator =
                                 new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                            var sources = reportGenerator.EvaluateSources(y);
-                            foreach (var source in sources)
-                            {
-                                reportGenerator.AddSource(source.Name, source.Collection);
-                            }
-
-                            var reportDefinition =
-                                y.getOrDefault<IElement>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
-                            if (reportDefinition == null)
-                            {
-                                MessageBox.Show("The report is not found");
-                                return;
-                            }
-
-                            var filePath = GetRandomWriter(out var writer);
-                            reportGenerator.GenerateReportByDefinition(reportDefinition, writer);
-
-                            DotNetHelper.CreateProcess(filePath);
+                            CreateReportWithDefinition(reportGenerator, y, ".html");
                         });
             }
         }
@@ -155,11 +144,44 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 yield return
                     new RowItemButtonDefinition(
                         "Create Report",
-                        (x, y) =>
+                        (x, definition) =>
                         {
-                            MessageBox.Show("ADOC");
+                            var reportGenerator =
+                                new AdocReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+                            CreateReportWithDefinition(reportGenerator, definition, ".adoc");
                         });
             }
+        }
+        
+        /// <summary>
+        /// Creates a report with the given definition 
+        /// </summary>
+        /// <param name="reportGenerator">Report generator to be used</param>
+        /// <param name="definition">Definition to be used for the report</param>
+        /// <param name="extension">Extension of the file to be used</param>
+        private static void CreateReportWithDefinition(ReportCreator reportGenerator, IObject definition, string extension)
+        {
+            var sources = reportGenerator.EvaluateSources(definition);
+            foreach (var source in sources)
+            {
+                reportGenerator.AddSource(source.Name, source.Collection);
+            }
+
+            var reportDefinition =
+                definition.getOrDefault<IElement>(_DatenMeister._Reports._HtmlReportInstance.reportDefinition);
+            if (reportDefinition == null)
+            {
+                MessageBox.Show($"The report is not found: {NamedElementMethods.GetName(definition)}");
+                return;
+            }
+
+            string tmpPath;
+            using (var streamWriter = GetRandomWriter(out tmpPath, extension))
+            {
+                reportGenerator.GenerateReportByDefinition(reportDefinition, streamWriter);
+            }
+
+            DotNetHelper.CreateProcess(tmpPath);
         }
 
         private IEnumerable<ViewExtension> OfferSimpleReportsInExplorer(ViewExtensionInfo viewExtensionInfo)
@@ -247,20 +269,21 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
             simpleReportConfiguration.rootElement = rootElement;
 
-            var tmpPath = GetRandomWriter(out var streamWriter);
-
-            var reportCreator = new SimpleReportCreator(GiveMe.Scope.WorkspaceLogic, simpleReportConfiguration);
-            reportCreator.CreateReport(streamWriter);
+            string tmpPath;
+            using (var streamWriter = GetRandomWriter(out tmpPath))
+            {
+                var reportCreator = new SimpleReportCreator(GiveMe.Scope.WorkspaceLogic, simpleReportConfiguration);
+                reportCreator.CreateReport(streamWriter);
+            }
 
             DotNetHelper.CreateProcess(tmpPath);
         }
 
-        private static string GetRandomWriter(out StreamWriter streamWriter)
+        private static StreamWriter GetRandomWriter(out string tmpPath, string extension = ".html")
         {
             var id = StringManipulation.RandomString(10);
-            var tmpPath = Path.Combine(Path.GetTempPath(), id + ".html");
-            streamWriter = new StreamWriter(tmpPath, false, Encoding.UTF8);
-            return tmpPath;
+            tmpPath = Path.Combine(Path.GetTempPath(), id + extension);
+            return new StreamWriter(tmpPath, false, Encoding.UTF8);
         }
 
         /// <summary>

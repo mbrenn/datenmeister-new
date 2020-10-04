@@ -80,6 +80,25 @@ namespace DatenMeister.Models
 
             public _ExtentManager ExtentManager = new _ExtentManager();
 
+            public class _OSIntegration
+            {
+                public class _CommandLineApplication
+                {
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                    public static string @applicationPath = "applicationPath";
+                    public IElement? @_applicationPath = null;
+
+                }
+
+                public _CommandLineApplication @CommandLineApplication = new _CommandLineApplication();
+                public IElement @__CommandLineApplication = new MofObjectShadow("dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication");
+
+            }
+
+            public _OSIntegration OSIntegration = new _OSIntegration();
+
         }
 
         public _CommonTypes CommonTypes = new _CommonTypes();

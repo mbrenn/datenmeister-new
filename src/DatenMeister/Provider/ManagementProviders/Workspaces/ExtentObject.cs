@@ -15,6 +15,14 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         {
             MetaclassUriPath = ((MofObjectShadow) _ManagementProvider.TheOne.__Extent).Uri;
         }
+        
+        /// <summary>
+        /// /Gets the information 
+        /// </summary>
+        public ExtentStorageData.LoadedExtentInformation? LoadedExtentInformation
+        {
+            get;
+        }
 
         public ExtentObject(
             ExtentOfWorkspaceProvider provider,
@@ -28,6 +36,8 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 ?? uriExtent?.contextURI() ?? throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"), 
                 MetaclassUriPath)
         {
+            LoadedExtentInformation = loadedExtentInformation;
+            
             AddMapping(
                 _ManagementProvider._Extent.uri,
                 e => loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri) ?? uriExtent?.contextURI() ?? "Invalid Uri",

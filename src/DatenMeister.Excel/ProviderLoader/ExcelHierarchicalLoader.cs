@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -76,6 +77,8 @@ namespace DatenMeister.Excel.ProviderLoader
                 var skipItem = false;
                 var current = tempExtent.elements();
                 IElement lastCreated = null;
+                var idBuilder = new StringBuilder();
+                var firstDefinition = true;
 
                 foreach (var definition in definitions)
                 {
@@ -89,6 +92,13 @@ namespace DatenMeister.Excel.ProviderLoader
                     }
 
                     var cellContent = excelImporter.GetCellContent(r, indexOfName);
+                    
+                    // Creates the idBuilder
+                    if (!firstDefinition) idBuilder.Append(".");
+                    idBuilder.Append(cellContent);
+                    firstDefinition = false;
+                    
+                    // Checks content
                     if (string.IsNullOrEmpty(cellContent))
                     {
                         // Skips the item, if the navigation cannot be completed
@@ -104,10 +114,16 @@ namespace DatenMeister.Excel.ProviderLoader
                         newCurrent = factory.create(metaClass);
                         newCurrent.set("name", cellContent);
                         current.add(newCurrent);
+                        
+                        if (newCurrent is ICanSetId canSetId)
+                        {
+                            canSetId.Id = idBuilder.ToString();
+                        }
                     }
 
                     lastCreated = newCurrent;
                     current = newCurrent.get<IReflectiveSequence>(property);
+                    
                 }
 
                 if (skipItem || lastCreated == null)
@@ -127,6 +143,9 @@ namespace DatenMeister.Excel.ProviderLoader
                 if (!skipElementsForLastLevel)
                 {
                     current.add(item);
+                }
+                else
+                {
                 }
             }
 

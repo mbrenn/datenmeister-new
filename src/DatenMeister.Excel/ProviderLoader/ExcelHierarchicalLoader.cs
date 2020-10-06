@@ -46,6 +46,8 @@ namespace DatenMeister.Excel.ProviderLoader
                 configuration.getOrDefault<int>(_ExcelHierarchicalLoaderConfig.countRows);
             var countColumns =
                 configuration.getOrDefault<int>(_ExcelHierarchicalLoaderConfig.countColumns);
+            var skipElementsForLastLevel =
+                configuration.getOrDefault<bool>(_ExcelHierarchicalLoaderConfig.skipElementsForLastLevel);
 
             var excelImporter = new ExcelImporter(configuration);
             excelImporter.LoadExcel();
@@ -63,11 +65,17 @@ namespace DatenMeister.Excel.ProviderLoader
                     _ExcelHierarchicalLoaderConfig.hierarchicalColumns)
                 .OfType<IElement>()
                 .ToList();
+
+            var definitionColumns = definitions
+                .Select(
+                    definition => definition.getOrDefault<string>(_ExcelHierarchicalColumnDefinition.name))
+                .ToList();
             
             for (var r = 0; r < countRows; r++)
             {
                 var skipItem = false;
                 var current = tempExtent.elements();
+                IElement lastCreated = null;
 
                 foreach (var definition in definitions)
                 {
@@ -98,24 +106,28 @@ namespace DatenMeister.Excel.ProviderLoader
                         current.add(newCurrent);
                     }
 
+                    lastCreated = newCurrent;
                     current = newCurrent.get<IReflectiveSequence>(property);
                 }
 
-                if (skipItem)
+                if (skipItem || lastCreated == null)
                 {
                     continue;
                 }
-
-                var item = factory.create(null);
+    
+                var item = skipElementsForLastLevel ? lastCreated : factory.create(null);
                 for (var c = 0; c < countColumns; c++)
                 {
                     var columnName = columnNames[c];
-                    if (columnName == null) continue;
+                    if (columnName == null || definitionColumns.Contains(columnName)) continue;
                     
                     item.set(columnName, excelImporter.GetCellContent(r, c));
                 }
 
-                current.add(item);
+                if (!skipElementsForLastLevel)
+                {
+                    current.add(item);
+                }
             }
 
             return new LoadedProviderInfo(provider);

@@ -659,6 +659,9 @@ namespace DatenMeister.Models
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
 
+                public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+                public IElement? @_skipEmptyRowsCount = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -704,6 +707,9 @@ namespace DatenMeister.Models
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
+
+                public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+                public IElement? @_skipEmptyRowsCount = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;
@@ -753,6 +759,9 @@ namespace DatenMeister.Models
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
+
+                public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+                public IElement? @_skipEmptyRowsCount = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;
@@ -960,6 +969,9 @@ namespace DatenMeister.Models
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
+
+                public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
+                public IElement? @_skipEmptyRowsCount = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;

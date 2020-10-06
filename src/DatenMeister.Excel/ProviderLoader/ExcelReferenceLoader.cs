@@ -52,6 +52,7 @@ namespace DatenMeister.Excel.ProviderLoader
         {
             loaderConfig = ObjectCopier.CopyForTemporary(loaderConfig) as IElement
                 ?? throw new InvalidOperationException("Element is not of type IElement");
+            
             var factory = new MofFactory(extent);
             var fixColumnCount =
                 loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig

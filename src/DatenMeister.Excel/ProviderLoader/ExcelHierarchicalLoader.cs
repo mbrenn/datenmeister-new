@@ -9,6 +9,7 @@ using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
@@ -24,6 +25,9 @@ namespace DatenMeister.Excel.ProviderLoader
 
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
+            configuration = ObjectCopier.CopyForTemporary(configuration) as IElement
+                            ?? throw new InvalidOperationException("Element is not of type IElement");
+
             if (WorkspaceLogic == null) throw new InvalidOperationException("WorkspaceLogic == null");
             
             var filePath =
@@ -62,6 +66,7 @@ namespace DatenMeister.Excel.ProviderLoader
             
             for (var r = 0; r < countRows; r++)
             {
+                var skipItem = false;
                 var current = tempExtent.elements();
 
                 foreach (var definition in definitions)
@@ -76,6 +81,12 @@ namespace DatenMeister.Excel.ProviderLoader
                     }
 
                     var cellContent = excelImporter.GetCellContent(r, indexOfName);
+                    if (string.IsNullOrEmpty(cellContent))
+                    {
+                        // Skips the item, if the navigation cannot be completed
+                        skipItem = true;
+                        break;
+                    }
 
                     var newCurrent = 
                         current.WhenPropertyHasValue("name", cellContent).OfType<IElement>()
@@ -88,6 +99,11 @@ namespace DatenMeister.Excel.ProviderLoader
                     }
 
                     current = newCurrent.get<IReflectiveSequence>(property);
+                }
+
+                if (skipItem)
+                {
+                    continue;
                 }
 
                 var item = factory.create(null);

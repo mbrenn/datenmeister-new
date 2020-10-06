@@ -29,9 +29,13 @@ namespace DatenMeister.Excel.Helper
         public void LoadExcel()
         {
             _excelDocument = SSDocument.LoadFromFile(LoaderConfig.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.filePath));
-            LoaderConfig.set(
-                _DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName,
-                _excelDocument.Tables.FirstOrDefault()?.Name);
+
+            if (!LoaderConfig.isSet(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName))
+            {
+                LoaderConfig.set(
+                    _DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.sheetName,
+                    _excelDocument.Tables.FirstOrDefault()?.Name);
+            }
         }
 
         /// <summary>
@@ -156,6 +160,8 @@ namespace DatenMeister.Excel.Helper
                 LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.countRows);
             var xFitRowCount =
                 LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.fixRowCount);
+            var xSkipEmptyRows =
+                LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.skipEmptyRowsCount);
             
             var hasHeaderRows = xHasHeader;
             var foundSheet = GetSelectedSheet();
@@ -164,10 +170,20 @@ namespace DatenMeister.Excel.Helper
 
             var offsetRow = hasHeaderRows ? xOffsetRow + 1 : xOffsetRow;
             var n = 0;
+            var skippedRows = 0;
             while (true)
             {
                 var content = foundSheet.GetCellContent(offsetRow + n, xOffsetColumn);
                 if (string.IsNullOrEmpty(content))
+                {
+                    skippedRows++;
+                }
+                else
+                {
+                    skippedRows = 0;
+                }
+
+                if (skippedRows > xSkipEmptyRows)
                 {
                     break;
                 }

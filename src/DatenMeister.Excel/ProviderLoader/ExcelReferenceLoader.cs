@@ -73,6 +73,7 @@ namespace DatenMeister.Excel.ProviderLoader
             for (var r = 0; r < countRows; r++)
             {
                 var item = factory.create(null);
+                var contentInElement = false;
                 for (var c = 0; c < countColumns; c++)
                 {
                     var columnName = columnNames[c];
@@ -82,10 +83,19 @@ namespace DatenMeister.Excel.ProviderLoader
                         continue;
                     }
 
+                    var cellContent = excelImporter.GetCellContent(r, c);
+                    if (!string.IsNullOrEmpty(cellContent))
+                    {
+                        contentInElement = true;
+                    }
+                    
                     item.set(columnName, excelImporter.GetCellContent(r, c));
                 }
 
-                extent.elements().add(item);
+                if (contentInElement)
+                {
+                    extent.elements().add(item);
+                }
             }
         }
 

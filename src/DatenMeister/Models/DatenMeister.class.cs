@@ -940,6 +940,9 @@ namespace DatenMeister.Models
                 public static string @hierarchicalColumns = "hierarchicalColumns";
                 public IElement? @_hierarchicalColumns = null;
 
+                public static string @skipElementsForLastLevel = "skipElementsForLastLevel";
+                public IElement? @_skipElementsForLastLevel = null;
+
                 public static string @fixRowCount = "fixRowCount";
                 public IElement? @_fixRowCount = null;
 

@@ -7,6 +7,7 @@ using DatenMeister.Models;
 using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -49,6 +50,8 @@ namespace DatenMeister.Excel.ProviderLoader
         /// <param name="loaderConfig">Element of ExcelLoaderConfig</param>
         internal static void ImportExcelIntoExtent(MofExtent extent, IElement loaderConfig)
         {
+            loaderConfig = ObjectCopier.CopyForTemporary(loaderConfig) as IElement
+                ?? throw new InvalidOperationException("Element is not of type IElement");
             var factory = new MofFactory(extent);
             var fixColumnCount =
                 loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig

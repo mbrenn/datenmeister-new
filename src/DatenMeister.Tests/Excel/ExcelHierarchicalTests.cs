@@ -67,16 +67,6 @@ namespace DatenMeister.Tests.Excel
                         [_ExcelHierarchicalColumnDefinition.property] = "player"
                     }
                 );
-            /*var definition3 = InMemoryObject.CreateEmpty(
-                    _DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelHierarchicalColumnDefinition)
-                .SetProperties(new Dictionary<string, object>
-                    {
-                        [_ExcelHierarchicalColumnDefinition.name] = "Spieler",
-                        [_ExcelHierarchicalColumnDefinition.metaClass] = type3,
-                        [_ExcelHierarchicalColumnDefinition.property] = ""
-                    }
-                );
-            */
 
             loaderConfig.set(_ExcelHierarchicalLoaderConfig.hierarchicalColumns,
                 new[] {definition1, definition2});

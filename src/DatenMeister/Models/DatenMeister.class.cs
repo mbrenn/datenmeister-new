@@ -381,6 +381,9 @@ namespace DatenMeister.Models
 
             public class _DynamicSourceNode
             {
+                public static string @nodeName = "nodeName";
+                public IElement? @_nodeName = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

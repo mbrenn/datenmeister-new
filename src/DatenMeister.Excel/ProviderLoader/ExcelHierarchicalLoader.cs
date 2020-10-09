@@ -123,7 +123,6 @@ namespace DatenMeister.Excel.ProviderLoader
 
                     lastCreated = newCurrent;
                     current = newCurrent.get<IReflectiveSequence>(property);
-                    
                 }
 
                 if (skipItem || lastCreated == null)

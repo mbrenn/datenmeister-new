@@ -410,7 +410,8 @@ namespace DatenMeister.Runtime.ExtentStorage
 
         /// <summary>
         /// Detaches the extent by removing it from the database of loaded extents.
-        /// The extent will also be unlocked
+        /// The extent will also be unlocked. This method does not remove the extent from
+        /// the workspaces.
         /// </summary>
         /// <param name="extent"></param>
         /// <param name="doStore">true, if the values shall be stored into the database</param>
@@ -435,6 +436,21 @@ namespace DatenMeister.Runtime.ExtentStorage
             }
 
             VerifyDatabaseContent();
+        }
+
+        /// <summary>
+        /// Removes the extent by specifying workspace id and uri extent.
+        /// The extent will be completely removed from database including WorkspaceLogic
+        /// </summary>
+        /// <param name="workspaceId"></param>
+        /// <param name="extentUri"></param>
+        public void RemoveExtent(string workspaceId, string extentUri)
+        {
+            var extent = WorkspaceLogic.FindExtent(workspaceId, extentUri);
+            if (extent != null)
+            {
+                RemoveExtent(extent);
+            }
         }
 
         /// <summary>

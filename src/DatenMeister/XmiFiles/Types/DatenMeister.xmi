@@ -220,6 +220,18 @@
       <generalization p2:type="dm:///_internal/model/uml#Generalization" p2:id="abe39d1e-e793-4f46-9410-3eed2615ee08" general-ref="dm:///_internal/types/internal#Actions.Action">
         <isSubstitutable href="dm:///_internal/model/uml#Generalization-isSubstitutable-_defaultValue" />
       </generalization>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="c1753150-4870-49ed-8a05-95a3b94455ce" name="dropExisting" type-ref="dm:///_internal/model/primitivetypes#Boolean">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="c870f6e8-2b70-415c-afaf-b78776b42a09" name="DropExtentAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />

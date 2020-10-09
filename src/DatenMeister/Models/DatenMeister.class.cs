@@ -181,6 +181,9 @@ namespace DatenMeister.Models
                 public static string @configuration = "configuration";
                 public IElement? @_configuration = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

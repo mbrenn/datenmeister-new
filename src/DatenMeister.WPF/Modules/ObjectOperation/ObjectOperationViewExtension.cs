@@ -26,26 +26,26 @@ namespace DatenMeister.WPF.Modules.ObjectOperation
             if (viewExtensionInfo.GetItemExplorerControl() != null)
             {
                 yield return new TreeViewItemCommandDefinition(
-                    "New...",
+                    "New Object...",
                     async (x) => { await NewItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
                 
                 yield return new TreeViewItemCommandDefinition(
-                    "Move...",
+                    "Move Object...",
                     async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Copy...",
+                    "Copy Object...",
                     async (x) => { await CopyItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                        "Edit...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x.Element); }
+                        "Edit Object...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x.Element); }
                     ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Delete...", (x) => { DeleteItem(x); }
+                    "Delete Object...", DeleteItem
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(

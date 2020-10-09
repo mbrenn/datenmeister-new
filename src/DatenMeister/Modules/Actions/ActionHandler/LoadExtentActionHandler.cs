@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
@@ -18,6 +19,15 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         {
             var configuration =
                 action.getOrDefault<IElement>(_DatenMeister._Actions._LoadExtentAction.configuration);
+            var extentUri =
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri);
+            var workspaceId =
+                configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.workspaceId)
+                ?? WorkspaceNames.WorkspaceData;
+
+            var dropExisting =
+                action.getOrDefault<bool>(_DatenMeister._Actions._LoadExtentAction.dropExisting);
+            
 
             if (configuration == null)
             {
@@ -25,6 +35,11 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             }
             
             var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+            if (dropExisting)
+            {
+                extentManager.RemoveExtent(workspaceId, extentUri);
+            }
+            
             extentManager.LoadExtent(
                 configuration, 
                 ExtentCreationFlags.LoadOrCreate);

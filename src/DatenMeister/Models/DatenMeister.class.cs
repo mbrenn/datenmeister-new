@@ -237,6 +237,50 @@ namespace DatenMeister.Models
             public _DropWorkspaceAction @DropWorkspaceAction = new _DropWorkspaceAction();
             public IElement @__DropWorkspaceAction = new MofObjectShadow("dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8");
 
+            public class _CopyElementsAction
+            {
+                public static string @sourcePath = "sourcePath";
+                public IElement? @_sourcePath = null;
+
+                public static string @targetPath = "targetPath";
+                public IElement? @_targetPath = null;
+
+                public static string @moveOnly = "moveOnly";
+                public IElement? @_moveOnly = null;
+
+                public static string @sourceWorkspace = "sourceWorkspace";
+                public IElement? @_sourceWorkspace = null;
+
+                public static string @targetWorkspace = "targetWorkspace";
+                public IElement? @_targetWorkspace = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _CopyElementsAction @CopyElementsAction = new _CopyElementsAction();
+            public IElement @__CopyElementsAction = new MofObjectShadow("dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed");
+
+            public class _ExportToXmiAction
+            {
+                public static string @sourcePath = "sourcePath";
+                public IElement? @_sourcePath = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _ExportToXmiAction @ExportToXmiAction = new _ExportToXmiAction();
+            public IElement @__ExportToXmiAction = new MofObjectShadow("dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863");
+
         }
 
         public _Actions Actions = new _Actions();

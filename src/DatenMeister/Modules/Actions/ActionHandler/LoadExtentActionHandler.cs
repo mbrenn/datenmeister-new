@@ -28,7 +28,6 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             var dropExisting =
                 action.getOrDefault<bool>(_DatenMeister._Actions._LoadExtentAction.dropExisting);
             
-
             if (configuration == null)
             {
                 throw new InvalidOperationException("No configuration is set");

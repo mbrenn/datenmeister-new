@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
@@ -28,7 +29,8 @@ namespace DatenMeister.WPF.Modules.Actions
                         var actionLogic = new ActionLogic(
                             GiveMe.Scope.WorkspaceLogic,
                             GiveMe.Scope.ScopeStorage);
-                        await actionLogic.ExecuteActionSet(asElement);
+                        var result = await actionLogic.ExecuteActionSet(asElement);
+                        MessageBox.Show($"{result.NumberOfActions:n0} action were executed.");
                     });
             }
         }

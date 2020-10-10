@@ -15,6 +15,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
     public class ExportToXmiActionHandler : IActionHandler
     {
         private static readonly ILogger logger = new ClassLogger(typeof(ExportToXmiActionHandler));
+        
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(

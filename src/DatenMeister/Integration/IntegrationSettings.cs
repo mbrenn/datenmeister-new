@@ -1,4 +1,6 @@
-﻿using DatenMeister.Runtime.Plugins;
+﻿using System;
+using System.IO;
+using DatenMeister.Runtime.Plugins;
 
 #nullable enable
 
@@ -58,6 +60,26 @@ namespace DatenMeister.Integration
         public IntegrationSettings()
         {
             DatabasePath = GiveMe.DefaultDatabasePath;
+        }
+
+
+        /// <summary>
+        /// Normalizes the directory path by using the integration settings.
+        /// The normalization is done by using the following steps
+        ///
+        /// 1) First, the environmental settings are included
+        /// 2) Second, the relative path is moved to absolute path
+        /// </summary>
+        /// <param name="directoryPath">Directory path to be normalized</param>
+        /// <returns>The normalized directory path</returns>
+        public string NormalizeDirectoryPath(string directoryPath)
+        {
+            if (!Path.IsPathRooted(directoryPath))
+            {
+                directoryPath = Path.Combine(DatabasePath, directoryPath);
+            }
+
+            return Environment.ExpandEnvironmentVariables(directoryPath);
         }
     }
 }

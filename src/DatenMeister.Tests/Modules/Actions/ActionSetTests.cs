@@ -13,7 +13,7 @@ using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.Modules
+namespace DatenMeister.Tests.Modules.Actions
 {
     [TestFixture]
     public class ActionSetTests
@@ -21,13 +21,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestActionSetExecution()
         {
-            var scopeStorage = new ScopeStorage();
-            scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
-            scopeStorage.Add(WorkspaceLogic.InitDefault());
-
-            var workspaceLogic = new WorkspaceLogic(scopeStorage);
-
-            var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
+            var actionLogic = CreateActionLogic();
 
             var actionSet = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionSet) as IElement;
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoggingWriterAction) as IElement;
@@ -39,6 +33,22 @@ namespace DatenMeister.Tests.Modules
             actionLogic.ExecuteActionSet(actionSet).Wait();
 
             Assert.That(LoggingWriterActionHandler.LastMessage.Contains("zyx"), Is.True);
+        }
+
+        /// <summary>
+        /// Creates the action logic for the test execution
+        /// </summary>
+        /// <returns></returns>
+        public static ActionLogic CreateActionLogic()
+        {
+            var scopeStorage = new ScopeStorage();
+            scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
+            scopeStorage.Add(WorkspaceLogic.InitDefault());
+
+            var workspaceLogic = new WorkspaceLogic(scopeStorage);
+
+            var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
+            return actionLogic;
         }
 
         [Test]

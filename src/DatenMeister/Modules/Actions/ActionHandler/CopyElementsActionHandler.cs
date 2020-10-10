@@ -8,6 +8,7 @@ using DatenMeister.Models;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
@@ -23,9 +24,11 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
             var sourceWorkspaceId =
-                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.sourceWorkspace);
+                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.sourceWorkspace)
+                ?? WorkspaceNames.WorkspaceData;
             var targetWorkspaceId =
-                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.targetWorkspace);
+                action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.targetWorkspace)
+                ?? WorkspaceNames.WorkspaceData;;
             var sourcePath =
                 action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.sourcePath);
             var targetPath =

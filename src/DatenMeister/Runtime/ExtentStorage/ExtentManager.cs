@@ -102,7 +102,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                          && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
                 {
                     throw new InvalidOperationException(
-                        $"There is already the extent loaded with extenturi: {extentUri}");
+                        $"There is already the extent loaded with extentUri: {extentUri}");
                 }
             }
 
@@ -169,13 +169,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             if (configuration.isSet(_ExtentFileLoaderConfig.filePath))
             {
                 var filePath =
-                    configuration.getOrDefault<string>(_ExtentFileLoaderConfig
-                        .filePath);
-                if (filePath != null && !Path.IsPathRooted(filePath))
-                {
-                    filePath = Path.Combine(_integrationSettings.DatabasePath, filePath);
-                }
-
+                    configuration.getOrDefault<string>(_ExtentFileLoaderConfig.filePath);
+                _integrationSettings.NormalizeDirectoryPath(filePath);
                 configuration.set(_ExtentFileLoaderConfig.filePath, filePath);
 
                 if (Directory.Exists(filePath))

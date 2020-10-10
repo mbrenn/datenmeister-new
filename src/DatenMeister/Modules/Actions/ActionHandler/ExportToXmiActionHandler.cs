@@ -3,10 +3,12 @@ using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
@@ -21,9 +23,13 @@ namespace DatenMeister.Modules.Actions.ActionHandler
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
+            var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
             var sourcePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourcePath);
             var filePath = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.filePath);
-            var workspaceId = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.workspaceId);
+            filePath = integrationSettings.NormalizeDirectoryPath(filePath);
+
+            var workspaceId = action.getOrDefault<string>(_DatenMeister._Actions._ExportToXmiAction.sourceWorkspaceId)
+                              ?? WorkspaceNames.WorkspaceData;
             
             var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);
             if (workspace == null)
@@ -33,6 +39,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 
                 throw new InvalidOperationException(message);
             }
+            
             var sourceElement = workspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
             if (sourceElement == null)
             {
@@ -47,7 +54,6 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             
             var document = new XDocument();
             var tempExtent = new MofUriExtent(new XmiProvider(document));
-            
             
             // Now do the copying. it makes us all happy
             var extentCopier = new ExtentCopier(new MofFactory(tempExtent));

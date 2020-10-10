@@ -132,7 +132,7 @@ namespace DatenMeister.Runtime
             var property = queryString.Get("prop");
             if (property != null && foundItem is MofElement mofElement)
             {
-                foundItem = mofElement.getOrDefault<IReflectiveCollection>(property);
+                foundItem = mofElement.get<IReflectiveCollection>(property);
             }
             
             // Now check whether we have a dataview

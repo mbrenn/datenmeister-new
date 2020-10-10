@@ -170,7 +170,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 var filePath =
                     configuration.getOrDefault<string>(_ExtentFileLoaderConfig.filePath);
-                _integrationSettings.NormalizeDirectoryPath(filePath);
+                filePath = _integrationSettings.NormalizeDirectoryPath(filePath);
                 configuration.set(_ExtentFileLoaderConfig.filePath, filePath);
 
                 if (Directory.Exists(filePath))

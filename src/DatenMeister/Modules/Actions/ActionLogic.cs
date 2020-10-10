@@ -79,7 +79,16 @@ namespace DatenMeister.Modules.Actions
                 if (actionHandler.IsResponsible(action))
                 {
                     await Task.Run(() =>
-                        actionHandler.Evaluate(this, action));
+                    {
+                        try
+                        {
+                            actionHandler.Evaluate(this, action);
+                        }
+                        catch (Exception exc)
+                        {
+                            ClassLogger.Error(exc.ToString());
+                        }
+                    });
                     found = true;
                 }
             }

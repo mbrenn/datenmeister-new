@@ -30,7 +30,8 @@ namespace DatenMeister.Tests
         /// Gets the DatenMeister Scope for the testing
         /// </summary>
         /// <returns></returns>
-        public static IDatenMeisterScope GetDatenMeisterScope(bool dropDatabase = true,
+        public static IDatenMeisterScope GetDatenMeisterScope(
+            bool dropDatabase = true,
             IntegrationSettings integrationSettings = null)
         {
             TheLog.ClearProviders();

@@ -6,6 +6,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Workspaces;
@@ -20,6 +21,9 @@ namespace DatenMeister.Excel.ProviderLoader
 
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
+            configuration = ObjectCopier.CopyForTemporary(configuration) as IElement
+                            ?? throw new InvalidOperationException("Element is not of type IElement");
+            
             var extentManager = new ExtentManager(
                 WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"),
                 ScopeStorage ?? throw new InvalidOperationException("ScopeStorage == null"));

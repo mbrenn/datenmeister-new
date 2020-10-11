@@ -20,6 +20,7 @@ using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.View;
+using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
@@ -240,6 +241,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void DeleteExtent(INavigationGuest guest, IObject element)
             {
+                var extentObject = (element as MofElement)?.ProviderObject as ExtentObject;
                 var uri = element.getOrDefault<string>("uri");
                 if (MessageBox.Show(
                     $"Are you sure, you would like to delete the extent '{uri}'?",
@@ -255,6 +257,13 @@ namespace DatenMeister.WPF.Forms.Lists
                     {
                         extentManager.RemoveExtent(extentToBeDeleted);
                     }
+
+                    if (extentObject?.LoadedExtentInformation != null)
+                    {
+                        extentManager.RemoveExtent(extentObject.LoadedExtentInformation);
+                    }
+                    
+                    guest.UpdateForm();
                 }
             }
 

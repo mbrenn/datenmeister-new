@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Excel
             var excelExtent = dm.LoadExcel("d:///excel", Path.Combine(currentDirectory, "Excel/Quadratzahlen.xlsx"));
 
             Console.WriteLine(excelExtent.ToString());
-            foreach (var sheet in excelExtent.GetRootObjects())
+            foreach (var sheet in excelExtent.GetRootObjects().Take(1))
             {
                 var allProperties = ((IEnumerable<object>) sheet.GetProperty("items")).First() as IProviderObject;
                 Assert.That(sheet.GetProperty("name").ToString(), Is.EqualTo("Tabelle1"));
@@ -99,6 +99,54 @@ namespace DatenMeister.Tests.Excel
                 Assert.That(value1, Is.EqualTo(2));
                 Assert.That(value2, Is.EqualTo(4));
             }
+        }
+
+        [Test]
+        public void PerformExcelTestSkipRows()
+        {
+            using var dm = DatenMeisterTests.GetDatenMeisterScope();
+            
+            var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var excelReferenceSettings =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelReferenceLoaderConfig);
+            excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+                "dm:///excel2");
+            excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.filePath,
+                Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
+            excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.hasHeader,
+                true);
+            excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
+                "Tabelle2");
+            excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+                0);
+
+            var extentManager = dm.Resolve<ExtentManager>();
+            var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
+            Assert.That(loadedExtent.Extent, Is.Not.Null);
+            Assert.That(loadedExtent.Extent!.elements().Count(), Is.LessThan(40));
+            
+            
+            var excelReferenceSettings2 =
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelReferenceLoaderConfig);
+            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+                "dm:///excel2");
+            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.filePath,
+                Path.Combine(currentDirectory!, "Excel/Quadratzahlen.xlsx"));
+            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.hasHeader,
+                true);
+            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
+                "Tabelle2");
+            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+                0);
+            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.extentUri,
+                "dm:///excel3");
+            excelReferenceSettings2.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
+                5);
+
+            var loadedExtent2 = extentManager.LoadExtent(excelReferenceSettings2, ExtentCreationFlags.LoadOrCreate);
+            Assert.That(loadedExtent2.Extent, Is.Not.Null);
+            Assert.That(loadedExtent2.Extent!.elements().Count(), Is.GreaterThan(40));
+            dm.UnuseDatenMeister();
         }
 
         [Test]

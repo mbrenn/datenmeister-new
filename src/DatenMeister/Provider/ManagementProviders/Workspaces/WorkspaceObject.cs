@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Models;
 using DatenMeister.Models.ManagementProviders;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.ExtentStorage;
+using static DatenMeister.Models._DatenMeister._ExtentLoaderConfigs;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
@@ -34,23 +39,49 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
             AddMapping(
                 _ManagementProvider._Workspace.extents,
-                w => w.extent.Select(x =>
+                w =>
                 {
-                    if (!(x is IUriExtent asUriExtent))
-                    {
-                        return null;
+                    var result = new List<ExtentObject?>();
 
+                    // Gets all the extents which are actively loaded
+                    result.AddRange(
+                        w.extent.Select(x =>
+                        {
+                            if (!(x is IUriExtent asUriExtent))
+                            {
+                                return null;
+                            }
+
+                            var loadedExtentInformation =
+                                provider.ExtentManager.GetLoadedExtentInformation(asUriExtent);
+                            if (loadedExtentInformation != null)
+                            {
+                                return new ExtentObject(provider, workspace, asUriExtent, loadedExtentInformation);
+                            }
+
+                            return new ExtentObject(provider, workspace, asUriExtent, null);
+                        }).Where(x => x != null));
+
+                    var copyResult = result.ToList();
+
+                    // Gets all the extent which are registered but are not actively loaded.
+                    // These one might be in error, unloaded state or other states
+                    foreach (var loadedExtent in
+                        provider.ExtentManager.GetLoadedExtentInformationForWorkspace(w.id))
+                    {
+                        if (copyResult.Any(x =>
+                            x?.LoadedExtentInformation?.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri) ==
+                            loadedExtent.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)))
+                        {
+                            continue;
+                        }
+                        
+                        result.Add(new ExtentObject(
+                            provider, workspace, null, loadedExtent));
                     }
 
-                    var loadedExtentInformation = provider.ExtentManager.GetLoadedExtentInformation(asUriExtent);
-                    if (loadedExtentInformation != null)
-                    {
-                        return new ExtentObject(provider, workspace, asUriExtent, loadedExtentInformation);
-                    }
-
-                    return new ExtentObject(provider, workspace, asUriExtent, null);
-
-                }).Where(x => x != null),
+                    return result;
+                },
                 (w, v) => throw new InvalidOperationException("Extent cannot be set"));
         }
 

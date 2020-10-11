@@ -21,13 +21,16 @@ namespace DatenMeister.Modules.DataViews.Evaluation
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
         {          
             var name = viewNode.getOrDefault<string>(_DatenMeister._DataViews._DynamicSourceNode.name);
-            if (name == null)
+            var nodeName = viewNode.getOrDefault<string>(_DatenMeister._DataViews._DynamicSourceNode.nodeName);
+
+            nodeName = string.IsNullOrEmpty(nodeName) ? name : nodeName;
+            if (nodeName == null)
             {
                 Logger.Warn($"Input node not found");
                 return new PureReflectiveSequence();
             }
 
-            if (evaluation.DynamicSources.TryGetValue(name, out var collection))
+            if (evaluation.DynamicSources.TryGetValue(nodeName, out var collection))
             {
                 return collection;
             }

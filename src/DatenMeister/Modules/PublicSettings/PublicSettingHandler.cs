@@ -34,7 +34,7 @@ namespace DatenMeister.Modules.PublicSettings
         {
             var path = Path.Combine(directoryPath, XmiFileName);
 
-            var result =  LoadSettingsFromFile(path);
+            var result = LoadSettingsFromFile(path);
             if (result == null)
             {
                 Logger.Info($"No Configuration file found in {directoryPath}");

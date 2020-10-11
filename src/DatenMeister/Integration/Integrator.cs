@@ -344,6 +344,8 @@ namespace DatenMeister.Integration
                         {
                             _settings.WindowTitle = _publicSettings.windowTitle;
                         }
+
+                        _settings.IsReadOnly = _publicSettings.isReadOnly;
                     }
                 }
             }

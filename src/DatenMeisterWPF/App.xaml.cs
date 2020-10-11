@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
+using DatenMeister.Modules.PublicSettings;
 
 namespace DatenMeisterWPF
 {
@@ -18,10 +20,36 @@ namespace DatenMeisterWPF
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             SetupExceptionHandling();
-            var path = Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location)!, "log.txt");
 
             TheLog.AddProvider(new DebugProvider(), LogLevel.Trace);
-            TheLog.AddProvider(new FileProvider(path, true), LogLevel.Trace);
+            
+            // Preload Public Settings
+            var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
+            var publicSettings = 
+                PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(publicSettingsPath));
+            if (publicSettings == null || publicSettings.logLocation != LogLocation.None)
+            {
+                var location = publicSettings?.logLocation ?? LogLocation.Application;
+
+                var logPath = location switch
+                {
+                    LogLocation.Application =>
+                        Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location)!,
+                            "log.txt"),
+                    LogLocation.Desktop => 
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                            "DatenMeister.log.txt"),
+                    LogLocation.LocalAppData =>
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "DatenMeister/log.txt"),
+                    _ => Path.Combine(Path.GetDirectoryName(typeof(App).Assembly.Location)!, "log.txt")
+                };
+
+                TheLog.AddProvider(new FileProvider(logPath, true), LogLevel.Trace);
+            }
+            
             TheLog.AddProvider(InMemoryDatabaseProvider.TheOne, LogLevel.Debug);
 #if DEBUG
             TheLog.FilterThreshold = LogLevel.Trace;

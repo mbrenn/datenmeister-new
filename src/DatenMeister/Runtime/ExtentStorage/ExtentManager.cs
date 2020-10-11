@@ -78,8 +78,10 @@ namespace DatenMeister.Runtime.ExtentStorage
             IScopeStorage scopeStorage)
         {
             ScopeStorage = scopeStorage ?? throw new ArgumentNullException(nameof(scopeStorage));
-            _extentStorageData = scopeStorage?.Get<ExtentStorageData>() ?? throw new InvalidOperationException("Extent Storage Data not found");
-            _integrationSettings = scopeStorage.Get<IntegrationSettings>() ?? throw new InvalidOperationException("IntegrationSettings not found");
+            _extentStorageData = scopeStorage?.Get<ExtentStorageData>() ??
+                                 throw new InvalidOperationException("Extent Storage Data not found");
+            _integrationSettings = scopeStorage.Get<IntegrationSettings>() ??
+                                   throw new InvalidOperationException("IntegrationSettings not found");
             _lockingHandler = _integrationSettings.IsLockingActivated ? new LockingLogic(scopeStorage) : null;
 
             WorkspaceLogic = workspaceLogic ?? throw new ArgumentNullException(nameof(workspaceLogic));
@@ -209,7 +211,10 @@ namespace DatenMeister.Runtime.ExtentStorage
             try
             {
                 loadedProviderInfo = extentLoader.LoadProvider(configuration, extentCreationFlags);
-                loadedExtentInformation.LoadingState = ExtentLoadingState.Loaded;
+                loadedExtentInformation.LoadingState =
+                    _integrationSettings.IsReadOnly
+                        ? ExtentLoadingState.LoadedReadOnly
+                        : ExtentLoadingState.Loaded;
             }
             catch (Exception e)
             {
@@ -363,6 +368,12 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <param name="extent">Extent to be stored</param>
         public void StoreExtent(IExtent extent)
         {
+            if (_integrationSettings.IsReadOnly)
+            {
+                Logger.Info("ExtentManager is read-only. We do not store");
+                return;
+            }
+            
             VerifyDatabaseContent();
             CheckForOpenedManager();
 
@@ -556,7 +567,6 @@ namespace DatenMeister.Runtime.ExtentStorage
                     _extentStorageData.FailedLoadingExtents = failedExtents;
 
                     throw new LoadingExtentsFailedException(failedExtents);
-
                 }
 
                 if (loaded == null)
@@ -706,6 +716,12 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         public void StoreAllExtents()
         {
+            if (_integrationSettings.IsReadOnly)
+            {
+                Logger.Info("ExtentManager is read-only. We do not store");
+                return;
+            }
+            
             VerifyDatabaseContent();
             CheckForOpenedManager();
                 
@@ -755,7 +771,7 @@ namespace DatenMeister.Runtime.ExtentStorage
                     return;
                 }
 
-                if (doStore)
+                if (doStore && !_integrationSettings.IsReadOnly)
                 {
                     StoreAllExtents();
                 }
@@ -770,8 +786,11 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 if (_extentStorageData.IsRegistrationOpen)
                 {
-                    var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
-                    configurationLoader.StoreConfiguration();
+                    if (!_integrationSettings.IsReadOnly)
+                    {
+                        var configurationLoader = new ExtentConfigurationLoader(ScopeStorage, this);
+                        configurationLoader.StoreConfiguration();
+                    }
 
                     _extentStorageData.LoadedExtents.Clear();
 

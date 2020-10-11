@@ -87,9 +87,13 @@ namespace DatenMeisterWPF
 
             var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             var extentStorageData = GiveMe.Scope.ScopeStorage.Get<ExtentStorageData>();
-            if (extentStorageData.FailedLoading)
+            if (integrationSettings.IsReadOnly)
             {
                 Title += " (READ-ONLY)";
+            }
+            if (extentStorageData.FailedLoading)
+            {
+                Title += " (FAILED LOADING)";
                 var message = extentStorageData.FailedLoadingException == null
                     ? "No message"
                     : extentStorageData.FailedLoadingException.ToString();

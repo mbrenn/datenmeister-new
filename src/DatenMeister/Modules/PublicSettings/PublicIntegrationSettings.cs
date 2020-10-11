@@ -21,5 +21,41 @@ namespace DatenMeister.Modules.PublicSettings
         /// by the PublicSettingsHandler
         /// </summary>
         public string settingsFilePath { get; set; } = string.Empty;
+        
+        /// <summary>
+        /// Gets or sets a flag indicating whether the complete DatenMeister shall run in Read-Only mode. 
+        /// </summary>
+        public bool isReadOnly { get; set; }
+        
+        /// <summary>
+        /// Defines the standard location of the logging
+        /// </summary>
+        public LogLocation logLocation { get; set; }
+    }
+
+    /// <summary>
+    /// Defines the file locations for the logging
+    /// </summary>
+    public enum LogLocation
+    {
+        /// <summary>
+        /// Storage in application folder
+        /// </summary>
+        Application, 
+        
+        /// <summary>
+        /// Storage in local appdata
+        /// </summary>
+        LocalAppData,
+        
+        /// <summary>
+        /// Storage in desktop
+        /// </summary>
+        Desktop,
+        
+        /// <summary>
+        /// No use
+        /// </summary>
+        None
     }
 }

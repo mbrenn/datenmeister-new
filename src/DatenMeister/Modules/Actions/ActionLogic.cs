@@ -9,6 +9,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Actions
 {
@@ -79,14 +80,25 @@ namespace DatenMeister.Modules.Actions
                 if (actionHandler.IsResponsible(action))
                 {
                     await Task.Run(() =>
-                        actionHandler.Evaluate(this, action));
+                    {
+                        try
+                        {
+                            actionHandler.Evaluate(this, action);
+                        }
+                        catch (Exception exc)
+                        {
+                            ClassLogger.Error(exc.ToString());
+                        }
+                    });
                     found = true;
                 }
             }
 
             if (!found)
             {
-                var message = $"Did not found action handler for {action}";
+                var metaClass = action.metaclass;
+                var metaClassName = metaClass == null ? "Unknown Type" : NamedElementMethods.GetFullName(metaClass);
+                var message = $"Did not found action handler for {action}: {metaClassName}";
                 ClassLogger.Warn(message);
                 throw new InvalidOperationException(message);
             }

@@ -33,6 +33,8 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.sourcePath);
             var targetPath =
                 action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.targetPath);
+            var moveOnly =
+                action.getOrDefault<bool>(_DatenMeister._Actions._CopyElementsAction.moveOnly);
 
             var sourceWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(sourceWorkspaceId);
             var targetWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(targetWorkspaceId);
@@ -72,17 +74,39 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             }
             
             // Depending on type, get the reflective instance
-            var sourceCollection = GetCollectionFromResolvedElement(sourceElement)
-                                   ?? throw new InvalidOperationException(
-                                       "sourceCollection is null");
-
             var targetCollection = GetCollectionFromResolvedElement(targetElement)
                                    ?? throw new InvalidOperationException(
                                        "targetElement is null");
 
-            // Now do the copying. it makes us all happy
-            var extentCopier = new ExtentCopier(new MofFactory(targetCollection));
-            extentCopier.Copy(sourceCollection, targetCollection, CopyOptions.CopyId);
+            if (sourceElement is IElement asElement && !(sourceElement is IExtent))
+            {
+                // Now do the copying. it makes us all happy
+                targetCollection.add(
+                    ObjectCopier.Copy(new MofFactory(targetCollection),
+                        asElement,
+                        CopyOptions.CopyId));
+
+                if (moveOnly)
+                {
+                    logger.Warn("Moving of single elements is not supported since it is not known" +
+                                "how the element is connected to its container. ");
+                }
+            }
+            else
+            {
+                var sourceCollection = GetCollectionFromResolvedElement(sourceElement)
+                                       ?? throw new InvalidOperationException(
+                                           "sourceCollection is null");
+
+                // Now do the copying. it makes us all happy
+                var extentCopier = new ExtentCopier(new MofFactory(targetCollection));
+                extentCopier.Copy(sourceCollection, targetCollection, CopyOptions.CopyId);
+
+                if (moveOnly)
+                {
+                    sourceCollection.clear();
+                }
+            }
         }
 
         public static IReflectiveCollection? GetCollectionFromResolvedElement(object sourceElement)

@@ -281,6 +281,22 @@ namespace DatenMeister.Models
             public _ExportToXmiAction @ExportToXmiAction = new _ExportToXmiAction();
             public IElement @__ExportToXmiAction = new MofObjectShadow("dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863");
 
+            public class _ClearCollectionAction
+            {
+                public static string @workspace = "workspace";
+                public IElement? @_workspace = null;
+
+                public static string @path = "path";
+                public IElement? @_path = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _ClearCollectionAction @ClearCollectionAction = new _ClearCollectionAction();
+            public IElement @__ClearCollectionAction = new MofObjectShadow("dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae");
+
         }
 
         public _Actions Actions = new _Actions();

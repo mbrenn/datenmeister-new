@@ -15,6 +15,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
     public class ExportToXmiActionHandler : IActionHandler
     {
         private static readonly ILogger logger = new ClassLogger(typeof(ExportToXmiActionHandler));
+        
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
@@ -52,14 +53,14 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                                    ?? throw new InvalidOperationException(
                                        "sourceCollection is null");
             
-            var document = new XDocument();
-            var tempExtent = new MofUriExtent(new XmiProvider(document));
+            var provider = new XmiProvider();
+            var tempExtent = new MofUriExtent(provider, "dm:///export");
             
             // Now do the copying. it makes us all happy
             var extentCopier = new ExtentCopier(new MofFactory(tempExtent));
             extentCopier.Copy(sourceCollection, tempExtent.elements(), CopyOptions.CopyId);
             
-            document.Save(filePath);
+            provider.Document.Save(filePath);
         }
         
     }

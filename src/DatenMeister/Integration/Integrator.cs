@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -158,7 +156,8 @@ namespace DatenMeister.Integration
             scopeStorage.Add(pluginManager);
             
             var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
-            pluginLoader.LoadAssembliesFromFolder(Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
+            pluginLoader.LoadAssembliesFromFolder(
+                Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
             
             Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();

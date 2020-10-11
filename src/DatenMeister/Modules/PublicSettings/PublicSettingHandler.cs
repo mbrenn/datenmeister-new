@@ -67,7 +67,9 @@ namespace DatenMeister.Modules.PublicSettings
 
                     var settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
                     settings.settingsFilePath = path;
-                    settings.databasePath = Environment.ExpandEnvironmentVariables(settings.databasePath);
+                    settings.databasePath = settings.databasePath != null
+                        ? Environment.ExpandEnvironmentVariables(settings.databasePath)
+                        : null;
                     return settings;
                 }
                 catch (Exception exc)

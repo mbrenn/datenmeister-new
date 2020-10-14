@@ -1,7 +1,10 @@
 using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Integration;
+#if !NET462
 using DatenMeister.NetCore.Modules.PluginLoader;
+#endif
+
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.NetCore
@@ -27,7 +30,11 @@ namespace DatenMeister.NetCore
 
             if (settings.PluginLoader is DefaultPluginLoader)
             {
+#if NET462
+                settings.PluginLoader = new DefaultPluginLoader();
+#else
                 settings.PluginLoader = new DotNetCorePluginLoader();
+#endif
             }
 
             var kernel = new ContainerBuilder();
@@ -52,7 +59,11 @@ namespace DatenMeister.NetCore
             {
                 EstablishDataEnvironment = true,
                 DatabasePath = GiveMe.DefaultDatabasePath,
+#if NET462
+                PluginLoader = new DefaultPluginLoader()
+#else
                 PluginLoader = new DotNetCorePluginLoader()
+#endif
             };
         }
     }

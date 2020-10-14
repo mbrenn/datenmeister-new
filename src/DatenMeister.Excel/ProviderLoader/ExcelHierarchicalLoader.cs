@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -9,6 +10,7 @@ using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
@@ -24,6 +26,9 @@ namespace DatenMeister.Excel.ProviderLoader
 
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
+            configuration = ObjectCopier.CopyForTemporary(configuration) as IElement
+                            ?? throw new InvalidOperationException("Element is not of type IElement");
+
             if (WorkspaceLogic == null) throw new InvalidOperationException("WorkspaceLogic == null");
             
             var filePath =
@@ -42,6 +47,8 @@ namespace DatenMeister.Excel.ProviderLoader
                 configuration.getOrDefault<int>(_ExcelHierarchicalLoaderConfig.countRows);
             var countColumns =
                 configuration.getOrDefault<int>(_ExcelHierarchicalLoaderConfig.countColumns);
+            var skipElementsForLastLevel =
+                configuration.getOrDefault<bool>(_ExcelHierarchicalLoaderConfig.skipElementsForLastLevel);
 
             var excelImporter = new ExcelImporter(configuration);
             excelImporter.LoadExcel();
@@ -59,10 +66,19 @@ namespace DatenMeister.Excel.ProviderLoader
                     _ExcelHierarchicalLoaderConfig.hierarchicalColumns)
                 .OfType<IElement>()
                 .ToList();
+
+            var definitionColumns = definitions
+                .Select(
+                    definition => definition.getOrDefault<string>(_ExcelHierarchicalColumnDefinition.name))
+                .ToList();
             
             for (var r = 0; r < countRows; r++)
             {
+                var skipItem = false;
                 var current = tempExtent.elements();
+                IElement lastCreated = null;
+                var idBuilder = new StringBuilder();
+                var firstDefinition = true;
 
                 foreach (var definition in definitions)
                 {
@@ -76,6 +92,19 @@ namespace DatenMeister.Excel.ProviderLoader
                     }
 
                     var cellContent = excelImporter.GetCellContent(r, indexOfName);
+                    
+                    // Creates the idBuilder
+                    if (!firstDefinition) idBuilder.Append(".");
+                    idBuilder.Append(cellContent);
+                    firstDefinition = false;
+                    
+                    // Checks content
+                    if (string.IsNullOrEmpty(cellContent))
+                    {
+                        // Skips the item, if the navigation cannot be completed
+                        skipItem = true;
+                        break;
+                    }
 
                     var newCurrent = 
                         current.WhenPropertyHasValue("name", cellContent).OfType<IElement>()
@@ -85,21 +114,38 @@ namespace DatenMeister.Excel.ProviderLoader
                         newCurrent = factory.create(metaClass);
                         newCurrent.set("name", cellContent);
                         current.add(newCurrent);
+                        
+                        if (newCurrent is ICanSetId canSetId)
+                        {
+                            canSetId.Id = idBuilder.ToString();
+                        }
                     }
 
+                    lastCreated = newCurrent;
                     current = newCurrent.get<IReflectiveSequence>(property);
                 }
 
-                var item = factory.create(null);
+                if (skipItem || lastCreated == null)
+                {
+                    continue;
+                }
+    
+                var item = skipElementsForLastLevel ? lastCreated : factory.create(null);
                 for (var c = 0; c < countColumns; c++)
                 {
                     var columnName = columnNames[c];
-                    if (columnName == null) continue;
+                    if (columnName == null || definitionColumns.Contains(columnName)) continue;
                     
                     item.set(columnName, excelImporter.GetCellContent(r, c));
                 }
 
-                current.add(item);
+                if (!skipElementsForLastLevel)
+                {
+                    current.add(item);
+                }
+                else
+                {
+                }
             }
 
             return new LoadedProviderInfo(provider);

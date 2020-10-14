@@ -87,9 +87,20 @@ namespace DatenMeisterWPF
 
             var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             var extentStorageData = GiveMe.Scope.ScopeStorage.Get<ExtentStorageData>();
-            if (extentStorageData.FailedLoading)
+
+            // Sets the title of the mainwindow
+            if (integrationSettings.WindowTitle != null)
+            {
+                Title = integrationSettings.WindowTitle;
+            }
+            
+            if (integrationSettings.IsReadOnly)
             {
                 Title += " (READ-ONLY)";
+            }
+            if (extentStorageData.FailedLoading)
+            {
+                Title += " (FAILED LOADING)";
                 var message = extentStorageData.FailedLoadingException == null
                     ? "No message"
                     : extentStorageData.FailedLoadingException.ToString();
@@ -112,12 +123,6 @@ namespace DatenMeisterWPF
 
                     DotNetHelper.CreateProcess(databasePath);
                 }
-            }
-            
-            // Sets the title of the mainwindow
-            if (integrationSettings.WindowTitle != null)
-            {
-                Title = integrationSettings.WindowTitle;
             }
         }
 

@@ -35,6 +35,9 @@ namespace DatenMeister.Modules.Actions
             logicState.AddActionHandler(new DropExtentActionHandler());
             logicState.AddActionHandler(new DropWorkspaceActionHandler());
             logicState.AddActionHandler(new LoadExtentActionHandler());
+            logicState.AddActionHandler(new CopyElementsActionHandler());
+            logicState.AddActionHandler(new ExportToXmiActionHandler());
+            logicState.AddActionHandler(new ClearCollectionActionHandler());
 
             return logicState;
         }

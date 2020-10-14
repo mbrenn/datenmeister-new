@@ -181,6 +181,9 @@ namespace DatenMeister.Models
                 public static string @configuration = "configuration";
                 public IElement? @_configuration = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -233,6 +236,66 @@ namespace DatenMeister.Models
 
             public _DropWorkspaceAction @DropWorkspaceAction = new _DropWorkspaceAction();
             public IElement @__DropWorkspaceAction = new MofObjectShadow("dm:///_internal/types/internal#db6cc8eb-011c-43e5-b966-cc0e3a1855e8");
+
+            public class _CopyElementsAction
+            {
+                public static string @sourcePath = "sourcePath";
+                public IElement? @_sourcePath = null;
+
+                public static string @targetPath = "targetPath";
+                public IElement? @_targetPath = null;
+
+                public static string @moveOnly = "moveOnly";
+                public IElement? @_moveOnly = null;
+
+                public static string @sourceWorkspace = "sourceWorkspace";
+                public IElement? @_sourceWorkspace = null;
+
+                public static string @targetWorkspace = "targetWorkspace";
+                public IElement? @_targetWorkspace = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _CopyElementsAction @CopyElementsAction = new _CopyElementsAction();
+            public IElement @__CopyElementsAction = new MofObjectShadow("dm:///_internal/types/internal#8b576580-0f75-4159-ad16-afb7c2268aed");
+
+            public class _ExportToXmiAction
+            {
+                public static string @sourcePath = "sourcePath";
+                public IElement? @_sourcePath = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @sourceWorkspaceId = "sourceWorkspaceId";
+                public IElement? @_sourceWorkspaceId = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _ExportToXmiAction @ExportToXmiAction = new _ExportToXmiAction();
+            public IElement @__ExportToXmiAction = new MofObjectShadow("dm:///_internal/types/internal#3c3595a4-026e-4c07-83ec-8a90607b8863");
+
+            public class _ClearCollectionAction
+            {
+                public static string @workspace = "workspace";
+                public IElement? @_workspace = null;
+
+                public static string @path = "path";
+                public IElement? @_path = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _ClearCollectionAction @ClearCollectionAction = new _ClearCollectionAction();
+            public IElement @__ClearCollectionAction = new MofObjectShadow("dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae");
 
         }
 
@@ -381,6 +444,9 @@ namespace DatenMeister.Models
 
             public class _DynamicSourceNode
             {
+                public static string @nodeName = "nodeName";
+                public IElement? @_nodeName = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -939,6 +1005,9 @@ namespace DatenMeister.Models
             {
                 public static string @hierarchicalColumns = "hierarchicalColumns";
                 public IElement? @_hierarchicalColumns = null;
+
+                public static string @skipElementsForLastLevel = "skipElementsForLastLevel";
+                public IElement? @_skipElementsForLastLevel = null;
 
                 public static string @fixRowCount = "fixRowCount";
                 public IElement? @_fixRowCount = null;
@@ -1724,6 +1793,8 @@ namespace DatenMeister.Models
                 public IElement @__Loaded = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Loaded");
                 public static string @Failed = "Failed";
                 public IElement @__Failed = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-Failed");
+                public static string @LoadedReadOnly = "LoadedReadOnly";
+                public IElement @__LoadedReadOnly = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-LoadedReadOnly");
 
             }
 

@@ -126,6 +126,11 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// <summary>
         /// The loading of the extent has failed and saving will not be performed
         /// </summary>
-        Failed
+        Failed,
+        
+        /// <summary>
+        /// The loading succeeded but we are in read-only mode
+        /// </summary>
+        LoadedReadOnly
     }
 }

@@ -15,7 +15,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         /// <summary>
         /// Defines the logger 
         /// </summary>
-        private readonly ClassLogger Logger = new ClassLogger(typeof(CommandExecutionActionHandler));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(CommandExecutionActionHandler));
             
         public bool IsResponsible(IElement node)
         {

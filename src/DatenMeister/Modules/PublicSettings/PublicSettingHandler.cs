@@ -34,7 +34,7 @@ namespace DatenMeister.Modules.PublicSettings
         {
             var path = Path.Combine(directoryPath, XmiFileName);
 
-            var result =  LoadSettingsFromFile(path);
+            var result = LoadSettingsFromFile(path);
             if (result == null)
             {
                 Logger.Info($"No Configuration file found in {directoryPath}");
@@ -67,7 +67,9 @@ namespace DatenMeister.Modules.PublicSettings
 
                     var settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
                     settings.settingsFilePath = path;
-                    settings.databasePath = Environment.ExpandEnvironmentVariables(settings.databasePath);
+                    settings.databasePath = settings.databasePath != null
+                        ? Environment.ExpandEnvironmentVariables(settings.databasePath)
+                        : null;
                     return settings;
                 }
                 catch (Exception exc)

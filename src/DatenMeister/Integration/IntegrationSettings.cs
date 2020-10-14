@@ -1,4 +1,6 @@
-﻿using DatenMeister.Runtime.Plugins;
+﻿using System;
+using System.IO;
+using DatenMeister.Runtime.Plugins;
 
 #nullable enable
 
@@ -54,10 +56,35 @@ namespace DatenMeister.Integration
         /// Gets or sets the plugin loader to be used for the DatenMeister... If none is specified, the default loader will be used. 
         /// </summary>
         public IPluginLoader PluginLoader { get; set; } = new DefaultPluginLoader();
+        
+        /// <summary>
+        /// Gets or sets the value that the DatenMeister is started in 'read-only' mode
+        /// </summary>
+        public bool IsReadOnly { get; set; }
 
         public IntegrationSettings()
         {
             DatabasePath = GiveMe.DefaultDatabasePath;
+        }
+
+
+        /// <summary>
+        /// Normalizes the directory path by using the integration settings.
+        /// The normalization is done by using the following steps
+        ///
+        /// 1) First, the environmental settings are included
+        /// 2) Second, the relative path is moved to absolute path
+        /// </summary>
+        /// <param name="directoryPath">Directory path to be normalized</param>
+        /// <returns>The normalized directory path</returns>
+        public string NormalizeDirectoryPath(string directoryPath)
+        {
+            if (!Path.IsPathRooted(directoryPath))
+            {
+                directoryPath = Path.Combine(DatabasePath, directoryPath);
+            }
+
+            return Environment.ExpandEnvironmentVariables(directoryPath);
         }
     }
 }

@@ -10,12 +10,16 @@ namespace DatenMeister.Runtime.Locking
     public class LockingLogic
     {
         private readonly LockingState _lockingState;
+
+        private bool _isReadOnly;
         
         private static readonly ClassLogger Logger = new ClassLogger(typeof(LockingLogic));
 
         public LockingLogic(IScopeStorage scopeStorage)
         {
             _lockingState = scopeStorage.Get<LockingState>();
+            var integrationSettings = scopeStorage.Get<IntegrationSettings>();
+            _isReadOnly = integrationSettings.IsReadOnly;
         }
 
         private LockingLogic(LockingState lockingState)
@@ -30,6 +34,8 @@ namespace DatenMeister.Runtime.Locking
 
         public bool IsLocked(string filePath)
         {
+            if (_isReadOnly) return false;
+            
             if (File.Exists(filePath))
             {
                 string lastUpdateText;
@@ -67,6 +73,8 @@ namespace DatenMeister.Runtime.Locking
 
         public void Lock(string filePath)
         {
+            if (_isReadOnly) return;
+            
             lock (_lockingState)
             {
                 if (IsLocked(filePath))
@@ -85,6 +93,8 @@ namespace DatenMeister.Runtime.Locking
 
         public void Unlock(string filePath)
         {
+            if (_isReadOnly) return;
+            
             lock (_lockingState)
             {
                 _lockingState.LockFilePaths.Remove(filePath);

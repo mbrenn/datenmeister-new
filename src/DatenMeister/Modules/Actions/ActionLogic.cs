@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -8,9 +9,28 @@ using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Actions
 {
+    public class ActionSetExecutionState
+    {
+        /// <summary>
+        /// Stores the number of actions
+        /// </summary>
+        private int _numberOfActions;
+
+        /// <summary>
+        /// Stores the number of actions being executed
+        /// </summary>
+        public int NumberOfActions => _numberOfActions;
+
+        public void IncrementNumberOfActions()
+        {
+            Interlocked.Increment(ref _numberOfActions);
+        }
+    }
+    
     public class ActionLogic
     {
         private static readonly ILogger ClassLogger = new ClassLogger(typeof(ActionLogic));
@@ -28,14 +48,24 @@ namespace DatenMeister.Modules.Actions
         /// Executes the given action
         /// </summary>
         /// <param name="actionSet">Actions-Set to be executed</param>
-        public async Task ExecuteActionSet(IElement actionSet)
+        public async Task<ActionSetExecutionState> ExecuteActionSet(IElement actionSet)
         {
+            var actionSetExecutionState = new ActionSetExecutionState();
             var actions = actionSet.getOrDefault<IReflectiveCollection>(
                 _DatenMeister._Actions._ActionSet.action);
+            if (actions == null)
+            {
+                // Nothing to be executed
+                return actionSetExecutionState;
+            }
+            
             foreach (var action in actions.OfType<IElement>())
             {
                 await ExecuteAction(action);
+                actionSetExecutionState.IncrementNumberOfActions();
             }
+
+            return actionSetExecutionState;
         }
 
         /// <summary>
@@ -50,14 +80,25 @@ namespace DatenMeister.Modules.Actions
                 if (actionHandler.IsResponsible(action))
                 {
                     await Task.Run(() =>
-                        actionHandler.Evaluate(this, action));
+                    {
+                        try
+                        {
+                            actionHandler.Evaluate(this, action);
+                        }
+                        catch (Exception exc)
+                        {
+                            ClassLogger.Error(exc.ToString());
+                        }
+                    });
                     found = true;
                 }
             }
 
             if (!found)
             {
-                var message = $"Did not found action handler for {action}";
+                var metaClass = action.metaclass;
+                var metaClassName = metaClass == null ? "Unknown Type" : NamedElementMethods.GetFullName(metaClass);
+                var message = $"Did not found action handler for {action}: {metaClassName}";
                 ClassLogger.Warn(message);
                 throw new InvalidOperationException(message);
             }

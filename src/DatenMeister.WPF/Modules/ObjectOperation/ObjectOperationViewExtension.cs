@@ -26,27 +26,47 @@ namespace DatenMeister.WPF.Modules.ObjectOperation
             if (viewExtensionInfo.GetItemExplorerControl() != null)
             {
                 yield return new TreeViewItemCommandDefinition(
-                    "Move...",
+                    "New Object...",
+                    async (x) => { await NewItem(viewExtensionInfo.NavigationHost, x.Element); }
+                ) {CategoryName = "Item"};
+                
+                yield return new TreeViewItemCommandDefinition(
+                    "Move Object...",
                     async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Copy...",
+                    "Copy Object...",
                     async (x) => { await CopyItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                        "Edit...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x.Element); }
+                        "Edit Object...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x.Element); }
                     ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Delete...", (x) => { DeleteItem(x); }
+                    "Delete Object...", DeleteItem
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                     "Copy as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
             }
+        }
+        
+
+        private async Task NewItem(INavigationHost navigationHost, IObject? o)
+        {
+            if (o == null)
+            {
+                return;
+            }
+
+            await NavigatorForItems.NavigateToNewItemForItem(
+                navigationHost,
+                o,
+                DefaultClassifierHints.GetDefaultPackagePropertyName(o),
+                null);
         }
 
         private async Task CopyItem(INavigationHost navigationHost, IObject? o)

@@ -105,7 +105,7 @@ namespace DatenMeister.Tests.Runtime
         {
             var extent = GetTestExtent();
             var firstChild = extent.GetUriResolver().Resolve(
-                    TestUri + "?fn=item2&prop=packagedElement&dataview=#child1Filter",
+                    TestUri + "?fn=item2&prop=packagedElement&dataview=%23child1Filter",
                     ResolveType.Default)
                 as IReflectiveSequence;
 

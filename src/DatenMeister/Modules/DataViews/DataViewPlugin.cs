@@ -1,6 +1,4 @@
-﻿using System;
-using DatenMeister.Integration;
-using DatenMeister.Models.DataViews;
+﻿using DatenMeister.Integration;
 using DatenMeister.Modules.DataViews.Evaluation;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;

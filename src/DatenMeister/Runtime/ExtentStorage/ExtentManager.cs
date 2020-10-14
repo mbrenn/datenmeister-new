@@ -7,8 +7,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Provider;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.ExtentStorage.Interfaces;

@@ -32,7 +32,7 @@ namespace DatenMeister.Tests.Modules.Actions
 
             Assert.That(File.Exists(temporaryStorage), Is.True);
 
-            var fileContent = await File.ReadAllTextAsync(temporaryStorage);
+            var fileContent = File.ReadAllText(temporaryStorage);
             Assert.That(fileContent.Contains("source1.2"), Is.True);
 
             File.Delete(temporaryStorage);

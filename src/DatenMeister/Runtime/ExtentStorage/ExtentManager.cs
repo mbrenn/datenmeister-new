@@ -313,8 +313,9 @@ namespace DatenMeister.Runtime.ExtentStorage
             lock (_extentStorageData.LoadedExtents)
             {
                 information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
-                    x.LoadingState == ExtentLoadingState.Loaded &&
-                    x.Extent?.@equals(extent) == true);
+                    (x.LoadingState == ExtentLoadingState.Loaded ||
+                        x.LoadingState == ExtentLoadingState.LoadedReadOnly)
+                    && x.Extent?.@equals(extent) == true);
             }
 
             return information;

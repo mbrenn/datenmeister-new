@@ -1,3 +1,5 @@
+#if !NET462
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,3 +90,6 @@ namespace DatenMeister.NetCore.Modules.PluginLoader
         }
     }
 }
+
+
+#endif

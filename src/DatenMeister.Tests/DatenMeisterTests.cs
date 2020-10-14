@@ -4,7 +4,9 @@ using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
 using DatenMeister.NetCore;
+#if !NET462
 using DatenMeister.NetCore.Modules.PluginLoader;
+#endif
 using DatenMeister.Runtime.Plugins;
 using NUnit.Framework;
 
@@ -65,7 +67,11 @@ namespace DatenMeister.Tests
                 PerformSlimIntegration = false,
                 AllowNoFailOfLoading = false,
                 InitializeDefaultExtents = dropDatabase,
+#if NET462
+                PluginLoader = new DefaultPluginLoader()
+#else
                 PluginLoader = new DotNetCorePluginLoader()
+#endif
             };
 
             return integrationSettings;

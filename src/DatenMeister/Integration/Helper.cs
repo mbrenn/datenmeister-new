@@ -24,9 +24,13 @@ namespace DatenMeister.Integration
         /// <param name="scope">Kernel to be used to find the appropriate methods</param>
         public static void UnuseDatenMeister(this IDatenMeisterScope scope)
         {
-            scope.Resolve<WorkspaceLoader>().Store();
+            var integrationSettings = scope.ScopeStorage.Get<IntegrationSettings>();
+            if (!integrationSettings.IsReadOnly)
+            {
+                scope.Resolve<WorkspaceLoader>().Store();
+            }
+            
             scope.Resolve<ExtentManager>().UnloadManager(true);
-
         }
     }
 }

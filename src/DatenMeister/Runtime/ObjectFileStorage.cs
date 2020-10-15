@@ -25,7 +25,7 @@ namespace DatenMeister.Runtime
                 return null;
             }
 
-            using (var fileStream = new FileStream(filePath, FileMode.Open))
+            using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
                 return (T) serializer.Deserialize(fileStream);
@@ -42,7 +42,7 @@ namespace DatenMeister.Runtime
                 Directory.CreateDirectory(directoryName);
             }
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
             {
                 var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
                 serializer.Serialize(fileStream, collection);

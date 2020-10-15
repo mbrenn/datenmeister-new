@@ -268,7 +268,7 @@ namespace DatenMeister.WPF.Forms.Fields
                         _control.Select(foundWorkspace, foundExtent);
                     }
                 }
-                else if (!string.IsNullOrEmpty(_workspace))
+                else if (!string.IsNullOrEmpty(_workspace) && _workspace != null)
                 {
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                     var foundWorkspace = workspaceLogic.GetWorkspace(_workspace);

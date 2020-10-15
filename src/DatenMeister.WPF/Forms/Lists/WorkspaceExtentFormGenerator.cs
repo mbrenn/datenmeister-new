@@ -389,14 +389,14 @@ namespace DatenMeister.WPF.Forms.Lists
                 var filePath = prop.NewValue?.ToString();
                 try
                 {
-                    if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                    if (filePath == null || string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
                     {
                         return;
                     }
 
                     var metaNode = XmiProvider.GetMetaNodeFromFile(filePath);
                     var uri = metaNode.Attribute("__uri")?.Value;
-                    if (!string.IsNullOrEmpty(uri))
+                    if (uri != null && !string.IsNullOrEmpty(uri))
                     {
                         prop.FormControl.InjectPropertyValue("extentUri", uri);
                     }

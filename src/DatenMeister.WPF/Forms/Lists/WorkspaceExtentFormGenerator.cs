@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Models.ManagementProviders;
@@ -35,6 +37,7 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
 using MessageBox = System.Windows.MessageBox;
+using PropertyValueChangedEventArgs = DatenMeister.WPF.Forms.Base.PropertyValueChangedEventArgs;
 
 namespace DatenMeister.WPF.Forms.Lists
 {
@@ -160,7 +163,7 @@ namespace DatenMeister.WPF.Forms.Lists
             var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
             var viewExtent = viewLogic.GetInternalFormExtent();
             var result = 
-                viewExtent.GetUriResolver().ResolveById("Workspaces.ListOfExtents");
+                viewExtent.GetUriResolver().ResolveById("Workspace.ExtentFormForExtents");
             
             if (result == null)
             {
@@ -186,7 +189,24 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
                     new RowItemButtonDefinition("Save", SaveExtent),
-                    new RowItemButtonDefinition("Delete", DeleteExtent)
+                    new RowItemButtonDefinition("Delete", DeleteExtent),
+                    new RowItemButtonDefinition(
+                        "Edit Properties",
+                        async (navigationGuest, element) =>
+                        {
+                            var extentUrl = element.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+                            var foundExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, extentUrl);
+                            if (foundExtent == null)
+                            {
+                                MessageBox.Show("No extent is found");
+                            }
+                            else
+                            {
+                                await NavigatorForExtents.OpenPropertiesOfExtent(
+                                    navigationGuest.NavigationHost,
+                                    foundExtent);
+                            }
+                        })
                 }
             };
 
@@ -224,7 +244,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     LoadExtent,
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));
-
+            
             viewDefinition.ViewExtensions.Add(
                 new InfoLineDefinition(() =>
                     new TextBlock

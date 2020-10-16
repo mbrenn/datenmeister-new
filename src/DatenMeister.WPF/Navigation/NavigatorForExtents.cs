@@ -83,7 +83,7 @@ namespace DatenMeister.WPF.Navigation
                 var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
                 var managementWorkspace = workspaceLogic.GetManagementWorkspace();
                 var resolvedForm = managementWorkspace.ResolveElement(
-                    $"{WorkspaceNames.UriExtentInternalForm}#ExtentPropertyDetailForm", ResolveType.NoMetaWorkspaces, false);
+                    $"{WorkspaceNames.UriExtentInternalForm}#Workspace.ExtentDetail", ResolveType.NoMetaWorkspaces, false);
                 var extentSettings = GiveMe.Scope.ScopeStorage.Get<ExtentSettings>();
 
                 // Look for the checkbox item list for the possible extent types

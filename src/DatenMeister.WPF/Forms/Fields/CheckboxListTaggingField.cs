@@ -43,7 +43,9 @@ namespace DatenMeister.WPF.Forms.Fields
             _containsFreeText = fieldData.getOrDefault<bool>(_FormAndFields._CheckboxListTaggingFieldData.containsFreeText);
 
             var valuePairs =
-                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._CheckboxListTaggingFieldData.values);
+                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._CheckboxListTaggingFieldData.values)?.ToList()
+                ?? new List<object?>();
+            
             var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
                              || fieldFlags.IsReadOnly;
 

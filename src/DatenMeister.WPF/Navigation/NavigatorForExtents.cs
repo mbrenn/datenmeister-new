@@ -116,23 +116,30 @@ namespace DatenMeister.WPF.Navigation
                     }
                 }
 
-
                 // Gets the properties of the extent themselves
                 var uri = 
                     WorkspaceNames.UriExtentWorkspaces + "#" +
                     WebUtility.UrlEncode(((IUriExtent) mofExtent).contextURI());
                 var foundItem = workspaceLogic.FindItem(uri);
-
-                var config = new NavigateToItemConfig(mofExtent.GetMetaObject())
+                if (foundItem == null)
                 {
-                    Form = new FormDefinition(resolvedForm),
-                    AttachedElement = foundItem,
-                    Title = "Edit Extent Properties"
-                };
-                
-                return await NavigatorForItems.NavigateToElementDetailView(
-                    navigationHost,
-                    config);
+                    var message = $"The element '{uri}' was not found";
+                    Logger.Error(message);
+                    MessageBox.Show("The extent which was selected, was not found.");
+                }
+                else
+                {
+                    var config = new NavigateToItemConfig(foundItem)
+                    {
+                        Form = new FormDefinition(resolvedForm),
+                        AttachedElement = foundItem,
+                        Title = "Edit Extent Properties"
+                    };
+                    
+                    return await NavigatorForItems.NavigateToElementDetailView(
+                        navigationHost,
+                        config);
+                }
             }
 
             return await NavigatorForItems.NavigateToElementDetailView(

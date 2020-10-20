@@ -100,7 +100,9 @@ namespace DatenMeister.WPF.Forms.Fields
 
                     items.Add(comboBoxItem);
 
-                    if (valueOfItem.Equals(_propertyValue))
+                    var valueAsString = DotNetHelper.AsString(valueOfItem);
+                    var propertyValueAsString = DotNetHelper.AsString(_propertyValue);
+                    if (valueAsString != null && propertyValueAsString != null && valueAsString.Equals(propertyValueAsString)) 
                     {
                         selectedBoxItem = comboBoxItem;
                     }

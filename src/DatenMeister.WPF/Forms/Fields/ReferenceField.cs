@@ -256,13 +256,15 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                if (!string.IsNullOrEmpty(_workspace) && !string.IsNullOrEmpty(_extent)
-                && _workspace != null && _extent != null)
+                if (!string.IsNullOrEmpty(_workspace)
+                    && !string.IsNullOrEmpty(_extent)
+                    && _workspace != null && _extent != null)
                 {
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                    var (foundWorkspace, foundExtent) = workspaceLogic.RetrieveWorkspaceAndExtent(
-                        _workspace,
-                        _extent);
+                    var (foundWorkspace, foundExtent) =
+                        workspaceLogic.RetrieveWorkspaceAndExtent(
+                            _workspace,
+                            _extent);
                     if (foundWorkspace != null && foundExtent != null)
                     {
                         _control.Select(foundWorkspace, foundExtent);
@@ -351,10 +353,10 @@ namespace DatenMeister.WPF.Forms.Fields
 
         public void SetSelectedValue(object? elementValue)
         {
-            if ( !(elementValue is IObject elementAsObject))
+            if (!(elementValue is IObject elementAsObject))
             {
                 SelectedValue = null;
-                UpdateTextOfTextBlock(null);                
+                UpdateTextOfTextBlock(null);
             }
             else
             {

@@ -83,24 +83,29 @@ namespace DatenMeister.WPF.Forms.Fields
             stackPanel.Children.Add(_referenceRadioButton);
             stackPanel.Margin = new Thickness(10);
 
+            _textRadioButton.IsEnabled = !isReadOnly;
+            _referenceRadioButton.IsEnabled = !isReadOnly;
+
             if (elementValue != null && DotNetHelper.IsOfPrimitiveType(elementValue))
             {
                 _textRadioButton.IsChecked = true;
-                _textRadioButton.IsEnabled = !isReadOnly;
                 _textBoxForString.Text = elementValue.ToString();
+                _textBoxForString.IsEnabled = !isReadOnly;
+                _referenceField.IsEnabled = false;
             }
             else
             {
                 _referenceRadioButton.IsChecked = true;
-                _referenceRadioButton.IsEnabled = !isReadOnly;
                 _referenceField.SetSelectedValue(elementValue);
                 _textBoxForString.IsEnabled = false;
+                _textBoxForString.IsEnabled = false;
+                _referenceField.IsEnabled = true;
             }
             
             _referenceRadioButton.Checked += (x, y) =>
             {
                 _textBoxForString.IsEnabled = false;
-                _referenceField.IsEnabled = !isReadOnly;
+                _referenceField.IsEnabled = true;
             };
 
             _textRadioButton.Checked += (x, y) =>

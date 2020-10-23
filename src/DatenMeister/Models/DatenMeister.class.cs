@@ -278,6 +278,9 @@ namespace DatenMeister.Models
                 public static string @targetWorkspace = "targetWorkspace";
                 public IElement? @_targetWorkspace = null;
 
+                public static string @emptyTarget = "emptyTarget";
+                public IElement? @_emptyTarget = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

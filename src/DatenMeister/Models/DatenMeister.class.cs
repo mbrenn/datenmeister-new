@@ -110,8 +110,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -139,8 +139,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -161,8 +161,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -180,8 +180,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -199,8 +199,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -218,8 +218,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -237,8 +237,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -253,8 +253,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -281,8 +281,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -303,8 +303,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -322,8 +322,8 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @isEnabled = "isEnabled";
-                public IElement? @_isEnabled = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 

@@ -61,6 +61,12 @@ namespace DatenMeister.Modules.Actions
             
             foreach (var action in actions.OfType<IElement>())
             {
+                var isDisabled = action.getOrDefault<bool>(_DatenMeister._Actions._Action.isDisabled);
+                if (isDisabled)
+                {
+                    continue;
+                }
+                
                 await ExecuteAction(action);
                 actionSetExecutionState.IncrementNumberOfActions();
             }

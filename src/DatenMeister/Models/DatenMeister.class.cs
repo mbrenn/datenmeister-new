@@ -110,6 +110,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
+
             }
 
             public _Action @Action = new _Action();
@@ -136,6 +139,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
+
             }
 
             public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
@@ -155,6 +161,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
+
             }
 
             public _CommandExecutionAction @CommandExecutionAction = new _CommandExecutionAction();
@@ -170,6 +179,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
 
             }
 
@@ -187,6 +199,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
+
             }
 
             public _LoadExtentAction @LoadExtentAction = new _LoadExtentAction();
@@ -202,6 +217,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
 
             }
 
@@ -219,6 +237,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
+
             }
 
             public _CreateWorkspaceAction @CreateWorkspaceAction = new _CreateWorkspaceAction();
@@ -231,6 +252,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
 
             }
 
@@ -257,6 +281,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
+
             }
 
             public _CopyElementsAction @CopyElementsAction = new _CopyElementsAction();
@@ -276,6 +303,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
+
             }
 
             public _ExportToXmiAction @ExportToXmiAction = new _ExportToXmiAction();
@@ -291,6 +321,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isEnabled = "isEnabled";
+                public IElement? @_isEnabled = null;
 
             }
 

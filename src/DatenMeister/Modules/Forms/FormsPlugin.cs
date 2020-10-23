@@ -645,7 +645,7 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
                         FormType = FormType.TreeItemDetail,

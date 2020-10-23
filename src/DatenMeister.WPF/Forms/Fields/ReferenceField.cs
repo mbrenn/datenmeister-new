@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -157,8 +155,7 @@ namespace DatenMeister.WPF.Forms.Fields
             };
             
             _inputTextBox.MouseDown += TextBlockOnMouseDown;
-
-            UpdateTextOfTextBlock(SelectedValue);
+            UpdateTextOfTextBlock(_inputTextBox, SelectedValue);
 
             _selectButton = new Button
             {
@@ -196,7 +193,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 {
                     IsValueUnsetted = false;
                     SelectedValue = selectedItem;
-                    UpdateTextOfTextBlock(selectedItem);
+                    UpdateTextOfTextBlock(_inputTextBox, selectedItem);
                 }
             };
 
@@ -210,7 +207,7 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 SelectedValue = null;
                 IsValueUnsetted = false;
-                UpdateTextOfTextBlock(null);
+                UpdateTextOfTextBlock(_inputTextBox, null);
             };
 
             // Adds the ui elements
@@ -313,23 +310,24 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <summary>
         /// Updates the text of the text block. 
         /// </summary>
+        /// <param name="inputTextBox"></param>
         /// <param name="value">The item which is used to set the textfield</param>
         /// <returns>true, if an item was given</returns>
-        private void UpdateTextOfTextBlock(IObject? value)
+        internal static void UpdateTextOfTextBlock(TextBlock inputTextBox, IObject? value)
         {
-            if (_inputTextBox == null) throw new InvalidOperationException("_inputTextBox == null");
+            if (inputTextBox == null) throw new InvalidOperationException("_inputTextBox == null");
             
             if (value == null)
             {
-                _inputTextBox.Text = "No item";
-                _inputTextBox.FontStyle = FontStyles.Italic;
+                inputTextBox.Text = "No item";
+                inputTextBox.FontStyle = FontStyles.Italic;
 
                 return;
             }
 
-            _inputTextBox.Text = value.ToString();
-            _inputTextBox.TextDecorations = TextDecorations.Underline;
-            _inputTextBox.Cursor = Cursors.Hand;
+            inputTextBox.Text = value.ToString();
+            inputTextBox.TextDecorations = TextDecorations.Underline;
+            inputTextBox.Cursor = Cursors.Hand;
         }
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)
@@ -353,15 +351,17 @@ namespace DatenMeister.WPF.Forms.Fields
 
         public void SetSelectedValue(object? elementValue)
         {
+            if (_inputTextBox == null) throw new InvalidOperationException("_inputTextBox == null");
+                
             if (!(elementValue is IObject elementAsObject))
             {
                 SelectedValue = null;
-                UpdateTextOfTextBlock(null);
+                UpdateTextOfTextBlock(_inputTextBox, null);
             }
             else
             {
                 SelectedValue = elementAsObject;
-                UpdateTextOfTextBlock(SelectedValue);
+                UpdateTextOfTextBlock(_inputTextBox, SelectedValue);
             }
         }
     }

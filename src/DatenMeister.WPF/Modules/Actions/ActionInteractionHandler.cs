@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Modules.Actions
                             GiveMe.Scope.WorkspaceLogic,
                             GiveMe.Scope.ScopeStorage);
                         var result = await actionLogic.ExecuteActionSet(asElement);
-                        MessageBox.Show($"{result.NumberOfActions:n0} action were executed.");
+                        MessageBox.Show($"{result.NumberOfActions:n0} action(s) were executed.");
                     });
             }
         }

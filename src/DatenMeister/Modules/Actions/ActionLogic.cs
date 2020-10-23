@@ -88,8 +88,10 @@ namespace DatenMeister.Modules.Actions
                         catch (Exception exc)
                         {
                             ClassLogger.Error(exc.ToString());
+                            throw;
                         }
                     });
+                    
                     found = true;
                 }
             }

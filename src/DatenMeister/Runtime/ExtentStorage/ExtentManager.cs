@@ -449,13 +449,16 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="workspaceId"></param>
         /// <param name="extentUri"></param>
-        public void RemoveExtent(string workspaceId, string extentUri)
+        public bool RemoveExtent(string workspaceId, string extentUri)
         {
             var extent = WorkspaceLogic.FindExtent(workspaceId, extentUri);
             if (extent != null)
             {
                 RemoveExtent(extent);
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

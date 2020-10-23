@@ -688,6 +688,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExtentLoaderConfig @ExtentLoaderConfig = new _ExtentLoaderConfig();
@@ -737,6 +740,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExcelLoaderConfig @ExcelLoaderConfig = new _ExcelLoaderConfig();
@@ -785,6 +791,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -838,6 +847,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExcelImportLoaderConfig @ExcelImportLoaderConfig = new _ExcelImportLoaderConfig();
@@ -860,6 +872,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExcelExtentLoaderConfig @ExcelExtentLoaderConfig = new _ExcelExtentLoaderConfig();
@@ -875,6 +890,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -898,6 +916,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _XmlReferenceLoaderConfig @XmlReferenceLoaderConfig = new _XmlReferenceLoaderConfig();
@@ -917,6 +938,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExtentFileLoaderConfig @ExtentFileLoaderConfig = new _ExtentFileLoaderConfig();
@@ -935,6 +959,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -957,6 +984,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -1050,6 +1080,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 

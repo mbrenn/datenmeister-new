@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Helper;
@@ -70,7 +71,7 @@ namespace DatenMeister.Excel.ProviderLoader
             var excelImporter = new ExcelImporter(loaderConfig);
             excelImporter.LoadExcel();
 
-            var columnNames = excelImporter.GetColumnNames();
+            var columnNames = excelImporter.GetColumnNames().ToList();
             if (!fixColumnCount) countRows = excelImporter.GuessRowCount();
             if (!fixRowCount) countColumns = excelImporter.GuessColumnCount();
 

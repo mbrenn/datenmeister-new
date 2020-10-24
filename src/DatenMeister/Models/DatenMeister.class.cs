@@ -767,6 +767,9 @@ namespace DatenMeister.Models
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
 
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -818,6 +821,9 @@ namespace DatenMeister.Models
 
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
+
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;
@@ -873,6 +879,9 @@ namespace DatenMeister.Models
 
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
+
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;
@@ -1108,6 +1117,9 @@ namespace DatenMeister.Models
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
 
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -1124,6 +1136,19 @@ namespace DatenMeister.Models
 
             public _ExcelHierarchicalLoaderConfig @ExcelHierarchicalLoaderConfig = new _ExcelHierarchicalLoaderConfig();
             public IElement @__ExcelHierarchicalLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig");
+
+            public class _ExcelColumn
+            {
+                public static string @header = "header";
+                public IElement? @_header = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _ExcelColumn @ExcelColumn = new _ExcelColumn();
+            public IElement @__ExcelColumn = new MofObjectShadow("dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a");
 
         }
 

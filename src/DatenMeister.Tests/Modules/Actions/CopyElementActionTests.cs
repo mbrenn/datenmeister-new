@@ -39,6 +39,7 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(target.GetUriResolver().Resolve("?source2", ResolveType.NoWorkspace), Is.Not.Null);
             Assert.That(target.GetUriResolver().Resolve("?target1", ResolveType.NoWorkspace), Is.Not.Null);
         }
+        
         [Test]
         public async Task TestCopyingFromExtentToExtentWithDeletion()
         {

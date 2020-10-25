@@ -92,14 +92,14 @@ namespace DatenMeister.Tests.Web
             Assert.That(tab
                     .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                     .OfType<IElement>()
-                    .Count(x => x.getMetaClass().ToString().Contains("TextFieldData")),
+                    .Count(x => x.getMetaClass()?.ToString()?.Contains("TextFieldData") == true),
                 Is.EqualTo(2));
 
             Assert.That(tab
                     .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                     .OfType<IElement>()
-                    .Count(x => x.getMetaClass().ToString().Contains("SubElementFieldData")
-                    || x.getMetaClass().ToString().Contains("ReferenceFieldData")),
+                    .Count(x => x.getMetaClass()?.ToString()?.Contains("SubElementFieldData") == true
+                    || x.getMetaClass()?.ToString()?.Contains("ReferenceFieldData") == true),
                 Is.GreaterThanOrEqualTo(1));
 
 

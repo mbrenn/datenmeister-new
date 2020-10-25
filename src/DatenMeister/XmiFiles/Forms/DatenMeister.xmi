@@ -112,13 +112,13 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="2ec15579-e205-443a-b89f-9e5d627d595d" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="UML.Packages.PackageFormList" name="Package - List">
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" />
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" name="Detail" p1:id="a6660c88-b6bd-4ac1-9976-e4bb3b81fb63">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="e11ca04a-1244-4c17-bac4-06dcef0c7df2" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="0a65b024-2880-4906-93f0-dd2ae32fcd28" />
         </tab>
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="packagedElement" name="packagedElement" property="packagedElement">
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" />
-          <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="null" />
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="packagedElement" name="packagedElement" property="packagedElement" p1:id="494ae4d1-e6cc-4d8e-b42c-9325a4d462f4">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="28fa89d2-d928-4f7c-849d-164225ab4802" />
+          <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="null" p1:id="2e8fdeb0-4f06-4093-8e3b-0e9ed621543b" />
         </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="UML.Packages.PackageAssociationDetail" formType="Detail" form-ref="#UML.Packages.PackageFormDetail" metaClass-ref="dm:///_internal/model/uml#Package" name="Association for Package - Detail" />

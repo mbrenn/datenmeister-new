@@ -5,6 +5,7 @@ using System.Text;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Runtime;
@@ -39,7 +40,7 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
         /// <param name="extentForm">The extent form being used to create the tables</param>
         public void FormatCollectionOfItems(IReflectiveCollection collection, IObject extentForm)
         {
-            var tabs = extentForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            var tabs = extentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
             if (tabs == null)
             {
                 FormatCollectionByTab(collection, extentForm);
@@ -55,7 +56,7 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
         private void FormatCollectionByTab(IEnumerable<object?> collection, IObject listForm)
         {
             var table = new HtmlTable();
-            var fields = listForm.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
+            var fields = listForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
 
             if (fields == null)
             {
@@ -67,14 +68,14 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
             var listFields = new List<HtmlElement>();
             foreach (var field in fields.OfType<IObject>())
             {
-                var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+                var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
                 if (fieldName == null)
                 {
                     continue;
                 }
 
                 listFields.Add(
-                    new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title ?? "unset"))
+                    new HtmlTableCell(field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title ?? "unset"))
                         {IsHeading = true});
             }
 
@@ -86,20 +87,20 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
                 listFields.Clear();
                 foreach (var field in fields.OfType<IElement>())
                 {
-                    var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+                    var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
                     if (fieldName == null)
                     {
                         continue;
                     }
                     
                     HtmlElement value;
-                    if (field.metaclass?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+                    if (field.metaclass?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
                     {
                         value = item is IElement element && element.metaclass != null
                             ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
                             : new HtmlRawString("<i>unset</i>");
                     } 
-                    else if (field.metaclass?.@equals(_FormAndFields.TheOne.__FullNameFieldData) == true)
+                    else if (field.metaclass?.@equals(_DatenMeister.TheOne.Forms.__FullNameFieldData) == true)
                     {
                         var result = NamedElementMethods.GetFullNameWithoutElementId(item);
                         if (result == null || string.IsNullOrEmpty(result))
@@ -113,7 +114,7 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
                     }
                     else
                     {
-                        if (field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration))
+                        if (field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration))
                         {
                             var asEnumeration = item.getOrDefault<IReflectiveCollection>(fieldName);
 
@@ -173,7 +174,7 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
 
             CreateRowForFields(item, detailForm, table);
 
-            var tabs = detailForm.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.tab);
+            var tabs = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.tab);
             if (tabs != null)
             {
                 foreach (var tab in tabs.OfType<IElement>())
@@ -194,7 +195,7 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
         /// <param name="table">The Html Table in which the fields will be include</param>
         private static void CreateRowForFields(IObject item, IObject form, HtmlTable table)
         {
-            var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
             if (fields == null)
             {
                 throw new InvalidOperationException("Fields are null...");
@@ -202,11 +203,11 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
 
             foreach (var field in fields.OfType<IElement>())
             {
-                var fieldName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
-                var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
+                var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+                var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
                 
                 HtmlElement content;
-                if (field.metaclass?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+                if (field.metaclass?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     content = item is IElement element && element.metaclass != null

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
@@ -24,7 +25,7 @@ namespace DatenMeister.WPF.Forms.Fields
             contentBlock.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Auto});
             contentBlock.ColumnDefinitions.Add(new ColumnDefinition {Width = GridLength.Auto});
 
-            var name = fieldData.get<string>(_FormAndFields._FieldData.name);
+            var name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
 
             if (valueElement?.isSet(name) == true)
             {

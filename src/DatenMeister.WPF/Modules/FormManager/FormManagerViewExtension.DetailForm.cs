@@ -7,6 +7,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms;
@@ -61,7 +62,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         return;
                     }
 
-                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
                     var originalForm = string.IsNullOrEmpty(url)
                         ? null
                         : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
@@ -102,7 +103,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         return;
                     }
 
-                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
                     var originalForm = string.IsNullOrEmpty(url)
                         ? null
                         : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
@@ -162,7 +163,7 @@ namespace DatenMeister.WPF.Modules.FormManager
 
 
             // The currently selected element is a form
-            if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, _FormAndFields.TheOne.__Form)
+            if (ClassifierMethods.IsSpecializedClassifierOf(metaClassOfDetailElement, _DatenMeister.TheOne.Forms.__Form)
                 && detailAsElement != null)
             {
                 yield return new ApplicationMenuButtonDefinition(
@@ -253,10 +254,10 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                 viewLogic.RemoveFormAssociationForDetailMetaClass(metaClass);
 
-                var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
-                formAssociation.set(_FormAndFields._FormAssociation.metaClass, metaClass);
-                formAssociation.set(_FormAndFields._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
-                formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.Detail);
+                var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, FormType.Detail);
                 userViewExtent.elements().add(formAssociation);
 
                 MessageBox.Show("View Association created");
@@ -295,26 +296,26 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var container = detailAsElement.container();
                 var isPackage = container != null && DefaultClassifierHints.IsPackageLike(container);
 
-                var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
+                var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
 
                 DefaultClassifierHints.AddToExtentOrElement(
                     isPackage && container != null ? container : (IObject) extent,
                     formAssociation);
                 
                 formAssociation.set(
-                    _FormAndFields._FormAssociation.name, 
+                    _DatenMeister._Forms._FormAssociation.name, 
                     "Detail Association for " + NamedElementMethods.GetName(detailAsElement));
 
                 var formMetaClass = detailAsElement.metaclass;
-                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _FormAndFields.TheOne.__DetailForm);
-                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _FormAndFields.TheOne.__ExtentForm);
+                var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__DetailForm);
+                var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__ExtentForm);
                 var formType = 
                     isExtentForm ? FormType.TreeItemDetail :
                     isDetailForm ? FormType.Detail :
                     FormType.TreeItemExtent;
 
-                formAssociation.set(_FormAndFields._FormAssociation.formType, formType);
-                formAssociation.set(_FormAndFields._FormAssociation.form, detailAsElement);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailAsElement);
 
                 await NavigatorForItems.NavigateToElementDetailView(navigationHost, formAssociation);
             }

@@ -2,8 +2,10 @@
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.ManagementProviders.View
@@ -54,28 +56,26 @@ namespace DatenMeister.Provider.ManagementProviders.View
         /// <returns>The created type</returns>
         public IElement GetFindTypeForm(FindTypeFormParameter parameter, string? buttonName = null)
         {
-            var form = new DetailForm(FindTypeForm)
+            var detailForm = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__DetailForm);
+            detailForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
+            detailForm.set(_DatenMeister._Forms._DetailForm.defaultHeight, 600);
+            detailForm.set(_DatenMeister._Forms._DetailForm.defaultWidth, 700);
+            detailForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, false);
+
+            if (buttonName != null)
             {
-                hideMetaInformation = true,
-                defaultHeight = 600,
-                defaultWidth = 700,
-                allowNewProperties = false
-            };
+                detailForm.set(_DatenMeister._Forms._DetailForm.buttonApplyText, buttonName);
+            }
 
-            if (buttonName != null) form.buttonApplyText = buttonName;
+            var type2Field = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
+            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, true);
+            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultValue, parameter.PreSelectedPackage);
+            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace, parameter.WorkspaceName);
+            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultExtentUri, parameter.ExtentUri);
 
-            var type2Field = new ReferenceFieldData("selectedType", "Type")
-            {
-                isSelectionInline = true,
-                defaultValue = parameter.PreSelectedPackage,
-                defaultWorkspace = parameter.WorkspaceName,
-                defaultExtentUri = parameter.ExtentUri
-            };
+            detailForm.set(_DatenMeister._Forms._DetailForm.field, new[] {type2Field});
 
-            form.AddFields(type2Field);
-
-            var createdForm = DotNetConverter.ConvertToMofObject(_formsPlugin.GetInternalFormExtent(), form) as IElement;
-            return createdForm ?? throw new InvalidOperationException("Form could not be created");
+            return detailForm ?? throw new InvalidOperationException("Form could not be created");
         }
     }
 

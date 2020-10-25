@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -53,7 +54,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 // Checks, if the given form is correct
                 if (!ClassifierMethods.IsSpecializedClassifierOf(
                     (OverridingViewDefinition.Element as IElement)?.getMetaClass(), 
-                    _FormAndFields.TheOne.__ExtentForm))
+                    _DatenMeister.TheOne.Forms.__ExtentForm))
                 {
                     MessageBox.Show("Overriding form is not of type ExtentForm.");
                     form = null;

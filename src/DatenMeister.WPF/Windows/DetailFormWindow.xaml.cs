@@ -11,6 +11,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -276,8 +277,8 @@ namespace DatenMeister.WPF.Windows
                 return;
             }
 
-            var width = control.EffectiveForm.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth);
-            var height = control.EffectiveForm.getOrDefault<double>(_FormAndFields._DetailForm.defaultHeight);
+            var width = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultWidth);
+            var height = control.EffectiveForm.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultHeight);
             if (width <= 0 && height <= 0)
             {
                 width = 1000;
@@ -459,7 +460,7 @@ namespace DatenMeister.WPF.Windows
 
                 SetMainContent(control);
 
-                var title = effectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.title);
+                var title = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._DetailForm.title);
                 if (!string.IsNullOrEmpty(title))
                 {
                     Title = title;

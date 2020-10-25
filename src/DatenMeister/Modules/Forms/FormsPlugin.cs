@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
@@ -110,7 +111,7 @@ namespace DatenMeister.Modules.Forms
 
                     extent.GetConfiguration()
                         .AddDefaultTypePackages(new[]
-                            {_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__FormAssociation});
+                            {_DatenMeister.TheOne.Forms.__Form, _DatenMeister.TheOne.Forms.__FormAssociation});
 
                     // Includes the default view modes
                     var packageMethods = new PackageMethods(_workspaceLogic);
@@ -119,9 +120,9 @@ namespace DatenMeister.Modules.Forms
                         packageMethods.GetOrCreatePackageStructure(
                             internalFormExtent.elements(), "DatenMeister::ViewModes");
                     var created = MofFactory.Create(internalFormExtent,
-                        _FormAndFields.TheOne.__ViewMode);
-                    created.set(_FormAndFields._ViewMode.id, "Default");
-                    created.set(_FormAndFields._ViewMode.name, "Default");
+                        _DatenMeister.TheOne.Forms.__ViewMode);
+                    created.set(_DatenMeister._Forms._ViewMode.id, "Default");
+                    created.set(_DatenMeister._Forms._ViewMode.name, "Default");
                     PackageMethods.AddObjectToPackage(package, created);
 
                     break;
@@ -136,32 +137,6 @@ namespace DatenMeister.Modules.Forms
         public void Add(FormLocationType type, IObject view)
         {
             GetFormExtent(type).elements().add(view);
-        }
-
-        /// <summary>
-        /// Adds the form
-        /// </summary>
-        /// <param name="type">Location Type to which the element shall be added</param>
-        /// <param name="form">Default view to be used</param>
-        /// <param name="id">Id of the element that shall be created</param>
-        public void Add(FormLocationType type, Form form, string? id = null)
-        {
-            var viewExtent = GetInternalFormExtent();
-            var factory = new MofFactory(viewExtent);
-            GetFormExtent(type).elements().add(factory.createFrom(form, id));
-        }
-
-        /// <summary>
-        /// Adds a default view for a certain meta class
-        /// </summary>
-        /// <param name="type">Location Type to which the element shall be added</param>
-        /// <param name="defaultForm">Default view to be used</param>
-        /// <param name="id">Id of the element that shall be created</param>
-        public void Add(FormLocationType type, FormAssociation defaultForm, string? id = null)
-        {
-            var viewExtent = GetInternalFormExtent();
-            var factory = new MofFactory(viewExtent);
-            GetFormExtent(type).elements().add(factory.createFrom(defaultForm, id));
         }
 
         /// <summary>
@@ -236,8 +211,10 @@ namespace DatenMeister.Modules.Forms
                         .SelectMany(x => x.elements()
                             .GetAllDescendants(new[]
                                 {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                            .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__Form, _FormAndFields.TheOne.__DetailForm,
-                                _FormAndFields.TheOne.__ListForm)),
+                            .WhenMetaClassIsOneOf(
+                                _DatenMeister.TheOne.Forms.__Form, 
+                                _DatenMeister.TheOne.Forms.__DetailForm,
+                                _DatenMeister.TheOne.Forms.__ListForm)),
                     true);
         }
 
@@ -253,13 +230,13 @@ namespace DatenMeister.Modules.Forms
         {
             var factory = new MofFactory(form);
             
-            var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
+            var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
             var name = NamedElementMethods.GetName(form);
             
-            formAssociation.set(_FormAndFields._FormAssociation.formType, formType);
-            formAssociation.set(_FormAndFields._FormAssociation.form, form);
-            formAssociation.set(_FormAndFields._FormAssociation.metaClass, metaClass);
-            formAssociation.set(_FormAndFields._FormAssociation.name, $"Association for {name}");
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.form, form);
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
+            formAssociation.set(_DatenMeister._Forms._FormAssociation.name, $"Association for {name}");
 
             return formAssociation;
         }
@@ -304,7 +281,7 @@ namespace DatenMeister.Modules.Forms
                         x.elements()
                             .GetAllDescendants(new[]
                                 {_UML._CommonStructure._Namespace.member, _UML._Packages._Package.packagedElement})
-                            .WhenMetaClassIsOneOf(_FormAndFields.TheOne.__FormAssociation)),
+                            .WhenMetaClassIsOneOf(_DatenMeister.TheOne.Forms.__FormAssociation)),
                 true);
         }
         
@@ -321,8 +298,8 @@ namespace DatenMeister.Modules.Forms
             foreach (var foundElement in viewExtent
                 .elements()
                 .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(_FormAndFields.TheOne.__FormAssociation)
-                .WhenPropertyHasValue(_FormAndFields._FormAssociation.extentType, selectedExtentType)
+                .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
+                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType)
                 .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
@@ -346,9 +323,9 @@ namespace DatenMeister.Modules.Forms
             foreach (var foundElement in viewExtent
                 .elements()
                 .GetAllDescendantsIncludingThemselves()
-                .WhenMetaClassIs(_FormAndFields.TheOne.__FormAssociation)
-                .WhenPropertyHasValue(_FormAndFields._FormAssociation.metaClass, metaClass)
-                .WhenPropertyHasValue(_FormAndFields._FormAssociation.formType, FormType.Detail)
+                .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
+                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
+                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType, FormType.Detail)
                 .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
@@ -738,7 +715,7 @@ namespace DatenMeister.Modules.Forms
             form = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, form, new CopyOption());
             if (originalUrl != null)
             {
-                form.set(_FormAndFields._Form.originalUri, originalUrl);
+                form.set(_DatenMeister._Forms._Form.originalUri, originalUrl);
             }
 
             foreach (var plugin in _formPluginState.FormModificationPlugins)

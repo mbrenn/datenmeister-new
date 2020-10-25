@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
@@ -358,36 +359,36 @@ namespace DatenMeister.WPF.Navigation
                         {
                             // Gets the view definition
                             var fields = y.View
-                                .get<IReflectiveSequence>(_FormAndFields._DetailForm.field);
+                                .get<IReflectiveSequence>(_DatenMeister._Forms._DetailForm.field);
                             var formFactory = new MofFactory(fields);
                             var containerProperty = config.ContainerProperty;
 
                             if (containerProperty == null) // ParentProperty is not given, so user gives property
                             {
                                 // Parent property is already given by function call
-                                var dropField = formFactory.create(_FormAndFields.TheOne.__DropDownFieldData);
+                                var dropField = formFactory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
 
                                 //dropField.set(_FormAndFields._DropDownFieldData.fieldType, DropDownFieldData.FieldType);
-                                dropField.set(_FormAndFields._DropDownFieldData.name, "ParentProperty");
-                                dropField.set(_FormAndFields._DropDownFieldData.title, "Parent Property");
-                                dropField.set(_FormAndFields._DropDownFieldData.isAttached, true);
+                                dropField.set(_DatenMeister._Forms._DropDownFieldData.name, "ParentProperty");
+                                dropField.set(_DatenMeister._Forms._DropDownFieldData.title, "Parent Property");
+                                dropField.set(_DatenMeister._Forms._DropDownFieldData.isAttached, true);
 
                                 var list = new List<object>();
                                 var properties = ObjectHelper.GetPropertyNames(containerElement)
                                     .OrderBy(z => z).Distinct();
                                 foreach (var property in properties)
                                 {
-                                    var valuePair = formFactory.create(_FormAndFields.TheOne.__ValuePair);
-                                    valuePair.set(_FormAndFields._ValuePair.name, property);
-                                    valuePair.set(_FormAndFields._ValuePair.value, property);
+                                    var valuePair = formFactory.create(_DatenMeister.TheOne.Forms.__ValuePair);
+                                    valuePair.set(_DatenMeister._Forms._ValuePair.name, property);
+                                    valuePair.set(_DatenMeister._Forms._ValuePair.value, property);
                                     list.Add(valuePair);
                                 }
 
-                                dropField.set(_FormAndFields._DropDownFieldData.values, list);
+                                dropField.set(_DatenMeister._Forms._DropDownFieldData.values, list);
                                 fields.add(0, dropField);
 
                                 // Adds the line to separate it from the other side
-                                var lineField = formFactory.create(_FormAndFields.TheOne.__SeparatorLineFieldData);
+                                var lineField = formFactory.create(_DatenMeister.TheOne.Forms.__SeparatorLineFieldData);
                                 fields.add(1, lineField);
                             }
                         },

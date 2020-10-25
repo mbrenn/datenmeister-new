@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
@@ -46,7 +47,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         return;
                     }
 
-                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
                     var originalForm = string.IsNullOrEmpty(url)
                         ? null
                         : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
@@ -87,7 +88,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         return;
                     }
 
-                    var url = effectiveForm.getOrDefault<string>(_FormAndFields._Form.originalUri);
+                    var url = effectiveForm.getOrDefault<string>(_DatenMeister._Forms._Form.originalUri);
                     var originalForm = string.IsNullOrEmpty(url)
                         ? null
                         : GiveMe.Scope.WorkspaceLogic.FindItem(url) as IObject;
@@ -197,10 +198,10 @@ namespace DatenMeister.WPF.Modules.FormManager
 
                         viewLogic.RemoveFormAssociationForExtentType(selectedExtentType);
 
-                        var formAssociation = factory.create(_FormAndFields.TheOne.__FormAssociation);
-                        formAssociation.set(_FormAndFields._FormAssociation.extentType, selectedExtentType);
-                        formAssociation.set(_FormAndFields._FormAssociation.form, itemExplorerControl.EffectiveForm);
-                        formAssociation.set(_FormAndFields._FormAssociation.formType, FormType.TreeItemExtent);
+                        var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
+                        formAssociation.set(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType);
+                        formAssociation.set(_DatenMeister._Forms._FormAssociation.form, itemExplorerControl.EffectiveForm);
+                        formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, FormType.TreeItemExtent);
                         userViewExtent.elements().add(formAssociation);
 
                         MessageBox.Show("View Association created");

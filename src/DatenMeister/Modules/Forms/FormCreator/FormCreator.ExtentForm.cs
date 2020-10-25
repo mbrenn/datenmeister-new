@@ -437,7 +437,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                         {
                             var field = GetFieldForProperty(
                                 objectMetaClass,
-                                property, 
+                                property,
                                 CreationMode.All | CreationMode.ReadOnly);
                             fields.Add(field);
                         }

@@ -8,12 +8,17 @@ namespace DatenMeister.Excel.EMOF
 {
     public class SheetItem : IProviderObject
     {
-        public ISheet Sheet { get; set; }
+        public ISheet Sheet { get; }
+        
+        /// <summary>
+        /// Gets the provider 
+        /// </summary>
+        IProvider IProviderObject.Provider => Provider;
 
         /// <summary>
         /// Gets the provider being used to create the element
         /// </summary>
-        public IProvider Provider { get; }
+        public ExcelProvider Provider { get; }
 
         /// <summary>
         /// Gets the provider as a typed instance
@@ -43,7 +48,9 @@ namespace DatenMeister.Excel.EMOF
         /// <param name="sheet">The sheet that is used for access</param>
         public SheetItem(IProvider provider, ISheet sheet)
         {
-            Provider = provider;
+            Provider = provider as ExcelProvider ??
+                       throw new InvalidOperationException("Provided excel is not an excel provider");
+            
             Sheet = sheet;
 
             InitializeData();
@@ -65,7 +72,7 @@ namespace DatenMeister.Excel.EMOF
                     break;
                 }
 
-                Columns[headline] = n;
+                Columns[Provider.ColumnTranslator.TranslateHeader(headline)] = n;
                 n++;
             }
 

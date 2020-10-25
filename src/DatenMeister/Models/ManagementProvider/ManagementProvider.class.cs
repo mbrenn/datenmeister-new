@@ -49,6 +49,9 @@ namespace DatenMeister.Models.ManagementProviders
             public static string @alternativeUris = "alternativeUris";
             public IElement? @_alternativeUris = null;
 
+            public static string @autoEnumerateType = "autoEnumerateType";
+            public IElement? @_autoEnumerateType = null;
+
             public static string @state = "state";
             public IElement? @_state = null;
 
@@ -124,6 +127,9 @@ namespace DatenMeister.Models.ManagementProviders
 
             public static string @alternativeUris = "alternativeUris";
             public IElement? @_alternativeUris = null;
+
+            public static string @autoEnumerateType = "autoEnumerateType";
+            public IElement? @_autoEnumerateType = null;
 
             public static string @state = "state";
             public IElement? @_state = null;

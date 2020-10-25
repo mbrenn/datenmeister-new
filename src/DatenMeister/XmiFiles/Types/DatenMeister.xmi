@@ -71,6 +71,18 @@
         <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="127bd072-3a79-41e1-b343-dbef1dcdf2cf" name="isDisabled" type-ref="dm:///_internal/model/primitivetypes#Boolean">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.ActionSet" name="ActionSet">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
@@ -388,6 +400,18 @@
         <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
+      <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="99c5113b-af42-4199-b82b-dab3915bcd59" name="emptyTarget" type-ref="dm:///_internal/model/primitivetypes#Boolean">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="3c3595a4-026e-4c07-83ec-8a90607b8863" name="ExportToXmiAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
@@ -623,6 +647,18 @@
       </ownedAttribute>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="extentUri" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="d272160f-f807-4131-8b7b-906df1530269" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="c6a6fb84-9688-472c-99cf-daa9db2906ce" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9405b77b-9eb2-4986-9d9f-66536315af1a" name="dropExisting" type-ref="dm:///_internal/model/primitivetypes#Boolean">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" name="ExcelLoaderConfig" p1:id="DatenMeister.Models.ExtentLoaderConfigs.ExcelLoaderConfig">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" general-ref="#DatenMeister.Models.ExtentLoaderConfigs.ExtentLoaderConfig" p1:id="6cc38949-e633-4f58-ad29-3bb3b5855a3b" />
@@ -637,6 +673,18 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="c009b374-b6cc-4fb9-b3ee-7b2bc1ef9cc2" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3f3be2dc-3f46-414d-bfe4-9c3403c32d36" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="88f22e39-88fe-484f-b969-f98286500ce8" name="skipEmptyRowsCount" type-ref="dm:///_internal/model/primitivetypes#Integer">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5c545cfe-04b8-430f-a648-6c65c788ede1" name="columns" type-ref="dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a" upper="*">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
         <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
         <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
@@ -750,6 +798,36 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
       <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="baa26cf4-cab5-4ab2-a805-f2a9e5dfa81b" name="skipElementsForLastLevel" type-ref="dm:///_internal/model/primitivetypes#Boolean">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a" name="ExcelColumn">
+      <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
+      <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
+      <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
+      <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a2e9bdff-51a0-4e17-b20c-9555c2cf0005" name="header" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f07b8bd5-b230-4121-b94a-ae56f6868660" name="name" type-ref="dm:///_internal/model/primitivetypes#String">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
         <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
         <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />

@@ -28,6 +28,11 @@ namespace DatenMeister.Models.ManagementProvider
         /// </summary>
         public IEnumerable<string>? alternativeUris { get; set; }
 
+        /// <summary>
+        /// Gets the alternative uris of the extent
+        /// </summary>
+        public IEnumerable<string>? autoEnumerateType { get; set; }
+
         public ExtentLoadingState state { get; set; }
 
         public string? failMessage { get; set; }

@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -81,7 +80,7 @@ namespace DatenMeister.WPF.Windows
             if (IsExcelNotLoaded()) return;
 
             // Gets the columns names
-            var columnNames = _importer.GetColumnNames();
+            var columnNames = _importer.GetColumnNames().ToList();
             var countRows = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countRows);
             var countColumns = _importer.LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.countColumns);
 

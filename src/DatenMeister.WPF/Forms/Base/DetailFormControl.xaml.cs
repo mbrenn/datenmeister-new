@@ -669,8 +669,7 @@ namespace DatenMeister.WPF.Forms.Base
                 throw new InvalidOperationException("DetailElement == null");
             if (EffectiveForm == null)
                 throw new InvalidOperationException("EffectiveForm == null");
-            
-            
+
             saveText ??= EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
             saveText ??= "Save";
 
@@ -945,7 +944,6 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 field.InjectValue(property, value);
             }
-
         }
     }
 }

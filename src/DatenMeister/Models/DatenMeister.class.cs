@@ -110,6 +110,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
             }
 
             public _Action @Action = new _Action();
@@ -136,6 +139,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
             }
 
             public _LoggingWriterAction @LoggingWriterAction = new _LoggingWriterAction();
@@ -155,6 +161,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
             }
 
             public _CommandExecutionAction @CommandExecutionAction = new _CommandExecutionAction();
@@ -170,6 +179,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -187,6 +199,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
             }
 
             public _LoadExtentAction @LoadExtentAction = new _LoadExtentAction();
@@ -202,6 +217,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -219,6 +237,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
             }
 
             public _CreateWorkspaceAction @CreateWorkspaceAction = new _CreateWorkspaceAction();
@@ -231,6 +252,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -254,8 +278,14 @@ namespace DatenMeister.Models
                 public static string @targetWorkspace = "targetWorkspace";
                 public IElement? @_targetWorkspace = null;
 
+                public static string @emptyTarget = "emptyTarget";
+                public IElement? @_emptyTarget = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -276,6 +306,9 @@ namespace DatenMeister.Models
                 public static string @name = "name";
                 public IElement? @_name = null;
 
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
             }
 
             public _ExportToXmiAction @ExportToXmiAction = new _ExportToXmiAction();
@@ -291,6 +324,9 @@ namespace DatenMeister.Models
 
                 public static string @name = "name";
                 public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -688,6 +724,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExtentLoaderConfig @ExtentLoaderConfig = new _ExtentLoaderConfig();
@@ -728,6 +767,9 @@ namespace DatenMeister.Models
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
 
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -736,6 +778,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -777,6 +822,9 @@ namespace DatenMeister.Models
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
 
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -785,6 +833,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -829,6 +880,9 @@ namespace DatenMeister.Models
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
 
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -837,6 +891,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -860,6 +917,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExcelExtentLoaderConfig @ExcelExtentLoaderConfig = new _ExcelExtentLoaderConfig();
@@ -875,6 +935,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -898,6 +961,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _XmlReferenceLoaderConfig @XmlReferenceLoaderConfig = new _XmlReferenceLoaderConfig();
@@ -917,6 +983,9 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExtentFileLoaderConfig @ExtentFileLoaderConfig = new _ExtentFileLoaderConfig();
@@ -935,6 +1004,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -957,6 +1029,9 @@ namespace DatenMeister.Models
 
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
 
             }
 
@@ -1042,6 +1117,9 @@ namespace DatenMeister.Models
                 public static string @skipEmptyRowsCount = "skipEmptyRowsCount";
                 public IElement? @_skipEmptyRowsCount = null;
 
+                public static string @columns = "columns";
+                public IElement? @_columns = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -1051,10 +1129,26 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
             }
 
             public _ExcelHierarchicalLoaderConfig @ExcelHierarchicalLoaderConfig = new _ExcelHierarchicalLoaderConfig();
             public IElement @__ExcelHierarchicalLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#ExtentLoaderConfigs.ExcelHierarchicalLoaderConfig");
+
+            public class _ExcelColumn
+            {
+                public static string @header = "header";
+                public IElement? @_header = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+            }
+
+            public _ExcelColumn @ExcelColumn = new _ExcelColumn();
+            public IElement @__ExcelColumn = new MofObjectShadow("dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a");
 
         }
 
@@ -1824,6 +1918,9 @@ namespace DatenMeister.Models
                 public static string @alternativeUris = "alternativeUris";
                 public IElement? @_alternativeUris = null;
 
+                public static string @autoEnumerateType = "autoEnumerateType";
+                public IElement? @_autoEnumerateType = null;
+
                 public static string @state = "state";
                 public IElement? @_state = null;
 
@@ -1899,6 +1996,9 @@ namespace DatenMeister.Models
 
                 public static string @alternativeUris = "alternativeUris";
                 public IElement? @_alternativeUris = null;
+
+                public static string @autoEnumerateType = "autoEnumerateType";
+                public IElement? @_autoEnumerateType = null;
 
                 public static string @state = "state";
                 public IElement? @_state = null;

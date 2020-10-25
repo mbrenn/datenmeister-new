@@ -15,6 +15,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
     public class CopyElementsActionHandler : IActionHandler
     {
         private static readonly ILogger logger = new ClassLogger(typeof(CopyElementsActionHandler));
+
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
@@ -28,13 +29,16 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 ?? WorkspaceNames.WorkspaceData;
             var targetWorkspaceId =
                 action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.targetWorkspace)
-                ?? WorkspaceNames.WorkspaceData;;
+                ?? WorkspaceNames.WorkspaceData;
+            ;
             var sourcePath =
                 action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.sourcePath);
             var targetPath =
                 action.getOrDefault<string>(_DatenMeister._Actions._CopyElementsAction.targetPath);
             var moveOnly =
                 action.getOrDefault<bool>(_DatenMeister._Actions._CopyElementsAction.moveOnly);
+            var emptyTarget =
+                action.getOrDefault<bool>(_DatenMeister._Actions._CopyElementsAction.emptyTarget);
 
             var sourceWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(sourceWorkspaceId);
             var targetWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(targetWorkspaceId);
@@ -42,41 +46,46 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             {
                 var message = $"sourceWorkspace is not found ${sourceWorkspaceId}";
                 logger.Error(message);
-                
+
                 throw new InvalidOperationException(message);
             }
-            
+
             if (targetWorkspace == null)
             {
                 var message = $"targetWorkspace is not found ${targetWorkspaceId}";
                 logger.Error(message);
-                
+
                 throw new InvalidOperationException(message);
             }
 
             var sourceElement = sourceWorkspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
             var targetElement = targetWorkspace.Resolve(targetPath, ResolveType.NoMetaWorkspaces);
-            
+
             if (sourceElement == null)
             {
                 var message = $"sourcePath is not found ${sourcePath}";
                 logger.Error(message);
-                
+
                 throw new InvalidOperationException(message);
             }
-            
+
             if (targetElement == null)
             {
                 var message = $"targetPath is not found ${targetPath}";
                 logger.Error(message);
-                
+
                 throw new InvalidOperationException(message);
             }
-            
+
             // Depending on type, get the reflective instance
             var targetCollection = GetCollectionFromResolvedElement(targetElement)
                                    ?? throw new InvalidOperationException(
                                        "targetElement is null");
+
+            if (emptyTarget)
+            {
+                targetCollection.clear();
+            }
 
             if (sourceElement is IElement asElement && !(sourceElement is IExtent))
             {

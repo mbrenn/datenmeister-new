@@ -547,14 +547,14 @@ namespace DatenMeister.Runtime
             string propertyOfChild,
             object requestValue)
         {
-            var valueOfProperty = value.get(property);
+            var valueOfProperty = value.getOrDefault<IReflectiveCollection>(property);
             if (valueOfProperty == null)
             {
                 // Nothing has been found, so return null
                 yield break;
             }
 
-            var asEnumeration = (valueOfProperty as IEnumerable)?.Cast<object>();
+            var asEnumeration = valueOfProperty.Cast<object>();
             if (asEnumeration == null)
             {
                 throw new InvalidOperationException("The value behind the property is not an enumeration");
@@ -581,8 +581,8 @@ namespace DatenMeister.Runtime
             foreach (var x in asEnumeration)
             {
                 var asElement = x as IObject;
-                var valueOfChild = asElement?.get(propertyOfChild);
-                if (valueOfChild?.Equals(requestValue) == true && asElement != null)
+                var valueOfChild = asElement?.getOrDefault<object>(propertyOfChild);
+                if (valueOfChild != null && valueOfChild.Equals(requestValue) == true && asElement != null)
                 {
                     yield return asElement;
                 }

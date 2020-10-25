@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Excel.Spreadsheet;
 using DatenMeister.Models;
@@ -10,17 +11,44 @@ namespace DatenMeister.Excel.Helper
 {
     public class ExcelImporter
     {
+        public class Column
+        {
+            /// <summary>
+            /// Initializes a new instance of the Column
+            /// </summary>
+            /// <param name="name">Name of the column</param>
+            /// <param name="header">Header of the column</param>
+            public Column(string name, string header)
+            {
+                Name = name;
+                Header = header;
+            }
+            
+            /// <summary>
+            /// Name of the property
+            /// </summary>
+            public string Name { get; set; }
+
+            /// <summary>
+            /// Name of the header
+            /// </summary>
+            public string Header { get; set; }
+        }
+        
         /// <summary>
         /// Gets or sets the settings to be used for the excel importer.
         /// Of Type ExcelLoaderConfig
         /// </summary>
         public IElement LoaderConfig { get; set; }
+        
+        private ExcelColumnTranslator _columnTranslator = new ExcelColumnTranslator();
 
         private SSDocument? _excelDocument;
 
         public ExcelImporter(IElement loaderConfig)
         {
             LoaderConfig = loaderConfig ?? throw new ArgumentNullException(nameof(loaderConfig));
+            _columnTranslator.LoadTranslation(loaderConfig);
         }
 
         /// <summary>
@@ -104,10 +132,10 @@ namespace DatenMeister.Excel.Helper
         }
 
         /// <summary>
-        /// Gets the column names
+        /// Gets the column names after the transformation has been done
         /// </summary>
         /// <returns>List of Columns</returns>
-        public List<string> GetColumnNames()
+        public IEnumerable<string> GetOriginalColumnNames()
         {
             var selectedSheet = GetSelectedSheet();
             
@@ -145,7 +173,21 @@ namespace DatenMeister.Excel.Helper
                     }
                 }
             }
+            
             return columnNames;
+        }
+
+        /// <summary>
+        /// Gets the column names including the translation 
+        /// </summary>
+        /// <returns>Enumeration of column names</returns>
+        public IEnumerable<string> GetColumnNames()
+        {
+            var list = GetOriginalColumnNames();
+            foreach (var headerName in list)
+            {
+                yield return _columnTranslator.TranslateHeader(headerName);
+            }
         }
 
         public int GuessRowCount()

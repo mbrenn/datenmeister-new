@@ -1,5 +1,6 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Models;
 using DatenMeister.Models.ManagementProviders;
@@ -88,6 +89,20 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                         mofExtent.GetConfiguration().ExtentType = v?.ToString() ?? string.Empty;
                     }
                 });
+            
+            AddMapping(
+                _ManagementProvider._Extent.autoEnumerateType,
+                e => (uriExtent as MofExtent)?.GetConfiguration().AutoEnumerateType,
+                (e, v) =>
+                {
+                    if (uriExtent is MofExtent mofExtent && v != null)
+                    {
+                        if (Enum.TryParse<AutoEnumerateType>(v.ToString(), out var result))
+                        {
+                            mofExtent.GetConfiguration().AutoEnumerateType = result;
+                        }
+                    }
+                });
 
             AddMapping(
                 _ManagementProvider._Extent.isModified,
@@ -103,7 +118,6 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 _ManagementProvider._Extent.state,
                 e => loadedExtentInformation?.LoadingState ?? ExtentLoadingState.Unknown,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
-
 
             AddMapping(
                 _ManagementProvider._Extent.failMessage,

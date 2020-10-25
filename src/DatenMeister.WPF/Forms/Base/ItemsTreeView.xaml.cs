@@ -273,7 +273,7 @@ namespace DatenMeister.WPF.Forms.Base
             var model = new List<ItemsTreeViewItem>();
 
             _newSelectedItem = null;
-            _previouslySelectedItem = 
+            _previouslySelectedItem =
                 (TreeView.SelectedItem as ItemsTreeViewItem)?.TreeViewItemParameter?.Element;
 
             var container = TreeView as ItemsControl;
@@ -284,7 +284,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // Checks, if a tree views are already created
                 var availableTreeViewItem = (container.ItemsSource as List<ItemsTreeViewItem>)?.FirstOrDefault();
-                
+
                 // ReSharper disable once RedundantLogicalConditionalExpressionOperand
                 if (availableTreeViewItem == null || ConfigurationAlwaysRefresh)
                 {
@@ -293,7 +293,7 @@ namespace DatenMeister.WPF.Forms.Base
                         true);
                     if (found != null)
                         model.Add(found);
-                    
+
                     container.ItemsSource = model;
                 }
                 else
@@ -308,7 +308,7 @@ namespace DatenMeister.WPF.Forms.Base
                 _newSelectedItem.IsExpanded = true;
                 _newSelectedItem.BringIntoView();
             }
-         }
+        }
 
         /// <summary>
         /// Updates the treeview item by using the current item and compares it to the given item

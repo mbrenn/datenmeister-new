@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
@@ -38,15 +39,15 @@ namespace DatenMeister.WPF.Forms.Fields
             DetailFormControl detailForm,
             FieldParameter fieldFlags)
         {
-            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            _separator = fieldData.getOrDefault<string>(_FormAndFields._CheckboxListTaggingFieldData.separator) ?? " ";
-            _containsFreeText = fieldData.getOrDefault<bool>(_FormAndFields._CheckboxListTaggingFieldData.containsFreeText);
+            _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+            _separator = fieldData.getOrDefault<string>(_DatenMeister._Forms._CheckboxListTaggingFieldData.separator) ?? " ";
+            _containsFreeText = fieldData.getOrDefault<bool>(_DatenMeister._Forms._CheckboxListTaggingFieldData.containsFreeText);
 
             var valuePairs =
-                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._CheckboxListTaggingFieldData.values)?.ToList()
+                fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._CheckboxListTaggingFieldData.values)?.ToList()
                 ?? new List<object?>();
             
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+            var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly)
                              || fieldFlags.IsReadOnly;
 
             var currentValue = value.getOrDefault<string>(_name) ?? string.Empty;
@@ -56,8 +57,8 @@ namespace DatenMeister.WPF.Forms.Fields
             _options = new List<CheckBox>();
             foreach (var pair in valuePairs.OfType<IElement>())
             {
-                var name = pair.getOrDefault<string>(_FormAndFields._ValuePair.name);
-                var valueContent = pair.getOrDefault<string>(_FormAndFields._ValuePair.value);
+                var name = pair.getOrDefault<string>(_DatenMeister._Forms._ValuePair.name);
+                var valueContent = pair.getOrDefault<string>(_DatenMeister._Forms._ValuePair.value);
 
                 var checkbox = new CheckBox
                 {

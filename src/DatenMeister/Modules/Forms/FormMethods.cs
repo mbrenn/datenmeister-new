@@ -6,6 +6,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -41,13 +42,13 @@ namespace DatenMeister.Modules.Forms
         /// <returns>true, if the form is valid</returns>
         public static bool ValidateForm(IObject form)
         {
-            var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
             if (fields != null)
             {
                 if (!ValidateFields(fields)) return false;
             }
 
-            var tabs = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
             if (tabs != null)
             {
                 foreach (var tab in tabs.OfType<IObject>())
@@ -70,8 +71,8 @@ namespace DatenMeister.Modules.Forms
             var set = new HashSet<string>();
             foreach (var field in fields.OfType<IObject>())
             {
-                var preName = field.getOrDefault<string>(_FormAndFields._FieldData.name);
-                var isAttached = field.getOrDefault<bool>(_FormAndFields._FieldData.isAttached);
+                var preName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+                var isAttached = field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isAttached);
                 var name = isAttached ? randomGuid  + preName : preName;
                 
                 if (set.Contains(name) && !string.IsNullOrEmpty(name))
@@ -93,9 +94,9 @@ namespace DatenMeister.Modules.Forms
         /// <returns>true, if the form already contains a metaclass form</returns>
         public static bool HasMetaClassFieldInForm(IObject form)
         {
-            var formAndFields = _FormAndFields.TheOne;
+            var formAndFields = _DatenMeister.TheOne.Forms;
             return form
-                .get<IReflectiveCollection>(_FormAndFields._DetailForm.field)
+                .get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                 .OfType<IElement>()
                 .Any(x => x.getMetaClass()?.@equals(formAndFields.__MetaClassElementFieldData) ?? false);
         }
@@ -112,7 +113,7 @@ namespace DatenMeister.Modules.Forms
 
             return fields
                 .OfType<IElement>()
-                .Any(x => x.getMetaClass()?.@equals(_FormAndFields.TheOne.__MetaClassElementFieldData) ?? false);
+                .Any(x => x.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) ?? false);
         }
         
         /// <summary>
@@ -123,12 +124,12 @@ namespace DatenMeister.Modules.Forms
         /// <returns>The found element or null, if not found</returns>
         public static IElement? GetField(IElement form, string fieldName)
         {
-            if (_FormAndFields._DetailForm.field != _FormAndFields._ListForm.field)
+            if (_DatenMeister._Forms._DetailForm.field != _DatenMeister._Forms._ListForm.field)
                 throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
             
-            var fields = form.get<IReflectiveCollection>(_FormAndFields._DetailForm.field);
+            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
             return fields
-                .WhenPropertyHasValue(_FormAndFields._FieldData.name, fieldName)
+                .WhenPropertyHasValue(_DatenMeister._Forms._FieldData.name, fieldName)
                 .OfType<IElement>()
                 .FirstOrDefault();
         }
@@ -141,16 +142,16 @@ namespace DatenMeister.Modules.Forms
         /// <returns>The found element</returns>
         public static IElement? GetListTabForPropertyName(IElement form, string propertyName)
         {
-            if (_FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab)
+            if (_DatenMeister._Forms._ExtentForm.tab != _DatenMeister._Forms._DetailForm.tab)
                 throw new InvalidOperationException("Something ugly happened here: _FormAndFields._ExtentForm.tab != _FormAndFields._DetailForm.tab");
 
-            var tabs = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            var tabs = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
 
             foreach (var tab in tabs.OfType<IElement>())
             {
-                if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(), _FormAndFields.TheOne.__ListForm))
+                if (ClassifierMethods.IsSpecializedClassifierOf(tab.getMetaClass(), _DatenMeister.TheOne.Forms.__ListForm))
                 {
-                    var property = tab.getOrDefault<string>(_FormAndFields._ListForm.property);
+                    var property = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
                     if (property == propertyName)
                     {
                         return tab;
@@ -177,8 +178,8 @@ namespace DatenMeister.Modules.Forms
                 foreach (var extentType in extentTypes)
                 {
                     var result = managementWorkspace
-                        .GetAllDescendentsOfType(_FormAndFields.TheOne.__ViewMode)
-                        .WhenPropertyHasValue(_FormAndFields._ViewMode.defaultExtentType, extentType)
+                        .GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
+                        .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.defaultExtentType, extentType)
                         .OfType<IElement>()
                         .FirstOrDefault();
                     if (result != null)
@@ -189,8 +190,8 @@ namespace DatenMeister.Modules.Forms
             }
 
             return managementWorkspace
-                .GetAllDescendentsOfType(_FormAndFields.TheOne.__ViewMode)
-                .WhenPropertyHasValue(_FormAndFields._ViewMode.id, "Default")
+                .GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode)
+                .WhenPropertyHasValue(_DatenMeister._Forms._ViewMode.id, "Default")
                 .OfType<IElement>()
                 .FirstOrDefault();
         }

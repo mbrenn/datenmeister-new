@@ -7,6 +7,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -92,15 +93,15 @@ namespace DatenMeister.WPF.Forms.Fields
             
             var navigationHost = detailForm.NavigationHost;
             
-            _isInline = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isSelectionInline);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.isReadOnly)
+            _isInline = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline);
+            var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.isReadOnly)
                 || fieldFlags.IsReadOnly;
-            _name = fieldData.get<string>(_FormAndFields._FieldData.name);
+            _name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
             _detailFormControl = detailForm;
             _element = element;
             
-            _workspace = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultWorkspace);
-            _extent = fieldData.getOrDefault<string>(_FormAndFields._ReferenceFieldData.defaultExtentUri);
+            _workspace = fieldData.getOrDefault<string>(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace);
+            _extent = fieldData.getOrDefault<string>(_DatenMeister._Forms._ReferenceFieldData.defaultExtentUri);
 
             if (_extent == null)
             {
@@ -179,7 +180,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     };
                 
                 var filterMetaClasses =
-                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+                    fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ReferenceFieldData.metaClassFilter);
                 if (filterMetaClasses != null)
                 {
                     configuration.FilteredMetaClasses = filterMetaClasses.OfType<IElement>().ToList();
@@ -237,16 +238,16 @@ namespace DatenMeister.WPF.Forms.Fields
             };
 
             var filterMetaClasses =
-                fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._ReferenceFieldData.metaClassFilter);
+                fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ReferenceFieldData.metaClassFilter);
             if (filterMetaClasses != null)
             {
                 _control.FilterMetaClasses = filterMetaClasses.OfType<IElement>();
             }
 
-            var showAllChildren = fieldData.getOrDefault<bool>(_FormAndFields._ReferenceFieldData.showAllChildren);
+            var showAllChildren = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.showAllChildren);
             if (showAllChildren) _control.ShowAllChildren = true;
 
-            var element = fieldData.getOrDefault<IElement>(_FormAndFields._ReferenceFieldData.defaultValue);
+            var element = fieldData.getOrDefault<IElement>(_DatenMeister._Forms._ReferenceFieldData.defaultValue);
             if (element != null)
             {
                 _control.Select(element);

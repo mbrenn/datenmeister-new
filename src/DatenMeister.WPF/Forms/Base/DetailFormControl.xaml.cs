@@ -15,6 +15,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Validators;
@@ -126,8 +127,8 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Gets the default size
         /// </summary>
         public Size DefaultSize => new Size(
-            EffectiveForm?.getOrDefault<double>(_FormAndFields._DetailForm.defaultWidth) ?? 0.0,
-            EffectiveForm?.getOrDefault<double>(_FormAndFields._DetailForm.defaultHeight) ?? 0.0
+            EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultWidth) ?? 0.0,
+            EffectiveForm?.getOrDefault<double>(_DatenMeister._Forms._DetailForm.defaultHeight) ?? 0.0
         );
 
         /// <summary>
@@ -405,14 +406,14 @@ namespace DatenMeister.WPF.Forms.Base
             RefreshViewDefinition();
 
             // Checks, if the form overwrites the allow new properties information. If yes, store it
-            var t = EffectiveForm?.getOrNull<bool>(_FormAndFields._DetailForm.allowNewProperties);
+            var t = EffectiveForm?.getOrNull<bool>(_DatenMeister._Forms._DetailForm.allowNewProperties);
             AllowNewProperties = t ?? AllowNewProperties;
 
             DataGrid.Children.Clear();
             AttachedItemFields.Clear();
             ItemFields.Clear();
 
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._DetailForm.field);
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
             if (fields == null)
             {
                 return;
@@ -436,7 +437,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (fields == null) throw new ArgumentNullException(nameof(fields));
             if (DetailElement == null) throw new InvalidOperationException("DetailElement == null");
 
-            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._Form.isReadOnly) == true
                                  || FormParameter?.IsReadOnly == true;
 
             DataGrid.Children.Clear();
@@ -444,7 +445,7 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var field in fields.Cast<IElement>())
             {
                 var flags = new FieldParameter {IsReadOnly = isFormReadOnly};
-                var isAttached = field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true;
+                var isAttached = field.getOrNull<bool>(_DatenMeister._Forms._FieldData.isAttached) == true;
 
                 var usedElement = isAttached ? AttachedElement : DetailElement;
                 if (usedElement == null) continue;
@@ -469,9 +470,9 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     if (!flags.IsSpanned)
                     {
-                        var title = field.getOrDefault<string>(_FormAndFields._FieldData.title);
+                        var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
                         var isReadOnly = 
-                            field.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly) || isFormReadOnly;
+                            field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly) || isFormReadOnly;
 
                         // Sets the title block
                         var titleBlock = new TextBlock
@@ -490,7 +491,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // Checks whether the control element shall be stored in
                 // the detail element itself or within the attached fields
-                if (field.getOrNull<bool>(_FormAndFields._FieldData.isAttached) == true)
+                if (field.getOrNull<bool>(_DatenMeister._Forms._FieldData.isAttached) == true)
                 {
                     AttachedItemFields.Add(detailElement);
                 }
@@ -670,7 +671,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (EffectiveForm == null)
                 throw new InvalidOperationException("EffectiveForm == null");
 
-            saveText ??= EffectiveForm.getOrDefault<string>(_FormAndFields._DetailForm.buttonApplyText);
+            saveText ??= EffectiveForm.getOrDefault<string>(_DatenMeister._Forms._DetailForm.buttonApplyText);
             saveText ??= "Save";
 
             if (AllowNewProperties)
@@ -684,7 +685,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var fieldValue = new TextboxField();
                     var flags = new FieldParameter();
 
-                    var fieldData = _FormAndFields.TheOne.__TextFieldData;
+                    var fieldData = _DatenMeister.TheOne.Forms.__TextFieldData;
 
                     var fieldUiElement = fieldValue.CreateElement(
                         DetailElement,

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
@@ -31,7 +32,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
             }
 
-            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
+            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
             var propertyName = property != null ? realPropertyName : "List";
             
@@ -40,18 +41,18 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 (metaClass != null && property != null ? " - " : "") +
                 (property != null ? NamedElementMethods.GetName(property) : "");
 
-            result.set(_FormAndFields._ListForm.title, title);
-            result.set(_FormAndFields._ListForm.name, propertyName);
-            result.set(_FormAndFields._ListForm.property, realPropertyName);
+            result.set(_DatenMeister._Forms._ListForm.title, title);
+            result.set(_DatenMeister._Forms._ListForm.name, propertyName);
+            result.set(_DatenMeister._Forms._ListForm.property, realPropertyName);
             
             if (metaClass != null)
             {
                 AddToFormByMetaclass(result, metaClass, creationMode | CreationMode.ForListForms);
                 
-                var defaultType = _factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
-                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, metaClass);
-                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
-                result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[] {defaultType});
+                var defaultType = _factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, metaClass);
+                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
+                result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] {defaultType});
             }
             else
             {
@@ -83,7 +84,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             IObject? firstElementMetaClass = null;
             var metaClassAdded = false;
-            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
+            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var onlyCommonProperties = creationMode.HasFlagFast(CreationMode.OnlyCommonProperties);
             
             // Figure out only the elements which have common properties
@@ -119,10 +120,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     cache.MetaClassAlreadyAdded = true;
 
                     // Create the metaclass as a field
-                    var metaClassField = _factory.create(_FormAndFields.TheOne.__MetaClassElementFieldData);
-                    metaClassField.set(_FormAndFields._MetaClassElementFieldData.name, "Metaclass");
-                    metaClassField.set(_FormAndFields._MetaClassElementFieldData.title, "Metaclass");
-                    result.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(0, metaClassField);
+                    var metaClassField = _factory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
+                    metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
+                    metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Metaclass");
+                    result.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, metaClassField);
                 }
 
                 if (creationMode.HasFlag(CreationMode.ByMetaClass) && metaClass != null)
@@ -253,12 +254,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
             }
 
-            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
+            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             AddToFormByMetaclass(result, metaClass, creationMode);
-            result.set(_FormAndFields._ListForm.property, propertyName);
-            result.set(_FormAndFields._ListForm.metaClass, metaClass);
-            result.set(_FormAndFields._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
-            result.set(_FormAndFields._ListForm.defaultTypesForNewElements, new[]{metaClass});
+            result.set(_DatenMeister._Forms._ListForm.property, propertyName);
+            result.set(_DatenMeister._Forms._ListForm.metaClass, metaClass);
+            result.set(_DatenMeister._Forms._ListForm.title, $"{propertyName} - {NamedElementMethods.GetName(metaClass)}");
+            result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[]{metaClass});
 
             return result;
         }
@@ -278,14 +279,14 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var propertyName = property.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
             var propertyType = PropertyMethods.GetPropertyType(property);
 
-            var result = _factory.create(_FormAndFields.TheOne.__ListForm);
+            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             if (propertyType != null)
             {
                 AddToFormByMetaclass(result, propertyType, creationMode);
             }
 
-            result.set(_FormAndFields._ListForm.property, propertyName);
-            result.set(_FormAndFields._ListForm.title, $"{propertyName}");
+            result.set(_DatenMeister._Forms._ListForm.property, propertyName);
+            result.set(_DatenMeister._Forms._ListForm.title, $"{propertyName}");
             return result;
         }
         

@@ -69,7 +69,7 @@ namespace DatenMeister.WPF.Forms.Lists
                                    throw new InvalidOperationException("No workspace is found"),
                                    FormDefinitionMode.Default)
                                ?? throw new InvalidOperationException("List form could not be created");
-                listForm.set(_FormAndFields._ListForm.inhibitNewItems, true);
+                listForm.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
 
                 formElement = viewLogic.GetExtentFormForSubforms(listForm);
             }
@@ -176,9 +176,9 @@ namespace DatenMeister.WPF.Forms.Lists
                         ?? throw new InvalidOperationException("Did not found extent"),
                         FormDefinitionMode.Default) ??
                     throw new InvalidOperationException("listForm == null");
-                listForm.set(_FormAndFields._ListForm.inhibitDeleteItems, true);
-                listForm.set(_FormAndFields._ListForm.inhibitNewItems, true);
-                listForm.set(_FormAndFields._ListForm.property, nameof(_ManagementProvider._Workspace.extents));
+                listForm.set(_DatenMeister._Forms._ListForm.inhibitDeleteItems, true);
+                listForm.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
+                listForm.set(_DatenMeister._Forms._ListForm.property, nameof(_ManagementProvider._Workspace.extents));
 
                 result = viewLogic.GetExtentFormForSubforms(listForm);
             }

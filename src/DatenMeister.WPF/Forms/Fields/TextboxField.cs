@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
@@ -27,12 +28,12 @@ namespace DatenMeister.WPF.Forms.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
             
-            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+            _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly)
                 || fieldFlags.IsReadOnly;
-            var width = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.width);
-            var height = fieldData.getOrDefault<int>(_FormAndFields._TextFieldData.lineHeight);
-            var isEnumeration = fieldData.getOrDefault<bool>(_FormAndFields._TextFieldData.isEnumeration);
+            var width = fieldData.getOrDefault<int>(_DatenMeister._Forms._TextFieldData.width);
+            var height = fieldData.getOrDefault<int>(_DatenMeister._Forms._TextFieldData.lineHeight);
+            var isEnumeration = fieldData.getOrDefault<bool>(_DatenMeister._Forms._TextFieldData.isEnumeration);
 
             _valueText = string.Empty;
             if (!string.IsNullOrEmpty(_name) && value.isSet(_name))
@@ -52,9 +53,9 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                if (fieldData.isSet(_FormAndFields._FieldData.defaultValue))
+                if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
                 {
-                    _valueText = fieldData.get(_FormAndFields._FieldData.defaultValue)?.ToString() ?? string.Empty;
+                    _valueText = fieldData.get(_DatenMeister._Forms._FieldData.defaultValue)?.ToString() ?? string.Empty;
                 }
             }
 

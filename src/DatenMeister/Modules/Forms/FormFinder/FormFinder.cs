@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -79,16 +80,16 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var points = 0;
                 if (element == null) throw new NullReferenceException("element");
 
-                var associationExtentType = element.getOrDefault<string>(_FormAndFields._FormAssociation.extentType);
-                var associationMetaClass = element.getOrDefault<IElement>(_FormAndFields._FormAssociation.metaClass);
-                var associationViewType = element.getOrNull<FormType>(_FormAndFields._FormAssociation.formType) ??
+                var associationExtentType = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
+                var associationMetaClass = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
+                var associationViewType = element.getOrNull<FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
                                     FormType.Detail;
                 var associationParentMetaclass =
-                    element.getOrDefault<IElement>(_FormAndFields._FormAssociation.parentMetaClass);
+                    element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.parentMetaClass);
                 var associationParentProperty =
-                    element.getOrDefault<string>(_FormAndFields._FormAssociation.parentProperty);
-                var associationForm = element.getOrDefault<IElement>(_FormAndFields._FormAssociation.form);
-                var associationViewModeId = element.getOrDefault<string>(_FormAndFields._FormAssociation.viewModeId);
+                    element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.parentProperty);
+                var associationForm = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.form);
+                var associationViewModeId = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.viewModeId);
                 if (associationExtentType == null && associationMetaClass == null
                                                   && associationParentMetaclass == null 
                                                   && associationParentProperty == null

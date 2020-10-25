@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -27,10 +28,10 @@ namespace DatenMeister.WPF.Forms.Fields
             _element = value;
             _detailFormControl = detailForm;
             
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._AnyDataFieldData.isReadOnly) ||
+            var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._AnyDataFieldData.isReadOnly) ||
                              fieldFlags.IsReadOnly;
 
-            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
             if (_name == null)
             {
                 return new TextBlock

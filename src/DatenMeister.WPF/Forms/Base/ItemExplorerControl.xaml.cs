@@ -14,6 +14,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
@@ -64,7 +65,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the id of the current view mode. 
         /// </summary>
-        public string CurrentViewModeId => CurrentViewMode?.getOrDefault<string>(_FormAndFields._ViewMode.id) ?? "";
+        public string CurrentViewModeId => CurrentViewMode?.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id) ?? "";
 
         public ItemExplorerControl()
         {
@@ -381,7 +382,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             EffectiveForm = formDefinition.Element;
 
-            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._ExtentForm.tab);
+            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
@@ -435,16 +436,16 @@ namespace DatenMeister.WPF.Forms.Base
             IReflectiveCollection? container = null)
         {
             // Gets the default view for the given tab
-            var name = tabForm.getOrDefault<string>(_FormAndFields._Form.title) ??
-                       tabForm.getOrDefault<string>(_FormAndFields._Form.name);
+            var name = tabForm.getOrDefault<string>(_DatenMeister._Forms._Form.title) ??
+                       tabForm.getOrDefault<string>(_DatenMeister._Forms._Form.name);
             var usedViewExtensions = viewExtensions.ToList();
 
             UserControl? createdUserControl = null;
-            if (tabForm.getMetaClass()?.equals(_FormAndFields.TheOne.__DetailForm) == true)
+            if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
             {
                 createdUserControl = CreateDetailForm(value, tabForm, container);
             }
-            else if (tabForm.getMetaClass()?.equals(_FormAndFields.TheOne.__ListForm) == true)
+            else if (tabForm.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
             {
                 createdUserControl = CreateListControl(value, tabForm, usedViewExtensions);
             }
@@ -497,7 +498,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Gets the default types by the form definition
             var defaultTypesForNewItems =
-                tabForm.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements)
+                tabForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements)
                     ?.ToList()
                 ?? new List<object?>();
 
@@ -513,8 +514,8 @@ namespace DatenMeister.WPF.Forms.Base
                     usedViewExtensions.OfType<NewInstanceViewExtension>())
                 {
                     var factory = new MofFactory(tabForm);
-                    var newElement = factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
-                    newElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass, extension.MetaClass);
+                    var newElement = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                    newElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, extension.MetaClass);
                     defaultTypesForNewItems.Add(newElement);
                 }
 
@@ -530,7 +531,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
 
                 // Creates the buttons for the new items
-                var inhibitNewButtons = tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
+                var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
                 if (!inhibitNewButtons)
                 {
                     // Creates the menu and buttons for the default types. 
@@ -545,7 +546,7 @@ namespace DatenMeister.WPF.Forms.Base
             else
             {
                 // Query all the plugins whether a filter is available
-                var propertyName = tabForm.getOrDefault<string>(nameof(ListForm.property));
+                var propertyName = tabForm.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
 
                 // Goes through the properties
                 if (!string.IsNullOrEmpty(propertyName))
@@ -563,9 +564,9 @@ namespace DatenMeister.WPF.Forms.Base
                 foreach (var extension in usedViewExtensions.OfType<NewInstanceViewExtension>())
                 {
                     var factory = new MofFactory(tabForm);
-                    var newElement = factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
-                    newElement.set(_FormAndFields._DefaultTypeForNewElement.metaClass, extension.MetaClass);
-                    newElement.set(_FormAndFields._DefaultTypeForNewElement.parentProperty, propertyName);
+                    var newElement = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                    newElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, extension.MetaClass);
+                    newElement.set(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty, propertyName);
                     defaultTypesForNewItems.Add(newElement);
                 }
 
@@ -584,7 +585,7 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                 }
                 
-                var inhibitNewButtons = tabForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
+                var inhibitNewButtons = tabForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
 
                 if (!inhibitNewButtons)
                 {
@@ -636,12 +637,12 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     // Check if type is a directly type or the DefaultTypeForNewElement
                     if (type.metaclass?.equals(
-                        _FormAndFields.TheOne.__DefaultTypeForNewElement) == true)
+                        _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement) == true)
                     {
                         var newType =
-                            type.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                            type.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
                         var tempParentProperty =
-                            type.getOrDefault<string>(_FormAndFields._DefaultTypeForNewElement.parentProperty)
+                            type.getOrDefault<string>(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty)
                             ?? parentProperty;
 
                         if (newType != null)
@@ -751,10 +752,10 @@ namespace DatenMeister.WPF.Forms.Base
         private IReflectiveCollection FilterByMetaClass(IReflectiveCollection collection, IObject listFormDefinition)
         {
             var noItemsWithMetaClass =
-                listFormDefinition.getOrDefault<bool>(_FormAndFields._ListForm.noItemsWithMetaClass);
+                listFormDefinition.getOrDefault<bool>(_DatenMeister._Forms._ListForm.noItemsWithMetaClass);
 
             // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = listFormDefinition.getOrDefault<IElement?>(_FormAndFields._ListForm.metaClass);
+            var metaClass = listFormDefinition.getOrDefault<IElement?>(_DatenMeister._Forms._ListForm.metaClass);
 
             if (metaClass != null)
             {
@@ -884,18 +885,18 @@ namespace DatenMeister.WPF.Forms.Base
         private void btnViewMode_OnClick(object sender, RoutedEventArgs e)
         {
             var managementWorkspace = GiveMe.Scope.WorkspaceLogic.GetManagementWorkspace();
-            var viewModes = managementWorkspace.GetAllDescendentsOfType(_FormAndFields.TheOne.__ViewMode);
+            var viewModes = managementWorkspace.GetAllDescendentsOfType(_DatenMeister.TheOne.Forms.__ViewMode);
             var contextMenu = new ContextMenu();
 
             var list = new List<MenuItem>();
-            var selectedViewModeId = CurrentViewMode?.getOrDefault<string>(_FormAndFields._ViewMode.id);
+            var selectedViewModeId = CurrentViewMode?.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id);
             
             foreach (var mode in viewModes.OfType<IElement>())
             {
                 var viewMode = mode;
                 var item = new MenuItem
                 {
-                    Header = viewMode.getOrDefault<string>(_FormAndFields._ViewMode.id), 
+                    Header = viewMode.getOrDefault<string>(_DatenMeister._Forms._ViewMode.id), 
                     Tag = viewMode
                 };
 

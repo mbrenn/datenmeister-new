@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -30,8 +31,8 @@ namespace DatenMeister.WPF.Forms.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-            _name = fieldData.get<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DropDownFieldData.isReadOnly)
+            _name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DropDownFieldData.isReadOnly)
                              || fieldFlags.IsReadOnly;
 
             _propertyValue = null;
@@ -41,16 +42,16 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                if (fieldData.isSet(_FormAndFields._FieldData.defaultValue))
+                if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
                 {
-                    _propertyValue = fieldData.get(_FormAndFields._FieldData.defaultValue);
+                    _propertyValue = fieldData.get(_DatenMeister._Forms._FieldData.defaultValue);
                 }
             }
 
             List<KeyValuePair<string, object>>? values = null;
 
             var enumerationProperty =
-                fieldData.getOrDefault<IElement>(_FormAndFields._DropDownFieldData.valuesByEnumeration);
+                fieldData.getOrDefault<IElement>(_DatenMeister._Forms._DropDownFieldData.valuesByEnumeration);
             if (enumerationProperty != null)
             {
                 values = new List<KeyValuePair<string, object>>();
@@ -65,7 +66,7 @@ namespace DatenMeister.WPF.Forms.Fields
             if (values == null)
             {
                 var dropDownValues =
-                    fieldData.getOrDefault<IReflectiveCollection>(_FormAndFields._DropDownFieldData.values);
+                    fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DropDownFieldData.values);
                 if (values == null && dropDownValues == null)
                 {
                     return new TextBlock
@@ -76,8 +77,8 @@ namespace DatenMeister.WPF.Forms.Fields
                 
                 values = dropDownValues.Select(x => x as IElement).Select(x =>
                     new KeyValuePair<string, object>(
-                        x.getOrDefault<string>(_FormAndFields._ValuePair.name),
-                        x.getOrDefault<object>(_FormAndFields._ValuePair.value))
+                        x.getOrDefault<string>(_DatenMeister._Forms._ValuePair.name),
+                        x.getOrDefault<object>(_DatenMeister._Forms._ValuePair.value))
                 ).ToList();
             }
 

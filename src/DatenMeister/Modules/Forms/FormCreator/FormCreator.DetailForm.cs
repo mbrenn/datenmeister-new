@@ -1,6 +1,7 @@
 #nullable enable
 
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Uml.Helper;
 
@@ -19,12 +20,12 @@ namespace DatenMeister.Modules.Forms.FormCreator
         public IElement CreateDetailForm(IObject element, CreationMode creationMode = CreationMode.All)
         {
             var cache = new FormCreatorCache();
-            var createdForm = _factory.create(_FormAndFields.TheOne.__DetailForm);
-            createdForm.set(_FormAndFields._DetailForm.name, "Item");
+            var createdForm = _factory.create(_DatenMeister.TheOne.Forms.__DetailForm);
+            createdForm.set(_DatenMeister._Forms._DetailForm.name, "Item");
 
             if (creationMode.HasFlag(CreationMode.AddMetaClass))
             {
-                createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
+                createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
             }
 
             AddToForm(createdForm, element, creationMode, cache);
@@ -39,18 +40,18 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <returns>The created form for the metaclass</returns>
         public IElement CreateDetailFormByMetaClass(IElement metaClass, CreationMode creationMode = CreationMode.All)
         {
-            var createdForm = _factory.create(_FormAndFields.TheOne.__DetailForm);
+            var createdForm = _factory.create(_DatenMeister.TheOne.Forms.__DetailForm);
             var name = NamedElementMethods.GetName(metaClass);
-            createdForm.set(_FormAndFields._DetailForm.name, $"{name} - Detail");
+            createdForm.set(_DatenMeister._Forms._DetailForm.name, $"{name} - Detail");
 
             if (creationMode.HasFlag(CreationMode.AddMetaClass))
             {
-                createdForm.set(_FormAndFields._DetailForm.hideMetaInformation, true);
+                createdForm.set(_DatenMeister._Forms._DetailForm.hideMetaInformation, true);
             }
 
             if (!AddToFormByMetaclass(createdForm, metaClass, creationMode))
             {
-                createdForm.set(_FormAndFields._DetailForm.allowNewProperties, true);
+                createdForm.set(_DatenMeister._Forms._DetailForm.allowNewProperties, true);
             }
 
             return createdForm;

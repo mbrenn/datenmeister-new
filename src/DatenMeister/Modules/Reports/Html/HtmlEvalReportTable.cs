@@ -61,11 +61,11 @@ namespace DatenMeister.Modules.Reports.Html
             }
             
             var cells = new List<HtmlTableCell>();
-            var fields = form.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
             foreach (var field in fields.OfType<IElement>())
             {
                 cells.Add(
-                    new HtmlTableCell(field.getOrDefault<string>(_FormAndFields._FieldData.title))
+                    new HtmlTableCell(field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title))
                     {
                         IsHeading = true
                     });
@@ -96,15 +96,15 @@ namespace DatenMeister.Modules.Reports.Html
         /// <returns>The created Html Table Cell</returns>
         private HtmlTableCell CreateCellForField(IObject listElement, IElement field)
         {
-            var property = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+            var property = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
             var metaClass = field.getMetaClass();
             var isPropertySet = listElement.isSet(property);
-            if (metaClass?.@equals((_FormAndFields.TheOne.__DateTimeFieldData)) == true)
+            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData) == true)
             {
                 if (isPropertySet)
                 {
-                    var hasDate = field?.getOrDefault<bool>(_FormAndFields._DateTimeFieldData.hideDate) != true;
-                    var hasTime = field?.getOrDefault<bool>(_FormAndFields._DateTimeFieldData.hideTime) != true;
+                    var hasDate = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate) != true;
+                    var hasTime = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime) != true;
                     var date = listElement.getOrDefault<DateTime>(property);
 
                     var result = string.Empty;
@@ -127,7 +127,7 @@ namespace DatenMeister.Modules.Reports.Html
                 return new HtmlTableCell("-");
             }
 
-            if (metaClass?.equals(_FormAndFields.TheOne.__CheckboxFieldData) == true)
+            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__CheckboxFieldData) == true)
             {
                 if (isPropertySet)
                 {
@@ -138,10 +138,10 @@ namespace DatenMeister.Modules.Reports.Html
                 return new HtmlTableCell("-");
             }
 
-            if (metaClass?.@equals(_FormAndFields.TheOne.__NumberFieldData) == true)
+            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__NumberFieldData) == true)
             {
-                var format = field.getOrDefault<string>(_FormAndFields._NumberFieldData.format) ?? "";
-                var isInteger = field.getOrDefault<bool>(_FormAndFields._NumberFieldData.isInteger);
+                var format = field.getOrDefault<string>(_DatenMeister._Forms._NumberFieldData.format) ?? "";
+                var isInteger = field.getOrDefault<bool>(_DatenMeister._Forms._NumberFieldData.isInteger);
                 
                 if (isPropertySet)
                 {
@@ -161,13 +161,13 @@ namespace DatenMeister.Modules.Reports.Html
                 return new HtmlTableCell("0");
             }
 
-            if (metaClass?.@equals(_FormAndFields.TheOne.__EvalTextFieldData) == true)
+            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
                 var defaultText = listElement.getOrDefault<string>(property);
                 cellInformation.set("text", defaultText);
 
-                var evalProperties = field.getOrDefault<string>(_FormAndFields._EvalTextFieldData.evalCellProperties);
+                var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
                 if (evalProperties != null)
                 {
                     TextTemplateEngine.Parse(

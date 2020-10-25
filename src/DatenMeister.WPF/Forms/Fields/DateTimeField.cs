@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.DotNet;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
@@ -31,11 +32,11 @@ namespace DatenMeister.WPF.Forms.Fields
 
             fieldFlags.CanBeFocused = true;
             
-            _name = fieldData.get<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._DateTimeFieldData.isReadOnly)
+            _name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.isReadOnly)
                              || fieldFlags.IsReadOnly;
-            var hideDate = fieldData.getOrDefault<bool>(_FormAndFields._DateTimeFieldData.hideDate);
-            var hideTime = fieldData.getOrDefault<bool>(_FormAndFields._DateTimeFieldData.hideTime);
+            var hideDate = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate);
+            var hideTime = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime);
 
             _propertyValue = PrimitiveTypeHelper.TruncateToSecond(DateTime.Now);
             
@@ -45,9 +46,9 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                if (fieldData.isSet(_FormAndFields._FieldData.defaultValue))
+                if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
                 {
-                    _propertyValue = fieldData.getOrDefault<DateTime>(_FormAndFields._FieldData.defaultValue);
+                    _propertyValue = fieldData.getOrDefault<DateTime>(_DatenMeister._Forms._FieldData.defaultValue);
                 }
             }
 

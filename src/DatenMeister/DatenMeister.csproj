@@ -38,6 +38,7 @@
   <ItemGroup>
     <Folder Include="Models\EMOF" />
     <Folder Include="Models\Example" />
+    <Folder Include="Models\Forms" />
     <Folder Include="Models\ManagementProvider\" />
     <Folder Include="Runtime\ExtentStorage\Configuration\" />
   </ItemGroup>

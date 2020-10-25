@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
@@ -24,8 +25,8 @@ namespace DatenMeister.WPF.Forms.Fields
             if (fieldData == null) throw new ArgumentNullException(nameof(fieldData));
             if (detailForm == null) throw new ArgumentNullException(nameof(detailForm));
 
-            _name = fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
-            var isReadOnly = fieldData.getOrDefault<bool>(_FormAndFields._FieldData.isReadOnly)
+            _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+            var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isReadOnly)
                 || fieldFlags.IsReadOnly;
             
             _valueText = string.Empty;
@@ -35,9 +36,9 @@ namespace DatenMeister.WPF.Forms.Fields
             }
             else
             {
-                if (fieldData.isSet(_FormAndFields._FieldData.defaultValue))
+                if (fieldData.isSet(_DatenMeister._Forms._FieldData.defaultValue))
                 {
-                    _valueText = fieldData.getOrDefault<string>(_FormAndFields._FieldData.defaultValue) ?? string.Empty;
+                    _valueText = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.defaultValue) ?? string.Empty;
                 }
             }
 
@@ -76,13 +77,13 @@ namespace DatenMeister.WPF.Forms.Fields
                     return;
                 }
 
-                var isSaving = fieldData.getOrDefault<bool>(_FormAndFields._FileSelectionFieldData.isSaving);
+                var isSaving = fieldData.getOrDefault<bool>(_DatenMeister._Forms._FileSelectionFieldData.isSaving);
                 var defaultExtension =
-                    fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.defaultExtension);
+                    fieldData.getOrDefault<string>(_DatenMeister._Forms._FileSelectionFieldData.defaultExtension);
                 var initialDirectory =
-                    fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.initialPathToDirectory);
+                    fieldData.getOrDefault<string>(_DatenMeister._Forms._FileSelectionFieldData.initialPathToDirectory);
                 var filter =
-                    fieldData.getOrDefault<string>(_FormAndFields._FileSelectionFieldData.filter);
+                    fieldData.getOrDefault<string>(_DatenMeister._Forms._FileSelectionFieldData.filter);
 
                 if (isSaving)
                 {

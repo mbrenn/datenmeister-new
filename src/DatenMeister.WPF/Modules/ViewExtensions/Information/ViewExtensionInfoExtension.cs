@@ -2,6 +2,7 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -242,7 +243,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
             if (info is ViewExtensionInfoTab extensionTab
                 && extensionTab.NavigationGuest is ItemExplorerControl explorerControl)
             {
-                var formPropertyName = extensionTab.TabFormDefinition.getOrDefault<string>(_FormAndFields._ListForm.property);
+                var formPropertyName = extensionTab.TabFormDefinition.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
                 if (!((explorerControl.SelectedItem ?? explorerControl.RootItem) is IElement selectedItem)) return false; // Nothing selected, should not occur
                 
                 // Checks the extent type

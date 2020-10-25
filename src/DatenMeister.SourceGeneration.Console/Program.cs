@@ -27,8 +27,6 @@ namespace DatenMeister.SourceGeneration.Console
             // First, creates
             CreateSourceForUmlAndMof();
 
-            CreateSourceForWebFields();
-
             CreateSourceForExcel();
 
             CreateSourceForManagementProvider();
@@ -158,21 +156,6 @@ namespace DatenMeister.SourceGeneration.Console
                     Path = "./",
                     Namespace = "DatenMeister.Excel.Models",
                     Types = ExcelModels.AllTypes
-                });
-            System.Console.WriteLine(" Done");
-        }
-
-        private static void CreateSourceForWebFields()
-        {
-            System.Console.Write("Create Sourcecode for Web-Fields...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "FormAndFields",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.Forms",
-                    Types = FieldTypes.GetAll()
                 });
             System.Console.WriteLine(" Done");
         }

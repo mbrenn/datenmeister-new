@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.DefaultTypes;
@@ -167,10 +168,10 @@ namespace DatenMeister.Modules.Reports.Simple
             {
 
                 // Create the metaclass as a field
-                var fullNamefield = MofFactory.Create(foundForm, _FormAndFields.TheOne.__FullNameFieldData);
-                fullNamefield.set(_FormAndFields._MetaClassElementFieldData.name, "Path");
-                fullNamefield.set(_FormAndFields._MetaClassElementFieldData.title, "Path");
-                foundForm.get<IReflectiveSequence>(_FormAndFields._ListForm.field).add(fullNamefield);
+                var fullNamefield = MofFactory.Create(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
+                fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
+                fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
+                foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(fullNamefield);
             }
         }
 

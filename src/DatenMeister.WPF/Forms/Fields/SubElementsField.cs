@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
@@ -59,7 +60,7 @@ namespace DatenMeister.WPF.Forms.Fields
             _navigationHost = detailForm.NavigationHost;
             if (_navigationHost == null) throw new InvalidOperationException("detailform.NavigationHost is null");
 
-            _propertyName = _fieldData.getOrDefault<string>(_FormAndFields._FieldData.name);
+            _propertyName = _fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
             _panel = new DockPanel();
 
             CreatePanelElement();
@@ -90,14 +91,14 @@ namespace DatenMeister.WPF.Forms.Fields
             _panel.Children.Clear();
 
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
-            var form = _fieldData.getOrDefault<IObject>(_FormAndFields._SubElementFieldData.form);
-            var isReadOnly = _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.isReadOnly)
+            var form = _fieldData.getOrDefault<IObject>(_DatenMeister._Forms._SubElementFieldData.form);
+            var isReadOnly = _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.isReadOnly)
                 || _fieldFlags?.IsReadOnly == true;
             
             _includeSpecializationsForDefaultTypes =
-                !_fieldData.isSet(_FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes)
+                !_fieldData.isSet(_DatenMeister._Forms._SubElementFieldData.includeSpecializationsForDefaultTypes)
                 || _fieldData.getOrDefault<bool>(
-                    _FormAndFields._SubElementFieldData.includeSpecializationsForDefaultTypes);
+                    _DatenMeister._Forms._SubElementFieldData.includeSpecializationsForDefaultTypes);
 
             valueOfElement ??= _element.get<IReflectiveCollection>(_propertyName);
             var valueCount = valueOfElement.Count();
@@ -144,8 +145,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     };
 
             form.set(
-                _FormAndFields._ListForm.inhibitNewItems,
-                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements));
+                _DatenMeister._Forms._ListForm.inhibitNewItems,
+                _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements));
 
             _listViewControl.SetContent(valueOfElement, form, viewExtensions);
 
@@ -185,16 +186,16 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             var defaultTypes =
-                form.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+                form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
             if (defaultTypes == null || defaultTypes.Any(x => x != null && x.Equals(propertyType)))
             {
                 // Already included
                 return;
             }
 
-            var defaultType = MofFactory.Create(form, _FormAndFields.TheOne.__DefaultTypeForNewElement);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, propertyType);
-            defaultType.set(_FormAndFields._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
+            var defaultType = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+            defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, propertyType);
+            defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(propertyType));
             defaultTypes.add(defaultType);
         }
 
@@ -288,7 +289,7 @@ namespace DatenMeister.WPF.Forms.Fields
             stackPanel.Children.Add(buttonDelete);
             
             var allowOnlyExistingElements =
-                _fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements);
+                _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements);
             if (!allowOnlyExistingElements)
             {
                 var buttonNew = new Button {Content = "N"};
@@ -298,7 +299,7 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             var buttonAttach = new Button {Content = "A"};
-            var metaClass = _fieldData.getOrDefault<IElement>(_FormAndFields._SubElementFieldData.metaClass);
+            var metaClass = _fieldData.getOrDefault<IElement>(_DatenMeister._Forms._SubElementFieldData.metaClass);
             
             buttonAttach.Click += async (x, y) =>
             {
@@ -419,10 +420,10 @@ namespace DatenMeister.WPF.Forms.Fields
                 var getAllSpecializations = _includeSpecializationsForDefaultTypes;
                 
                 // Gets the buttons for specific types
-                if (!_fieldData.getOrDefault<bool>(_FormAndFields._SubElementFieldData.allowOnlyExistingElements))
+                if (!_fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements))
                 {
                     // Only of new elements may be added
-                    if (_fieldData?.getOrDefault<IReflectiveCollection>(_FormAndFields._SubElementFieldData
+                    if (_fieldData?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._SubElementFieldData
                         .defaultTypesForNewElements) is { } defaultTypesForNewItems)
                     {
                         IEnumerable<IElement> specializedTypes;
@@ -430,8 +431,8 @@ namespace DatenMeister.WPF.Forms.Fields
                         var typeList =
                             defaultTypesForNewItems.OfType<IElement>().Select(
                                 innerType =>
-                                    innerType.isSet(_FormAndFields._DefaultTypeForNewElement.metaClass)
-                                        ? innerType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement
+                                    innerType.isSet(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
+                                        ? innerType.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement
                                             .metaClass)
                                         : innerType);
 
@@ -496,10 +497,10 @@ namespace DatenMeister.WPF.Forms.Fields
                                            ?? throw new InvalidOperationException("referencedExtent == null");
 
                     var defaultWorkspace =
-                        _fieldData.getOrDefault<string>(_FormAndFields._SubElementFieldData
+                        _fieldData.getOrDefault<string>(_DatenMeister._Forms._SubElementFieldData
                             .defaultWorkspaceOfNewElements);
                     var defaultExtent =
-                        _fieldData.getOrDefault<string>(_FormAndFields._SubElementFieldData.defaultExtentOfNewElements);
+                        _fieldData.getOrDefault<string>(_DatenMeister._Forms._SubElementFieldData.defaultExtentOfNewElements);
 
                     var elements =
                         await NavigatorForItems.NavigateToCreateNewItem(

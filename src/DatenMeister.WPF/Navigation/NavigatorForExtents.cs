@@ -93,8 +93,8 @@ namespace DatenMeister.WPF.Navigation
                     // Add the options for the extent types
                     var foundExtentType =
                         resolvedForm.GetByPropertyFromCollection(
-                            _FormAndFields._ListForm.field, 
-                            _FormAndFields._Form.name,
+                            _DatenMeister._Forms._ListForm.field, 
+                            _DatenMeister._Forms._Form.name,
                             _ManagementProvider._Extent.extentType).FirstOrDefault();
                     if (foundExtentType == null)
                     {
@@ -106,14 +106,14 @@ namespace DatenMeister.WPF.Navigation
                         var factory = new MofFactory(foundExtentType);
                         foreach (var setting in extentSettings.extentTypeSettings)
                         {
-                            var pair = factory.create(_FormAndFields.TheOne.__ValuePair);
-                            pair.set(_FormAndFields._ValuePair.name, setting.name);
-                            pair.set(_FormAndFields._ValuePair.value, setting.name);
+                            var pair = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
+                            pair.set(_DatenMeister._Forms._ValuePair.name, setting.name);
+                            pair.set(_DatenMeister._Forms._ValuePair.value, setting.name);
 
                             list.Add(pair);
                         }
 
-                        foundExtentType.set(_FormAndFields._CheckboxListTaggingFieldData.values, list);
+                        foundExtentType.set(_DatenMeister._Forms._CheckboxListTaggingFieldData.values, list);
                     }
                 }
 

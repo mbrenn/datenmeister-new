@@ -246,7 +246,7 @@ namespace DatenMeister.WPF.Forms.Base
                 CopyToClipboardCommand.Execute(this, CopyType.AsXmi);
             }
 
-            if (EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitEditItems) == false)
+            if (EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitEditItems) == false)
             {
                 yield return
                     new RowItemButtonDefinition(
@@ -255,7 +255,7 @@ namespace DatenMeister.WPF.Forms.Base
                         ButtonPosition.Before);
             }
 
-            if (EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitDeleteItems) == false)
+            if (EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitDeleteItems) == false)
             {
                 yield return
                     new RowItemButtonDefinition(
@@ -390,7 +390,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (_formsPlugin == null) throw new InvalidOperationException("_formlogic == null");
 
             var fieldMetaClass = field.getMetaClass();
-            if (fieldMetaClass?.equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+            if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
             {
                 var elementAsElement = element as IElement;
                 var metaClass = elementAsElement?.getMetaClass();
@@ -400,7 +400,7 @@ namespace DatenMeister.WPF.Forms.Base
                     : NamedElementMethods.GetFullName(metaClass);
             }
 
-            var name = field.getOrDefault<string>(_FormAndFields._FieldData.name);
+            var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
             return element.isSet(name) ? element.get(name) : null;
         }
 
@@ -422,7 +422,7 @@ namespace DatenMeister.WPF.Forms.Base
             ExpandoObject? selectedExpandoObject = null;
 
             SupportNewItems =
-                !EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems);
+                !EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
             SupportNewItems = false; // TODO: Make new items working
 
             lock (_itemMapping)
@@ -446,7 +446,7 @@ namespace DatenMeister.WPF.Forms.Base
                 if (Items != null)
                 {
                     var items = Items;
-                    if (_effectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.includeDescendents))
+                    if (_effectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.includeDescendents))
                     {
                         items = items.GetAllDescendantsIncludingThemselves();
                     }
@@ -475,7 +475,7 @@ namespace DatenMeister.WPF.Forms.Base
                     }
 
                     // Checks, if we have a view node
-                    var viewNode = _effectiveForm.getOrDefault<IElement>(_FormAndFields._ListForm.viewNode);
+                    var viewNode = _effectiveForm.getOrDefault<IElement>(_DatenMeister._Forms._ListForm.viewNode);
                     if (viewNode != null)
                     {
                         var dataviewHandler =
@@ -488,18 +488,18 @@ namespace DatenMeister.WPF.Forms.Base
                     // Now performs the sorting
                     var sortingOrder =
                         _effectiveForm.getOrDefault<IReflectiveCollection>(
-                            _FormAndFields._ListForm.sortingOrder);
+                            _DatenMeister._Forms._ListForm.sortingOrder);
                     if (sortingOrder != null)
                     {
                         var sortingColumnNames =
                             sortingOrder
                                 .OfType<IElement>()
                                 .Select(x =>
-                                    (x.getOrDefault<bool>(_FormAndFields._SortingOrder.isDescending)
+                                    (x.getOrDefault<bool>(_DatenMeister._Forms._SortingOrder.isDescending)
                                         ? "!"
                                         : "") +
-                                    x.getOrDefault<IElement>(_FormAndFields._SortingOrder.field)
-                                        ?.getOrDefault<string>(_FormAndFields._FieldData.name))
+                                    x.getOrDefault<IElement>(_DatenMeister._Forms._SortingOrder.field)
+                                        ?.getOrDefault<string>(_DatenMeister._Forms._FieldData.name))
                                 .Where(x => !string.IsNullOrEmpty(x) && x != "!");
                         items = items.OrderElementsBy(sortingColumnNames);
                     }
@@ -523,7 +523,7 @@ namespace DatenMeister.WPF.Forms.Base
                                 }
 
                                 var isEnumeration =
-                                    field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
+                                    field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
                                 var value = GetValueOfElement(item, field);
 
                                 if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
@@ -631,7 +631,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </returns>
         private (IList<string> names, IReflectiveCollection? fields) UpdateColumnDefinitions()
         {
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_FormAndFields._ListForm.field);
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
             if (fields == null)
                 return (new string[] { }, null);
 
@@ -642,18 +642,18 @@ namespace DatenMeister.WPF.Forms.Base
 
             var fieldNames = new List<string>();
 
-            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_FormAndFields._Form.isReadOnly) == true;
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._Form.isReadOnly) == true;
 
             // Creates the column
             foreach (var field in fields.Cast<IElement>())
             {
-                var name = "_" + (field.getOrDefault<string>(_FormAndFields._FieldData.name) ?? string.Empty);
-                var title = field.getOrDefault<string>(_FormAndFields._FieldData.title) ?? string.Empty;
+                var name = "_" + (field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ?? string.Empty);
+                var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) ?? string.Empty;
                 var fieldMetaClass = field.getMetaClass();
 
                 bool isReadOnly;
 
-                if (fieldMetaClass?.equals(_FormAndFields.TheOne.__MetaClassElementFieldData) == true)
+                if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     name = "Metaclass";
@@ -661,7 +661,7 @@ namespace DatenMeister.WPF.Forms.Base
                 }
                 else
                 {
-                    var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
+                    var isEnumeration = field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
                     isReadOnly = isEnumeration;
                 }
 
@@ -682,13 +682,13 @@ namespace DatenMeister.WPF.Forms.Base
             
             // Go through the form and create the creation button
             var defaultTypes =
-                EffectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
-            if (Items != null && EffectiveForm.getOrDefault<bool>(_FormAndFields._ListForm.inhibitNewItems) == false)
+                EffectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
+            if (Items != null && EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems) == false)
             {
                 foreach (var defaultType in defaultTypes.OfType<IElement>().Distinct())
                 {
                     var defaultTypeMetaClass =
-                        defaultType.getOrDefault<IElement>(_FormAndFields._DefaultTypeForNewElement.metaClass);
+                        defaultType.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
                     if (defaultTypeMetaClass != null)
                     {
                         effectiveViewExtensions.Add(
@@ -946,37 +946,37 @@ namespace DatenMeister.WPF.Forms.Base
                                                     throw new InvalidOperationException("EffectiveForm == null");
 
                                 // Remove the field with property
-                                var fields = b.View.get<IReflectiveSequence>(_FormAndFields._ListForm.field);
+                                var fields = b.View.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field);
                                 var propertyField = QueryHelper.GetChildWithProperty(fields,
-                                    _FormAndFields._FieldData.name,
+                                    _DatenMeister._Forms._FieldData.name,
                                     nameof(PropertyComparisonFilter.Property));
                                 if (propertyField != null) fields.remove(propertyField);
 
                                 // Now, create the replacement
                                 var factory = new MofFactory(b.View);
-                                var element = factory.create(_FormAndFields.TheOne.__DropDownFieldData);
-                                element.set(_FormAndFields._DropDownFieldData.name,
+                                var element = factory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
+                                element.set(_DatenMeister._Forms._DropDownFieldData.name,
                                     nameof(PropertyComparisonFilter.Property));
-                                element.set(_FormAndFields._DropDownFieldData.title,
+                                element.set(_DatenMeister._Forms._DropDownFieldData.title,
                                     nameof(PropertyComparisonFilter.Property));
 
                                 var pairs = new List<IObject>();
                                 foreach (var field in
-                                    effectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.field)
+                                    effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field)
                                         .OfType<IObject>())
                                 {
-                                    if (!field.isSet(_FormAndFields._FieldData.name)) continue;
+                                    if (!field.isSet(_DatenMeister._Forms._FieldData.name)) continue;
 
-                                    var pair = factory.create(_FormAndFields.TheOne.__ValuePair);
+                                    var pair = factory.create(_DatenMeister.TheOne.Forms.__ValuePair);
 
-                                    pair.set(_FormAndFields._ValuePair.name,
-                                        field.get<string>(_FormAndFields._FieldData.title));
-                                    pair.set(_FormAndFields._ValuePair.value,
-                                        field.get<string>(_FormAndFields._FieldData.name));
+                                    pair.set(_DatenMeister._Forms._ValuePair.name,
+                                        field.get<string>(_DatenMeister._Forms._FieldData.title));
+                                    pair.set(_DatenMeister._Forms._ValuePair.value,
+                                        field.get<string>(_DatenMeister._Forms._FieldData.name));
                                     pairs.Add(pair);
                                 }
 
-                                element.set(_FormAndFields._DropDownFieldData.values, pairs);
+                                element.set(_DatenMeister._Forms._DropDownFieldData.values, pairs);
                                 fields.add(0, element);
                             };
                         });
@@ -1002,7 +1002,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var effectiveForm = EffectiveForm 
                                 ?? throw new InvalidOperationException("EffectiveForm == null");
-            effectiveForm.AddCollectionItem(_FormAndFields._ListForm.fastViewFilters, fastFilter);
+            effectiveForm.AddCollectionItem(_DatenMeister._Forms._ListForm.fastViewFilters, fastFilter);
             UpdateFastFilterTexts();
             UpdateForm();
         }
@@ -1014,7 +1014,7 @@ namespace DatenMeister.WPF.Forms.Base
             
             FastViewFilterPanel.Children.Clear();
             var fastFilters =
-                effectiveForm.get<IReflectiveCollection>(_FormAndFields._ListForm.fastViewFilters);
+                effectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.fastViewFilters);
 
             foreach (var filter in fastFilters.OfType<IElement>())
             {
@@ -1045,7 +1045,7 @@ namespace DatenMeister.WPF.Forms.Base
             var effectiveForm = EffectiveForm
                                 ?? throw new InvalidOperationException("EffectiveForm == null"); 
                                 
-            return effectiveForm.ForceAsEnumerable(_FormAndFields._ListForm.fastViewFilters).OfType<IElement>();
+            return effectiveForm.ForceAsEnumerable(_DatenMeister._Forms._ListForm.fastViewFilters).OfType<IElement>();
         }
 
         private void ItemListViewControl_OnUnloaded(object sender, RoutedEventArgs e)

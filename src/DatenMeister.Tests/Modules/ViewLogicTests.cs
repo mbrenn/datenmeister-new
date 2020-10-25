@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using NUnit.Framework;
@@ -37,7 +38,7 @@ namespace DatenMeister.Tests.Modules
             var viewExtent = viewLogic.GetUserFormExtent();
             var factory = new MofFactory(viewExtent);
             
-            var listForm = _FormAndFields.TheOne.__ListForm;
+            var listForm = _DatenMeister.TheOne.Forms.__ListForm;
             
             var n = 0;
             foreach (var _ in viewLogic.GetAllForms())

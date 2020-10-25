@@ -32,7 +32,7 @@ namespace DatenMeister.Modules.DefaultTypes
                     var factory = new MofFactory(form);
                     
                     var defaultTypes =
-                        tabPackagedElement.get<IReflectiveCollection>(_FormAndFields._ListForm.defaultTypesForNewElements);
+                        tabPackagedElement.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
 
                     // Checks the preferred types
                     var preferredTypes =
@@ -77,10 +77,10 @@ namespace DatenMeister.Modules.DefaultTypes
         {
             if (preferredType.getMetaClass()?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
             {
-                var defaultType = factory.create(_FormAndFields.TheOne.__DefaultTypeForNewElement);
-                defaultType.set(_FormAndFields._DefaultTypeForNewElement.name,
+                var defaultType = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name,
                     NamedElementMethods.GetName(preferredType));
-                defaultType.set(_FormAndFields._DefaultTypeForNewElement.metaClass, preferredType);
+                defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, preferredType);
                 defaultTypes.add(defaultType);
             }
         }

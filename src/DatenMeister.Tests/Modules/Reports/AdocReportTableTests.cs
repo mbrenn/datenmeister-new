@@ -55,14 +55,14 @@ namespace DatenMeister.Tests.Modules.Reports
             /* Create the report paragraph and its corresponding view node */
             var reportTable = factory.create(_DatenMeister.TheOne.Reports.__ReportTable);
 
-            var form = factory.create(_FormAndFields.TheOne.__ListForm);
-            var field1 = factory.create(_FormAndFields.TheOne.__EvalTextFieldData)
+            var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var field1 = factory.create(_DatenMeister.TheOne.Forms.__EvalTextFieldData)
                 .SetProperties(
                     new Dictionary<string, object>
                     {
-                        [_FormAndFields._EvalTextFieldData.name] = "name",
-                        [_FormAndFields._EvalTextFieldData.title] = "Name",
-                        [_FormAndFields._EvalTextFieldData.evalCellProperties] =
+                        [_DatenMeister._Forms._EvalTextFieldData.name] = "name",
+                        [_DatenMeister._Forms._EvalTextFieldData.title] = "Name",
+                        [_DatenMeister._Forms._EvalTextFieldData.evalCellProperties] =
                             "if(i.age>18)\r\n" +
                             " c.text = c.text + \" (over18)\"\r\n" +
                             "else\r\n" +
@@ -70,14 +70,14 @@ namespace DatenMeister.Tests.Modules.Reports
                             "end"
                     });
             
-            var field2 = factory.create(_FormAndFields.TheOne.__TextFieldData)
+            var field2 = factory.create(_DatenMeister.TheOne.Forms.__TextFieldData)
                 .SetProperties(
                     new Dictionary<string, object>
                     {
-                        [_FormAndFields._TextFieldData.name] = "age",
-                        [_FormAndFields._TextFieldData.title] = "age"
+                        [_DatenMeister._Forms._TextFieldData.name] = "age",
+                        [_DatenMeister._Forms._TextFieldData.title] = "age"
                     });
-            form.set(_FormAndFields._ListForm.field, new[] {field1, field2});
+            form.set(_DatenMeister._Forms._ListForm.field, new[] {field1, field2});
 
             reportTable.SetProperties(
                 new Dictionary<string, object>

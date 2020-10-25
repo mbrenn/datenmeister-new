@@ -2,6 +2,7 @@
 using System.Windows;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
@@ -17,6 +18,7 @@ namespace DatenMeister.WPF.Forms.Fields
         /// Stores the logger for the field factory
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(FieldFactory));
+
         /// <summary>
         /// Creates a specific field by the reading out the field type
         /// </summary>
@@ -25,7 +27,7 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <returns>Found field or exception if not found</returns>
         public static IDetailField CreateField(IObject value, IElement field)
         {
-            var isEnumeration = field.getOrDefault<bool>(_FormAndFields._FieldData.isEnumeration);
+            var isEnumeration = field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
             // Get by field type
             var metaClass = field?.getMetaClass();
             if (metaClass == null)
@@ -34,36 +36,36 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             var id = (metaClass as IHasId)?.Id;
-            if (id == typeof(AnyDataFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__AnyDataFieldData)
                 return new AnyDataField();
-            if (id == typeof(SeparatorLineFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__SeparatorLineFieldData)
                 return new SeparatorLineField();
-            if (id == typeof(SubElementFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__SubElementFieldData)
                 return new SubElementsField();
-            if (id == typeof(DropDownFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__DropDownFieldData)
                 return new DropdownField();
-            if (id == typeof(CheckboxFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__CheckboxFieldData)
                 return new CheckboxField();
-            if (id == typeof(DateTimeFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__DateTimeFieldData)
                 return new DateTimeField();
-            if (id == typeof(ReferenceFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__ReferenceFieldData)
                 return new ReferenceField();
-            if (id == typeof(TextFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__TextFieldData)
                 return new TextboxField();
-            if (id == typeof(MetaClassElementFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__MetaClassElementFieldData)
                 return new MetaClassElementField();
-            if (id == typeof(FileSelectionFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__FileSelectionFieldData)
                 return new FileSelectionField();
-            if (id == typeof(CheckboxListTaggingFieldData).FullName)
+            if (metaClass == _DatenMeister.TheOne.Forms.__CheckboxListTaggingFieldData)
                 return new CheckboxListTaggingField();
 
             Logger.Warn("Unknown FieldData type for field creation: " + metaClass);
-            
+
             if (isEnumeration)
             {
                 return new ReadOnlyListField();
             }
-            
+
             return new TextboxField();
         }
 

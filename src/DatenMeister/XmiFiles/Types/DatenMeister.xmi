@@ -8,6 +8,18 @@
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="packagedElement" upper="*" isComposite="true" p1:id="f59bd4b9-ea44-4dc4-bee9-ba5274ccd299" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="92047310-19b3-4177-9fab-1ffcba5f9dd0" name="preferredType" type-ref="dm:///_internal/model/uml#Class" upper="*" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eb9214a4-ddc6-4d78-b866-78cf88ec1115" name="preferredPackage" type-ref="dm:///_internal/model/uml#Package" upper="*" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9092814a-1469-49d5-a16d-a8e38cc994b0" name="defaultViewMode" type-ref="dm:///_internal/model/primitivetypes#String">
+          <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+          <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+          <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+          <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+          <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+          <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+          <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+          <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+          <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+        </ownedAttribute>
       </packagedElement>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="ExtentManager" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
@@ -1005,6 +1017,15 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="db1e3cc2-0065-4dad-b08c-2506f64eef8c" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="36db9d08-802c-4e84-b547-adf297978dc8" name="id" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="5f7cc38f-6431-4103-b7d1-fa60720178a6" name="defaultExtentType" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+  </item>
+  <item p1:type="dm:///_internal/model/uml#Package" name="AttachedExtent" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="7447d350-9b9d-47d3-85d4-737fb6e886c7">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="AttachedExtentConfiguration">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedExtent" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referenceType" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referenceProperty" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
   </item>
 </item>

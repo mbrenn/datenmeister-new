@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.DotNet;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 using Orientation = System.Windows.Controls.Orientation;

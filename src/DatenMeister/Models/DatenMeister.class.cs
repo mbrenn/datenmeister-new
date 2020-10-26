@@ -39,6 +39,9 @@ namespace DatenMeister.Models
                     public static string @preferredPackage = "preferredPackage";
                     public IElement? @_preferredPackage = null;
 
+                    public static string @defaultViewMode = "defaultViewMode";
+                    public IElement? @_defaultViewMode = null;
+
                 }
 
                 public _Package @Package = new _Package();
@@ -1878,6 +1881,34 @@ namespace DatenMeister.Models
 
         public _Forms Forms = new _Forms();
 
+        public class _AttachedExtent
+        {
+            public class _AttachedExtentConfiguration
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @referencedWorkspace = "referencedWorkspace";
+                public IElement? @_referencedWorkspace = null;
+
+                public static string @referencedExtent = "referencedExtent";
+                public IElement? @_referencedExtent = null;
+
+                public static string @referenceType = "referenceType";
+                public IElement? @_referenceType = null;
+
+                public static string @referenceProperty = "referenceProperty";
+                public IElement? @_referenceProperty = null;
+
+            }
+
+            public _AttachedExtentConfiguration @AttachedExtentConfiguration = new _AttachedExtentConfiguration();
+            public IElement @__AttachedExtentConfiguration = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration");
+
+        }
+
+        public _AttachedExtent AttachedExtent = new _AttachedExtent();
+
         public class _Management
         {
             public class _ExtentLoadingState
@@ -2046,34 +2077,6 @@ namespace DatenMeister.Models
         }
 
         public _Management Management = new _Management();
-
-        public class _AttachedExtent
-        {
-            public class _AttachedExtentConfiguration
-            {
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-                public static string @referencedWorkspace = "referencedWorkspace";
-                public IElement? @_referencedWorkspace = null;
-
-                public static string @referencedExtent = "referencedExtent";
-                public IElement? @_referencedExtent = null;
-
-                public static string @referenceType = "referenceType";
-                public IElement? @_referenceType = null;
-
-                public static string @referenceProperty = "referenceProperty";
-                public IElement? @_referenceProperty = null;
-
-            }
-
-            public _AttachedExtentConfiguration @AttachedExtentConfiguration = new _AttachedExtentConfiguration();
-            public IElement @__AttachedExtentConfiguration = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration");
-
-        }
-
-        public _AttachedExtent AttachedExtent = new _AttachedExtent();
 
         public class _UserManagement
         {

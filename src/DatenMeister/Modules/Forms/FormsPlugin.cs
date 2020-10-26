@@ -388,6 +388,8 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
+                foundForm = CloneForm(foundForm);
+                
                 CallFormsModificationPlugins(new FormCreationContext()
                     {
                         DefinitionMode = formDefinitionMode,
@@ -430,10 +432,14 @@ namespace DatenMeister.Modules.Forms
                     extent,
                     CreationMode.All | CreationMode.ForListForms);
             }
-
+            
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                foundForm = CloneForm(foundForm);
+                
+                EvaluateListFormsForAutogenerationByReflectiveCollection(extent.elements(), foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
                         FormType = FormType.TreeItemExtent,
@@ -443,6 +449,80 @@ namespace DatenMeister.Modules.Forms
             }
 
             return foundForm;
+        }
+
+        /// <summary>
+        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration
+        /// </summary>
+        /// <param name="reflectiveCollection">The reflective collection to be used</param>
+        /// <param name="foundForm">The element that has been found</param>
+        private void EvaluateListFormsForAutogenerationByReflectiveCollection(IReflectiveCollection reflectiveCollection, IElement foundForm)
+        {
+            // Go through the list forms and check if we need to auto-populate
+            foreach (var tab in
+                foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).OfType<IElement>())
+            {
+                var tabMetaClass = tab.getMetaClass();
+                if (tabMetaClass == null ||
+                    !tabMetaClass.@equals(_DatenMeister.TheOne.Forms.__ListForm))
+                {
+                    // Not a list tab
+                    continue;
+                }
+
+                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                if (autoGenerate)
+                {
+                    var formCreator = CreateFormCreator();
+                    formCreator.AddToListFormByElements(tab, reflectiveCollection, CreationMode.All);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration
+        /// </summary>
+        /// <param name="element">The element to be used</param>
+        /// <param name="foundForm">The element that has been found</param>
+        private void EvaluateListFormsForAutogenerationByElement(IElement element, IElement foundForm)
+        {
+            // Go through the list forms and check if we need to auto-populate
+            foreach (var tab in
+                foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).OfType<IElement>())
+            {
+                var tabMetaClass = tab.getMetaClass();
+                if (tabMetaClass == null ||
+                    !tabMetaClass.@equals(_DatenMeister.TheOne.Forms.__ListForm))
+                {
+                    // Not a list tab
+                    continue;
+                }
+
+                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                if (autoGenerate)
+                {
+                    var formCreator = CreateFormCreator();
+                    var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                    if (propertyName == null || string.IsNullOrEmpty(propertyName))
+                    {
+                        formCreator.AddToListFormByElements(
+                            tab,
+                            new PropertiesAsReflectiveCollection(element), 
+                            CreationMode.All);
+                    }
+                    else
+                    {
+                        var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
+                        if (reflectiveSequence != null)
+                        {
+                            formCreator.AddToListFormByElements(
+                                tab,
+                                reflectiveSequence,
+                                CreationMode.All);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -498,6 +578,8 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
+                foundForm = CloneForm(foundForm);
+                
                 CallFormsModificationPlugins(new FormCreationContext()
                     {
                         DefinitionMode = formDefinitionMode,
@@ -555,7 +637,9 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                foundForm = CloneForm(foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
                         FormType = FormType.ObjectList,
@@ -617,11 +701,21 @@ namespace DatenMeister.Modules.Forms
             if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All | CreationMode.OnlyCommonProperties);
+                foundForm = formCreator.CreateExtentFormForObject(
+                    element, 
+                    extent, 
+                    CreationMode.All | CreationMode.OnlyCommonProperties);
             }
 
             if (foundForm != null)
             {
+                foundForm = CloneForm(foundForm);
+
+                if (element is IElement asElement)
+                {
+                    EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
+                }
+
                 CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
@@ -634,6 +728,18 @@ namespace DatenMeister.Modules.Forms
             }
 
             // No Form
+            return foundForm;
+        }
+
+        private static IElement CloneForm(IElement foundForm)
+        {
+            var originalUrl = foundForm.GetUri();
+            foundForm = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, foundForm, new CopyOption());
+            if (originalUrl != null)
+            {
+                foundForm.set(_DatenMeister._Forms._Form.originalUri, originalUrl);
+            }
+
             return foundForm;
         }
 
@@ -684,7 +790,9 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                foundForm = CloneForm(foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
                         FormType = FormType.TreeItemDetail,
@@ -709,13 +817,6 @@ namespace DatenMeister.Modules.Forms
             if (form == null || formCreationContext.DefinitionMode.HasFlagFast(FormDefinitionMode.NoFormModifications))
             {
                 return; // Nothing to do
-            }
-
-            var originalUrl = form.GetUri();
-            form = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, form, new CopyOption());
-            if (originalUrl != null)
-            {
-                form.set(_DatenMeister._Forms._Form.originalUri, originalUrl);
             }
 
             foreach (var plugin in _formPluginState.FormModificationPlugins)

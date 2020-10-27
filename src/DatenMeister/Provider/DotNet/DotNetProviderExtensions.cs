@@ -124,16 +124,23 @@ namespace DatenMeister.Provider.DotNet
 
             if (DotNetHelper.IsOfMofObject(result))
             {
-                var asMofObject = result as MofObject ?? throw new InvalidOperationException("Not a MofObject");
-                var otherProvider = asMofObject.ProviderObject.Provider;
-                if (otherProvider == provider)
+                if (DotNetHelper.IsOfMofShadow(result) && result is MofObjectShadow mofObjectShadow)
                 {
-                    // Returns the given element itself, if it is an MofElement or MofObject
-                    return asMofObject.ProviderObject;
+                    return new UriReference(mofObjectShadow.Uri);
                 }
                 else
                 {
-                    var uriExtent = asMofObject.GetUriExtentOf()
+                    MofObject asMofObject = result as MofObject ??
+                                             throw new InvalidOperationException(
+                                                 "asMofObject is not result");
+                    var otherProvider = asMofObject?.ProviderObject.Provider;
+                    if (asMofObject != null && otherProvider == provider)
+                    {
+                        // Returns the given element itself, if it is an MofElement or MofObject
+                        return asMofObject.ProviderObject;
+                    }
+
+                    var uriExtent = asMofObject?.GetUriExtentOf()
                                     ?? throw new InvalidOperationException("No UriExtent connected");
                     var asElement = asMofObject as IElement
                                     ?? throw new InvalidOperationException("Element is not an IElement");

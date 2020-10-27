@@ -95,7 +95,7 @@
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" isReadOnly="True" name="alternativeUris" title="alternativeUris" isAttached="True" isEnumeration="True" p1:id="01dfaf41-9d0b-430a-b97d-c039268f9e2e" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.SeparatorLineFieldData" p1:id="e06a553f-38b5-4367-81c2-8a9de3257b38" />
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="df8baf49-5cf8-414a-93c0-47e4249b14da" name="Association - DetailForm for Extent" formType="DetailForm" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent" form-ref="dm:///_internal/forms/internal#Workspace.ExtentDetail" />
+      <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="df8baf49-5cf8-414a-93c0-47e4249b14da" name="Association - DetailForm for Extent" formType="Detail" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent" form-ref="dm:///_internal/forms/internal#Workspace.ExtentDetail" />
     </packagedElement>
   </item>
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e0d85e06-1168-4840-b757-eef4e0a9baf3" name="DefaultTypes" xmlns:p2="http://www.omg.org/spec/XMI/20131001">

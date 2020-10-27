@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Modules.AttachedExtent;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Modules.UserInteractions;
@@ -36,7 +37,7 @@ namespace DatenMeister.WPF.Modules.AttachedExtent
                 if (configuration == null) continue;
 
                 var interaction = new DefaultElementInteraction(
-                    $"Attach Item: {configuration.name ?? "Attached Item"}",
+                    $"Attach Item: {_DatenMeister._AttachedExtent._AttachedExtentConfiguration.name ?? "Attached Item"}",
                     async (guest, o) =>
                     {
                         var attachedItem =

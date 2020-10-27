@@ -82,7 +82,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 var associationExtentType = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
                 var associationMetaClass = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
-                var associationViewType = element.getOrNull<FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
+                var associationViewType = 
+                    element.getOrNull<FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
                                     FormType.Detail;
                 var associationParentMetaclass =
                     element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.parentMetaClass);

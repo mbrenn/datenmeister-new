@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.AttachedExtent;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
+using static DatenMeister.Models._DatenMeister._AttachedExtent;
 
 namespace DatenMeister.Modules.AttachedExtent
 {
@@ -30,22 +29,18 @@ namespace DatenMeister.Modules.AttachedExtent
         /// </summary>
         /// <param name="attachedExtent">Attached extent to be parsed</param>
         /// <returns>The found extent</returns>
-        public AttachedExtentConfiguration? GetConfiguration(IExtent attachedExtent)
+        public IElement? GetConfiguration(IExtent attachedExtent)
         {
             var attachedExtentConfiguration = attachedExtent.getOrDefault<IElement>(AttachedExtentProperty);
-            if (attachedExtentConfiguration == null)
-            {
-                return null;
-            }
 
-            return DotNetConverter.ConvertToDotNetObject<AttachedExtentConfiguration>(attachedExtentConfiguration);
+            return attachedExtentConfiguration;
         }
 
-        public void SetConfiguration(IUriExtent attachedExtent, AttachedExtentConfiguration configuration)
+        public void SetConfiguration(IUriExtent attachedExtent, IElement configuration)
         {
             attachedExtent.set(
-                AttachedExtentProperty, 
-                DotNetConverter.ConvertToMofObject(attachedExtent, configuration));
+                AttachedExtentProperty,
+                configuration);
         }
 
         /// <summary>
@@ -61,13 +56,13 @@ namespace DatenMeister.Modules.AttachedExtent
                 return null;
             }
 
-            var workspace = configuration.referencedWorkspace;
-            var extent = configuration.referencedExtent;
+            var workspace = configuration.getOrDefault<string>(_AttachedExtentConfiguration.referencedWorkspace);
+            var extent = configuration.getOrDefault<string>(_AttachedExtentConfiguration.referencedExtent);
             if (workspace == null || extent == null)
             {
                 return null;
             }
-            
+
             return _workspaceLogic.FindExtent(workspace, extent) as IUriExtent;
         }
 
@@ -86,8 +81,11 @@ namespace DatenMeister.Modules.AttachedExtent
                 from extent in workspace.extent
                 let configuration = GetConfiguration(extent)
                 where configuration != null
-                      && configuration.referencedWorkspace == workspaceName
-                      && configuration.referencedExtent == extentName
+                      && configuration.getOrDefault<string>(
+                          _AttachedExtentConfiguration.referencedWorkspace) ==
+                      workspaceName
+                      && configuration.getOrDefault<string>(
+                          _AttachedExtentConfiguration.referencedExtent) == extentName
                 let uriExtent = extent as IUriExtent
                 where uriExtent != null
                 select uriExtent;
@@ -109,7 +107,8 @@ namespace DatenMeister.Modules.AttachedExtent
         public IElement GetOrCreateAttachedItem(IElement originalItem, IUriExtent attachedExtent)
         {
             var configuration = GetConfiguration(attachedExtent);
-            if (configuration == null || configuration.referenceProperty == null)
+            if (configuration == null ||
+                configuration.getOrDefault<string>(_AttachedExtentConfiguration.referenceProperty) == null)
             {
                 throw new InvalidOperationException(
                     "Attached item cannot ba retrieved since the attached extent does not have a configuration");
@@ -118,14 +117,19 @@ namespace DatenMeister.Modules.AttachedExtent
             // Now go through the attached extent and look for the attached item
             var foundItem = attachedExtent.elements()
                 .GetAllDescendantsIncludingThemselves()
-                .WhenPropertyHasValue(configuration.referenceProperty, originalItem)
+                .WhenPropertyHasValue(
+                    configuration.getOrDefault<string>(_AttachedExtentConfiguration.referenceProperty), originalItem)
                 .OfType<IElement>()
                 .FirstOrDefault();
 
             if (foundItem != null) return foundItem;
-            
-            var newItem = MofFactory.Create(attachedExtent, configuration.referenceType);
-            newItem.set(configuration.referenceProperty, originalItem);
+
+            var referenceType =
+                configuration.getOrDefault<IElement>(_AttachedExtentConfiguration.referenceType);
+
+            var newItem = MofFactory.Create(attachedExtent, referenceType);
+            newItem.set(configuration.getOrDefault<string>(_AttachedExtentConfiguration.referenceProperty),
+                originalItem);
             attachedExtent.elements().add(newItem);
             return newItem;
         }

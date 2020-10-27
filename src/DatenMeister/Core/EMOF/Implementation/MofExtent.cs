@@ -313,6 +313,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">Extent to be added</param>
         public void AddMetaExtent(IUriExtent extent)
         {
+            if (extent == null)
+            {
+                return;
+            }
+
+            if (XmlMetaExtent != this && XmlMetaExtent != null)
+            {
+                XmlMetaExtent.AddMetaExtent(extent);
+            }
+
             lock (_metaExtents)
             {
                 if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))

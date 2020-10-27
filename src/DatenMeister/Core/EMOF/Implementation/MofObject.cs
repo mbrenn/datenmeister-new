@@ -285,6 +285,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                 {
                     SetContainer(ProviderObject, value, valueForSetting);
                 }
+
+                if (value is MofObject ofMofObject && valueForSetting is UriReference && 
+                    ofMofObject.ReferencedExtent is IUriExtent asUriExtent)
+                {
+                    _referencedExtent?.AddMetaExtent(asUriExtent);
+                }
             }
 
             UpdateContent();

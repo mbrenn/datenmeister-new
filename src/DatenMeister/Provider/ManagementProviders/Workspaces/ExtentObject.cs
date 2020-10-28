@@ -38,6 +38,12 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 MetaclassUriPath)
         {
             LoadedExtentInformation = loadedExtentInformation;
+
+
+            AddMapping(
+                _ManagementProvider._Extent.workspaceId,
+                e => parentWorkspace.id,
+                (e, v) => throw new InvalidOperationException("Seeting of workspaces is not supported"));
             
             AddMapping(
                 _ManagementProvider._Extent.uri,

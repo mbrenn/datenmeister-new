@@ -1020,12 +1020,12 @@
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="AttachedExtent" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="7447d350-9b9d-47d3-85d4-737fb6e886c7">
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="AttachedExtentConfiguration">
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedExtent" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referenceType" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referenceProperty" type-ref="dm:///_internal/model/primitivetypes#String" />
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="AttachedExtentConfiguration" p1:id="68b3ddbf-a563-4d91-91fb-81e5bfac46b5">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="734ffcf5-59a8-466b-ad90-3dfc80b1ae65" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3ec12c2c-f65a-4639-a80f-58f83f6e5861" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedExtent" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="271dd130-e5c3-4221-8fcb-c6bd61825953" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referenceType" p1:id="53cd92c3-cdcd-45a6-a603-610f2ca169f3" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referenceProperty" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="0e87a86e-2c42-4c46-b48d-8f902cb43ff0" />
     </packagedElement>
   </item>
 </item>

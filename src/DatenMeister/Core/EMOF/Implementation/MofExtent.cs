@@ -255,7 +255,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
                 else
                 {
-                    nullObject.SetProperty(property, value);
+                    
+                    var valueForSetting = ConvertForSetting(this, value);
+                    nullObject.SetProperty(property, valueForSetting);
                 }
             }
             else
@@ -318,17 +320,17 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return;
             }
 
-            if (XmlMetaExtent != this && XmlMetaExtent != null)
-            {
-                XmlMetaExtent.AddMetaExtent(extent);
-            }
-
             lock (_metaExtents)
             {
                 if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
                 {
                     // Already in
                     return;
+                }
+
+                if (XmlMetaExtent != this && XmlMetaExtent != null)
+                {
+                    XmlMetaExtent.AddMetaExtent(extent);
                 }
 
                 _metaExtents.Add(extent);

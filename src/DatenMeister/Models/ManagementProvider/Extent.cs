@@ -9,6 +9,8 @@ namespace DatenMeister.Models.ManagementProvider
     public class Extent
     {
         public string? uri { get; set; }
+        
+        public string? workspaceId { get; set; }
 
         public int count { get; set; }
         

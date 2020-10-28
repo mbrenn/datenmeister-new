@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.ManagementProviders;
+using DatenMeister.Models;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Navigation;
 
@@ -12,10 +14,12 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
 {
     public class ExtentPropertyUserInteraction : IElementInteractionsHandler
     {
+        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
 
-        public ExtentPropertyUserInteraction(IScopeStorage scopeStorage)
+        public ExtentPropertyUserInteraction(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
+            _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
         }
 
@@ -26,7 +30,7 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
                 yield break;
             }
 
-            if (asElement.getMetaClass()?.@equals(_ManagementProvider.TheOne.__ExtentProperties) != true)
+            if (asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Management.__Extent) != true)
             {
                 yield break;
             }
@@ -38,12 +42,21 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
                     $"Configure {property.title}",
                     async (x,y) =>
                     {
-                        var foundElement = element.getOrDefault<IElement>(property.name);
+                        // Gets the extent to find the real extent by using the model.  
+                        var extent = _workspaceLogic.GetExtentByManagementModel(asElement);           
+                        var foundElement = extent.getOrDefault<IElement>(property.name);
                         if (foundElement == null)
                         {
-                            var factory = new MofFactory(element);
+                            var factory = new MofFactory(extent);
                             foundElement = factory.create(property.metaClass);
-                            element.set(property.name, foundElement);
+                            extent.set(property.name, foundElement);
+                            foundElement = extent.getOrDefault<IElement>(property.name);
+
+                            if (foundElement == null)
+                            {
+                                throw new InvalidOperationException(
+                                    "Getting the data did not work for whatever reason");
+                            }
                         }
 
                         await NavigatorForItems.NavigateToElementDetailView(

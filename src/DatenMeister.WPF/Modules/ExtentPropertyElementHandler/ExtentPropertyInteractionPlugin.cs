@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Integration;
 using DatenMeister.Runtime.Plugins;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
@@ -12,17 +13,19 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
     [PluginLoading(PluginLoadingPosition.AfterInitialization)]
     public class ExtentPropertyInteractionPlugin : IDatenMeisterPlugin
     {
+        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
 
-        public ExtentPropertyInteractionPlugin(IScopeStorage scopeStorage)
+        public ExtentPropertyInteractionPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
+            _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
         }
 
         public void Start(PluginLoadingPosition position)
         {
              _scopeStorage.Get<UserInteractionState>().ElementInteractionHandler.Add(
-                 new ExtentPropertyUserInteraction(_scopeStorage));
+                 new ExtentPropertyUserInteraction(_workspaceLogic, _scopeStorage));
         }
     }
 }

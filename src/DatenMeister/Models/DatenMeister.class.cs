@@ -1903,7 +1903,7 @@ namespace DatenMeister.Models
             }
 
             public _AttachedExtentConfiguration @AttachedExtentConfiguration = new _AttachedExtentConfiguration();
-            public IElement @__AttachedExtentConfiguration = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration");
+            public IElement @__AttachedExtentConfiguration = new MofObjectShadow("dm:///_internal/types/internal#68b3ddbf-a563-4d91-91fb-81e5bfac46b5");
 
         }
 
@@ -1933,6 +1933,9 @@ namespace DatenMeister.Models
             {
                 public static string @uri = "uri";
                 public IElement? @_uri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @count = "count";
                 public IElement? @_count = null;
@@ -2012,6 +2015,9 @@ namespace DatenMeister.Models
             {
                 public static string @uri = "uri";
                 public IElement? @_uri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @count = "count";
                 public IElement? @_count = null;

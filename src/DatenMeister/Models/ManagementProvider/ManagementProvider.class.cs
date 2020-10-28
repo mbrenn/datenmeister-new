@@ -31,6 +31,9 @@ namespace DatenMeister.Models.ManagementProviders
             public static string @uri = "uri";
             public IElement? @_uri = null;
 
+            public static string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
+
             public static string @count = "count";
             public IElement? @_count = null;
 
@@ -109,6 +112,9 @@ namespace DatenMeister.Models.ManagementProviders
         {
             public static string @uri = "uri";
             public IElement? @_uri = null;
+
+            public static string @workspaceId = "workspaceId";
+            public IElement? @_workspaceId = null;
 
             public static string @count = "count";
             public IElement? @_count = null;

@@ -4,6 +4,7 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 
 namespace DatenMeister.Runtime.Workspaces
 {
@@ -149,6 +150,21 @@ namespace DatenMeister.Runtime.Workspaces
             }
 
             return (foundWorkspace, foundExtent);
+        }
+
+        public static IUriExtent GetExtentByManagementModel(this IWorkspaceLogic workspaceLogic, IElement modelElement)
+        {
+            if (modelElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Management.__Extent) != true)
+            {
+                throw new InvalidOperationException(
+                    $"The given element is not of type {_DatenMeister.TheOne.Management.__Extent}");
+            }
+
+            var workspaceId = modelElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId);
+            var uri = modelElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
+
+            return workspaceLogic.FindExtent(workspaceId, uri) as IUriExtent
+                   ?? throw new InvalidOperationException("The extent is not found");
         }
 
         public static (Workspace workspace, IUriExtent extent) RetrieveWorkspaceAndExtent(

@@ -95,7 +95,7 @@ namespace DatenMeister.WPF.Forms.Fields
             _isInline = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline);
             var isReadOnly = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.isReadOnly)
                 || fieldFlags.IsReadOnly;
-            _name = fieldData.get<string>(_DatenMeister._Forms._FieldData.name);
+            _name = fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ?? string.Empty;
             _detailFormControl = detailForm;
             _element = element;
             

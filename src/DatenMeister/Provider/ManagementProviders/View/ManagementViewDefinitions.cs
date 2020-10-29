@@ -68,6 +68,7 @@ namespace DatenMeister.Provider.ManagementProviders.View
             }
 
             var type2Field = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
+            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.name, "selectedType");
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, true);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultValue, parameter.PreSelectedPackage);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace, parameter.WorkspaceName);

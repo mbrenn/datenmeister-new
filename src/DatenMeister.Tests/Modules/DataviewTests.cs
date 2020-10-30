@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.DataViews;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.TypeSupport;
@@ -52,7 +51,7 @@ namespace DatenMeister.Tests.Modules
             var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterPropertyNode);
             userViewExtent.elements().add(propertyFilter);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.property, "name");
-            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
+            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, _DatenMeister._DataViews.___ComparisonMode.Contains);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.value, "ai");
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.input, extentSource);
 
@@ -69,7 +68,7 @@ namespace DatenMeister.Tests.Modules
             Assert.That(elements.Length, Is.GreaterThan(0));
 
             // Go to Non-Contain
-            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.DoesNotContain);
+            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, _DatenMeister._DataViews.___ComparisonMode.DoesNotContain);
             elements = extent.elements().OfType<IElement>().ToArray();
             Assert.That(elements.All(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
             Assert.That(elements.Any(x => x.getOrDefault<string>("name")?.Contains("ai") == true), Is.False);
@@ -91,7 +90,7 @@ namespace DatenMeister.Tests.Modules
             
             var propertyFilter = factory.create(_DatenMeister.TheOne.DataViews.__FilterPropertyNode);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.property, "name");
-            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, ComparisonMode.Contains);
+            propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode, _DatenMeister._DataViews.___ComparisonMode.Contains);
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.value, "ai");
             propertyFilter.set(_DatenMeister._DataViews._FilterPropertyNode.input, extentSource);
             

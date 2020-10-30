@@ -63,8 +63,9 @@ namespace DatenMeister.Modules.UserProperties
         {
             lock (_viewModeSelection)
             {
-                return _viewModeSelection.FirstOrDefault(x => x.extentUri == extentUri
-                                                              && (tag == null || x.tag == tag));
+                return _viewModeSelection.FirstOrDefault(
+                    x => x.extentUri == extentUri
+                         && (tag == null || x.tag == tag));
             }
         }
     }

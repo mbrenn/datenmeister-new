@@ -159,7 +159,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine();
             Result.AppendLine();
             
-            Result.AppendLine($"{stack.Indentation}public enum {name}");
+            Result.AppendLine($"{stack.Indentation}public enum ___{name}");
             Result.AppendLine($"{stack.Indentation}{{");
 
             var first = true;
@@ -174,7 +174,7 @@ namespace DatenMeister.SourcecodeGenerator
                 var nameAsObject = literal.get("name");
                 var literalName = nameAsObject == null ? string.Empty : nameAsObject.ToString();
 
-                Result.Append($"{innerStack.Indentation}{literalName}");
+                Result.Append($"{innerStack.Indentation}@{literalName}");
                 first = false;
             });
 

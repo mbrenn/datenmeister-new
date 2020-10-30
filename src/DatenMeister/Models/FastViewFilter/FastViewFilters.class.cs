@@ -26,6 +26,16 @@ namespace DatenMeister.Models.FastViewFilter
         public _ComparisonType @ComparisonType = new _ComparisonType();
         public IElement @__ComparisonType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType");
 
+
+        public enum ___ComparisonType
+        {
+            @Equal,
+            @GreaterThan,
+            @LighterThan,
+            @GreaterOrEqualThan,
+            @LighterOrEqualThan
+        }
+
         public class _PropertyComparisonFilter
         {
             public static string @Property = "Property";

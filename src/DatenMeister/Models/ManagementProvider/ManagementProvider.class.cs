@@ -26,6 +26,16 @@ namespace DatenMeister.Models.ManagementProviders
         public _ExtentLoadingState @ExtentLoadingState = new _ExtentLoadingState();
         public IElement @__ExtentLoadingState = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState");
 
+
+        public enum ___ExtentLoadingState
+        {
+            @Unknown,
+            @Unloaded,
+            @Loaded,
+            @Failed,
+            @LoadedReadOnly
+        }
+
         public class _Extent
         {
             public static string @uri = "uri";

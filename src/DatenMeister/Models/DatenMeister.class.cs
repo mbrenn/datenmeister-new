@@ -468,6 +468,19 @@ namespace DatenMeister.Models
             public _ComparisonMode @ComparisonMode = new _ComparisonMode();
             public IElement @__ComparisonMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ComparisonMode");
 
+
+            public enum ___ComparisonMode
+            {
+                @Equal,
+                @NotEqual,
+                @Contains,
+                @DoesNotContain,
+                @GreaterThan,
+                @GreaterOrEqualThan,
+                @LighterThan,
+                @LighterOrEqualThan
+            }
+
             public class _SelectByFullNameNode
             {
                 public static string @input = "input";
@@ -667,6 +680,14 @@ namespace DatenMeister.Models
             public _DescendentMode @DescendentMode = new _DescendentMode();
             public IElement @__DescendentMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.DescendentMode");
 
+
+            public enum ___DescendentMode
+            {
+                @None,
+                @Inline,
+                @PerPackage
+            }
+
             public class _ReportTableForTypeMode
             {
                 public static string @PerType = "PerType";
@@ -678,6 +699,13 @@ namespace DatenMeister.Models
 
             public _ReportTableForTypeMode @ReportTableForTypeMode = new _ReportTableForTypeMode();
             public IElement @__ReportTableForTypeMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode");
+
+
+            public enum ___ReportTableForTypeMode
+            {
+                @PerType,
+                @AllTypes
+            }
 
             public class _SimpleReportConfiguration
             {
@@ -1713,6 +1741,15 @@ namespace DatenMeister.Models
             public _FormType @FormType = new _FormType();
             public IElement @__FormType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType");
 
+
+            public enum ___FormType
+            {
+                @Detail,
+                @TreeItemExtent,
+                @TreeItemDetail,
+                @ObjectList
+            }
+
             public class _Form
             {
                 public static string @name = "name";
@@ -1932,6 +1969,16 @@ namespace DatenMeister.Models
             public _ExtentLoadingState @ExtentLoadingState = new _ExtentLoadingState();
             public IElement @__ExtentLoadingState = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState");
 
+
+            public enum ___ExtentLoadingState
+            {
+                @Unknown,
+                @Unloaded,
+                @Loaded,
+                @Failed,
+                @LoadedReadOnly
+            }
+
             public class _Extent
             {
                 public static string @uri = "uri";
@@ -2135,6 +2182,16 @@ namespace DatenMeister.Models
 
             public _ComparisonType @ComparisonType = new _ComparisonType();
             public IElement @__ComparisonType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType");
+
+
+            public enum ___ComparisonType
+            {
+                @Equal,
+                @GreaterThan,
+                @LighterThan,
+                @GreaterOrEqualThan,
+                @LighterOrEqualThan
+            }
 
             public class _PropertyComparisonFilter
             {

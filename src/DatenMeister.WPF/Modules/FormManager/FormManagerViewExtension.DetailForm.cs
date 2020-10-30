@@ -8,7 +8,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
@@ -257,7 +256,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.metaClass, metaClass);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailWindow.OverridingFormDefinition.Element);
-                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, FormType.Detail);
+                formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Detail);
                 userViewExtent.elements().add(formAssociation);
 
                 MessageBox.Show("View Association created");
@@ -310,9 +309,9 @@ namespace DatenMeister.WPF.Modules.FormManager
                 var isDetailForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__DetailForm);
                 var isExtentForm = ClassifierMethods.IsSpecializedClassifierOf(formMetaClass, _DatenMeister.TheOne.Forms.__ExtentForm);
                 var formType = 
-                    isExtentForm ? FormType.TreeItemDetail :
-                    isDetailForm ? FormType.Detail :
-                    FormType.TreeItemExtent;
+                    isExtentForm ? _DatenMeister._Forms.___FormType.TreeItemDetail :
+                    isDetailForm ? _DatenMeister._Forms.___FormType.Detail :
+                    _DatenMeister._Forms.___FormType.TreeItemExtent;
 
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, formType);
                 formAssociation.set(_DatenMeister._Forms._FormAssociation.form, detailAsElement);

@@ -10,7 +10,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
@@ -201,7 +200,7 @@ namespace DatenMeister.WPF.Modules.FormManager
                         var formAssociation = factory.create(_DatenMeister.TheOne.Forms.__FormAssociation);
                         formAssociation.set(_DatenMeister._Forms._FormAssociation.extentType, selectedExtentType);
                         formAssociation.set(_DatenMeister._Forms._FormAssociation.form, itemExplorerControl.EffectiveForm);
-                        formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, FormType.TreeItemExtent);
+                        formAssociation.set(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.TreeItemExtent);
                         userViewExtent.elements().add(formAssociation);
 
                         MessageBox.Show("View Association created");
@@ -395,9 +394,9 @@ namespace DatenMeister.WPF.Modules.FormManager
                 // Creates association
                 var formLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 var association1 = 
-                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, FormType.Detail);
+                    formLogic.AddFormAssociationForMetaclass(detailForm, locatedItem, _DatenMeister._Forms.___FormType.Detail);
                 var association2 = 
-                    formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, FormType.TreeItemDetail);
+                    formLogic.AddFormAssociationForMetaclass(extentForm, locatedItem, _DatenMeister._Forms.___FormType.TreeItemDetail);
                 
                 DefaultClassifierHints.AddToExtentOrElement(package, association1);
                 name = fullName + "AssociationDetail";

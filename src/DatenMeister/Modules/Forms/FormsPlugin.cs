@@ -11,7 +11,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
-using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -226,7 +225,7 @@ namespace DatenMeister.Modules.Forms
         /// <param name="metaClass">The metaclass being used for form association</param>
         /// <param name="formType">Type to be added</param>
         /// <returns></returns>
-        public IElement AddFormAssociationForMetaclass(IElement form, IElement metaClass, FormType formType)
+        public IElement AddFormAssociationForMetaclass(IElement form, IElement metaClass, _DatenMeister._Forms.___FormType formType)
         {
             var factory = new MofFactory(form);
             
@@ -325,7 +324,7 @@ namespace DatenMeister.Modules.Forms
                 .GetAllDescendantsIncludingThemselves()
                 .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
                 .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
-                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType, FormType.Detail)
+                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Detail)
                 .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
@@ -369,7 +368,7 @@ namespace DatenMeister.Modules.Forms
                     new FindFormQuery
                     {
                         metaClass = (element as IElement)?.getMetaClass(),
-                        FormType = FormType.Detail,
+                        FormType = _DatenMeister._Forms.___FormType.Detail,
                         extentType = extent == null ? string.Empty : extent.GetConfiguration().ExtentType
                     }).FirstOrDefault();
 
@@ -394,7 +393,7 @@ namespace DatenMeister.Modules.Forms
                     {
                         DefinitionMode = formDefinitionMode,
                         MetaClass = (element as IElement)?.getMetaClass(),
-                        FormType = FormType.Detail,
+                        FormType = _DatenMeister._Forms.___FormType.Detail,
                         ExtentType = extent?.GetConfiguration().ExtentType ?? string.Empty,
                         DetailElement = element
                     },
@@ -414,7 +413,7 @@ namespace DatenMeister.Modules.Forms
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         viewModeId = viewModeId
                     }).FirstOrDefault();
 
@@ -442,7 +441,7 @@ namespace DatenMeister.Modules.Forms
                 CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         ExtentType = extent.GetConfiguration().ExtentType
                     },
                     ref foundForm);
@@ -558,7 +557,7 @@ namespace DatenMeister.Modules.Forms
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         metaClass = metaClass
                     }).FirstOrDefault();
 
@@ -580,10 +579,10 @@ namespace DatenMeister.Modules.Forms
             {
                 foundForm = CloneForm(foundForm);
                 
-                CallFormsModificationPlugins(new FormCreationContext()
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         MetaClass = metaClass
                     },
                     ref foundForm);
@@ -617,7 +616,7 @@ namespace DatenMeister.Modules.Forms
                         extentType = (parentElement as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
                         parentMetaClass = (parentElement as IElement)?.metaclass,
                         metaClass = propertyType,
-                        FormType = FormType.ObjectList,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList,
                         parentProperty = parentProperty
                     }).FirstOrDefault();
 
@@ -642,7 +641,7 @@ namespace DatenMeister.Modules.Forms
                 CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.ObjectList,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList,
                         MetaClass = (parentElement as IElement)?.metaclass,
                         ParentPropertyName = parentProperty,
                         DetailElement = parentElement
@@ -688,7 +687,7 @@ namespace DatenMeister.Modules.Forms
                 {
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = (element as IElement)?.getMetaClass(),
-                    FormType = FormType.TreeItemDetail,
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                     viewModeId = viewModeId
                 }).FirstOrDefault();
 
@@ -719,7 +718,7 @@ namespace DatenMeister.Modules.Forms
                 CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemDetail,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                         MetaClass = (element as IElement)?.metaclass,
                         ViewMode = viewModeId,
                         DetailElement = element
@@ -769,7 +768,7 @@ namespace DatenMeister.Modules.Forms
                 {
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = metaClass,
-                    FormType = FormType.TreeItemDetail,
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                     parentProperty = propertyName,
                     parentMetaClass = parentMetaClass
                 }).FirstOrDefault();
@@ -795,7 +794,7 @@ namespace DatenMeister.Modules.Forms
                 CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemDetail,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                         MetaClass = metaClass,
                         ParentPropertyName = propertyName,
                         ParentMetaClass = parentMetaClass,

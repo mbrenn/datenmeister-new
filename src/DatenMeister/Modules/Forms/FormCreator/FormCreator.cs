@@ -10,7 +10,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
-using DatenMeister.Models.Forms;
 using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.InMemory;
@@ -560,7 +559,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                                     parentMetaClass = parentMetaClass,
                                     parentProperty = propertyName,
                                     metaClass = propertyType,
-                                    FormType = FormType.ObjectList
+                                    FormType = _DatenMeister._Forms.___FormType.ObjectList
                                 }).FirstOrDefault();
                         }
                         // Create the internal form out of the metaclass

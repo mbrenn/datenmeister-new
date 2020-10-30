@@ -6,7 +6,6 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
@@ -83,8 +82,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 var associationExtentType = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
                 var associationMetaClass = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
                 var associationViewType = 
-                    element.getOrNull<FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
-                                    FormType.Detail;
+                    element.getOrNull<_DatenMeister._Forms.___FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
+                                    _DatenMeister._Forms.___FormType.Detail;
                 var associationParentMetaclass =
                     element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.parentMetaClass);
                 var associationParentProperty =

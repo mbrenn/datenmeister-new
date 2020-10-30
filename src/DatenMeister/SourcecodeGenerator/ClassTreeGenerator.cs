@@ -138,7 +138,9 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         /// <param name="enumInstance">The class that shall be retrieved</param>
         /// <param name="stack">Stack being used</param>
-        protected override void WalkEnum(IObject enumInstance, CallStack stack)
+        /// <param name="callee">The element to be called when tn enumeration is required to be called.
+        /// May be null, then WalkEnumLiteral will be called</param>
+        protected override void WalkEnum(IObject enumInstance, CallStack stack, Action<IObject, CallStack>? callee = null)
         {
             var asElement = (IElement) enumInstance;
             var name = GetNameOfElement(enumInstance);
@@ -155,6 +157,30 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}public _{name} @{name} = new _{name}();");
             Result.AppendLine($"{stack.Indentation}public IElement @__{name} = new MofObjectShadow(\"{asElement.GetUri()}\");");
             Result.AppendLine();
+            Result.AppendLine();
+            
+            Result.AppendLine($"{stack.Indentation}public enum {name}");
+            Result.AppendLine($"{stack.Indentation}{{");
+
+            var first = true;
+
+            base.WalkEnum(enumInstance, stack, (literal, innerStack) =>
+            {
+                if (!first)
+                {
+                    Result.AppendLine(",");
+                }
+                
+                var nameAsObject = literal.get("name");
+                var literalName = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+
+                Result.Append($"{innerStack.Indentation}{literalName}");
+                first = false;
+            });
+
+            Result.AppendLine();
+            Result.AppendLine($"{stack.Indentation}}}");
+            Result.AppendLine();
         }
 
         protected override void WalkEnumLiteral(IObject enumLiteralObject, CallStack stack)
@@ -163,8 +189,8 @@ namespace DatenMeister.SourcecodeGenerator
             base.WalkEnumLiteral(enumLiteralObject, stack);
 
             var nameAsObject = enumLiteralObject.get("name");
-
             var name = nameAsObject == null ? string.Empty : nameAsObject.ToString();
+            
             Result.AppendLine($"{stack.Indentation}public static string @{name} = \"{name}\";");
 
             var id = (asElement as IHasId)?.Id ?? string.Empty;

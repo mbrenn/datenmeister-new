@@ -244,4 +244,7 @@
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="19bee149-04c9-4cbb-a51e-3523e094f75c" name="Association - PrimitiveTypes - Detail" formType="Detail" metaClass-ref="dm:///_internal/model/uml#PrimitiveType" form-ref="#c56fa272-2307-4c2a-a572-d4dce5206ee2" />
     </packagedElement>
   </item>
+  <item p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" name="ViewModes" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="3af75e2d-6ba1-4431-943d-d426b9b32dd4">
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ViewModes.ViewMode" id="Default" name="Default" />
+  </item>
 </item>

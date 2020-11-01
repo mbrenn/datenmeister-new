@@ -112,18 +112,6 @@ namespace DatenMeister.Modules.Forms
                         .AddDefaultTypePackages(new[]
                             {_DatenMeister.TheOne.Forms.__Form, _DatenMeister.TheOne.Forms.__FormAssociation});
 
-                    // Includes the default view modes
-                    var packageMethods = new PackageMethods(_workspaceLogic);
-                    var internalFormExtent = GetInternalFormExtent();
-                    var package =
-                        packageMethods.GetOrCreatePackageStructure(
-                            internalFormExtent.elements(), "DatenMeister::ViewModes");
-                    var created = MofFactory.Create(internalFormExtent,
-                        _DatenMeister.TheOne.Forms.__ViewMode);
-                    created.set(_DatenMeister._Forms._ViewMode.id, "Default");
-                    created.set(_DatenMeister._Forms._ViewMode.name, "Default");
-                    PackageMethods.AddObjectToPackage(package, created);
-
                     break;
             }
         }

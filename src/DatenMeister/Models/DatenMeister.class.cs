@@ -1735,6 +1735,10 @@ namespace DatenMeister.Models
                 public IElement @__TreeItemDetail = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TreeItemDetail");
                 public static string @ObjectList = "ObjectList";
                 public IElement @__ObjectList = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-ObjectList");
+                public static string @TreeItemExtentExtension = "TreeItemExtentExtension";
+                public IElement? @__TreeItemExtentExtension = null;
+                public static string @TreeItemDetailExtension = "TreeItemDetailExtension";
+                public IElement? @__TreeItemDetailExtension = null;
 
             }
 
@@ -1747,7 +1751,9 @@ namespace DatenMeister.Models
                 @Detail,
                 @TreeItemExtent,
                 @TreeItemDetail,
-                @ObjectList
+                @ObjectList,
+                @TreeItemExtentExtension,
+                @TreeItemDetailExtension
             }
 
             public class _Form

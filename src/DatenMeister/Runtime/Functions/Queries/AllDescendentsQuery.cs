@@ -39,19 +39,19 @@ namespace DatenMeister.Runtime.Functions.Queries
         public static IEnumerable<IObject> GetDescendents(IExtent extent, IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties?.ToList());
+            return inner.GetDescendentsInternal(extent.elements(), byFollowingProperties?.ToList(),null);
         }
 
         public static IEnumerable<IObject> GetDescendents(IEnumerable enumeration, IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList());
+            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null);
         }
 
         public static IEnumerable<IObject> GetCompositeDescendents(IEnumerable enumeration, IEnumerable<string>? byFollowingProperties = null)
         {
             var inner = new AllDescendentsQuery();
-            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), true);
+            return inner.GetDescendentsInternal(enumeration, byFollowingProperties?.ToList(), null, true);
         }
 
         /// <summary>
@@ -92,8 +92,9 @@ namespace DatenMeister.Runtime.Functions.Queries
                 }
                 else
                 {
-                    propertyList = ClassifierMethods.GetCompositingProperties(metaClass)
-                        .Select(NamedElementMethods.GetName);
+                    propertyList =
+                        ClassifierMethods.GetCompositingProperties(metaClass)
+                            .Select(NamedElementMethods.GetName);
                 }
             }
             else
@@ -119,6 +120,14 @@ namespace DatenMeister.Runtime.Functions.Queries
                         // Skip what is already visited
                         yield break;
                     }
+
+                    var parentAsMofObject = element as MofObject;
+                    var childAsMofObject = valueAsObject as MofObject;
+                    if (parentAsMofObject?.ReferencedExtent != childAsMofObject?.ReferencedExtent
+                        && parentAsMofObject != null)
+                    {
+                        continue;
+                    }
                     
                     // Value is an object... perfect!
                     foreach (var innerValue in GetDescendentsInternal(valueAsObject, byFollowingProperties, onlyComposites))
@@ -130,7 +139,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                 {
                     // Value is a real enumeration. 
                     var valueAsEnumerable = (IEnumerable) value;
-                    foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties, onlyComposites))
+                    foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties, element, onlyComposites))
                     {
                         if (_alreadyVisited.Contains(innerValue))
                         {
@@ -151,11 +160,15 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="byFollowingProperties">The properties that are requested</param>
         /// <param name="onlyComposites">true, if only composite elements shall be regarded</param>
         /// <returns>The descendents of each list item of the enumeration</returns>
+        /// <param name="parent">Parent to be evaluated</param>
         private IEnumerable<IObject> GetDescendentsInternal(
             IEnumerable valueAsEnumerable,
             ICollection<string>? byFollowingProperties,
+            IObject? parent,
             bool onlyComposites = false)
         {
+            var parentAsMofObject = parent as MofObject;
+            
             if (valueAsEnumerable == null)
             {
                 yield break;
@@ -165,6 +178,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 foreach (var element in reflectiveSequence.Enumerate(true))
                 {
+                    var childAsMofObject = element as MofObject;
+                    if (parentAsMofObject?.ReferencedExtent != childAsMofObject?.ReferencedExtent
+                        && parentAsMofObject != null)
+                    {
+                        continue;
+                    }
+                    
                     if (element is IObject elementAsIObject)
                     {
                         foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties, onlyComposites))
@@ -178,6 +198,13 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 foreach (var element in valueAsEnumerable)
                 {
+                    var childAsMofObject = element as MofObject;
+                    if (parentAsMofObject?.ReferencedExtent != childAsMofObject?.ReferencedExtent
+                        && parentAsMofObject != null)
+                    {
+                        continue;
+                    }
+                    
                     if (element is IObject elementAsIObject)
                     {
                         foreach (var value in GetDescendentsInternal(elementAsIObject, byFollowingProperties, onlyComposites))

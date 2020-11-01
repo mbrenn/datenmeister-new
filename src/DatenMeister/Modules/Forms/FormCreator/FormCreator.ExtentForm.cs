@@ -169,7 +169,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     // Asks the view logic whether it has a list form for the specific metaclass
                     // It will ask the form creator, if there is no view association directly referencing
                     // to the element
-                    form = _formLogic.GetListFormForExtent(
+                    form = _formLogic.GetListFormForExtentsItem(
                         extent,
                         groupedMetaclass,
                         FormDefinitionMode.Default) ?? throw new InvalidOperationException("No form was found");
@@ -197,7 +197,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             result.set(_DatenMeister._Forms._ExtentForm.tab, tabs);
             return result;
-
 
             // Some helper method which creates the button to create new elements by the extent being connected
             // to the enumeration of elements
@@ -410,11 +409,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
             // Now collect the property Values
             propertyNamesWithCollection.Reverse();
             propertyNamesWithoutCollection.Reverse();
-            
+
             var propertiesWithCollection =
                 from p in propertyNamesWithCollection.Distinct(new P.PropertyNameEqualityComparer())
                 let propertyContent = element.get<IReflectiveCollection>(p.PropertyName)
-                select new {propertyName = p.PropertyName, propertyType =p.PropertyType, propertyContent};
+                select new {propertyName = p.PropertyName, propertyType = p.PropertyType, propertyContent};
 
             var propertiesWithoutCollection =
                 (from p in propertyNamesWithoutCollection.Distinct(new P.PropertyNameEqualityComparer())
@@ -471,7 +470,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 if (ConfigurationFormCreatorSeparateProperties)
                     // ReSharper disable HeuristicUnreachableCode
                 {
-                    
                     var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
                     {
                         if (x is IElement innerElement)
@@ -593,8 +591,6 @@ namespace DatenMeister.Modules.Forms.FormCreator
         }
     }
     
-    
-
     /// <summary>
     /// A configuration helper class to create the extent form
     /// </summary>

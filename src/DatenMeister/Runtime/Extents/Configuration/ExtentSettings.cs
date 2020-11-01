@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DatenMeister.Models.Runtime
+namespace DatenMeister.Runtime.Extents.Configuration
 {
     /// <summary>
     /// Stores the configurations for the extents themselves.
@@ -9,6 +9,9 @@ namespace DatenMeister.Models.Runtime
     /// </summary>
     public class ExtentSettings
     {
+        /// <summary>
+        /// Defines the name of the extent settings
+        /// </summary>
         public string name = "Extent Settings";
         
         /// <summary>

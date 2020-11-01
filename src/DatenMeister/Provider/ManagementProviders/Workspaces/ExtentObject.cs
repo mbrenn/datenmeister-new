@@ -3,7 +3,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Models;
-using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
@@ -14,7 +13,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
     {
         static ExtentObject()
         {
-            MetaclassUriPath = ((MofObjectShadow) _ManagementProvider.TheOne.__Extent).Uri;
+            MetaclassUriPath = ((MofObjectShadow) _DatenMeister.TheOne.Management.__Extent).Uri;
         }
         
         /// <summary>
@@ -41,12 +40,12 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
 
             AddMapping(
-                _ManagementProvider._Extent.workspaceId,
+                _DatenMeister._Management._Extent.workspaceId,
                 e => parentWorkspace.id,
                 (e, v) => throw new InvalidOperationException("Seeting of workspaces is not supported"));
             
             AddMapping(
-                _ManagementProvider._Extent.uri,
+                _DatenMeister._Management._Extent.uri,
                 e => loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri) ?? uriExtent?.contextURI() ?? "Invalid Uri",
                 (e, v) =>
                 {
@@ -71,22 +70,22 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 });
 
             AddMapping(
-                _ManagementProvider._Extent.count,
+                _DatenMeister._Management._Extent.count,
                 e => uriExtent?.elements().size() ?? 0,
                 (e, v) => throw new InvalidOperationException("count cannot be set"));
 
             AddMapping(
-                _ManagementProvider._Extent.totalCount,
+                _DatenMeister._Management._Extent.totalCount,
                 e => (uriExtent as MofUriExtent)?.ItemCount ?? 0,
                 (e, v) => throw new InvalidOperationException("totalCount cannot be set"));
 
             AddMapping(
-                _ManagementProvider._Extent.type,
+                _DatenMeister._Management._Extent.type,
                 e => (uriExtent as MofUriExtent)?.Provider.GetType().Name,
                 (e, v) => throw new InvalidOperationException("type cannot be set"));
 
             AddMapping(
-                _ManagementProvider._Extent.extentType,
+                _DatenMeister._Management._Extent.extentType,
                 e => (uriExtent as MofExtent)?.GetConfiguration().ExtentType,
                 (e, v) =>
                 {
@@ -97,7 +96,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 });
             
             AddMapping(
-                _ManagementProvider._Extent.autoEnumerateType,
+                _DatenMeister._Management._Extent.autoEnumerateType,
                 e => (uriExtent as MofExtent)?.GetConfiguration().AutoEnumerateType,
                 (e, v) =>
                 {
@@ -111,22 +110,22 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 });
 
             AddMapping(
-                _ManagementProvider._Extent.isModified,
+                _DatenMeister._Management._Extent.isModified,
                 e => (uriExtent as MofExtent)?.IsModified == true,
                 (e, v) => throw new InvalidOperationException("isModified cannot be set"));
 
             AddMapping(
-                _ManagementProvider._Extent.alternativeUris,
+                _DatenMeister._Management._Extent.alternativeUris,
                 e => (uriExtent as MofUriExtent)?.AlternativeUris,
                 (e, v) => throw new InvalidOperationException("alternativeUris cannot be set"));
 
             AddMapping(
-                _ManagementProvider._Extent.state,
+                _DatenMeister._Management._Extent.state,
                 e => loadedExtentInformation?.LoadingState ?? ExtentLoadingState.Unknown,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 
             AddMapping(
-                _ManagementProvider._Extent.failMessage,
+                _DatenMeister._Management._Extent.failMessage,
                 e => loadedExtentInformation?.FailLoadingMessage ?? string.Empty,
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 

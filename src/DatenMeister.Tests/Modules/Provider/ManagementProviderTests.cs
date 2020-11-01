@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.ManagementProviders;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
@@ -23,13 +23,13 @@ namespace DatenMeister.Tests.Modules.Provider
             Assert.That(extent, Is.Not.Null);
 
             var workspaceValue = extent.elements().WhenPropertyHasValue(
-                _ManagementProvider._Workspace.id,
+                _DatenMeister._Management._Workspace.id,
                 WorkspaceNames.WorkspaceManagement).FirstOrDefault() as IElement;
             Assert.That(workspaceValue, Is.Not.Null);
-            Assert.That(workspaceValue.get(_ManagementProvider._Workspace.id), Is.EqualTo(WorkspaceNames.WorkspaceManagement));
+            Assert.That(workspaceValue.get(_DatenMeister._Management._Workspace.id), Is.EqualTo(WorkspaceNames.WorkspaceManagement));
 
             var extents =
-                workspaceValue.getOrDefault<IReflectiveCollection>(_ManagementProvider._Workspace.extents);
+                workspaceValue.getOrDefault<IReflectiveCollection>(_DatenMeister._Management._Workspace.extents);
             Assert.That(extents, Is.Not.Null);
             var extentAsList = extents.ToList();
             Assert.That(extentAsList.Count, Is.GreaterThan(0));

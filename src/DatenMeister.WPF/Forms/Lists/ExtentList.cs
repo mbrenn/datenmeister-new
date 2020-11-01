@@ -3,7 +3,7 @@ using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.ManagementProviders;
+using DatenMeister.Models;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -67,7 +67,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (IsExtentSelectedInTreeview ||
                 SelectedItem is IElement selectedElement &&
-                selectedElement.metaclass?.@equals(_ManagementProvider.TheOne.__Workspace) == true)
+                selectedElement.metaclass?.@equals(_DatenMeister.TheOne.Management.__Workspace) == true)
             {
                 var formDefinition =
                     overridingDefinition ??

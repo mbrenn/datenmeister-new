@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Models.ManagementProviders;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 using static DatenMeister.Models._DatenMeister._ExtentLoaderConfigs;
 using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
@@ -14,7 +14,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
     {
         static WorkspaceObject()
         {
-            MetaclassUriPath = ((MofObjectShadow) _ManagementProvider.TheOne.__Workspace).Uri;
+            MetaclassUriPath = ((MofObjectShadow) _DatenMeister.TheOne.Management.__Workspace).Uri;
         }
 
         /// <summary>
@@ -26,17 +26,17 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             workspace.id, MetaclassUriPath)
         {
             AddMapping(
-                _ManagementProvider._Workspace.id,
+                _DatenMeister._Management._Workspace.id,
                 w => w.id,
                 (w, v) => throw new InvalidOperationException("Id cannot be set"));
 
             AddMapping(
-                _ManagementProvider._Workspace.annotation,
+                _DatenMeister._Management._Workspace.annotation,
                 w => w.annotation,
                 (w, v) => w.annotation = v?.ToString() ?? string.Empty);
 
             AddMapping(
-                _ManagementProvider._Workspace.extents,
+                _DatenMeister._Management._Workspace.extents,
                 w =>
                 {
                     var result = new List<ExtentObject?>();

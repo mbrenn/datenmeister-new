@@ -12,8 +12,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.ManagementProvider;
-using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
@@ -63,7 +61,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var listForm = viewLogic.GetListFormForExtentsItem(
                                    extent,
                                    GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
-                                       _ManagementProvider.TheOne.__Workspace) ??
+                                       _DatenMeister.TheOne.Management.__Workspace) ??
                                    throw new InvalidOperationException("No workspace is found"),
                                    FormDefinitionMode.Default)
                                ?? throw new InvalidOperationException("List form could not be created");
@@ -170,13 +168,13 @@ namespace DatenMeister.WPF.Forms.Lists
                     viewLogic.GetListFormForExtentsItem(
                         extent,
                         GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace().ResolveElement(
-                            _ManagementProvider.TheOne.__Extent)
+                            _DatenMeister.TheOne.Management.__Extent)
                         ?? throw new InvalidOperationException("Did not found extent"),
                         FormDefinitionMode.Default) ??
                     throw new InvalidOperationException("listForm == null");
                 listForm.set(_DatenMeister._Forms._ListForm.inhibitDeleteItems, true);
                 listForm.set(_DatenMeister._Forms._ListForm.inhibitNewItems, true);
-                listForm.set(_DatenMeister._Forms._ListForm.property, nameof(_ManagementProvider._Workspace.extents));
+                listForm.set(_DatenMeister._Forms._ListForm.property, nameof(_DatenMeister._Management._Workspace.extents));
 
                 result = viewLogic.GetExtentFormForSubforms(listForm);
             }
@@ -348,7 +346,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void SaveExtent(INavigationGuest navigationGuest, IObject item)
             {
-                var uri = item.getOrDefault<string>(nameof(Extent.uri));
+                var uri = item.getOrDefault<string>(nameof(_DatenMeister._Management._Extent.uri));
                 var storeExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, uri);
 
                 var extentManager = GiveMe.Scope.Resolve<ExtentManager>();

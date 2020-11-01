@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Integration;
-using DatenMeister.Models.Runtime;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Uml.Plugin

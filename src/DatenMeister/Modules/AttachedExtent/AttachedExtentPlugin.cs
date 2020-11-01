@@ -3,7 +3,7 @@ using DatenMeister.Runtime.Plugins;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.Runtime;
+using DatenMeister.Runtime.Extents.Configuration;
 
 
 namespace DatenMeister.Modules.AttachedExtent

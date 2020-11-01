@@ -2,7 +2,6 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Models;
-using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -22,9 +21,9 @@ namespace DatenMeister.Tests.Provider
             var userExtent = uriExtent.element("#dm%3A%2F%2F%2F_internal%2Fforms%2Fuser");
             Assert.That(userExtent, Is.Not.Null);
             
-            userExtent.set(_ManagementProvider._Extent.uri, "dm:///newusers");
+            userExtent.set(_DatenMeister._Management._Extent.uri, "dm:///newusers");
 
-            Assert.That(userExtent.get(_ManagementProvider._Extent.uri), Is.EqualTo("dm:///newusers"));
+            Assert.That(userExtent.get(_DatenMeister._Management._Extent.uri), Is.EqualTo("dm:///newusers"));
 
             var newUsers = scope.WorkspaceLogic.GetManagementWorkspace().extent
                 .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == "dm:///newusers");

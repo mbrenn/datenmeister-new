@@ -4,7 +4,6 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
 using DatenMeister.Models.FastViewFilter;
-using DatenMeister.Models.ManagementProvider;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;

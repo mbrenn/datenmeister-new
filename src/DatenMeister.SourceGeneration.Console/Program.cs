@@ -27,8 +27,6 @@ namespace DatenMeister.SourceGeneration.Console
 
             CreateSourceForExcel();
 
-            CreateSourceForManagementProvider();
-
             CreateSourceForFastFilter();
 
             // CreateSourceForDataViews();
@@ -123,21 +121,6 @@ namespace DatenMeister.SourceGeneration.Console
                     Types = FastViewFilters.Types
                 });
 
-            System.Console.WriteLine(" Done");
-        }
-
-        private static void CreateSourceForManagementProvider()
-        {
-            System.Console.Write("Create Sourcecode for Management Provider...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "ManagementProvider",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.ManagementProviders",
-                    Types = ManagementProviderModel.AllTypes
-                });
             System.Console.WriteLine(" Done");
         }
 

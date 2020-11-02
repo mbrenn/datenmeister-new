@@ -1068,4 +1068,22 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="4218242e-73de-475f-8cd8-d95c3f796197" name="propertyDefinitions" type-ref="#DatenMeister.Models.Runtime.ExtentPropertyDefinition" upper="2" />
     </packagedElement>
   </item>
+  <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_DatenMeister_FastViewFilters" name="FastViewFilters" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.FastViewFilter.ComparisonType" name="ComparisonType">
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.FastViewFilter.ComparisonType-Equal" name="Equal" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.FastViewFilter.ComparisonType-GreaterThan" name="GreaterThan" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.FastViewFilter.ComparisonType-LighterThan" name="LighterThan" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.FastViewFilter.ComparisonType-GreaterOrEqualThan" name="GreaterOrEqualThan" />
+      <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Models.FastViewFilter.ComparisonType-LighterOrEqualThan" name="LighterOrEqualThan" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.FastViewFilter.PropertyComparisonFilter" name="PropertyComparisonFilter">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="461b6e44-03db-4d33-9ba2-53dbe2b5dea0" name="Property" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45293f6f-4cb7-4289-869a-54598cceebf1" name="ComparisonType" type-ref="#DatenMeister.Models.FastViewFilter.ComparisonType" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="16a79392-428e-4434-8da6-b259427c18d1" name="Value" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.FastViewFilter.PropertyContainsFilter" name="PropertyContainsFilter">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="81940171-b08b-4465-be8c-d63710cbc81b" name="Property" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e8278dd3-eecb-4880-b496-70fcbd49521c" name="Value" type-ref="dm:///_internal/model/primitivetypes#String" />
+    </packagedElement>
+  </item>
 </item>

@@ -948,16 +948,16 @@ namespace DatenMeister.WPF.Forms.Base
                                 var fields = b.View.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field);
                                 var propertyField = QueryHelper.GetChildWithProperty(fields,
                                     _DatenMeister._Forms._FieldData.name,
-                                    nameof(PropertyComparisonFilter.Property));
+                                    _DatenMeister._FastViewFilters._PropertyComparisonFilter.Property);
                                 if (propertyField != null) fields.remove(propertyField);
 
                                 // Now, create the replacement
                                 var factory = new MofFactory(b.View);
                                 var element = factory.create(_DatenMeister.TheOne.Forms.__DropDownFieldData);
                                 element.set(_DatenMeister._Forms._DropDownFieldData.name,
-                                    nameof(PropertyComparisonFilter.Property));
+                                    _DatenMeister._FastViewFilters._PropertyComparisonFilter.Property);
                                 element.set(_DatenMeister._Forms._DropDownFieldData.title,
-                                    nameof(PropertyComparisonFilter.Property));
+                                    _DatenMeister._FastViewFilters._PropertyComparisonFilter.Property);
 
                                 var pairs = new List<IObject>();
                                 foreach (var field in

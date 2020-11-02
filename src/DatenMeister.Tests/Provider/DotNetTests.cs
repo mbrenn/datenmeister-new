@@ -7,9 +7,11 @@ using DatenMeister.Models.EMOF;
 using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
+using static DatenMeister.Models._DatenMeister._FastViewFilters;
 
 namespace DatenMeister.Tests.Provider
 {
@@ -109,66 +111,11 @@ namespace DatenMeister.Tests.Provider
             var value = factory.create(_FastViewFilters.TheOne.__PropertyComparisonFilter);
             value.set(_FastViewFilters._PropertyComparisonFilter.Property, "Test");
             value.set(_FastViewFilters._PropertyComparisonFilter.Value, "Content");
-            value.set(_FastViewFilters._PropertyComparisonFilter.ComparisonType, ComparisonType.GreaterThan);
+            value.set(_FastViewFilters._PropertyComparisonFilter.ComparisonType, ___ComparisonType.GreaterThan);
 
-            var convertedObject = DotNetConverter.ConvertToDotNetObject(value);
-            Assert.That(convertedObject, Is.TypeOf<PropertyComparisonFilter>());
-            var typed = (PropertyComparisonFilter) convertedObject;
-
-            Assert.That(typed.Value, Is.EqualTo("Content"));
-            Assert.That(typed.Property, Is.EqualTo("Test"));
-            Assert.That(typed.ComparisonType, Is.EqualTo(ComparisonType.GreaterThan));
-        }
-
-        [Test]
-        public void TestOfEnumerationWithValueType()
-        {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
-            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-
-            var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "dm:///test");
-            workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
-
-            var factory = new MofFactory(extent);
-            var value = factory.create(_FastViewFilters.TheOne.__PropertyComparisonFilter);
-            value.set(_FastViewFilters._PropertyComparisonFilter.Property, "Test");
-            value.set(_FastViewFilters._PropertyComparisonFilter.Value, "Content");
-            value.set(_FastViewFilters._PropertyComparisonFilter.ComparisonType, _FastViewFilters.TheOne.ComparisonType.__GreaterThan);
-
-            var convertedObject = DotNetConverter.ConvertToDotNetObject(value);
-            Assert.That(convertedObject, Is.TypeOf<PropertyComparisonFilter>());
-            var typed = (PropertyComparisonFilter)convertedObject;
-
-            Assert.That(typed.Value, Is.EqualTo("Content"));
-            Assert.That(typed.Property, Is.EqualTo("Test"));
-            Assert.That(typed.ComparisonType, Is.EqualTo(ComparisonType.GreaterThan));
-        }
-
-
-        [Test]
-        public void TestOfEnumerationWithString()
-        {
-            using var scope = DatenMeisterTests.GetDatenMeisterScope();
-            var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-
-            var provider = new InMemoryProvider();
-            var extent = new MofUriExtent(provider, "dm:///test");
-            workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
-
-            var factory = new MofFactory(extent);
-            var value = factory.create(_FastViewFilters.TheOne.__PropertyComparisonFilter);
-            value.set(_FastViewFilters._PropertyComparisonFilter.Property, "Test");
-            value.set(_FastViewFilters._PropertyComparisonFilter.Value, "Content");
-            value.set(_FastViewFilters._PropertyComparisonFilter.ComparisonType, "GreaterThan");
-
-            var convertedObject = DotNetConverter.ConvertToDotNetObject(value);
-            Assert.That(convertedObject, Is.TypeOf<PropertyComparisonFilter>());
-            var typed = (PropertyComparisonFilter)convertedObject;
-
-            Assert.That(typed.Value, Is.EqualTo("Content"));
-            Assert.That(typed.Property, Is.EqualTo("Test"));
-            Assert.That(typed.ComparisonType, Is.EqualTo(ComparisonType.GreaterThan));
+            Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Value), Is.EqualTo("Content"));
+            Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Property), Is.EqualTo("Test"));
+            Assert.That(value.getOrDefault<___ComparisonType>(_PropertyComparisonFilter.ComparisonType), Is.EqualTo(___ComparisonType.GreaterThan));
         }
 
         public class TestClassForConversion 

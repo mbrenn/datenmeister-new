@@ -449,9 +449,13 @@ namespace DatenMeister.WPF.Forms.Base
                     {
                         items = items.GetAllDescendantsIncludingThemselves();
                     }
+                    
+                    // Extent shall be shown
+                    IReflectiveCollection elements = items;
+                    elements = FilterByMetaClass(elements);
 
                     // Get the items and honor searching
-                    items = items.WhenElementIsObject();
+                    items = elements.WhenElementIsObject();
                     if (!string.IsNullOrEmpty(_searchText))
                     {
                         var columnNames = fields.OfType<IElement>()
@@ -611,6 +615,36 @@ namespace DatenMeister.WPF.Forms.Base
 
                 watch.Stop();
             });
+        }
+
+        /// <summary>
+        /// Gets the collection and return the collection by the filtered metaclasses. If the metaclass
+        /// is not defined, then null is returned
+        /// </summary>
+        /// <param name="collection">Collection to be filtered</param>
+        /// <param name="listFormDefinition">The list form definition defining the meta class</param>
+        /// <returns>The filtered metaclasses</returns>
+        private IReflectiveCollection FilterByMetaClass(IReflectiveCollection collection)
+        {
+            if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
+            
+            var noItemsWithMetaClass =
+                EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.noItemsWithMetaClass);
+
+            // If form  defines constraints upon metaclass, then the filtering will occur here
+            var metaClass = EffectiveForm.getOrDefault<IElement?>(_DatenMeister._Forms._ListForm.metaClass);
+
+            if (metaClass != null)
+            {
+                return collection.WhenMetaClassIs(metaClass);
+            }
+
+            if (noItemsWithMetaClass)
+            {
+                return collection.WhenMetaClassIs(null);
+            }
+
+            return collection;
         }
 
         /// <summary>

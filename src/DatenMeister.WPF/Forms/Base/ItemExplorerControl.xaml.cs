@@ -536,11 +536,8 @@ namespace DatenMeister.WPF.Forms.Base
                     // Creates the menu and buttons for the default types. 
                     CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, null);
                 }
-
-                // Extent shall be shown
-                IReflectiveCollection elements = extent.elements();
-                elements = FilterByMetaClass(elements, tabForm);
-                control.SetContent(elements, tabForm, usedViewExtensions);
+                
+                control.SetContent(extent.elements(), tabForm, usedViewExtensions);
             }
             else
             {
@@ -595,7 +592,6 @@ namespace DatenMeister.WPF.Forms.Base
 
                 // The properties of a specific item shall be shown
                 var elements = GetPropertiesAsReflection(value, propertyName);
-                elements = FilterByMetaClass(elements, tabForm);
                 control.SetContent(elements, tabForm, usedViewExtensions);
             }
 
@@ -739,34 +735,6 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             return value.get<IReflectiveCollection>(propertyName);
-        }
-
-        /// <summary>
-        /// Gets the collection and return the collection by the filtered metaclasses. If the metaclass
-        /// is not defined, then null is returned
-        /// </summary>
-        /// <param name="collection">Collection to be filtered</param>
-        /// <param name="listFormDefinition">The list form definition defining the meta class</param>
-        /// <returns>The filtered metaclasses</returns>
-        private IReflectiveCollection FilterByMetaClass(IReflectiveCollection collection, IObject listFormDefinition)
-        {
-            var noItemsWithMetaClass =
-                listFormDefinition.getOrDefault<bool>(_DatenMeister._Forms._ListForm.noItemsWithMetaClass);
-
-            // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = listFormDefinition.getOrDefault<IElement?>(_DatenMeister._Forms._ListForm.metaClass);
-
-            if (metaClass != null)
-            {
-                return collection.WhenMetaClassIs(metaClass);
-            }
-
-            if (noItemsWithMetaClass)
-            {
-                return collection.WhenMetaClassIs(null);
-            }
-
-            return collection;
         }
 
         private void NavigationTreeView_OnItemChosen(object sender, ItemEventArgs e)

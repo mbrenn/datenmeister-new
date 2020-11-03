@@ -98,7 +98,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                         return value;
                     }
 
-                    return value.ToString();
+                    return value?.ToString();
                 }
 
                 return null;

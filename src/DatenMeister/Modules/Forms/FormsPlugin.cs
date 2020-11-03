@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Forms.FormModifications;
@@ -679,6 +680,13 @@ namespace DatenMeister.Modules.Forms
             {
                 throw new InvalidOperationException("Item Tree for extent-less object can't be created");
             }
+
+            string? packageViewMode = null;
+            // Checks if the current item is a package and if the viewmode
+            if (DefaultClassifierHints.IsPackageLike(element))
+            {
+                packageViewMode = element.getOrDefault<string>(_DatenMeister._CommonTypes._Default._Package.defaultViewMode);
+            }
             
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
@@ -688,7 +696,7 @@ namespace DatenMeister.Modules.Forms
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = (element as IElement)?.getMetaClass(),
                     FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
-                    viewModeId = viewModeId
+                    viewModeId = packageViewMode ?? viewModeId
                 }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -708,7 +716,8 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
-            
+                foundForm = CloneForm(foundForm);
+                
                 // Adds the extension forms to the found extent
                 AddExtensionFormsToExtentForm(
                     foundForm,
@@ -719,8 +728,6 @@ namespace DatenMeister.Modules.Forms
                         FormType = _DatenMeister._Forms.___FormType.TreeItemDetailExtension,
                         viewModeId = viewModeId
                     });
-
-                foundForm = CloneForm(foundForm);
 
                 if (element is IElement asElement)
                 {

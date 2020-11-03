@@ -66,6 +66,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             InternalDebug("# of FormAssociations: " + formAssociations.Count);
 
             var foundForms = new List<FoundForm>();
+            var queryViewModeIds = query.viewModeId?.Split(' ');
 
             foreach (var element in formAssociations)
             {
@@ -111,7 +112,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 // Now go through each property and get the points
 
                 // ExtentType
-                if (!string.IsNullOrEmpty(associationExtentType))
+                if (!string.IsNullOrEmpty(associationExtentType) && associationExtentType != null)
                 {
                     if (!string.IsNullOrEmpty(query.extentType)
                         && query.extentType.Contains(associationExtentType))
@@ -132,8 +133,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 // ViewMode Id
                 if (!string.IsNullOrEmpty(associationViewModeId))
                 {
-                    if (!string.IsNullOrEmpty(query.viewModeId)
-                        && query.viewModeId.Equals(associationViewModeId))
+                    if (queryViewModeIds != null
+                        && queryViewModeIds.Contains(associationViewModeId))
                     {
                         InternalDebug("-- MATCH: ViewMode: " + query.viewModeId + ", FormAssociation ViewModeId: " +
                                       associationViewModeId);

@@ -272,6 +272,13 @@ namespace DatenMeister.WPF.Modules.FormManager
                         "Form.Form Manager");
 
                     yield return new ItemMenuButtonDefinition(
+                        "Create List Form by Classifier",
+                        (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ListForm),
+                        null,
+                        "Form.Form Manager");
+
+
+                    yield return new ItemMenuButtonDefinition(
                         "Create Forms and Association",
                         (x) => AskUserForFormsAndAssociation(itemExplorerControl),
                         null,
@@ -293,7 +300,12 @@ namespace DatenMeister.WPF.Modules.FormManager
             /// <summary>
             /// To be chosen, when the form shall be created for an extent form
             /// </summary>
-            ExtentForm
+            ExtentForm,
+            
+            /// <summary>
+            /// To be chosen when the form shall be created for a list form
+            /// </summary>
+            ListForm
         }
 
         /// <summary>
@@ -324,6 +336,9 @@ namespace DatenMeister.WPF.Modules.FormManager
                 {
                     CreateFormByClassifierType.DetailForm => formCreator.CreateDetailFormByMetaClass(locatedItem),
                     CreateFormByClassifierType.ExtentForm => formCreator.CreateExtentFormByMetaClass(locatedItem),
+                    CreateFormByClassifierType.ListForm => formCreator.CreateListFormForMetaClass(
+                        locatedItem,
+                        CreationMode.ForListForms | CreationMode.ByMetaClass),
                     _ => throw new InvalidOperationException()
                 };
 

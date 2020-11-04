@@ -5,6 +5,7 @@ using System.Reflection;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -290,6 +291,25 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
                                 reflectedProperty.SetValue(result, Enum.Parse(reflectedProperty.PropertyType, name));
                             }
                         }
+                    }
+                    else if (DotNetHelper.IsEnumeration(reflectedProperty.PropertyType))
+                    {
+                        var asCollection = reflectedProperty.GetValue(result) as IList;
+                        if (asCollection == null)
+                        {
+                            continue;
+                        }
+                        
+                        var listPropertyType = DotNetTypeGenerator.GetAnyElementType(reflectedProperty.PropertyType);
+                        foreach (var valueInList in (IEnumerable) propertyValue)
+                        {
+                            if (valueInList is IObject asObject)
+                            {
+                                var listItem = ConvertToDotNetObject(asObject, listPropertyType);
+                                asCollection.Add(listItem);
+                            }
+                        }
+                        
                     }
                     else
                     {

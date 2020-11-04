@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+
 namespace DatenMeister.Modules.PublicSettings
 {
     /// <summary>
@@ -31,6 +34,17 @@ namespace DatenMeister.Modules.PublicSettings
         /// Defines the standard location of the logging
         /// </summary>
         public LogLocation logLocation { get; set; }
+        
+        /// <summary>
+        /// Defines an enumeration of environmental variables which are added at startup.
+        /// </summary>
+        public List<PublicEnvironmentVariable> environmentVariable { get; } = new List<PublicEnvironmentVariable>();
+    }
+
+    public class PublicEnvironmentVariable
+    {
+        public string? key { get; set; }
+        public string? value { get; set; }
     }
 
     /// <summary>

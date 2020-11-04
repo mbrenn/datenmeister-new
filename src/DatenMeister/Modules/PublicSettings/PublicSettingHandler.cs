@@ -70,6 +70,17 @@ namespace DatenMeister.Modules.PublicSettings
                     settings.databasePath = settings.databasePath != null
                         ? Environment.ExpandEnvironmentVariables(settings.databasePath)
                         : null;
+
+                    if (!string.IsNullOrEmpty(settings.databasePath))
+                    {
+                        Environment.SetEnvironmentVariable("dm_databasepath", settings.databasePath);
+                    }
+
+                    foreach (var variable in settings.environmentVariable)
+                    {
+                        Environment.SetEnvironmentVariable(variable.key, variable.value);
+                    }
+
                     return settings;
                 }
                 catch (Exception exc)

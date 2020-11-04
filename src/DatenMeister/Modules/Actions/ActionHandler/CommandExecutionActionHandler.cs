@@ -45,6 +45,9 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 Logger.Info($"Translated process: {oldCommand} {command}");
             }
 
+            // Expands the environment variables
+            command = Environment.ExpandEnvironmentVariables(command);
+
             Logger.Info($"Process started: {command} {arguments}");
             var startInfo = new ProcessStartInfo
             {

@@ -76,7 +76,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             IScopeStorage scopeStorage)
         {
             ScopeStorage = scopeStorage ?? throw new ArgumentNullException(nameof(scopeStorage));
-            _extentStorageData = scopeStorage?.Get<ExtentStorageData>() ??
+            _extentStorageData = scopeStorage.Get<ExtentStorageData>() ??
                                  throw new InvalidOperationException("Extent Storage Data not found");
             _integrationSettings = scopeStorage.Get<IntegrationSettings>() ??
                                    throw new InvalidOperationException("IntegrationSettings not found");
@@ -125,7 +125,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             // Now adds the extent to the workspace if required
             if (uriExtent != null)
             {
-                AddToWorkspaceIfPossible(configuration, uriExtent);
+                AddToWorkspaceIfPossible(configuration, uriExtent, true);
                 loadedExtentInformation.IsExtentAddedToWorkspace = true;
             }
 
@@ -281,7 +281,9 @@ namespace DatenMeister.Runtime.ExtentStorage
         /// </summary>
         /// <param name="configuration">Configuration to be used</param>
         /// <param name="loadedExtent">The loaded extent to be added to the workpace</param>
-        private void AddToWorkspaceIfPossible(IElement configuration, IUriExtent loadedExtent)
+        /// <param name="createEmptyWorkspace">true, if an empty workspace shall be created in case the workspace
+        /// does not exist. </param>
+        private void AddToWorkspaceIfPossible(IElement configuration, IUriExtent loadedExtent, bool createEmptyWorkspace)
         {
             var workspaceId =
                 configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId);
@@ -293,7 +295,15 @@ namespace DatenMeister.Runtime.ExtentStorage
 
                 if (workspace == null)
                 {
-                    throw new InvalidOperationException($"Workspace {workspaceId} not found");
+                    if (createEmptyWorkspace)
+                    {
+                        WorkspaceLogic.AddWorkspace(
+                            workspace = new Workspace(workspaceId, string.Empty));
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Workspace {workspaceId} not found");
+                    }
                 }
 
                 workspace.AddExtentNoDuplicate(WorkspaceLogic, loadedExtent);

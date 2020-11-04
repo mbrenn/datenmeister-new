@@ -7,6 +7,7 @@ using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents.Configuration;
+using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Navigation;
@@ -35,7 +36,29 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
             {
                 yield break;
             }
+
+            var extent = _workspaceLogic.GetExtentByManagementModel(asElement);
+
+            // Adds a button to read the extent loading configuration
+            var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
+            var loadConfiguration = extentManager.GetLoadConfigurationFor(extent);
+            if (loadConfiguration != null)
+            {
+                var interaction = new DefaultElementInteraction(
+                    "Configure Load Configuration",
+                    async (x, y) =>
+                    {
+                        await NavigatorForItems.NavigateToElementDetailView(
+                            x.NavigationHost,
+                            loadConfiguration,
+                            title: $"Load Configuration for {extent.contextURI()}");
+                    }
+                );
+                
+                yield return interaction;
+            }
             
+            // Adds a new button for each of the possible configuration items that could be added to an extent 
             var extentSettings = _scopeStorage.Get<ExtentSettings>();
             foreach (var property in extentSettings.propertyDefinitions)
             {
@@ -44,7 +67,6 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
                     async (x, y) =>
                     {
                         // Gets the extent to find the real extent by using the model.  
-                        var extent = _workspaceLogic.GetExtentByManagementModel(asElement);
                         var foundElement = extent.getOrDefault<IElement>(property.name);
                         if (foundElement == null)
                         {

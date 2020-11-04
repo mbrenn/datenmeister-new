@@ -19,7 +19,7 @@ namespace DatenMeister.Uml.Plugin
         {
             var extentSettings = scopeStorage.Get<ExtentSettings>();
             extentSettings.extentTypeSettings.Add(
-                new ExtentTypeSetting(ExtentType));
+                new ExtentType(ExtentType));
         }
 
         public void Start(PluginLoadingPosition position)

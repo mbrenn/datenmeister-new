@@ -85,6 +85,17 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 (e, v) => throw new InvalidOperationException("type cannot be set"));
 
             AddMapping(
+                _DatenMeister._Management._Extent.name,
+                e => (uriExtent as MofExtent)?.GetConfiguration().Name,
+                (e, v) =>
+                {
+                    if (uriExtent is MofExtent mofExtent)
+                    {
+                        mofExtent.GetConfiguration().Name = v?.ToString() ?? string.Empty;
+                    }
+                });
+            
+            AddMapping(
                 _DatenMeister._Management._Extent.extentType,
                 e => (uriExtent as MofExtent)?.GetConfiguration().ExtentType,
                 (e, v) =>

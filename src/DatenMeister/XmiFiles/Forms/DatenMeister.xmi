@@ -71,17 +71,19 @@
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="7fe103c7-9648-47fe-ae41-3c0530fa30be" name="ExtentList">
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ExtentForm" p1:id="Workspace.ExtentFormForExtents" name="ExtentForm - Extent">
         <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" p1:id="Workspace.ListFormForExtents" title="Extent" name="List" property="extents" inhibitDeleteItems="True" inhibitNewItems="True" inhibitEditItems="True">
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="35b359d7-9a18-4ff2-8483-b1be318a8d80" name="name" title="Name" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="4435a1fe-2fd7-4af9-ad4f-739ab77eab9a" name="uri" title="URI" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="94fd4faa-6f65-47a5-a256-f5c29429110a" name="count" title="count" width="10" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="94fd4faa-6f65-47a5-a256-f5c29429110a" name="count" width="10" title="Count" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="4ab62c41-55cd-4a0c-8b31-9e98e8ca8468" name="type" title="Type" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="d002e384-9d4e-4789-a9ea-8cd8781da2be" name="extentType" title="extentType" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="658f8f07-e93a-4f9e-b645-7e3caf17c64b" name="alternativeUris" title="alternativeUris" />
-          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="41a0886b-66d4-4bea-bea6-ee058dd4c891" name="state" title="state" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="d002e384-9d4e-4789-a9ea-8cd8781da2be" name="extentType" title="Extent Type" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="658f8f07-e93a-4f9e-b645-7e3caf17c64b" name="alternativeUris" title="Alternative URIs" />
+          <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="41a0886b-66d4-4bea-bea6-ee058dd4c891" name="state" title="State" />
           <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" p1:id="79c61308-1982-4daa-b42b-bec4c2f22c41" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Extent" name="Extent" />
         </tab>
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" p1:id="31b89f89-b79b-4b20-9895-89fe531fe7e0" name="Association - List View for Working" parentProperty="extents" formType="ObjectList" parentMetaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.ManagementProvider.Workspace" form-ref="dm:///datenmeister.forms#Workspace.ListFormForExtents" />
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="Workspace.ExtentDetail" xmlns:p1="http://www.omg.org/spec/XMI/20131001" name="Detail Form - Extent">
+        <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="11cd4d41-4d63-4b97-8f5a-8630cb7d1e73" name="name" title="Name" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" title="Extent Uri" p1:id="13b33a1e-0dbe-47ac-b058-265b73c2e032" name="uri" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxListTaggingFieldData" title="Extent Type" separator=" " containsFreeText="True" p1:id="6e092346-085b-4166-ba67-6e7f60cc2953" name="extentType" />
         <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DropDownFieldData" title="Auto Enumeration Type" p1:id="d221d2f1-7096-4196-98d9-040ae40bc3db" name="autoEnumerateType">

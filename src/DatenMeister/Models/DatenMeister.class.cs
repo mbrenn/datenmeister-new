@@ -1987,6 +1987,9 @@ namespace DatenMeister.Models
 
             public class _Extent
             {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @uri = "uri";
                 public IElement? @_uri = null;
 
@@ -2069,6 +2072,9 @@ namespace DatenMeister.Models
 
             public class _ExtentProperties
             {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @uri = "uri";
                 public IElement? @_uri = null;
 

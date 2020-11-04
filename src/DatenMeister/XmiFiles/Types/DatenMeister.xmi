@@ -1030,6 +1030,18 @@
       <ownedLiteral p1:type="dm:///_internal/model/uml#EnumerationLiteral" p1:id="DatenMeister.Runtime.ExtentStorage.ExtentLoadingState-LoadedReadOnly" name="LoadedReadOnly" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.ManagementProvider.Extent" name="Extent">
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e8bc79f7-09dd-481e-8ad7-5d9ad39b027e" name="name" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3ecfc2f1-5787-4787-ac1c-6f27dea16c23" name="uri" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="10c82cc6-137b-457a-9e11-a37385c522e1" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="ab007fae-298d-4e0e-ac01-ead9206c2ddb" name="count" type-ref="dm:///_internal/model/primitivetypes#Integer" />

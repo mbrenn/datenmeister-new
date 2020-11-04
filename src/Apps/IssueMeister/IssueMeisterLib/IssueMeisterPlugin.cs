@@ -55,7 +55,7 @@ namespace IssueMeisterLib
                 TargetPackageName);
 
             var extentSetting =
-                new ExtentTypeSetting(ExtentTypeName);
+                new ExtentType(ExtentTypeName);
             extentSetting.rootElementMetaClasses.Add(
                 _localTypeSupport.InternalTypes.element("#IssueMeister.Issue"));
             _extentSettings.extentTypeSettings.Add(extentSetting);

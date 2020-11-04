@@ -6,9 +6,9 @@ namespace DatenMeister.Runtime.Extents.Configuration
     /// <summary>
     /// Stores the setting of the extent
     /// </summary>
-    public class ExtentTypeSetting
+    public class ExtentType
     {
-        public ExtentTypeSetting(string name)
+        public ExtentType(string name)
         {
             this.name = name;
         }

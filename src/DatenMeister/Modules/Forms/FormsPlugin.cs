@@ -92,7 +92,7 @@ namespace DatenMeister.Modules.Forms
                         new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentInternalForm);
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
-                    _extentSettings.extentTypeSettings.Add(new ExtentTypeSetting(FormExtentType));
+                    _extentSettings.extentTypeSettings.Add(new ExtentType(FormExtentType));
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:

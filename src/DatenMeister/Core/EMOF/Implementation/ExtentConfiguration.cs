@@ -23,6 +23,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         public const string ExtentTypeProperty = "__ExtentType";
 
         /// <summary>
+        /// Saves the type of the extent
+        /// </summary>
+        public const string NameProperty = "__Name";
+
+        /// <summary>
         /// Stores the extent
         /// </summary>
         private readonly MofExtent _extent;
@@ -45,6 +50,14 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => _extent.set(AutoEnumerateHandler.AutoEnumerateTypeProperty, value);
         }
 
+        /// <summary>
+        /// Gets the extent type
+        /// </summary>
+        public string Name
+        {
+            get => _extent.getOrDefault<string>(NameProperty) ?? string.Empty;
+            set => _extent.set(NameProperty, value);
+        }
 
         /// <summary>
         /// Gets the extent type

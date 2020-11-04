@@ -17,11 +17,11 @@ namespace DatenMeister.Runtime.Extents.Configuration
         /// <summary>
         /// Stores the extent type setting
         /// </summary>
-        public List<ExtentTypeSetting> extentTypeSettings { get; } = new List<ExtentTypeSetting>();
+        public List<ExtentType> extentTypeSettings { get; } = new List<ExtentType>();
         
         public List<ExtentPropertyDefinition> propertyDefinitions { get; } = new List<ExtentPropertyDefinition>();
 
-        public ExtentTypeSetting? GetExtentTypeSetting(string extentType)
+        public ExtentType? GetExtentTypeSetting(string extentType)
         {
             return extentTypeSettings.FirstOrDefault(x => x.name == extentType);
         }

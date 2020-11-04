@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
-  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///datenmeister.types" />
+  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///datenmeister.types">
+    <DatenMeister.AttachedExtent p2:type="dm:///_internal/types/internal#68b3ddbf-a563-4d91-91fb-81e5bfac46b5" p2:id="a2233e4c-bfe8-4aff-9d0b-34a736d1cbbe" xmlns="" />
+  </meta>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="CommonTypes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="Default" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DefaultTypes.Package" name="Package">
@@ -1013,7 +1015,7 @@
     </packagedElement>
   </item>
   <item p1:type="dm:///_internal/model/uml#Package" name="AttachedExtent" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="7447d350-9b9d-47d3-85d4-737fb6e886c7">
-    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="AttachedExtentConfiguration" p1:id="68b3ddbf-a563-4d91-91fb-81e5bfac46b5">
+    <packagedElement p1:type="dm:///_internal/model/uml#Class" name="AttachedExtentConfiguration" p1:id="DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="734ffcf5-59a8-466b-ad90-3dfc80b1ae65" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedWorkspace" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3ec12c2c-f65a-4639-a80f-58f83f6e5861" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="referencedExtent" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="271dd130-e5c3-4221-8fcb-c6bd61825953" />

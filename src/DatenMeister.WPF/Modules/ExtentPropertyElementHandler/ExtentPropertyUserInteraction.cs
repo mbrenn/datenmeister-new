@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -40,10 +41,10 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
             {
                 var newData = new DefaultElementInteraction(
                     $"Configure {property.title}",
-                    async (x,y) =>
+                    async (x, y) =>
                     {
                         // Gets the extent to find the real extent by using the model.  
-                        var extent = _workspaceLogic.GetExtentByManagementModel(asElement);           
+                        var extent = _workspaceLogic.GetExtentByManagementModel(asElement);
                         var foundElement = extent.getOrDefault<IElement>(property.name);
                         if (foundElement == null)
                         {
@@ -51,11 +52,40 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
                             foundElement = factory.create(property.metaClass);
                             extent.set(property.name, foundElement);
                             foundElement = extent.getOrDefault<IElement>(property.name);
+                        }
 
-                            if (foundElement == null)
+                        if (foundElement == null)
+                        {
+                            throw new InvalidOperationException(
+                                "Getting the data did not work for whatever reason");
+                        }
+
+                        var foundElementMetaClass = foundElement.getMetaClass();
+                        var propertyMetaClass = property.metaClass;
+                        if (foundElementMetaClass != null && propertyMetaClass != null &&
+                            !foundElementMetaClass.@equals(property.metaClass))
+                        {
+                            var resolvedElementMetaClass =
+                                _workspaceLogic.GetTypesWorkspace().ResolveElement(
+                                    foundElementMetaClass,
+                                    ResolveType.NoMetaWorkspaces,
+                                    false) ?? foundElementMetaClass;
+
+                            var resolvedPropertyMetaClass =
+                                _workspaceLogic.GetTypesWorkspace().ResolveElement(
+                                    propertyMetaClass,
+                                    ResolveType.NoMetaWorkspaces,
+                                    false) ?? propertyMetaClass;
+
+                            if (MessageBox.Show(
+                                $"The type of the configuration item is: {resolvedElementMetaClass}.\r\n\r\n" +
+                                $"The type of the configuration item should be {resolvedPropertyMetaClass}.\r\n\r\n" +
+                                $"Shall the type be converted?",
+                                "Mismatch of type",
+                                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                             {
-                                throw new InvalidOperationException(
-                                    "Getting the data did not work for whatever reason");
+                                var asSetMetaclass = foundElement as IElementSetMetaClass;
+                                asSetMetaclass?.SetMetaClass(propertyMetaClass);
                             }
                         }
 

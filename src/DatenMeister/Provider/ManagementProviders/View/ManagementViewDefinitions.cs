@@ -1,9 +1,7 @@
 ﻿using System;
-using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
@@ -68,6 +66,7 @@ namespace DatenMeister.Provider.ManagementProviders.View
             }
 
             var type2Field = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__ReferenceFieldData);
+            type2Field.set(_DatenMeister._Forms._ReferenceFieldData.name, "selectedType");
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.isSelectionInline, true);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultValue, parameter.PreSelectedPackage);
             type2Field.set(_DatenMeister._Forms._ReferenceFieldData.defaultWorkspace, parameter.WorkspaceName);

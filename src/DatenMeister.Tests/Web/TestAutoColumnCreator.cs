@@ -4,7 +4,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -92,14 +91,14 @@ namespace DatenMeister.Tests.Web
             Assert.That(tab
                     .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                     .OfType<IElement>()
-                    .Count(x => x.getMetaClass().ToString().Contains("TextFieldData")),
+                    .Count(x => x.getMetaClass()?.ToString()?.Contains("TextFieldData") == true),
                 Is.EqualTo(2));
 
             Assert.That(tab
                     .getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                     .OfType<IElement>()
-                    .Count(x => x.getMetaClass().ToString().Contains("SubElementFieldData")
-                    || x.getMetaClass().ToString().Contains("ReferenceFieldData")),
+                    .Count(x => x.getMetaClass()?.ToString()?.Contains("SubElementFieldData") == true
+                    || x.getMetaClass()?.ToString()?.Contains("ReferenceFieldData") == true),
                 Is.GreaterThanOrEqualTo(1));
 
 

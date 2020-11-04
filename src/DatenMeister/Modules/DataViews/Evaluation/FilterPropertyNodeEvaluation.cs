@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.DataViews;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
 
@@ -47,7 +46,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
                 return new PureReflectiveSequence();
             }
 
-            var comparisonMode = viewNode.getOrNull<ComparisonMode>(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode);
+            var comparisonMode = viewNode.getOrNull<_DatenMeister._DataViews.___ComparisonMode>(_DatenMeister._DataViews._FilterPropertyNode.comparisonMode);
             if (comparisonMode == null)
             {
                 Logger.Warn("Comparison not found");
@@ -67,7 +66,7 @@ namespace DatenMeister.Modules.DataViews.Evaluation
         /// <param name="propertyValue">Value of the property that will be used as filtering value</param>
         /// <param name="comparisonMode">The type of the comparison</param>
         /// <returns>Enumeration of elements being in the filter</returns>
-        private IEnumerable<object> FilterElementsForPropertyNode(IReflectiveCollection input, string property, string propertyValue, ComparisonMode comparisonMode)
+        private IEnumerable<object> FilterElementsForPropertyNode(IReflectiveCollection input, string property, string propertyValue, _DatenMeister._DataViews.___ComparisonMode comparisonMode)
         {
             foreach (var element in input.OfType<IObject>())
             {
@@ -81,17 +80,19 @@ namespace DatenMeister.Modules.DataViews.Evaluation
 
                 var isIn = comparisonMode switch
                 {
-                    ComparisonMode.Equal => elementValue == propertyValue,
-                    ComparisonMode.NotEqual => elementValue != propertyValue,
-                    ComparisonMode.Contains => elementValue.Contains(propertyValue),
-                    ComparisonMode.DoesNotContain => !elementValue.Contains(propertyValue),
-                    ComparisonMode.GreaterThan =>
-                    string.Compare(elementValue, propertyValue, StringComparison.Ordinal) > 0,
-                    ComparisonMode.GreaterOrEqualThan => string.Compare(elementValue, propertyValue,
+                    _DatenMeister._DataViews.___ComparisonMode.Equal => elementValue == propertyValue,
+                    _DatenMeister._DataViews.___ComparisonMode.NotEqual => elementValue != propertyValue,
+                    _DatenMeister._DataViews.___ComparisonMode.Contains => elementValue.Contains(propertyValue),
+                    _DatenMeister._DataViews.___ComparisonMode.DoesNotContain => !elementValue.Contains(propertyValue),
+                    _DatenMeister._DataViews.___ComparisonMode.GreaterThan =>
+                        string.Compare(elementValue, propertyValue, StringComparison.Ordinal) > 0,
+                    _DatenMeister._DataViews.___ComparisonMode.GreaterOrEqualThan => string.Compare(elementValue,
+                        propertyValue,
                         StringComparison.Ordinal) >= 0,
-                    ComparisonMode.LighterThan =>
-                    string.Compare(elementValue, propertyValue, StringComparison.Ordinal) < 0,
-                    ComparisonMode.LighterOrEqualThan => string.Compare(elementValue, propertyValue,
+                    _DatenMeister._DataViews.___ComparisonMode.LighterThan =>
+                        string.Compare(elementValue, propertyValue, StringComparison.Ordinal) < 0,
+                    _DatenMeister._DataViews.___ComparisonMode.LighterOrEqualThan => string.Compare(elementValue,
+                        propertyValue,
                         StringComparison.Ordinal) <= 0,
                     _ => throw new ArgumentOutOfRangeException(nameof(comparisonMode), comparisonMode, null)
                 };

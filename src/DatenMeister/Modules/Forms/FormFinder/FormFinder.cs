@@ -6,7 +6,6 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 
@@ -67,6 +66,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
             InternalDebug("# of FormAssociations: " + formAssociations.Count);
 
             var foundForms = new List<FoundForm>();
+            var queryViewModeIds = query.viewModeId?.Split(' ');
 
             foreach (var element in formAssociations)
             {
@@ -82,8 +82,9 @@ namespace DatenMeister.Modules.Forms.FormFinder
 
                 var associationExtentType = element.getOrDefault<string>(_DatenMeister._Forms._FormAssociation.extentType);
                 var associationMetaClass = element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.metaClass);
-                var associationViewType = element.getOrNull<FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
-                                    FormType.Detail;
+                var associationViewType = 
+                    element.getOrNull<_DatenMeister._Forms.___FormType>(_DatenMeister._Forms._FormAssociation.formType) ??
+                                    _DatenMeister._Forms.___FormType.Detail;
                 var associationParentMetaclass =
                     element.getOrDefault<IElement>(_DatenMeister._Forms._FormAssociation.parentMetaClass);
                 var associationParentProperty =
@@ -111,7 +112,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 // Now go through each property and get the points
 
                 // ExtentType
-                if (!string.IsNullOrEmpty(associationExtentType))
+                if (!string.IsNullOrEmpty(associationExtentType) && associationExtentType != null)
                 {
                     if (!string.IsNullOrEmpty(query.extentType)
                         && query.extentType.Contains(associationExtentType))
@@ -132,8 +133,8 @@ namespace DatenMeister.Modules.Forms.FormFinder
                 // ViewMode Id
                 if (!string.IsNullOrEmpty(associationViewModeId))
                 {
-                    if (!string.IsNullOrEmpty(query.viewModeId)
-                        && query.viewModeId.Equals(associationViewModeId))
+                    if (queryViewModeIds != null
+                        && queryViewModeIds.Contains(associationViewModeId))
                     {
                         InternalDebug("-- MATCH: ViewMode: " + query.viewModeId + ", FormAssociation ViewModeId: " +
                                       associationViewModeId);

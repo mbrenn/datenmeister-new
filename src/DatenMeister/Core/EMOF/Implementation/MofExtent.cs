@@ -11,7 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.ManagementProviders;
+using DatenMeister.Models;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Provider;
 using DatenMeister.Provider.XMI.EMOF;
@@ -143,7 +143,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                                      "Provider does not support setting of extent properties");
 
                 var result = new MofElement(nullObject, this);
-                result.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
+                result.SetMetaClass(_DatenMeister.TheOne.Management.__ExtentProperties);
                 return result;
             }
 
@@ -198,7 +198,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     this);
             }
             
-            MetaXmiElement.SetMetaClass(_ManagementProvider.TheOne.__ExtentProperties);
+            MetaXmiElement.SetMetaClass(_DatenMeister.TheOne.Management.__ExtentProperties);
             ExtentConfiguration = new ExtentConfiguration(this);
         }
 
@@ -255,7 +255,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
                 else
                 {
-                    nullObject.SetProperty(property, value);
+                    
+                    var valueForSetting = ConvertForSetting(this, value);
+                    nullObject.SetProperty(property, valueForSetting);
                 }
             }
             else
@@ -313,12 +315,22 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <param name="extent">Extent to be added</param>
         public void AddMetaExtent(IUriExtent extent)
         {
+            if (extent == null)
+            {
+                return;
+            }
+
             lock (_metaExtents)
             {
                 if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
                 {
                     // Already in
                     return;
+                }
+
+                if (XmlMetaExtent != this && XmlMetaExtent != null)
+                {
+                    XmlMetaExtent.AddMetaExtent(extent);
                 }
 
                 _metaExtents.Add(extent);

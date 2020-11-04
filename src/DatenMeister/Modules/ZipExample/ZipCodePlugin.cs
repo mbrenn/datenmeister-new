@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using DatenMeister.Integration;
 using DatenMeister.Models.Example.ZipCode;
-using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.ZipExample
@@ -54,7 +54,7 @@ namespace DatenMeister.Modules.ZipExample
                 }
                 case PluginLoadingPosition.AfterBootstrapping:
                     _extentSettings.extentTypeSettings.Add(
-                        new ExtentTypeSetting(ExtentType));
+                        new ExtentType(ExtentType));
                     break;
             }
         }

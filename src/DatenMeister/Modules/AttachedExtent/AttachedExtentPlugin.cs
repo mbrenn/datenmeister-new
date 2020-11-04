@@ -1,23 +1,20 @@
 ﻿using System.Linq;
-using DatenMeister.Models.AttachedExtent;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
-using DatenMeister.Models.Runtime;
+using DatenMeister.Models;
+using DatenMeister.Runtime.Extents.Configuration;
+
 
 namespace DatenMeister.Modules.AttachedExtent
 {
     [PluginLoading(PluginLoadingPosition.AfterInitialization | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class AttachedExtentPlugin : IDatenMeisterPlugin
     {
-        private readonly LocalTypeSupport _localTypeSupport;
         private readonly ExtentSettings _extentSettings;
 
-        public AttachedExtentPlugin(
-            LocalTypeSupport localTypeSupport, IScopeStorage scopeStorage)
+        public AttachedExtentPlugin(IScopeStorage scopeStorage)
         {
-            _localTypeSupport = localTypeSupport;
             _extentSettings = scopeStorage.Get<ExtentSettings>();
         }
 
@@ -25,18 +22,12 @@ namespace DatenMeister.Modules.AttachedExtent
         {
             if ((position & PluginLoadingPosition.AfterInitialization) != 0)
             {
-                var createdTypes = _localTypeSupport.AddInternalTypes("DatenMeister::AttachedExtent", AttachedExtentTypes.GetTypes());
                 _extentSettings.propertyDefinitions.Add(
                     new ExtentPropertyDefinition
                     {
                         name = AttachedExtentHandler.AttachedExtentProperty,
                         title = "Attached Extent",
-                        metaClass =
-                            (from x in createdTypes
-                                let hasId = (IHasId) x
-                                where hasId.Id?.Contains(typeof(AttachedExtentConfiguration).FullName) == true
-                                select x)
-                            .First()
+                        metaClass = _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration
                     });
             }
             else if ((position & PluginLoadingPosition.AfterLoadingOfExtents) != 0)

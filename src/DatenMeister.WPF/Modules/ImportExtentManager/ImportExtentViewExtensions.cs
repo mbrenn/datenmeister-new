@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
@@ -102,7 +100,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     }
 
                     var metaClass = selectedExtent.getMetaClass();
-                    if (metaClass?.@equals(_ManagementProvider.TheOne.__Extent) != true)
+                    if (metaClass?.@equals(_DatenMeister.TheOne.Management.__Extent) != true)
                     {
                         MessageBox.Show("Selected element does not reference an extent");
                         return;
@@ -115,8 +113,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                         return;
                     }
 
-                    var workspaceName = workspace.getOrDefault<string>(_ManagementProvider._Workspace.id);
-                    var uri = selectedExtent.getOrDefault<string>(_ManagementProvider._Extent.uri);
+                    var workspaceName = workspace.getOrDefault<string>(_DatenMeister._Management._Workspace.id);
+                    var uri = selectedExtent.getOrDefault<string>(_DatenMeister._Management._Extent.uri);
 
                     // Gets the extent from which the data shall be imported
                     var sourceExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceName, uri);

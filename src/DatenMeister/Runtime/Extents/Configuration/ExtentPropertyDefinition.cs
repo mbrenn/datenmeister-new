@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Models.Runtime
+namespace DatenMeister.Runtime.Extents.Configuration
 {
     /// <summary>
     /// Defines an additional property of the extent.

@@ -7,7 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -79,24 +78,39 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <returns>The created list form </returns>
         public IElement CreateListFormForElements(IReflectiveCollection elements, CreationMode creationMode)
         {
+            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            
+            AddToListFormByElements(result, elements, creationMode);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Adds the property to the list elements by parsing through the
+        /// </summary>
+        /// <param name="form">Contains the form which is parsed</param>
+        /// <param name="elements">Goes through the elements</param>
+        /// <param name="creationMode">The creation mode to be used</param>
+        public void AddToListFormByElements(IElement form, IReflectiveCollection elements, CreationMode creationMode)
+        {
+            var metaClassAdded = false;
+            var onlyCommonProperties = creationMode.HasFlagFast(CreationMode.OnlyCommonProperties);
+
             var cache = new FormCreatorCache();
             var alreadyVisitedMetaClasses = new HashSet<IElement>();
 
             IObject? firstElementMetaClass = null;
-            var metaClassAdded = false;
-            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
-            var onlyCommonProperties = creationMode.HasFlagFast(CreationMode.OnlyCommonProperties);
-            
+
             // Figure out only the elements which have common properties
             var propertyNames = onlyCommonProperties ? new HashSet<string>() : null;
 
             if (propertyNames != null)
             {
                 DefinePropertyNames(elements, propertyNames, creationMode);
-                
+
                 foreach (var propertyName in propertyNames)
                 {
-                    cache.FocusOnPropertyNames.Add(propertyName);    
+                    cache.FocusOnPropertyNames.Add(propertyName);
                 }
             }
 
@@ -109,12 +123,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     // of a metaclass
                     firstElementMetaClass = metaClass;
                 }
-
                 else if (firstElementMetaClass != metaClass
                          && !metaClassAdded
                          && !cache.MetaClassAlreadyAdded
                          && creationMode.HasFlagFast(CreationMode.AddMetaClass)
-                         && !FormMethods.HasMetaClassFieldInForm(result))
+                         && !FormMethods.HasMetaClassFieldInForm(form))
                 {
                     metaClassAdded = true;
                     cache.MetaClassAlreadyAdded = true;
@@ -123,7 +136,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     var metaClassField = _factory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Metaclass");
-                    result.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, metaClassField);
+                    form.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, metaClassField);
                 }
 
                 if (creationMode.HasFlag(CreationMode.ByMetaClass) && metaClass != null)
@@ -134,19 +147,17 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
 
                     alreadyVisitedMetaClasses.Add(metaClass);
-                    AddToFormByMetaclass(result, metaClass, creationMode, cache);
+                    AddToFormByMetaclass(form, metaClass, creationMode, cache);
                 }
                 else if (creationMode.HasFlag(CreationMode.ByPropertyValues))
                 {
                     AddToForm(
-                        result,
+                        form,
                         element,
-                        creationMode & ~CreationMode.ByMetaClass, 
+                        creationMode & ~CreationMode.ByMetaClass,
                         cache);
                 }
             }
-
-            return result;
         }
 
         /// <summary>

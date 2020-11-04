@@ -17,7 +17,7 @@ namespace DatenMeister.SourcecodeGenerator
     /// </summary>
     public class WalkPackageClass
     {
-        public Version FactoryVersion = new Version(1, 0, 1, 0);
+        protected Version FactoryVersion = new Version(1, 0, 1, 0);
 
         /// <summary>
         /// Stores the source parser to find out the elements and attributes
@@ -237,18 +237,28 @@ namespace DatenMeister.SourcecodeGenerator
         /// </summary>
         /// <param name="enumInstance">Enumeration to be walked</param>
         /// <param name="stack">Stack being used</param>
-        protected virtual void WalkEnum(IObject enumInstance, CallStack stack)
+        /// <param name="callee">The element to be called when tn enumeration is required to be called.
+        /// May be null, then WalkEnumLiteral will be called</param>
+        protected virtual void WalkEnum(IObject enumInstance, CallStack stack, Action<IObject, CallStack>? callee = null)
         {
             var innerStack = new CallStack(stack);
             var name = GetNameOfElement(enumInstance);
             innerStack.Fullname += $".{name}";
 
             // Needs to be updated
-            foreach (var enumLiteral in enumInstance.GetAsEnumerable(_UML._SimpleClassifiers._Enumeration.ownedLiteral).OfType<IElement>())
+            foreach (var enumLiteral in enumInstance.GetAsEnumerable(_UML._SimpleClassifiers._Enumeration.ownedLiteral)
+                .OfType<IElement>())
             {
                 if (_parser.IsEnumLiteral(enumLiteral))
                 {
-                    WalkEnumLiteral(enumLiteral, innerStack);
+                    if (callee != null)
+                    {
+                        callee(enumLiteral, innerStack);
+                    }
+                    else
+                    {
+                        WalkEnumLiteral(enumLiteral, innerStack);
+                    }
                 }
             }
         }

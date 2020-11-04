@@ -1,7 +1,7 @@
 ﻿#nullable enable
 
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.Forms;
+using DatenMeister.Models;
 
 // ReSharper disable InconsistentNaming
 
@@ -9,7 +9,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
 {
     public class FindFormQuery
     {
-        public FormType FormType { get; set; }
+        public _DatenMeister._Forms.___FormType FormType { get; set; }
 
         public IElement? metaClass { get; set; }
 

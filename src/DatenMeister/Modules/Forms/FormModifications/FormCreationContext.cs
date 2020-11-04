@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.Forms;
+using DatenMeister.Models;
 using DatenMeister.Modules.Forms.FormFinder;
 
 namespace DatenMeister.Modules.Forms.FormModifications
@@ -9,7 +9,7 @@ namespace DatenMeister.Modules.Forms.FormModifications
     /// </summary>
     public class FormCreationContext
     {
-        public FormType FormType { get; set; }
+        public _DatenMeister._Forms.___FormType FormType { get; set; }
 
         public FormDefinitionMode DefinitionMode { get; set; }
 

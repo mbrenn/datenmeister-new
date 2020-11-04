@@ -1,7 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Implementation.DotNet;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.FastViewFilter;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
+using static DatenMeister.Models._DatenMeister._FastViewFilters;
 
 namespace DatenMeister.Modules.FastViewFilter
 {
@@ -18,22 +17,28 @@ namespace DatenMeister.Modules.FastViewFilter
         {
             if (value is IObject valueAsObject)
             {
-                var filterObject = DotNetConverter.ConvertToDotNetObject<PropertyComparisonFilter>(_filterObject);
-                if (filterObject.Property == null)
+                var property =
+                    valueAsObject.getOrDefault<string>(_PropertyComparisonFilter
+                        .Property);
+                if (property == null)
                 {
                     // To avoid exceptions
                     return true;
                 }
 
-                var propertyValue = valueAsObject.getOrDefault<string>(filterObject.Property);
+                var propertyValue = valueAsObject.getOrDefault<string>(property);
 
-                return filterObject.ComparisonType switch
+                var comparisonType = valueAsObject.getOrDefault<___ComparisonType>(
+                    _PropertyComparisonFilter.ComparisonType);
+                var filterValue = valueAsObject.getOrDefault<string>(_PropertyComparisonFilter.Value);
+
+                return comparisonType switch
                 {
-                    ComparisonType.Equal => propertyValue == filterObject.Value,
-                    ComparisonType.GreaterThan => string.CompareOrdinal(propertyValue, filterObject.Value) > 0,
-                    ComparisonType.LighterThan => string.CompareOrdinal(propertyValue, filterObject.Value) < 0,
-                    ComparisonType.GreaterOrEqualThan => string.CompareOrdinal(propertyValue, filterObject.Value) >= 0,
-                    ComparisonType.LighterOrEqualThan => string.CompareOrdinal(propertyValue, filterObject.Value) <= 0,
+                    ___ComparisonType.Equal => propertyValue == filterValue,
+                    ___ComparisonType.GreaterThan => string.CompareOrdinal(propertyValue, filterValue) > 0,
+                    ___ComparisonType.LighterThan => string.CompareOrdinal(propertyValue, filterValue) < 0,
+                    ___ComparisonType.GreaterOrEqualThan => string.CompareOrdinal(propertyValue, filterValue) >= 0,
+                    ___ComparisonType.LighterOrEqualThan => string.CompareOrdinal(propertyValue, filterValue) <= 0,
                     _ => true
                 };
             }

@@ -127,9 +127,9 @@ namespace DatenMeister.Runtime
                 var asString = DotNetHelper.AsString(value.GetAsSingle(property, noReferences, ObjectType.String)!)!;
                 if (string.IsNullOrEmpty(asString))
                 {
-                    return (T) (object)' ';
+                    return (T) (object) ' ';
                 }
-                
+
                 return (T) (object) asString[0];
             }
 

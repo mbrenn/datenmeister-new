@@ -122,6 +122,28 @@ namespace DatenMeister.Tests.Runtime
         }
 
         [Test]
+        public void TestByMofShadow()
+        {
+            var extent = GetTestExtent();
+            var found = extent.GetUriResolver().Resolve(TestUri, ResolveType.Default);
+            
+            var firstChild = extent.GetUriResolver().Resolve(TestUri + "#child1", ResolveType.Default)
+                as IElement;
+            var asShadow = new MofObjectShadow(TestUri + "#child1");
+
+            Assert.That(firstChild, Is.Not.Null);
+
+            var resolvedChildDirectly = extent.GetUriResolver().ResolveElement(firstChild, ResolveType.Default, false);
+            Assert.That(resolvedChildDirectly, Is.Not.Null);
+            Assert.That(resolvedChildDirectly, Is.EqualTo(firstChild));
+            
+            
+            var resolvedChildShadow = extent.GetUriResolver().ResolveElement(asShadow, ResolveType.NoMetaWorkspaces | ResolveType.NoWorkspace, false);
+            Assert.That(resolvedChildShadow, Is.Not.Null);
+            Assert.That(resolvedChildShadow, Is.EqualTo(firstChild));
+        }
+
+        [Test]
         public void TestGetExtentPerResolver()
         {
             var extent = GetTestExtent();

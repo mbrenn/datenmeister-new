@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Integration;
-using DatenMeister.Models.Runtime;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Uml.Plugin
@@ -19,7 +19,7 @@ namespace DatenMeister.Uml.Plugin
         {
             var extentSettings = scopeStorage.Get<ExtentSettings>();
             extentSettings.extentTypeSettings.Add(
-                new ExtentTypeSetting(ExtentType));
+                new ExtentType(ExtentType));
         }
 
         public void Start(PluginLoadingPosition position)

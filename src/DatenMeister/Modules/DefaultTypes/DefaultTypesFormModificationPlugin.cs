@@ -4,7 +4,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormModifications;
 using DatenMeister.Runtime;
@@ -20,7 +19,7 @@ namespace DatenMeister.Modules.DefaultTypes
         public void ModifyForm(FormCreationContext context, IElement form)
         {
             if (context.MetaClass?.Equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true
-                && context.FormType == FormType.TreeItemDetail
+                && context.FormType == _DatenMeister._Forms.___FormType.TreeItemDetail
                 && context.ParentPropertyName == string.Empty
                 && context.DetailElement != null)
             {

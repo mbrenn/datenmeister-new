@@ -9,9 +9,6 @@ using Autofac.Features.ResolveAnything;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
-using DatenMeister.Models.ManagementProviders;
-using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -21,6 +18,7 @@ using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Provider.Xml;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
@@ -225,16 +223,6 @@ namespace DatenMeister.Integration
                 null,
                 internalUserExtent,
                 "DatenMeister");
-
-            // Adds the module for managementprovider
-            var managementProvider = new _ManagementProvider();
-            IntegrateManagementProvider.Assign(
-                mofFactory,
-                packageMethods.GetPackagedObjects(
-                    localTypeSupport.InternalTypes.elements(),
-                    "DatenMeister::Management") ??
-                throw new InvalidOperationException("DatenMeister::Management not found"),
-                (MofUriExtent)localTypeSupport.InternalTypes);
 
             var formsPlugin = scope.Resolve<FormsPlugin>();
             packageMethods.ImportByManifest(

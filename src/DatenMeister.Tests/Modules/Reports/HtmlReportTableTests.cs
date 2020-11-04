@@ -3,8 +3,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models;
-using DatenMeister.Models.DataViews;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;

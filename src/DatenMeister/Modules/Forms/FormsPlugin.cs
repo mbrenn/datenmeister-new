@@ -11,14 +11,14 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
-using DatenMeister.Models.Forms;
-using DatenMeister.Models.Runtime;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Forms.FormModifications;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Plugins;
@@ -92,7 +92,7 @@ namespace DatenMeister.Modules.Forms
                         new MofUriExtent(new InMemoryProvider(), WorkspaceNames.UriExtentInternalForm);
                     dotNetUriExtent.GetConfiguration().ExtentType = FormExtentType;
                     _workspaceLogic.AddExtent(mgmtWorkspace, dotNetUriExtent);
-                    _extentSettings.extentTypeSettings.Add(new ExtentTypeSetting(FormExtentType));
+                    _extentSettings.extentTypeSettings.Add(new ExtentType(FormExtentType));
                     break;
 
                 case PluginLoadingPosition.AfterLoadingOfExtents:
@@ -112,18 +112,6 @@ namespace DatenMeister.Modules.Forms
                     extent.GetConfiguration()
                         .AddDefaultTypePackages(new[]
                             {_DatenMeister.TheOne.Forms.__Form, _DatenMeister.TheOne.Forms.__FormAssociation});
-
-                    // Includes the default view modes
-                    var packageMethods = new PackageMethods(_workspaceLogic);
-                    var internalFormExtent = GetInternalFormExtent();
-                    var package =
-                        packageMethods.GetOrCreatePackageStructure(
-                            internalFormExtent.elements(), "DatenMeister::ViewModes");
-                    var created = MofFactory.Create(internalFormExtent,
-                        _DatenMeister.TheOne.Forms.__ViewMode);
-                    created.set(_DatenMeister._Forms._ViewMode.id, "Default");
-                    created.set(_DatenMeister._Forms._ViewMode.name, "Default");
-                    PackageMethods.AddObjectToPackage(package, created);
 
                     break;
             }
@@ -193,10 +181,8 @@ namespace DatenMeister.Modules.Forms
             {
                 return GetUserFormExtent().element(url);
             }
-            else
-            {
-                return GetInternalFormExtent().element(url);
-            }
+
+            return GetInternalFormExtent().element(url);
         }
 
         /// <summary>
@@ -226,7 +212,7 @@ namespace DatenMeister.Modules.Forms
         /// <param name="metaClass">The metaclass being used for form association</param>
         /// <param name="formType">Type to be added</param>
         /// <returns></returns>
-        public IElement AddFormAssociationForMetaclass(IElement form, IElement metaClass, FormType formType)
+        public IElement AddFormAssociationForMetaclass(IElement form, IElement metaClass, _DatenMeister._Forms.___FormType formType)
         {
             var factory = new MofFactory(form);
             
@@ -325,7 +311,7 @@ namespace DatenMeister.Modules.Forms
                 .GetAllDescendantsIncludingThemselves()
                 .WhenMetaClassIs(_DatenMeister.TheOne.Forms.__FormAssociation)
                 .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.metaClass, metaClass)
-                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType, FormType.Detail)
+                .WhenPropertyHasValue(_DatenMeister._Forms._FormAssociation.formType, _DatenMeister._Forms.___FormType.Detail)
                 .OfType<IElement>())
             {
                 RemoveElement(viewExtent, foundElement);
@@ -369,7 +355,7 @@ namespace DatenMeister.Modules.Forms
                     new FindFormQuery
                     {
                         metaClass = (element as IElement)?.getMetaClass(),
-                        FormType = FormType.Detail,
+                        FormType = _DatenMeister._Forms.___FormType.Detail,
                         extentType = extent == null ? string.Empty : extent.GetConfiguration().ExtentType
                     }).FirstOrDefault();
 
@@ -388,11 +374,13 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
+                foundForm = CloneForm(foundForm);
+                
                 CallFormsModificationPlugins(new FormCreationContext()
                     {
                         DefinitionMode = formDefinitionMode,
                         MetaClass = (element as IElement)?.getMetaClass(),
-                        FormType = FormType.Detail,
+                        FormType = _DatenMeister._Forms.___FormType.Detail,
                         ExtentType = extent?.GetConfiguration().ExtentType ?? string.Empty,
                         DetailElement = element
                     },
@@ -412,7 +400,7 @@ namespace DatenMeister.Modules.Forms
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         viewModeId = viewModeId
                     }).FirstOrDefault();
 
@@ -430,19 +418,111 @@ namespace DatenMeister.Modules.Forms
                     extent,
                     CreationMode.All | CreationMode.ForListForms);
             }
-
+            
+            // Adds the extension forms to the found extent
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                AddExtensionFormsToExtentForm(
+                    foundForm,
+                    new FindFormQuery
+                    {
+                        extentType = extent.GetConfiguration().ExtentType,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtentExtension,
+                        viewModeId = viewModeId
+                    });
+            }
+            
+            // 
+            if (foundForm != null)
+            {
+                foundForm = CloneForm(foundForm);
+                
+                EvaluateListFormsForAutogenerationByReflectiveCollection(extent.elements(), foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         ExtentType = extent.GetConfiguration().ExtentType
                     },
                     ref foundForm);
             }
 
             return foundForm;
+        }
+
+        /// <summary>
+        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration
+        /// </summary>
+        /// <param name="reflectiveCollection">The reflective collection to be used</param>
+        /// <param name="foundForm">The element that has been found</param>
+        private void EvaluateListFormsForAutogenerationByReflectiveCollection(IReflectiveCollection reflectiveCollection, IElement foundForm)
+        {
+            // Go through the list forms and check if we need to auto-populate
+            foreach (var tab in
+                foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).OfType<IElement>())
+            {
+                var tabMetaClass = tab.getMetaClass();
+                if (tabMetaClass == null ||
+                    !tabMetaClass.@equals(_DatenMeister.TheOne.Forms.__ListForm))
+                {
+                    // Not a list tab
+                    continue;
+                }
+
+                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                if (autoGenerate)
+                {
+                    var formCreator = CreateFormCreator();
+                    formCreator.AddToListFormByElements(tab, reflectiveCollection, CreationMode.All);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration
+        /// </summary>
+        /// <param name="element">The element to be used</param>
+        /// <param name="foundForm">The element that has been found</param>
+        private void EvaluateListFormsForAutogenerationByElement(IElement element, IElement foundForm)
+        {
+            // Go through the list forms and check if we need to auto-populate
+            foreach (var tab in
+                foundForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).OfType<IElement>())
+            {
+                var tabMetaClass = tab.getMetaClass();
+                if (tabMetaClass == null ||
+                    !tabMetaClass.@equals(_DatenMeister.TheOne.Forms.__ListForm))
+                {
+                    // Not a list tab
+                    continue;
+                }
+
+                var autoGenerate = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.autoGenerateFields);
+                if (autoGenerate)
+                {
+                    var formCreator = CreateFormCreator();
+                    var propertyName = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+                    if (propertyName == null || string.IsNullOrEmpty(propertyName))
+                    {
+                        formCreator.AddToListFormByElements(
+                            tab,
+                            new PropertiesAsReflectiveCollection(element), 
+                            CreationMode.All);
+                    }
+                    else
+                    {
+                        var reflectiveSequence = element.getOrDefault<IReflectiveCollection>(propertyName);
+                        if (reflectiveSequence != null)
+                        {
+                            formCreator.AddToListFormByElements(
+                                tab,
+                                reflectiveSequence,
+                                CreationMode.All);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -465,7 +545,7 @@ namespace DatenMeister.Modules.Forms
         /// <param name="metaClass">Metaclass of the items that are listed now</param>
         /// <param name="formDefinitionMode">The view definition mode</param>
         /// <returns>The found or created list form</returns>
-        public IElement? GetListFormForExtent(
+        public IElement? GetListFormForExtentsItem(
             IExtent extent,
             IElement metaClass,
             FormDefinitionMode formDefinitionMode)
@@ -478,7 +558,7 @@ namespace DatenMeister.Modules.Forms
                     new FindFormQuery
                     {
                         extentType = extent.GetConfiguration().ExtentType,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         metaClass = metaClass
                     }).FirstOrDefault();
 
@@ -498,10 +578,12 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                foundForm = CloneForm(foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemExtent,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
                         MetaClass = metaClass
                     },
                     ref foundForm);
@@ -535,7 +617,7 @@ namespace DatenMeister.Modules.Forms
                         extentType = (parentElement as IHasExtent)?.Extent?.GetConfiguration().ExtentType ?? string.Empty,
                         parentMetaClass = (parentElement as IElement)?.metaclass,
                         metaClass = propertyType,
-                        FormType = FormType.ObjectList,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList,
                         parentProperty = parentProperty
                     }).FirstOrDefault();
 
@@ -555,10 +637,12 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                foundForm = CloneForm(foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.ObjectList,
+                        FormType = _DatenMeister._Forms.___FormType.ObjectList,
                         MetaClass = (parentElement as IElement)?.metaclass,
                         ParentPropertyName = parentProperty,
                         DetailElement = parentElement
@@ -596,6 +680,13 @@ namespace DatenMeister.Modules.Forms
             {
                 throw new InvalidOperationException("Item Tree for extent-less object can't be created");
             }
+
+            string? packageViewMode = null;
+            // Checks if the current item is a package and if the viewmode
+            if (DefaultClassifierHints.IsPackageLike(element))
+            {
+                packageViewMode = element.getOrDefault<string>(_DatenMeister._CommonTypes._Default._Package.defaultViewMode);
+            }
             
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
@@ -604,8 +695,8 @@ namespace DatenMeister.Modules.Forms
                 {
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = (element as IElement)?.getMetaClass(),
-                    FormType = FormType.TreeItemDetail,
-                    viewModeId = viewModeId
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
+                    viewModeId = packageViewMode ?? viewModeId
                 }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -617,15 +708,36 @@ namespace DatenMeister.Modules.Forms
             if (foundForm == null && formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormCreator))
             {
                 var formCreator = CreateFormCreator();
-                foundForm = formCreator.CreateExtentFormForObject(element, extent, CreationMode.All | CreationMode.OnlyCommonProperties);
+                foundForm = formCreator.CreateExtentFormForObject(
+                    element, 
+                    extent, 
+                    CreationMode.All | CreationMode.OnlyCommonProperties);
             }
 
             if (foundForm != null)
             {
+                foundForm = CloneForm(foundForm);
+                
+                // Adds the extension forms to the found extent
+                AddExtensionFormsToExtentForm(
+                    foundForm,
+                    new FindFormQuery
+                    {
+                        extentType = extent.GetConfiguration().ExtentType,
+                        metaClass = (element as IElement)?.getMetaClass(),
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetailExtension,
+                        viewModeId = viewModeId
+                    });
+
+                if (element is IElement asElement)
+                {
+                    EvaluateListFormsForAutogenerationByElement(asElement, foundForm);
+                }
+
                 CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemDetail,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                         MetaClass = (element as IElement)?.metaclass,
                         ViewMode = viewModeId,
                         DetailElement = element
@@ -634,6 +746,18 @@ namespace DatenMeister.Modules.Forms
             }
 
             // No Form
+            return foundForm;
+        }
+
+        private static IElement CloneForm(IElement foundForm)
+        {
+            var originalUrl = foundForm.GetUri();
+            foundForm = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, foundForm, new CopyOption());
+            if (originalUrl != null)
+            {
+                foundForm.set(_DatenMeister._Forms._Form.originalUri, originalUrl);
+            }
+
             return foundForm;
         }
 
@@ -663,7 +787,7 @@ namespace DatenMeister.Modules.Forms
                 {
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = metaClass,
-                    FormType = FormType.TreeItemDetail,
+                    FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                     parentProperty = propertyName,
                     parentMetaClass = parentMetaClass
                 }).FirstOrDefault();
@@ -684,10 +808,12 @@ namespace DatenMeister.Modules.Forms
 
             if (foundForm != null)
             {
-                CallFormsModificationPlugins(new FormCreationContext()
+                foundForm = CloneForm(foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
-                        FormType = FormType.TreeItemDetail,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                         MetaClass = metaClass,
                         ParentPropertyName = propertyName,
                         ParentMetaClass = parentMetaClass,
@@ -711,16 +837,29 @@ namespace DatenMeister.Modules.Forms
                 return; // Nothing to do
             }
 
-            var originalUrl = form.GetUri();
-            form = ObjectCopier.Copy(InMemoryObject.TemporaryFactory, form, new CopyOption());
-            if (originalUrl != null)
-            {
-                form.set(_DatenMeister._Forms._Form.originalUri, originalUrl);
-            }
-
             foreach (var plugin in _formPluginState.FormModificationPlugins)
             {
                 plugin.ModifyForm(formCreationContext, form);
+            }
+        }
+
+        /// <summary>
+        /// Adds all found extension forms to the  
+        /// </summary>
+        /// <param name="form">Gives the extent form that will be extended.
+        /// Must be of type ExtentForm.</param>
+        /// <param name="query">Defines the query to be evaluated</param>
+        private void AddExtensionFormsToExtentForm(
+            IElement form,
+            FindFormQuery query)
+        {
+            var viewFinder = new FormFinder.FormFinder(this);
+            var foundForms = viewFinder.FindFormsFor(query);
+
+            var tabs = form.get<IReflectiveSequence>(_DatenMeister._Forms._ExtentForm.tab);
+            foreach (var listForm in foundForms)
+            {
+                tabs.add(listForm);
             }
         }
         

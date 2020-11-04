@@ -3,10 +3,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
-using DatenMeister.Models.FastViewFilter;
-using DatenMeister.Models.Forms;
-using DatenMeister.Models.ManagementProvider;
-using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;
@@ -29,10 +25,6 @@ namespace DatenMeister.SourceGeneration.Console
 
             CreateSourceForExcel();
 
-            CreateSourceForManagementProvider();
-
-            CreateSourceForFastFilter();
-
             // CreateSourceForDataViews();
             
             //CreateSourceCodeForDatenMeister();
@@ -46,14 +38,6 @@ namespace DatenMeister.SourceGeneration.Console
             
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
             File.Copy($"./ExcelModels.dotnet.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
-            File.Copy($"./ManagementProvider.class.cs",
-                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.class.cs", true);
-            File.Copy($"./ManagementProvider.dotnet.cs",
-                $"{R}/../DatenMeister/Models/ManagementProvider/ManagementProvider.dotnet.cs", true);
-            File.Copy($"./FastViewFilters.class.cs",
-                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.class.cs", true);
-            File.Copy($"./FastViewFilters.dotnet.cs",
-                $"{R}/../DatenMeister/Models/FastViewFilter/FastViewFilters.dotnet.cs", true);
             File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
 #endif
         }
@@ -109,37 +93,6 @@ namespace DatenMeister.SourceGeneration.Console
             var pathOfClassTree = "DatenMeister.class.cs";
             var fileContent = classTreeGenerator.Result.ToString();
             File.WriteAllText(pathOfClassTree, fileContent);
-            System.Console.WriteLine(" Done");
-        }
-
-        private static void CreateSourceForFastFilter()
-        {
-            System.Console.Write("Create Sourcecode for Fast Filter...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "FastViewFilters",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.FastViewFilter",
-                    Types = FastViewFilters.Types
-                });
-
-            System.Console.WriteLine(" Done");
-        }
-
-        private static void CreateSourceForManagementProvider()
-        {
-            System.Console.Write("Create Sourcecode for Management Provider...");
-            SourceGenerator.GenerateSourceFor(
-                new SourceGeneratorOptions
-                {
-                    ExtentUrl = WorkspaceNames.UriExtentInternalTypes,
-                    Name = "ManagementProvider",
-                    Path = "./",
-                    Namespace = "DatenMeister.Models.ManagementProviders",
-                    Types = ManagementProviderModel.AllTypes
-                });
             System.Console.WriteLine(" Done");
         }
 

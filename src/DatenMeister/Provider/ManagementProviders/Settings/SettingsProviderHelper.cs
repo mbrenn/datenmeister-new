@@ -1,8 +1,8 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Integration;
-using DatenMeister.Models.Runtime;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Runtime.Workspaces;
 

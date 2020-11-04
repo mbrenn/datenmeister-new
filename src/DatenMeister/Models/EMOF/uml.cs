@@ -1832,6 +1832,15 @@ namespace DatenMeister.Models.EMOF
             public _ObjectNodeOrderingKind @ObjectNodeOrderingKind = new _ObjectNodeOrderingKind();
             public IElement @__ObjectNodeOrderingKind = new MofObjectShadow("dm:///_internal/model/uml#ObjectNodeOrderingKind");
 
+
+            public enum ___ObjectNodeOrderingKind
+            {
+                @unordered,
+                @ordered,
+                @LIFO,
+                @FIFO
+            }
+
         }
 
         public _Activities Activities = new _Activities();
@@ -4831,6 +4840,13 @@ namespace DatenMeister.Models.EMOF
             public _ConnectorKind @ConnectorKind = new _ConnectorKind();
             public IElement @__ConnectorKind = new MofObjectShadow("dm:///_internal/model/uml#ConnectorKind");
 
+
+            public enum ___ConnectorKind
+            {
+                @assembly,
+                @delegation
+            }
+
         }
 
         public _StructuredClassifiers StructuredClassifiers = new _StructuredClassifiers();
@@ -5917,6 +5933,21 @@ namespace DatenMeister.Models.EMOF
             public _PseudostateKind @PseudostateKind = new _PseudostateKind();
             public IElement @__PseudostateKind = new MofObjectShadow("dm:///_internal/model/uml#PseudostateKind");
 
+
+            public enum ___PseudostateKind
+            {
+                @initial,
+                @deepHistory,
+                @shallowHistory,
+                @join,
+                @fork,
+                @junction,
+                @choice,
+                @entryPoint,
+                @exitPoint,
+                @terminate
+            }
+
             public class _TransitionKind
             {
                 public static string @internal = "internal";
@@ -5930,6 +5961,14 @@ namespace DatenMeister.Models.EMOF
 
             public _TransitionKind @TransitionKind = new _TransitionKind();
             public IElement @__TransitionKind = new MofObjectShadow("dm:///_internal/model/uml#TransitionKind");
+
+
+            public enum ___TransitionKind
+            {
+                @internal,
+                @local,
+                @external
+            }
 
         }
 
@@ -9072,6 +9111,23 @@ namespace DatenMeister.Models.EMOF
             public _InteractionOperatorKind @InteractionOperatorKind = new _InteractionOperatorKind();
             public IElement @__InteractionOperatorKind = new MofObjectShadow("dm:///_internal/model/uml#InteractionOperatorKind");
 
+
+            public enum ___InteractionOperatorKind
+            {
+                @seq,
+                @alt,
+                @opt,
+                @break,
+                @par,
+                @strict,
+                @loop,
+                @critical,
+                @neg,
+                @assert,
+                @ignore,
+                @consider
+            }
+
             public class _MessageKind
             {
                 public static string @complete = "complete";
@@ -9087,6 +9143,15 @@ namespace DatenMeister.Models.EMOF
 
             public _MessageKind @MessageKind = new _MessageKind();
             public IElement @__MessageKind = new MofObjectShadow("dm:///_internal/model/uml#MessageKind");
+
+
+            public enum ___MessageKind
+            {
+                @complete,
+                @lost,
+                @found,
+                @unknown
+            }
 
             public class _MessageSort
             {
@@ -9107,6 +9172,17 @@ namespace DatenMeister.Models.EMOF
 
             public _MessageSort @MessageSort = new _MessageSort();
             public IElement @__MessageSort = new MofObjectShadow("dm:///_internal/model/uml#MessageSort");
+
+
+            public enum ___MessageSort
+            {
+                @synchCall,
+                @asynchCall,
+                @asynchSignal,
+                @createMessage,
+                @deleteMessage,
+                @reply
+            }
 
         }
 
@@ -11280,6 +11356,15 @@ namespace DatenMeister.Models.EMOF
             public _VisibilityKind @VisibilityKind = new _VisibilityKind();
             public IElement @__VisibilityKind = new MofObjectShadow("dm:///_internal/model/uml#VisibilityKind");
 
+
+            public enum ___VisibilityKind
+            {
+                @public,
+                @private,
+                @protected,
+                @package
+            }
+
         }
 
         public _CommonStructure CommonStructure = new _CommonStructure();
@@ -13381,6 +13466,14 @@ namespace DatenMeister.Models.EMOF
             public _AggregationKind @AggregationKind = new _AggregationKind();
             public IElement @__AggregationKind = new MofObjectShadow("dm:///_internal/model/uml#AggregationKind");
 
+
+            public enum ___AggregationKind
+            {
+                @none,
+                @shared,
+                @composite
+            }
+
             public class _CallConcurrencyKind
             {
                 public static string @sequential = "sequential";
@@ -13394,6 +13487,14 @@ namespace DatenMeister.Models.EMOF
 
             public _CallConcurrencyKind @CallConcurrencyKind = new _CallConcurrencyKind();
             public IElement @__CallConcurrencyKind = new MofObjectShadow("dm:///_internal/model/uml#CallConcurrencyKind");
+
+
+            public enum ___CallConcurrencyKind
+            {
+                @sequential,
+                @guarded,
+                @concurrent
+            }
 
             public class _ParameterDirectionKind
             {
@@ -13411,6 +13512,15 @@ namespace DatenMeister.Models.EMOF
             public _ParameterDirectionKind @ParameterDirectionKind = new _ParameterDirectionKind();
             public IElement @__ParameterDirectionKind = new MofObjectShadow("dm:///_internal/model/uml#ParameterDirectionKind");
 
+
+            public enum ___ParameterDirectionKind
+            {
+                @in,
+                @inout,
+                @out,
+                @return
+            }
+
             public class _ParameterEffectKind
             {
                 public static string @create = "create";
@@ -13426,6 +13536,15 @@ namespace DatenMeister.Models.EMOF
 
             public _ParameterEffectKind @ParameterEffectKind = new _ParameterEffectKind();
             public IElement @__ParameterEffectKind = new MofObjectShadow("dm:///_internal/model/uml#ParameterEffectKind");
+
+
+            public enum ___ParameterEffectKind
+            {
+                @create,
+                @read,
+                @update,
+                @delete
+            }
 
         }
 
@@ -13919,6 +14038,14 @@ namespace DatenMeister.Models.EMOF
 
             public _ExpansionKind @ExpansionKind = new _ExpansionKind();
             public IElement @__ExpansionKind = new MofObjectShadow("dm:///_internal/model/uml#ExpansionKind");
+
+
+            public enum ___ExpansionKind
+            {
+                @parallel,
+                @iterative,
+                @stream
+            }
 
             public class _AcceptCallAction
             {

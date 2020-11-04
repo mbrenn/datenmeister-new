@@ -39,6 +39,9 @@ namespace DatenMeister.Models
                     public static string @preferredPackage = "preferredPackage";
                     public IElement? @_preferredPackage = null;
 
+                    public static string @defaultViewMode = "defaultViewMode";
+                    public IElement? @_defaultViewMode = null;
+
                 }
 
                 public _Package @Package = new _Package();
@@ -120,11 +123,14 @@ namespace DatenMeister.Models
 
             public class _ActionSet
             {
+                public static string @action = "action";
+                public IElement? @_action = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
-                public static string @action = "action";
-                public IElement? @_action = null;
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
 
             }
 
@@ -462,6 +468,19 @@ namespace DatenMeister.Models
             public _ComparisonMode @ComparisonMode = new _ComparisonMode();
             public IElement @__ComparisonMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.DataViews.ComparisonMode");
 
+
+            public enum ___ComparisonMode
+            {
+                @Equal,
+                @NotEqual,
+                @Contains,
+                @DoesNotContain,
+                @GreaterThan,
+                @GreaterOrEqualThan,
+                @LighterThan,
+                @LighterOrEqualThan
+            }
+
             public class _SelectByFullNameNode
             {
                 public static string @input = "input";
@@ -661,6 +680,14 @@ namespace DatenMeister.Models
             public _DescendentMode @DescendentMode = new _DescendentMode();
             public IElement @__DescendentMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.DescendentMode");
 
+
+            public enum ___DescendentMode
+            {
+                @None,
+                @Inline,
+                @PerPackage
+            }
+
             public class _ReportTableForTypeMode
             {
                 public static string @PerType = "PerType";
@@ -672,6 +699,13 @@ namespace DatenMeister.Models
 
             public _ReportTableForTypeMode @ReportTableForTypeMode = new _ReportTableForTypeMode();
             public IElement @__ReportTableForTypeMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode");
+
+
+            public enum ___ReportTableForTypeMode
+            {
+                @PerType,
+                @AllTypes
+            }
 
             public class _SimpleReportConfiguration
             {
@@ -1701,11 +1735,26 @@ namespace DatenMeister.Models
                 public IElement @__TreeItemDetail = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-TreeItemDetail");
                 public static string @ObjectList = "ObjectList";
                 public IElement @__ObjectList = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType-ObjectList");
+                public static string @TreeItemExtentExtension = "TreeItemExtentExtension";
+                public IElement? @__TreeItemExtentExtension = null;
+                public static string @TreeItemDetailExtension = "TreeItemDetailExtension";
+                public IElement? @__TreeItemDetailExtension = null;
 
             }
 
             public _FormType @FormType = new _FormType();
             public IElement @__FormType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.FormType");
+
+
+            public enum ___FormType
+            {
+                @Detail,
+                @TreeItemExtent,
+                @TreeItemDetail,
+                @ObjectList,
+                @TreeItemExtentExtension,
+                @TreeItemDetailExtension
+            }
 
             public class _Form
             {
@@ -1807,6 +1856,9 @@ namespace DatenMeister.Models
                 public static string @viewNode = "viewNode";
                 public IElement? @_viewNode = null;
 
+                public static string @autoGenerateFields = "autoGenerateFields";
+                public IElement? @_autoGenerateFields = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -1875,6 +1927,34 @@ namespace DatenMeister.Models
 
         public _Forms Forms = new _Forms();
 
+        public class _AttachedExtent
+        {
+            public class _AttachedExtentConfiguration
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @referencedWorkspace = "referencedWorkspace";
+                public IElement? @_referencedWorkspace = null;
+
+                public static string @referencedExtent = "referencedExtent";
+                public IElement? @_referencedExtent = null;
+
+                public static string @referenceType = "referenceType";
+                public IElement? @_referenceType = null;
+
+                public static string @referenceProperty = "referenceProperty";
+                public IElement? @_referenceProperty = null;
+
+            }
+
+            public _AttachedExtentConfiguration @AttachedExtentConfiguration = new _AttachedExtentConfiguration();
+            public IElement @__AttachedExtentConfiguration = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration");
+
+        }
+
+        public _AttachedExtent AttachedExtent = new _AttachedExtent();
+
         public class _Management
         {
             public class _ExtentLoadingState
@@ -1895,10 +1975,26 @@ namespace DatenMeister.Models
             public _ExtentLoadingState @ExtentLoadingState = new _ExtentLoadingState();
             public IElement @__ExtentLoadingState = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Runtime.ExtentStorage.ExtentLoadingState");
 
+
+            public enum ___ExtentLoadingState
+            {
+                @Unknown,
+                @Unloaded,
+                @Loaded,
+                @Failed,
+                @LoadedReadOnly
+            }
+
             public class _Extent
             {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @uri = "uri";
                 public IElement? @_uri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @count = "count";
                 public IElement? @_count = null;
@@ -1976,8 +2072,14 @@ namespace DatenMeister.Models
 
             public class _ExtentProperties
             {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
                 public static string @uri = "uri";
                 public IElement? @_uri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
                 public static string @count = "count";
                 public IElement? @_count = null;
@@ -2044,63 +2146,6 @@ namespace DatenMeister.Models
 
         public _Management Management = new _Management();
 
-        public class _AttachedExtent
-        {
-            public class _AttachedExtentConfiguration
-            {
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-                public static string @referencedWorkspace = "referencedWorkspace";
-                public IElement? @_referencedWorkspace = null;
-
-                public static string @referencedExtent = "referencedExtent";
-                public IElement? @_referencedExtent = null;
-
-                public static string @referenceType = "referenceType";
-                public IElement? @_referenceType = null;
-
-                public static string @referenceProperty = "referenceProperty";
-                public IElement? @_referenceProperty = null;
-
-            }
-
-            public _AttachedExtentConfiguration @AttachedExtentConfiguration = new _AttachedExtentConfiguration();
-            public IElement @__AttachedExtentConfiguration = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration");
-
-        }
-
-        public _AttachedExtent AttachedExtent = new _AttachedExtent();
-
-        public class _UserManagement
-        {
-            public class _User
-            {
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-                public static string @password = "password";
-                public IElement? @_password = null;
-
-            }
-
-            public _User @User = new _User();
-            public IElement @__User = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.User");
-
-            public class _UserManagementSettings
-            {
-                public static string @salt = "salt";
-                public IElement? @_salt = null;
-
-            }
-
-            public _UserManagementSettings @UserManagementSettings = new _UserManagementSettings();
-            public IElement @__UserManagementSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.UserManagementSettings");
-
-        }
-
-        public _UserManagement UserManagement = new _UserManagement();
-
         public class _FastViewFilters
         {
             public class _ComparisonType
@@ -2120,6 +2165,16 @@ namespace DatenMeister.Models
 
             public _ComparisonType @ComparisonType = new _ComparisonType();
             public IElement @__ComparisonType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.FastViewFilter.ComparisonType");
+
+
+            public enum ___ComparisonType
+            {
+                @Equal,
+                @GreaterThan,
+                @LighterThan,
+                @GreaterOrEqualThan,
+                @LighterOrEqualThan
+            }
 
             public class _PropertyComparisonFilter
             {
@@ -2153,6 +2208,35 @@ namespace DatenMeister.Models
         }
 
         public _FastViewFilters FastViewFilters = new _FastViewFilters();
+
+        public class _UserManagement
+        {
+            public class _User
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @password = "password";
+                public IElement? @_password = null;
+
+            }
+
+            public _User @User = new _User();
+            public IElement @__User = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.User");
+
+            public class _UserManagementSettings
+            {
+                public static string @salt = "salt";
+                public IElement? @_salt = null;
+
+            }
+
+            public _UserManagementSettings @UserManagementSettings = new _UserManagementSettings();
+            public IElement @__UserManagementSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.UserManagementSettings");
+
+        }
+
+        public _UserManagement UserManagement = new _UserManagement();
 
         public static readonly _DatenMeister TheOne = new _DatenMeister();
 

@@ -11,8 +11,8 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
 using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
@@ -159,12 +159,20 @@ namespace DatenMeister.WPF.Forms.Lists
                 {
                     if (SelectedItem == null)
                         throw new InvalidOperationException("Not a root item, but also no SelectedItem");
+
+                    var viewMode = CurrentViewModeId;
+                    if (DefaultClassifierHints.IsPackageLike(SelectedItem))
+                    {
+                        viewMode = SelectedItem.getOrDefault<string>(
+                                       _DatenMeister._CommonTypes._Default._Package.defaultViewMode)
+                                   ?? viewMode;
+                    }
                     
                     // User has selected a sub element and its children shall be shown
                     form = formPlugin.GetItemTreeFormForObject(
                         SelectedItem,
                         overridingMode, 
-                        CurrentViewModeId);
+                        viewMode);
                 }
             }
 

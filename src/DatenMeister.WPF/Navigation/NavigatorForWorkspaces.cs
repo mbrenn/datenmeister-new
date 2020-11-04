@@ -7,7 +7,6 @@ using System.Windows;
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.ManagementProviders;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.ManagementProviders.View;
@@ -58,7 +57,7 @@ namespace DatenMeister.WPF.Navigation
             if (formElement == null)
             {
                 var creator = GiveMe.Scope.Resolve<FormCreator>();
-                formElement = creator.CreateDetailFormByMetaClass(_ManagementProvider.TheOne.__CreateNewWorkspaceModel);
+                formElement = creator.CreateDetailFormByMetaClass(_DatenMeister.TheOne.Management.__CreateNewWorkspaceModel);
             }
 
             var result = await NavigatorForItems.NavigateToElementDetailView(

@@ -10,14 +10,12 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.Forms;
-using DatenMeister.Models.ManagementProviders;
-using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage.Validators;
 using DatenMeister.Runtime.Workspaces;
@@ -95,10 +93,10 @@ namespace DatenMeister.WPF.Navigation
                         resolvedForm.GetByPropertyFromCollection(
                             _DatenMeister._Forms._ListForm.field, 
                             _DatenMeister._Forms._Form.name,
-                            _ManagementProvider._Extent.extentType).FirstOrDefault();
+                            _DatenMeister._Management._Extent.extentType).FirstOrDefault();
                     if (foundExtentType == null)
                     {
-                        Logger.Error($"Found Form #ExtentPropertyDetailForm did not find the field ${_ManagementProvider._Extent.extentType}");
+                        Logger.Error($"Found Form #ExtentPropertyDetailForm did not find the field ${_DatenMeister._Management._Extent.extentType}");
                     }
                     else
                     {

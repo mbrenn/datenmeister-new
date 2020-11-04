@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Integration;
-using DatenMeister.Models.Runtime;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml.Helper;
 
@@ -55,7 +55,7 @@ namespace IssueMeisterLib
                 TargetPackageName);
 
             var extentSetting =
-                new ExtentTypeSetting(ExtentTypeName);
+                new ExtentType(ExtentTypeName);
             extentSetting.rootElementMetaClasses.Add(
                 _localTypeSupport.InternalTypes.element("#IssueMeister.Issue"));
             _extentSettings.extentTypeSettings.Add(extentSetting);

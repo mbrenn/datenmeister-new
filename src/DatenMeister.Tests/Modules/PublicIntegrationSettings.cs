@@ -87,6 +87,8 @@ namespace DatenMeister.Tests.Modules
             Assert.That(settings, Is.Not.Null);
             Assert.That(settings.environmentVariable.Any(x=>x.key == "key"), Is.True);
             Assert.That(settings.environmentVariable.Any(x=>x.key == "key2"), Is.True);
+
+            Assert.That(Environment.GetEnvironmentVariable("key"), Is.EqualTo("value"));
         }
     }
 }

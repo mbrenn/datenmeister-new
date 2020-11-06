@@ -232,6 +232,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 loadedExtentInformation.LoadingState = ExtentLoadingState.Failed;
                 loadedExtentInformation.FailLoadingMessage = e.ToString();
+                loadedExtentInformation.IsExtentAddedToWorkspace = true;
                 return loadedExtentInformation; 
             }
 
@@ -480,6 +481,17 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 RemoveExtent(extent);
                 return true;
+            }
+
+            // Check, if we have some rest in the loaded extents
+            lock (_extentStorageData.LoadedExtents)
+            {
+                var found = GetExtentInformation(
+                    workspaceId, extentUri);
+                if (found != null)
+                {
+                    _extentStorageData.LoadedExtents.Remove(found);
+                }
             }
 
             return false;

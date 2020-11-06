@@ -86,6 +86,20 @@ namespace DatenMeister.Runtime.ExtentStorage
             _map = ScopeStorage.Get<ConfigurationToExtentStorageMapper>();
         }
 
+        public ExtentStorageData.LoadedExtentInformation? GetExtentInformation(string workspaceId, string extentUri)
+        {
+            if (_extentStorageData != null)
+            {
+                return _extentStorageData.LoadedExtents.FirstOrDefault(
+                    x => workspaceId == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.workspaceId)
+                         && extentUri == x.Configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
+            }
+            
+
+            
+            return null;
+        }
+
         public ExtentStorageData.LoadedExtentInformation LoadExtent(IElement configuration,
             ExtentCreationFlags extentCreationFlags = ExtentCreationFlags.LoadOnly)
         {

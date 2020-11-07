@@ -519,7 +519,6 @@ namespace DatenMeister.Uml
             BootstrapMode mode,
             FilePaths? paths = null)
         {
-            var isSlim = mode == BootstrapMode.SlimMof || mode == BootstrapMode.SlimUml;
             if (workspaceLogic == null) throw new ArgumentNullException(nameof(workspaceLogic));
             if (workspace == null) throw new ArgumentNullException(nameof(workspace));
 

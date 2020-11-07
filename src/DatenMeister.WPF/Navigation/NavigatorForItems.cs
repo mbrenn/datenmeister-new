@@ -347,7 +347,6 @@ namespace DatenMeister.WPF.Navigation
             {
                 var factory = new MofFactory(containerElement);
                 var newElement = factory.create(selectedMetaclass);
-                var typeWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
 
                 // Creates the dialog
                 var detailControlView = await NavigateToElementDetailView(

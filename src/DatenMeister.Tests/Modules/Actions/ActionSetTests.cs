@@ -27,8 +27,8 @@ namespace DatenMeister.Tests.Modules.Actions
         {
             var actionLogic = CreateActionLogic();
 
-            var actionSet = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionSet) as IElement;
-            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoggingWriterAction) as IElement;
+            var actionSet = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ActionSet);
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoggingWriterAction);
             if (actionSet == null || action == null) throw new InvalidOperationException("null");
             
             action.set(_DatenMeister._Actions._LoggingWriterAction.message, "zyx");
@@ -67,7 +67,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = new ActionLogic(workspaceLogic, scopeStorage);
             
             
-            var createWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction) as IElement;
+            var createWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
@@ -78,7 +78,7 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.True);
             
             
-            var dropWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DropWorkspaceAction) as IElement;
+            var dropWorkspaceAction = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__DropWorkspaceAction);
             Debug.Assert(dropWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
             dropWorkspaceAction.set(_DatenMeister._Actions._DropWorkspaceAction.workspace, "ws");
             actionLogic.ExecuteAction(dropWorkspaceAction).Wait();
@@ -100,7 +100,7 @@ namespace DatenMeister.Tests.Modules.Actions
 
 
             var createWorkspaceAction =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction) as IElement;
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CreateWorkspaceAction);
             Debug.Assert(createWorkspaceAction != null, nameof(createWorkspaceAction) + " != null");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.workspace, "ws");
             createWorkspaceAction.set(_DatenMeister._Actions._CreateWorkspaceAction.annotation, "I'm the workspace");
@@ -111,10 +111,10 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(foundExtent, Is.Null);
 
             var loadExtentAction =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoadExtentAction) as IElement;
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__LoadExtentAction);
             Debug.Assert(loadExtentAction != null, nameof(createWorkspaceAction) + " != null");
             var configuration =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig) as IElement;
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);
             Debug.Assert(configuration != null, nameof(configuration) + " != null");
             configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.workspaceId, "ws");
             configuration.set(_DatenMeister._ExtentLoaderConfigs._InMemoryLoaderConfig.extentUri, "dm:///");
@@ -129,7 +129,6 @@ namespace DatenMeister.Tests.Modules.Actions
         public static (IUriExtent source, IUriExtent target) CreateExtents(ActionLogic actionLogic)
         {
             var workspaceLogic = actionLogic.WorkspaceLogic;
-            var scopeStorage = actionLogic.ScopeStorage;
 
             var sourceProvider = new InMemoryProvider();
             var targetProvider = new InMemoryProvider();

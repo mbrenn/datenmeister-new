@@ -17,17 +17,6 @@ namespace DatenMeister.Uml.Helper
 {
     public class PackageMethods
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
-
-        /// <summary>
-        /// Initializes a new instance of the PackageMethods
-        /// </summary>
-        /// <param name="workspaceLogic"></param>
-        public PackageMethods(IWorkspaceLogic workspaceLogic)
-        {
-            _workspaceLogic = workspaceLogic;
-        }
-
         /// <summary>
         /// Gets a package by following the path.
         /// </summary>

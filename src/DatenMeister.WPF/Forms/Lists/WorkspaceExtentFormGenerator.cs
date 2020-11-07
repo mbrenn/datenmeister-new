@@ -323,8 +323,9 @@ namespace DatenMeister.WPF.Forms.Lists
 
                     try
                     {
-                        var loadedExtent =
-                            extentManager.LoadExtent(extentLoaderConfig, ExtentCreationFlags.LoadOrCreate);
+                        var loadedExtent = extentManager.LoadExtent(
+                            extentLoaderConfig, 
+                            ExtentCreationFlags.LoadOrCreate);
                         if (loadedExtent.LoadingState == ExtentLoadingState.Failed)
                         {
                             Logger.Info($"Extent could not be created: {loadedExtent.FailLoadingMessage}");

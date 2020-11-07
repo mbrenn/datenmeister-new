@@ -20,7 +20,7 @@ namespace DatenMeister.Tests.Uml
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
-            
+            Assert.That(classifier, Is.Not.Null);
 
             var properties = ClassifierMethods.GetCompositingProperties(classifier).ToList();
             Assert.That(properties, Is.Not.Null);
@@ -38,7 +38,6 @@ namespace DatenMeister.Tests.Uml
         public void TestAddGeneralization()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
             var extent = dm.CreateXmiExtent("dm:///test");
@@ -85,7 +84,6 @@ namespace DatenMeister.Tests.Uml
         public void TestGeneralizationEvaluation()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var workspaceLogic = dm.Resolve<IWorkspaceLogic>();
             
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;

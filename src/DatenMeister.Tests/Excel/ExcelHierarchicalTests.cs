@@ -2,11 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Excel.Integration;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.TypeSupport;

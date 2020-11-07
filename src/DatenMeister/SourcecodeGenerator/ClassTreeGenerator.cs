@@ -148,7 +148,7 @@ namespace DatenMeister.SourcecodeGenerator
             Result.AppendLine($"{stack.Indentation}public class _{name}");
             Result.AppendLine($"{stack.Indentation}{{");
 
-            base.WalkEnum(enumInstance, stack);
+            base.WalkEnum(enumInstance, stack, callee);
 
             Result.AppendLine();
             Result.AppendLine($"{stack.Indentation}}}");

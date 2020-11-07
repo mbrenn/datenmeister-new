@@ -148,7 +148,8 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 {
                     // Now, we got the item extent...
                     var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
-                    var loadedExtent = extentManager.LoadExtentWithoutAdding(result);
+                    var loadedExtent = new ExtentStorageData.LoadedExtentInformation(result);
+                    extentManager.LoadExtentWithoutAdding(result, ref loadedExtent);
                     if (loadedExtent != null && loadedExtent.Extent != null &&
                         loadedExtent.LoadingState == ExtentLoadingState.Loaded)
                     {

@@ -2,7 +2,6 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
 
@@ -10,13 +9,6 @@ namespace DatenMeister.Provider.ManagementProviders.View
 {
     public class ManagementViewDefinitions
     {
-        private FormsPlugin _formsPlugin;
-
-        public ManagementViewDefinitions(FormsPlugin formsPlugin)
-        {
-            _formsPlugin = formsPlugin;
-        }
-
         /// <summary>
         /// Stores the name of the package
         /// </summary>

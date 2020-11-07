@@ -13,11 +13,12 @@ namespace DatenMeister.Core.EMOF.Implementation.DefaultValue
         /// <summary>
         /// Handles the new item 
         /// </summary>
-        /// <param name="element">Element which is recently created</param>
-        public static void HandleNewItem(IElement element)
+        /// <param name="newValue">Element which is recently created</param>
+        /// <param name="metaClass">Defines the metaclass of the new value</param>
+        public static void HandleNewItem(IElement newValue, IElement? metaClass)
         {
             // Gets the type and the associated properties
-            var type = element.getMetaClass();
+            var type = metaClass;
             if (type == null)
             {
                 // Nothing to do
@@ -32,7 +33,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DefaultValue
                 
                 if (defaultValue != null)
                 {
-                    element.set(name, defaultValue);
+                    newValue.set(name, defaultValue);
                 }
             }
         }

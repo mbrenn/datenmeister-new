@@ -132,7 +132,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = (ReferencedExtent as IUriResolver)?.ResolveElement(uri, ResolveType.OnlyMetaClasses)
+            var result = 
+                (ReferencedExtent as IUriResolver)?.ResolveElement(uri, ResolveType.OnlyMetaClasses)
                          ?? new MofObjectShadow(uri);
 
             _cachedMetaClass = result;

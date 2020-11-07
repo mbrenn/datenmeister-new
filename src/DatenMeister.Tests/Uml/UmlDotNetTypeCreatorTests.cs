@@ -59,7 +59,7 @@ namespace DatenMeister.Tests.Uml
                     zipCodesWithState),
                 Is.False);
 
-            var propertyNames = ClassifierMethods.GetPropertyNamesOfClassifier(zipCodesWithState);
+            var propertyNames = ClassifierMethods.GetPropertyNamesOfClassifier(zipCodesWithState).ToList();
             Assert.That(propertyNames.Contains("state"), Is.True);
             Assert.That(propertyNames.Contains("zip"), Is.True);
         }

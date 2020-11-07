@@ -125,8 +125,6 @@ namespace DatenMeister.Tests.Runtime
         public void TestByMofShadow()
         {
             var extent = GetTestExtent();
-            var found = extent.GetUriResolver().Resolve(TestUri, ResolveType.Default);
-            
             var firstChild = extent.GetUriResolver().Resolve(TestUri + "#child1", ResolveType.Default)
                 as IElement;
             var asShadow = new MofObjectShadow(TestUri + "#child1");

@@ -182,7 +182,7 @@ namespace DatenMeister.Runtime.Workspaces
 
         public bool @equals(object? other) => throw new NotImplementedException();
 
-        public object? get(string property)
+        public object get(string property)
         {
             if (property == "id")
             {

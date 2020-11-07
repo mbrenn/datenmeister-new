@@ -363,7 +363,6 @@ namespace DatenMeister.Tests.Provider
 
         internal static MofUriExtent Initialize()
         {
-            var uml = new _UML();
             var extent = new MofUriExtent(new InMemoryProvider(), "dm:///test");
 
             extent.CreateTypeSpecification(typeof(DotNetTests.TestClass));

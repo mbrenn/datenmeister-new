@@ -16,7 +16,7 @@ namespace DatenMeister.Tests.Modules.Actions
         public async Task TestExportXmi()
         {
             var actionLogic = ActionSetTests.CreateActionLogic();
-            var (source, target) = ActionSetTests.CreateExtents(actionLogic);
+            ActionSetTests.CreateExtents(actionLogic);
 
             var temporaryStorage = DatenMeisterTests.GetPathForTemporaryStorage("export.xmi");
 

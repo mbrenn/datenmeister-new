@@ -38,7 +38,7 @@ namespace DatenMeister.WPF.Navigation
         /// <param name="window">Root window being used</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns>The navigation being used to control the view</returns>
-        public static Task<NavigateToElementDetailResult?>? NavigateToExtentList(
+        public static Task<NavigateToElementDetailResult?> NavigateToExtentList(
             INavigationHost window,
             string workspaceId)
         {

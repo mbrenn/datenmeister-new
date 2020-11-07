@@ -81,7 +81,6 @@ namespace DatenMeister.Tests.Modules
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var dataExtent = CreateDataForTest(dm);
 
-            var helper = dm.Resolve<DataViewHelper>();
             var factory = InMemoryObject.TemporaryFactory;
             
             // Creates the dataview

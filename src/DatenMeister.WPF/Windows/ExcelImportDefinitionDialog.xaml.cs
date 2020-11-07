@@ -48,7 +48,7 @@ namespace DatenMeister.WPF.Windows
         {
             txtFileName.Text = Path.GetFileName(filePath);
             var importConfig =
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig) as IElement
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__ExcelImportLoaderConfig)
                 ?? throw new InvalidOperationException("Not an IElement");
             importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.extentUri, "dm:///dm_temp");
             importConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.filePath, filePath);

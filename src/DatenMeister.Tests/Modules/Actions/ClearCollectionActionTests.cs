@@ -17,7 +17,7 @@ namespace DatenMeister.Tests.Modules.Actions
         public async Task TestClearCollectionInExtent()
         {
             var actionLogic = ActionSetTests.CreateActionLogic();
-            var (source, target) = ActionSetTests.CreateExtents(actionLogic);
+            var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
             var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
                 .SetProperties(new Dictionary<string, object>
@@ -34,7 +34,7 @@ namespace DatenMeister.Tests.Modules.Actions
         public async Task TestClearCollectionInProperty()
         {
             var actionLogic = ActionSetTests.CreateActionLogic();
-            var (source, target) = ActionSetTests.CreateExtents(actionLogic);
+            var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
             var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
                 .SetProperties(new Dictionary<string, object>

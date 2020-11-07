@@ -133,7 +133,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
                 else
                 {
-                    uriMetaClass = (elementAsMetaClass?.Extent as MofUriExtent)?.uri(metaClass) ?? string.Empty;     
+                    uriMetaClass = (elementAsMetaClass?.Extent as MofUriExtent)?.uri(metaClass) ?? string.Empty;
                 }
             }
 
@@ -148,12 +148,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                 Extent.AddMetaExtent(typeExtent);
             }
 
-            var created = new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
+            var created =
+                new MofElement(_provider.CreateElement(uriMetaClass), Extent).CreatedBy(Extent);
 
             if (!Extent.SlimUmlEvaluation)
             {
                 AutoEnumerateHandler.HandleNewItem(Extent, created);
-                DefaultValueHandler.HandleNewItem(created);
+                DefaultValueHandler.HandleNewItem(created, metaClass);
             }
 
             return created;

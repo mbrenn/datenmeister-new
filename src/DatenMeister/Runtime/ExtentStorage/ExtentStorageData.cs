@@ -72,8 +72,8 @@ namespace DatenMeister.Runtime.ExtentStorage
             public IUriExtent? Extent { get; set; }
             
             public IElement Configuration { get; set; }
-            
-            public ExtentLoadingState LoadingState { get; set; }
+
+            public ExtentLoadingState LoadingState { get; set; } = ExtentLoadingState.Unloaded;
 
             /// <summary>
             /// Gets or sets the message why the loading of the extent has failed

@@ -48,7 +48,7 @@ namespace DatenMeister.Provider.InMemory
         /// Creates an empty mof object that can be used to identify a temporary object. All content will be stored within the InMemoryObject
         /// </summary>
         /// <returns>The created object as MofObject</returns>
-        public static MofElement? CreateEmpty(string metaClass, IExtent? uriExtent = null)
+        public static MofElement CreateEmpty(string metaClass, IExtent? uriExtent = null)
         {
             var factory = new MofFactory(uriExtent ?? InMemoryProvider.TemporaryExtent);
             var element = (MofElement?) factory.create(null);

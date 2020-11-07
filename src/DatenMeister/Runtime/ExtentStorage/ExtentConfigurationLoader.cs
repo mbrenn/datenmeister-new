@@ -19,11 +19,6 @@ namespace DatenMeister.Runtime.ExtentStorage
     /// </summary>
     public partial class ExtentConfigurationLoader
     {
-        /// <summary>
-        /// Stores the mapper instance being used to find the allowed types
-        /// </summary>
-        private readonly ConfigurationToExtentStorageMapper _mapper;
-
         private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
 
         /// <summary>
@@ -44,7 +39,6 @@ namespace DatenMeister.Runtime.ExtentStorage
             ExtentManager extentManager)
         {
             _scopeStorage = scopeStorage;
-            _mapper = scopeStorage.Get<ConfigurationToExtentStorageMapper>();
             ExtentManager = extentManager;
             ExtentStorageData = scopeStorage.Get<ExtentStorageData>();
         }

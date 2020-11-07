@@ -13,7 +13,6 @@ namespace DatenMeister.Modules.TextTemplates
         /// <summary>
         /// Parses the given text in the content of the given element
         /// </summary>
-        /// <param name="element">Element to be used</param>
         /// <param name="text">Text to be parsed</param>
         /// <param name="additionalObjects">Additional objects that can be added to the parser
         /// DatenMeister Objects are converted to the appropriate object type</param>

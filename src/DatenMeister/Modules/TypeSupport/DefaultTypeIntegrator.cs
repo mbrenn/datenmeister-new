@@ -27,7 +27,7 @@ namespace DatenMeister.Modules.TypeSupport
         {
             _workspaceLogic = workspaceLogic;
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
-            _packageMethods = new PackageMethods(_workspaceLogic);
+            _packageMethods = new PackageMethods();
         }
 
         /// <summary>

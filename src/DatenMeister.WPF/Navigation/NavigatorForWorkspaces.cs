@@ -28,7 +28,7 @@ namespace DatenMeister.WPF.Navigation
         /// </summary>
         /// <param name="window">Windows to be used</param>
         /// <returns>The navigation to control the view</returns>
-        public static Task<NavigateToElementDetailResult?>? NavigateToWorkspaces(INavigationHost window)
+        public static Task<NavigateToElementDetailResult?> NavigateToWorkspaces(INavigationHost window)
         {
             return window.NavigateTo(
                 () => new WorkspaceList(),

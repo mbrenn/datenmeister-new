@@ -1,5 +1,7 @@
 using DatenMeister.Core.EMOF.Implementation.DotNet;
+using DatenMeister.Models;
 using DatenMeister.Provider.DotNet;
+using DatenMeister.Runtime.Extents.Configuration;
 
 namespace DatenMeister.Provider.ManagementProviders.Settings
 {
@@ -7,6 +9,12 @@ namespace DatenMeister.Provider.ManagementProviders.Settings
     {
         public ManagementSettingsProvider(IDotNetTypeLookup typeLookup) : base(typeLookup)
         {
+            typeLookup.Add(
+                _DatenMeister.TheOne.Management.__ExtentTypeSetting,
+                typeof(ExtentType));
+            typeLookup.Add(
+                _DatenMeister.TheOne.Management.__ExtentPropertyDefinition,
+                typeof(ExtentPropertyDefinition));
         }
     }
 }

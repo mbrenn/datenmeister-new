@@ -57,7 +57,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                     // First, update the extent itself
                     if (uriExtent is MofUriExtent mofUriExtent)
                     {
-                        (mofUriExtent).UriOfExtent = v.ToString();
+                        mofUriExtent.UriOfExtent = v.ToString();
                     }
 
                     // But we also need to update the extentmanager's configuration

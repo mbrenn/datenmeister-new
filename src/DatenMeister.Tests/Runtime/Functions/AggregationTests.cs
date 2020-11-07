@@ -80,12 +80,15 @@ namespace DatenMeister.Tests.Runtime.Functions
             var reflectiveSequence = CreateReflectiveSequence();
 
             Func<IAggregator> aggregatorFunc = () => new SumAggregator();
-            var finalValue = reflectiveSequence.GroupProperties(
-                property3,
-                property1,
-                aggregatorFunc,
-                property1).Cast<IObject>();
-
+            var finalValue =
+                reflectiveSequence.GroupProperties(
+                        property3,
+                        property1,
+                        aggregatorFunc,
+                        property1)
+                    .Cast<IObject>()
+                    .ToList();
+            
             var groupByA = finalValue.FirstOrDefault(x => x.get(property3).ToString() == "A");
             var groupByB = finalValue.FirstOrDefault(x => x.get(property3).ToString() == "B");
 

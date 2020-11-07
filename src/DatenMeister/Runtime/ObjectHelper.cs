@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -582,7 +581,7 @@ namespace DatenMeister.Runtime
             {
                 var asElement = x as IObject;
                 var valueOfChild = asElement?.getOrDefault<object>(propertyOfChild);
-                if (valueOfChild != null && valueOfChild.Equals(requestValue) == true && asElement != null)
+                if (valueOfChild != null && valueOfChild.Equals(requestValue) && asElement != null)
                 {
                     yield return asElement;
                 }

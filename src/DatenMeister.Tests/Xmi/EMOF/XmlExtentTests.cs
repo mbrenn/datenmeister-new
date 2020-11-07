@@ -291,7 +291,6 @@ namespace DatenMeister.Tests.Xmi.EMOF
             
             using var scope = builder.BeginLifetimeScope();
             var dataLayerLogic = scope.Resolve<IWorkspaceLogic>();
-            var umlDataLayer = dataLayerLogic.GetUmlWorkspace();
 
             var xmlProvider = new XmiProvider();
             var extent = new MofUriExtent(xmlProvider, "dm:///test/");

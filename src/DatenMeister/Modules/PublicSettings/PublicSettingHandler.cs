@@ -80,6 +80,7 @@ namespace DatenMeister.Modules.PublicSettings
                         .Where(variable => variable.key != null && variable.value != null))
                     {
                         Environment.SetEnvironmentVariable(variable.key!, variable.value);
+                        Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
                     }
 
                     return settings;

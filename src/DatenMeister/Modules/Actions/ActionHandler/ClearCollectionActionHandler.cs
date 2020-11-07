@@ -49,7 +49,6 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             {
                 throw new InvalidOperationException("Unknown datatype");
             }
-
         }
     }
 }

@@ -44,7 +44,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             var targetWorkspace = actionLogic.WorkspaceLogic.GetWorkspace(targetWorkspaceId);
             if (sourceWorkspace == null)
             {
-                var message = $"sourceWorkspace is not found ${sourceWorkspaceId}";
+                var message = $"sourceWorkspace is not found {sourceWorkspaceId}";
                 logger.Error(message);
 
                 throw new InvalidOperationException(message);
@@ -52,7 +52,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
 
             if (targetWorkspace == null)
             {
-                var message = $"targetWorkspace is not found ${targetWorkspaceId}";
+                var message = $"targetWorkspace is not found {targetWorkspaceId}";
                 logger.Error(message);
 
                 throw new InvalidOperationException(message);

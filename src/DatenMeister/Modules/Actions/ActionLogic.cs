@@ -30,7 +30,7 @@ namespace DatenMeister.Modules.Actions
             Interlocked.Increment(ref _numberOfActions);
         }
     }
-    
+
     public class ActionLogic
     {
         private static readonly ILogger ClassLogger = new ClassLogger(typeof(ActionLogic));

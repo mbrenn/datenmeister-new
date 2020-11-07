@@ -61,7 +61,8 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="byFollowingProperties">The properties that are requested</param>
         /// <param name="onlyComposites">true, if only composite elements shall be regarded</param>
         /// <returns>An enumeration of all descendent elements</returns>
-        private IEnumerable<IObject> GetDescendentsInternal(IObject element, ICollection<string>? byFollowingProperties, bool onlyComposites = false)
+        private IEnumerable<IObject> GetDescendentsInternal(IObject element, ICollection<string>? byFollowingProperties,
+            bool onlyComposites = false)
         {
             if (_alreadyVisited.Contains(element))
             {
@@ -101,17 +102,25 @@ namespace DatenMeister.Runtime.Functions.Queries
             {
                 propertyList = elementAsIObjectExt.getPropertiesBeingSet();
             }
-            
+
             // Goes through the found properties
             foreach (var property in propertyList)
             {
-                if (byFollowingProperties?.Contains(property) == false || !asMofObject.isSet(property))
+                if (byFollowingProperties?.Contains(property) == false
+                    || !asMofObject.ProviderObject.IsPropertySet(property))
                 {
                     // Skip the properties that are not defined in the given collection
                     continue;
                 }
-                
-                var value = asMofObject.get(property, noReferences: true, ObjectType.None);
+
+                var value =
+                    MofObject.ConvertToMofObject(
+                        asMofObject,
+                        property,
+                        asMofObject.ProviderObject.GetProperty(
+                            property,
+                            ObjectType.None),
+                        noReferences: true);
 
                 if (value is IObject valueAsObject)
                 {
@@ -128,9 +137,10 @@ namespace DatenMeister.Runtime.Functions.Queries
                     {
                         continue;
                     }
-                    
+
                     // Value is an object... perfect!
-                    foreach (var innerValue in GetDescendentsInternal(valueAsObject, byFollowingProperties, onlyComposites))
+                    foreach (var innerValue in GetDescendentsInternal(valueAsObject, byFollowingProperties,
+                        onlyComposites))
                     {
                         yield return innerValue;
                     }
@@ -139,7 +149,8 @@ namespace DatenMeister.Runtime.Functions.Queries
                 {
                     // Value is a real enumeration. 
                     var valueAsEnumerable = (IEnumerable) value;
-                    foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties, element, onlyComposites))
+                    foreach (var innerValue in GetDescendentsInternal(valueAsEnumerable, byFollowingProperties, element,
+                        onlyComposites))
                     {
                         if (_alreadyVisited.Contains(innerValue))
                         {

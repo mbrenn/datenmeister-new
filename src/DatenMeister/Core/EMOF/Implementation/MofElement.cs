@@ -100,8 +100,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             if (!IsSlimEvaluation)
             {
                 var metaClass = getMetaClass();
-                var extent = metaclass?.GetExtentOf() as MofExtent;
-                if (extent == null)
+                if (!(metaclass?.GetExtentOf() is MofExtent extent))
                 {
                     return (false, null);
                 }
@@ -132,9 +131,10 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return null;
             }
 
-            var result = 
-                (ReferencedExtent as IUriResolver)?.ResolveElement(uri, ResolveType.OnlyMetaClasses)
-                         ?? new MofObjectShadow(uri);
+            var result =
+                (ReferencedExtent as IUriResolver)
+                ?.ResolveElement(uri, ResolveType.OnlyMetaClasses | ResolveType.AlsoTypeWorkspace)
+                ?? new MofObjectShadow(uri);
 
             _cachedMetaClass = result;
             return result;

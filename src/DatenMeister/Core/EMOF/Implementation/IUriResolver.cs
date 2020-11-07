@@ -35,22 +35,35 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Default resolving process in which all extents in current workspace but also meta workspaces are resolved.
         /// If nothing was found, a full search will be started
         /// </summary>
-        Default = 1,
+        Default = 0x01,
 
         /// <summary>
         /// Resolving in which the current workspace will not be looked. The type
         /// will only be looked within the meta workspaces and extents. Useful to look for meta classes
         /// </summary>
-        OnlyMetaClasses = 2,
+        OnlyMetaClasses = 0x02,
 
         /// <summary>
         /// Resolving in which the current extent is resolved solely
         /// </summary>
-        NoWorkspace = 4,
+        NoWorkspace = 0x04,
 
         /// <summary>
         /// Performs the resolving process only in the current workspace
         /// </summary>
-        NoMetaWorkspaces = 8
+        NoMetaWorkspaces = 0x08,
+        
+        /// <summary>
+        /// Searches also within the workspace within the types
+        /// </summary>
+        AlsoTypeWorkspace = 0x10
+    }
+
+    public static class ResolveTypeExtensions
+    {
+        public static bool HasFlagFast(this ResolveType value, ResolveType flag)
+        {
+            return (value & flag) != 0;
+        }
     }
 }

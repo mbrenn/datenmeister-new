@@ -8,6 +8,7 @@ using DatenMeister.Integration;
 using DatenMeister.Provider;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Proxies;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {
@@ -195,6 +196,23 @@ namespace DatenMeister.Core.EMOF.Implementation
                 if (workspaceResult != null)
                 {
                     return workspaceResult;
+                }
+            }
+
+            if (resolveType.HasFlagFast(ResolveType.AlsoTypeWorkspace)
+                && GiveMe.TryGetScope()?.WorkspaceLogic != null)
+            {
+                var typesWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
+                if (typesWorkspace != null)
+                {
+                    foreach (var result in
+                        typesWorkspace.extent
+                            .OfType<IUriExtent>()
+                            .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.NoWorkspace, false))
+                            .Where(result => result != null))
+                    {
+                        return result;
+                    }
                 }
             }
 

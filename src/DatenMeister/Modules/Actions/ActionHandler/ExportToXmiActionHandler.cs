@@ -43,7 +43,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             var sourceElement = workspace.Resolve(sourcePath, ResolveType.NoMetaWorkspaces);
             if (sourceElement == null)
             {
-                var message = $"sourcePath is not found ${sourcePath}";
+                var message = $"sourcePath is not found {sourcePath}";
                 logger.Error(message);
                 
                 throw new InvalidOperationException(message);

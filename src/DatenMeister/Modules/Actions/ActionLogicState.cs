@@ -38,6 +38,7 @@ namespace DatenMeister.Modules.Actions
             logicState.AddActionHandler(new CopyElementsActionHandler());
             logicState.AddActionHandler(new ExportToXmiActionHandler());
             logicState.AddActionHandler(new ClearCollectionActionHandler());
+            logicState.AddActionHandler(new ActionSetActionHandler());
 
             return logicState;
         }

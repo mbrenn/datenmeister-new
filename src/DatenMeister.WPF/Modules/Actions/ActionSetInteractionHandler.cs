@@ -8,31 +8,29 @@ using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.Actions
 {
-    public class ActionInteractionHandler : BaseElementInteractionHandler
+    public class ActionSetInteractionHandler : BaseElementInteractionHandler
     {
         /// <summary>
         /// Initializes a new instance of the ActionInteractionHandler
         /// </summary>
-        public ActionInteractionHandler()
+        public ActionSetInteractionHandler()
         {
-            OnlyElementsOfType = _DatenMeister.TheOne.Actions.__Action;
+            OnlyElementsOfType = _DatenMeister.TheOne.Actions.__ActionSet;
         }
         
         public override IEnumerable<IElementInteraction> GetInteractions(IObject element)
         {
-            if (IsRelevant(element)
-                && element is IElement asElement
-                && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Actions.ActionSet) != true)
+            if (IsRelevant(element) && element is IElement asElement)
             {
                 yield return new DefaultElementInteraction(
-                    "Execute Action",
+                    "Execute ActionSet",
                     async () =>
                     {
                         var actionLogic = new ActionLogic(
                             GiveMe.Scope.WorkspaceLogic,
                             GiveMe.Scope.ScopeStorage);
-                        await actionLogic.ExecuteAction(asElement);
-                        MessageBox.Show("Action was executed.");
+                        var result = await actionLogic.ExecuteActionSet(asElement);
+                        MessageBox.Show($"{result.NumberOfActions:n0} action(s) were executed.");
                     });
             }
         }

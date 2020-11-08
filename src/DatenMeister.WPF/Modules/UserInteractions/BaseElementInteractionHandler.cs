@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Uml.Helper;
 
@@ -12,7 +14,27 @@ namespace DatenMeister.WPF.Modules.UserInteractions
         /// <summary>
         /// Gets or sets the class name of the elements that are in scópe of the BaseElementInteractionHandler
         /// </summary>
-        protected IElement? OnlyElementsOfType { get; set; }
+        protected IElement? OnlyElementsOfType {
+            get
+            {
+                return OnlyElementsOfTypes.Count switch
+                {
+                    1 => OnlyElementsOfTypes.First(),
+                    0 => null,
+                    _ => throw new InvalidOperationException("OnlyElementsOfType.Count is not 0 or 1")
+                };
+            }
+            set
+            {
+                OnlyElementsOfTypes.Clear();
+                if (value != null)
+                {
+                    OnlyElementsOfTypes.Add(value);
+                }
+            }
+        }
+        
+        protected List<IElement> OnlyElementsOfTypes { get; } = new List<IElement>();
 
         /// <inheritdoc />
         public abstract IEnumerable<IElementInteraction> GetInteractions(IObject element);
@@ -26,21 +48,24 @@ namespace DatenMeister.WPF.Modules.UserInteractions
         /// <returns>true, if relevant</returns>
         protected bool IsRelevant(IObject element)
         {
-            if (OnlyElementsOfType != null && element is IElement elementAsElement)
+            var elementAsElement = element as IElement;
+            var metaClassElement = elementAsElement?.getMetaClass();
+            if (metaClassElement == null)
             {
-                var metaClassElement = elementAsElement.getMetaClass();
-                if (metaClassElement == null)
+                return false;
+            }
+
+            foreach (var type in OnlyElementsOfTypes)
+            {
+                if (ClassifierMethods.IsSpecializedClassifierOf(
+                    metaClassElement,
+                    type))
                 {
-                    return false;
-                }
-                
-                if (!ClassifierMethods.IsSpecializedClassifierOf(elementAsElement.getMetaClass(), OnlyElementsOfType))
-                {
-                    return false;
+                    return true;
                 }
             }
 
-            return true;
+            return false;
         }
     }
 }

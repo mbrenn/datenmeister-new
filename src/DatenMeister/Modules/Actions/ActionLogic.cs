@@ -93,8 +93,9 @@ namespace DatenMeister.Modules.Actions
                         }
                         catch (Exception exc)
                         {
+                            var message = $"An exception occured during execution of {action}: {exc.Message}";
                             ClassLogger.Error(exc.ToString());
-                            throw;
+                            throw new InvalidOperationException(message, exc);
                         }
                     });
                     

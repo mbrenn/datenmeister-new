@@ -21,8 +21,12 @@ namespace DatenMeister.WPF.Modules.Actions
             _scopeStorage
                 .Get<UserInteractionState>()
                 .ElementInteractionHandler
-                .Add(
-                    new ActionInteractionHandler());
+                .AddRange(
+                    new BaseElementInteractionHandler[]
+                    {
+                        new ActionSetInteractionHandler(),
+                        new ActionInteractionHandler()
+                    });
         }
     }
 }

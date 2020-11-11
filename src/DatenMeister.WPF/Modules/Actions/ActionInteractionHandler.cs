@@ -22,7 +22,7 @@ namespace DatenMeister.WPF.Modules.Actions
         {
             if (IsRelevant(element)
                 && element is IElement asElement
-                && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Actions.ActionSet) != true)
+                && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Actions.__ActionSet) != true)
             {
                 yield return new DefaultElementInteraction(
                     "Execute Action",

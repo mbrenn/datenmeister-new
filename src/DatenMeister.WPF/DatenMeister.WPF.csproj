@@ -6,7 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net462;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Navigation\Validators\**" />

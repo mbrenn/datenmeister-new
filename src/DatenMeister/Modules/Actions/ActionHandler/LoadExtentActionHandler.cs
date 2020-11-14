@@ -39,9 +39,15 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 extentManager.RemoveExtent(workspaceId, extentUri);
             }
             
-            extentManager.LoadExtent(
+            var result = extentManager.LoadExtent(
                 configuration, 
                 ExtentCreationFlags.LoadOrCreate);
+
+            if (result.LoadingState == ExtentLoadingState.Failed)
+            {
+                throw new InvalidOperationException(
+                    "Loading of extent failed:\r\n\r\n" + result.FailLoadingMessage);
+            }
         }
     }
 }

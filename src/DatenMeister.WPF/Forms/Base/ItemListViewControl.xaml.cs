@@ -16,7 +16,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.FastViewFilter;

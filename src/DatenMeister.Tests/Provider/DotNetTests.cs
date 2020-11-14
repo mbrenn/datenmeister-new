@@ -3,8 +3,8 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
-using DatenMeister.Models.FastViewFilter;
 using DatenMeister.Provider.DotNet;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -108,10 +108,10 @@ namespace DatenMeister.Tests.Provider
             workspaceLogic.AddExtent(workspaceLogic.GetDefaultWorkspace(), extent);
 
             var factory = new MofFactory(extent);
-            var value = factory.create(_FastViewFilters.TheOne.__PropertyComparisonFilter);
-            value.set(_FastViewFilters._PropertyComparisonFilter.Property, "Test");
-            value.set(_FastViewFilters._PropertyComparisonFilter.Value, "Content");
-            value.set(_FastViewFilters._PropertyComparisonFilter.ComparisonType, ___ComparisonType.GreaterThan);
+            var value = factory.create(_DatenMeister.TheOne.FastViewFilters.__PropertyComparisonFilter);
+            value.set(_DatenMeister._FastViewFilters._PropertyComparisonFilter.Property, "Test");
+            value.set(_DatenMeister._FastViewFilters._PropertyComparisonFilter.Value, "Content");
+            value.set(_DatenMeister._FastViewFilters._PropertyComparisonFilter.ComparisonType, ___ComparisonType.GreaterThan);
 
             Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Value), Is.EqualTo("Content"));
             Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Property), Is.EqualTo("Test"));

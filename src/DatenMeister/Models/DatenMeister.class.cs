@@ -1217,8 +1217,8 @@ namespace DatenMeister.Models
 
             public class _SortingOrder
             {
-                public static string @field = "field";
-                public IElement? @_field = null;
+                public static string @name = "name";
+                public IElement? @_name = null;
 
                 public static string @isDescending = "isDescending";
                 public IElement? @_isDescending = null;

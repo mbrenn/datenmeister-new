@@ -500,8 +500,7 @@ namespace DatenMeister.WPF.Forms.Base
                                     (x.getOrDefault<bool>(_DatenMeister._Forms._SortingOrder.isDescending)
                                         ? "!"
                                         : "") +
-                                    x.getOrDefault<IElement>(_DatenMeister._Forms._SortingOrder.field)
-                                        ?.getOrDefault<string>(_DatenMeister._Forms._FieldData.name))
+                                    x.getOrDefault<string>(_DatenMeister._Forms._SortingOrder.name))
                                 .Where(x => !string.IsNullOrEmpty(x) && x != "!");
                         items = items.OrderElementsBy(sortingColumnNames);
                     }

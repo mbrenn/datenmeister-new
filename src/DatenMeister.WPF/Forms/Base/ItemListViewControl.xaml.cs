@@ -21,6 +21,7 @@ using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.FastViewFilter;
 using DatenMeister.Modules.Forms;
+using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -241,7 +242,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        ///     Gets the value of the element by the field
+        /// Gets the value of the element by the field
         /// </summary>
         /// <param name="element">Element being queried</param>
         /// <param name="field">Field being used for query</param>
@@ -262,6 +263,29 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+            if (fieldMetaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+            {
+                var cellInformation = InMemoryObject.CreateEmpty();
+                var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;
+                cellInformation.set("text", defaultText);
+
+                var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
+                if (evalProperties != null)
+                {
+                    defaultText = TextTemplateEngine.Parse(
+                        evalProperties,
+                        new Dictionary<string, object>
+                        {
+                            ["i"] = element,
+                            ["c"] = cellInformation
+                        });
+                }
+
+                return cellInformation.isSet("text")
+                    ? cellInformation.getOrDefault<string>("text")
+                    : defaultText;
+            }
+
             return element.isSet(name) ? element.get(name) : null;
         }
 
@@ -326,9 +350,9 @@ namespace DatenMeister.WPF.Forms.Base
                                     continue;
                                 }
 
+                                var value = GetValueOfElement(item, field);
                                 var isEnumeration =
                                     field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
-                                var value = GetValueOfElement(item, field);
 
                                 if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
                                 {
@@ -352,12 +376,10 @@ namespace DatenMeister.WPF.Forms.Base
                                         }
                                     }
 
-                                    asDictionary.Add(columnName, result.ToString());
+                                    value = result.ToString();
                                 }
-                                else
-                                {
-                                    asDictionary.Add(columnName, value);
-                                }
+
+                                asDictionary.Add(columnName, value);
 
                                 n++;
                             }
@@ -475,8 +497,7 @@ namespace DatenMeister.WPF.Forms.Base
                             (x.getOrDefault<bool>(_DatenMeister._Forms._SortingOrder.isDescending)
                                 ? "!"
                                 : "") +
-                            x.getOrDefault<IElement>(_DatenMeister._Forms._SortingOrder.field)
-                                ?.getOrDefault<string>(_DatenMeister._Forms._FieldData.name))
+                            x.getOrDefault<IElement>(_DatenMeister._Forms._SortingOrder.name))
                         .Where(x => !string.IsNullOrEmpty(x) && x != "!");
                 items = items.OrderElementsBy(sortingColumnNames);
             }
@@ -489,7 +510,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// is not defined, then null is returned
         /// </summary>
         /// <param name="collection">Collection to be filtered</param>
-        /// <param name="listFormDefinition">The list form definition defining the meta class</param>
         /// <returns>The filtered metaclasses</returns>
         private IReflectiveCollection FilterByMetaClass(IReflectiveCollection collection)
         {

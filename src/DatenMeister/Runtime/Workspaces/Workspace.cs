@@ -79,11 +79,11 @@ namespace DatenMeister.Runtime.Workspaces
                     {
                         result.Add(localExtent);
                     }
+                }
 
-                    foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
-                    {
-                        result.Add(pluginExtent);
-                    }
+                foreach (var pluginExtent in ExtentPlugins.SelectMany(plugin => plugin))
+                {
+                    result.Add(pluginExtent);
                 }
 
                 return result;

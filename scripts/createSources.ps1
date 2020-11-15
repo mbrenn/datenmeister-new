@@ -35,7 +35,7 @@ $switches = "-nologo"
 
 cd ..
 
-cd src\DatenMeister.SourceGeneration.Console\bin\Release\netcoreapp3.0
+cd src\DatenMeister.SourceGeneration.Console\bin\Release\net5.0
 
 ./DatenMeister.SourceGeneration.Console.exe
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -22,7 +23,7 @@ namespace DatenMeister.WPF.Modules.Actions
         {
             if (IsRelevant(element)
                 && element is IElement asElement
-                && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Actions.ActionSet) != true)
+                && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Actions.__ActionSet) != true)
             {
                 yield return new DefaultElementInteraction(
                     "Execute Action",
@@ -31,8 +32,15 @@ namespace DatenMeister.WPF.Modules.Actions
                         var actionLogic = new ActionLogic(
                             GiveMe.Scope.WorkspaceLogic,
                             GiveMe.Scope.ScopeStorage);
-                        await actionLogic.ExecuteAction(asElement);
-                        MessageBox.Show("Action was executed.");
+                        try
+                        {
+                            await actionLogic.ExecuteAction(asElement);
+                            MessageBox.Show("Action was executed.");
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show($"An exception occured during the action execution: \r\n{exc}");
+                        }
                     });
             }
         }

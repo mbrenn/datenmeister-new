@@ -54,11 +54,11 @@ namespace DatenMeister.Tests.Modules.Reports
                         [_DatenMeister._Forms._EvalTextFieldData.name] = "name",
                         [_DatenMeister._Forms._EvalTextFieldData.title] = "Name",
                         [_DatenMeister._Forms._EvalTextFieldData.evalCellProperties] =
-                            "if(i.age>18)\r\n" +
+                            "{{if(i.age>18)\r\n" +
                             " c.cssClass=\"over18\"\r\n" +
                             "else\r\n" +
                             " c.cssClass=\"under18\"\r\n" +
-                            "end"
+                            "end}}"
                     });
             form.set(_DatenMeister._Forms._ListForm.field, new[] {field});
 

@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.FastViewFilter;
+using DatenMeister.Models;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.FastViewFilter
@@ -22,8 +22,8 @@ namespace DatenMeister.Modules.FastViewFilter
         {
             if (value is IObject valueAsObject)
             {
-                var filterValue = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Value);
-                var propertyName = _fastFilter.getOrDefault<string>(_FastViewFilters._PropertyContainsFilter.Property);
+                var filterValue = _fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Value);
+                var propertyName = _fastFilter.getOrDefault<string>(_DatenMeister._FastViewFilters._PropertyContainsFilter.Property);
 
                 if (filterValue == null || propertyName == null)
                 {

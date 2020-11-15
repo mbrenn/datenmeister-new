@@ -61,11 +61,11 @@ namespace DatenMeister.Tests.Modules.Reports
                         [_DatenMeister._Forms._EvalTextFieldData.name] = "name",
                         [_DatenMeister._Forms._EvalTextFieldData.title] = "Name",
                         [_DatenMeister._Forms._EvalTextFieldData.evalCellProperties] =
-                            "if(i.age>18)\r\n" +
+                            "{{if(i.age>18)\r\n" +
                             " c.text = c.text + \" (over18)\"\r\n" +
                             "else\r\n" +
                             " c.text = c.text\r\n" +
-                            "end"
+                            "end}}"
                     });
             
             var field2 = factory.create(_DatenMeister.TheOne.Forms.__TextFieldData)

@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<item>
-  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///datenmeister.types">
-    <DatenMeister.AttachedExtent p2:type="dm:///_internal/types/internal#68b3ddbf-a563-4d91-91fb-81e5bfac46b5" p2:id="a2233e4c-bfe8-4aff-9d0b-34a736d1cbbe" xmlns="" />
-  </meta>
+<item abc="DEF">
+  <meta p2:id="6fdf34b3-c96e-4893-a95f-c291eda52653" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __ExtentType="Uml.Classes" __uri="dm:///datenmeister.types"></meta>
   <item p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="CommonTypes" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p1:type="dm:///_internal/model/uml#Package" p1:id="_package_Default" name="Default" xmlns:p1="http://www.omg.org/spec/XMI/20131001">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.DefaultTypes.Package" name="Package">
@@ -856,7 +854,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="7fdad2dd-dba6-4fe4-8acf-ef20ba16caa4" name="isReadOnly" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.SortingOrder" name="SortingOrder">
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="092b7ca9-dd10-459b-bd83-05261f51a8f8" name="field" type-ref="#DatenMeister.Models.Forms.FieldData" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="092b7ca9-dd10-459b-bd83-05261f51a8f8" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="59a53f9c-81b4-4265-a8cb-fc7db955aeba" name="isDescending" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.AnyDataFieldData" name="AnyDataFieldData">
@@ -988,7 +986,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8c8e9f1a-5841-4bff-ac52-ccb115292a91" name="defaultTypesForNewElements" type-ref="#DatenMeister.Models.Forms.DefaultTypeForNewElement" upper="2" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0b299138-b359-4591-be5d-66c2a39ee8f0" name="fastViewFilters" upper="2" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f9ca8794-7771-4738-a9c4-54099a3d7c4d" name="field" type-ref="#DatenMeister.Models.Forms.FieldData" upper="2" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="315a2fbb-881d-474b-b23a-b701767f5ae7" name="sortingOrder" type-ref="#DatenMeister.Models.Forms.FieldData" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="315a2fbb-881d-474b-b23a-b701767f5ae7" name="sortingOrder" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.SortingOrder" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eef7da35-1bb3-4885-b3c5-1841ce9aa386" name="viewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="bea99781-dfa4-4fd3-8624-c03219595458" name="autoGenerateFields" type-ref="dm:///_internal/model/primitivetypes#Boolean">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />

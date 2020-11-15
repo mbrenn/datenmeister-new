@@ -169,8 +169,8 @@ namespace DatenMeister.Modules.Reports.Html
                 var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
                 if (evalProperties != null)
                 {
-                    TextTemplateEngine.Parse(
-                        "{{" + evalProperties + "}}",
+                    defaultText = TextTemplateEngine.Parse(
+                        evalProperties,
                         new Dictionary<string, object>
                         {
                             ["i"] = listElement,

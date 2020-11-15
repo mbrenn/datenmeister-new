@@ -42,34 +42,6 @@ namespace DatenMeister.SourceGeneration.Console
 #endif
         }
 
-        private static void CreateSourceCodeForDatenMeister()
-        {
-            System.Console.Write("Create Sourcecode for DatenMeister...");
-            using var stream = typeof(MofObject).GetTypeInfo()
-                .Assembly.GetManifestResourceStream("DatenMeister.XmiFiles.Types.DatenMeister.xmi");
-
-            var document = XDocument.Load(stream);
-            var pseudoProvider = new XmiProvider(document);
-            var pseudoExtent = new MofUriExtent(pseudoProvider, WorkspaceNames.UriExtentInternalTypes);
-
-            ////////////////////////////////////////
-            // Creates the class tree
-
-            // Creates the source parser which is needed to navigate through the package
-            var sourceParser = new ElementSourceParser();
-            var classTreeGenerator = new ClassTreeGenerator(sourceParser)
-            {
-                Namespace = "DatenMeister.Models"
-            };
-
-            classTreeGenerator.Walk(pseudoExtent);
-
-            var pathOfClassTree = "DatenMeister.class.cs";
-            var fileContent = classTreeGenerator.Result.ToString();
-            File.WriteAllText(pathOfClassTree, fileContent);
-            System.Console.WriteLine(" Done");
-        }
-
         private static void CreateSourceCodeForDatenMeisterAllTypes()
         {
             var dm = GiveMeDotNetCore.DatenMeister();

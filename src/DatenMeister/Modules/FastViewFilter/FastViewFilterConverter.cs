@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.FastViewFilter;
+using DatenMeister.Models;
 
 namespace DatenMeister.Modules.FastViewFilter
 {
@@ -15,12 +15,12 @@ namespace DatenMeister.Modules.FastViewFilter
         /// <returns>The returned instance or </returns>
         public static IFastFilter? Convert(IElement element)
         {
-            if (element.getMetaClass()?.Equals(_FastViewFilters.TheOne.__PropertyComparisonFilter) == true)
+            if (element.getMetaClass()?.Equals(_DatenMeister.TheOne.FastViewFilters.__PropertyComparisonFilter) == true)
             {
                 return new PropertyComparison(element);
             }
 
-            if (element.getMetaClass()?.Equals(_FastViewFilters.TheOne.@__PropertyContainsFilter) == true)
+            if (element.getMetaClass()?.Equals(_DatenMeister.TheOne.FastViewFilters.@__PropertyContainsFilter) == true)
             {
                 return new PropertyContains(element);
             }

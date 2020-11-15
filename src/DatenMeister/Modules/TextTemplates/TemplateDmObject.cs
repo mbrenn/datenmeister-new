@@ -27,6 +27,14 @@ namespace DatenMeister.Modules.TextTemplates
                 return true;
             }
 
+            if (member == "_container")
+            {
+                var asElement = _value as IElement;
+                var container = asElement?.container();
+                value = container == null ? (object) new NullDmObject() : new TemplateDmObject(container);
+                return true;
+            }
+
             if (_value.isSet(member))
             {
                 value = _value.get(member);

@@ -457,7 +457,10 @@ namespace DatenMeister.WPF.Forms.Base
                 var columnNames = fields.OfType<IElement>()
                     .Select(x => x.get("name")?.ToString())
                     .Where(x => x != null);
-                items = items.WhenOneOfThePropertyContains(columnNames!, _searchText);
+                items = items.WhenOneOfThePropertyContains(
+                    columnNames!, 
+                    _searchText,
+                    StringComparison.CurrentCultureIgnoreCase);
             }
 
             // Goes through the fast filters and filters the items

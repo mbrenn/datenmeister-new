@@ -104,7 +104,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
                 BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public))
             {
                 var innerValue = reflectedProperty.GetValue(value);
-                if (DotNetHelper.IsOfEnumeration(innerValue))
+                if (DotNetHelper.IsOfEnumeration(innerValue) && innerValue != null)
                 {
                     var list = new List<object>();
                     var enumeration = (IEnumerable) innerValue;

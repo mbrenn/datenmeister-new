@@ -366,6 +366,18 @@ namespace DatenMeister.Runtime
         }
 
         /// <summary>
+        /// Sets the properties of the value
+        /// </summary>
+        /// <param name="element">Object which will receive the values</param>
+        /// <param name="key">key of the property to be set</param>
+        /// <param name="value">Value to be set</param>
+        public static IElement SetProperty(this IElement element, string key, object value)
+        {
+            element.set(key, value);
+            return element;
+        }
+
+        /// <summary>
         /// Gets a certain property value as a reflective sequence.
         /// If the value is not a reflective sequence, an exception is thrown
         /// </summary>

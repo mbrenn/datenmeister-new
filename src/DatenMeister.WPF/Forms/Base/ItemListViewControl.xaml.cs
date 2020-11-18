@@ -397,10 +397,12 @@ namespace DatenMeister.WPF.Forms.Base
                             var noMessageBox = false;
                             (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
                             {
+                                var propertyName = y.PropertyName ??
+                                                   throw new InvalidOperationException("No property given");
                                 try
                                 {
                                     var newPropertyValue =
-                                        (itemObject as IDictionary<string, object>)[y.PropertyName];
+                                        ((IDictionary<string, object?>) itemObject)[propertyName];
                                     item.set(y.PropertyName, newPropertyValue);
                                 }
                                 catch (Exception exc)
@@ -409,7 +411,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                                     // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
                                     noMessageBox = true;
-                                    (itemObject as IDictionary<string, object?>)[y.PropertyName] =
+                                    ((IDictionary<string, object?>) itemObject)[propertyName] =
                                         item.get(y.PropertyName);
                                     noMessageBox = false;
                                 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using BenchmarkDotNet.Attributes;
 using BurnSystems.Logging;
@@ -38,7 +39,7 @@ namespace DatenMeister.Benchmark.Integration
         public static IntegrationSettings GetIntegrationSettings(bool dropDatabase = true)
         {
             var path = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException("Path is null"),
                 "testing/datenmeister/data");
             var integrationSettings = new IntegrationSettings
             {

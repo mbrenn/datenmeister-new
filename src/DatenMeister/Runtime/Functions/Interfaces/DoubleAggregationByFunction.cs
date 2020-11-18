@@ -8,7 +8,7 @@ namespace DatenMeister.Runtime.Functions.Interfaces
             Func<double, TItem, double> aggregation)
         {
             Start = 0.0;
-            Aggregation = (a, b) => aggregation(Convert.ToDouble(a), (TItem) Convert.ChangeType(b, typeof(TItem)));
+            Aggregation = (a, b) => aggregation(Convert.ToDouble(a), b);
         }
     }
 }

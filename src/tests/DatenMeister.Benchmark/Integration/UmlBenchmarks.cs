@@ -18,7 +18,8 @@ namespace DatenMeister.Benchmark.Integration
         {
             using var datenMeister = DatenMeisterBenchmark.GetDatenMeisterScope();
             _umlElements = datenMeister.WorkspaceLogic.GetUmlWorkspace().extent
-                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == "dm:///_internal/model/uml");
+                               .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == "dm:///_internal/model/uml")
+                           ?? throw new InvalidOperationException("Uml extent is not found");
 
             if (_umlElements == null)
             {

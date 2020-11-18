@@ -212,7 +212,7 @@ namespace DatenMeister.Runtime
                 value.Equals("True") ||
                 value.Equals("true") ||
                 value.Equals("TRUE") ||
-                value is string && value.ToString().ToLower() == "true");
+                value is string && value.ToString()?.ToLower() == "true");
 
         /// <summary>
         /// Converts the given element to double
@@ -380,9 +380,10 @@ namespace DatenMeister.Runtime
             foreach (var property in typeOfValue.GetProperties())
             {
                 var propertyValue = property.GetValue(value);
-
-                instanceValue.set(property.Name,
-                    ConvertPropertyValue(propertyValue, extent, factory));
+                
+                instanceValue.set(
+                    property.Name,
+                    propertyValue == null ? null : ConvertPropertyValue(propertyValue, extent, factory));
             }
 
             return instanceValue;
@@ -408,6 +409,8 @@ namespace DatenMeister.Runtime
                 var list = new List<object>();
                 foreach (var listItem in propertyValueAsList)
                 {
+                    if (listItem == null) continue;
+
                     if (IsOfPrimitiveType(listItem))
                     {
                         list.Add(listItem);

@@ -54,7 +54,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return string.Empty;
                 }
 
-                return uri.ToString();
+                return uri.ToString() ?? string.Empty;
             }
 
             set => set("__uri", value);
@@ -347,7 +347,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     return string.Equals(_uri, other._uri, StringComparison.InvariantCulture) && _resolveType == other._resolveType;
                 }
 
-                public override bool Equals(object obj)
+                public override bool Equals(object? obj)
                 {
                     if (ReferenceEquals(null, obj)) return false;
                     if (ReferenceEquals(this, obj)) return true;

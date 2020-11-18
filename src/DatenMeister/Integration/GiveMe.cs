@@ -4,6 +4,10 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
+#if !NET462
+using DatenMeister.NetCore.Modules.PluginLoader;
+#endif
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Integration
 {
@@ -38,7 +42,7 @@ namespace DatenMeister.Integration
         }
 
         /// <summary>
-        /// Return the DatenMeisterScope asynchronously as a task.
+        /// Return the DatenMeisterScope asynchronisously as a task.
         /// </summary>
         /// <param name="settings">Settings to be used</param>
         /// <returns>The created task, retuning the DatenMeister. </returns>
@@ -52,28 +56,45 @@ namespace DatenMeister.Integration
         /// <returns>The initialized DatenMeister that can be used</returns>
         public static IDatenMeisterScope DatenMeister(IntegrationSettings? settings = null)
         {
-            settings ??= new IntegrationSettings
+            settings ??= GetDefaultIntegrationSettings();
+
+            if (settings.PluginLoader is DefaultPluginLoader)
             {
-                EstablishDataEnvironment = true,
-                DatabasePath = DefaultDatabasePath,
-                IsLockingActivated = true
-            };
+#if NET462
+                settings.PluginLoader = new DefaultPluginLoader();
+#else
+                settings.PluginLoader = new DotNetCorePluginLoader();
+#endif
+            }
 
             var kernel = new ContainerBuilder();
             var container = kernel.UseDatenMeister(settings);
 
             var scope = new DatenMeisterScope(container.BeginLifetimeScope());
-            scope.ScopeStorage = scope.Resolve<ScopeStorage>();
+            scope.ScopeStorage = scope.Resolve<IScopeStorage>();
 
-            Scope = scope;
-
-            Scope.BeforeDisposing += (x, y) =>
+            GiveMe.Scope = scope;
+            scope.BeforeDisposing += (x, y) =>
             {
-                Scope.UnuseDatenMeister();
-                _scope = null; // Set to null to avoid wrong use of scope
+                scope.UnuseDatenMeister();
+                GiveMe.ClearScope();
             };
 
-            return Scope;
+            return GiveMe.Scope;
+        }
+
+        public static IntegrationSettings GetDefaultIntegrationSettings()
+        {
+            return new IntegrationSettings
+            {
+                EstablishDataEnvironment = true,
+                DatabasePath = GiveMe.DefaultDatabasePath,
+#if NET462
+                PluginLoader = new DefaultPluginLoader()
+#else
+                PluginLoader = new DotNetCorePluginLoader()
+#endif
+            };
         }
 
         /// <summary>

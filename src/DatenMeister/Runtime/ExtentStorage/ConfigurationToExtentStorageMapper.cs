@@ -49,7 +49,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             {
                 if (ConnectedMetaClass == null)
                 {
-                    return base.ToString();
+                    return base.ToString() ?? "To String did not work";
                 }
 
                 return NamedElementMethods.GetFullName(ConnectedMetaClass);

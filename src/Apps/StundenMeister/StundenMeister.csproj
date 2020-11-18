@@ -5,7 +5,7 @@
     <Nullable>disable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net462;net5.0-windows</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>StundenMeister.ico</ApplicationIcon>
@@ -14,7 +14,6 @@
     <ProjectReference Include="..\..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj" />
     <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
     <ProjectReference Include="..\..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj" />
-    <ProjectReference Include="..\..\DatenMeister.NetCore\DatenMeister.NetCore.csproj" />
     <ProjectReference Include="..\..\DatenMeister.WPF\DatenMeister.WPF.csproj" />
     <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
     <ProjectReference Include="..\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />

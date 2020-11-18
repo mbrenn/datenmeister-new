@@ -92,7 +92,7 @@ namespace DatenMeister.WPF.Windows
                 r < countRows; 
                 r++)
             {
-                var item = (IDictionary<string, object>) new ExpandoObject();
+                var item = (IDictionary<string, object?>) new ExpandoObject();
 
                 for (
                     var c = 0;

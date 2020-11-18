@@ -102,7 +102,7 @@ namespace DatenMeister.WPF.Windows
                 _menu.Items.Add(tab);
             }
 
-            MenuItem group;
+            MenuItem? group;
             if (!string.IsNullOrEmpty(groupName))
             {
                 group = tab.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header.ToString() == groupName);

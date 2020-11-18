@@ -74,7 +74,7 @@ namespace DatenMeister.Runtime.DynamicFunctions
         
         public string Property { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is DerivedPropertyKey key)
             {

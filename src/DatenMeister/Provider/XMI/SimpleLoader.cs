@@ -48,19 +48,16 @@ namespace DatenMeister.Provider.XMI
         /// <param name="resourceName">Path to the resources</param>
         public void LoadFromEmbeddedResource(IFactory factory, IUriExtent extent, string resourceName)
         {
-            using (var stream = typeof(WorkspaceNames).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
-            {
-                LoadFromStream(factory, extent, stream);
-            }
+            using var stream = typeof(WorkspaceNames).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName)
+                               ?? throw new InvalidOperationException($"Stream for {resourceName} is not found");
+            LoadFromStream(factory, extent, stream);
         }
         
         public void LoadFromFile(IFactory factory, IUriExtent extent, string filePath)
         {
             if (factory == null) throw new ArgumentNullException(nameof(factory));
-            using (var stream = new FileStream(filePath, FileMode.Open))
-            {
-                LoadFromStream(factory, extent, stream);
-            }
+            using var stream = new FileStream(filePath, FileMode.Open);
+            LoadFromStream(factory, extent, stream);
         }
 
         /// <summary>

@@ -350,7 +350,8 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="workspace"></param>
         /// <returns></returns>
         public static IUriExtent GetInternalTypeExtent(IWorkspace workspace) =>
-            workspace.FindExtent(WorkspaceNames.UriExtentInternalTypes);
+            workspace.FindExtent(WorkspaceNames.UriExtentInternalTypes)
+                ?? throw new InvalidOperationException("Extent for internal Types not found");
 
         /// <summary>
         /// Gets the extent containing the
@@ -358,7 +359,8 @@ namespace DatenMeister.Modules.TypeSupport
         /// <param name="workspace"></param>
         /// <returns></returns>
         public static IUriExtent GetUserTypeExtent(IWorkspace workspace) =>
-            workspace.FindExtent(WorkspaceNames.UriExtentUserTypes);
+            workspace.FindExtent(WorkspaceNames.UriExtentUserTypes)
+                ?? throw new InvalidOperationException("Extent for user Types not found");
 
         /// <summary>
         /// Creates a new instance of the metaclass by looking through the internal extent

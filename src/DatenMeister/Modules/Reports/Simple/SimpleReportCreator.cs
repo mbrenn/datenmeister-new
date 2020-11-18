@@ -3,11 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlExporter.Formatter;
@@ -16,6 +14,7 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using static DatenMeister.Models._DatenMeister._Reports;
 
 namespace DatenMeister.Modules.Reports.Simple
 {
@@ -39,25 +38,17 @@ namespace DatenMeister.Modules.Reports.Simple
         /// <summary>
         /// Stores the configuration of the report engine
         /// </summary>
-        private readonly SimpleReportConfiguration _reportConfiguration;
-
-        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, IElement element)
-        {
-            _workspaceLogic = workspaceLogic;
-            _reportConfiguration = DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>( element);
-            _defaultClassifierHints = new DefaultClassifierHints();
-            _formCreator = FormCreator.Create(workspaceLogic, null);
-        }
+        private readonly IElement _reportConfiguration;
 
         /// <summary>
-        /// Initializes a new instance of the ReportCreator class.
+        /// Initializes a new instance of the simple report creator. 
         /// </summary>
-        /// <param name="workspaceLogic">Default workspace Logic to be used</param>
-        /// <param name="reportConfiguration">The report configuration to be used</param>
-        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, SimpleReportConfiguration reportConfiguration)
+        /// <param name="workspaceLogic">The workspace logic to be used</param>
+        /// <param name="simpleReportConfiguration">The configuration defining the layout of the report</param>
+        public SimpleReportCreator(IWorkspaceLogic workspaceLogic, IElement simpleReportConfiguration)
         {
             _workspaceLogic = workspaceLogic;
-            _reportConfiguration = reportConfiguration;
+            _reportConfiguration = simpleReportConfiguration;
             _defaultClassifierHints = new DefaultClassifierHints();
             _formCreator = FormCreator.Create(workspaceLogic, null);
         }
@@ -68,11 +59,11 @@ namespace DatenMeister.Modules.Reports.Simple
         /// <param name="textWriter">Text Writer to be used for html file creation</param>
         public void CreateReport(TextWriter textWriter)
         {
-            var creationMode = _reportConfiguration.showMetaClasses
+            var creationMode = _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
                 ? CreationMode.All
                 : CreationMode.All & ~CreationMode.AddMetaClass;
 
-            var rootElement = _reportConfiguration.rootElement;
+            var rootElement = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.rootElement);
             if (rootElement == null)
                 throw new InvalidOperationException("rootElement is null");
 
@@ -82,7 +73,7 @@ namespace DatenMeister.Modules.Reports.Simple
 
                 report.SetDefaultCssStyle();
 
-                if (_reportConfiguration.showRootElement)
+                if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showRootElement))
                 {
                     var name = NamedElementMethods.GetFullName(rootElement);
                     report.Add(new HtmlHeadline($"Reported Item + '{name}'", 1));
@@ -92,12 +83,12 @@ namespace DatenMeister.Modules.Reports.Simple
                 }
 
                 // And now start the report
-                report.StartReport("Extent: " + NamedElementMethods.GetName(_reportConfiguration.rootElement));
+                report.StartReport("Extent: " + NamedElementMethods.GetName(rootElement));
 
                 // First, gets the elements to be shown
                 IReflectiveCollection elements =
                     new TemporaryReflectiveCollection(_defaultClassifierHints.GetPackagedElements(rootElement));
-                if (_reportConfiguration.showDescendents)
+                if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showDescendents))
                 {
                     elements = elements.GetAllCompositesIncludingThemselves();
                 }
@@ -107,8 +98,8 @@ namespace DatenMeister.Modules.Reports.Simple
 
                 report.Add(new HtmlHeadline("Items in collection", 1));
 
-                var foundForm = _reportConfiguration.form;
-                if (_reportConfiguration.typeMode == ReportTableForTypeMode.PerType)
+                var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
+                if (_reportConfiguration.getOrDefault<___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == ___ReportTableForTypeMode.PerType)
                 {
                     // Splits them up by metaclasses 
                     var metaClasses =
@@ -163,7 +154,7 @@ namespace DatenMeister.Modules.Reports.Simple
 
         private void AddFullNameColumnIfNecessary(IObject foundForm)
         {
-            if (_reportConfiguration.showFullName)
+            if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showFullName))
             {
 
                 // Create the metaclass as a field

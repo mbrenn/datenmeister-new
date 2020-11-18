@@ -28,7 +28,8 @@ namespace DatenMeister.Runtime
             using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 var serializer = new XmlSerializer(typeof(T), GetAdditionalTypes());
-                return (T) serializer.Deserialize(fileStream);
+                return (T) 
+                    (serializer.Deserialize(fileStream) ?? throw new InvalidOperationException("Deserialization failed"));
             }
         }
 

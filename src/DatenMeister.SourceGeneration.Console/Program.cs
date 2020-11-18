@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
+using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;
@@ -44,7 +45,7 @@ namespace DatenMeister.SourceGeneration.Console
 
         private static void CreateSourceCodeForDatenMeisterAllTypes()
         {
-            var dm = GiveMeDotNetCore.DatenMeister();
+            var dm = GiveMe.DatenMeister();
             
             System.Console.Write("Create Sourcecode for DatenMeister...");
 

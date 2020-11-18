@@ -26,7 +26,7 @@ namespace DatenMeister.Modules.FastViewFilter
         /// <summary>
         /// Translates the filter to a filter text
         /// </summary>
-        /// <param name="fastFilter">Fastfilter t</param>
+        /// <param name="fastFilter">Fastfilter to be translated</param>
         /// <returns></returns>
         public string TranslateFilter(IElement fastFilter)
         {
@@ -48,7 +48,7 @@ namespace DatenMeister.Modules.FastViewFilter
                 return $"'{property}' contains '{contains}'";
             }
 
-            return fastFilter.ToString();
+            return fastFilter.ToString() ?? "Unknown Filter";
         }
     }
 }

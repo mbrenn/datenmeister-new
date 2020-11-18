@@ -2,13 +2,12 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
       <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
-      <ProjectReference Include="..\..\DatenMeister.NetCore\DatenMeister.NetCore.csproj" />
       <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
     </ItemGroup>
 

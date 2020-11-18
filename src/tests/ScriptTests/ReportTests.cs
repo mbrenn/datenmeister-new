@@ -3,9 +3,9 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Autofac;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipExample;
@@ -24,11 +24,11 @@ namespace ScriptTests
         
         private static string GetScriptFolder([CallerFilePath] string path = null) => Path.GetDirectoryName(path);
 
-        public static void TestReportIssues(SimpleReportConfiguration configuration) => TestReports(true, configuration);
+        public static void TestReportIssues(IElement configuration) => TestReports(true, configuration);
         
-        public static void TestReportZipCode(SimpleReportConfiguration configuration) => TestReports(false, configuration);
+        public static void TestReportZipCode(IElement configuration) => TestReports(false, configuration);
 
-        public static void TestReports(bool doIssues , SimpleReportConfiguration configuration)
+        public static void TestReports(bool doIssues , IElement configuration)
         {
             BurnSystems.Logging.TheLog.ClearProviders();
             BurnSystems.Logging.TheLog.AddProvider(new ConsoleProvider());
@@ -37,14 +37,13 @@ namespace ScriptTests
 
             GiveMe.DropDatenMeisterStorage(settings);
 
-            using (var dm = GiveMeDotNetCore.DatenMeister(settings))
+            using (var dm = GiveMe.DatenMeister(settings))
             {
                 DatenMeister.Core.EMOF.Interface.Identifiers.IUriExtent testExtent;
                 if (doIssues)
                 {
                     var extentManager = dm.Resolve<ExtentManager>();
-                    
-                    
+
                     var loaderConfig =
                         InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
                     loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///");
@@ -62,7 +61,7 @@ namespace ScriptTests
                         Path.Combine(GetScriptFolder(), "plz.csv"));
                 }
 
-                configuration.rootElement = testExtent;
+                configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, testExtent);
 
                 var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
                 Directory.CreateDirectory(targetPath);

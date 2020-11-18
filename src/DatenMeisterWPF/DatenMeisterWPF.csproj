@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net462;netcoreapp3.1;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net5.0-windows</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icons.ico</ApplicationIcon>
@@ -20,7 +20,6 @@
     <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj" />
     <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
-    <ProjectReference Include="..\DatenMeister.NetCore\DatenMeister.NetCore.csproj" />
     <ProjectReference Include="..\DatenMeister.WPF\DatenMeister.WPF.csproj" />
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>

@@ -61,7 +61,7 @@ namespace DatenMeister.Runtime.Workspaces
             return null;
         }
 
-        public static Workspace FindWorkspace(this IEnumerable<Workspace> workspaces, IUriExtent extent)
+        public static Workspace? FindWorkspace(this IEnumerable<Workspace> workspaces, IUriExtent extent)
         {
             return workspaces.FirstOrDefault(x => x.extent.Contains(extent));
         }
@@ -72,9 +72,9 @@ namespace DatenMeister.Runtime.Workspaces
         /// <param name="workspace">The workspace being queried</param>
         /// <param name="extentUri">The uri of the extent that is looked for</param>
         /// <returns>The found extent or null, if not found</returns>
-        public static IUriExtent FindExtent(this IWorkspace workspace, string extentUri)
+        public static IUriExtent? FindExtent(this IWorkspace workspace, string extentUri)
         {
-            return (IUriExtent) workspace.extent.FirstOrDefault(
+            return (IUriExtent?) workspace.extent.FirstOrDefault(
                 x => (x as IUriExtent)?.contextURI() == extentUri
                      || (x as MofUriExtent)?.AlternativeUris.Contains(extentUri) == true);
         }
@@ -321,6 +321,8 @@ namespace DatenMeister.Runtime.Workspaces
                 }
             }
         }
+        public static Workspace? TryGetManagementWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.WorkspaceManagement);
 
         public static Workspace GetManagementWorkspace(this IWorkspaceLogic logic) =>
             logic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
@@ -341,13 +343,15 @@ namespace DatenMeister.Runtime.Workspaces
         public static IUriExtent GetUserFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriExtentUserForm);
+            return mgmt.FindExtent(WorkspaceNames.UriExtentUserForm)
+                ?? throw new InvalidOperationException("User Forms not Found");
         }
 
         public static IUriExtent GetInternalFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
-            return mgmt.FindExtent(WorkspaceNames.UriExtentInternalForm);
+            return mgmt.FindExtent(WorkspaceNames.UriExtentInternalForm)
+                ?? throw new InvalidOperationException("Internal Forms not Found");
         }
 
         public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>

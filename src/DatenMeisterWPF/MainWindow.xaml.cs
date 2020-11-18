@@ -10,7 +10,6 @@ using System.Windows.Controls.Ribbon;
 using BurnSystems;
 using DatenMeister.Integration;
 using DatenMeister.Modules.PublicSettings;
-using DatenMeister.NetCore;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Locking;
@@ -58,13 +57,13 @@ namespace DatenMeisterWPF
         private async void Window_Initialized(object sender, EventArgs e)
         {
             MainControl.Content = new IntroScreen();
-            var defaultSettings = GiveMeDotNetCore.GetDefaultIntegrationSettings();
+            var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
             defaultSettings.IsLockingActivated = true;
 
             try
             {
                 GiveMe.Scope = await Task.Run(
-                    () => GiveMeDotNetCore.DatenMeister(defaultSettings));
+                    () => GiveMe.DatenMeister(defaultSettings));
             }
             catch (IsLockedException exception)
             {
@@ -186,12 +185,12 @@ namespace DatenMeisterWPF
                     9),
                 new ApplicationMenuButtonDefinition(
                     "Find by URL",
-                    () => NavigatorForDialogs.SearchByUrl(this),
+                    async () => await NavigatorForDialogs.SearchByUrl(this),
                     null,
                     NavigationCategories.DatenMeister + ".Database"),
                 new ApplicationMenuButtonDefinition(
                     "Locate",
-                    () => NavigatorForDialogs.LocateAndOpen(this),
+                    async () => await NavigatorForDialogs.LocateAndOpen(this),
                     null,
                     NavigationCategories.DatenMeister + ".Database"),
                 new ApplicationMenuButtonDefinition(

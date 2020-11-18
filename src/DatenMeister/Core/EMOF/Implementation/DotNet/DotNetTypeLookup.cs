@@ -57,7 +57,7 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
         public string ToElement(Type type)
         {
             _typesToElements.TryGetValue(type, out var result);
-            return result;
+            return result ?? string.Empty;
         }
 
         /// <inheritdoc />

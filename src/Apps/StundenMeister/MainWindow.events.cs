@@ -70,13 +70,13 @@ namespace StundenMeister
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            GiveMe.Scope?.UnuseDatenMeister();
+            GiveMe.Scope.UnuseDatenMeister();
         }
 
-        private void ManageCostCenters_Click(object sender, RoutedEventArgs e)
+        private async void ManageCostCenters_Click(object sender, RoutedEventArgs e)
         {
             var metaclass = StundenMeisterPlugin.Get().Data.ClassCostCenter;
-            NavigatorForItems.NavigateToItemsWithAutomaticForm(
+            await NavigatorForItems.NavigateToItemsWithAutomaticForm(
                 StundenMeisterPlugin.Get().Data
                     .Extent
                     .elements()
@@ -107,14 +107,14 @@ namespace StundenMeister
             DotNetHelper.CreateProcess(filePath);
         }
 
-        private void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)
+        private async void ManageTimeRecordings_Click(object sender, RoutedEventArgs e)
         {
             var metaclass = StundenMeisterPlugin.Get().Data.ClassTimeRecording;
             var dataWorkspace = GiveMe.Scope.WorkspaceLogic.GetDataWorkspace();
             var formTimeRecordings = dataWorkspace.ResolveById("formListTimeRecordings")
                 ?? throw new InvalidOperationException("formListTimeRecordings not found");
             
-            NavigatorForItems.NavigateToItems(
+            await NavigatorForItems.NavigateToItems(
                 StundenMeisterPlugin.Get().Data
                     .Extent
                     .elements()

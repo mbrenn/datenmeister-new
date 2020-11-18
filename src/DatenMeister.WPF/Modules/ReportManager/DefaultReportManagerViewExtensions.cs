@@ -4,12 +4,10 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using BurnSystems;
-using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.Reports.Simple;
 using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
@@ -98,10 +96,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
                             if (result != null)
                             {
-                                var configuration =
-                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(tempObject);
-                                configuration.rootElement = result;
-                                var simpleReport = new SimpleReportCreator(workspaceLogic, configuration);
+                                var simpleReport = new SimpleReportCreator(workspaceLogic, tempObject);
 
                                 string tmpPath;
                                 using (var streamWriter = GetRandomWriter(out tmpPath))
@@ -234,15 +229,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
                             {
                                 CreateReportForExplorerView(
                                     asExtent,
-                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(
-                                        simpleConfiguration));
+                                    simpleConfiguration);
                             }
                             else
                             {
                                 CreateReportForExplorerView(
                                     x,
-                                    DotNetConverter.ConvertToDotNetObject<SimpleReportConfiguration>(
-                                        simpleConfiguration));
+                                    simpleConfiguration);
                             }
                         }
                     },
@@ -257,17 +250,14 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// <param name="rootElement">Defines the item that is selected</param>
         /// <param name="simpleReportConfiguration">Describes the configuration to be used, otherwise a default
         /// configuration will be created</param>
-        private void CreateReportForExplorerView(IObject rootElement, SimpleReportConfiguration? simpleReportConfiguration = null)
+        private void CreateReportForExplorerView(IObject rootElement, IElement? simpleReportConfiguration = null)
         {
-            simpleReportConfiguration ??= new SimpleReportConfiguration
-            {
-                form = null, 
-                showDescendents = true,
-                showRootElement = true,
-                showFullName = true
-            };
-
-            simpleReportConfiguration.rootElement = rootElement;
+            simpleReportConfiguration ??=
+                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration)
+                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showDescendents, true)
+                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showRootElement, true)
+                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showFullName, true)
+                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, rootElement);
 
             string tmpPath;
             using (var streamWriter = GetRandomWriter(out tmpPath))

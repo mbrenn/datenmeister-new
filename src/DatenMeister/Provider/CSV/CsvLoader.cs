@@ -71,65 +71,63 @@ namespace DatenMeister.Provider.CSV
                 metaClass = _workspaceLogic.FindItem(metaClassUri);
             }
 
-            using (var streamReader = new StreamReader(stream, Encoding.GetEncoding(
-                settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8")))
+            using var streamReader = new StreamReader(stream, Encoding.GetEncoding(
+                settings.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._CsvSettings.encoding) ?? "UTF-8"));
+            var tempColumns = columns?.OfType<string>().ToList();
+                
+            if (tempColumns == null)
             {
-                var tempColumns = columns?.OfType<string>().ToList();
-                
-                if (tempColumns == null)
-                {
-                    createColumns = true;
-                    tempColumns = new List<string>();
-                }
-
-                // Reads header, if necessary
-                if (hasHeader)
-                {
-                    tempColumns.Clear();
-
-                    // Creates the column names for the headline
-                    var ignoredLine = streamReader.ReadLine();
-                    var columnNames = SplitLine(ignoredLine, settings);
-                    foreach (var columnName in columnNames)
-                    {
-                        tempColumns.Add(columnName);
-                    }
-                }
-
-                // Reads the data itself
-                string? line;
-                while ((line = streamReader.ReadLine()) != null)
-                {
-                    var values = SplitLine(line, settings);
-
-                    var csvObject = extent.CreateElement(metaClass?.GetUri());
-
-                    // we now have the created object, let's fill it
-                    var valueCount = values.Count;
-                    for (var n = 0; n < valueCount; n++)
-                    {
-                        string foundColumn;
-
-                        // Check, if we have enough columns, if we don't have enough columns, create one
-                        if (tempColumns.Count <= n && (createColumns || !hasHeader))
-                        {
-                            // Create new column
-                            foundColumn = $"Column {n + 1}";
-                            tempColumns.Add(foundColumn);
-                        }
-                        else
-                        {
-                            foundColumn = tempColumns[n];
-                        }
-
-                        csvObject.SetProperty(foundColumn, values[n]);
-                    }
-
-                    extent.AddElement(csvObject);
-                }
-                
-                settings?.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
+                createColumns = true;
+                tempColumns = new List<string>();
             }
+
+            // Reads header, if necessary
+            if (hasHeader)
+            {
+                tempColumns.Clear();
+
+                // Creates the column names for the headline
+                var ignoredLine = streamReader.ReadLine();
+                var columnNames = SplitLine(ignoredLine, settings);
+                foreach (var columnName in columnNames)
+                {
+                    tempColumns.Add(columnName);
+                }
+            }
+
+            // Reads the data itself
+            string? line;
+            while ((line = streamReader.ReadLine()) != null)
+            {
+                var values = SplitLine(line, settings);
+
+                var csvObject = extent.CreateElement(metaClass?.GetUri());
+
+                // we now have the created object, let's fill it
+                var valueCount = values.Count;
+                for (var n = 0; n < valueCount; n++)
+                {
+                    string foundColumn;
+
+                    // Check, if we have enough columns, if we don't have enough columns, create one
+                    if (tempColumns.Count <= n && (createColumns || !hasHeader))
+                    {
+                        // Create new column
+                        foundColumn = $"Column {n + 1}";
+                        tempColumns.Add(foundColumn);
+                    }
+                    else
+                    {
+                        foundColumn = tempColumns[n];
+                    }
+
+                    csvObject.SetProperty(foundColumn, values[n]);
+                }
+
+                extent.AddElement(csvObject);
+            }
+                
+            settings?.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.columns, tempColumns);
         }
 
         /// <summary>

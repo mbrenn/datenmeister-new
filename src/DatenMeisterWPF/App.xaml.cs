@@ -26,7 +26,8 @@ namespace DatenMeisterWPF
             // Preload Public Settings
             var publicSettingsPath = Assembly.GetEntryAssembly()?.Location;
             var publicSettings = 
-                PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(publicSettingsPath));
+                PublicSettingHandler.LoadSettingsFromDirectory(
+                    Path.GetDirectoryName(publicSettingsPath) ?? throw new InvalidOperationException("Path returned null"));
             if (publicSettings == null || publicSettings.logLocation != LogLocation.None)
             {
                 var location = publicSettings?.logLocation ?? LogLocation.Application;
@@ -99,8 +100,8 @@ namespace DatenMeisterWPF
             string message = $"Unhandled exception ({source})";
             try
             {
-                System.Reflection.AssemblyName assemblyName =
-                    System.Reflection.Assembly.GetExecutingAssembly().GetName();
+                var assemblyName =
+                    Assembly.GetExecutingAssembly().GetName();
                 message = $"Unhandled exception in {assemblyName.Name} v{assemblyName.Version}";
             }
             catch (Exception ex)

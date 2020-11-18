@@ -155,7 +155,8 @@ namespace DatenMeister.Integration
             
             var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(
-                Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location));
+                Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location) 
+                ?? throw new InvalidOperationException("Path is null"));
             
             Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();
@@ -213,7 +214,6 @@ namespace DatenMeister.Integration
 
             // Creates the workspace and extent for the types layer which are belonging to the types
             var localTypeSupport = scope.Resolve<LocalTypeSupport>();
-            var mofFactory = new MofFactory(localTypeSupport.InternalTypes);
             var packageMethods = scope.Resolve<PackageMethods>();
             var internalUserExtent = localTypeSupport.InternalTypes;
 
@@ -309,7 +309,7 @@ namespace DatenMeister.Integration
                 var path = Assembly.GetEntryAssembly()?.Location;
                 if (path != null)
                 {
-                    _publicSettings = PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(path));
+                    _publicSettings = PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(path) ?? throw new InvalidOperationException("Path is null"));
                     if (_publicSettings != null)
                     {
                         if (_publicSettings.databasePath != null && !string.IsNullOrEmpty(_publicSettings.databasePath))

@@ -10,6 +10,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="100"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.Resources>
@@ -82,7 +83,14 @@ Portions Copyright © 2002-2012 Charlie Poole or Copyright © 2002-2004 James W.
                 </TextBlock>
             </ScrollViewer>
         </Border>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+
+        <Border Grid.Row="1"  BorderBrush="Black" BorderThickness="1" Margin="10">
+            <ScrollViewer>
+                <TextBox HorizontalAlignment="Stretch" TextWrapping="Wrap" Margin="5" x:Name="TxtEnvironment">
+                </TextBox>
+            </ScrollViewer>
+        </Border>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button  Content="Close" Style="{StaticResource TouchButton}" IsCancel="True"/>
         </StackPanel>
     </Grid>

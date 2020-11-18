@@ -22,6 +22,11 @@ namespace DatenMeister.Runtime.Workspaces
         
         private readonly ChangeEventManager? _changeEventManager;
 
+        /// <summary>
+        /// Cache to store the uri storing the extents as a provider object
+        /// </summary>
+        private IUriExtent? _cacheUriExtents;
+
         private WorkspaceLogic(WorkspaceData workspaceData, IScopeStorage? scopeStorage)
         {
             _workspaceData = workspaceData;
@@ -191,7 +196,12 @@ namespace DatenMeister.Runtime.Workspaces
                 _changeEventManager?.SendChangeEvent((IWorkspace) workspace);
             }
 
-            _changeEventManager?.SendChangeEvent(this.GetManagementWorkspace().FindExtent(WorkspaceNames.UriExtentWorkspaces));
+            _cacheUriExtents ??= this.TryGetManagementWorkspace()?.FindExtent(WorkspaceNames.UriExtentWorkspaces);
+
+            if (_cacheUriExtents != null)
+            {
+                _changeEventManager?.SendChangeEvent(_cacheUriExtents);
+            }
         }
 
         /// <summary>

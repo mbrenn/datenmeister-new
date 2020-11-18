@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Runtime.Workspaces;
+using System;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
@@ -30,7 +31,8 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         public static IUriExtent GetExtentsForWorkspaces(IDatenMeisterScope scope)
         {
             var workspaceLogic = scope.Resolve<IWorkspaceLogic>();
-            return workspaceLogic.GetManagementWorkspace().FindExtent(WorkspaceNames.UriExtentWorkspaces);
+            return workspaceLogic.GetManagementWorkspace().FindExtent(WorkspaceNames.UriExtentWorkspaces)
+                ?? throw new InvalidOperationException("Extent for uri extents not found");
         }
     }
 }

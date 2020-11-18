@@ -23,82 +23,82 @@ namespace DatenMeister.Modules.TextTemplates
             return TypeCode.Object;
         }
 
-        public bool ToBoolean(IFormatProvider provider)
+        public bool ToBoolean(IFormatProvider? provider)
         {
             return false;
         }
 
-        public byte ToByte(IFormatProvider provider)
+        public byte ToByte(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public char ToChar(IFormatProvider provider)
+        public char ToChar(IFormatProvider? provider)
         {
             return '\0';
         }
 
-        public DateTime ToDateTime(IFormatProvider provider)
+        public DateTime ToDateTime(IFormatProvider? provider)
         {
             return DateTime.MinValue;
         }
 
-        public decimal ToDecimal(IFormatProvider provider)
+        public decimal ToDecimal(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public double ToDouble(IFormatProvider provider)
+        public double ToDouble(IFormatProvider? provider)
         {
             return 0.0;
         }
 
-        public short ToInt16(IFormatProvider provider)
+        public short ToInt16(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public int ToInt32(IFormatProvider provider)
+        public int ToInt32(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public long ToInt64(IFormatProvider provider)
+        public long ToInt64(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public sbyte ToSByte(IFormatProvider provider)
+        public sbyte ToSByte(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public float ToSingle(IFormatProvider provider)
+        public float ToSingle(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public string ToString(IFormatProvider provider)
+        public string ToString(IFormatProvider? provider)
         {
             return string.Empty;
         }
 
-        public object ToType(Type conversionType, IFormatProvider provider)
+        public object ToType(Type? conversionType, IFormatProvider? provider)
         {
             throw new InvalidOperationException();
         }
 
-        public ushort ToUInt16(IFormatProvider provider)
+        public ushort ToUInt16(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public uint ToUInt32(IFormatProvider provider)
+        public uint ToUInt32(IFormatProvider? provider)
         {
             return 0;
         }
 
-        public ulong ToUInt64(IFormatProvider provider)
+        public ulong ToUInt64(IFormatProvider? provider)
         {
             return 0;
         }

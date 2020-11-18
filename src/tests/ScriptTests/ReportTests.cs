@@ -37,7 +37,7 @@ namespace ScriptTests
 
             GiveMe.DropDatenMeisterStorage(settings);
 
-            using (var dm = GiveMeDotNetCore.DatenMeister(settings))
+            using (var dm = GiveMe.DatenMeister(settings))
             {
                 DatenMeister.Core.EMOF.Interface.Identifiers.IUriExtent testExtent;
                 if (doIssues)

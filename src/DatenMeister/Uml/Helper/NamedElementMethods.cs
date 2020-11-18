@@ -247,7 +247,7 @@ namespace DatenMeister.Uml.Helper
             {
                 MofObjectShadow shadowedObject => shadowedObject.Uri,
                 MofObject _ => "MofObject",
-                _ => element.ToString()
+                _ => element.ToString() ?? "No string"
             };
         }
 
@@ -265,7 +265,7 @@ namespace DatenMeister.Uml.Helper
 
             return
                 !(element is IObject asObject)
-                    ? element.ToString()
+                    ? element.ToString() ?? "No element"
                     : GetName(asObject);
         }
     }

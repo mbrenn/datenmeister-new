@@ -417,7 +417,7 @@ namespace DatenMeister.Uml
                         throw new InvalidOperationException(elementInstance.ToString());
                     }
 
-                    var generalAsString = general.ToString();
+                    var generalAsString = general.ToString() ?? throw new InvalidOperationException("ToString did not work");
                     if (DotNetHelper.IsOfMofObject(general))
                     {
                         elementInstance.set("general", general as IElement);

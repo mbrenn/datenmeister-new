@@ -33,7 +33,7 @@ namespace DatenMeister.Runtime
             if (DotNetHelper.IsOfEnumeration(value))
             {
                 var asEnumeration = (IEnumerable) value;
-                return asEnumeration.Cast<object>().FirstOrDefault();
+                return asEnumeration.Cast<object>().First();
             }
 
             return value;

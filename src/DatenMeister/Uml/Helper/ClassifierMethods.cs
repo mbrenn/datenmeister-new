@@ -69,7 +69,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="classifier">Classifier being queried</param>
         /// <param name="propertyName">Name of the properties</param>
         /// <returns>The found property</returns>
-        public static IElement GetPropertyOfClassifier(IObject classifier, string propertyName)
+        public static IElement? GetPropertyOfClassifier(IObject classifier, string propertyName)
         {
             if (classifier == null) throw new ArgumentNullException(nameof(classifier));
 
@@ -211,7 +211,7 @@ namespace DatenMeister.Uml.Helper
             return GetPropertiesOfClassifier(classifier)
                 .Select(x => x.get("name"))
                 .Where(x => x != null)
-                .Select(x => x!.ToString());
+                .Select(x => x?.ToString() ?? string.Empty);
         }
 
         /// <summary>

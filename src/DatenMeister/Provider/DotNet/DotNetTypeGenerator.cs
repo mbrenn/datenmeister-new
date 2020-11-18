@@ -91,7 +91,7 @@ namespace DatenMeister.Provider.DotNet
                 var umlClass = _factoryForTypes.create(_UML.TheOne.StructuredClassifiers.__Class);
                 if (umlClass is ICanSetId umlClassAsSet)
                 {
-                    umlClassAsSet.Id = type.FullName;
+                    umlClassAsSet.Id = type.FullName ?? throw new InvalidOperationException("Unknown FullName");
                 }
 
                 umlClass.set(_UML._CommonStructure._NamedElement.name, type.Name);
@@ -158,6 +158,8 @@ namespace DatenMeister.Provider.DotNet
                 var enumValues = new List<IObject>();
                 foreach (var enumValue in type.GetEnumValues())
                 {
+                    if (enumValue == null) continue;
+
                     var enumValueClass = _factoryForTypes.create(_UML.TheOne.SimpleClassifiers.__EnumerationLiteral);
                     if (enumValueClass is ICanSetId umlValueClassAsSet)
                     {

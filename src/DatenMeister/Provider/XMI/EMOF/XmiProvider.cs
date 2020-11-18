@@ -69,7 +69,7 @@ namespace DatenMeister.Provider.XMI.EMOF
             var rootNodeName = document.Elements().First().Name;
 
             _document = document;
-            _rootNode = _document.Element(rootNodeName);
+            _rootNode = _document.Element(rootNodeName) ?? throw new InvalidOperationException("Xml Document inconclusive");
 
             if (_rootNode == null)
             {

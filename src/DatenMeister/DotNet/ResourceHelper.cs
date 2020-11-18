@@ -27,7 +27,12 @@ namespace DatenMeister.DotNet
         {
             using var stream =
                 typeInAssembly.Assembly.GetManifestResourceStream(resourcePath);
-            
+
+            if (stream == null)
+            {
+                throw new InvalidOperationException($"The Manifest Resource Stream {resourcePath} was not found");
+            }
+
             return XDocument.Load(stream);
         }
 
@@ -35,10 +40,11 @@ namespace DatenMeister.DotNet
         {
             var xml = LoadXmlFromAssembly(typeInAssembly, resourcePath);
             var xmlProvider = new XmiProvider(xml);
+            var root = xml.Root ?? throw new InvalidOperationException("The Xml Document does not have a root");
 
             var extent = new MofExtent(xmlProvider);
             var element = new MofElement(
-                xmlProvider.CreateProviderObject(xml.Root), extent);
+                xmlProvider.CreateProviderObject(root), extent);
 
             return element;
         }

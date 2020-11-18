@@ -128,7 +128,7 @@ namespace DatenMeister.Runtime.Workspaces
         {
             lock (_workspaceData)
             {
-                return _workspaceData.Workspaces.FirstOrDefault(x => x.id == id);
+                return _workspaceData.Workspaces.First(x => x.id == id);
             }
         }
 

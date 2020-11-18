@@ -66,7 +66,7 @@ namespace DatenMeister.Runtime.Plugins
                     }
 
                     if (AppDomain.CurrentDomain.GetAssemblies().All(
-                        x => x.GetName().Name.ToLower() != filenameWithoutExtension))
+                        x => x.GetName().Name?.ToLower() != filenameWithoutExtension))
                     {
                         try
                         {
@@ -92,7 +92,8 @@ namespace DatenMeister.Runtime.Plugins
         /// </summary>
         public void LoadAllAssembliesFromCurrentDirectory()
         {
-            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+                                ?? throw new InvalidOperationException("directoryName is not set");
             LoadAssembliesFromFolder(directoryName);
         }
 

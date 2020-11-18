@@ -87,11 +87,14 @@ namespace DatenMeister.Provider.CSV
                 tempColumns.Clear();
 
                 // Creates the column names for the headline
-                var ignoredLine = streamReader.ReadLine();
-                var columnNames = SplitLine(ignoredLine, settings);
-                foreach (var columnName in columnNames)
+                var headerLine = streamReader.ReadLine();
+                if (headerLine != null)
                 {
-                    tempColumns.Add(columnName);
+                    var columnNames = SplitLine(headerLine, settings);
+                    foreach (var columnName in columnNames)
+                    {
+                        tempColumns.Add(columnName);
+                    }
                 }
             }
 

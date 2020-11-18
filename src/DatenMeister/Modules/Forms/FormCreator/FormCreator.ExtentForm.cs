@@ -315,7 +315,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             public class PropertyNameEqualityComparer : IEqualityComparer<P>
             {
-                public bool Equals(P x, P y)
+                public bool Equals(P? x, P? y)
                 {
                     if (x == null || y == null)
                     {

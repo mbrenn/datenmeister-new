@@ -16,7 +16,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="queryProperty">The property's value that should match to query Value</param>
         /// <param name="queryValue">The query value that should match.</param>
         /// <returns>The found object</returns>
-        public static IObject GetChildWithProperty(
+        public static IObject? GetChildWithProperty(
             IObject element,
             string childrenProperty,
             string queryProperty,
@@ -46,7 +46,7 @@ namespace DatenMeister.Runtime.Functions.Queries
         /// <param name="queryProperty">The property's value that should match to query Value</param>
         /// <param name="queryValue">The query value that should match.</param>
         /// <returns>The found object</returns>
-        public static IObject GetChildWithProperty(IReflectiveCollection reflectiveCollection, string queryProperty,
+        public static IObject? GetChildWithProperty(IReflectiveCollection reflectiveCollection, string queryProperty,
             object queryValue)
         {
             return reflectiveCollection

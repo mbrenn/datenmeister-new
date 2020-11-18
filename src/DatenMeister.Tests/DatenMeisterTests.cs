@@ -1,9 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
-using DatenMeister.NetCore;
 #if !NET462
 using DatenMeister.NetCore.Modules.PluginLoader;
 #endif
@@ -47,7 +47,7 @@ namespace DatenMeister.Tests
                 GiveMe.DropDatenMeisterStorage(integrationSettings);
             }
 
-            return GiveMeDotNetCore.DatenMeister(integrationSettings);
+            return GiveMe.DatenMeister(integrationSettings);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace DatenMeister.Tests
         public static IntegrationSettings GetIntegrationSettings(bool dropDatabase = true)
         {
             var path = Path.Combine(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException("Get Directory Name failed"),
                 "testing/datenmeister/data");
             var integrationSettings = new IntegrationSettings
             {

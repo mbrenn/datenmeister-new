@@ -184,12 +184,12 @@ namespace DatenMeister.Provider.XMI.EMOF
         {
             if (value is string)
             {
-                return value.ToString();
+                return value.ToString() ?? throw new InvalidOperationException();
             }
 
             if (DotNetHelper.IsOfBoolean(value))
             {
-                return value.ToString();
+                return value.ToString() ?? throw new InvalidOperationException();
             }
 
             if (value is double valueAsDouble)
@@ -199,12 +199,12 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             if (DotNetHelper.IsOfNumber(value))
             {
-                return value.ToString();
+                return value.ToString() ?? throw new InvalidOperationException();
             }
 
             if (DotNetHelper.IsOfChar(value))
             {
-                return value.ToString();
+                return value.ToString() ?? throw new InvalidOperationException();
             }
 
             if (value is DateTime propertyAsDateTime)
@@ -214,7 +214,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             if (value.GetType().IsEnum)
             {
-                return value.ToString();
+                return value.ToString() ?? throw new InvalidOperationException();
             }
 
             if (value == null)
@@ -680,7 +680,9 @@ namespace DatenMeister.Provider.XMI.EMOF
             {
                 lock (_xmiProvider.LockObject)
                 {
-                    return _xmiProvider.CreateProviderObject(XmlNode.Parent);
+                    return XmlNode.Parent != null 
+                        ? _xmiProvider.CreateProviderObject(XmlNode.Parent) 
+                        : null;
                 }
             }
 
@@ -771,7 +773,7 @@ namespace DatenMeister.Provider.XMI.EMOF
         /// Converts the xmiproviderobject to string
         /// </summary>
         /// <returns>The converted object</returns>
-        public override string ToString()
+        public override string? ToString()
         {
             lock (_xmiProvider.LockObject)
             {

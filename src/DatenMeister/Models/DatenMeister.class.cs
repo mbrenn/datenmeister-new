@@ -2209,6 +2209,56 @@ namespace DatenMeister.Models
 
         public _FastViewFilters FastViewFilters = new _FastViewFilters();
 
+        public class _DynamicRuntimeProvider
+        {
+            public class _DynamicRuntimeLoaderConfig
+            {
+                public static string @runtimeClass = "runtimeClass";
+                public IElement? @_runtimeClass = null;
+
+                public static string @configuration = "configuration";
+                public IElement? @_configuration = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
+            }
+
+            public _DynamicRuntimeLoaderConfig @DynamicRuntimeLoaderConfig = new _DynamicRuntimeLoaderConfig();
+            public IElement @__DynamicRuntimeLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#8be3c0ea-ef40-4b4a-a4ea-9262e924d7b8");
+
+            public class _Examples
+            {
+                public class _NumberProviderSettings
+                {
+                    public static string @start = "start";
+                    public IElement? @_start = null;
+
+                    public static string @end = "end";
+                    public IElement? @_end = null;
+
+                }
+
+                public _NumberProviderSettings @NumberProviderSettings = new _NumberProviderSettings();
+                public IElement @__NumberProviderSettings = new MofObjectShadow("dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a");
+
+            }
+
+            public _Examples Examples = new _Examples();
+
+        }
+
+        public _DynamicRuntimeProvider DynamicRuntimeProvider = new _DynamicRuntimeProvider();
+
         public class _UserManagement
         {
             public class _User

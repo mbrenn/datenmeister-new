@@ -1138,6 +1138,18 @@
         <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
         <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+        <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="6f9e76bf-2b55-4fb0-b593-8c3e11a51a09" name="name" type-ref="dm:///_internal/model/primitivetypes#String">
+          <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+          <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+          <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+          <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+          <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+          <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+          <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+          <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+          <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+          <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+        </ownedAttribute>
         <ownedAttribute p2:type="dm:///_internal/model/uml#Property" p2:id="a73ea7aa-a430-44d5-8f33-05360fd8f8ec" name="start" type-ref="dm:///_internal/model/primitivetypes#Integer">
           <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
           <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />

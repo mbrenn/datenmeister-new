@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using DatenMeister.Runtime;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using static DatenMeister.Models._DatenMeister._DynamicRuntimeProvider;
 
 namespace DatenMeister.Provider.DynamicRuntime
 {
@@ -53,10 +55,16 @@ namespace DatenMeister.Provider.DynamicRuntime
 
         public IEnumerable<IProviderObject> GetRootObjects()
         {
+
+            var runtimeConfiguration = _configuration.getOrDefault<IElement>(_DynamicRuntimeLoaderConfig.configuration);
             var n = 1;
-            foreach (var element in _provider.Get(this, _configuration))
+            foreach (var element in _provider.Get(this, runtimeConfiguration))
             {
-                element.Id = n.ToString(CultureInfo.InvariantCulture);
+                if (string.IsNullOrEmpty(element.Id))
+                {
+                    element.Id = n.ToString(CultureInfo.InvariantCulture);
+                }
+
                 yield return element;
                 n++;
             }

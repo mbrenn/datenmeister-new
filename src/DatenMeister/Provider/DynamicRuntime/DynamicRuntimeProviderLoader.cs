@@ -21,8 +21,7 @@ namespace DatenMeister.Provider.DynamicRuntime
 
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
-            var runtimeClass= configuration.getOrDefault<string>(_DynamicRuntimeLoaderConfig.runtimeClass);
-            var runtimeConfiguration = configuration.getOrDefault<IElement>(_DynamicRuntimeLoaderConfig.configuration);
+            var runtimeClass = configuration.getOrDefault<string>(_DynamicRuntimeLoaderConfig.runtimeClass);
             if (runtimeClass == null || string.IsNullOrEmpty(runtimeClass))
             {
                 Logger.Warn("No configuration is set");
@@ -48,7 +47,9 @@ namespace DatenMeister.Provider.DynamicRuntime
                 throw new InvalidOperationException(message);
             }
 
-            var resultProvider = new DynamicRuntimeProviderWrapper(provider, configuration);
+            var resultProvider = new DynamicRuntimeProviderWrapper(
+                provider,
+                configuration);
             return new LoadedProviderInfo(resultProvider, configuration);
         }
 

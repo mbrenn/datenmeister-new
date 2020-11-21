@@ -436,7 +436,6 @@ namespace DatenMeister.WPF.Forms.Base
                             ? selectedItemPosition
                             : selectedItemPosition - 1;
                     }
-
                 });
 
                 watch.Stop();

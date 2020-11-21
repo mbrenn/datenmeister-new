@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Provider;
 using DatenMeister.Provider.DynamicRuntime;
@@ -15,11 +16,11 @@ namespace DatenMeister.Modules.DynamicRuntimeProviders
         public IEnumerable<IProviderObject> Get(DynamicRuntimeProviderWrapper wrapper, IElement configuration)
         {
             var begin =
-                configuration.isSet(_NumberProviderSettings.start)
+                configuration?.isSet(_NumberProviderSettings.start) == true
                     ? configuration.getOrDefault<int>(_NumberProviderSettings.start)
                     : 0;
             var end =
-                configuration.isSet(_NumberProviderSettings.start)
+                configuration?.isSet(_NumberProviderSettings.start) == true
                     ? configuration.getOrDefault<int>(_NumberProviderSettings.end)
                     : 100;
 
@@ -30,6 +31,7 @@ namespace DatenMeister.Modules.DynamicRuntimeProviders
                 item.SetProperty("octal", Convert.ToString(n, 8));
                 item.SetProperty("decimal", Convert.ToString(n, 10));
                 item.SetProperty("hexadecimal", Convert.ToString(n, 16));
+                item.Id = n.ToString(CultureInfo.InvariantCulture);
                 yield return item;
             }
         }

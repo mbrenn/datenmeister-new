@@ -42,7 +42,7 @@ namespace DatenMeister.Modules.Reports
         public static AdocReportEvaluators CreateAdocEvaluators()
         {
             var evaluator = new AdocReportEvaluators();
-            evaluator.AddEvaluator(new AdocEvalReportTitle());
+            evaluator.AddEvaluator(new AdocEvalReportHeadline());
             evaluator.AddEvaluator(new AdocEvalReportParagraph());
             evaluator.AddEvaluator(new AdocEvalReportTable());
             return evaluator;

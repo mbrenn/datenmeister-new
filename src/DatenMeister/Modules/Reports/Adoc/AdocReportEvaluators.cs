@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DatenMeister.Modules.Reports.Generic;
 
 namespace DatenMeister.Modules.Reports.Adoc
 {
@@ -11,23 +12,15 @@ namespace DatenMeister.Modules.Reports.Adoc
         /// <summary>
         /// Stores the html report evaluators
         /// </summary>
-        private readonly List<IAdocReportEvaluator> _adocReportEvaluators = new List<IAdocReportEvaluator>();
+        private readonly List<IGenericReportEvaluator<AdocGenericReportCreator>> _adocReportEvaluators = 
+            new List<IGenericReportEvaluator<AdocGenericReportCreator>>();
         
         /// <summary>
         /// Gets the evaluators
         /// </summary>
-        public IEnumerable<IAdocReportEvaluator> Evaluators => _adocReportEvaluators.ToList();
+        public IEnumerable<IGenericReportEvaluator<AdocGenericReportCreator>> Evaluators => _adocReportEvaluators.ToList();
 
-        public void AddEvaluator(IAdocReportEvaluator evaluator)
-        {
-            _adocReportEvaluators.Add(evaluator);
-        }
-
-        /// <summary>
-        /// Adds an additional evaluators
-        /// </summary>
-        /// <param name="evaluator"></param>
-        public void Add(IAdocReportEvaluator evaluator)
+        public void AddEvaluator(IGenericReportEvaluator<AdocGenericReportCreator> evaluator)
         {
             _adocReportEvaluators.Add(evaluator);
         }

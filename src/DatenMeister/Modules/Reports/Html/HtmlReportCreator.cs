@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
@@ -16,7 +17,7 @@ namespace DatenMeister.Modules.Reports.Html
     /// <summary>
     /// Creates the report
     /// </summary>
-    public class HtmlReportCreator : ReportCreator
+    public class HtmlReportCreator : GenericReportCreator
     {
         private readonly ClassLogger Logger = new ClassLogger(typeof(HtmlReportCreator));
 

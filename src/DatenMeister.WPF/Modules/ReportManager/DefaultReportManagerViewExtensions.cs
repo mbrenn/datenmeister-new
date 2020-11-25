@@ -12,6 +12,7 @@ using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Adoc;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Provider.InMemory;
@@ -142,7 +143,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         (x, definition) =>
                         {
                             var reportGenerator =
-                                new AdocReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+                                new AdocGenericReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
                             CreateReportWithDefinition(reportGenerator, definition, ".adoc");
                         });
             }
@@ -154,7 +155,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// <param name="reportGenerator">Report generator to be used</param>
         /// <param name="definition">Definition to be used for the report</param>
         /// <param name="extension">Extension of the file to be used</param>
-        private static void CreateReportWithDefinition(ReportCreator reportGenerator, IObject definition, string extension)
+        private static void CreateReportWithDefinition(GenericReportCreator reportGenerator, IObject definition, string extension)
         {
             var sources = reportGenerator.EvaluateSources(definition);
             foreach (var source in sources)

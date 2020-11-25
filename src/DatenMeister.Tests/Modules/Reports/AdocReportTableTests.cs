@@ -102,7 +102,7 @@ namespace DatenMeister.Tests.Modules.Reports
 
             /* Now create the report */
             var writer = new StringWriter();
-            var htmlReport = new AdocReportCreator(workspaceLogic, scopeStorage);
+            var htmlReport = new AdocGenericReportCreator(workspaceLogic, scopeStorage);
             htmlReport.GenerateReportByInstance(reportInstance, writer);
 
             var asString = writer.ToString();

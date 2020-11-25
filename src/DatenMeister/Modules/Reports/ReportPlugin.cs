@@ -44,7 +44,7 @@ namespace DatenMeister.Modules.Reports
             var evaluator = new AdocReportEvaluators();
             evaluator.AddEvaluator(new AdocEvalReportHeadline());
             evaluator.AddEvaluator(new AdocEvalReportParagraph());
-            evaluator.AddEvaluator(new AdocEvalReportTable());
+            /*evaluator.AddEvaluator(new AdocEvalReportTable());*/
             return evaluator;
         }
     }

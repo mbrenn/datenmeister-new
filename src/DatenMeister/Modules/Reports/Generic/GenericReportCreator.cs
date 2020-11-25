@@ -15,11 +15,11 @@ using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.Reports
+namespace DatenMeister.Modules.Reports.Generic
 {
-    public abstract class ReportCreator
+    public abstract class GenericReportCreator
     {
-        private readonly ClassLogger Logger = new ClassLogger(typeof(ReportCreator));
+        private readonly ClassLogger Logger = new ClassLogger(typeof(GenericReportCreator));
 
         /// <summary>
         /// Stores the possible source of the report
@@ -36,7 +36,7 @@ namespace DatenMeister.Modules.Reports
         /// </summary>
         public Dictionary<string, IReflectiveCollection> Sources => _sources;
 
-        public ReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        public GenericReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             WorkspaceLogic = workspaceLogic;
             ScopeStorage = scopeStorage;

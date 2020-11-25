@@ -22,7 +22,7 @@ namespace DatenMeister.Modules.Reports.Adoc
             return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
         }
 
-        public void Evaluate(AdocReportCreator adocReportCreator, IElement reportNode, TextWriter writer)
+        public void Evaluate(AdocGenericReportCreator adocGenericReportCreator, IElement reportNode, TextWriter writer)
         {
             var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
             if (viewNode == null)
@@ -33,7 +33,7 @@ namespace DatenMeister.Modules.Reports.Adoc
             
             var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
 
-            var dataviewEvaluation = adocReportCreator.GetDataViewEvaluation();
+            var dataviewEvaluation = adocGenericReportCreator.GetDataViewEvaluation();
             var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
 
             // Find form 
@@ -41,7 +41,7 @@ namespace DatenMeister.Modules.Reports.Adoc
             {
                 // Create form
                 var formCreator = FormCreator.Create(
-                    adocReportCreator.WorkspaceLogic, 
+                    adocGenericReportCreator.WorkspaceLogic, 
                     null);
                 form = formCreator.CreateListFormForElements(elements, CreationMode.All);
             }

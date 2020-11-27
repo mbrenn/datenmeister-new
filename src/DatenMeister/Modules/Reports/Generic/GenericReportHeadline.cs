@@ -18,7 +18,7 @@ namespace DatenMeister.Modules.Reports.Generic
         /// </summary>
         /// <param name="reportCreator">Report reportCreator</param>
         /// <param name="reportNode">The report node</param>
-        public void Evaluate(GenericReportLogic reportLogic, T reportCreator, IElement reportNode)
+        public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNode)
         {
             var headline = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportHeadline.title);
             WriteHeadline(reportCreator, headline);

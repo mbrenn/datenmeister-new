@@ -58,7 +58,7 @@ namespace DatenMeister.Modules.Reports.Generic
         /// <param name="cellContents"></param>
         public abstract void WriteRow(T reportCreator, IEnumerable<TableCellContent> cellContents);
 
-        public void Evaluate(GenericReportLogic reportLogic, T reportCreator, IElement reportNode)
+        public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNode)
         {
             var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportTable.viewNode);
             if (viewNode == null)

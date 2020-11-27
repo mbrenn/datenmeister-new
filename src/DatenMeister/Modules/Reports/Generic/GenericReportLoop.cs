@@ -15,7 +15,7 @@ namespace DatenMeister.Modules.Reports.Generic
             var metaClass = element.getMetaClass();
             return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportLoop) == true;
         }
-        public void Evaluate(GenericReportLogic reportLogic, T reportCreator, IElement reportNode)
+        public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNode)
         {
             var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportLoop.viewNode);
             if (viewNode == null)

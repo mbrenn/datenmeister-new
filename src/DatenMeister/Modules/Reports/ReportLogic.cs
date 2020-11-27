@@ -9,16 +9,17 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Modules.DataViews;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.Reports.Generic
+namespace DatenMeister.Modules.Reports
 {
-    public class GenericReportLogic
+    public class ReportLogic
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(GenericReportLogic));
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(ReportLogic));
 
         /// <summary>
         /// Stores the possible source of the report
@@ -37,7 +38,7 @@ namespace DatenMeister.Modules.Reports.Generic
         /// </summary>
         public Dictionary<string, IReflectiveCollection> Sources => _sources;
 
-        public GenericReportLogic(
+        public ReportLogic(
             IWorkspaceLogic workspaceLogic, 
             IScopeStorage scopeStorage,
             GenericReportCreator reportCreator)

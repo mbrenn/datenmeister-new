@@ -2,6 +2,7 @@
 using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models;
+using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Provider.InMemory;
@@ -104,7 +105,7 @@ namespace DatenMeister.Tests.Modules.Reports
             /* Now create the report */
             var writer = new StringWriter();
             var htmlReport = new AdocReportCreator(writer);
-            var logic = new GenericReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            var logic = new ReportLogic(workspaceLogic, scopeStorage, htmlReport);
             logic.GenerateReportByInstance(reportInstance);
 
             var asString = writer.ToString();

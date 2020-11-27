@@ -96,7 +96,7 @@ namespace StundenMeister
             var htmlReportCreator =
                 new HtmlReportCreator(stream);
             var htmlReportLogic =
-                new GenericReportLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage, htmlReportCreator);
+                new ReportLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage, htmlReportCreator);
             htmlReportLogic.AddSource(
                 "timeRecordings", 
                 stundenMeisterLogic.Data.Extent.elements()

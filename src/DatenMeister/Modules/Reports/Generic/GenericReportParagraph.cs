@@ -15,7 +15,7 @@ namespace DatenMeister.Modules.Reports.Generic
             return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph) == true;
         }
 
-        public void Evaluate(GenericReportLogic reportLogic, T reportCreator, IElement reportNodeOrigin)
+        public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNodeOrigin)
         {
             var reportNode = reportLogic.GetNodeWithEvaluatedProperties(reportNodeOrigin, _DatenMeister._Reports._Elements._ReportParagraph.viewNode);
 

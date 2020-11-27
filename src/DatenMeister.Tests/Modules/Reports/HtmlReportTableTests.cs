@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models;
+using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
@@ -89,7 +90,7 @@ namespace DatenMeister.Tests.Modules.Reports
             /* Now create the report */
             var writer = new StringWriter();
             var htmlReport = new HtmlReportCreator(writer);
-            var htmlReportLogic = new GenericReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            var htmlReportLogic = new ReportLogic(workspaceLogic, scopeStorage, htmlReport);
             htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             var asString = writer.ToString();

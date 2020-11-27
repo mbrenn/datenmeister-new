@@ -39,7 +39,7 @@ namespace DatenMeister.Modules.Reports.Adoc
         /// If a report shall be generated upon a Report Instance, use GenerateByInstance
         /// </summary>
         /// <param name="reportDefinition">The report definition to be used</param>
-        public override void StartReport(GenericReportLogic reportLogic, IObject reportDefinition)
+        public override void StartReport(ReportLogic reportLogic, IObject reportDefinition)
         {
             var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
             if (!string.IsNullOrEmpty(title))
@@ -49,11 +49,11 @@ namespace DatenMeister.Modules.Reports.Adoc
             }
         }
 
-        public override void EndReport(GenericReportLogic logic, IObject definition)
+        public override void EndReport(ReportLogic logic, IObject definition)
         {
         }
 
-        public override void EvaluateElements(GenericReportLogic reportLogic, IReflectiveCollection reportElements)
+        public override void EvaluateElements(ReportLogic reportLogic, IReflectiveCollection reportElements)
         {
             var evaluators =
                 reportLogic.ScopeStorage.Get<AdocReportEvaluators>().Evaluators.ToList();

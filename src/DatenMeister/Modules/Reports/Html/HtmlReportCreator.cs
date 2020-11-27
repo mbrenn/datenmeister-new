@@ -39,7 +39,7 @@ namespace DatenMeister.Modules.Reports.Html
             _htmlReporter ?? throw new InvalidOperationException("_htmlReporter is null");
 
 
-        public override void StartReport(GenericReportLogic logic, IObject reportDefinition)
+        public override void StartReport(ReportLogic logic, IObject reportDefinition)
         {
             _htmlReporter = new HtmlReport(TextWriter);
 
@@ -49,7 +49,7 @@ namespace DatenMeister.Modules.Reports.Html
         }
 
 
-        public override void EndReport(GenericReportLogic logic, IObject definition)
+        public override void EndReport(ReportLogic logic, IObject definition)
         {
             _htmlReporter?.EndReport();
         }
@@ -59,8 +59,9 @@ namespace DatenMeister.Modules.Reports.Html
         /// It is important that the reportDefinition value is not of type ReportInstance.
         /// If a report shall be generated upon a Report Instance, use GenerateByInstance
         /// </summary>
-        /// <param name="reportDefinition">The report reportDefinition to be used</param>
-        public override void EvaluateElements(GenericReportLogic reportLogic, IReflectiveCollection reportElements)
+        /// <param name="reportLogic">The reportlogic to be used</param>
+        /// <param name="reportElements">The reportElements to be used</param>
+        public override void EvaluateElements(ReportLogic reportLogic, IReflectiveCollection reportElements)
         {
             var evaluators = reportLogic.ScopeStorage.Get<HtmlReportEvaluators>();
             foreach (var element in reportElements.OfType<IElement>())

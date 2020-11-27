@@ -127,7 +127,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
 
                             var reportGenerator =
                                 new HtmlReportCreator(streamWriter);
-                            var reportlogic = new GenericReportLogic(
+                            var reportlogic = new ReportLogic(
                                 GiveMe.Scope.WorkspaceLogic,
                                 GiveMe.Scope.ScopeStorage,
                                 reportGenerator);
@@ -155,7 +155,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                             {
                                 var reportGenerator =
                                     new AdocReportCreator(streamWriter);
-                                var reportLogic = new GenericReportLogic(
+                                var reportLogic = new ReportLogic(
                                     GiveMe.Scope.WorkspaceLogic,
                                     GiveMe.Scope.ScopeStorage,
                                     reportGenerator);
@@ -171,7 +171,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// </summary>
         /// <param name="reportLogic">Report generator to be used</param>
         /// <param name="definition">Definition to be used for the report</param>
-        private static void CreateReportWithDefinition(GenericReportLogic reportLogic, IObject definition)
+        private static void CreateReportWithDefinition(ReportLogic reportLogic, IObject definition)
         {
             var sources = reportLogic.EvaluateSources(definition);
             foreach (var source in sources)

@@ -140,9 +140,9 @@ namespace DatenMeister.Modules.Reports.Generic
                 yield return new ReportSource(name, sourceItems);
             }
         }
-        public bool GetDataEvaluation(IElement reportNodeOrigin, out IElement? element)
+        public bool GetDataEvaluation(IElement reportNodeOrigin, out IElement? element, string propertyName)
         {
-            var viewNode = reportNodeOrigin.getOrDefault<IElement>(_DatenMeister._Reports._ReportParagraph.viewNode);
+            var viewNode = reportNodeOrigin.getOrDefault<IElement>(propertyName);
             if (viewNode == null)
             {
                 Logger.Info("No Viewnode found");
@@ -150,7 +150,7 @@ namespace DatenMeister.Modules.Reports.Generic
                 return false;
             }
 
-            var dataViewEvaluation = this.GetDataViewEvaluation();
+            var dataViewEvaluation = GetDataViewEvaluation();
             element = dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
             if (element == null)
             {
@@ -161,12 +161,12 @@ namespace DatenMeister.Modules.Reports.Generic
             return true;
         }
 
-        public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin)
+        public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin, string propertyName)
         {
             var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
             if (reportNode.isSet(_DatenMeister._Reports._ReportParagraph.evalProperties))
             {
-                GetDataEvaluation(reportNodeOrigin, out var element);
+                GetDataEvaluation(reportNodeOrigin, out var element, propertyName);
                 var evalProperties = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.evalProperties);
 
                 var dict = new Dictionary<string, object> {["v"] = reportNode};

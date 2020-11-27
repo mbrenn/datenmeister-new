@@ -17,7 +17,7 @@ namespace DatenMeister.Modules.Reports.Generic
 
         public void Evaluate(T htmlReportCreator, IElement reportNodeOrigin)
         {
-            var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin);
+            var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin, _DatenMeister._Reports._ReportParagraph.viewNode);
 
             var paragraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.paragraph);
 
@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.Reports.Generic
             if (reportNode.isSet(_DatenMeister._Reports._ReportParagraph.evalParagraph))
             {
                 // Dynamic evaluation
-                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element) || element == null) return;
+                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element, _DatenMeister._Reports._ReportParagraph.viewNode) || element == null) return;
 
                 var evalParagraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.evalParagraph);
                 paragraph = TextTemplateEngine.Parse(

@@ -179,7 +179,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 }
             }
 
-            var alreadyVisited = new HashSet<Runtime.Workspaces.Workspace>();
+            var alreadyVisited = new HashSet<Workspace>();
 
             if ((resolveType & (ResolveType.NoWorkspace | ResolveType.NoMetaWorkspaces)) == 0)
             {
@@ -249,10 +249,10 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns>Found element or null, if not found</returns>
         private IElement? ResolveByMetaWorkspaces(
             string uri,
-            Runtime.Workspaces.Workspace? workspace,
-            HashSet<Runtime.Workspaces.Workspace>? alreadyVisited = null)
+            Workspace? workspace,
+            HashSet<Workspace>? alreadyVisited = null)
         {
-            alreadyVisited ??= new HashSet<Runtime.Workspaces.Workspace>();
+            alreadyVisited ??= new HashSet<Workspace>();
             if (workspace != null && alreadyVisited.Contains(workspace))
             {
                 return null;

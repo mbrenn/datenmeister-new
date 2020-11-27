@@ -235,7 +235,7 @@ namespace DatenMeister.Modules.Forms
         public IEnumerable<IExtent> GetAllFormExtents()
         {
             var result = _workspaceLogic.GetManagementWorkspace().extent
-                .Where(x => x.GetConfiguration().ContainsExtentType(FormsPlugin.FormExtentType))
+                .Where(x => x.GetConfiguration().ContainsExtentType(FormExtentType))
                 .OfType<IUriExtent>()
                 .ToList();
 

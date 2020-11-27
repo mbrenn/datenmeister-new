@@ -7,20 +7,10 @@ namespace DatenMeister.Modules.Reports.Generic
     public abstract class GenericReportHeadline<T> :
         IGenericReportEvaluator<T> where T : GenericReportCreator
     {
-        /// <summary>
-        /// Stores the relevant MetaClass
-        /// </summary>
-        private readonly IElement _relevantMetaClass;
-
-        public GenericReportHeadline()
-        {
-            _relevantMetaClass = _DatenMeister.TheOne.Reports.__ReportHeadline;
-        }
-
         public bool IsRelevant(IElement element)
         {
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_relevantMetaClass) == true;
+            return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportHeadline) == true;
         }
 
         /// <summary>
@@ -30,7 +20,7 @@ namespace DatenMeister.Modules.Reports.Generic
         /// <param name="reportNode">The report node</param>
         public void Evaluate(T genericReportCreator, IElement reportNode)
         {
-            var headline = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportHeadline.title);
+            var headline = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportHeadline.title);
             WriteHeadline(genericReportCreator, headline);
         }
 

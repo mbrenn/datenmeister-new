@@ -12,28 +12,28 @@ namespace DatenMeister.Modules.Reports.Generic
         public bool IsRelevant(IElement element)
         {
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportParagraph) == true;
+            return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph) == true;
         }
 
         public void Evaluate(T htmlReportCreator, IElement reportNodeOrigin)
         {
-            var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin, _DatenMeister._Reports._ReportParagraph.viewNode);
+            var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin, _DatenMeister._Reports._Elements._ReportParagraph.viewNode);
 
-            var paragraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.paragraph);
+            var paragraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.paragraph);
 
             // Evaluates the paragraph if required
-            if (reportNode.isSet(_DatenMeister._Reports._ReportParagraph.evalParagraph))
+            if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph))
             {
                 // Dynamic evaluation
-                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element, _DatenMeister._Reports._ReportParagraph.viewNode) || element == null) return;
+                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element, _DatenMeister._Reports._Elements._ReportParagraph.viewNode) || element == null) return;
 
-                var evalParagraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.evalParagraph);
+                var evalParagraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph);
                 paragraph = TextTemplateEngine.Parse(
                     evalParagraph,
                     new Dictionary<string, object> { ["i"] = element });
             }
 
-            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.cssClass);
+            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.cssClass);
 
             WriteParagraph(htmlReportCreator, paragraph, cssClass);
         }

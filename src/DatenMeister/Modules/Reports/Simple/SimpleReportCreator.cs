@@ -99,7 +99,7 @@ namespace DatenMeister.Modules.Reports.Simple
                 report.Add(new HtmlHeadline("Items in collection", 1));
 
                 var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
-                if (_reportConfiguration.getOrDefault<___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == ___ReportTableForTypeMode.PerType)
+                if (_reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == _Elements.___ReportTableForTypeMode.PerType)
                 {
                     // Splits them up by metaclasses 
                     var metaClasses =

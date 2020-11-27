@@ -532,76 +532,6 @@ namespace DatenMeister.Models
             public _ReportDefinition @ReportDefinition = new _ReportDefinition();
             public IElement @__ReportDefinition = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition");
 
-            public class _ReportElement
-            {
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-            }
-
-            public _ReportElement @ReportElement = new _ReportElement();
-            public IElement @__ReportElement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement");
-
-            public class _ReportHeadline
-            {
-                public static string @title = "title";
-                public IElement? @_title = null;
-
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-            }
-
-            public _ReportHeadline @ReportHeadline = new _ReportHeadline();
-            public IElement @__ReportHeadline = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline");
-
-            public class _ReportParagraph
-            {
-                public static string @paragraph = "paragraph";
-                public IElement? @_paragraph = null;
-
-                public static string @cssClass = "cssClass";
-                public IElement? @_cssClass = null;
-
-                public static string @viewNode = "viewNode";
-                public IElement? @_viewNode = null;
-
-                public static string @evalProperties = "evalProperties";
-                public IElement? @_evalProperties = null;
-
-                public static string @evalParagraph = "evalParagraph";
-                public IElement? @_evalParagraph = null;
-
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-            }
-
-            public _ReportParagraph @ReportParagraph = new _ReportParagraph();
-            public IElement @__ReportParagraph = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph");
-
-            public class _ReportTable
-            {
-                public static string @cssClass = "cssClass";
-                public IElement? @_cssClass = null;
-
-                public static string @viewNode = "viewNode";
-                public IElement? @_viewNode = null;
-
-                public static string @form = "form";
-                public IElement? @_form = null;
-
-                public static string @evalProperties = "evalProperties";
-                public IElement? @_evalProperties = null;
-
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-            }
-
-            public _ReportTable @ReportTable = new _ReportTable();
-            public IElement @__ReportTable = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable");
-
             public class _ReportInstanceSource
             {
                 public static string @name = "name";
@@ -688,25 +618,6 @@ namespace DatenMeister.Models
                 @PerPackage
             }
 
-            public class _ReportTableForTypeMode
-            {
-                public static string @PerType = "PerType";
-                public IElement @__PerType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode-PerType");
-                public static string @AllTypes = "AllTypes";
-                public IElement @__AllTypes = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode-AllTypes");
-
-            }
-
-            public _ReportTableForTypeMode @ReportTableForTypeMode = new _ReportTableForTypeMode();
-            public IElement @__ReportTableForTypeMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode");
-
-
-            public enum ___ReportTableForTypeMode
-            {
-                @PerType,
-                @AllTypes
-            }
-
             public class _SimpleReportConfiguration
             {
                 public static string @name = "name";
@@ -740,6 +651,117 @@ namespace DatenMeister.Models
 
             public _SimpleReportConfiguration @SimpleReportConfiguration = new _SimpleReportConfiguration();
             public IElement @__SimpleReportConfiguration = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration");
+
+            public class _Elements
+            {
+                public class _ReportElement
+                {
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                }
+
+                public _ReportElement @ReportElement = new _ReportElement();
+                public IElement @__ReportElement = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportElement");
+
+                public class _ReportHeadline
+                {
+                    public static string @title = "title";
+                    public IElement? @_title = null;
+
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                }
+
+                public _ReportHeadline @ReportHeadline = new _ReportHeadline();
+                public IElement @__ReportHeadline = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportHeadline");
+
+                public class _ReportParagraph
+                {
+                    public static string @paragraph = "paragraph";
+                    public IElement? @_paragraph = null;
+
+                    public static string @cssClass = "cssClass";
+                    public IElement? @_cssClass = null;
+
+                    public static string @viewNode = "viewNode";
+                    public IElement? @_viewNode = null;
+
+                    public static string @evalProperties = "evalProperties";
+                    public IElement? @_evalProperties = null;
+
+                    public static string @evalParagraph = "evalParagraph";
+                    public IElement? @_evalParagraph = null;
+
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                }
+
+                public _ReportParagraph @ReportParagraph = new _ReportParagraph();
+                public IElement @__ReportParagraph = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph");
+
+                public class _ReportTable
+                {
+                    public static string @cssClass = "cssClass";
+                    public IElement? @_cssClass = null;
+
+                    public static string @viewNode = "viewNode";
+                    public IElement? @_viewNode = null;
+
+                    public static string @form = "form";
+                    public IElement? @_form = null;
+
+                    public static string @evalProperties = "evalProperties";
+                    public IElement? @_evalProperties = null;
+
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                }
+
+                public _ReportTable @ReportTable = new _ReportTable();
+                public IElement @__ReportTable = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable");
+
+                public class _ReportTableForTypeMode
+                {
+                    public static string @PerType = "PerType";
+                    public IElement @__PerType = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode-PerType");
+                    public static string @AllTypes = "AllTypes";
+                    public IElement @__AllTypes = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode-AllTypes");
+
+                }
+
+                public _ReportTableForTypeMode @ReportTableForTypeMode = new _ReportTableForTypeMode();
+                public IElement @__ReportTableForTypeMode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode");
+
+
+                public enum ___ReportTableForTypeMode
+                {
+                    @PerType,
+                    @AllTypes
+                }
+
+                public class _ReportLoop
+                {
+                    public static string @viewNode = "viewNode";
+                    public IElement? @_viewNode = null;
+
+                    public static string @elements = "elements";
+                    public IElement? @_elements = null;
+
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                }
+
+                public _ReportLoop @ReportLoop = new _ReportLoop();
+                public IElement @__ReportLoop = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportLoop");
+
+            }
+
+            public _Elements Elements = new _Elements();
 
         }
 

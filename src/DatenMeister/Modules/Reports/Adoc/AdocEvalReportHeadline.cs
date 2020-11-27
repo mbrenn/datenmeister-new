@@ -10,7 +10,7 @@ namespace DatenMeister.Modules.Reports.Adoc
     {
         public void Evaluate(AdocGenericReportCreator adocGenericReportCreator, IElement reportNode, TextWriter writer)
         {
-            var title = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportHeadline.title);
+            var title = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportHeadline.title);
             writer.WriteLine($"== {title}");
         }
 

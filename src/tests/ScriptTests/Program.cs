@@ -11,7 +11,7 @@ namespace ScriptTests
         {
             var configuration =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration)
-                    .SetProperty(_SimpleReportConfiguration.typeMode, ___ReportTableForTypeMode.PerType)
+                    .SetProperty(_SimpleReportConfiguration.typeMode, _Elements.___ReportTableForTypeMode.PerType)
                     .SetProperty(_SimpleReportConfiguration.descendentMode, ___DescendentMode.Inline)
                     .SetProperty(_SimpleReportConfiguration.showDescendents, true)
                     .SetProperty(_SimpleReportConfiguration.showMetaClasses, true)
@@ -22,7 +22,7 @@ namespace ScriptTests
             
             ReportTests.TestReportZipCode(configuration);
 
-            configuration.set(_SimpleReportConfiguration.typeMode, ___ReportTableForTypeMode.AllTypes);
+            configuration.set(_SimpleReportConfiguration.typeMode, _Elements.___ReportTableForTypeMode.AllTypes);
 
             ReportTests.TestReportIssues(configuration);
         }

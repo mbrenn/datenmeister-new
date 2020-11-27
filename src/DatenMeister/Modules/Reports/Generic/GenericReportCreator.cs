@@ -164,10 +164,10 @@ namespace DatenMeister.Modules.Reports.Generic
         public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin, string propertyName)
         {
             var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
-            if (reportNode.isSet(_DatenMeister._Reports._ReportParagraph.evalProperties))
+            if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties))
             {
                 GetDataEvaluation(reportNodeOrigin, out var element, propertyName);
-                var evalProperties = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportParagraph.evalProperties);
+                var evalProperties = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties);
 
                 var dict = new Dictionary<string, object> {["v"] = reportNode};
                 if (element != null)

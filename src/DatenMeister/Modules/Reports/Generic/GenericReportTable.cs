@@ -28,7 +28,7 @@ namespace DatenMeister.Modules.Reports.Generic
         public bool IsRelevant(IElement element)
         {
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
+            return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportTable) == true;
         }
 
         /// <summary>
@@ -60,14 +60,14 @@ namespace DatenMeister.Modules.Reports.Generic
 
         public void Evaluate(T adocGenericReportCreator, IElement reportNode)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
+            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportTable.viewNode);
             if (viewNode == null)
             {
                 throw new InvalidOperationException(
                     $"The viewNode of the listForm '{NamedElementMethods.GetName(reportNode)}' is null");
             }
 
-            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
+            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportTable.form);
 
             var dataviewEvaluation = adocGenericReportCreator.GetDataViewEvaluation();
             var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
@@ -83,7 +83,7 @@ namespace DatenMeister.Modules.Reports.Generic
             }
 
             // Creates the table
-            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportTable.cssClass);
+            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportTable.cssClass);
             StartTable(adocGenericReportCreator, cssClass);
 
             var cellHeaders = new List<TableCellHeader>();

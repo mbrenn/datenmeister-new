@@ -43,15 +43,15 @@ namespace DatenMeister.Tests.Modules.Reports
             extent.elements().add(filterMetaClass);
             
             /* Create the report paragraph and its corresponding view node */
-            var reportHeadline = factory.create(_DatenMeister.TheOne.Reports.__ReportHeadline);
-            reportHeadline.set(_DatenMeister._Reports._ReportHeadline.title, "This is a headline");
+            var reportHeadline = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportHeadline);
+            reportHeadline.set(_DatenMeister._Reports._Elements._ReportHeadline.title, "This is a headline");
             
             /* Create the report paragraph and its corresponding view node */
-            var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.__ReportParagraph);
-            reportParagraph.set(_DatenMeister._Reports._ReportParagraph.paragraph, "This is a paragraph");
+            var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph);
+            reportParagraph.set(_DatenMeister._Reports._Elements._ReportParagraph.paragraph, "This is a paragraph");
 
             /* Create the report paragraph and its corresponding view node */
-            var reportTable = factory.create(_DatenMeister.TheOne.Reports.__ReportTable);
+            var reportTable = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportTable);
 
             var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var field1 = factory.create(_DatenMeister.TheOne.Forms.__EvalTextFieldData)
@@ -80,9 +80,9 @@ namespace DatenMeister.Tests.Modules.Reports
             reportTable.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_DatenMeister._Reports._ReportTable.name] = "Table",
-                    [_DatenMeister._Reports._ReportTable.form] = form,
-                    [_DatenMeister._Reports._ReportTable.viewNode] = filterMetaClass
+                    [_DatenMeister._Reports._Elements._ReportTable.name] = "Table",
+                    [_DatenMeister._Reports._Elements._ReportTable.form] = form,
+                    [_DatenMeister._Reports._Elements._ReportTable.viewNode] = filterMetaClass
                 });
 
             /* Attached it to the report definition */

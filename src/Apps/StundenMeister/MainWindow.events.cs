@@ -90,7 +90,10 @@ namespace StundenMeister
             var hourReport = dataWorkspace.ResolveById("hourReport");
             var stundenMeisterLogic = StundenMeisterPlugin.Get();
 
-            var htmlReportCreator = GiveMe.Scope.Resolve<HtmlReportCreator>();
+            using var stream = ReportHelper.CreateRandomFile(out var filePath);
+
+            var htmlReportCreator =
+                new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage, stream);
             htmlReportCreator.AddSource(
                 "timeRecordings", 
                 stundenMeisterLogic.Data.Extent.elements()
@@ -101,8 +104,7 @@ namespace StundenMeister
                 return;
             }
 
-            using var stream = ReportHelper.CreateRandomFile(out var filePath);
-            htmlReportCreator.GenerateReportByDefinition(hourReport, stream);
+            htmlReportCreator.GenerateReportByDefinition(hourReport);
             
             DotNetHelper.CreateProcess(filePath);
         }

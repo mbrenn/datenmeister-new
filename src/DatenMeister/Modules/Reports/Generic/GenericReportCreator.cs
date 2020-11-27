@@ -73,8 +73,7 @@ namespace DatenMeister.Modules.Reports.Generic
         /// Generates a full html report by using the instance
         /// </summary>
         /// <param name="reportInstance">Report instance to be used</param>
-        /// <param name="writer">The writer being used</param>
-        public void GenerateReportByInstance(IElement reportInstance, TextWriter writer)
+        public void GenerateReportByInstance(IElement reportInstance)
         {
             foreach (var scope in EvaluateSources(reportInstance))
             {
@@ -87,10 +86,10 @@ namespace DatenMeister.Modules.Reports.Generic
                 throw new InvalidOperationException("There is no report definition set.");
             }
             
-            GenerateReportByDefinition(definition, writer);
+            GenerateReportByDefinition(definition);
         }
 
-        public abstract void GenerateReportByDefinition(IObject definition, TextWriter writer);
+        public abstract void GenerateReportByDefinition(IObject definition);
 
         /// <summary>
         /// Reads the report instance and returns all report data sources with

@@ -123,9 +123,14 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         "Create Report",
                         (x, y) =>
                         {
+                            using var streamWriter = GetRandomWriter(out string tmpPath);
+
                             var reportGenerator =
-                                new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                            CreateReportWithDefinition(reportGenerator, y, ".html");
+                                new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage,
+                                    streamWriter);
+                            CreateReportWithDefinition(reportGenerator, y);
+
+                            DotNetHelper.CreateProcess(tmpPath);
                         });
             }
         }
@@ -142,20 +147,26 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         "Create Report",
                         (x, definition) =>
                         {
-                            var reportGenerator =
-                                new AdocGenericReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                            CreateReportWithDefinition(reportGenerator, definition, ".adoc");
+                            string tmpPath;
+                            using (var streamWriter = GetRandomWriter(out tmpPath, ".adoc"))
+                            {
+                                var reportGenerator =
+                                    new AdocGenericReportCreator(
+                                        GiveMe.Scope.WorkspaceLogic,
+                                        GiveMe.Scope.ScopeStorage,
+                                        streamWriter);
+                                CreateReportWithDefinition(reportGenerator, definition);
+                            }
                         });
             }
         }
-        
+
         /// <summary>
         /// Creates a report with the given definition 
         /// </summary>
         /// <param name="reportGenerator">Report generator to be used</param>
         /// <param name="definition">Definition to be used for the report</param>
-        /// <param name="extension">Extension of the file to be used</param>
-        private static void CreateReportWithDefinition(GenericReportCreator reportGenerator, IObject definition, string extension)
+        private static void CreateReportWithDefinition(GenericReportCreator reportGenerator, IObject definition)
         {
             var sources = reportGenerator.EvaluateSources(definition);
             foreach (var source in sources)
@@ -171,13 +182,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 return;
             }
 
-            string tmpPath;
-            using (var streamWriter = GetRandomWriter(out tmpPath, extension))
-            {
-                reportGenerator.GenerateReportByDefinition(reportDefinition, streamWriter);
-            }
-
-            DotNetHelper.CreateProcess(tmpPath);
+            reportGenerator.GenerateReportByDefinition(reportDefinition);
         }
 
         private IEnumerable<ViewExtension> OfferSimpleReportsInExplorer(ViewExtensionInfo viewExtensionInfo)

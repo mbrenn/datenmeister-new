@@ -29,9 +29,12 @@ namespace DatenMeister.Modules.Reports.Html
 
         private HtmlReport? _htmlReporter;
 
-        public HtmlReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        public TextWriter TextWriter { get; set; }
+
+        public HtmlReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage, TextWriter textWriter)
         : base(workspaceLogic, scopeStorage)
         {
+            TextWriter = textWriter;
         }
 
         public HtmlReport HtmlReporter => 
@@ -45,9 +48,9 @@ namespace DatenMeister.Modules.Reports.Html
         /// </summary>
         /// <param name="reportDefinition">The report definition to be used</param>
         /// <param name="writer">The writer being used</param>
-        public override void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
+        public override void GenerateReportByDefinition(IObject reportDefinition)
         {
-            _htmlReporter = new HtmlReport(writer);
+            _htmlReporter = new HtmlReport(TextWriter);
             
             var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
             _htmlReporter.SetDefaultCssStyle();

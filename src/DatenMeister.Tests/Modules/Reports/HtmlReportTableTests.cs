@@ -87,8 +87,8 @@ namespace DatenMeister.Tests.Modules.Reports
 
             /* Now create the report */
             var writer = new StringWriter();
-            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
-            htmlReport.GenerateReportByInstance(reportInstance, writer);
+            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage,writer);
+            htmlReport.GenerateReportByInstance(reportInstance);
 
             var asString = writer.ToString();
             Assert.That(asString.Contains("Father"), Is.True);

@@ -6,12 +6,11 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports.Html
 {
-    public class HtmlEvalReportHeadline : GenericReportHeadline, IHtmlReportEvaluator
+    public class HtmlEvalReportHeadline : GenericReportHeadline<HtmlReportCreator>, IHtmlReportEvaluator
     {
-        public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNode)
+        public override void WriteHeadline(HtmlReportCreator reportCreator, string headline)
         {
-            var title = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportHeadline.title);
-            htmlReportCreator.HtmlReporter.Add(new HtmlHeadline(title, 1));
+            reportCreator.HtmlReporter.Add(new HtmlHeadline(headline, 1));
         }
     }
 }

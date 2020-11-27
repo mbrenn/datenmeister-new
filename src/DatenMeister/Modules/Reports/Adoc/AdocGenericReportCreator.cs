@@ -15,22 +15,25 @@ namespace DatenMeister.Modules.Reports.Adoc
     public class AdocGenericReportCreator : GenericReportCreator
     {
         private readonly ClassLogger Logger = new ClassLogger(typeof(AdocGenericReportCreator));
-        private TextWriter _textWriter;
 
         /// <summary>
         /// Gets or sets the text writer to be used for the report creator
         /// </summary>
-        public TextWriter TextWriter
-        {
-            get => _textWriter ?? throw new InvalidOperationException("TextWriter == null");
-            set => _textWriter = value;
-        }
-
+        public TextWriter TextWriter { get; set; }
+        
+        /// <summary>
+        /// Initializes a new instance of the AdocGenericReportCreator
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic to be used</param>
+        /// <param name="scopeStorage">Scope storage to be used</param>
+        /// <param name="textWriter">Text writer in which the report shall be stored</param>
         public AdocGenericReportCreator(
             IWorkspaceLogic workspaceLogic, 
-            IScopeStorage scopeStorage)
+            IScopeStorage scopeStorage, 
+            TextWriter textWriter)
             : base(workspaceLogic, scopeStorage)
         {
+            TextWriter = textWriter;
         }
 
         /// <summary>
@@ -39,11 +42,8 @@ namespace DatenMeister.Modules.Reports.Adoc
         /// If a report shall be generated upon a Report Instance, use GenerateByInstance
         /// </summary>
         /// <param name="reportDefinition">The report definition to be used</param>
-        /// <param name="writer">The writer being used</param>
-        public override void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
+        public override void GenerateReportByDefinition(IObject reportDefinition)
         {
-            TextWriter = writer;
-
             var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
             if (!string.IsNullOrEmpty(title))
             {
@@ -65,7 +65,7 @@ namespace DatenMeister.Modules.Reports.Adoc
                     .FirstOrDefault();
                 if (foundItem != null)
                 {
-                    foundItem.Evaluate(this, element, writer);
+                    foundItem.Evaluate(this, element);
                 }
                 else
                 {

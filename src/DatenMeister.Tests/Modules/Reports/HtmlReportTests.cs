@@ -78,16 +78,16 @@ namespace DatenMeister.Tests.Modules.Reports
             
             /* Now create the report over 18 */
             var writer = new StringWriter();
-            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
-            htmlReport.GenerateReportByInstance(reportInstance, writer);
+            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage, writer);
+            htmlReport.GenerateReportByInstance(reportInstance);
 
             Assert.That(writer.ToString().Contains("over18"), Is.True, writer.ToString());
             
             /* Now create the report under 18 */
             element.set("age", 17);
             writer = new StringWriter();
-            htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
-            htmlReport.GenerateReportByInstance(reportInstance, writer);
+            htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage, writer);
+            htmlReport.GenerateReportByInstance(reportInstance);
 
             Assert.That(writer.ToString().Contains("under18"), Is.True, writer.ToString());
         }

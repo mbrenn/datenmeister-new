@@ -1,198 +1,63 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Modules.Forms.FormCreator;
+using System.Diagnostics;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
-using DatenMeister.Modules.TextTemplates;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
+using DatenMeister.Modules.Reports.Generic;
 
 namespace DatenMeister.Modules.Reports.Html
 {
-    public class HtmlReportTable : IHtmlReportEvaluator
+    public class HtmlReportTable : GenericReportTable<HtmlReportCreator>
     {
-        public bool IsRelevant(IElement element)
+        private HtmlTable? _table;
+
+        public override void StartTable(HtmlReportCreator reportCreator, string cssClass)
         {
-            
-            var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
+            _table = new HtmlTable
+            {
+                CssClass = cssClass
+            };
         }
 
-        /// <summary>
-        /// Evaluates the table
-        /// </summary>
-        /// <param name="htmlReportCreator">The report creator</param>
-        /// <param name="reportNode">The element describing the report.
-        /// The form should be of type ListForm</param>
-        public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNode)
+        public override void EndTable(HtmlReportCreator reportCreator)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
-            if (viewNode == null)
-            {
-                throw new InvalidOperationException("The viewNode is null");
-            }
-            
-            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
+            if (_table == null) throw new InvalidOperationException(nameof(_table) + " is null");
 
-            var dataviewEvaluation = htmlReportCreator.GetDataViewEvaluation();
-            var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
+            reportCreator.HtmlReporter.Add(_table);
+        }
 
-            // Find form 
-            if (form == null)
-            {
-                // Create form
-                var formCreator = FormCreator.Create(
-                    htmlReportCreator.WorkspaceLogic, 
-                    null);
-                form = formCreator.CreateListFormForElements(elements, CreationMode.All);
-            }
-            
-            // Creates the table
-            var table = new HtmlTable();
-            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportTable.cssClass);
-            if (!string.IsNullOrEmpty(cssClass) && cssClass != null)
-            {
-                table.CssClass = cssClass;
-            }
+        public override void WriteColumnHeader(HtmlReportCreator reportCreator, IEnumerable<TableCellHeader> cellHeaders)
+        {
+            if (_table == null) throw new InvalidOperationException(nameof(_table) + " is null");
             
             var cells = new List<HtmlTableCell>();
-            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
-            foreach (var field in fields.OfType<IElement>())
+            foreach (var field in cellHeaders)
             {
                 cells.Add(
-                    new HtmlTableCell(field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title))
+                    new HtmlTableCell(field.ColumnName)
                     {
                         IsHeading = true
                     });
             }
 
-            table.AddRow(new HtmlTableRow(cells));
-            
-            foreach (var listElement in elements.OfType<IElement>())
-            {
-                cells.Clear();
-                foreach (var field in fields.OfType<IElement>())
-                {
-                    var cell = CreateCellForField(listElement, field);
-                    cells.Add(cell);
-                }
-
-                table.AddRow(new HtmlTableRow(cells));   
-            }
-            
-            htmlReportCreator.HtmlReporter.Add(table);
+            _table.AddRow(new HtmlTableRow(cells));
         }
 
-        /// <summary>
-        /// Creates the cell for a specific element and field
-        /// </summary>
-        /// <param name="listElement">Element to be shown</param>
-        /// <param name="field">Field definition for the element</param>
-        /// <returns>The created Html Table Cell</returns>
-        private HtmlTableCell CreateCellForField(IObject listElement, IElement field)
+        public override void WriteRow(HtmlReportCreator reportCreator, IEnumerable<TableCellContent> cellContents)
         {
-            var property = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-            var metaClass = field.getMetaClass();
-            var isPropertySet = listElement.isSet(property);
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData) == true)
+            if (_table == null) throw new InvalidOperationException(nameof(_table) + " is null");
+
+            var cells = new List<HtmlTableCell>();
+            foreach (var field in cellContents)
             {
-                if (isPropertySet)
-                {
-                    var hasDate = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate) != true;
-                    var hasTime = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime) != true;
-                    var date = listElement.getOrDefault<DateTime>(property);
-
-                    var result = string.Empty;
-                    if (hasDate && hasTime)
-                    {
-                        result = date.ToString(CultureInfo.CurrentCulture);
-                    }
-                    else if (hasDate)
-                    {
-                        result = date.ToShortDateString();
-                    }
-                    else if (hasTime)
-                    {
-                        result = date.ToShortTimeString();
-                    }
-
-                    return new HtmlTableCell(result);
-                }
-
-                return new HtmlTableCell("-");
+                var cell = 
+                    new HtmlTableCell(
+                        field.Content,
+                        field.CssClass);
+                cells.Add(cell);
             }
 
-            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__CheckboxFieldData) == true)
-            {
-                if (isPropertySet)
-                {
-                    var value = listElement.getOrDefault<bool>(property);
-                    return new HtmlTableCell(value ? "X" : "-");
-                }
-
-                return new HtmlTableCell("-");
-            }
-
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__NumberFieldData) == true)
-            {
-                var format = field.getOrDefault<string>(_DatenMeister._Forms._NumberFieldData.format) ?? "";
-                var isInteger = field.getOrDefault<bool>(_DatenMeister._Forms._NumberFieldData.isInteger);
-                
-                if (isPropertySet)
-                {
-                    if (isInteger)
-                    {
-                        var value = listElement.getOrDefault<int>(property);
-                        return new HtmlTableCell(value.ToString(format, CultureInfo.CurrentCulture));
-                    }
-                    else
-                    {
-                        var value = listElement.getOrDefault<double>(property);
-                        return new HtmlTableCell(value.ToString(format, CultureInfo.CurrentCulture));
-                        
-                    }
-                }
-
-                return new HtmlTableCell("0");
-            }
-
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
-            {
-                var cellInformation = InMemoryObject.CreateEmpty();
-                var defaultText = listElement.getOrDefault<string>(property);
-                cellInformation.set("text", defaultText);
-
-                var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
-                if (evalProperties != null)
-                {
-                    defaultText = TextTemplateEngine.Parse(
-                        evalProperties,
-                        new Dictionary<string, object>
-                        {
-                            ["i"] = listElement,
-                            ["c"] = cellInformation
-                        });
-                }
-
-                var cssClassName = cellInformation.getOrDefault<string>("cssClass") ?? string.Empty;
-
-                var text= cellInformation.isSet("text") 
-                    ? cellInformation.getOrDefault<string>("text") 
-                    : defaultText;
-                
-                return new HtmlTableCell(text, cssClassName);
-            }
-
-            if (isPropertySet)
-            {
-                return new HtmlTableCell(listElement.getOrDefault<string>(property));
-            }
-
-            return new HtmlTableCell(new HtmlRawString("<i>Null</i>"));
+            Debug.Assert(_table != null, nameof(_table) + " != null");
+            _table.AddRow(new HtmlTableRow(cells));
         }
     }
 }

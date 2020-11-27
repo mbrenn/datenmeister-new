@@ -6,7 +6,7 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports.Html
 {
-    public class HtmlEvalReportHeadline : GenericReportHeadline<HtmlReportCreator>, IHtmlReportEvaluator
+    public class HtmlEvalReportHeadline : GenericReportHeadline<HtmlReportCreator>
     {
         public override void WriteHeadline(HtmlReportCreator reportCreator, string headline)
         {

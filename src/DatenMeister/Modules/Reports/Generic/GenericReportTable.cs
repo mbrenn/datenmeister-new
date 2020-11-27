@@ -1,20 +1,229 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Xml.XPath;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
+using DatenMeister.Modules.Forms.FormCreator;
+using DatenMeister.Modules.Reports.Adoc;
+using DatenMeister.Modules.TextTemplates;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Reports.Generic
 {
-    public class GenericReportTable<T> :
-        IGenericReportEvaluator<T> where T : GenericReportCreator
+    public abstract class GenericReportTable<T> : IGenericReportEvaluator<T> where T : GenericReportCreator
     {
+        public class TableCellHeader
+        {
+            public string ColumnName { get; set; } = string.Empty;
+        }
+        public class TableCellContent { 
+            public string Content { get; set; } = string.Empty;
+
+            public string CssClass { get; set; } = string.Empty;
+        }
+
         public bool IsRelevant(IElement element)
         {
             var metaClass = element.getMetaClass();
             return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
         }
 
-        public void Evaluate(T genericReportCreator, IElement reportNode)
+        /// <summary>
+        /// Starts the table and gives the cssClass
+        /// </summary>
+        /// <param name="reportCreator">Report Creator to be used</param>
+        /// <param name="cssClass">CssClass defining the style</param>
+        public abstract void StartTable(T reportCreator, string cssClass);
+
+        /// <summary>
+        /// Ends the table after all column headers and rows are added
+        /// </summary>
+        /// <param name="reportCreator">Report Creator To be used</param>
+        public abstract void EndTable(T reportCreator);
+
+        /// <summary>
+        /// Writes a row containing the column headers. 
+        /// </summary>
+        /// <param name="reportCreator">Report Creator To be used</param>
+        /// <param name="cellHeaders">Enumeration of cell header definitions</param>
+        public abstract void WriteColumnHeader(T reportCreator, IEnumerable<TableCellHeader> cellHeaders);
+
+        /// <summary>
+        /// Writes a row with the columns
+        /// </summary>
+        /// <param name="reportCreator">Report Creator To be used</param>
+        /// <param name="cellContents"></param>
+        public abstract void WriteRow(T reportCreator, IEnumerable<TableCellContent> cellContents);
+
+        public void Evaluate(T adocGenericReportCreator, IElement reportNode)
         {
-            throw new System.NotImplementedException();
+            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
+            if (viewNode == null)
+            {
+                throw new InvalidOperationException(
+                    $"The viewNode of the listForm '{NamedElementMethods.GetName(reportNode)}' is null");
+            }
+
+            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
+
+            var dataviewEvaluation = adocGenericReportCreator.GetDataViewEvaluation();
+            var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
+
+            // Find form 
+            if (form == null)
+            {
+                // Create form
+                var formCreator = FormCreator.Create(
+                    adocGenericReportCreator.WorkspaceLogic,
+                    null);
+                form = formCreator.CreateListFormForElements(elements, CreationMode.All);
+            }
+
+            // Creates the table
+            var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportTable.cssClass);
+            StartTable(adocGenericReportCreator, cssClass);
+
+            var cellHeaders = new List<TableCellHeader>();
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            foreach (var field in fields.OfType<IElement>())
+            {
+                cellHeaders.Add(
+                    new TableCellHeader
+                    {
+                        ColumnName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title)
+                    });
+            }
+
+            WriteColumnHeader(adocGenericReportCreator, cellHeaders);
+
+            foreach (var listElement in elements.OfType<IElement>())
+            {
+                var cellContent = new List<TableCellContent>();
+
+                foreach (var field in fields.OfType<IElement>())
+                {
+                    cellContent.Add(CreateCellForField(listElement, field));
+                }
+
+                WriteRow(adocGenericReportCreator, cellContent);
+            }
+
+            EndTable(adocGenericReportCreator);
+        }
+        /// <summary>
+        /// Creates the cell for a specific element and field
+        /// </summary>
+        /// <param name="listElement">Element to be shown</param>
+        /// <param name="field">Field definition for the element</param>
+        /// <returns>The created Html Table Cell</returns>
+        private TableCellContent CreateCellForField(IObject listElement, IElement field)
+        {
+            var property = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+            var metaClass = field.getMetaClass();
+            var isPropertySet = listElement.isSet(property);
+            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData) == true)
+            {
+                if (isPropertySet)
+                {
+                    var hasDate = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate) != true;
+                    var hasTime = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime) != true;
+                    var date = listElement.getOrDefault<DateTime>(property);
+
+                    var result = string.Empty;
+                    if (hasDate && hasTime)
+                    {
+                        result = date.ToString(CultureInfo.CurrentCulture);
+                    }
+                    else if (hasDate)
+                    {
+                        result = date.ToShortDateString();
+                    }
+                    else if (hasTime)
+                    {
+                        result = date.ToShortTimeString();
+                    }
+
+                    return new TableCellContent { Content = result };
+                }
+
+                return new TableCellContent {Content = "-"};
+            }
+
+            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__CheckboxFieldData) == true)
+            {
+                if (isPropertySet)
+                {
+                    var value = listElement.getOrDefault<bool>(property);
+                    return new TableCellContent {Content = value ? "X" : "-"};
+                }
+
+                return new TableCellContent {Content = "-"};
+            }
+
+            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__NumberFieldData) == true)
+            {
+                var format = field.getOrDefault<string>(_DatenMeister._Forms._NumberFieldData.format) ?? "";
+                var isInteger = field.getOrDefault<bool>(_DatenMeister._Forms._NumberFieldData.isInteger);
+
+                if (isPropertySet)
+                {
+                    if (isInteger)
+                    {
+                        var value = listElement.getOrDefault<int>(property);
+                        return new TableCellContent {Content = value.ToString(format, CultureInfo.CurrentCulture)};
+                    }
+                    else
+                    {
+                        var value = listElement.getOrDefault<double>(property);
+                        return new TableCellContent {Content = value.ToString(format, CultureInfo.CurrentCulture)};
+
+                    }
+                }
+
+                return new TableCellContent { Content = "0"};
+            }
+
+            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+            {
+                var cellInformation = InMemoryObject.CreateEmpty();
+                var defaultText = listElement.getOrDefault<string>(property);
+                cellInformation.set("text", defaultText);
+
+                var evalProperties =
+                    field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
+                if (evalProperties != null)
+                {
+                    defaultText = TextTemplateEngine.Parse(
+                        evalProperties,
+                        new Dictionary<string, object>
+                        {
+                            ["i"] = listElement,
+                            ["c"] = cellInformation
+                        });
+                }
+
+                var cssClassName = cellInformation.getOrDefault<string>("cssClass") ?? string.Empty;
+                return new TableCellContent
+                {
+                    Content = cellInformation.isSet("text")
+                        ? cellInformation.getOrDefault<string>("text")
+                        : defaultText,
+                    CssClass = cssClassName
+                };
+            }
+
+            if (isPropertySet)
+            {
+                return new TableCellContent {Content = listElement.getOrDefault<string>(property)};
+            }
+
+            return new TableCellContent {Content = "Null"};
         }
     }
 }

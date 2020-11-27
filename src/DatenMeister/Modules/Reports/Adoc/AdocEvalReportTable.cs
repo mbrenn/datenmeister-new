@@ -1,178 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Modules.Forms.FormCreator;
-using DatenMeister.Modules.TextTemplates;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
+﻿using System.Collections.Generic;
+using DatenMeister.Modules.Reports.Generic;
 
 namespace DatenMeister.Modules.Reports.Adoc
 {
-    public class AdocEvalReportTable : IAdocReportEvaluator
+    public class AdocEvalReportTable : GenericReportTable<AdocGenericReportCreator>
     {
-        public bool IsRelevant(IElement element)
+        public override void StartTable(AdocGenericReportCreator reportCreator, string cssClass)
         {
-            var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportTable) == true;
+            reportCreator.TextWriter.WriteLine("[%header]");
+            reportCreator.TextWriter.WriteLine("|===");
         }
 
-        public void Evaluate(AdocGenericReportCreator adocGenericReportCreator, IElement reportNode, TextWriter writer)
+        public override void EndTable(AdocGenericReportCreator reportCreator)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.viewNode);
-            if (viewNode == null)
-            {
-                throw new InvalidOperationException(
-                    $"The viewNode of the listForm '{NamedElementMethods.GetName(reportNode)}' is null");
-            }
-            
-            var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._ReportTable.form);
-
-            var dataviewEvaluation = adocGenericReportCreator.GetDataViewEvaluation();
-            var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
-
-            // Find form 
-            if (form == null)
-            {
-                // Create form
-                var formCreator = FormCreator.Create(
-                    adocGenericReportCreator.WorkspaceLogic, 
-                    null);
-                form = formCreator.CreateListFormForElements(elements, CreationMode.All);
-            }
-            
-            // Creates the table
-            writer.WriteLine("[%header]");
-            writer.WriteLine("|===");
-            
-            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
-            foreach (var field in fields.OfType<IElement>())
-            {
-                writer.Write("|" + field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title));
-            }
-
-            writer.WriteLine(string.Empty);
-
-            foreach (var listElement in elements.OfType<IElement>())
-            {
-                foreach (var field in fields.OfType<IElement>())
-                {
-                    writer.Write("|" + CreateCellForField(listElement, field));
-                }
-
-                writer.WriteLine(string.Empty);
-            }
-
-            writer.WriteLine("|===");
-            writer.WriteLine(string.Empty);
+            reportCreator.TextWriter.WriteLine("|===");
+            reportCreator.TextWriter.WriteLine(string.Empty);
         }
-        /// <summary>
-        /// Creates the cell for a specific element and field
-        /// </summary>
-        /// <param name="listElement">Element to be shown</param>
-        /// <param name="field">Field definition for the element</param>
-        /// <returns>The created Html Table Cell</returns>
-        private string CreateCellForField(IObject listElement, IElement field)
+
+        public override void WriteColumnHeader(AdocGenericReportCreator reportCreator, IEnumerable<TableCellHeader> cellHeaders)
         {
-            var property = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-            var metaClass = field.getMetaClass();
-            var isPropertySet = listElement.isSet(property);
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData) == true)
+            foreach (var header in cellHeaders)
             {
-                if (isPropertySet)
-                {
-                    var hasDate = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate) != true;
-                    var hasTime = field?.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime) != true;
-                    var date = listElement.getOrDefault<DateTime>(property);
+                reportCreator.TextWriter.Write("|" + header.ColumnName);
+            }
+        }
 
-                    var result = string.Empty;
-                    if (hasDate && hasTime)
-                    {
-                        result = date.ToString(CultureInfo.CurrentCulture);
-                    }
-                    else if (hasDate)
-                    {
-                        result = date.ToShortDateString();
-                    }
-                    else if (hasTime)
-                    {
-                        result = date.ToShortTimeString();
-                    }
-
-                    return result;
-                }
-
-                return "-";
+        public override void WriteRow(AdocGenericReportCreator reportCreator, IEnumerable<TableCellContent> cellContents)
+        {
+            foreach (var field in cellContents)
+            {
+                reportCreator.TextWriter.Write("|" + field.Content);
             }
 
-            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__CheckboxFieldData) == true)
-            {
-                if (isPropertySet)
-                {
-                    var value = listElement.getOrDefault<bool>(property);
-                    return value ? "X" : "-";
-                }
-
-                return "-";
-            }
-
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__NumberFieldData) == true)
-            {
-                var format = field.getOrDefault<string>(_DatenMeister._Forms._NumberFieldData.format) ?? "";
-                var isInteger = field.getOrDefault<bool>(_DatenMeister._Forms._NumberFieldData.isInteger);
-                
-                if (isPropertySet)
-                {
-                    if (isInteger)
-                    {
-                        var value = listElement.getOrDefault<int>(property);
-                        return value.ToString(format, CultureInfo.CurrentCulture);
-                    }
-                    else
-                    {
-                        var value = listElement.getOrDefault<double>(property);
-                        return value.ToString(format, CultureInfo.CurrentCulture);
-                        
-                    }
-                }
-
-                return "0";
-            }
-
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
-            {
-                var cellInformation = InMemoryObject.CreateEmpty();
-                var defaultText = listElement.getOrDefault<string>(property);
-                cellInformation.set("text", defaultText);
-
-                var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
-                if (evalProperties != null)
-                {
-                    defaultText = TextTemplateEngine.Parse(
-                        evalProperties,
-                        new Dictionary<string, object>
-                        {
-                            ["i"] = listElement,
-                            ["c"] = cellInformation
-                        });
-                }
-
-                return cellInformation.isSet("text") 
-                    ? cellInformation.getOrDefault<string>("text") 
-                    : defaultText;
-            }
-
-            if (isPropertySet)
-            {
-                return listElement.getOrDefault<string>(property);
-            }
-
-            return "Null";
+            reportCreator.TextWriter.WriteLine(string.Empty);
         }
     }
 }

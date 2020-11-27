@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Generic;
 
 namespace DatenMeister.Modules.Reports.Html

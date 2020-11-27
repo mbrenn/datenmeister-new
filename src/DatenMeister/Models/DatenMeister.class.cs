@@ -2240,6 +2240,9 @@ namespace DatenMeister.Models
             {
                 public class _NumberProviderSettings
                 {
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
                     public static string @start = "start";
                     public IElement? @_start = null;
 
@@ -2250,6 +2253,25 @@ namespace DatenMeister.Models
 
                 public _NumberProviderSettings @NumberProviderSettings = new _NumberProviderSettings();
                 public IElement @__NumberProviderSettings = new MofObjectShadow("dm:///_internal/types/internal#f264ab67-ab6a-4462-8088-d3d6c9e2763a");
+
+                public class _NumberRepresentation
+                {
+                    public static string @binary = "binary";
+                    public IElement? @_binary = null;
+
+                    public static string @octal = "octal";
+                    public IElement? @_octal = null;
+
+                    public static string @decimal = "decimal";
+                    public IElement? @_decimal = null;
+
+                    public static string @hexadecimal = "hexadecimal";
+                    public IElement? @_hexadecimal = null;
+
+                }
+
+                public _NumberRepresentation @NumberRepresentation = new _NumberRepresentation();
+                public IElement @__NumberRepresentation = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.DynamicRuntimeProviders.Examples.NumberRepresentation");
 
             }
 

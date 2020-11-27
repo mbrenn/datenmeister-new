@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Xml.XPath;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Modules.Forms.FormCreator;
-using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;

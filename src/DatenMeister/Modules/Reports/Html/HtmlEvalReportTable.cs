@@ -49,14 +49,12 @@ namespace DatenMeister.Modules.Reports.Html
             var cells = new List<HtmlTableCell>();
             foreach (var field in cellContents)
             {
-                var cell = 
-                    new HtmlTableCell(
-                        field.Content,
-                        field.CssClass);
+                var cell = new HtmlTableCell(
+                    field.Content,
+                    field.CssClass);
                 cells.Add(cell);
             }
 
-            Debug.Assert(_table != null, nameof(_table) + " != null");
             _table.AddRow(new HtmlTableRow(cells));
         }
     }

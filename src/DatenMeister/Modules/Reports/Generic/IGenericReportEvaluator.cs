@@ -1,6 +1,4 @@
-﻿using System.IO;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.Reports.Adoc;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Modules.Reports.Generic
 {

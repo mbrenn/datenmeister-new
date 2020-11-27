@@ -60,12 +60,10 @@ namespace DatenMeister.Modules.Reports.Generic
 
         public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNode)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportTable.viewNode);
-            if (viewNode == null)
-            {
-                throw new InvalidOperationException(
-                    $"The viewNode of the listForm '{NamedElementMethods.GetName(reportNode)}' is null");
-            }
+            var viewNode =
+                ReportLogic.GetViewNode(
+                    reportNode,
+                    _DatenMeister._Reports._Elements._ReportTable.viewNode);
 
             var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportTable.form);
 

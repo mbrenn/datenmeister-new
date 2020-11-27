@@ -11,6 +11,7 @@ using DatenMeister.Models;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.TextTemplates;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Workspaces;
@@ -24,7 +25,7 @@ namespace DatenMeister.Modules.Reports
         /// <summary>
         /// Stores the possible source of the report
         /// </summary>
-        private readonly Dictionary<string, IReflectiveCollection> _sources
+        private Dictionary<string, IReflectiveCollection> _sources
             = new Dictionary<string, IReflectiveCollection>();
 
         public IWorkspaceLogic WorkspaceLogic { get; set; }
@@ -36,7 +37,11 @@ namespace DatenMeister.Modules.Reports
         /// <summary>
         /// Stores the possible source of the report
         /// </summary>
-        public Dictionary<string, IReflectiveCollection> Sources => _sources;
+        public Dictionary<string, IReflectiveCollection> Sources
+        {
+            get => _sources;
+            set => _sources = value;
+        }
 
         public ReportLogic(
             IWorkspaceLogic workspaceLogic, 
@@ -56,6 +61,20 @@ namespace DatenMeister.Modules.Reports
         public void AddSource(string id, IReflectiveCollection collection)
         {
             _sources[id] = collection;
+        }
+
+        public Dictionary<string, IReflectiveCollection> PushSources()
+        {
+            var old = _sources;
+            _sources = new Dictionary<string, IReflectiveCollection>(_sources);
+
+            return old;
+
+        }
+
+        public void PopSources(Dictionary<string, IReflectiveCollection> sources)
+        {
+            _sources = sources;
         }
 
         /// <summary>
@@ -83,7 +102,8 @@ namespace DatenMeister.Modules.Reports
         /// <returns>Enumeration of report sources</returns>
         public IEnumerable<ReportSource> EvaluateSources(IObject reportInstance)
         {
-            var sources = reportInstance.getOrDefault<IReflectiveCollection>(_DatenMeister._Reports._HtmlReportInstance.sources);
+            var sources =
+                reportInstance.getOrDefault<IReflectiveCollection>(_DatenMeister._Reports._HtmlReportInstance.sources);
             foreach (var source in sources.OfType<IObject>())
             {
                 var name = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.name);
@@ -108,7 +128,7 @@ namespace DatenMeister.Modules.Reports
                 {
                     IExtent extent => extent.elements(),
                     IReflectiveCollection asReflectiveCollection => asReflectiveCollection,
-                    IObject asObject => new TemporaryReflectiveCollection(new[] { asObject }),
+                    IObject asObject => new TemporaryReflectiveCollection(new[] {asObject}),
                     _ => sourceItems
                 };
 
@@ -120,15 +140,20 @@ namespace DatenMeister.Modules.Reports
                 yield return new ReportSource(name, sourceItems);
             }
         }
-        public bool GetDataEvaluation(IElement reportNodeOrigin, out IElement? element, string propertyName)
+
+        /// <summary>
+        /// Gets the object view the dataevaluation
+        /// </summary>
+        /// <param name="reportNodeOrigin"></param>
+        /// <param name="element"></param>
+        /// <param name="viewNodePropertyName"></param>
+        /// <returns></returns>
+        public bool GetObjectViaDataEvaluation(
+            IElement reportNodeOrigin,
+            out IElement? element,
+            string viewNodePropertyName)
         {
-            var viewNode = reportNodeOrigin.getOrDefault<IElement>(propertyName);
-            if (viewNode == null)
-            {
-                Logger.Info("No Viewnode found");
-                element = null;
-                return false;
-            }
+            var viewNode = GetViewNode(reportNodeOrigin, viewNodePropertyName);
 
             var dataViewEvaluation = GetDataViewEvaluation();
             element = dataViewEvaluation.GetElementsForViewNode(viewNode).OfType<IElement>().FirstOrDefault();
@@ -141,12 +166,27 @@ namespace DatenMeister.Modules.Reports
             return true;
         }
 
+        /// <summary>
+        /// Gets the view node
+        /// </summary>
+        /// <param name="reportNodeOrigin">The element which contains view node</param>
+        /// <param name="viewNodePropertyName">The property name upon which the view node will be used</param>
+        /// <returns>Found viewnode</returns>
+        public static IElement GetViewNode(IElement reportNodeOrigin, string viewNodePropertyName)
+        {
+            var viewNode = reportNodeOrigin.getOrDefault<IElement>(viewNodePropertyName);
+            viewNode ??= InMemoryObject.CreateEmpty(
+                    _DatenMeister.TheOne.DataViews.__DynamicSourceNode)
+                .SetProperty(_DatenMeister._DataViews._DynamicSourceNode.nodeName, "item");
+            return viewNode;
+        }
+
         public IObject GetNodeWithEvaluatedProperties(IElement reportNodeOrigin, string propertyName)
         {
             var reportNode = ObjectCopier.CopyForTemporary(reportNodeOrigin);
             if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties))
             {
-                GetDataEvaluation(reportNodeOrigin, out var element, propertyName);
+                GetObjectViaDataEvaluation(reportNodeOrigin, out var element, propertyName);
                 var evalProperties = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties);
 
                 var dict = new Dictionary<string, object> { ["v"] = reportNode };

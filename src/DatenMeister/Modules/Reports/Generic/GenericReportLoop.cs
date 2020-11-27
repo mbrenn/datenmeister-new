@@ -1,6 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using System;
 using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Models;
 using DatenMeister.Runtime;
@@ -17,7 +18,10 @@ namespace DatenMeister.Modules.Reports.Generic
         }
         public void Evaluate(ReportLogic reportLogic, T reportCreator, IElement reportNode)
         {
-            var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportLoop.viewNode);
+            var viewNode =
+                ReportLogic.GetViewNode(
+                    reportNode,
+                    _DatenMeister._Reports._Elements._ReportLoop.viewNode);
             if (viewNode == null)
             {
                 throw new InvalidOperationException(
@@ -32,10 +36,10 @@ namespace DatenMeister.Modules.Reports.Generic
 
             foreach (var element in elements.OfType<IElement>())
             {
-                foreach (var reportElement in reportElements)
-                {
-                    // reportCreator.
-                }
+                var sources = reportLogic.PushSources();
+                reportLogic.AddSource("item", new TemporaryReflectiveCollection(new[] {element}));
+                reportLogic.ReportCreator.EvaluateElements(reportLogic, reportElements);
+                reportLogic.PopSources(sources);
             }
         }
     }

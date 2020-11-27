@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.Reports.Generic
             if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph))
             {
                 // Dynamic evaluation
-                if (reportLogic.GetDataEvaluation(reportNodeOrigin, out var element, _DatenMeister._Reports._Elements._ReportParagraph.viewNode) || element == null) return;
+                if (reportLogic.GetObjectViaDataEvaluation(reportNodeOrigin, out var element, _DatenMeister._Reports._Elements._ReportParagraph.viewNode) || element == null) return;
 
                 var evalParagraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph);
                 paragraph = TextTemplateEngine.Parse(

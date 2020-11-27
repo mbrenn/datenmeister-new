@@ -34,31 +34,31 @@ namespace DatenMeister.Modules.Reports.Generic
         /// <summary>
         /// Starts the table and gives the cssClass
         /// </summary>
-        /// <param name="reportCreator">Report Creator to be used</param>
+        /// <param name="reportCreator">Report ReportCreator to be used</param>
         /// <param name="cssClass">CssClass defining the style</param>
         public abstract void StartTable(T reportCreator, string cssClass);
 
         /// <summary>
         /// Ends the table after all column headers and rows are added
         /// </summary>
-        /// <param name="reportCreator">Report Creator To be used</param>
+        /// <param name="reportCreator">Report ReportCreator To be used</param>
         public abstract void EndTable(T reportCreator);
 
         /// <summary>
         /// Writes a row containing the column headers. 
         /// </summary>
-        /// <param name="reportCreator">Report Creator To be used</param>
+        /// <param name="reportCreator">Report ReportCreator To be used</param>
         /// <param name="cellHeaders">Enumeration of cell header definitions</param>
         public abstract void WriteColumnHeader(T reportCreator, IEnumerable<TableCellHeader> cellHeaders);
 
         /// <summary>
         /// Writes a row with the columns
         /// </summary>
-        /// <param name="reportCreator">Report Creator To be used</param>
+        /// <param name="reportCreator">Report ReportCreator To be used</param>
         /// <param name="cellContents"></param>
         public abstract void WriteRow(T reportCreator, IEnumerable<TableCellContent> cellContents);
 
-        public void Evaluate(T adocGenericReportCreator, IElement reportNode)
+        public void Evaluate(GenericReportLogic reportLogic, T reportCreator, IElement reportNode)
         {
             var viewNode = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportTable.viewNode);
             if (viewNode == null)
@@ -69,7 +69,7 @@ namespace DatenMeister.Modules.Reports.Generic
 
             var form = reportNode.getOrDefault<IElement>(_DatenMeister._Reports._Elements._ReportTable.form);
 
-            var dataviewEvaluation = adocGenericReportCreator.GetDataViewEvaluation();
+            var dataviewEvaluation = reportLogic.GetDataViewEvaluation();
             var elements = dataviewEvaluation.GetElementsForViewNode(viewNode);
 
             // Find form 
@@ -77,14 +77,14 @@ namespace DatenMeister.Modules.Reports.Generic
             {
                 // Create form
                 var formCreator = FormCreator.Create(
-                    adocGenericReportCreator.WorkspaceLogic,
+                    reportLogic.WorkspaceLogic,
                     null);
                 form = formCreator.CreateListFormForElements(elements, CreationMode.All);
             }
 
             // Creates the table
             var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportTable.cssClass);
-            StartTable(adocGenericReportCreator, cssClass);
+            StartTable(reportCreator, cssClass);
 
             var cellHeaders = new List<TableCellHeader>();
             var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
@@ -97,7 +97,7 @@ namespace DatenMeister.Modules.Reports.Generic
                     });
             }
 
-            WriteColumnHeader(adocGenericReportCreator, cellHeaders);
+            WriteColumnHeader(reportCreator, cellHeaders);
 
             foreach (var listElement in elements.OfType<IElement>())
             {
@@ -108,10 +108,10 @@ namespace DatenMeister.Modules.Reports.Generic
                     cellContent.Add(CreateCellForField(listElement, field));
                 }
 
-                WriteRow(adocGenericReportCreator, cellContent);
+                WriteRow(reportCreator, cellContent);
             }
 
-            EndTable(adocGenericReportCreator);
+            EndTable(reportCreator);
         }
         /// <summary>
         /// Creates the cell for a specific element and field

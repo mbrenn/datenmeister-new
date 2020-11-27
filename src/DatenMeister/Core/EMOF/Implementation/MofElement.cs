@@ -198,7 +198,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Sets the extent by which the element was created
         /// </summary>
-        /// <param name="extent">Extent being used to define the the creator</param>
+        /// <param name="extent">Extent being used to define the the reportCreator</param>
         /// <returns>this element. </returns>
         public new IElement CreatedBy(MofExtent extent)
         {

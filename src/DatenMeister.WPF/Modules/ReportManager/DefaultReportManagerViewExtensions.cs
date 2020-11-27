@@ -126,9 +126,12 @@ namespace DatenMeister.WPF.Modules.ReportManager
                             using var streamWriter = GetRandomWriter(out string tmpPath);
 
                             var reportGenerator =
-                                new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage,
-                                    streamWriter);
-                            CreateReportWithDefinition(reportGenerator, y);
+                                new HtmlReportCreator(streamWriter);
+                            var reportlogic = new GenericReportLogic(
+                                GiveMe.Scope.WorkspaceLogic,
+                                GiveMe.Scope.ScopeStorage,
+                                reportGenerator);
+                            CreateReportWithDefinition(reportlogic, y);
 
                             DotNetHelper.CreateProcess(tmpPath);
                         });
@@ -151,11 +154,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
                             using (var streamWriter = GetRandomWriter(out tmpPath, ".adoc"))
                             {
                                 var reportGenerator =
-                                    new AdocGenericReportCreator(
-                                        GiveMe.Scope.WorkspaceLogic,
-                                        GiveMe.Scope.ScopeStorage,
-                                        streamWriter);
-                                CreateReportWithDefinition(reportGenerator, definition);
+                                    new AdocReportCreator(streamWriter);
+                                var reportLogic = new GenericReportLogic(
+                                    GiveMe.Scope.WorkspaceLogic,
+                                    GiveMe.Scope.ScopeStorage,
+                                    reportGenerator);
+
+                                CreateReportWithDefinition(reportLogic, definition);
                             }
                         });
             }
@@ -164,14 +169,14 @@ namespace DatenMeister.WPF.Modules.ReportManager
         /// <summary>
         /// Creates a report with the given definition 
         /// </summary>
-        /// <param name="reportGenerator">Report generator to be used</param>
+        /// <param name="reportLogic">Report generator to be used</param>
         /// <param name="definition">Definition to be used for the report</param>
-        private static void CreateReportWithDefinition(GenericReportCreator reportGenerator, IObject definition)
+        private static void CreateReportWithDefinition(GenericReportLogic reportLogic, IObject definition)
         {
-            var sources = reportGenerator.EvaluateSources(definition);
+            var sources = reportLogic.EvaluateSources(definition);
             foreach (var source in sources)
             {
-                reportGenerator.AddSource(source.Name, source.Collection);
+                reportLogic.AddSource(source.Name, source.Collection);
             }
 
             var reportDefinition =
@@ -182,7 +187,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 return;
             }
 
-            reportGenerator.GenerateReportByDefinition(reportDefinition);
+            reportLogic.GenerateReportByDefinition(reportDefinition);
         }
 
         private IEnumerable<ViewExtension> OfferSimpleReportsInExplorer(ViewExtensionInfo viewExtensionInfo)

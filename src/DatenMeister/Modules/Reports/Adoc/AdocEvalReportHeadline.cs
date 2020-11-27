@@ -6,15 +6,9 @@ using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports.Adoc
 {
-    public class AdocEvalReportHeadline : GenericReportHeadline<AdocGenericReportCreator>
+    public class AdocEvalReportHeadline : GenericReportHeadline<AdocReportCreator>
     {
-        public void Evaluate(AdocGenericReportCreator adocGenericReportCreator, IElement reportNode, TextWriter writer)
-        {
-            var title = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportHeadline.title);
-            writer.WriteLine($"== {title}");
-        }
-
-        public override void WriteHeadline(AdocGenericReportCreator reportCreator, string headline)
+        public override void WriteHeadline(AdocReportCreator reportCreator, string headline)
         {
             reportCreator.TextWriter.WriteLine($"== {headline}");
         }

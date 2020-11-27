@@ -15,9 +15,9 @@ namespace DatenMeister.Modules.Reports.Generic
             return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph) == true;
         }
 
-        public void Evaluate(T htmlReportCreator, IElement reportNodeOrigin)
+        public void Evaluate(GenericReportLogic reportLogic, T reportCreator, IElement reportNodeOrigin)
         {
-            var reportNode = htmlReportCreator.GetNodeWithEvaluatedProperties(reportNodeOrigin, _DatenMeister._Reports._Elements._ReportParagraph.viewNode);
+            var reportNode = reportLogic.GetNodeWithEvaluatedProperties(reportNodeOrigin, _DatenMeister._Reports._Elements._ReportParagraph.viewNode);
 
             var paragraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.paragraph);
 
@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.Reports.Generic
             if (reportNode.isSet(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph))
             {
                 // Dynamic evaluation
-                if (htmlReportCreator.GetDataEvaluation(reportNodeOrigin, out var element, _DatenMeister._Reports._Elements._ReportParagraph.viewNode) || element == null) return;
+                if (reportLogic.GetDataEvaluation(reportNodeOrigin, out var element, _DatenMeister._Reports._Elements._ReportParagraph.viewNode) || element == null) return;
 
                 var evalParagraph = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.evalParagraph);
                 paragraph = TextTemplateEngine.Parse(
@@ -35,7 +35,7 @@ namespace DatenMeister.Modules.Reports.Generic
 
             var cssClass = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportParagraph.cssClass);
 
-            WriteParagraph(htmlReportCreator, paragraph, cssClass);
+            WriteParagraph(reportCreator, paragraph, cssClass);
         }
 
         public abstract void WriteParagraph(T report, string paragraph, string cssClass);

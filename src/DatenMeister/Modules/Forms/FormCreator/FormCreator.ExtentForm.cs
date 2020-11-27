@@ -167,7 +167,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
                     
                     // Asks the view logic whether it has a list form for the specific metaclass
-                    // It will ask the form creator, if there is no view association directly referencing
+                    // It will ask the form reportCreator, if there is no view association directly referencing
                     // to the element
                     form = _formLogic.GetListFormForExtentsItem(
                         extent,
@@ -184,7 +184,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 }
                 else
                 {
-                    // If no view logic is given, then ask directly the form creator.
+                    // If no view logic is given, then ask directly the form reportCreator.
                     form = CreateListFormForMetaClass(groupedMetaclass, creationMode);
                 }
 

@@ -3,6 +3,7 @@ using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models;
 using DatenMeister.Modules.Reports.Adoc;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -102,8 +103,9 @@ namespace DatenMeister.Tests.Modules.Reports
 
             /* Now create the report */
             var writer = new StringWriter();
-            var htmlReport = new AdocGenericReportCreator(workspaceLogic, scopeStorage, writer);
-            htmlReport.GenerateReportByInstance(reportInstance);
+            var htmlReport = new AdocReportCreator(writer);
+            var logic = new GenericReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            logic.GenerateReportByInstance(reportInstance);
 
             var asString = writer.ToString();
             Assert.That(asString.Contains("headline"), Is.True);

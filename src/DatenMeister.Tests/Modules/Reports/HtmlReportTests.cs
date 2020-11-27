@@ -7,6 +7,7 @@ using DatenMeister.Models;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;
@@ -78,16 +79,18 @@ namespace DatenMeister.Tests.Modules.Reports
             
             /* Now create the report over 18 */
             var writer = new StringWriter();
-            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage, writer);
-            htmlReport.GenerateReportByInstance(reportInstance);
+            var htmlReport = new HtmlReportCreator(writer);
+            var htmlReportLogic = new GenericReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             Assert.That(writer.ToString().Contains("over18"), Is.True, writer.ToString());
             
             /* Now create the report under 18 */
             element.set("age", 17);
             writer = new StringWriter();
-            htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage, writer);
-            htmlReport.GenerateReportByInstance(reportInstance);
+            htmlReport = new HtmlReportCreator(writer);
+            htmlReportLogic = new GenericReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             Assert.That(writer.ToString().Contains("under18"), Is.True, writer.ToString());
         }

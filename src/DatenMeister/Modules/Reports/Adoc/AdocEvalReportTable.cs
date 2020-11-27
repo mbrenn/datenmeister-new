@@ -3,21 +3,21 @@ using DatenMeister.Modules.Reports.Generic;
 
 namespace DatenMeister.Modules.Reports.Adoc
 {
-    public class AdocEvalReportTable : GenericReportTable<AdocGenericReportCreator>
+    public class AdocEvalReportTable : GenericReportTable<AdocReportCreator>
     {
-        public override void StartTable(AdocGenericReportCreator reportCreator, string cssClass)
+        public override void StartTable(AdocReportCreator reportCreator, string cssClass)
         {
             reportCreator.TextWriter.WriteLine("[%header]");
             reportCreator.TextWriter.WriteLine("|===");
         }
 
-        public override void EndTable(AdocGenericReportCreator reportCreator)
+        public override void EndTable(AdocReportCreator reportCreator)
         {
             reportCreator.TextWriter.WriteLine("|===");
             reportCreator.TextWriter.WriteLine(string.Empty);
         }
 
-        public override void WriteColumnHeader(AdocGenericReportCreator reportCreator, IEnumerable<TableCellHeader> cellHeaders)
+        public override void WriteColumnHeader(AdocReportCreator reportCreator, IEnumerable<TableCellHeader> cellHeaders)
         {
             foreach (var header in cellHeaders)
             {
@@ -25,7 +25,7 @@ namespace DatenMeister.Modules.Reports.Adoc
             }
         }
 
-        public override void WriteRow(AdocGenericReportCreator reportCreator, IEnumerable<TableCellContent> cellContents)
+        public override void WriteRow(AdocReportCreator reportCreator, IEnumerable<TableCellContent> cellContents)
         {
             foreach (var field in cellContents)
             {

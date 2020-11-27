@@ -119,7 +119,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 var metaClass = (element as IElement)?.getMetaClass();
                 if (firstElementMetaClass == null || !creationMode.HasFlag(CreationMode.AddMetaClass))
                 {
-                    // If this is the first element or when the creator does not allow the addition
+                    // If this is the first element or when the reportCreator does not allow the addition
                     // of a metaclass
                     firstElementMetaClass = metaClass;
                 }

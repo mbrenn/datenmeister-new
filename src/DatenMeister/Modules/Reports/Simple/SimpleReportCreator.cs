@@ -41,7 +41,7 @@ namespace DatenMeister.Modules.Reports.Simple
         private readonly IElement _reportConfiguration;
 
         /// <summary>
-        /// Initializes a new instance of the simple report creator. 
+        /// Initializes a new instance of the simple report reportCreator. 
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="simpleReportConfiguration">The configuration defining the layout of the report</param>

@@ -16,12 +16,12 @@ namespace DatenMeister.Modules.Reports.Generic
         /// <summary>
         /// Performs the evaluation
         /// </summary>
-        /// <param name="genericReportCreator">Report creator</param>
+        /// <param name="reportCreator">Report reportCreator</param>
         /// <param name="reportNode">The report node</param>
-        public void Evaluate(T genericReportCreator, IElement reportNode)
+        public void Evaluate(GenericReportLogic reportLogic, T reportCreator, IElement reportNode)
         {
             var headline = reportNode.getOrDefault<string>(_DatenMeister._Reports._Elements._ReportHeadline.title);
-            WriteHeadline(genericReportCreator, headline);
+            WriteHeadline(reportCreator, headline);
         }
 
         /// <summary>

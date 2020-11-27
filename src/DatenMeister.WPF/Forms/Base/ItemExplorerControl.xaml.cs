@@ -160,7 +160,7 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
-        /// Forces the generation of the form via the form creator
+        /// Forces the generation of the form via the form reportCreator
         /// </summary>
         public void ForceAutoGenerationOfForm()
         {
@@ -392,7 +392,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var tabViewExtensions = new List<ViewExtension>();
                 
-                // 1) Gets the form extensions as defined by the creator of the form definition
+                // 1) Gets the form extensions as defined by the reportCreator of the form definition
                 if (formDefinition.TabViewExtensionsFunction != null)
                     tabViewExtensions = formDefinition.TabViewExtensionsFunction(tab).ToList();
 

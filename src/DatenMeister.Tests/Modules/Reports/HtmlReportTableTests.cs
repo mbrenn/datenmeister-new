@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models;
 using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;

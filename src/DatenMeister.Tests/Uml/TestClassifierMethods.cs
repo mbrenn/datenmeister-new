@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;

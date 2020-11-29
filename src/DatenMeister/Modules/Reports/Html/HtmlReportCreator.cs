@@ -61,7 +61,9 @@ namespace DatenMeister.Modules.Reports.Html
         /// </summary>
         /// <param name="reportLogic">The reportlogic to be used</param>
         /// <param name="reportElements">The reportElements to be used</param>
-        public override void EvaluateElements(ReportLogic reportLogic, IReflectiveCollection reportElements)
+        public override void EvaluateElements(
+            ReportLogic reportLogic, 
+            IReflectiveCollection reportElements)
         {
             var evaluators = reportLogic.ScopeStorage.Get<HtmlReportEvaluators>();
             foreach (var element in reportElements.OfType<IElement>())

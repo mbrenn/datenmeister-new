@@ -7,7 +7,6 @@ using DatenMeister.Models;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Workspaces;

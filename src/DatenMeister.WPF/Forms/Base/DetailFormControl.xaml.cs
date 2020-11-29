@@ -201,7 +201,7 @@ namespace DatenMeister.WPF.Forms.Base
                 NavigationCategories.DatenMeister);
 
             yield return new ItemMenuButtonDefinition(
-                "Copy as XMI",
+                "Export as XMI",
                 CopyContentAsXmi,
                 null,
                 NavigationCategories.DatenMeister);

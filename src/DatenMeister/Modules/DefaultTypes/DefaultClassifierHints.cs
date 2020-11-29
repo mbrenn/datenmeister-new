@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
@@ -112,6 +113,23 @@ namespace DatenMeister.Modules.DefaultTypes
             }
         }
 
+        /// <summary>
+        /// Gets the default reflective collection for the given element.
+        /// For extents, it is an enumeration of all elements, for the objects, it is the default
+        /// property being used for compositions
+        /// </summary>
+        /// <param name="element">Element to be used. </param>
+        /// <returns>the reflectiv collection</returns>
+        public static IReflectiveCollection GetDefaultReflectiveCollection(IObject element)
+        {
+            return element switch
+            {
+                null => throw new InvalidOperationException("container is null"),
+                IExtent extent => extent.elements(),
+                _ => element.get<IReflectiveCollection>(GetDefaultPackagePropertyName(element))
+            };
+        }
+
         public static void RemoveFromExtentOrElement(IObject container, IObject child)
         {
             if (container is IExtent extent)
@@ -123,7 +141,6 @@ namespace DatenMeister.Modules.DefaultTypes
                 var propertyName = GetDefaultPackagePropertyName(container);
                 container.RemoveCollectionItem(propertyName, child);
             }
-            
         }
 
         /// <summary>

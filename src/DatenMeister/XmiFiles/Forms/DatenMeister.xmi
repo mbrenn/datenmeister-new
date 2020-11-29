@@ -45,6 +45,9 @@
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.FormAssociation" formType="Detail" form-ref="#AttachedElement.ExtentProperty" metaClass-ref="dm:///_internal/types/internal#DatenMeister.Models.AttachedExtent.AttachedExtentConfiguration" name="Association for Extent Property" p1:id="0a43615b-42eb-4c0b-818c-985c966fbaa3" />
     </packagedElement>
+    <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" p1:id="DatenMeister.ContextMenu.ImportByXmi" buttonApplyText="Import By Xmi" name="ContextMenu - Import By Xmi" title="Import By Xmi">
+      <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" p1:id="b585e1c6-0b85-460c-bfb1-5520e36d3c5e" lineHeight="30" name="importXmi" title="Import Xmi" width="600" />
+    </packagedElement>
   </item>
   <item xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="WorkspacesAndExtents" name="WorkspacesAndExtents">
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DetailForm" allowNewProperties="False" hideMetaInformation="True" defaultWidth="0" defaultHeight="0" buttonApplyText="Create Xmi" title="Create Xmi Extent" p1:id="WorkspacesAndExtents.Xmi.New" name="Dialog - New Xmi Extent">

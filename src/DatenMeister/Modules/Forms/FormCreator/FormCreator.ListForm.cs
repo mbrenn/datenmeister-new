@@ -56,14 +56,10 @@ namespace DatenMeister.Modules.Forms.FormCreator
             else
             {
                 // Ok, we have no metaclass, but let's add at least the columns for the property 'name'
-                var nameProperty = _UML.TheOne.CommonStructure.NamedElement._name;
-                if (nameProperty != null)
-                {
-                    AddToFormByUmlElement(
-                        result, 
-                        nameProperty, 
-                        CreationMode.ForListForms | CreationMode.ByMetaClass);
-                }
+                AddToFormByUmlElement(
+                    result,
+                    _UML.TheOne.CommonStructure.NamedElement._name, 
+                    CreationMode.ForListForms | CreationMode.ByMetaClass);
             }
 
             return result;

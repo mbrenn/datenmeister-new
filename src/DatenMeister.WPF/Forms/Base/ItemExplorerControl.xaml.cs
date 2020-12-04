@@ -627,6 +627,8 @@ namespace DatenMeister.WPF.Forms.Base
                 menuItem.Click += async (x, y) => await CreateNewElementByUser(null, parentProperty);
                 menuItems.Add(menuItem);
 
+                var alreadyIncludedElements = new HashSet<IElement>();
+
                 // Sets the generic buttons to create the new types
                 foreach (var type in defaultTypesForNewItems.OfType<IElement>())
                 {
@@ -642,15 +644,15 @@ namespace DatenMeister.WPF.Forms.Base
 
                         if (newType != null)
                         {
-                            Create(newType, tempParentProperty);
+                            Create(newType, tempParentProperty, alreadyIncludedElements);
                         }
                     }
                     else
                     {
-                        Create(type, parentProperty);
+                        Create(type, parentProperty, alreadyIncludedElements);
                     }
 
-                    void Create(IElement newType, string? innerParentProperty)
+                    void Create(IElement newType, string? innerParentProperty, HashSet<IElement> visitedElements)
                     {
                         var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
 
@@ -661,7 +663,7 @@ namespace DatenMeister.WPF.Forms.Base
                             Tag = new TagCreateMetaClass(newType)
                         });
 
-                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType))
+                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType, visitedElements))
                         {
                             // Stores the menu items for the context menu
                             menuItem = new MenuItem

@@ -171,14 +171,20 @@ namespace DatenMeister.Uml.Helper
                 // The element is not connected to an extent, so metaclasses cannot be found
                 yield break;
             }
-            
+
             var classInstance = _UML.TheOne.StructuredClassifiers.__Class;
             if (classInstance == null)
             {
                 throw new InvalidOperationException("Classifier is not known in metaextent");
             }
 
-            if (!withoutItself) yield return element;
+            if (!withoutItself)
+            {
+                if (!visitedElements.Contains(element))
+                {
+                    yield return element;
+                }
+            }
 
             if (workspace != null)
             {
@@ -193,9 +199,9 @@ namespace DatenMeister.Uml.Helper
                     if (!visitedElements.Contains(elementInExtent) && generalizations.Contains(element))
                     {
                         yield return elementInExtent;
-                        
+
                         visitedElements.Add(elementInExtent);
-                    }                    
+                    }
                 }
             }
         }

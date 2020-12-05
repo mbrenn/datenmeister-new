@@ -455,7 +455,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 throw new InvalidOperationException(ExtentManager.PackagePathTypesExtentLoaderConfig + " not found");
             }
             
-            dlg.SetAsRoot(package);
+            dlg.SetAsRoot(extent /*package*/);
 
             // User has selected the type
             if (dlg.ShowDialog() != true) return null;

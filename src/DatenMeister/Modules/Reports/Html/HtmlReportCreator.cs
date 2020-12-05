@@ -5,57 +5,68 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Reports.Html
 {
     /// <summary>
     /// Creates the report
     /// </summary>
-    public class HtmlReportCreator : ReportCreator
+    public class HtmlReportCreator : GenericReportCreator
     {
         private readonly ClassLogger Logger = new ClassLogger(typeof(HtmlReportCreator));
 
         /// <summary>
         /// Stores the possible source of the report
         /// </summary>
-        private readonly Dictionary<string, IReflectiveCollection> _sources 
+        private readonly Dictionary<string, IReflectiveCollection> _sources
             = new Dictionary<string, IReflectiveCollection>();
 
         private HtmlReport? _htmlReporter;
 
-        public HtmlReportCreator(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
-        : base(workspaceLogic, scopeStorage)
+        public TextWriter TextWriter { get; set; }
+
+        public HtmlReportCreator(TextWriter textWriter)
         {
+            TextWriter = textWriter;
         }
 
-        public HtmlReport HtmlReporter => 
+
+        public HtmlReport HtmlReporter =>
             _htmlReporter ?? throw new InvalidOperationException("_htmlReporter is null");
 
+
+        public override void StartReport(ReportLogic logic, IObject reportDefinition)
+        {
+            _htmlReporter = new HtmlReport(TextWriter);
+
+            var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
+            _htmlReporter.SetDefaultCssStyle();
+            _htmlReporter.StartReport(title);
+        }
+
+
+        public override void EndReport(ReportLogic logic, IObject definition)
+        {
+            _htmlReporter?.EndReport();
+        }
 
         /// <summary>
         /// Generates a report after the sources has been manually attached
         /// It is important that the reportDefinition value is not of type ReportInstance.
         /// If a report shall be generated upon a Report Instance, use GenerateByInstance
         /// </summary>
-        /// <param name="reportDefinition">The report definition to be used</param>
-        /// <param name="writer">The writer being used</param>
-        public override void GenerateReportByDefinition(IObject reportDefinition, TextWriter writer)
+        /// <param name="reportLogic">The reportlogic to be used</param>
+        /// <param name="reportElements">The reportElements to be used</param>
+        public override void EvaluateElements(
+            ReportLogic reportLogic, 
+            IReflectiveCollection reportElements)
         {
-            _htmlReporter = new HtmlReport(writer);
-            
-            var title = reportDefinition.getOrDefault<string>(_DatenMeister._Reports._ReportDefinition.title);
-            _htmlReporter.SetDefaultCssStyle();
-            _htmlReporter.StartReport(title);
-
-            var evaluators = ScopeStorage.Get<HtmlReportEvaluators>();
-
-            var elements = reportDefinition.getOrDefault<IReflectiveCollection>(_DatenMeister._Reports._ReportDefinition.elements);
-            foreach (var element in elements.OfType<IElement>())
+            var evaluators = reportLogic.ScopeStorage.Get<HtmlReportEvaluators>();
+            foreach (var element in reportElements.OfType<IElement>())
             {
                 var foundItem =
                     (from x in evaluators.Evaluators
@@ -64,15 +75,13 @@ namespace DatenMeister.Modules.Reports.Html
                     .FirstOrDefault();
                 if (foundItem != null)
                 {
-                    foundItem.Evaluate(this, element);
+                    foundItem.Evaluate(reportLogic, this, element);
                 }
                 else
                 {
                     Logger.Warn("No evaluator found" + element);
                 }
             }
-            
-            _htmlReporter.EndReport();
         }
     }
 }

@@ -73,14 +73,14 @@ namespace DatenMeister.Integration
             var scope = new DatenMeisterScope(container.BeginLifetimeScope());
             scope.ScopeStorage = scope.Resolve<IScopeStorage>();
 
-            GiveMe.Scope = scope;
+            Scope = scope;
             scope.BeforeDisposing += (x, y) =>
             {
                 scope.UnuseDatenMeister();
-                GiveMe.ClearScope();
+                ClearScope();
             };
 
-            return GiveMe.Scope;
+            return Scope;
         }
 
         public static IntegrationSettings GetDefaultIntegrationSettings()
@@ -88,7 +88,7 @@ namespace DatenMeister.Integration
             return new IntegrationSettings
             {
                 EstablishDataEnvironment = true,
-                DatabasePath = GiveMe.DefaultDatabasePath,
+                DatabasePath = DefaultDatabasePath,
 #if NET462
                 PluginLoader = new DefaultPluginLoader()
 #else

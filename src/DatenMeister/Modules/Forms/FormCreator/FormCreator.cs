@@ -281,7 +281,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="form">Form that will be extended. Must be list or detail form.</param>
         /// <param name="metaClass">Metaclass to be used</param>
         /// <param name="creationMode">Creation Mode to be used</param>
-        /// <param name="cache">Cache of creator cache</param>
+        /// <param name="cache">Cache of reportCreator cache</param>
         /// <returns>true, if the metaclass is not null and if the metaclass contains at least on</returns>
         private bool AddToFormByMetaclass(IObject form, IObject metaClass, CreationMode creationMode, FormCreatorCache? cache = null)
         {

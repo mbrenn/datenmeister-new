@@ -26,7 +26,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Initializes a new instance of the ExtentReflectiveSequence class
         /// </summary>
-        /// <param name="extent">Extent to be covered by this refective sequence</param>
+        /// <param name="extent">Extent to be covered by this reflective sequence</param>
         public ExtentReflectiveSequence(MofExtent extent)
         {
             _extent = extent;

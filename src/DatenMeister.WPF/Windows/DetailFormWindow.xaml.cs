@@ -126,7 +126,7 @@ namespace DatenMeister.WPF.Windows
         public UIElement? MainControl => MainContent.Content as UIElement;
 
         /// <summary>
-        /// Stores the view definition as requested by the creator of the window.
+        /// Stores the view definition as requested by the reportCreator of the window.
         /// This view definition may be overridden by the OverridingViewDefinition
         /// </summary>
         public FormDefinition? RequestedFormDefinition { get; set; }
@@ -138,7 +138,7 @@ namespace DatenMeister.WPF.Windows
 
 
         /// <summary>
-        /// Forces the generation of the form via the form creator
+        /// Forces the generation of the form via the form reportCreator
         /// </summary>
         public void ForceAutoGenerationOfForm()
         {

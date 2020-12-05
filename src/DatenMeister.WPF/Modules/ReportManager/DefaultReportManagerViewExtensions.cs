@@ -12,6 +12,7 @@ using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Adoc;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Provider.InMemory;
@@ -122,9 +123,17 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         "Create Report",
                         (x, y) =>
                         {
+                            using var streamWriter = GetRandomWriter(out string tmpPath);
+
                             var reportGenerator =
-                                new HtmlReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                            CreateReportWithDefinition(reportGenerator, y, ".html");
+                                new HtmlReportCreator(streamWriter);
+                            var reportlogic = new ReportLogic(
+                                GiveMe.Scope.WorkspaceLogic,
+                                GiveMe.Scope.ScopeStorage,
+                                reportGenerator);
+                            CreateReportWithDefinition(reportlogic, y);
+
+                            DotNetHelper.CreateProcess(tmpPath);
                         });
             }
         }
@@ -141,25 +150,33 @@ namespace DatenMeister.WPF.Modules.ReportManager
                         "Create Report",
                         (x, definition) =>
                         {
-                            var reportGenerator =
-                                new AdocReportCreator(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
-                            CreateReportWithDefinition(reportGenerator, definition, ".adoc");
+                            string tmpPath;
+                            using (var streamWriter = GetRandomWriter(out tmpPath, ".adoc"))
+                            {
+                                var reportGenerator =
+                                    new AdocReportCreator(streamWriter);
+                                var reportLogic = new ReportLogic(
+                                    GiveMe.Scope.WorkspaceLogic,
+                                    GiveMe.Scope.ScopeStorage,
+                                    reportGenerator);
+
+                                CreateReportWithDefinition(reportLogic, definition);
+                            }
                         });
             }
         }
-        
+
         /// <summary>
         /// Creates a report with the given definition 
         /// </summary>
-        /// <param name="reportGenerator">Report generator to be used</param>
+        /// <param name="reportLogic">Report generator to be used</param>
         /// <param name="definition">Definition to be used for the report</param>
-        /// <param name="extension">Extension of the file to be used</param>
-        private static void CreateReportWithDefinition(ReportCreator reportGenerator, IObject definition, string extension)
+        private static void CreateReportWithDefinition(ReportLogic reportLogic, IObject definition)
         {
-            var sources = reportGenerator.EvaluateSources(definition);
+            var sources = reportLogic.EvaluateSources(definition);
             foreach (var source in sources)
             {
-                reportGenerator.AddSource(source.Name, source.Collection);
+                reportLogic.AddSource(source.Name, source.Collection);
             }
 
             var reportDefinition =
@@ -170,13 +187,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 return;
             }
 
-            string tmpPath;
-            using (var streamWriter = GetRandomWriter(out tmpPath, extension))
-            {
-                reportGenerator.GenerateReportByDefinition(reportDefinition, streamWriter);
-            }
-
-            DotNetHelper.CreateProcess(tmpPath);
+            reportLogic.GenerateReportByDefinition(reportDefinition);
         }
 
         private IEnumerable<ViewExtension> OfferSimpleReportsInExplorer(ViewExtensionInfo viewExtensionInfo)

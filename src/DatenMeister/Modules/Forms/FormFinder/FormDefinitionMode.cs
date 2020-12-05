@@ -14,7 +14,7 @@ namespace DatenMeister.Modules.Forms.FormFinder
         Default = ViaFormCreator | ViaFormFinder,
 
         /// <summary>
-        /// Returns all properties by form creator
+        /// Returns all properties by form reportCreator
         /// </summary>
         ViaFormCreator = 0x01,
 

@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Integration;
 using DatenMeister.Modules.Reports.Adoc;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Runtime.Plugins;
 
@@ -32,6 +33,7 @@ namespace DatenMeister.Modules.Reports
             evaluator.AddEvaluator(new HtmlEvalReportHeadline());
             evaluator.AddEvaluator(new HtmlReportParagraph());
             evaluator.AddEvaluator(new HtmlReportTable());
+            evaluator.AddEvaluator(new GenericReportLoop<HtmlReportCreator>());
             return evaluator;
         }
 
@@ -42,9 +44,10 @@ namespace DatenMeister.Modules.Reports
         public static AdocReportEvaluators CreateAdocEvaluators()
         {
             var evaluator = new AdocReportEvaluators();
-            evaluator.AddEvaluator(new AdocEvalReportTitle());
+            evaluator.AddEvaluator(new AdocEvalReportHeadline());
             evaluator.AddEvaluator(new AdocEvalReportParagraph());
             evaluator.AddEvaluator(new AdocEvalReportTable());
+            evaluator.AddEvaluator(new GenericReportLoop<AdocReportCreator>());
             return evaluator;
         }
     }

@@ -15,7 +15,6 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -28,7 +27,6 @@ using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
@@ -615,72 +613,6 @@ namespace DatenMeister.WPF.Forms.Base
         {
             if (usedViewExtensions == null) throw new ArgumentNullException(nameof(usedViewExtensions));
 
-            List<MenuItem> GetMenuItems()
-            {
-                // Stores the menu items for the context menu
-                var menuItems = new List<MenuItem>();
-                var menuItem = new MenuItem
-                {
-                    Header = "Select Type..."
-                };
-
-                menuItem.Click += async (x, y) => await CreateNewElementByUser(null, parentProperty);
-                menuItems.Add(menuItem);
-
-                var alreadyIncludedElements = new HashSet<IElement>();
-
-                // Sets the generic buttons to create the new types
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-                {
-                    // Check if type is a directly type or the DefaultTypeForNewElement
-                    if (type.metaclass?.equals(
-                        _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement) == true)
-                    {
-                        var newType =
-                            type.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
-                        var tempParentProperty =
-                            type.getOrDefault<string>(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty)
-                            ?? parentProperty;
-
-                        if (newType != null)
-                        {
-                            Create(newType, tempParentProperty, alreadyIncludedElements);
-                        }
-                    }
-                    else
-                    {
-                        Create(type, parentProperty, alreadyIncludedElements);
-                    }
-
-                    void Create(IElement newType, string? innerParentProperty, HashSet<IElement> visitedElements)
-                    {
-                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
-
-                        usedViewExtensions.Add(new GenericButtonDefinition(
-                            $"New {typeName}",
-                            async () => await CreateNewElementByUser(newType, innerParentProperty))
-                        {
-                            Tag = new TagCreateMetaClass(newType)
-                        });
-
-                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType, visitedElements))
-                        {
-                            // Stores the menu items for the context menu
-                            menuItem = new MenuItem
-                            {
-                                Header = $"New {newSpecializationType}"
-                            };
-
-                            menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, innerParentProperty);
-                            menuItems.Add(menuItem);
-                        }
-                    }
-                }
-
-                menuItems = menuItems.OrderBy(x => x.Header.ToString()).ToList();
-                return menuItems;
-            }
-
             async Task CreateNewElementByUser(IElement? type, string? innerParentProperty)
             {
                 if (IsExtentSelectedInTreeview)
@@ -704,9 +636,19 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Sets the button for the new item
             usedViewExtensions.Add(
-                new GenericButtonDefinition(
-                    "New Item...",
-                    () => _ = new ContextMenu {ItemsSource = GetMenuItems(), IsOpen = true}));
+                new FreeWpfElementDefinition
+                {
+                    ElementFactory = () =>
+                    {
+                        var result = new NewTypeButton();
+                        result.SetDefaultTypesForCreation(defaultTypesForNewItems.OfType<IElement>());
+                        result.TypeSelected += async (x, y) =>
+                        {
+                            await CreateNewElementByUser(y.SelectedType, parentProperty);
+                        };
+                        return result;
+                    }
+                });
         }
 
         /// <summary>

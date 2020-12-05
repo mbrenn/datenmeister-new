@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -563,6 +561,15 @@ namespace DatenMeister.WPF.Forms.Base
                 if (ExtentManager.IsExtentModified(extent))
                 {
                     itemHeader += "*";
+                }
+
+                if (_cacheShowMetaClasses)
+                {
+                    var configuration = extent.GetConfiguration();
+                    if (!string.IsNullOrEmpty(configuration.ExtentType))
+                    {
+                        itemHeader += $" {{{configuration.ExtentType}}}";
+                    }
                 }
             }
             else

@@ -677,6 +677,7 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                 }
 
+                menuItems = menuItems.OrderBy(x => x.Header.ToString()).ToList();
                 return menuItems;
             }
 

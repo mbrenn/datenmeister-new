@@ -19,6 +19,9 @@ namespace DatenMeister.Uml.Helper
         public static IElement? GetPropertyType(IObject value) =>
             value?.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
 
+        public static bool IsComposite(IObject property)
+            => property.getOrDefault<bool>(_UML._Classification._Property.isComposite);
+
         /// <summary>
         /// Gets the value whether the property is a collection by
         /// </summary>

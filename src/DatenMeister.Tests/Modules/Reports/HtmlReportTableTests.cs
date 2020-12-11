@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Models;
+using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
@@ -44,7 +45,7 @@ namespace DatenMeister.Tests.Modules.Reports
             extent.elements().add(filterMetaClass);
 
             /* Create the report paragraph and its corresponding view node */
-            var reportTable = factory.create(_DatenMeister.TheOne.Reports.__ReportTable);
+            var reportTable = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportTable);
 
             var form = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var field = factory.create(_DatenMeister.TheOne.Forms.__EvalTextFieldData)
@@ -65,9 +66,9 @@ namespace DatenMeister.Tests.Modules.Reports
             reportTable.SetProperties(
                 new Dictionary<string, object>
                 {
-                    [_DatenMeister._Reports._ReportTable.name] = "Table",
-                    [_DatenMeister._Reports._ReportTable.form] = form,
-                    [_DatenMeister._Reports._ReportTable.viewNode] = filterMetaClass
+                    [_DatenMeister._Reports._Elements._ReportTable.name] = "Table",
+                    [_DatenMeister._Reports._Elements._ReportTable.form] = form,
+                    [_DatenMeister._Reports._Elements._ReportTable.viewNode] = filterMetaClass
                 });
 
             /* Attached it to the report definition */
@@ -87,8 +88,9 @@ namespace DatenMeister.Tests.Modules.Reports
 
             /* Now create the report */
             var writer = new StringWriter();
-            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
-            htmlReport.GenerateReportByInstance(reportInstance, writer);
+            var htmlReport = new HtmlReportCreator(writer);
+            var htmlReportLogic = new ReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             var asString = writer.ToString();
             Assert.That(asString.Contains("Father"), Is.True);

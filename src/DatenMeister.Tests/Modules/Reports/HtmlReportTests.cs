@@ -53,13 +53,13 @@ namespace DatenMeister.Tests.Modules.Reports
             extent.elements().add(reportDefinition);
 
             /* Create the report paragraph and its corresponding view node */
-            var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.__ReportParagraph);
-            reportParagraph.set(_DatenMeister._Reports._ReportParagraph.evalProperties, "if (i.age>18)\r\n v.paragraph=\"over18\"\r\n else\r\n v.paragraph=\"under18\"\r\n end");
+            var reportParagraph = factory.create(_DatenMeister.TheOne.Reports.Elements.__ReportParagraph);
+            reportParagraph.set(_DatenMeister._Reports._Elements._ReportParagraph.evalProperties, "if (i.age>18)\r\n v.paragraph=\"over18\"\r\n else\r\n v.paragraph=\"under18\"\r\n end");
 
             var dynamicViewNode = factory.create(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
             dynamicViewNode.set(_DatenMeister._DataViews._DynamicSourceNode.name, "input");
             extent.elements().add(dynamicViewNode);
-            reportParagraph.set(_DatenMeister._Reports._ReportParagraph.viewNode, dynamicViewNode);
+            reportParagraph.set(_DatenMeister._Reports._Elements._ReportParagraph.viewNode, dynamicViewNode);
             
             /* Attached it to the report definition */
             reportDefinition.set(_DatenMeister._Reports._ReportDefinition.elements, new[]{reportParagraph});
@@ -78,16 +78,18 @@ namespace DatenMeister.Tests.Modules.Reports
             
             /* Now create the report over 18 */
             var writer = new StringWriter();
-            var htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
-            htmlReport.GenerateReportByInstance(reportInstance, writer);
+            var htmlReport = new HtmlReportCreator(writer);
+            var htmlReportLogic = new ReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             Assert.That(writer.ToString().Contains("over18"), Is.True, writer.ToString());
             
             /* Now create the report under 18 */
             element.set("age", 17);
             writer = new StringWriter();
-            htmlReport = new HtmlReportCreator(workspaceLogic, scopeStorage);
-            htmlReport.GenerateReportByInstance(reportInstance, writer);
+            htmlReport = new HtmlReportCreator(writer);
+            htmlReportLogic = new ReportLogic(workspaceLogic, scopeStorage, htmlReport);
+            htmlReportLogic.GenerateReportByInstance(reportInstance);
 
             Assert.That(writer.ToString().Contains("under18"), Is.True, writer.ToString());
         }

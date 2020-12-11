@@ -41,7 +41,7 @@ namespace DatenMeister.Modules.Reports.Simple
         private readonly IElement _reportConfiguration;
 
         /// <summary>
-        /// Initializes a new instance of the simple report creator. 
+        /// Initializes a new instance of the simple report reportCreator. 
         /// </summary>
         /// <param name="workspaceLogic">The workspace logic to be used</param>
         /// <param name="simpleReportConfiguration">The configuration defining the layout of the report</param>
@@ -99,7 +99,7 @@ namespace DatenMeister.Modules.Reports.Simple
                 report.Add(new HtmlHeadline("Items in collection", 1));
 
                 var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
-                if (_reportConfiguration.getOrDefault<___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == ___ReportTableForTypeMode.PerType)
+                if (_reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == _Elements.___ReportTableForTypeMode.PerType)
                 {
                     // Splits them up by metaclasses 
                     var metaClasses =

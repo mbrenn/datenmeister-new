@@ -235,7 +235,7 @@ namespace DatenMeister.Modules.Forms
         public IEnumerable<IExtent> GetAllFormExtents()
         {
             var result = _workspaceLogic.GetManagementWorkspace().extent
-                .Where(x => x.GetConfiguration().ContainsExtentType(FormsPlugin.FormExtentType))
+                .Where(x => x.GetConfiguration().ContainsExtentType(FormExtentType))
                 .OfType<IUriExtent>()
                 .ToList();
 
@@ -538,7 +538,7 @@ namespace DatenMeister.Modules.Forms
 
         /// <summary>
         /// Gets one of the list forms for the extent. If the extent form is available, but
-        /// the form creator thinks about creating a list form for the extent, it will query this
+        /// the form reportCreator thinks about creating a list form for the extent, it will query this
         /// method
         /// </summary>
         /// <param name="extent">Extent for which the list is created</param>
@@ -864,9 +864,9 @@ namespace DatenMeister.Modules.Forms
         }
         
         /// <summary>
-        /// Creates a new instance of the form creator
+        /// Creates a new instance of the form reportCreator
         /// </summary>
-        /// <returns>The created instance of the form creator</returns>
+        /// <returns>The created instance of the form reportCreator</returns>
         public FormCreator.FormCreator CreateFormCreator()
             =>  FormCreator.FormCreator.Create(WorkspaceLogic, this, _extentSettings);
     }

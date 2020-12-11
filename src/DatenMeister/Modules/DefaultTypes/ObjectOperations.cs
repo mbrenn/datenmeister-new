@@ -2,6 +2,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DefaultTypes
 {
@@ -40,6 +41,55 @@ namespace DatenMeister.Modules.DefaultTypes
             var options = new CopyOption {CloneAllReferences = false};
             var copied = ObjectCopier.Copy(new MofFactory(targetContainer), value, options);
             DefaultClassifierHints.AddToExtentOrElement(targetContainer, copied);
+        }
+
+        /// <summary>
+        /// Creates a new instance of an element having the Type subType.
+        /// The element will be added to the property. If the property is not a compositing element
+        /// then the element will be added to the containing element otherwise it will be directly added. 
+        /// </summary>
+        /// <param name="item">Item which will receive the new element</param>
+        /// <param name="propertyName">Property to which the new element will be added</param>
+        /// <param name="typeForCreation">Type of the element that will be instantiiated</param>
+        /// <param name="container">Container element to which the element will be added if the property is
+        /// not a composition</param>
+        /// <param name="containerPropertyName">The property to which the element will be added when
+        /// added to a container</param>
+        /// <returns>The created element</returns>
+        public static IElement AddNewItemAsReferenceToInstanceProperty(
+            IElement item, 
+            string propertyName, 
+            IElement? typeForCreation, 
+            IObject container)
+        {
+            var factory = new MofFactory(item);
+            var newElement = factory.create(typeForCreation);
+
+            // Check, if the element is a compositing property
+            bool isComposite;
+            var metaClass = item.getMetaClass();
+            if (metaClass == null)
+            {
+                isComposite = true;
+            }
+            else
+            {
+                var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, propertyName);
+                isComposite = property == null || PropertyMethods.IsComposite(property);
+            }
+
+            // Checks, if there is a composition
+            if (isComposite)
+            {
+                item.set(propertyName, newElement);
+            }
+            else
+            {
+                DefaultClassifierHints.AddToExtentOrElement(container, newElement);
+                item.set(propertyName, newElement);
+            }
+
+            return newElement;
         }
     }
 }

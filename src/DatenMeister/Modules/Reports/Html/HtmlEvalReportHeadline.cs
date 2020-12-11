@@ -1,22 +1,13 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Modules.HtmlExporter.HtmlEngine;
-using DatenMeister.Runtime;
+﻿using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Modules.Reports.Generic;
 
 namespace DatenMeister.Modules.Reports.Html
 {
-    public class HtmlEvalReportHeadline : IHtmlReportEvaluator
+    public class HtmlEvalReportHeadline : GenericReportHeadline<HtmlReportCreator>
     {
-        public bool IsRelevant(IElement element)
+        public override void WriteHeadline(HtmlReportCreator reportCreator, string headline)
         {
-            var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_DatenMeister.TheOne.Reports.__ReportHeadline) == true;
-        }
-
-        public void Evaluate(HtmlReportCreator htmlReportCreator, IElement reportNode)
-        {
-            var title = reportNode.getOrDefault<string>(_DatenMeister._Reports._ReportHeadline.title);
-            htmlReportCreator.HtmlReporter.Add(new HtmlHeadline(title, 1));
+            reportCreator.HtmlReporter.Add(new HtmlHeadline(headline, 1));
         }
     }
 }

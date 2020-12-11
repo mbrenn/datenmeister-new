@@ -436,7 +436,6 @@ namespace DatenMeister.WPF.Forms.Base
                             ? selectedItemPosition
                             : selectedItemPosition - 1;
                     }
-
                 });
 
                 watch.Stop();
@@ -661,12 +660,27 @@ namespace DatenMeister.WPF.Forms.Base
                     case ItemButtonDefinition itemButtonDefinition:
                         AddItemButton(itemButtonDefinition.Name, itemButtonDefinition.OnPressed);
                         break;
+                    case FreeWpfElementDefinition freeWpfElementDefinition:
+                        AddFreeWpfElement(freeWpfElementDefinition);
+                        break;
                     case InfoLineDefinition lineDefinition:
                         AddInfoLine(lineDefinition.InfolineFactory());
                         break;
                 }
 
             return (fieldNames, fields);
+        }
+
+        /// <summary>
+        ///     Adds a free style WpfElement to the view
+        /// </summary>
+        /// <returns>The created button</returns>
+        public UIElement AddFreeWpfElement(FreeWpfElementDefinition wpfElementDefinition)
+        {
+            var button = wpfElementDefinition.ElementFactory();
+            ButtonBar.Children.Add(button);
+            ButtonBar.Visibility = Visibility.Visible;
+            return button;
         }
 
         /// <summary>

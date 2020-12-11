@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Reports;
+using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -90,8 +91,13 @@ namespace StundenMeister
             var hourReport = dataWorkspace.ResolveById("hourReport");
             var stundenMeisterLogic = StundenMeisterPlugin.Get();
 
-            var htmlReportCreator = GiveMe.Scope.Resolve<HtmlReportCreator>();
-            htmlReportCreator.AddSource(
+            using var stream = ReportHelper.CreateRandomFile(out var filePath);
+
+            var htmlReportCreator =
+                new HtmlReportCreator(stream);
+            var htmlReportLogic =
+                new ReportLogic(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage, htmlReportCreator);
+            htmlReportLogic.AddSource(
                 "timeRecordings", 
                 stundenMeisterLogic.Data.Extent.elements()
                     .WhenMetaClassIs(stundenMeisterLogic.Data.ClassTimeRecording));
@@ -101,8 +107,7 @@ namespace StundenMeister
                 return;
             }
 
-            using var stream = ReportHelper.CreateRandomFile(out var filePath);
-            htmlReportCreator.GenerateReportByDefinition(hourReport, stream);
+            htmlReportLogic.GenerateReportByDefinition(hourReport);
             
             DotNetHelper.CreateProcess(filePath);
         }

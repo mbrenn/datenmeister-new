@@ -140,7 +140,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             yield return
                 new CollectionMenuButtonDefinition(
-                    "Copy as XMI",
+                    "Export as XMI",
                     CopyContentAsXmi,
                     null,
                     "Selection");

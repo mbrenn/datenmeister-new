@@ -38,7 +38,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         ForListForms = 0x10,
             
         /// <summary>
-        /// This flag is evaluated by the list form creator.
+        /// This flag is evaluated by the list form reportCreator.
         /// Only properties which are common in all child classes will be included
         /// into the view
         /// </summary>

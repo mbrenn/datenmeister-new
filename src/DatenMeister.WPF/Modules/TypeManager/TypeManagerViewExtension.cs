@@ -35,6 +35,13 @@ namespace DatenMeister.WPF.Modules.TypeManager
                         WorkspaceNames.UriExtentUserTypes),
                     string.Empty,
                     NavigationCategories.DatenMeisterNavigation);
+
+                yield return new ApplicationMenuButtonDefinition(
+                    "Goto Types", async () => await NavigatorForExtents.NavigateToExtentList(
+                        navigationHost,
+                        WorkspaceNames.WorkspaceTypes),
+                    string.Empty,
+                    NavigationCategories.DatenMeisterNavigation);
             }
 
             var packageMetaClass = _UML.TheOne.Packages.__Package;

@@ -31,7 +31,10 @@ namespace DatenMeister.WPF.Modules.FormManager
 
             if (navigationHost is IApplicationWindow)
             {
-                yield return GetForApplicationWindow(viewExtensionInfo);
+                foreach (var viewExtension in GetForApplicationWindow(viewExtensionInfo))
+                {
+                    yield return viewExtension;
+                }
             }
 
             if (detailFormWindow != null)

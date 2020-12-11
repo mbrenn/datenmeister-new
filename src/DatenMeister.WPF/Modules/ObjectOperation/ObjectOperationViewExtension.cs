@@ -1,13 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
+using BurnSystems.Logging;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Modules.Xml;
+using DatenMeister.Provider.InMemory;
+using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
+using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
@@ -20,6 +31,11 @@ namespace DatenMeister.WPF.Modules.ObjectOperation
 {
     public class ObjectOperationViewExtension : IViewExtensionFactory
     {
+        /// <summary>
+        /// Defines the logger for 
+        /// </summary>
+        private static ILogger Logger = new ClassLogger(typeof(ObjectOperationViewExtension));
+
         public IEnumerable<ViewExtension> GetViewExtensions(
             ViewExtensionInfo viewExtensionInfo)
         {
@@ -49,8 +65,17 @@ namespace DatenMeister.WPF.Modules.ObjectOperation
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Copy as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x.Element); }
+                    "Export as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
+
+                yield return new TreeViewItemCommandDefinition(
+                        "Import By Xmi...", 
+                        async (x) =>
+                        {
+                            await ImportByXmi(viewExtensionInfo.NavigationHost, x.Element);
+                        }
+                    )
+                    { CategoryName = "Item" };
             }
         }
         
@@ -188,6 +213,56 @@ namespace DatenMeister.WPF.Modules.ObjectOperation
                 "Done",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+        }
+
+        /// <summary>
+        /// Creates a dialog in which the user can define the xmi
+        /// which is afterwards imported
+        /// </summary>
+        /// <param name="navigationHost">Navigation host to be included</param>
+        /// <param name="container">Element to which the parsed items shall be added</param>
+        /// <returns>Task used for awaiter</returns>
+        private async Task ImportByXmi(INavigationHost navigationHost, IObject? container)
+        {
+            if (container == null)
+            {
+                return;
+            }
+
+            // 1) 
+            // Asks the user to include the Xmi
+            var managementWorkspace = GiveMe.Scope.WorkspaceLogic.GetManagementWorkspace();
+            var form =
+                managementWorkspace.Resolve("#DatenMeister.ContextMenu.ImportByXmi", ResolveType.NoMetaWorkspaces)
+                    as IElement;
+            var element = InMemoryObject.CreateEmpty();
+
+            var result = await NavigatorForItems.NavigateToElementDetailView(
+                navigationHost,
+                new NavigateToItemConfig
+                {
+                    Form = new FormDefinition(form),
+                    DetailElement = element
+                });
+
+            if (result.Result == NavigationResult.Saved)
+            {
+                try
+                {
+                    // 2) 
+                    // Includes the result into the current item
+                    var xmlText = result.DetailElement.getOrDefault<string>("importXmi");
+                    ByXmlImporter.ImportByXml(container, xmlText);
+
+                    MessageBox.Show("OK" + xmlText);
+                }
+                catch (Exception exc)
+                {
+                    var message = "Inclusion of object failed: " + exc;
+                    Logger.Error(message);
+                    MessageBox.Show(message);
+                }
+            }
         }
     }
 }

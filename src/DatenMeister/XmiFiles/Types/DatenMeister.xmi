@@ -907,7 +907,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.FormAssociation" name="FormAssociation">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="962027e2-ef36-4251-b904-99611f11b3e4" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="082133ce-1461-4b3c-8948-d95dfbf90ce7" name="formType" type-ref="#System.Nullable%601%5B%5BDatenMeister.Models.Forms.FormType%2C+DatenMeister%2C+Version%3D1.0.0.0%2C+Culture%3Dneutral%2C+PublicKeyToken%3Dnull%5D%5D" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="082133ce-1461-4b3c-8948-d95dfbf90ce7" name="formType" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.FormType" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0ffd0c66-c174-46af-8fb6-f8763d8a4b01" name="metaClass" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="95703311-36e5-4a76-a319-ec61dbfc6642" name="extentType" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cbaf32f7-47e1-445d-9720-394b14df1094" name="viewModeId" type-ref="dm:///_internal/model/primitivetypes#String" />

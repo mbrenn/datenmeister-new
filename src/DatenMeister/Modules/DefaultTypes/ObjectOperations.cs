@@ -1,3 +1,4 @@
+using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Runtime;
@@ -65,6 +66,34 @@ namespace DatenMeister.Modules.DefaultTypes
             var factory = new MofFactory(item);
             var newElement = factory.create(typeForCreation);
 
+            return AddItemReferenceToInstanceProperty(item, propertyName, container, newElement);
+        }
+
+        public static IElement AddItemReferenceToInstanceProperty(
+            IElement item,
+            string propertyName,
+            IElement newElement)
+        {
+            var container = item.container();
+            if (container != null)
+            {
+                return AddItemReferenceToInstanceProperty(item, propertyName, container, newElement);
+            }
+
+            if(item.GetExtentOf() is IObject asObject)
+            {
+                return AddItemReferenceToInstanceProperty(item, propertyName, asObject, newElement);
+            }
+
+            throw new InvalidOperationException("item does not have a container");
+        }
+
+        public static IElement AddItemReferenceToInstanceProperty(
+            IElement item, 
+            string propertyName, 
+            IObject container,
+            IElement newElement)
+        {
             // Check, if the element is a compositing property
             bool isComposite;
             var metaClass = item.getMetaClass();

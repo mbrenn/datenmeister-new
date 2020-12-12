@@ -4,12 +4,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Autofac;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Controls;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
@@ -20,7 +23,7 @@ namespace DatenMeister.WPF.Forms.Fields
     /// Implements a reference field which is shown the currently selected instance and allows the user to select
     /// another instance to set the appropriate property
     /// </summary>
-    public class ReferenceField : IDetailField
+    public partial class ReferenceField : IDetailField
     {
         /// <summary>
         /// Stores the name of the property of the field
@@ -60,6 +63,7 @@ namespace DatenMeister.WPF.Forms.Fields
         private TextBlock? _inputTextBox;
 
         private bool _isEnabled = true;
+        private Button? _newButton;
         private Button? _removeButton;
         
         private Button? _selectButton;
@@ -72,8 +76,9 @@ namespace DatenMeister.WPF.Forms.Fields
             set
             {
                 _isEnabled = value;
-                if (!_isInline && _selectButton != null && _removeButton != null)
+                if (!_isInline && _selectButton != null && _removeButton != null && _newButton != null)
                 {
+                    _newButton.IsEnabled = value;
                     _selectButton.IsEnabled = value;
                     _removeButton.IsEnabled = value;
                 }
@@ -141,6 +146,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 ColumnDefinitions =
                 {
                     new ColumnDefinition {Width = new GridLength(1.0, GridUnitType.Star)}, // Text field
+                    new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // New button
                     new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Select button
                     new ColumnDefinition {Width = new GridLength(90.0, GridUnitType.Pixel)}, // Remove button
                 },
@@ -149,13 +155,92 @@ namespace DatenMeister.WPF.Forms.Fields
 
             SelectedValue = value.getOrDefault<IElement>(_name);
 
+            CreateInputTextBox();
+
+            CreateNewButton(value, navigationHost);
+
+            CreateSelectButton(fieldData, navigationHost);
+
+            CreateRemoveButton();
+
+            if ( _newButton == null || _selectButton == null  || _removeButton == null || _inputTextBox == null)
+                throw new InvalidOperationException("One of the fields are null... Should not be. ");
+
+            // Adds the ui elements
+            Grid.SetColumn(_newButton, 1);
+            Grid.SetColumn(_selectButton, 2);
+            Grid.SetColumn(_removeButton, 3);
+            panel.Children.Add(_inputTextBox);
+
+            if (!isReadOnly)
+            {
+                panel.Children.Add(_newButton);
+                panel.Children.Add(_selectButton);
+                panel.Children.Add(_removeButton);
+            }
+
+            fieldFlags.CanBeFocused = true;
+            return panel;
+        }
+
+        private void CreateInputTextBox()
+        {
             _inputTextBox = new TextBlock
             {
                 VerticalAlignment = VerticalAlignment.Center
             };
-            
+
             _inputTextBox.MouseDown += TextBlockOnMouseDown;
             UpdateTextOfTextBlock(_inputTextBox, SelectedValue);
+        }
+
+        /// <summary>
+        /// Updates the text of the text block. 
+        /// </summary>
+        /// <param name="inputTextBox"></param>
+        /// <param name="value">The item which is used to set the textfield</param>
+        /// <returns>true, if an item was given</returns>
+        internal static void UpdateTextOfTextBlock(TextBlock inputTextBox, IObject? value)
+        {
+            if (inputTextBox == null) 
+                throw new InvalidOperationException("_inputTextBox == null");
+
+            if (value == null)
+            {
+                inputTextBox.Text = "No item";
+                inputTextBox.FontStyle = FontStyles.Italic;
+
+                return;
+            }
+
+            inputTextBox.Text = value.ToString();
+            inputTextBox.TextDecorations = TextDecorations.Underline;
+            inputTextBox.Cursor = Cursors.Hand;
+        }
+
+        private void CreateRemoveButton()
+        {
+            if (_inputTextBox == null)
+                throw new InvalidOperationException(nameof(_inputTextBox) + " is null");
+
+            _removeButton = new Button
+            {
+                Content = "Remove",
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+
+            _removeButton.Click += (sender, args) =>
+            {
+                SelectedValue = null;
+                IsValueUnsetted = false;
+                UpdateTextOfTextBlock(_inputTextBox, null);
+            };
+        }
+
+        private void CreateSelectButton(IElement fieldData, INavigationHost navigationHost)
+        {
+            if (_inputTextBox == null)
+                throw new InvalidOperationException(nameof(_inputTextBox) + " is null");
 
             _selectButton = new Button
             {
@@ -177,14 +262,14 @@ namespace DatenMeister.WPF.Forms.Fields
                         DefaultWorkspace = foundWorkspace,
                         DefaultExtent = foundExtent
                     };
-                
+
                 var filterMetaClasses =
                     fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ReferenceFieldData.metaClassFilter);
                 if (filterMetaClasses != null)
                 {
                     configuration.FilteredMetaClasses = filterMetaClasses.OfType<IElement>().ToList();
                 }
-                
+
                 var selectedItem = await NavigatorForDialogs.Locate(
                     navigationHost,
                     configuration);
@@ -196,90 +281,44 @@ namespace DatenMeister.WPF.Forms.Fields
                     UpdateTextOfTextBlock(_inputTextBox, selectedItem);
                 }
             };
-
-            _removeButton = new Button
-            {
-                Content = "Remove",
-                HorizontalAlignment = HorizontalAlignment.Stretch
-            };
-
-            _removeButton.Click += (sender, args) =>
-            {
-                SelectedValue = null;
-                IsValueUnsetted = false;
-                UpdateTextOfTextBlock(_inputTextBox, null);
-            };
-
-            // Adds the ui elements
-            Grid.SetColumn(_selectButton, 1);
-            Grid.SetColumn(_removeButton, 2);
-            panel.Children.Add(_inputTextBox);
-
-            if (!isReadOnly)
-            {
-                panel.Children.Add(_selectButton);
-                panel.Children.Add(_removeButton);
-            }
-
-            fieldFlags.CanBeFocused = true;
-            return panel;
         }
 
-        private UIElement CreateInlineField(IObject fieldData, FieldParameter fieldFlags)
+        private void CreateNewButton(IObject value, INavigationHost navigationHost)
         {
-            // Defines the locate element control in which the user can select
-            // workspace, extent and element
-            _control = new LocateElementControl
+            if (_inputTextBox == null)
+                throw new InvalidOperationException(nameof(_name) + " is null");
+            if ( _name == null)
+                throw new InvalidOperationException(nameof(_name) + " is null");
+
+            var foundProperty = ClassifierMethods.GetPropertyTypeOfValuesProperty(value as IElement, _name);
+
+            _newButton = new Button
             {
-                MinHeight = 400,
-                MaxHeight = 400,
-                MinWidth = 600
+                Content = "New...",
+                ToolTip = foundProperty == null ? "Undefined Type" : foundProperty.ToString(),
+                VerticalAlignment = VerticalAlignment.Center
             };
 
-            var filterMetaClasses =
-                fieldData.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ReferenceFieldData.metaClassFilter);
-            if (filterMetaClasses != null)
+            _newButton.Click += async (sender, args) =>
             {
-                _control.FilterMetaClasses = filterMetaClasses.OfType<IElement>();
-            }
+                var factory = new MofFactory(value);
+                var newElement = factory.create(foundProperty);
 
-            var showAllChildren = fieldData.getOrDefault<bool>(_DatenMeister._Forms._ReferenceFieldData.showAllChildren);
-            if (showAllChildren) _control.ShowAllChildren = true;
+                var result = await NavigatorForItems.NavigateToElementDetailView(
+                    navigationHost,
+                    newElement);
 
-            var element = fieldData.getOrDefault<IElement>(_DatenMeister._Forms._ReferenceFieldData.defaultValue);
-            if (element != null)
-            {
-                _control.Select(element);
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(_workspace)
-                    && !string.IsNullOrEmpty(_extent)
-                    && _workspace != null && _extent != null)
+                if (result?.Result == NavigationResult.Saved)
                 {
-                    var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                    var (foundWorkspace, foundExtent) =
-                        workspaceLogic.RetrieveWorkspaceAndExtent(
-                            _workspace,
-                            _extent);
-                    if (foundWorkspace != null && foundExtent != null)
-                    {
-                        _control.Select(foundWorkspace, foundExtent);
-                    }
-                }
-                else if (!string.IsNullOrEmpty(_workspace) && _workspace != null)
-                {
-                    var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-                    var foundWorkspace = workspaceLogic.GetWorkspace(_workspace);
-                    if (foundWorkspace != null)
-                    {
-                        _control.Select((IWorkspace) foundWorkspace);
-                    }
-                }
-            }
+                    ObjectOperations.AddItemReferenceToInstanceProperty(
+                        value as IElement ?? throw new InvalidOperationException("value is not an element"),
+                        _name,
+                        newElement
+                    );
 
-            fieldFlags.CanBeFocused = true;
-            return _control;
+                    UpdateTextOfTextBlock(_inputTextBox, newElement);
+                }
+            };
         }
 
         public void CallSetAction(IObject element)
@@ -305,29 +344,6 @@ namespace DatenMeister.WPF.Forms.Fields
                     element.set(_name, SelectedValue);
                 }
             }
-        }
-
-        /// <summary>
-        /// Updates the text of the text block. 
-        /// </summary>
-        /// <param name="inputTextBox"></param>
-        /// <param name="value">The item which is used to set the textfield</param>
-        /// <returns>true, if an item was given</returns>
-        internal static void UpdateTextOfTextBlock(TextBlock inputTextBox, IObject? value)
-        {
-            if (inputTextBox == null) throw new InvalidOperationException("_inputTextBox == null");
-            
-            if (value == null)
-            {
-                inputTextBox.Text = "No item";
-                inputTextBox.FontStyle = FontStyles.Italic;
-
-                return;
-            }
-
-            inputTextBox.Text = value.ToString();
-            inputTextBox.TextDecorations = TextDecorations.Underline;
-            inputTextBox.Cursor = Cursors.Hand;
         }
 
         private void TextBlockOnMouseDown(object sender, MouseButtonEventArgs e)

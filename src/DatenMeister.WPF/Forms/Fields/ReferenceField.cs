@@ -63,7 +63,7 @@ namespace DatenMeister.WPF.Forms.Fields
         private TextBlock? _inputTextBox;
 
         private bool _isEnabled = true;
-        private Button? _newButton;
+        private CreateNewInstanceButton? _newButton;
         private Button? _removeButton;
         
         private Button? _selectButton;
@@ -292,17 +292,19 @@ namespace DatenMeister.WPF.Forms.Fields
 
             var foundProperty = ClassifierMethods.GetPropertyTypeOfValuesProperty(value as IElement, _name);
 
-            _newButton = new Button
+            _newButton = new CreateNewInstanceButton
             {
                 Content = "New...",
                 ToolTip = foundProperty == null ? "Undefined Type" : foundProperty.ToString(),
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            _newButton.Click += async (sender, args) =>
+            _newButton.SetDefaultTypeForCreation(foundProperty);
+
+            _newButton.TypeSelected += async (sender, args) =>
             {
                 var factory = new MofFactory(value);
-                var newElement = factory.create(foundProperty);
+                var newElement = factory.create(args.SelectedType);
 
                 var result = await NavigatorForItems.NavigateToElementDetailView(
                     navigationHost,

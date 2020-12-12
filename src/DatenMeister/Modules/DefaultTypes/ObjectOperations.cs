@@ -95,17 +95,7 @@ namespace DatenMeister.Modules.DefaultTypes
             IElement newElement)
         {
             // Check, if the element is a compositing property
-            bool isComposite;
-            var metaClass = item.getMetaClass();
-            if (metaClass == null)
-            {
-                isComposite = true;
-            }
-            else
-            {
-                var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, propertyName);
-                isComposite = property == null || PropertyMethods.IsComposite(property);
-            }
+            var isComposite = IsCompositeProperty(item, propertyName);
 
             // Checks, if there is a composition
             if (isComposite)
@@ -119,6 +109,23 @@ namespace DatenMeister.Modules.DefaultTypes
             }
 
             return newElement;
+        }
+
+        public static bool IsCompositeProperty(IElement item, string propertyName)
+        {
+            bool isComposite;
+            var metaClass = item.getMetaClass();
+            if (metaClass == null)
+            {
+                isComposite = true;
+            }
+            else
+            {
+                var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, propertyName);
+                isComposite = property == null || PropertyMethods.IsComposite(property);
+            }
+
+            return isComposite;
         }
     }
 }

@@ -4,20 +4,14 @@ using System.Linq;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;
-using NPOI.POIFS.Storage;
 
 namespace DatenMeister.WPF.Forms.Base
 {
-    public class NewTypeButtonEventArgs : EventArgs
+    public class CreateNewInstanceButtonEventArgs : EventArgs
     {
-        public NewTypeButtonEventArgs(IElement? selectedType)
+        public CreateNewInstanceButtonEventArgs(IElement? selectedType)
         {
             SelectedType = selectedType;
         }
@@ -29,11 +23,11 @@ namespace DatenMeister.WPF.Forms.Base
     /// Defines a button which creates a context menu when the user clicks the button.
     /// The context menu lists all derived types
     /// </summary>
-    public class NewTypeButton : Button
+    public class CreateNewInstanceButton : Button
     {
         private IEnumerable<IElement>? _typesForCreation;
 
-        public NewTypeButton()
+        public CreateNewInstanceButton()
         {
             Initialized += NewTypeButton_Initialized;
             Content = "New Item...";
@@ -48,9 +42,25 @@ namespace DatenMeister.WPF.Forms.Base
         /// Sets the types that will be selected for the creation
         /// </summary>
         /// <param name="types">Types to be selected</param>
-        public void SetDefaultTypesForCreation(IEnumerable<IElement> types)
+        public void SetDefaultTypesForCreation(IEnumerable<IElement>? types)
         {
-            this._typesForCreation = types;
+            _typesForCreation = types ?? new List<IElement>();
+        }
+
+        /// <summary>
+        /// Sets the types that will be selected for the creation
+        /// </summary>
+        /// <param name="types">Types to be selected</param>
+        public void SetDefaultTypeForCreation(IElement? types)
+        {
+            if (types == null)
+            {
+                _typesForCreation = new List<IElement>();
+            }
+            else
+            {
+                this._typesForCreation = new []{types};
+            }
         }
 
         private void NewTypeButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -61,7 +71,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// This event is called when the user has selected a certain type
         /// </summary>
-        public event EventHandler<NewTypeButtonEventArgs>? TypeSelected;
+        public event EventHandler<CreateNewInstanceButtonEventArgs>? TypeSelected;
 
         /// <summary>
         /// This method gets called when the users selects one type
@@ -69,7 +79,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="selectedType"></param>
         protected void OnTypeSelected(IElement? selectedType)
         {
-            TypeSelected?.Invoke(this, new NewTypeButtonEventArgs(selectedType));
+            TypeSelected?.Invoke(this, new CreateNewInstanceButtonEventArgs(selectedType));
         }
 
         /// <summary>
@@ -78,7 +88,6 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>List of menu items being used as context menu</returns>
         private List<MenuItem> GetMenuItems()
         {
-            if (_typesForCreation == null) return new List<MenuItem>();
 
             // Stores the menu items for the context menu
             var menuItems = new List<MenuItem>();
@@ -91,38 +100,42 @@ namespace DatenMeister.WPF.Forms.Base
 
             var alreadyIncludedElements = new HashSet<IElement>();
 
-            // Sets the generic buttons to create the new types
-            foreach (var element in _typesForCreation)
+            if (_typesForCreation != null)
             {
-                IElement? type = null;
-                if (element.metaclass?.equals(
-                    _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement) == true)
+                // Sets the generic buttons to create the new types
+                foreach (var element in _typesForCreation)
                 {
-                    var newType =
-                        element.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
-                    /*var tempParentProperty =
-                        element.getOrDefault<string>(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty)
-                        ?? parentProperty;*/
-
-                    if (newType != null)
+                    IElement? type = null;
+                    if (element.metaclass?.equals(
+                        _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement) == true)
                     {
-                        type = newType;
+                        var newType =
+                            element.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
+                        /*var tempParentProperty =
+                            element.getOrDefault<string>(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty)
+                            ?? parentProperty;*/
+
+                        if (newType != null)
+                        {
+                            type = newType;
+                        }
                     }
-                }
-                else
-                {
-                    type = element;
-                }
-
-                if (type != null)
-                {
-                    foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(type, alreadyIncludedElements))
+                    else
                     {
-                        // Stores the menu items for the context menu
-                        var menuItem = new MenuItem {Header = $"New {newSpecializationType}"};
+                        type = element;
+                    }
 
-                        menuItem.Click += (x, y) => OnTypeSelected(newSpecializationType);
-                        menuItems.Add(menuItem);
+                    if (type != null)
+                    {
+                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(type,
+                            alreadyIncludedElements))
+                        {
+                            // Stores the menu items for the context menu
+                            var menuItem = new MenuItem {Header = $"New {newSpecializationType}"};
+
+                            menuItem.Click += (x, y) => OnTypeSelected(newSpecializationType);
+                            menuItems.Add(menuItem);
+                        }
                     }
                 }
             }

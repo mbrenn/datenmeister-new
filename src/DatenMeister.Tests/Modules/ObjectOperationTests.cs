@@ -76,28 +76,32 @@ namespace DatenMeister.Tests.Modules
                 instanceRoot,
                 "child",
                 class1,
-                dataExtent);
+                dataExtent,
+                false);
             child1.set("name", "child root");
 
             var child2 = ObjectOperations.AddNewItemAsReferenceToInstanceProperty(
                 instanceRoot,
                 "husband",
                 class1,
-                dataExtent);
+                dataExtent,
+                false);
             child2.set("name", "husband root");
 
             var child3 = ObjectOperations.AddNewItemAsReferenceToInstanceProperty(
                 instanceInPackage,
                 "child",
                 class1,
-                instancePackage);
+                instancePackage,
+                false);
             child3.set("name", "child package");
 
             var child4 = ObjectOperations.AddNewItemAsReferenceToInstanceProperty(
                 instanceInPackage,
                 "husband",
                 class1,
-                instancePackage);
+                instancePackage,
+                false);
             child4.set("name", "husband package");
 
             Assert.That(child1, Is.Not.Null);

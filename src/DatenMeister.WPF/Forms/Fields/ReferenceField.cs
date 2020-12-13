@@ -315,7 +315,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     ObjectOperations.AddItemReferenceToInstanceProperty(
                         value as IElement ?? throw new InvalidOperationException("value is not an element"),
                         _name,
-                        newElement
+                        newElement,
+                        false
                     );
 
                     UpdateTextOfTextBlock(_inputTextBox, newElement);

@@ -33,7 +33,7 @@ namespace DatenMeister.WPF.Forms.Base
             Content = "New Item...";
         }
 
-        private void NewTypeButton_Initialized(object sender, EventArgs e)
+        private void NewTypeButton_Initialized(object? sender, EventArgs e)
         {
             Click += NewTypeButton_Click;
         }

@@ -408,7 +408,8 @@ namespace DatenMeister.WPF.Forms.Fields
                     ObjectOperations.AddItemReferenceToInstanceProperty(
                         element,
                         _propertyName,
-                        newElementAsIElement);
+                        newElementAsIElement,
+                        true);
 
                     panel.Children.Clear();
                     RefreshPanelElement();

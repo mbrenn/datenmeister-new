@@ -54,45 +54,45 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <param name="typeForCreation">Type of the element that will be instantiiated</param>
         /// <param name="container">Container element to which the element will be added if the property is
         /// not a composition</param>
-        /// <param name="containerPropertyName">The property to which the element will be added when
-        /// added to a container</param>
+        /// <param name="asCollection">Flag whether the element shall added as a entry within a collection
+        /// or whether the element will be the only element</param>
         /// <returns>The created element</returns>
         public static IElement AddNewItemAsReferenceToInstanceProperty(
             IElement item, 
             string propertyName, 
             IElement? typeForCreation, 
-            IObject container)
+            IObject container,
+            bool asCollection)
         {
             var factory = new MofFactory(item);
             var newElement = factory.create(typeForCreation);
 
-            return AddItemReferenceToInstanceProperty(item, propertyName, container, newElement);
+            return AddItemReferenceToInstanceProperty(item, propertyName, container, newElement, asCollection);
         }
 
+        /// <summary>
+        /// Adds an existing item as reference or as composite to the 
+        /// </summary>
+        /// <param name="item">The item to which the new element shall be added</param>
+        /// <param name="propertyName">The property under which the new element will be added</param>
+        /// <param name="newElement">The element to be added</param>
+        /// <param name="asCollection">true, if the newElement shall be added as a collective item</param>
+        /// <returns>The added element itself</returns>
         public static IElement AddItemReferenceToInstanceProperty(
             IElement item,
             string propertyName,
-            IElement newElement)
+            IElement newElement,
+            bool asCollection)
         {
-            var container = item.container();
-            if (container != null)
-            {
-                return AddItemReferenceToInstanceProperty(item, propertyName, container, newElement);
-            }
-
-            if(item.GetExtentOf() is IObject asObject)
-            {
-                return AddItemReferenceToInstanceProperty(item, propertyName, asObject, newElement);
-            }
-
-            throw new InvalidOperationException("item does not have a container");
+            return AddItemReferenceToInstanceProperty(item, propertyName, null, newElement, asCollection);
         }
 
-        public static IElement AddItemReferenceToInstanceProperty(
+        private static IElement AddItemReferenceToInstanceProperty(
             IElement item, 
             string propertyName, 
-            IObject container,
-            IElement newElement)
+            IObject? container,
+            IElement newElement,
+            bool asCollection)
         {
             // Check, if the element is a compositing property
             var isComposite = IsCompositeProperty(item, propertyName);
@@ -100,17 +100,42 @@ namespace DatenMeister.Modules.DefaultTypes
             // Checks, if there is a composition
             if (isComposite)
             {
-                item.set(propertyName, newElement);
+                if (asCollection)
+                {
+                    item.AddCollectionItem(propertyName, newElement);
+                }
+                else
+                {
+                    item.set(propertyName, newElement);
+                }
             }
             else
             {
+                container ??= item.container()
+                              ?? (IObject?) item.GetExtentOf()
+                              ?? throw new InvalidOperationException("Container is not given");
+
                 DefaultClassifierHints.AddToExtentOrElement(container, newElement);
-                item.set(propertyName, newElement);
+
+                if (asCollection)
+                {
+                    item.AddCollectionItem(propertyName, newElement);
+                }
+                else
+                {
+                    item.set(propertyName, newElement);
+                }
             }
 
             return newElement;
         }
 
+        /// <summary>
+        /// Checks whether the item has a composite property
+        /// </summary>
+        /// <param name="item">Item to be evaluated</param>
+        /// <param name="propertyName">Name of the property</param>
+        /// <returns>true, if the item has a composite property</returns>
         public static bool IsCompositeProperty(IElement item, string propertyName)
         {
             bool isComposite;

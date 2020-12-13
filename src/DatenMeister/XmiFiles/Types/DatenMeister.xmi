@@ -907,17 +907,17 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.FormAssociation" name="FormAssociation">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="962027e2-ef36-4251-b904-99611f11b3e4" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="082133ce-1461-4b3c-8948-d95dfbf90ce7" name="formType" type-ref="#System.Nullable%601%5B%5BDatenMeister.Models.Forms.FormType%2C+DatenMeister%2C+Version%3D1.0.0.0%2C+Culture%3Dneutral%2C+PublicKeyToken%3Dnull%5D%5D" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0ffd0c66-c174-46af-8fb6-f8763d8a4b01" name="metaClass" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="082133ce-1461-4b3c-8948-d95dfbf90ce7" name="formType" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.FormType" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0ffd0c66-c174-46af-8fb6-f8763d8a4b01" name="metaClass" type-ref="dm:///_internal/model/uml#Classifier" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="95703311-36e5-4a76-a319-ec61dbfc6642" name="extentType" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cbaf32f7-47e1-445d-9720-394b14df1094" name="viewModeId" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f80de5f4-ec93-43d8-a57f-a0f67b01dcf2" name="parentMetaClass" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f80de5f4-ec93-43d8-a57f-a0f67b01dcf2" name="parentMetaClass" type-ref="dm:///_internal/model/uml#Classifier" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="59863465-8110-43b5-bcd1-13131818f742" name="parentProperty" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="44a47962-26c5-440f-a2c9-486c6f8da64c" name="form" type-ref="#DatenMeister.Models.Forms.Form" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.DropDownFieldData" name="DropDownFieldData">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="e01dba4b-06a8-4850-b5b3-4d6acbed97a7" general-ref="#DatenMeister.Models.Forms.FieldData" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b6872ea3-0549-484c-a8e1-525f1d3bf4da" name="values" type-ref="#DatenMeister.Models.Forms.ValuePair" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b6872ea3-0549-484c-a8e1-525f1d3bf4da" name="values" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.ValuePair" isComposite="True" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1ad78406-9cd7-4351-9cb1-8e278eccda0b" name="valuesByEnumeration" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ValuePair" name="ValuePair">
@@ -1006,8 +1006,8 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="03dd410c-bce9-4511-ad17-8f5cec707dbe" name="allowNewProperties" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e950a3c3-7c62-4313-a701-fe19498628dd" name="defaultWidth" type-ref="dm:///_internal/model/primitivetypes#Integer" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="fef9fe90-8e1d-460b-b87b-a85e8b594400" name="defaultHeight" type-ref="dm:///_internal/model/primitivetypes#Integer" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a4b9c360-779e-4f6c-bf88-0d543c330055" name="tab" type-ref="#DatenMeister.Models.Forms.Form" upper="2" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0a679d01-09d4-443d-b9ef-001206d6a244" name="field" type-ref="#DatenMeister.Models.Forms.FieldData" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a4b9c360-779e-4f6c-bf88-0d543c330055" name="tab" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.Form" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0a679d01-09d4-443d-b9ef-001206d6a244" name="field" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.FieldData" isComposite="True" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ListForm" name="ListForm">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="b8d444bc-f1e2-42bc-80a6-0323e7f7971b" general-ref="#DatenMeister.Models.Forms.Form" />
@@ -1018,10 +1018,10 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e7072759-62e3-4f2b-a339-72c1abe92e45" name="inhibitNewItems" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="45487402-0a87-4ca9-acf8-02e4759128f3" name="inhibitDeleteItems" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f1be8492-ad34-43df-99f2-604a8567edbc" name="inhibitEditItems" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8c8e9f1a-5841-4bff-ac52-ccb115292a91" name="defaultTypesForNewElements" type-ref="#DatenMeister.Models.Forms.DefaultTypeForNewElement" upper="2" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0b299138-b359-4591-be5d-66c2a39ee8f0" name="fastViewFilters" upper="2" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f9ca8794-7771-4738-a9c4-54099a3d7c4d" name="field" type-ref="#DatenMeister.Models.Forms.FieldData" upper="2" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="315a2fbb-881d-474b-b23a-b701767f5ae7" name="sortingOrder" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.SortingOrder" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="8c8e9f1a-5841-4bff-ac52-ccb115292a91" name="defaultTypesForNewElements" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.DefaultTypeForNewElement" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0b299138-b359-4591-be5d-66c2a39ee8f0" name="fastViewFilters" upper="2" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f9ca8794-7771-4738-a9c4-54099a3d7c4d" name="field" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.FieldData" isComposite="True" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="315a2fbb-881d-474b-b23a-b701767f5ae7" name="sortingOrder" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.SortingOrder" isComposite="True" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eef7da35-1bb3-4885-b3c5-1841ce9aa386" name="viewNode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="bea99781-dfa4-4fd3-8624-c03219595458" name="autoGenerateFields" type-ref="dm:///_internal/model/primitivetypes#Boolean">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
@@ -1038,7 +1038,7 @@
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ExtentForm" name="ExtentForm">
       <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="8cae918e-73c1-498c-8479-19d1aea39caa" general-ref="#DatenMeister.Models.Forms.Form" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="c19bbfec-6afb-4017-94c2-d2992853a25c" name="tab" type-ref="#DatenMeister.Models.Forms.Form" upper="2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="c19bbfec-6afb-4017-94c2-d2992853a25c" name="tab" upper="2" type-ref="dm:///datenmeister.types#DatenMeister.Models.Forms.Form" isComposite="True" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b09268a2-2412-42cd-816c-cf0c4a913a63" name="autoTabs" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Forms.ViewModes.ViewMode" name="ViewMode">

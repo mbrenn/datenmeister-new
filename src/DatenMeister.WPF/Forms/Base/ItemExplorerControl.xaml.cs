@@ -640,7 +640,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     ElementFactory = () =>
                     {
-                        var result = new NewTypeButton();
+                        var result = new CreateNewInstanceButton();
                         result.SetDefaultTypesForCreation(defaultTypesForNewItems.OfType<IElement>());
                         result.TypeSelected += async (x, y) =>
                         {

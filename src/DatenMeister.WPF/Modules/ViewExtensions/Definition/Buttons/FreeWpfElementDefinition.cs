@@ -8,7 +8,6 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons
         /// <summary>
         /// Gets or sets the factory element being used to create the WPF element. 
         /// </summary>
-        public Func<UIElement> ElementFactory { get; set; }
-        
+        public Func<UIElement>? ElementFactory { get; set; }
     }
 }

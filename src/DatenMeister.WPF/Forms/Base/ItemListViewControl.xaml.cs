@@ -677,7 +677,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>The created button</returns>
         public UIElement AddFreeWpfElement(FreeWpfElementDefinition wpfElementDefinition)
         {
-            var button = wpfElementDefinition.ElementFactory();
+            var button = wpfElementDefinition.ElementFactory?.Invoke()
+                ?? throw new InvalidOperationException("No UI element was returned");
             ButtonBar.Children.Add(button);
             ButtonBar.Visibility = Visibility.Visible;
             return button;

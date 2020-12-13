@@ -20,7 +20,10 @@ namespace DatenMeister.Uml.Helper
             value?.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
 
         public static bool IsComposite(IObject property)
-            => property.getOrDefault<bool>(_UML._Classification._Property.isComposite);
+        {
+            return property.getOrDefault<bool>(_UML._Classification._Property.isComposite)
+                   || property.getOrDefault<string>(_UML._Classification._Property.aggregation) == "composite";
+        }
 
         /// <summary>
         /// Gets the value whether the property is a collection by

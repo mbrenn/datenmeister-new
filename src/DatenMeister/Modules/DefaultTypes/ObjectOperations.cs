@@ -53,8 +53,6 @@ namespace DatenMeister.Modules.DefaultTypes
         /// <param name="typeForCreation">Type of the element that will be instantiiated</param>
         /// <param name="container">Container element to which the element will be added if the property is
         /// not a composition</param>
-        /// <param name="containerPropertyName">The property to which the element will be added when
-        /// added to a container</param>
         /// <returns>The created element</returns>
         public static IElement AddNewItemAsReferenceToInstanceProperty(
             IElement item, 
@@ -65,18 +63,7 @@ namespace DatenMeister.Modules.DefaultTypes
             var factory = new MofFactory(item);
             var newElement = factory.create(typeForCreation);
 
-            // Check, if the element is a compositing property
-            bool isComposite;
-            var metaClass = item.getMetaClass();
-            if (metaClass == null)
-            {
-                isComposite = true;
-            }
-            else
-            {
-                var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, propertyName);
-                isComposite = property == null || PropertyMethods.IsComposite(property);
-            }
+            var isComposite = IsPropertyComposite(item, propertyName);
 
             // Checks, if there is a composition
             if (isComposite)
@@ -90,6 +77,68 @@ namespace DatenMeister.Modules.DefaultTypes
             }
 
             return newElement;
+        }
+
+        /// <summary>
+        /// Creates a new instance of an element having the Type subType.
+        /// The element will be added to the property as an item in the collection.
+        /// If the property is not a compositing element
+        /// then the element will be added to the containing element otherwise it will be directly added. 
+        /// </summary>
+        /// <param name="item">Item which will receive the new element</param>
+        /// <param name="propertyName">Property to which the new element will be added</param>
+        /// <param name="typeForCreation">Type of the element that will be instantiiated</param>
+        /// <param name="container">Container element to which the element will be added if the property is
+        /// not a composition</param>
+        /// <returns>The created element</returns>
+        public static IElement AddNewItemAsReferenceAsCollectionToInstanceProperty(
+            IElement item,
+            string propertyName,
+            IElement? typeForCreation,
+            IObject container)
+        {
+            var factory = new MofFactory(item);
+            var newElement = factory.create(typeForCreation);
+
+            var isComposite = IsPropertyComposite(item, propertyName);
+
+            // Checks, if there is a composition
+            if (isComposite)
+            {
+                item.AddCollectionItem(propertyName, newElement);
+            }
+            else
+            {
+                DefaultClassifierHints.AddToExtentOrElement(container, newElement);
+                item.AddCollectionItem(propertyName, newElement);
+            }
+
+            return newElement;
+        }
+
+        /// <summary>
+        /// Checks if the property of the metaclass is a
+        /// composite property
+        /// </summary>
+        /// <param name="item">Item whose metaclass is queried</param>
+        /// <param name="propertyName">The name of the property that is evaluated</param>
+        /// <returns>true, if the property is a composite property</returns>
+        private static bool IsPropertyComposite(IElement item, string propertyName)
+        {
+            // Check, if the element is a compositing property
+            bool isComposite;
+            var metaClass = item.getMetaClass();
+            if (metaClass == null)
+            {
+                isComposite = true;
+            }
+            else
+            {
+                var property = ClassifierMethods.GetPropertyOfClassifier(metaClass, propertyName);
+                isComposite = property == null || PropertyMethods.IsComposite(property);
+            }
+
+            return isComposite;
         }
     }
 }

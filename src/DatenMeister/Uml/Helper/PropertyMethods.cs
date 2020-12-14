@@ -17,7 +17,7 @@ namespace DatenMeister.Uml.Helper
         /// <param name="value">Property being queried</param>
         /// <returns>Type of the property</returns>
         public static IElement? GetPropertyType(IObject value) =>
-            value?.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
+            value.getOrDefault<IElement>(_UML._CommonStructure._TypedElement.type);
 
         public static bool IsComposite(IObject property)
         {

@@ -300,6 +300,13 @@ namespace DatenMeister.WPF.Forms.Base
             if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
 
             var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
+            
+
+            if (EffectiveForm is IElement currentForm)
+            {
+                DataGrid2.SetForm(currentForm);
+            }
+            
 
             var listItems = new ObservableCollection<ExpandoObject>();
 

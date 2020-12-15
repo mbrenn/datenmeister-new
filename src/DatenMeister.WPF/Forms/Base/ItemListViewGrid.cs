@@ -16,6 +16,7 @@ namespace DatenMeister.WPF.Forms.Base
         public class GridColumnDefinition
         {
             public int Width { get; set; }
+            
             public string Title { get; set; } = string.Empty;
         }
 
@@ -24,7 +25,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public class CellInstantiation
         {
-            public UIElement? CellElement { get; set; }
+            public FrameworkElement? CellElement { get; set; }
         }
 
         public class RowInstantiation
@@ -63,9 +64,11 @@ namespace DatenMeister.WPF.Forms.Base
 
         public static class GridSettings
         {
-            public const int GridPenWidth = 2;
+            public const int GridPenWidth = 1;
+            public static readonly Brush GridBrush = Brushes.DimGray;
             public static readonly Thickness GridMargin = new Thickness(10, 5, 10, 5);
             public const int RowHeight = 14;
+            
         }
 
         public List<GridColumnDefinition> ColumnDefinitions { get; set; } = new List<GridColumnDefinition>();
@@ -101,8 +104,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             var border = new Border
             {
-                BorderThickness = new Thickness(2),
-                BorderBrush = Brushes.Red
+                BorderThickness = new Thickness(1),
+                BorderBrush = GridSettings.GridBrush
             };
 
             //  Create the scroll bars
@@ -233,18 +236,27 @@ namespace DatenMeister.WPF.Forms.Base
             for (var n = rowOffset; n < RowCount; n++)
             {
                 var rowInstantiation = GetRowOfContent(row);
-                rowInstantiation.Height = RowHeight;
-                rowInstantiation.PositionOffset = positionRow;
-                _rowInstantiations.Add(rowInstantiation);
-
-                foreach (var column in rowInstantiation.Cells)
+                if (rowInstantiation != null)
                 {
-                    if (column.CellElement != null)
+                    rowInstantiation.Height = RowHeight;
+                    rowInstantiation.PositionOffset = positionRow;
+                    _rowInstantiations.Add(rowInstantiation);
+
+                    var c = 0;
+                    foreach (var column in rowInstantiation.Cells)
                     {
-                        _canvas.Children.Add(column.CellElement);
+                        var columnInstantiation = GetColumnInstantiation(c);
+                        if (column.CellElement != null)
+                        {
+                            column.CellElement.Width = columnInstantiation.Width;
+                            column.CellElement.ClipToBounds = true;
+                            _canvas.Children.Add(column.CellElement);
+                        }
                     }
+
+                    c++;
                 }
-                
+
                 row++;
                 positionRow += RowHeight + GridSettings.GridPenWidth
                                          + GridSettings.GridMargin.Top
@@ -285,6 +297,8 @@ namespace DatenMeister.WPF.Forms.Base
                     n++;
                 }
             }
+            
+            InvalidateVisual();
         }
 
         /// <summary>
@@ -295,14 +309,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Returns the number of columns
         /// </summary>
-        public int RowCount => 10;
+        public virtual int RowCount => 10;
 
         /// <summary>
         /// Gets the row of the content  
         /// </summary>
         /// <param name="row">Number of the row to be queried</param>
         /// <returns>The row instantiation including the content to be shown</returns>
-        public virtual RowInstantiation GetRowOfContent(int row)
+        public virtual RowInstantiation? GetRowOfContent(int row)
         {
             // The instantiated row
             var rowInstantiation = new RowInstantiation();
@@ -338,7 +352,7 @@ namespace DatenMeister.WPF.Forms.Base
             var actualWidth = 0.0;
             double ResidualWidth() => _canvas.ActualWidth - actualWidth;
 
-            var blackPen = new Pen(Brushes.Black, 2);
+            var blackPen = new Pen(GridSettings.GridBrush, GridSettings.GridPenWidth);
 
             // Goes through the columns
             for (var currentColumn = columnOffset; currentColumn < columnCount; currentColumn++)

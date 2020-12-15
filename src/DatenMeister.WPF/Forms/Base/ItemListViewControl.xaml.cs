@@ -302,11 +302,14 @@ namespace DatenMeister.WPF.Forms.Base
             var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
             
 
-            if (EffectiveForm is IElement currentForm)
+            var fields2 = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            if (EffectiveForm is IElement currentForm && Items != null && fields2 != null)
             {
                 DataGrid2.SetForm(currentForm);
+                
+                var items = GetFilteredAndSortedItems(Items, fields2);
+                DataGrid2.SetContent(items);
             }
-            
 
             var listItems = new ObservableCollection<ExpandoObject>();
 

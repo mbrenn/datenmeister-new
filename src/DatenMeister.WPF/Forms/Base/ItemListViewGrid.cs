@@ -91,6 +91,18 @@ namespace DatenMeister.WPF.Forms.Base
             _canvas = new Canvas();
 
             SizeChanged += (x, y) => { RefreshGrid(); };
+            _scrollVertical.ValueChanged += (x, y) =>
+            {
+                _rowOffset = Convert.ToInt32(_scrollVertical.Value);
+                InvalidateVisual();
+                RefreshGrid();
+            };
+            _scrollHorizontal.ValueChanged += (x, y) =>
+            {
+                _columnOffset = Convert.ToInt32(_scrollHorizontal.Value);
+                InvalidateVisual();
+                RefreshGrid();
+            };
         }
 
         public void DefaultInit()
@@ -233,7 +245,6 @@ namespace DatenMeister.WPF.Forms.Base
 
             var positionRow = 0.0;
 
-            var row = 1;
             for (var n = 0; n < RowCount + 1; n++)
             {
                 var rowInstantiation = GetVisibleRow(n);
@@ -258,7 +269,6 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                 }
 
-                row++;
                 positionRow += RowHeight + GridSettings.GridPenWidth
                                          + GridSettings.GridMargin.Top
                                          + GridSettings.GridMargin.Bottom;
@@ -284,6 +294,18 @@ namespace DatenMeister.WPF.Forms.Base
                     n++;
                 }
             }
+
+            _scrollHorizontal.Minimum = 0;
+            _scrollHorizontal.SmallChange = 1;
+            _scrollHorizontal.LargeChange = 3;
+            _scrollHorizontal.ViewportSize = 1.0;
+            _scrollHorizontal.Maximum = _columnInstantiations.Count;
+            _scrollVertical.Minimum = 0;
+            _scrollVertical.SmallChange = 1;
+            _scrollVertical.LargeChange = 3;
+            _scrollVertical.ViewportSize = 1.0;
+            _scrollVertical.Maximum = RowCount;
+            
             
             InvalidateVisual();
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
@@ -39,7 +40,7 @@ namespace DatenMeister.WPF.Forms.Base
                     title = "Metaclass";
                 }
 
-                ColumnDefinitions.Add(new GridColumnDefinition {Title = title, Width = 100});
+                ColumnDefinitions.Add(new GridColumnDefinition {Title = title, Width = 100 + new Random().Next(100)});
             }
             
             RefreshGrid();

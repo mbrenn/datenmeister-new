@@ -65,6 +65,7 @@ namespace DatenMeister.WPF.Forms.Base
         private readonly List<ColumnInstantiation> _columnInstantiations = new List<ColumnInstantiation>();
         private int _rowOffset;
         private int _columnOffset;
+        private double _columnPixelOffset;
 
         public static class GridSettings
         {
@@ -90,7 +91,7 @@ namespace DatenMeister.WPF.Forms.Base
             _scrollHorizontal = new ScrollBar();
             _canvas = new Canvas();
 
-            SizeChanged += (x, y) => { RefreshGrid(); };
+            // SizeChanged += (x, y) => { RefreshGrid(); };
             _scrollVertical.ValueChanged += (x, y) =>
             {
                 _rowOffset = Convert.ToInt32(_scrollVertical.Value);
@@ -100,6 +101,7 @@ namespace DatenMeister.WPF.Forms.Base
             _scrollHorizontal.ValueChanged += (x, y) =>
             {
                 _columnOffset = Convert.ToInt32(_scrollHorizontal.Value);
+                _columnPixelOffset = GetColumnInstantiation(_columnOffset)?.PositionOffset ?? 0;
                 InvalidateVisual();
                 RefreshGrid();
             };
@@ -124,7 +126,19 @@ namespace DatenMeister.WPF.Forms.Base
 
             //  Create the scroll bars
             _scrollVertical.Orientation = Orientation.Vertical;
+            _scrollVertical.Minimum = 0;
+            _scrollVertical.SmallChange = 1;
+            _scrollVertical.LargeChange = 3;
+            _scrollVertical.ViewportSize = 1.0;
             _scrollHorizontal.Orientation = Orientation.Horizontal;
+            _scrollHorizontal.Minimum = 0;
+            _scrollHorizontal.SmallChange = 1;
+            _scrollHorizontal.LargeChange = 3;
+            _scrollHorizontal.ViewportSize = 1.0;
+            _scrollVertical.Margin = new Thickness(0,
+                GridSettings.GridMargin.Top + GridSettings.GridMargin.Bottom + GridSettings.RowHeight,
+                0, 0);
+            
             SetDock(_scrollVertical, Dock.Right);
             SetDock(_scrollHorizontal, Dock.Bottom);
             _contentPanel.Children.Add(_scrollHorizontal);
@@ -236,6 +250,13 @@ namespace DatenMeister.WPF.Forms.Base
             return result;
         }
 
+        protected override Size ArrangeOverride(Size arrangeSize)
+        {
+            var result = base.ArrangeOverride(arrangeSize);
+            RefreshGrid();
+            return result;
+        }
+
         protected void RefreshGrid()
         {
             UpdateColumnPositions();
@@ -288,26 +309,15 @@ namespace DatenMeister.WPF.Forms.Base
                     if (column.CellElement != null)
                     {
                         Canvas.SetTop(column.CellElement, rowInstantiation.PositionOffset);
-                        Canvas.SetLeft(column.CellElement, columnInstantiation.PositionOffset);
+                        Canvas.SetLeft(column.CellElement, columnInstantiation.PositionOffset - _columnPixelOffset);
                     }
 
                     n++;
                 }
             }
 
-            _scrollHorizontal.Minimum = 0;
-            _scrollHorizontal.SmallChange = 1;
-            _scrollHorizontal.LargeChange = 3;
-            _scrollHorizontal.ViewportSize = 1.0;
             _scrollHorizontal.Maximum = _columnInstantiations.Count;
-            _scrollVertical.Minimum = 0;
-            _scrollVertical.SmallChange = 1;
-            _scrollVertical.LargeChange = 3;
-            _scrollVertical.ViewportSize = 1.0;
             _scrollVertical.Maximum = RowCount;
-            
-            
-            InvalidateVisual();
         }
 
         /// <summary>
@@ -379,7 +389,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             base.OnRender(dc);
 
-            var actualWidth = 0.0;
+            double actualWidth;
             double ResidualWidth() => _canvas.ActualWidth - actualWidth;
 
             var blackPen = new Pen(GridSettings.GridBrush, GridSettings.GridPenWidth);
@@ -388,10 +398,14 @@ namespace DatenMeister.WPF.Forms.Base
             var actualHeight = 0.0;
             double ResidualHeight() => _canvas.ActualHeight - actualHeight;
             
-            for (var currentRow = 0; currentRow < GetVisibleRowCount(); currentRow++)
+            for (var currentRow = 0; currentRow <  GetVisibleRowCount(); currentRow++)
             {
                 var gridRowDefinition = GetVisibleRow(currentRow);
-                if (gridRowDefinition?.BackgroundColor != null)
+                // Skip the row, if not existing
+                if (gridRowDefinition == null) continue;
+                
+                // Sets the backgroundcolor
+                if (gridRowDefinition.BackgroundColor != null)
                 {
                     dc.DrawRectangle(
                         gridRowDefinition.BackgroundColor,
@@ -407,12 +421,10 @@ namespace DatenMeister.WPF.Forms.Base
                 }
 
                 actualHeight +=
-                    gridRowDefinition != null
-                        ? gridRowDefinition.Height
-                          + GridSettings.GridMargin.Top
-                          + GridSettings.GridMargin.Bottom
-                          + GridSettings.GridPenWidth
-                        : RowHeight;
+                    gridRowDefinition.Height
+                    + GridSettings.GridMargin.Top
+                    + GridSettings.GridMargin.Bottom
+                    + GridSettings.GridPenWidth;
 
                 dc.DrawLine(
                     blackPen,
@@ -429,7 +441,7 @@ namespace DatenMeister.WPF.Forms.Base
             for (var currentColumn = _columnOffset; currentColumn < ColumnCount; currentColumn++)
             {
                 var columnInstantiation = GetColumnInstantiation(currentColumn);
-                actualWidth = columnInstantiation.PositionOffset - GridSettings.GridMargin.Left;
+                actualWidth = columnInstantiation.PositionOffset - GridSettings.GridMargin.Left - _columnPixelOffset;
 
                 dc.DrawLine(
                     blackPen,

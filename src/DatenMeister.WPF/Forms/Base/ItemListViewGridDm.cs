@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
+using DatenMeister.Modules.TextTemplates;
+using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
+using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.GridControl;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -70,22 +74,96 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var field in fields.Cast<IElement>())
             {
                 var cell = new CellInstantiation();
-                var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ?? string.Empty;
-                if (string.IsNullOrEmpty(name))
+                var value = GetTextFieldContent(currentElement, field);
+                cell.CellElement =  new TextBlock
                 {
-                    cell.CellElement = new TextBlock {Text = "Not set"};
-                }
-                else
-                {
-                    var text = currentElement.getOrDefault<string>(name);
-                    
-                    cell.CellElement = new TextBlock {Text = text};
-                }
+                    Text = value
+                };
 
                 rowInstantiation.Cells.Add(cell);
             }
 
             return rowInstantiation;
+        }
+
+        private string GetTextFieldContent(IElement element, IElement field)
+        {
+            var value = GetValueOfElement(element, field);
+            var isEnumeration =
+                field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
+
+            if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+            {
+                var result = new StringBuilder();
+                var valueAsList = DotNetHelper.AsEnumeration(value);
+                if (valueAsList != null)
+                {
+                    var elementCount = 0;
+                    var nr = string.Empty;
+                    foreach (var valueElement in valueAsList)
+                    {
+                        result.Append(nr + NamedElementMethods.GetName(valueElement));
+                        nr = "\r\n";
+
+                        elementCount++;
+                        if (elementCount > 10)
+                        {
+                            result.Append("\r\n... (more)");
+                            break;
+                        }
+                    }
+                }
+
+                value = result.ToString();
+            }
+
+            return value?.ToString() ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Gets the value of the element by the field
+        /// </summary>
+        /// <param name="element">Element being queried</param>
+        /// <param name="field">Field being used for query</param>
+        /// <returns>Returned element for the </returns>
+        private object? GetValueOfElement(IObject element, IElement field)
+        {
+            var fieldMetaClass = field.getMetaClass();
+            if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+            {
+                var elementAsElement = element as IElement;
+                var metaClass = elementAsElement?.getMetaClass();
+
+                return metaClass == null
+                    ? string.Empty
+                    : NamedElementMethods.GetFullName(metaClass);
+            }
+
+            var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+            if (fieldMetaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+            {
+                var cellInformation = InMemoryObject.CreateEmpty();
+                var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;
+                cellInformation.set("text", defaultText);
+
+                var evalProperties = field.getOrDefault<string>(_DatenMeister._Forms._EvalTextFieldData.evalCellProperties);
+                if (evalProperties != null)
+                {
+                    defaultText = TextTemplateEngine.Parse(
+                        evalProperties,
+                        new Dictionary<string, object>
+                        {
+                            ["i"] = element,
+                            ["c"] = cellInformation
+                        });
+                }
+
+                return cellInformation.isSet("text")
+                    ? cellInformation.getOrDefault<string>("text")
+                    : defaultText;
+            }
+
+            return element.isSet(name) ? element.get(name) : null;
         }
     }
 }

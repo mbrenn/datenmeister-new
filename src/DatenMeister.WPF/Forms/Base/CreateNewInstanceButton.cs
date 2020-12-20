@@ -9,16 +9,6 @@ using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.WPF.Forms.Base
 {
-    public class CreateNewInstanceButtonEventArgs : EventArgs
-    {
-        public CreateNewInstanceButtonEventArgs(IElement? selectedType)
-        {
-            SelectedType = selectedType;
-        }
-
-        public IElement? SelectedType { get; }
-    }
-
     /// <summary>
     /// Defines a button which creates a context menu when the user clicks the button.
     /// The context menu lists all derived types

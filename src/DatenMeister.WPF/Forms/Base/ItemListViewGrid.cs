@@ -4,84 +4,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base.GridControl;
-using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base
 {
-    namespace GridControl
-    {
-        /// <summary>
-        /// Gets the column definition
-        /// </summary>
-        public class GridColumnDefinition
-        {
-            public double Width { get; set; }
-            
-            public string Title { get; set; } = string.Empty;
-        }
-        /// <summary>
-        /// Gets the column definition
-        /// </summary>
-        public class GridTextBlockColumnDefinition : GridColumnDefinition
-        {
-            /// <summary>
-            /// Gets or sets the field being used for the textblock
-            /// </summary>
-            public IElement? Field { get; set; }
-        }
-
-        /// <summary>
-        /// Gets the column definition for buttons
-        /// </summary>
-        public class GridButtonColumnDefinition : GridColumnDefinition
-        {
-            /// <summary>
-            /// Defines the action that shall be performed when the user has clicked on the button
-            /// </summary>
-            public Action<INavigationGuest, IObject>? OnPressed;
-        }
-
-        /// <summary>
-        /// Defines the element for the cell
-        /// </summary>
-        public class CellInstantiation
-        {
-            public FrameworkElement? CellElement { get; set; }
-        }
-
-        public class RowInstantiation
-        {
-            public double Height { get; set; }
-
-            public double PositionOffset { get; set; }
-            
-            public Brush? BackgroundColor { get; set; }
-
-            public List<CellInstantiation> Cells { get; } = new List<CellInstantiation>();
-        }
-
-        public class ColumnInstantiation
-        {
-            public double PositionOffset { get; set; }
-            
-            public double Width { get; set; }
-            
-            /// <summary>
-            /// Gets or sets the desired width of the column
-            /// </summary>
-            public double DesiredWidth { get; set; }
-            
-            /// <summary>
-            /// Gets or sets the desired height of the column
-            /// </summary>
-            public double DesiredHeight { get; set; }
-
-            public GridColumnDefinition? ColumnDefinition { get; set; }
-        }
-    }
-
     /// <summary>
     /// Create the grid view
     /// </summary>

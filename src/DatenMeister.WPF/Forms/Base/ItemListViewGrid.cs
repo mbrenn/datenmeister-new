@@ -65,7 +65,18 @@ namespace DatenMeister.WPF.Forms.Base
         public class ColumnInstantiation
         {
             public double PositionOffset { get; set; }
+            
             public double Width { get; set; }
+            
+            /// <summary>
+            /// Gets or sets the desired width of the column
+            /// </summary>
+            public double DesiredWidth { get; set; }
+            
+            /// <summary>
+            /// Gets or sets the desired height of the column
+            /// </summary>
+            public double DesiredHeight { get; set; }
 
             public GridColumnDefinition? ColumnDefinition { get; set; }
         }
@@ -96,7 +107,6 @@ namespace DatenMeister.WPF.Forms.Base
             public static readonly Brush GridBrush = Brushes.DimGray;
             public static readonly Thickness GridMargin = new Thickness(10, 5, 10, 5);
             public const int RowHeight = 14;
-            
         }
 
         public List<GridColumnDefinition> ColumnDefinitions { get; set; } = new List<GridColumnDefinition>();
@@ -114,19 +124,19 @@ namespace DatenMeister.WPF.Forms.Base
             _scrollHorizontal = new ScrollBar();
             _canvas = new Canvas();
 
-            // SizeChanged += (x, y) => { RefreshGrid(); };
             _scrollVertical.ValueChanged += (x, y) =>
             {
                 _rowOffset = Convert.ToInt32(_scrollVertical.Value);
                 InvalidateVisual();
-                RefreshGrid();
+                InvalidateMeasure();
             };
+            
             _scrollHorizontal.ValueChanged += (x, y) =>
             {
                 _columnOffset = Convert.ToInt32(_scrollHorizontal.Value);
                 _columnPixelOffset = GetColumnInstantiation(_columnOffset)?.PositionOffset ?? 0;
                 InvalidateVisual();
-                RefreshGrid();
+                InvalidateMeasure();
             };
         }
 
@@ -171,8 +181,6 @@ namespace DatenMeister.WPF.Forms.Base
             _contentPanel.Children.Add(_canvas);
 
             border.Child = _contentPanel;
-
-            RefreshGrid();
 
             Children.Add(border);
         }
@@ -230,7 +238,7 @@ namespace DatenMeister.WPF.Forms.Base
             return _rowInstantiations[row];
         }
 
-        public void UpdateColumnPositions()
+        public void ClearColumnInstantiations()
         {
             _columnInstantiations.Clear();
 
@@ -244,11 +252,28 @@ namespace DatenMeister.WPF.Forms.Base
                         Width = definition.Width,
                         ColumnDefinition = definition
                     });
+            }
+        }
 
-                offsetColumn += definition.Width;
+        public void UpdateColumnPositions()
+        {
+            var offsetColumn = 0.0;
+            var n = 0;
+            foreach (var definition in ColumnDefinitions)
+            {
+                var current = GetColumnInstantiation(n);
+                current.PositionOffset = offsetColumn;
+                current.Width = definition.Width;
+                if (current.Width == 0)
+                {
+                    current.Width = current.DesiredWidth;
+                }
+                
+                offsetColumn += current.Width;
                 offsetColumn += GridSettings.GridPenWidth
                                 + GridSettings.GridMargin.Left
                                 + GridSettings.GridMargin.Right;
+                n++;
             }
         }
 
@@ -273,16 +298,9 @@ namespace DatenMeister.WPF.Forms.Base
             return result;
         }
 
-        protected override Size ArrangeOverride(Size arrangeSize)
+        protected override Size MeasureOverride(Size constraint)
         {
-            var result = base.ArrangeOverride(arrangeSize);
-            RefreshGrid();
-            return result;
-        }
-
-        protected void RefreshGrid()
-        {
-            UpdateColumnPositions();
+            ClearColumnInstantiations();
 
             _canvas.Children.Clear();
             _rowInstantiations.Clear();
@@ -299,16 +317,23 @@ namespace DatenMeister.WPF.Forms.Base
                     _rowInstantiations.Add(rowInstantiation);
 
                     var c = 0;
-                    foreach (var column in rowInstantiation.Cells)
+                    foreach (var cell in rowInstantiation.Cells)
                     {
                         var columnInstantiation = GetColumnInstantiation(c);
-                        if (column.CellElement != null)
+                        if (cell.CellElement != null)
                         {
-                            column.CellElement.Width = columnInstantiation.Width;
-                            column.CellElement.ClipToBounds = true;
-                            _canvas.Children.Add(column.CellElement);
+                            cell.CellElement.Measure(new Size(double.MaxValue, double.MaxValue));
+                            columnInstantiation.DesiredWidth =
+                                Math.Max(
+                                    columnInstantiation.DesiredWidth,
+                                    Math.Ceiling(cell.CellElement.DesiredSize.Width));
+                            columnInstantiation.DesiredHeight =
+                                Math.Max(
+                                    columnInstantiation.DesiredHeight,
+                                    Math.Ceiling(cell.CellElement.DesiredSize.Height));
+                            _canvas.Children.Add(cell.CellElement);
                         }
-                        
+
                         c++;
                     }
                 }
@@ -317,12 +342,19 @@ namespace DatenMeister.WPF.Forms.Base
                                          + GridSettings.GridMargin.Top
                                          + GridSettings.GridMargin.Bottom;
 
-                if (positionRow > _canvas.ActualHeight)
+                if (positionRow > constraint.Height)
                 {
                     break;
                 }
             }
+            
+            return base.MeasureOverride(constraint);
+        }
 
+        protected override Size ArrangeOverride(Size arrangeSize)
+        {
+            UpdateColumnPositions();
+            
             foreach (var rowInstantiation in _rowInstantiations)
             {
                 var n = 0;
@@ -331,6 +363,7 @@ namespace DatenMeister.WPF.Forms.Base
                     var columnInstantiation = GetColumnInstantiation(n);
                     if (column.CellElement != null)
                     {
+                        column.CellElement.Width = columnInstantiation.Width;
                         Canvas.SetTop(column.CellElement, rowInstantiation.PositionOffset);
                         Canvas.SetLeft(column.CellElement, columnInstantiation.PositionOffset - _columnPixelOffset);
                     }
@@ -339,8 +372,10 @@ namespace DatenMeister.WPF.Forms.Base
                 }
             }
 
-            _scrollHorizontal.Maximum = _columnInstantiations.Count;
-            _scrollVertical.Maximum = RowCount;
+            _scrollHorizontal.Maximum = _columnInstantiations.Count - 1;
+            _scrollVertical.Maximum = RowCount - 1;
+            
+            return base.ArrangeOverride(arrangeSize);
         }
 
         /// <summary>

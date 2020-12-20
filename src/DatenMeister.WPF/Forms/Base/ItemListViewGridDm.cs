@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -58,8 +56,7 @@ namespace DatenMeister.WPF.Forms.Base
                 ColumnDefinitions.Add(new GridTextBlockColumnDefinition
                 {
                     Field = field,
-                    Title = title, 
-                    Width = 100 + new Random().Next(100)
+                    Title = title
                 });
             }
 
@@ -68,14 +65,8 @@ namespace DatenMeister.WPF.Forms.Base
                 var definition = new GridButtonColumnDefinition
                 {
                     Title = rowItemDefinition.Name,
-                    OnPressed = rowItemDefinition.OnPressed,
-                    Width = 80
+                    OnPressed = rowItemDefinition.OnPressed
                 };
-
-                var button = new Button();
-                button.Content = definition.Title;
-                button.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                definition.Width = Math.Ceiling(button.DesiredSize.Width) + 20;
 
                 if (rowItemDefinition.Position == ItemListViewControl.ButtonPosition.Before)
                     ColumnDefinitions.Insert(0, definition);
@@ -83,14 +74,14 @@ namespace DatenMeister.WPF.Forms.Base
                     ColumnDefinitions.Add(definition);
             }
 
-            RefreshGrid();
+            InvalidateVisual();
         }
 
         public void SetContent(IReflectiveCollection collection)
         {
             _currentElements = collection.OfType<IElement>().ToList();
             
-            RefreshGrid();
+            InvalidateVisual();
         }
 
         public override int RowCount => _currentElements?.Count ?? 0;
@@ -128,10 +119,7 @@ namespace DatenMeister.WPF.Forms.Base
                         
                         var button = new Button
                         {
-                            Content = gridButtonColumnDefinition.Title,
-                            HorizontalAlignment = HorizontalAlignment.Stretch,
-                            VerticalAlignment = VerticalAlignment.Stretch,
-                            Width = columnDefinition.Width
+                            Content = gridButtonColumnDefinition.Title
                         };
                         button.Click += (x, y) =>
                         {

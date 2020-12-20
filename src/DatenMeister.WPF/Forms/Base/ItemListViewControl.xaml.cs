@@ -102,6 +102,8 @@ namespace DatenMeister.WPF.Forms.Base
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
             _formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
             InitializeComponent();
+            
+            DataGrid2.NavigationGuest = this;
         }
 
         /// <summary>
@@ -305,7 +307,7 @@ namespace DatenMeister.WPF.Forms.Base
             var fields2 = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
             if (EffectiveForm is IElement currentForm && Items != null && fields2 != null)
             {
-                DataGrid2.SetForm(currentForm);
+                DataGrid2.SetForm(currentForm, ViewExtensions);
                 
                 var items = GetFilteredAndSortedItems(Items, fields2);
                 DataGrid2.SetContent(items);
@@ -567,7 +569,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
             if (fields == null)
-                return (new string[] { }, null);
+                return (Array.Empty<string>(), null);
 
             ClearInfoLines();
             DataGrid.Columns.Clear();
@@ -653,7 +655,6 @@ namespace DatenMeister.WPF.Forms.Base
                             DataGrid.Columns.Insert(0, dataColumn);
                         else
                             DataGrid.Columns.Add(dataColumn);
-
                         break;
                     case GenericButtonDefinition genericButtonDefinition:
                         if (genericButtonDefinition.Tag != null)

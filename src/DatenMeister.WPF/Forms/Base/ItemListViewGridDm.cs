@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -11,11 +13,19 @@ using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base.GridControl;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition;
+using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
+using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base
 {
     public class ItemListViewGridDm : ItemListViewGrid
     {
+        /// <summary>
+        /// Gets or sets the navigation guest
+        /// </summary>
+        public INavigationGuest? NavigationGuest { get; set; }
+        
         /// <summary>
         /// Stores the current form
         /// </summary>
@@ -27,7 +37,8 @@ namespace DatenMeister.WPF.Forms.Base
         /// Sets the form and creates the depending columns out of the form definition
         /// </summary>
         /// <param name="formDefinition">Definition of the form </param>
-        public void SetForm(IElement formDefinition)
+        /// <param name="viewExtensions">Definitions for row items</param>
+        public void SetForm(IElement formDefinition, IEnumerable<ViewExtension> viewExtensions)
         {
             _currentForm = formDefinition;
             ColumnDefinitions.Clear();
@@ -44,9 +55,34 @@ namespace DatenMeister.WPF.Forms.Base
                     title = "Metaclass";
                 }
 
-                ColumnDefinitions.Add(new GridColumnDefinition {Title = title, Width = 100 + new Random().Next(100)});
+                ColumnDefinitions.Add(new GridTextBlockColumnDefinition
+                {
+                    Field = field,
+                    Title = title, 
+                    Width = 100 + new Random().Next(100)
+                });
             }
-            
+
+            foreach (var rowItemDefinition in viewExtensions.OfType<RowItemButtonDefinition>())
+            {
+                var definition = new GridButtonColumnDefinition
+                {
+                    Title = rowItemDefinition.Name,
+                    OnPressed = rowItemDefinition.OnPressed,
+                    Width = 80
+                };
+
+                var button = new Button();
+                button.Content = definition.Title;
+                button.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                definition.Width = Math.Ceiling(button.DesiredSize.Width) + 20;
+
+                if (rowItemDefinition.Position == ItemListViewControl.ButtonPosition.Before)
+                    ColumnDefinitions.Insert(0, definition);
+                else
+                    ColumnDefinitions.Add(definition);
+            }
+
             RefreshGrid();
         }
 
@@ -70,15 +106,42 @@ namespace DatenMeister.WPF.Forms.Base
             if (currentElement == null)
                 return null;
             
-            var fields = _currentForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
-            foreach (var field in fields.Cast<IElement>())
+            foreach (var columnDefinition in ColumnDefinitions)
             {
                 var cell = new CellInstantiation();
-                var value = GetTextFieldContent(currentElement, field);
-                cell.CellElement =  new TextBlock
+                switch (columnDefinition)
                 {
-                    Text = value
-                };
+                    case GridTextBlockColumnDefinition gridTextBlockColumnDefinition 
+                        when gridTextBlockColumnDefinition.Field != null:
+                    {
+                        var value = GetTextFieldContent(currentElement, gridTextBlockColumnDefinition.Field);
+                        cell.CellElement = new TextBlock
+                        {
+                            Text = value
+                        };
+                        break;
+                    }
+                    case GridButtonColumnDefinition gridButtonColumnDefinition:
+                    {
+                        if (NavigationGuest == null)
+                            throw new InvalidOperationException(nameof(NavigationGuest) + "is null");
+                        
+                        var button = new Button
+                        {
+                            Content = gridButtonColumnDefinition.Title,
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            VerticalAlignment = VerticalAlignment.Stretch,
+                            Width = columnDefinition.Width
+                        };
+                        button.Click += (x, y) =>
+                        {
+                            gridButtonColumnDefinition.OnPressed?.Invoke(NavigationGuest, currentElement);
+                        };
+                    
+                        cell.CellElement = button;
+                        break;
+                    }
+                }
 
                 rowInstantiation.Cells.Add(cell);
             }

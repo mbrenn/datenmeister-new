@@ -4,7 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Forms.Base.GridControl;
+using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -15,9 +17,30 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public class GridColumnDefinition
         {
-            public int Width { get; set; }
+            public double Width { get; set; }
             
             public string Title { get; set; } = string.Empty;
+        }
+        /// <summary>
+        /// Gets the column definition
+        /// </summary>
+        public class GridTextBlockColumnDefinition : GridColumnDefinition
+        {
+            /// <summary>
+            /// Gets or sets the field being used for the textblock
+            /// </summary>
+            public IElement? Field { get; set; }
+        }
+
+        /// <summary>
+        /// Gets the column definition for buttons
+        /// </summary>
+        public class GridButtonColumnDefinition : GridColumnDefinition
+        {
+            /// <summary>
+            /// Defines the action that shall be performed when the user has clicked on the button
+            /// </summary>
+            public Action<INavigationGuest, IObject>? OnPressed;
         }
 
         /// <summary>
@@ -211,7 +234,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _columnInstantiations.Clear();
 
-            var offsetColumn = GridSettings.GridMargin.Left;
+            var offsetColumn = 0.0;
             foreach (var definition in ColumnDefinitions)
             {
                 _columnInstantiations.Add(

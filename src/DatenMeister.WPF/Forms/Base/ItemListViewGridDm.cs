@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -91,7 +92,7 @@ namespace DatenMeister.WPF.Forms.Base
             if (_currentElements == null)
                 return null;
 
-            var rowInstantiation = new RowInstantiation {Height = RowHeight};
+            var rowInstantiation = new RowInstantiation {Height = 25};
 
             var currentElement = _currentElements.ElementAtOrDefault(row);
             if (currentElement == null)
@@ -108,7 +109,8 @@ namespace DatenMeister.WPF.Forms.Base
                         var value = GetTextFieldContent(currentElement, gridTextBlockColumnDefinition.Field);
                         cell.CellElement = new TextBlock
                         {
-                            Text = value
+                            Text = value,
+                            VerticalAlignment = VerticalAlignment.Center
                         };
                         break;
                     }
@@ -119,7 +121,8 @@ namespace DatenMeister.WPF.Forms.Base
                         
                         var button = new Button
                         {
-                            Content = gridButtonColumnDefinition.Title
+                            Content = gridButtonColumnDefinition.Title,
+                            Padding = new Thickness(5,2,5,2)
                         };
                         button.Click += (x, y) =>
                         {

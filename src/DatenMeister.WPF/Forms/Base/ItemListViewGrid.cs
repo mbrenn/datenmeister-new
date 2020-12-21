@@ -120,7 +120,7 @@ namespace DatenMeister.WPF.Forms.Base
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            _scrollVertical.Value += e.Delta / 120.0;
+            _scrollVertical.Value -= e.Delta / 120.0;
             base.OnMouseWheel(e);
         }
 

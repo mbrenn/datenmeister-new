@@ -39,10 +39,6 @@
                     Visibility="Collapsed"  HorizontalAlignment="Right" Margin="10">
         </StackPanel>
         <Grid x:Name="MainGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
             <DataGrid Grid.Row="0" IsReadOnly="True"
                       x:Name="DataGrid" Margin="10,0,10,0" MouseDoubleClick="DataGrid_MouseDoubleClick"
                       EnableRowVirtualization="True">
@@ -53,7 +49,7 @@
                     <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
                 </DataGrid.InputBindings>
             </DataGrid>
-            <base:ItemListViewGridDm Grid.Row="1" x:Name="DataGrid2" />
+            <base:ItemListViewGridDm Grid.Row="0" x:Name="DataGrid2" />
         </Grid>
     </DockPanel>
 </UserControl>

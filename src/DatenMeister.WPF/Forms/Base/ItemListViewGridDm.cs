@@ -75,6 +75,7 @@ namespace DatenMeister.WPF.Forms.Base
                     ColumnDefinitions.Add(definition);
             }
 
+            InvalidateMeasure();
             InvalidateVisual();
         }
 
@@ -82,6 +83,7 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _currentElements = collection.OfType<IElement>().ToList();
             
+            InvalidateMeasure();
             InvalidateVisual();
         }
 

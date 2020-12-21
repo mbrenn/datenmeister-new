@@ -292,7 +292,9 @@ namespace DatenMeister.WPF.Forms.Base
                         column.CellElement.Arrange(
                             new Rect(0, 0, columnInstantiation.Width, rowInstantiation.Height));
 
-                        var heightAlignment = (rowInstantiation.Height - column.CellElement.ActualHeight) / 2.0;
+                        var heightAlignment = Math.Max(
+                            0,
+                            (rowInstantiation.Height - column.CellElement.ActualHeight) / 2.0);
 
                         Canvas.SetTop(column.CellElement,
                             rowInstantiation.OffsetHeight 
@@ -392,6 +394,8 @@ namespace DatenMeister.WPF.Forms.Base
             var blackPen = new Pen(GridSettings.GridBrush, GridSettings.GridPenWidth);
 
             // Goes through the rows
+
+            var lastRowHeight = 0.0;
             
             // First of all, paints the rows
             foreach (var rowInstantiation in _rowInstantiations)
@@ -425,6 +429,7 @@ namespace DatenMeister.WPF.Forms.Base
                             + GridSettings.GridMargin.Bottom));
                 }
 
+                lastRowHeight = Math.Max(lastRowHeight, bottomHeight + w + GridSettings.GridPenWidth / 2.0);
                 dc.DrawLine(
                     blackPen,
                     new Point(0 + w, bottomHeight + w + GridSettings.GridPenWidth / 2.0),
@@ -453,7 +458,7 @@ namespace DatenMeister.WPF.Forms.Base
                 dc.DrawLine(
                     blackPen,
                     new Point(rightWidth + w - GridSettings.GridPenWidth / 2.0, w),
-                    new Point(rightWidth + w - GridSettings.GridPenWidth / 2.0, _canvas.ActualHeight + w));
+                    new Point(rightWidth + w - GridSettings.GridPenWidth / 2.0, lastRowHeight + w));
             }
         }
     }

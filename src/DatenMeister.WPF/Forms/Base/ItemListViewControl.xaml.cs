@@ -339,6 +339,7 @@ namespace DatenMeister.WPF.Forms.Base
                 var items = GetFilteredAndSortedItems(Items, fields2);
                 DataGrid2.SetContent(items);
             }
+
             watch.Stop();
 #endif
 

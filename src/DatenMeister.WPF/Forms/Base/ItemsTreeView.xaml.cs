@@ -165,17 +165,11 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private TreeViewItem? _newSelectedItem;
 
-        /// <summary>
-        /// Stores the list of hints for the default classifier
-        /// </summary>
-        private readonly DefaultClassifierHints _defaultClassifierHints;
-
         private INavigationHost? _navigationHost;
 
         public ItemsTreeView()
         {
             InitializeComponent();
-            _defaultClassifierHints = new DefaultClassifierHints();
         }
 
         public IObject? ItemsSource
@@ -509,7 +503,7 @@ namespace DatenMeister.WPF.Forms.Base
             var propertiesForChildren =
                 ShowAllChildren // Defines whether all children shall be shown
                     ? (item as IObjectAllProperties)?.getPropertiesBeingSet().ToList() ?? new List<string>()
-                    : _defaultClassifierHints.GetPackagingPropertyNames(item);
+                    : DefaultClassifierHints.GetPackagingPropertyNames(item);
             foreach (var property in propertiesForChildren)
             {
                 // Goes through the properties

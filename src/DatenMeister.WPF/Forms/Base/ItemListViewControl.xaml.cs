@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define USE_NEW_GRID_VIEW
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -41,6 +43,8 @@ using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using UserControl = System.Windows.Controls.UserControl;
 
+
+
 namespace DatenMeister.WPF.Forms.Base
 {
     /// <summary>
@@ -70,7 +74,15 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private readonly FastViewFilterLogic _fastViewFilter;
 
+#if !USE_NEW_GRID_VIEW
         private readonly IDictionary<ExpandoObject, IObject> _itemMapping = new Dictionary<ExpandoObject, IObject>();
+        
+
+        /// <summary>
+        ///     Stores the view logic
+        /// </summary>
+        private readonly FormsPlugin _formsPlugin;
+#endif
 
         /// <summary>
         ///     Defines the change event handle being used for current view
@@ -81,11 +93,6 @@ namespace DatenMeister.WPF.Forms.Base
         ///     Defines the text being used for search
         /// </summary>
         private string _searchText = string.Empty;
-
-        /// <summary>
-        ///     Stores the view logic
-        /// </summary>
-        private readonly FormsPlugin _formsPlugin;
 
         private INavigationHost? _navigationHost;
 
@@ -100,8 +107,21 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _delayedDispatcher = new DelayedRefreshDispatcher(Dispatcher, UpdateForm);
             _fastViewFilter = GiveMe.Scope.Resolve<FastViewFilterLogic>();
+#if !USE_NEW_GRID_VIEW
             _formsPlugin = GiveMe.Scope.Resolve<FormsPlugin>();
+#endif
             InitializeComponent();
+
+#if USE_NEW_GRID_VIEW
+            DataGrid2.NavigationGuest = this;
+            DataGrid2.Visibility = Visibility.Visible;
+            DataGrid.Visibility = Visibility.Collapsed;
+#else
+
+            DataGrid2.Visibility = Visibility.Collapsed;
+            DataGrid.Visibility = Visibility.Visible;
+#endif
+
         }
 
         /// <summary>
@@ -152,6 +172,7 @@ namespace DatenMeister.WPF.Forms.Base
                 // If no item is selected, get no item
                 yield break;
 
+#if !USE_NEW_GRID_VIEW
             lock (_itemMapping)
             {
                 foreach (var item in selectedItems)
@@ -159,6 +180,7 @@ namespace DatenMeister.WPF.Forms.Base
                         if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
                             yield return foundItem;
             }
+#endif
         }
 
         /// <summary>
@@ -241,6 +263,8 @@ namespace DatenMeister.WPF.Forms.Base
             }
         }
 
+#if !USE_NEW_GRID_VIEW
+
         /// <summary>
         /// Gets the value of the element by the field
         /// </summary>
@@ -288,6 +312,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             return element.isSet(name) ? element.get(name) : null;
         }
+#endif
 
         /// <summary>
         ///     Updates the content of the list by recreating the columns and rows
@@ -301,145 +326,167 @@ namespace DatenMeister.WPF.Forms.Base
 
             var watch = new StopWatchLogger(Logger, "UpdateView", LogLevel.Trace);
 
-            var listItems = new ObservableCollection<ExpandoObject>();
 
-            var selectedItem = GetSelectedItem();
-            var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
-            ExpandoObject? selectedExpandoObject = null;
-
-            SupportNewItems =
-                !EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
-
-            lock (_itemMapping)
-            {
-                _itemMapping.Clear();
-            }
-
-            // Updates all columns and returns the fieldnames and fields
-            var (fieldDataNames, fields) = UpdateColumnDefinitions();
-            if (fields == null)
-            {
-                Logger.Warn("UpdateColumnDefinitions did not return any fields.");
-                return;
-            }
+#if USE_NEW_GRID_VIEW
+            EvaluateViewExtensions();
 
             watch.IntermediateLog("UpdateColumnDefinitions done");
-
-            Task.Run(() =>
+            var fields2 = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            if (EffectiveForm is IElement currentForm && Items != null && fields2 != null)
             {
-                // Creates the rows
-                if (Items != null)
+                DataGrid2.SetForm(currentForm, ViewExtensions);
+                
+                var items = GetFilteredAndSortedItems(Items, fields2);
+                DataGrid2.SetContent(items);
+            }
+            watch.Stop();
+#endif
+
+
+#if !USE_NEW_GRID_VIEW
+            {
+                var listItems = new ObservableCollection<ExpandoObject>();
+
+                var selectedItem = GetSelectedItem();
+                var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
+                ExpandoObject? selectedExpandoObject = null;
+
+                SupportNewItems =
+                    !EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
+
+                lock (_itemMapping)
                 {
-                    var items = GetFilteredAndSortedItems(Items, fields);
+                    _itemMapping.Clear();
+                }
 
-                    lock (_itemMapping)
+                // Updates all columns and returns the fieldnames and fields
+                var (fieldDataNames, fields) = UpdateColumnDefinitions();
+                EvaluateViewExtensions();
+                if (fields == null)
+                {
+                    Logger.Warn("UpdateColumnDefinitions did not return any fields.");
+                    return;
+                }
+
+                watch.IntermediateLog("UpdateColumnDefinitions done");
+
+                Task.Run(() =>
+                {
+                    // Creates the rows
+                    if (Items != null)
                     {
-                        // Go through the items and build up the list of elements
-                        foreach (var item in items.OfType<IObject>())
+                        var items = GetFilteredAndSortedItems(Items, fields);
+
+                        lock (_itemMapping)
                         {
-                            var itemObject = new ExpandoObject();
-                            var asDictionary = (IDictionary<string, object?>) itemObject;
-
-                            var n = 0;
-                            foreach (var field in fields.Cast<IElement>())
+                            // Go through the items and build up the list of elements
+                            foreach (var item in items.OfType<IObject>())
                             {
-                                var columnName = fieldDataNames[n];
-                                if (asDictionary.ContainsKey(columnName))
-                                {
-                                    Logger.Warn($"Column {columnName} skipped because it is given multiple times");
-                                    continue;
-                                }
+                                var itemObject = new ExpandoObject();
+                                var asDictionary = (IDictionary<string, object?>) itemObject;
 
-                                var value = GetValueOfElement(item, field);
-                                var isEnumeration =
-                                    field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
-
-                                if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                                var n = 0;
+                                foreach (var field in fields.Cast<IElement>())
                                 {
-                                    var result = new StringBuilder();
-                                    var valueAsList = DotNetHelper.AsEnumeration(value);
-                                    if (valueAsList != null)
+                                    var columnName = fieldDataNames[n];
+                                    if (asDictionary.ContainsKey(columnName))
                                     {
-                                        var elementCount = 0;
-                                        var nr = string.Empty;
-                                        foreach (var valueElement in valueAsList)
-                                        {
-                                            result.Append(nr + NamedElementMethods.GetName(valueElement));
-                                            nr = "\r\n";
-
-                                            elementCount++;
-                                            if (elementCount > 10)
-                                            {
-                                                result.Append("\r\n... (more)");
-                                                break;
-                                            }
-                                        }
+                                        Logger.Warn($"Column {columnName} skipped because it is given multiple times");
+                                        continue;
                                     }
 
-                                    value = result.ToString();
+                                    var value = GetValueOfElement(item, field);
+                                    var isEnumeration =
+                                        field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
+
+                                    if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+                                    {
+                                        var result = new StringBuilder();
+                                        var valueAsList = DotNetHelper.AsEnumeration(value);
+                                        if (valueAsList != null)
+                                        {
+                                            var elementCount = 0;
+                                            var nr = string.Empty;
+                                            foreach (var valueElement in valueAsList)
+                                            {
+                                                result.Append(nr + NamedElementMethods.GetName(valueElement));
+                                                nr = "\r\n";
+
+                                                elementCount++;
+                                                if (elementCount > 10)
+                                                {
+                                                    result.Append("\r\n... (more)");
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        value = result.ToString();
+                                    }
+
+                                    asDictionary.Add(columnName, value);
+
+                                    n++;
                                 }
 
-                                asDictionary.Add(columnName, value);
+                                // Ok, we got the item. Now we need to have a mapping from ExpandoObject to the real item
+                                _itemMapping[itemObject] = item;
+                                listItems.Add(itemObject);
 
-                                n++;
-                            }
-
-                            // Ok, we got the item. Now we need to have a mapping from ExpandoObject to the real item
-                            _itemMapping[itemObject] = item;
-                            listItems.Add(itemObject);
-
-                            if (item.Equals(selectedItem))
-                            {
-                                selectedExpandoObject = itemObject;
-                            }
-
-                            // Adds the notification for the property
-                            var noMessageBox = false;
-                            (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
-                            {
-                                var propertyName = y.PropertyName ??
-                                                   throw new InvalidOperationException("No property given");
-                                try
+                                if (item.Equals(selectedItem))
                                 {
-                                    var newPropertyValue =
-                                        ((IDictionary<string, object?>) itemObject)[propertyName];
-                                    item.set(y.PropertyName, newPropertyValue);
+                                    selectedExpandoObject = itemObject;
                                 }
-                                catch (Exception exc)
-                                {
-                                    if (!noMessageBox) MessageBox.Show(exc.Message);
 
-                                    // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
-                                    noMessageBox = true;
-                                    ((IDictionary<string, object?>) itemObject)[propertyName] =
-                                        item.get(y.PropertyName);
-                                    noMessageBox = false;
-                                }
-                            };
+                                // Adds the notification for the property
+                                var noMessageBox = false;
+                                (itemObject as INotifyPropertyChanged).PropertyChanged += (x, y) =>
+                                {
+                                    var propertyName = y.PropertyName ??
+                                                       throw new InvalidOperationException("No property given");
+                                    try
+                                    {
+                                        var newPropertyValue =
+                                            ((IDictionary<string, object?>) itemObject)[propertyName];
+                                        item.set(y.PropertyName, newPropertyValue);
+                                    }
+                                    catch (Exception exc)
+                                    {
+                                        if (!noMessageBox) MessageBox.Show(exc.Message);
+
+                                        // Sets flag, so no additional message box will be shown when the itemObject is updated, possibly, leading to a new exception.
+                                        noMessageBox = true;
+                                        ((IDictionary<string, object?>) itemObject)[propertyName] =
+                                            item.get(y.PropertyName);
+                                        noMessageBox = false;
+                                    }
+                                };
+                            }
                         }
                     }
-                }
-            }).ContinueWith((x) =>
-            {
-                watch.IntermediateLog("Before setting");
-
-                Dispatcher?.Invoke(() =>
+                }).ContinueWith((x) =>
                 {
-                    DataGrid.ItemsSource = listItems;
-                    if (selectedExpandoObject != null)
-                    {
-                        DataGrid.SelectedItem = selectedExpandoObject;
-                    }
-                    else if (selectedItemPosition != -1 && listItems.Count > 0)
-                    {
-                        DataGrid.SelectedIndex = selectedItemPosition < listItems.Count
-                            ? selectedItemPosition
-                            : selectedItemPosition - 1;
-                    }
-                });
+                    watch.IntermediateLog("Before setting");
 
-                watch.Stop();
-            });
+                    Dispatcher?.Invoke(() =>
+                    {
+                        DataGrid.ItemsSource = listItems;
+                        if (selectedExpandoObject != null)
+                        {
+                            DataGrid.SelectedItem = selectedExpandoObject;
+                        }
+                        else if (selectedItemPosition != -1 && listItems.Count > 0)
+                        {
+                            DataGrid.SelectedIndex = selectedItemPosition < listItems.Count
+                                ? selectedItemPosition
+                                : selectedItemPosition - 1;
+                        }
+                    });
+
+                    watch.Stop();
+                });
+            }
+#endif
         }
 
         private IReflectiveCollection GetFilteredAndSortedItems(IReflectiveCollection items, IReflectiveCollection fields)
@@ -546,65 +593,15 @@ namespace DatenMeister.WPF.Forms.Base
             _delayedDispatcher.ForceRefresh();
         }
 
-        /// <summary>
-        ///     Updates the columns for the fields and returns the names and fields
-        /// </summary>
-        /// <returns>
-        ///     The tuple containing the names being used for the column
-        ///     and the fields being used.
-        /// </returns>
-        private (IList<string> names, IReflectiveCollection? fields) UpdateColumnDefinitions()
+        private void EvaluateViewExtensions()
         {
-            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
-            if (fields == null)
-                return (new string[] { }, null);
-
             ClearInfoLines();
-            DataGrid.Columns.Clear();
             ButtonBar.Children.Clear();
             ButtonBar.Visibility = Visibility.Collapsed;
 
-            var fieldNames = new List<string>();
-
-            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._Form.isReadOnly) == true;
-
-            // Creates the column
-            foreach (var field in fields.Cast<IElement>())
-            {
-                var internalName = StringManipulation.RandomString(20, true);
-                var name = "_" + (field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ?? string.Empty);
-                var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) ?? string.Empty;
-                var fieldMetaClass = field.getMetaClass();
-
-                bool isReadOnly;
-
-                if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
-                {
-                    title = "Metaclass";
-                    name = "Metaclass";
-                    isReadOnly = true;
-                }
-                else
-                {
-                    var isEnumeration = field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
-                    isReadOnly = isEnumeration;
-                }
-
-                var dataColumn = new DataGridTextColumn
-                {
-                    Header = title,
-                    Binding = new Binding(internalName),
-                    IsReadOnly = isReadOnly || isFormReadOnly,
-                    ElementStyle = (Style) TryFindResource("DataGridCellCentered")
-                };
-
-                DataGrid.Columns.Add(dataColumn);
-                fieldNames.Add(internalName);
-            }
-
             // Creates the row button
             var effectiveViewExtensions = new List<ViewExtension>(ViewExtensions);
-            
+
             // Go through the form and create the creation button
             var defaultTypes =
                 EffectiveForm.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.defaultTypesForNewElements);
@@ -624,7 +621,7 @@ namespace DatenMeister.WPF.Forms.Base
                     }
                 }
             }
-            
+
             var hashSet = new HashSet<object>();
 
             foreach (var definition in effectiveViewExtensions)
@@ -643,7 +640,6 @@ namespace DatenMeister.WPF.Forms.Base
                             DataGrid.Columns.Insert(0, dataColumn);
                         else
                             DataGrid.Columns.Add(dataColumn);
-
                         break;
                     case GenericButtonDefinition genericButtonDefinition:
                         if (genericButtonDefinition.Tag != null)
@@ -654,7 +650,7 @@ namespace DatenMeister.WPF.Forms.Base
 
                             hashSet.Add(genericButtonDefinition.Tag);
                         }
-                        
+
                         AddGenericButton(genericButtonDefinition.Name, genericButtonDefinition.OnPressed);
                         break;
                     case ItemButtonDefinition itemButtonDefinition:
@@ -667,8 +663,6 @@ namespace DatenMeister.WPF.Forms.Base
                         AddInfoLine(lineDefinition.InfolineFactory());
                         break;
                 }
-
-            return (fieldNames, fields);
         }
 
         /// <summary>
@@ -747,6 +741,84 @@ namespace DatenMeister.WPF.Forms.Base
                 });
         }
 
+#if USE_NEW_GRID_VIEW
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
+
+        /// <summary>
+        ///     Called, if the user performs a double click on the given item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
+        {
+
+        }
+#else
+
+
+        /// <summary>
+        ///     Updates the columns for the fields and returns the names and fields
+        /// </summary>
+        /// <returns>
+        ///     The tuple containing the names being used for the column
+        ///     and the fields being used.
+        /// </returns>
+        private (IList<string> names, IReflectiveCollection? fields) UpdateColumnDefinitions()
+        {
+            var fields = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            if (fields == null)
+                return (Array.Empty<string>(), null);
+
+            DataGrid.Columns.Clear();
+
+            var fieldNames = new List<string>();
+
+            var isFormReadOnly = EffectiveForm?.getOrDefault<bool>(_DatenMeister._Forms._Form.isReadOnly) == true;
+
+            // Creates the column
+            foreach (var field in fields.Cast<IElement>())
+            {
+                var internalName = StringManipulation.RandomString(20, true);
+                var name = "_" + (field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name) ?? string.Empty);
+                var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title) ?? string.Empty;
+                var fieldMetaClass = field.getMetaClass();
+
+                bool isReadOnly;
+
+                if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+                {
+                    title = "Metaclass";
+                    name = "Metaclass";
+                    isReadOnly = true;
+                }
+                else
+                {
+                    var isEnumeration = field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
+                    isReadOnly = isEnumeration;
+                }
+
+                var dataColumn = new DataGridTextColumn
+                {
+                    Header = title,
+                    Binding = new Binding(internalName),
+                    IsReadOnly = isReadOnly || isFormReadOnly,
+                    ElementStyle = (Style) TryFindResource("DataGridCellCentered")
+                };
+
+                DataGrid.Columns.Add(dataColumn);
+                fieldNames.Add(internalName);
+            }
+
+            return (fieldNames, fields);
+        }
+
         /// <summary>
         ///     Called, if the user clicks on the button
         /// </summary>
@@ -783,6 +855,25 @@ namespace DatenMeister.WPF.Forms.Base
             return (foundItem, column);
         }
 
+
+        /// <summary>
+        ///     Called, if the user performs a double click on the given item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!(DataGrid.SelectedItem is ExpandoObject selectedItem)) return;
+
+            lock (_itemMapping)
+            {
+                if (_itemMapping.TryGetValue(selectedItem, out _))
+                {
+                    // OnMouseDoubleClick(foundItem);
+                }
+            }
+        }
+
         /// <summary>
         ///     Called, when a row button is initialized.
         ///     The method is called, when a row is created.
@@ -805,29 +896,13 @@ namespace DatenMeister.WPF.Forms.Base
                 button.Content = column.Header.ToString();
             }
         }
+#endif
+
 
         private void SearchField_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             _searchText = SearchField.Text;
             UpdateForm();
-        }
-
-        /// <summary>
-        ///     Called, if the user performs a double click on the given item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (!(DataGrid.SelectedItem is ExpandoObject selectedItem)) return;
-
-            lock (_itemMapping)
-            {
-                if (_itemMapping.TryGetValue(selectedItem, out _))
-                {
-                    // OnMouseDoubleClick(foundItem);
-                }
-            }
         }
 
         private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)

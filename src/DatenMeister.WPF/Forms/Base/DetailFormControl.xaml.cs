@@ -140,7 +140,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         public List<IDetailField> AttachedItemFields { get; } = new List<IDetailField>();
 
-        public IObject? GetSelectedItem() => DetailElement;
+        public IObject GetSelectedItem() => DetailElement;
         
         /// <summary>
         /// Stores the list of validators

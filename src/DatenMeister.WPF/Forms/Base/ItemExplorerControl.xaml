@@ -7,27 +7,6 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800" Unloaded="ItemExplorerControl_OnUnloaded"
              xmlns:dmforms="clr-namespace:DatenMeister.WPF.Forms.Base">
-    <UserControl.Resources>
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="5,2,5,2" />
-        </Style>
-        <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="5,2,5,2" />
-        </Style>
-        <Style TargetType="ComboBox">
-            <Setter Property="Margin" Value="5,2,5,2" />
-        </Style>
-        <Style TargetType="CheckBox">
-            <Setter Property="Margin" Value="5,2,5,2" />
-        </Style>
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="5,2,5,2" />
-        </Style>
-        <Style TargetType="dmforms:ViewButton">
-            <Setter Property="Margin" Value="5,2,5,2" />
-            <Setter Property="Width" Value="80" />
-        </Style>
-    </UserControl.Resources>
     <DockPanel>
         <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>

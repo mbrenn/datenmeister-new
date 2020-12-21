@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
+using BurnSystems.Collections;
 using DatenMeister.WPF.Forms.Base.GridControl;
 
 namespace DatenMeister.WPF.Forms.Base
@@ -37,7 +39,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Gets the list of columndefinitions
         /// </summary>
-        public List<GridColumnDefinition> ColumnDefinitions { get; set; } = new List<GridColumnDefinition>();
+        public DirtyList<GridColumnDefinition> ColumnDefinitions { get; } = new DirtyList<GridColumnDefinition>();
 
         static ItemListViewGrid()
         {
@@ -52,8 +54,11 @@ namespace DatenMeister.WPF.Forms.Base
             _canvas = new Canvas();
             _contentPanel = new DockPanel();
         }
+        
         protected override void OnInitialized(EventArgs e)
         {
+            Background = Brushes.Transparent;
+
             //  Create the scroll bars
             _scrollVertical.Orientation = Orientation.Vertical;
             _scrollVertical.Minimum = 0;
@@ -111,6 +116,12 @@ namespace DatenMeister.WPF.Forms.Base
             };
 
             Children.Add(border);
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            _scrollVertical.Value += e.Delta / 120.0;
+            base.OnMouseWheel(e);
         }
 
         /// <summary>
@@ -193,20 +204,24 @@ namespace DatenMeister.WPF.Forms.Base
 
         protected override Size MeasureOverride(Size constraint)
         {
-            _columnInstantiations.Clear();
             _rowInstantiations.Clear();
             _canvas.Children.Clear();
 
             // Create the Column Instantiations
             var offsetColumn = 0.0;
-            foreach (var definition in ColumnDefinitions)
+
+            if (ColumnDefinitions.PopDirty())
             {
-                _columnInstantiations.Add(
-                    new ColumnInstantiation
-                    {
-                        OffsetWidth = offsetColumn,
-                        ColumnDefinition = definition
-                    });
+                _columnInstantiations.Clear();
+                foreach (var definition in ColumnDefinitions)
+                {
+                    _columnInstantiations.Add(
+                        new ColumnInstantiation
+                        {
+                            OffsetWidth = offsetColumn,
+                            ColumnDefinition = definition
+                        });
+                }
             }
 
             // Go through the rows and estimate the sizes
@@ -227,6 +242,7 @@ namespace DatenMeister.WPF.Forms.Base
                         var columnInstantiation = GetColumnInstantiation(c);
                         if (cell.CellElement != null)
                         {
+                            cell.CellElement.OverridesDefaultStyle = true;
                             cell.CellElement.MaxHeight = rowInstantiation.Height;
                             cell.CellElement.MaxWidth = constraint.Width / 2.0; // Limit horizontal size by maximum of half-size
                             cell.CellElement.Measure(new Size(double.MaxValue, rowInstantiation.Height));
@@ -262,20 +278,19 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 var current = GetColumnInstantiation(y);
                 current.OffsetWidth = offsetColumn;
-                current.Width = Math.Ceiling(definition.DesiredWidth);
-                
-                if (current.Width == 0)
-                {
-                    current.Width = Math.Ceiling(current.DesiredWidth);
-                }
-                
+                current.Width = Math.Max(
+                    Math.Max(
+                        current.Width,
+                        Math.Ceiling(definition.DesiredWidth)),
+                    Math.Ceiling(current.DesiredWidth));
+
                 offsetColumn += current.Width;
                 offsetColumn += GridSettings.GridPenWidth
                                 + GridSettings.GridMargin.Left
                                 + GridSettings.GridMargin.Right;
                 y++;
             }
-            
+
             return base.MeasureOverride(constraint);
         }
 

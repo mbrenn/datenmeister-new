@@ -4,7 +4,12 @@
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
     <TargetFrameworks>net462;net5.0-windows</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TargetFrameworks>net5.0-windows</TargetFrameworks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icons.ico</ApplicationIcon>

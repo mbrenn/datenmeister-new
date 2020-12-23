@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net462</TargetFrameworks>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -10,6 +10,12 @@
     <Nullable>enable</Nullable>
     <LangVersion>9</LangVersion>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
+    <TargetFrameworks>netcoreapp3.1;net5.0;net462</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TargetFrameworks>net5.0</TargetFrameworks>
+  </PropertyGroup>  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;VIEWLOGICINFO</DefineConstants>
     <Optimize>false</Optimize>

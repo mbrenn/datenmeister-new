@@ -17,7 +17,8 @@
                   MouseRightButtonDown="TreeView_MouseRightButtonDown"
                   ContextMenuOpening="TreeView_ContextMenuOpening" 
                   HorizontalContentAlignment="Left"
-                  VerticalContentAlignment="Center">
+                  VerticalContentAlignment="Center"
+                  TreeViewItem.Expanded="TreeView_OnExpanded">
                 <TreeView.ContextMenu>
                     <ContextMenu x:Name="ItemContextMenu" Opened="ItemContextMenu_OnOpened"></ContextMenu>
                 </TreeView.ContextMenu>

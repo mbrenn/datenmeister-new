@@ -92,12 +92,9 @@ namespace DatenMeister.WPF.Helper
                 {
                     _lastRefreshTime = DateTime.Now;
                 }
-
-                Task.Delay(MinDispatchTime).ContinueWith(t =>
-                {
-                    CheckForRefresh();
-                });
             }
+
+            Task.Delay(MinDispatchTime).ContinueWith(t => { CheckForRefresh(); });
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.WPF.Navigation;
 
-namespace DatenMeister.WPF.Forms.Base.GridControl
+namespace DatenMeister.WPF.Controls.GridControl
 {
     /// <summary>
     /// Gets the column definition for buttons

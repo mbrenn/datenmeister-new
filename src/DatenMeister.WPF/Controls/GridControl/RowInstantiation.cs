@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Media;
 
-namespace DatenMeister.WPF.Forms.Base.GridControl
+namespace DatenMeister.WPF.Controls.GridControl
 {
     public class RowInstantiation
     {
@@ -25,5 +25,10 @@ namespace DatenMeister.WPF.Forms.Base.GridControl
         /// Defines the cell instantiations containing the UI element
         /// </summary>
         public List<CellInstantiation> Cells { get; } = new List<CellInstantiation>();
+        
+        /// <summary>
+        /// Gets or sets the index in the data. -1 if not an index 
+        /// </summary>
+        public int IndexInData { get; set; }
     }
 }

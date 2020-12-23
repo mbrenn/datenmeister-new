@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.WPF.Forms.Base.GridControl
+﻿namespace DatenMeister.WPF.Controls.GridControl
 {
     /// <summary>
     /// Gets the column definition

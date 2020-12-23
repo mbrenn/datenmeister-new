@@ -6,9 +6,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using BurnSystems.Collections;
-using DatenMeister.WPF.Forms.Base.GridControl;
+using DatenMeister.WPF.Controls.GridControl;
 
-namespace DatenMeister.WPF.Forms.Base
+namespace DatenMeister.WPF.Controls
 {
     /// <summary>
     /// Create the grid view
@@ -27,11 +27,25 @@ namespace DatenMeister.WPF.Forms.Base
         private int _columnOffset;
         private double _columnPixelOffset;
 
+        /// <summary>
+        /// Gets or sets the index of the selected row
+        /// </summary>
+        public int SelectedRowIndex { get; set; } = -1;
+        
+        /// <summary>
+        /// Gets or sets the selected row
+        /// </summary>
+        public RowInstantiation? SelectedRow { get; set; }
+
+        /// <summary>
+        /// Defines some default grid settings
+        /// </summary>
         public static class GridSettings
         {
             public const double BorderWidth = 1.0;
             public const double GridPenWidth = 1.0;
             public static readonly Brush GridBrush = Brushes.DimGray;
+            public static readonly Brush SelectedRowBrush = Brushes.LightSteelBlue;
             public static readonly Thickness GridMargin = new Thickness(5, 2, 5, 1);
             public const double HeaderRowHeight = 20.0;
         }
@@ -122,6 +136,43 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _scrollVertical.Value -= e.Delta / 120.0;
             base.OnMouseWheel(e);
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            var position = e.GetPosition(_canvas);
+            if (position.Y < 0 || position.Y > _canvas.ActualHeight)
+            {
+                return;
+            }
+
+            RowInstantiation? lastRow = null;
+            foreach (var rowInstantiation in _rowInstantiations)
+            {
+                if (rowInstantiation.OffsetHeight < position.Y
+                    && rowInstantiation.OffsetHeight + rowInstantiation.Height > position.Y)
+                {
+                    lastRow = rowInstantiation;
+                }
+            }
+
+            if (lastRow != null)
+            {
+                SelectedRowIndex = lastRow.IndexInData;
+                SelectedRow = lastRow;
+                
+                InvalidateVisual();
+                InvalidateMeasure();
+            }
+            else
+            {
+                SelectedRowIndex = -1;
+                SelectedRow = null;
+                InvalidateVisual();
+                InvalidateMeasure();
+            }
+            
+            base.OnMouseDown(e);
         }
 
         /// <summary>
@@ -248,6 +299,7 @@ namespace DatenMeister.WPF.Forms.Base
                             cell.CellElement.Measure(new Size(double.MaxValue, rowInstantiation.Height));
 
                             columnInstantiation.DesiredWidth =
+                                Math.Min()
                                 Math.Max(
                                     columnInstantiation.DesiredWidth,
                                     cell.CellElement.DesiredSize.Width);
@@ -383,12 +435,26 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>The instantiated row or null if not available</returns>
         public RowInstantiation? GetVisibleRow(int row)
         {
-            bool IsHeaderRow(int theRow) => theRow == 0;
+            static bool IsHeaderRow(int theRow) => theRow == 0;
             int MapRows(int theRow) => theRow == 0 ? theRow - 1 : theRow + _rowOffset - 1;
 
-            return IsHeaderRow(row)
-                ? GetHeaderRowInstantiation()
-                : GetRowOfContent(MapRows(row));
+            if (IsHeaderRow(row))
+            {
+                var foundRow = GetHeaderRowInstantiation();
+                foundRow.IndexInData = -1;
+                return foundRow;
+            }
+            else
+            {
+                var index = MapRows(row);
+                var foundRow = GetRowOfContent(index);
+                if (foundRow != null)
+                {
+                    foundRow.IndexInData = index;
+                }
+
+                return foundRow;
+            }
         }
 
         /// <summary>
@@ -429,11 +495,17 @@ namespace DatenMeister.WPF.Forms.Base
                     + GridSettings.GridMargin.Top
                     + GridSettings.GridMargin.Bottom;
 
+                var currentBackgroundColor = rowInstantiation.BackgroundColor;
+                if (rowInstantiation.IndexInData == SelectedRow?.IndexInData && rowInstantiation.IndexInData != -1)
+                {
+                    currentBackgroundColor = GridSettings.SelectedRowBrush;
+                }
+
                 // Sets the backgroundcolor
-                if (rowInstantiation.BackgroundColor != null)
+                if (currentBackgroundColor != null)
                 {
                     dc.DrawRectangle(
-                        rowInstantiation.BackgroundColor,
+                        currentBackgroundColor,
                         null,
                         new Rect(
                             w,

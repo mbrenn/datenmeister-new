@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DatenMeister.WPF.Forms.Base.GridControl
+namespace DatenMeister.WPF.Controls.GridControl
 {
     /// <summary>
     /// Defines the element for the cell

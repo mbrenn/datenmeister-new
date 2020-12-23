@@ -281,8 +281,7 @@ namespace DatenMeisterWPF
             {
                 canUnregister.Unregister();
             }
-            
-            
+
             // Asks the user, if he was not already asked before
 
             if (!DoCloseWithoutAcknowledgement)

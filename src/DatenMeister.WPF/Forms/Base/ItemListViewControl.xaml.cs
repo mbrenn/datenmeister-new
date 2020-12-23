@@ -347,9 +347,6 @@ namespace DatenMeister.WPF.Forms.Base
                 var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
                 ExpandoObject? selectedExpandoObject = null;
 
-                SupportNewItems =
-                    !EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
-
                 lock (_itemMapping)
                 {
                     _itemMapping.Clear();

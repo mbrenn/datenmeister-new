@@ -30,7 +30,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the index of the selected row
         /// </summary>
-        public int SelectedRowIndex { get; set; } = -1;
+        public int SelectedRowIndex => SelectedRow?.IndexInData ?? -1;
         
         /// <summary>
         /// Gets or sets the selected row
@@ -158,7 +158,6 @@ namespace DatenMeister.WPF.Controls
 
             if (lastRow != null)
             {
-                SelectedRowIndex = lastRow.IndexInData;
                 SelectedRow = lastRow;
                 
                 InvalidateVisual();
@@ -166,7 +165,6 @@ namespace DatenMeister.WPF.Controls
             }
             else
             {
-                SelectedRowIndex = -1;
                 SelectedRow = null;
                 InvalidateVisual();
                 InvalidateMeasure();
@@ -299,10 +297,10 @@ namespace DatenMeister.WPF.Controls
                             cell.CellElement.Measure(new Size(double.MaxValue, rowInstantiation.Height));
 
                             columnInstantiation.DesiredWidth =
-                                Math.Min()
-                                Math.Max(
-                                    columnInstantiation.DesiredWidth,
-                                    cell.CellElement.DesiredSize.Width);
+                                Math.Min(constraint.Width / 2.0,
+                                    Math.Max(
+                                        columnInstantiation.DesiredWidth,
+                                        cell.CellElement.DesiredSize.Width));
                             columnInstantiation.DesiredHeight =
                                 Math.Max(
                                     columnInstantiation.DesiredHeight,
@@ -396,9 +394,9 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets the row of the content. This method shall be overridden
         /// </summary>
-        /// <param name="row">Number of the row to be queried</param>
+        /// <param name="dataRow">Number of the row to be queried</param>
         /// <returns>The row instantiation including the content to be shown</returns>
-        public virtual RowInstantiation? GetRowOfContent(int row)
+        public virtual RowInstantiation? GetRowOfContent(int dataRow)
         {
             // 
             // THIS IS A DEMO IMPLEMENTATION 
@@ -413,7 +411,7 @@ namespace DatenMeister.WPF.Controls
                 {
                     CellElement = new TextBlock
                     {
-                        Text = $"R #{row}, C #{c}",
+                        Text = $"R #{dataRow}, C #{c}",
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Left
                     }
@@ -424,6 +422,38 @@ namespace DatenMeister.WPF.Controls
             }
 
             return rowInstantiation;
+        }
+
+        /// <summary>
+        /// Gets an enumeration of the selected items
+        /// </summary>
+        public IEnumerable<object> SelectedItems
+        {
+            get
+            {
+                if (SelectedRow != null)
+                {
+                    var data = GetDataOfRow(SelectedRow.IndexInData);
+                    if (data != null)
+                    {
+                        return new[] {data};
+                    }
+                }
+
+                return Array.Empty<object>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the object behind the given data row number
+        /// </summary>
+        /// <param name="dataRow">Index within the data for the given row.
+        /// This number is the same number as specified by GetRowOfContent and does not include
+        /// any scrolling or zooming</param>
+        /// <returns>The object behind the data row</returns>
+        public virtual object? GetDataOfRow(int dataRow)
+        {
+            return null;
         }
 
         /// <summary>

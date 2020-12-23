@@ -90,14 +90,20 @@ namespace DatenMeister.WPF.Forms.Base
 
         public override int RowCount => _currentElements?.Count ?? 0;
 
-        public override RowInstantiation? GetRowOfContent(int row)
+        /// <inheritdoc />
+        public override object? GetDataOfRow(int dataRow)
+        {
+            return _currentElements?.ElementAtOrDefault(dataRow);
+        }
+
+        public override RowInstantiation? GetRowOfContent(int dataRow)
         {
             if (_currentElements == null)
                 return null;
 
             var rowInstantiation = new RowInstantiation {Height = 25};
 
-            var currentElement = _currentElements.ElementAtOrDefault(row);
+            var currentElement = _currentElements.ElementAtOrDefault(dataRow);
             if (currentElement == null)
                 return null;
             

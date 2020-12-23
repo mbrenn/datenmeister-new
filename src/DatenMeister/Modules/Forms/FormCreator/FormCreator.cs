@@ -173,6 +173,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 cache.MetaClassAlreadyAdded = true;
             }
             
+            // Sorts the field by important properties
             SortFieldsByImportantProperties(form);
 
 #if DEBUG
@@ -341,6 +342,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 cache.MetaClassAlreadyAdded = true;
             }
 
+            // Sorts the field by important properties
+            SortFieldsByImportantProperties(form);
+            
 #if DEBUG
             if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");

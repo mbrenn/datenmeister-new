@@ -153,26 +153,17 @@ namespace DatenMeister.WPF.Forms.Base
         public List<ViewExtension> ViewExtensions { get; private set; } = new List<ViewExtension>();
 
         /// <summary>
-        ///     Gets or sets the information whether new items can be added via the datagrid
-        /// </summary>
-        private bool SupportNewItems
-        {
-            get => DataGrid.CanUserAddRows;
-            set => DataGrid.CanUserAddRows = value;
-        }
-
-        /// <summary>
         ///     Gets an enumeration of all selected items
         /// </summary>
         /// <returns>Enumeration of selected item</returns>
         public IEnumerable<IObject> GetSelectedItems()
         {
+#if !USE_NEW_GRID_VIEW
             var selectedItems = DataGrid.SelectedItems;
             if (selectedItems.Count == 0)
                 // If no item is selected, get no item
                 yield break;
 
-#if !USE_NEW_GRID_VIEW
             lock (_itemMapping)
             {
                 foreach (var item in selectedItems)
@@ -180,7 +171,11 @@ namespace DatenMeister.WPF.Forms.Base
                         if (_itemMapping.TryGetValue(selectedItem, out var foundItem))
                             yield return foundItem;
             }
+            #else
+            var selectedItems = DataGrid2.SelectedItems;
+            return selectedItems.OfType<IElement>();
 #endif
+
         }
 
         /// <summary>
@@ -351,9 +346,6 @@ namespace DatenMeister.WPF.Forms.Base
                 var selectedItem = GetSelectedItem();
                 var selectedItemPosition = DataGrid.SelectedIndex; // Gets the item position
                 ExpandoObject? selectedExpandoObject = null;
-
-                SupportNewItems =
-                    !EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.inhibitNewItems);
 
                 lock (_itemMapping)
                 {
@@ -628,6 +620,7 @@ namespace DatenMeister.WPF.Forms.Base
             foreach (var definition in effectiveViewExtensions)
                 switch (definition)
                 {
+#if !USE_NEW_GRID_VIEW
                     case RowItemButtonDefinition rowButtonDefinition:
                         var columnTemplate = FindResource("TemplateColumnButton") as DataTemplate;
                         var dataColumn = new ClickedTemplateColumn
@@ -642,6 +635,7 @@ namespace DatenMeister.WPF.Forms.Base
                         else
                             DataGrid.Columns.Add(dataColumn);
                         break;
+#endif
                     case GenericButtonDefinition genericButtonDefinition:
                         if (genericButtonDefinition.Tag != null)
                         {

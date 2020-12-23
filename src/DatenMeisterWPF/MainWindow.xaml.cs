@@ -281,20 +281,23 @@ namespace DatenMeisterWPF
             {
                 canUnregister.Unregister();
             }
-            
-            
+
             // Asks the user, if he was not already asked before
 
             if (!DoCloseWithoutAcknowledgement)
             {
-                var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
-                var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
-                if (MessageBox.Show(
-                    $"Are you sure, that you would like to close '{windowTitle}'",
-                    $"Close {windowTitle}?",
-                    MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                var scope = GiveMe.TryGetScope();
+                if (scope != null)
                 {
-                    e.Cancel = true;
+                    var integrationSettings = scope.ScopeStorage.Get<IntegrationSettings>();
+                    var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
+                    if (MessageBox.Show(
+                        $"Are you sure, that you would like to close '{windowTitle}'",
+                        $"Close {windowTitle}?",
+                        MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                    {
+                        e.Cancel = true;
+                    }
                 }
             }
         }

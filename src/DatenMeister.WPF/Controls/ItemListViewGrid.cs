@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using BurnSystems.Collections;
-using DatenMeister.WPF.Forms.Base.GridControl;
+using DatenMeister.WPF.Controls.GridControl;
 
-namespace DatenMeister.WPF.Forms.Base
+namespace DatenMeister.WPF.Controls
 {
     /// <summary>
     /// Create the grid view
@@ -27,11 +28,32 @@ namespace DatenMeister.WPF.Forms.Base
         private int _columnOffset;
         private double _columnPixelOffset;
 
+        /// <summary>
+        /// Gets or sets the index of the selected row
+        /// </summary>
+        public int SelectedDataIndex { get; set; } = -1;
+
+        /// <summary>
+        /// Gets or sets the selected row
+        /// </summary>
+        public RowInstantiation? SelectedRow =>
+            _rowInstantiations.FirstOrDefault(x => x.IndexInData == SelectedDataIndex);
+
+        /// <summary>
+        /// Defines the data that has been selected.
+        /// This value is used to find the selected item in case of a new setting of data
+        /// </summary>
+        private object? _selectedRowData;
+
+        /// <summary>
+        /// Defines some default grid settings
+        /// </summary>
         public static class GridSettings
         {
             public const double BorderWidth = 1.0;
             public const double GridPenWidth = 1.0;
             public static readonly Brush GridBrush = Brushes.DimGray;
+            public static readonly Brush SelectedRowBrush = Brushes.LightSteelBlue;
             public static readonly Thickness GridMargin = new Thickness(5, 2, 5, 1);
             public const double HeaderRowHeight = 20.0;
         }
@@ -122,6 +144,64 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _scrollVertical.Value -= e.Delta / 120.0;
             base.OnMouseWheel(e);
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            var position = e.GetPosition(_canvas);
+            if (position.Y < 0 || position.Y > _canvas.ActualHeight)
+            {
+                return;
+            }
+
+            RowInstantiation? lastRow = null;
+            foreach (var rowInstantiation in _rowInstantiations)
+            {
+                if (rowInstantiation.OffsetHeight < position.Y
+                    && rowInstantiation.OffsetHeight + rowInstantiation.Height > position.Y)
+                {
+                    lastRow = rowInstantiation;
+                }
+            }
+
+            if (lastRow != null)
+            {
+                SelectedDataIndex = lastRow.IndexInData;
+                _selectedRowData = GetDataOfRow(lastRow.IndexInData);
+                InvalidateVisual();
+                InvalidateMeasure();
+            }
+            else
+            {
+                SelectedDataIndex = -1;
+                _selectedRowData = null;
+                InvalidateVisual();
+                InvalidateMeasure();
+            }
+            
+            base.OnMouseDown(e);
+        }
+
+        /// <summary>
+        /// Goes through the data of the element and tries to set 
+        /// </summary>
+        protected void FindSelectedElement()
+        {
+            if (_selectedRowData == null)
+            {
+                return;
+            }
+            
+            for (var n = 0; n < DataRowCount; n++)
+            {
+                var current = GetDataOfRow(n);
+                if (current == null) continue;
+
+                if (current.Equals(_selectedRowData))
+                {
+                    SelectedDataIndex = n;
+                }
+            }
         }
 
         /// <summary>
@@ -226,7 +306,7 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Go through the rows and estimate the sizes
             var positionRow = 0.0;
-            for (var n = 0; n < RowCount + 1; n++)
+            for (var n = 0; n < DataRowCount + 1; n++)
             {
                 var rowInstantiation = GetVisibleRow(n);
                 if (rowInstantiation != null)
@@ -248,9 +328,10 @@ namespace DatenMeister.WPF.Forms.Base
                             cell.CellElement.Measure(new Size(double.MaxValue, rowInstantiation.Height));
 
                             columnInstantiation.DesiredWidth =
-                                Math.Max(
-                                    columnInstantiation.DesiredWidth,
-                                    cell.CellElement.DesiredSize.Width);
+                                Math.Min(constraint.Width / 2.0,
+                                    Math.Max(
+                                        columnInstantiation.DesiredWidth,
+                                        cell.CellElement.DesiredSize.Width));
                             columnInstantiation.DesiredHeight =
                                 Math.Max(
                                     columnInstantiation.DesiredHeight,
@@ -326,7 +407,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             _scrollHorizontal.Maximum = _columnInstantiations.Count - 1;
-            _scrollVertical.Maximum = RowCount - 1;
+            _scrollVertical.Maximum = DataRowCount - 1;
             
             return base.ArrangeOverride(arrangeSize);
         }
@@ -339,14 +420,14 @@ namespace DatenMeister.WPF.Forms.Base
         /// <summary>
         /// Returns the number of columns
         /// </summary>
-        public virtual int RowCount => 10;
+        public virtual int DataRowCount => 10;
 
         /// <summary>
         /// Gets the row of the content. This method shall be overridden
         /// </summary>
-        /// <param name="row">Number of the row to be queried</param>
+        /// <param name="dataRow">Number of the row to be queried</param>
         /// <returns>The row instantiation including the content to be shown</returns>
-        public virtual RowInstantiation? GetRowOfContent(int row)
+        public virtual RowInstantiation? GetRowOfContent(int dataRow)
         {
             // 
             // THIS IS A DEMO IMPLEMENTATION 
@@ -361,7 +442,7 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     CellElement = new TextBlock
                     {
-                        Text = $"R #{row}, C #{c}",
+                        Text = $"R #{dataRow}, C #{c}",
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Left
                     }
@@ -375,6 +456,38 @@ namespace DatenMeister.WPF.Forms.Base
         }
 
         /// <summary>
+        /// Gets an enumeration of the selected items
+        /// </summary>
+        public IEnumerable<object> SelectedItems
+        {
+            get
+            {
+                if (SelectedRow != null)
+                {
+                    var data = GetDataOfRow(SelectedRow.IndexInData);
+                    if (data != null)
+                    {
+                        return new[] {data};
+                    }
+                }
+
+                return Array.Empty<object>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the object behind the given data row number
+        /// </summary>
+        /// <param name="dataRow">Index within the data for the given row.
+        /// This number is the same number as specified by GetRowOfContent and does not include
+        /// any scrolling or zooming</param>
+        /// <returns>The object behind the data row</returns>
+        public virtual object? GetDataOfRow(int dataRow)
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Returns the instantiation of the visible row of the content.
         /// The first (0) is usually the header row, then followed by the
         /// content rows
@@ -383,12 +496,26 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns>The instantiated row or null if not available</returns>
         public RowInstantiation? GetVisibleRow(int row)
         {
-            bool IsHeaderRow(int theRow) => theRow == 0;
+            static bool IsHeaderRow(int theRow) => theRow == 0;
             int MapRows(int theRow) => theRow == 0 ? theRow - 1 : theRow + _rowOffset - 1;
 
-            return IsHeaderRow(row)
-                ? GetHeaderRowInstantiation()
-                : GetRowOfContent(MapRows(row));
+            if (IsHeaderRow(row))
+            {
+                var foundRow = GetHeaderRowInstantiation();
+                foundRow.IndexInData = -1;
+                return foundRow;
+            }
+            else
+            {
+                var index = MapRows(row);
+                var foundRow = GetRowOfContent(index);
+                if (foundRow != null)
+                {
+                    foundRow.IndexInData = index;
+                }
+
+                return foundRow;
+            }
         }
 
         /// <summary>
@@ -397,7 +524,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <returns></returns>
         public int GetVisibleRowCount()
         {
-            return RowCount + 1;
+            return DataRowCount + 1;
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -429,11 +556,17 @@ namespace DatenMeister.WPF.Forms.Base
                     + GridSettings.GridMargin.Top
                     + GridSettings.GridMargin.Bottom;
 
+                var currentBackgroundColor = rowInstantiation.BackgroundColor;
+                if (rowInstantiation.IndexInData == SelectedRow?.IndexInData && rowInstantiation.IndexInData != -1)
+                {
+                    currentBackgroundColor = GridSettings.SelectedRowBrush;
+                }
+
                 // Sets the backgroundcolor
-                if (rowInstantiation.BackgroundColor != null)
+                if (currentBackgroundColor != null)
                 {
                     dc.DrawRectangle(
-                        rowInstantiation.BackgroundColor,
+                        currentBackgroundColor,
                         null,
                         new Rect(
                             w,

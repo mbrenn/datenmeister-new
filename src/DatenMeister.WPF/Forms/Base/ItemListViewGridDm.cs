@@ -11,7 +11,8 @@ using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
-using DatenMeister.WPF.Forms.Base.GridControl;
+using DatenMeister.WPF.Controls;
+using DatenMeister.WPF.Controls.GridControl;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
@@ -83,20 +84,28 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _currentElements = collection.OfType<IElement>().ToList();
             
+            FindSelectedElement();
+            
             InvalidateMeasure();
             InvalidateVisual();
         }
 
-        public override int RowCount => _currentElements?.Count ?? 0;
+        public override int DataRowCount => _currentElements?.Count ?? 0;
 
-        public override RowInstantiation? GetRowOfContent(int row)
+        /// <inheritdoc />
+        public override object? GetDataOfRow(int dataRow)
+        {
+            return _currentElements?.ElementAtOrDefault(dataRow);
+        }
+
+        public override RowInstantiation? GetRowOfContent(int dataRow)
         {
             if (_currentElements == null)
                 return null;
 
             var rowInstantiation = new RowInstantiation {Height = 25};
 
-            var currentElement = _currentElements.ElementAtOrDefault(row);
+            var currentElement = _currentElements.ElementAtOrDefault(dataRow);
             if (currentElement == null)
                 return null;
             

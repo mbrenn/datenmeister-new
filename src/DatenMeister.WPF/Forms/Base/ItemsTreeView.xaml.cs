@@ -280,9 +280,10 @@ namespace DatenMeister.WPF.Forms.Base
                 // ReSharper disable once RedundantLogicalConditionalExpressionOperand
                 if (availableTreeViewItem == null || ConfigurationAlwaysRefresh)
                 {
-                    var found = CreateTreeViewItem(
+                    var found = CreateTreeViewItemLazy(
                         new TreeViewItemParameter(ItemsSource),
                         true);
+                    
                     if (found != null)
                         model.Add(found);
 
@@ -358,7 +359,7 @@ namespace DatenMeister.WPF.Forms.Base
                     if (child.Element is null)
                         continue;
 
-                    var createdTreeViewItem = CreateTreeViewItem(child);
+                    var createdTreeViewItem = CreateTreeViewItemLazy(child);
                     if (createdTreeViewItem != null)
                     {
                         viewChildren.Add(createdTreeViewItem);
@@ -378,7 +379,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// <param name="item">Item to be converted to a treeview</param>
         /// <param name="isRoot">true, if this is the root element. This means that the element is expanded. </param>
         /// <returns>The created element</returns>
-        private ItemsTreeViewItem? CreateTreeViewItem(TreeViewItemParameter item, bool isRoot = false)
+        private ItemsTreeViewItem? CreateTreeViewItemLazy(TreeViewItemParameter item, bool isRoot = false)
         {
             if (item.Element == null || _alreadyVisited.Contains(item.Element))
             {
@@ -433,18 +434,42 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 _newSelectedItem = treeViewItem;
             }
+            
+            _mappingItems[item.Element] = treeViewItem;
 
-            if (item.Element is IExtent extent)
+            if (!isRoot)
             {
-                _mappingItems[extent] = treeViewItem;
+                treeViewItem.Items.Add("Loading...");
+            }
+            else
+            {
+                CreateSubTreeItems(treeViewItem, parameter);
+            }
+
+            return treeViewItem;
+        }
+
+        /// <summary>
+        /// Creates the subtree upon the elements being child of the current treeViewItem.
+        /// This function is used for lazy loading
+        /// </summary>
+        /// <param name="treeViewItem">The WPF Treeview item being showed</param>
+        /// <param name="itemParameter">The parameter of the current item whose children shall
+        /// be listed. </param>
+        private void CreateSubTreeItems(ItemsControl treeViewItem, TreeViewItemParameter itemParameter)
+        {
+            treeViewItem.Items.Clear();
+            
+            if (itemParameter.Element is IExtent extent)
+            {
                 var childModels = new List<ItemsTreeViewItem>();
                 var n = 0;
                 foreach (var element in GetChildrenOfItem(extent))
                 {
                     if (element.Element == null) continue; // Skip the empty ones
-                    
-                    var created = 
-                        CreateTreeViewItem(element);
+
+                    var created =
+                        CreateTreeViewItemLazy(element);
                     if (created != null)
                         childModels.Add(created);
                     n++;
@@ -453,17 +478,15 @@ namespace DatenMeister.WPF.Forms.Base
 
                 treeViewItem.ItemsSource = childModels;
             }
-            else if (item.Element is { } itemAsObject)
+            else if (itemParameter.Element is { } itemAsObject)
             {
-                _mappingItems[itemAsObject] = treeViewItem;
-
                 var n = 0;
 
                 // Gets the properties
                 var childModels = new List<ItemsTreeViewItem>();
                 foreach (var propertyValue in GetChildrenOfItem(itemAsObject))
                 {
-                    var childTreeViewItem = CreateTreeViewItem(propertyValue);
+                    var childTreeViewItem = CreateTreeViewItemLazy(propertyValue);
                     if (childTreeViewItem != null)
                     {
                         childModels.Add(childTreeViewItem);
@@ -479,8 +502,6 @@ namespace DatenMeister.WPF.Forms.Base
 
                 treeViewItem.ItemsSource = childModels;
             }
-
-            return treeViewItem;
         }
 
         /// <summary>
@@ -537,6 +558,16 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             return result;
+        }
+
+        private void TreeView_OnExpanded(object sender, RoutedEventArgs e)
+        {
+            if (!(e.OriginalSource is ItemsTreeViewItem item)) return;
+            
+            if (item.Items.Count == 1 && item.Items[0] is string && item.TreeViewItemParameter != null)
+            {
+                CreateSubTreeItems(item, item.TreeViewItemParameter);
+            }
         }
 
         private string GetItemHeader(TreeViewItemParameter parameter)

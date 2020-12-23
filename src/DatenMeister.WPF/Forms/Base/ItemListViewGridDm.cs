@@ -84,11 +84,13 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _currentElements = collection.OfType<IElement>().ToList();
             
+            FindSelectedElement();
+            
             InvalidateMeasure();
             InvalidateVisual();
         }
 
-        public override int RowCount => _currentElements?.Count ?? 0;
+        public override int DataRowCount => _currentElements?.Count ?? 0;
 
         /// <inheritdoc />
         public override object? GetDataOfRow(int dataRow)

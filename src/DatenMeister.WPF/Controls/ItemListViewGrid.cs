@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -30,12 +31,19 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Gets or sets the index of the selected row
         /// </summary>
-        public int SelectedRowIndex => SelectedRow?.IndexInData ?? -1;
-        
+        public int SelectedDataIndex { get; set; } = -1;
+
         /// <summary>
         /// Gets or sets the selected row
         /// </summary>
-        public RowInstantiation? SelectedRow { get; set; }
+        public RowInstantiation? SelectedRow =>
+            _rowInstantiations.FirstOrDefault(x => x.IndexInData == SelectedDataIndex);
+
+        /// <summary>
+        /// Defines the data that has been selected.
+        /// This value is used to find the selected item in case of a new setting of data
+        /// </summary>
+        private object? _selectedRowData;
 
         /// <summary>
         /// Defines some default grid settings
@@ -158,19 +166,42 @@ namespace DatenMeister.WPF.Controls
 
             if (lastRow != null)
             {
-                SelectedRow = lastRow;
-                
+                SelectedDataIndex = lastRow.IndexInData;
+                _selectedRowData = GetDataOfRow(lastRow.IndexInData);
                 InvalidateVisual();
                 InvalidateMeasure();
             }
             else
             {
-                SelectedRow = null;
+                SelectedDataIndex = -1;
+                _selectedRowData = null;
                 InvalidateVisual();
                 InvalidateMeasure();
             }
             
             base.OnMouseDown(e);
+        }
+
+        /// <summary>
+        /// Goes through the data of the element and tries to set 
+        /// </summary>
+        protected void FindSelectedElement()
+        {
+            if (_selectedRowData == null)
+            {
+                return;
+            }
+            
+            for (var n = 0; n < DataRowCount; n++)
+            {
+                var current = GetDataOfRow(n);
+                if (current == null) continue;
+
+                if (current.Equals(_selectedRowData))
+                {
+                    SelectedDataIndex = n;
+                }
+            }
         }
 
         /// <summary>
@@ -275,7 +306,7 @@ namespace DatenMeister.WPF.Controls
 
             // Go through the rows and estimate the sizes
             var positionRow = 0.0;
-            for (var n = 0; n < RowCount + 1; n++)
+            for (var n = 0; n < DataRowCount + 1; n++)
             {
                 var rowInstantiation = GetVisibleRow(n);
                 if (rowInstantiation != null)
@@ -376,7 +407,7 @@ namespace DatenMeister.WPF.Controls
             }
 
             _scrollHorizontal.Maximum = _columnInstantiations.Count - 1;
-            _scrollVertical.Maximum = RowCount - 1;
+            _scrollVertical.Maximum = DataRowCount - 1;
             
             return base.ArrangeOverride(arrangeSize);
         }
@@ -389,7 +420,7 @@ namespace DatenMeister.WPF.Controls
         /// <summary>
         /// Returns the number of columns
         /// </summary>
-        public virtual int RowCount => 10;
+        public virtual int DataRowCount => 10;
 
         /// <summary>
         /// Gets the row of the content. This method shall be overridden
@@ -493,7 +524,7 @@ namespace DatenMeister.WPF.Controls
         /// <returns></returns>
         public int GetVisibleRowCount()
         {
-            return RowCount + 1;
+            return DataRowCount + 1;
         }
 
         protected override void OnRender(DrawingContext dc)

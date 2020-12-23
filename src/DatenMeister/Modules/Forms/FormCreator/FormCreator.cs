@@ -172,6 +172,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 // Sets the information in cache, that the element was already added
                 cache.MetaClassAlreadyAdded = true;
             }
+            
+            SortFieldsByImportantProperties(form);
 
 #if DEBUG
             if (!FormMethods.ValidateForm(form))
@@ -267,6 +269,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     _DatenMeister._Forms._FieldData.isEnumeration,
                     column.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration) | DotNetHelper.IsEnumeration(propertyValue?.GetType()));
             }
+            
+            SortFieldsByImportantProperties(form);
             
 #if DEBUG
             if (!FormMethods.ValidateForm(form))

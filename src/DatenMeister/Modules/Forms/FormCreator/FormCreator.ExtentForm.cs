@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Models;
 using DatenMeister.Models.EMOF;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
 using DatenMeister.Uml.Helper;
@@ -137,6 +138,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     AddToForm(form, item, creationMode, cache);
 
                 AddTextFieldForNameIfNoFieldAvailable(form);
+                SortFieldsByImportantProperties(form);
                 
                 SetDefaultTypesByPackages(form);
 
@@ -466,9 +468,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 var propertyName = pair.propertyName;
                 var elementsAsObjects = pair.propertyContent.OfType<IObject>().ToList();
 
-#pragma warning disable 162
-                if (ConfigurationFormCreatorSeparateProperties)
-                    // ReSharper disable HeuristicUnreachableCode
+                if (propertyName == _UML._Packages._Package.packagedElement)
                 {
                     var elementsWithoutMetaClass = elementsAsObjects.Where(x =>
                     {
@@ -556,17 +556,38 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     }
                     
                     AddTextFieldForNameIfNoFieldAvailable(form);
+                    SortFieldsByImportantProperties(form);
 
                     // Adds the form to the tabs
                     tabs.Add(form);
                 }
             }
-#pragma warning restore 162
-            // ReSharper restore HeuristicUnreachableCode
 
+            // ReSharper restore HeuristicUnreachableCode
             extentForm.set(_DatenMeister._Forms._ExtentForm.tab, tabs);
 
             return extentForm;
+        }
+
+        private void SortFieldsByImportantProperties(IObject form)
+        {
+            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            if (fields == null) return;
+            var fieldsAsList = fields.OfType<IElement>().ToList();
+
+            // Check if the name is within the list, if yes, push it to the front
+            var fieldName = fieldsAsList.FirstOrDefault(x =>
+                x.getOrDefault<string>(_UML._CommonStructure._NamedElement.name) ==
+                _UML._CommonStructure._NamedElement.name);
+
+            if (fieldName != null)
+            {
+                fieldsAsList.Remove(fieldName);
+                fieldsAsList.Insert(0, fieldName);
+            }
+            
+            // Sets it
+            form.set(_DatenMeister._Forms._ListForm.field, fieldsAsList);
         }
 
         /// <summary>

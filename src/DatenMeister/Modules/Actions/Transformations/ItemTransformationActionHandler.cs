@@ -7,7 +7,6 @@ using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.DynamicRuntime;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Actions.Transformations
 {
@@ -17,6 +16,7 @@ namespace DatenMeister.Modules.Actions.Transformations
     public class ItemTransformationActionHandler : IActionHandler
     {
         private static readonly ILogger logger = new ClassLogger(typeof(ItemTransformationActionHandler));
+        
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
@@ -70,7 +70,7 @@ namespace DatenMeister.Modules.Actions.Transformations
                 }
                 
                 // Transform item
-                transformer.TransformItem(asElement);
+                transformer.TransformItem(asElement, action);
             }
         }
     }

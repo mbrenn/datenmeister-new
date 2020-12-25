@@ -494,7 +494,7 @@
         <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
       </ownedAttribute>
     </packagedElement>
-    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="87db7ef0-f901-464f-83d5-fee6d43f58fd" name="TransformItemsAction">
+    <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.ItemTransformationActionHandler" name="TransformItemsAction">
       <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
       <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
       <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />

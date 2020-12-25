@@ -8,6 +8,8 @@ namespace DatenMeister.Modules.Actions.Transformations
         /// Implements the transformation of the item 
         /// </summary>
         /// <param name="element">Element to be transformed</param>
-        void TransformItem(IElement element);
+        /// <param name="actionConfiguration">Defines the action element which contains also
+        /// the configuration</param>
+        void TransformItem(IElement element, IElement actionConfiguration);
     }
 }

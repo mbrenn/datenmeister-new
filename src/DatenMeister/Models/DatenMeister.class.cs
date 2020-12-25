@@ -339,6 +339,31 @@ namespace DatenMeister.Models
             public _ClearCollectionAction @ClearCollectionAction = new _ClearCollectionAction();
             public IElement @__ClearCollectionAction = new MofObjectShadow("dm:///_internal/types/internal#b70b736b-c9b0-4986-8d92-240fcabc95ae");
 
+            public class _TransformItemsAction
+            {
+                public static string @metaClass = "metaClass";
+                public IElement? @_metaClass = null;
+
+                public static string @runtimeClass = "runtimeClass";
+                public IElement? @_runtimeClass = null;
+
+                public static string @workspace = "workspace";
+                public IElement? @_workspace = null;
+
+                public static string @path = "path";
+                public IElement? @_path = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
+            public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#87db7ef0-f901-464f-83d5-fee6d43f58fd");
+
         }
 
         public _Actions Actions = new _Actions();

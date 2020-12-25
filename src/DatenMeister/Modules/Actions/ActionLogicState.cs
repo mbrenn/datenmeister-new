@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Modules.Actions.ActionHandler;
+using DatenMeister.Modules.Actions.Transformations;
 
 namespace DatenMeister.Modules.Actions
 {
@@ -39,6 +40,7 @@ namespace DatenMeister.Modules.Actions
             logicState.AddActionHandler(new ExportToXmiActionHandler());
             logicState.AddActionHandler(new ClearCollectionActionHandler());
             logicState.AddActionHandler(new ActionSetActionHandler());
+            logicState.AddActionHandler(new ItemTransformationActionHandler());
 
             return logicState;
         }

@@ -353,6 +353,9 @@ namespace DatenMeister.Models
                 public static string @path = "path";
                 public IElement? @_path = null;
 
+                public static string @excludeDescendents = "excludeDescendents";
+                public IElement? @_excludeDescendents = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -362,7 +365,7 @@ namespace DatenMeister.Models
             }
 
             public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
-            public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#87db7ef0-f901-464f-83d5-fee6d43f58fd");
+            public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
 
         }
 

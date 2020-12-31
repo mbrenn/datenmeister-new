@@ -148,7 +148,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             var result = ResolveInternal(uri, resolveType);
             if (result == null && traceFailing)
             {
-                Logger.Trace($"URI not resolved: {uri}");
+                Logger.Debug($"URI not resolved: {uri}");
             }
 
             if (result != null)

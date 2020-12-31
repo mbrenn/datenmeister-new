@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,14 @@ namespace DatenMeister.Excel.ProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
         public IScopeStorage? ScopeStorage { get; set; }
+
+        private class DefinitionColumn
+        {
+            public string Name { get; set; }
+            public IElement MetaClass { get; set; }
+            public string Property { get; set; }
+            
+        }
 
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
@@ -71,6 +80,21 @@ namespace DatenMeister.Excel.ProviderLoader
                 .Select(
                     definition => definition.getOrDefault<string>(_ExcelHierarchicalColumnDefinition.name))
                 .ToList();
+
+            var definitionsCache = new List<DefinitionColumn>();
+
+            foreach (var definition in definitions)
+            {
+                var name = definition.getOrDefault<string>(_ExcelHierarchicalColumnDefinition.name);
+                var metaClass = definition.getOrDefault<IElement>(_ExcelHierarchicalColumnDefinition.metaClass);
+                var property = definition.getOrDefault<string>(_ExcelHierarchicalColumnDefinition.property);
+                definitionsCache.Add(new DefinitionColumn
+                {
+                    Name = name,
+                    MetaClass = metaClass,
+                    Property = property
+                });
+            }
             
             for (var r = 0; r < countRows; r++)
             {
@@ -80,11 +104,12 @@ namespace DatenMeister.Excel.ProviderLoader
                 var idBuilder = new StringBuilder();
                 var firstDefinition = true;
 
-                foreach (var definition in definitions)
+                for (var d = 0; d < definitions.Count; d++)
                 {
-                    var name = definition.getOrDefault<string>(_ExcelHierarchicalColumnDefinition.name);
-                    var metaClass = definition.getOrDefault<IElement>(_ExcelHierarchicalColumnDefinition.metaClass);
-                    var property = definition.getOrDefault<string>(_ExcelHierarchicalColumnDefinition.property);
+                    var name = definitionsCache[d].Name;
+                    var metaClass = definitionsCache[d].MetaClass;
+                    var property = definitionsCache[d].Property;
+
                     var indexOfName = columnNames.IndexOf(name);
                     if (indexOfName == -1)
                     {
@@ -92,12 +117,12 @@ namespace DatenMeister.Excel.ProviderLoader
                     }
 
                     var cellContent = excelImporter.GetCellContent(r, indexOfName);
-                    
+
                     // Creates the idBuilder
                     if (!firstDefinition) idBuilder.Append(".");
                     idBuilder.Append(cellContent);
                     firstDefinition = false;
-                    
+
                     // Checks content
                     if (string.IsNullOrEmpty(cellContent))
                     {
@@ -106,7 +131,7 @@ namespace DatenMeister.Excel.ProviderLoader
                         break;
                     }
 
-                    var newCurrent = 
+                    var newCurrent =
                         current.WhenPropertyHasValue("name", cellContent).OfType<IElement>()
                             .FirstOrDefault();
                     if (newCurrent == null)
@@ -114,7 +139,7 @@ namespace DatenMeister.Excel.ProviderLoader
                         newCurrent = factory.create(metaClass);
                         newCurrent.set("name", cellContent);
                         current.add(newCurrent);
-                        
+
                         if (newCurrent is ICanSetId canSetId)
                         {
                             canSetId.Id = idBuilder.ToString();

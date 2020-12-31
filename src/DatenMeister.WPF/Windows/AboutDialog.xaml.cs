@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Windows
             environmentBuilder.AppendLine("64 Bit Process: " + (Environment.Is64BitProcess ? "Yes" : "No"));
             environmentBuilder.AppendLine(string.Empty);
 
-            foreach (var loadedAssembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var loadedAssembly in AppDomain.CurrentDomain.GetAssemblies().OrderBy(x=>x.GetName().Name))
             {
                 environmentBuilder.AppendLine($" - {loadedAssembly.GetName().Name}: {loadedAssembly.GetName().Version}");
             }

@@ -263,8 +263,6 @@ namespace DatenMeister.Integration
                         throw;
                     }
                 }
-
-                scope.Resolve<UserLogic>().Initialize();
             }
 
             // Finally loads the plugin

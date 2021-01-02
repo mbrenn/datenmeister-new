@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {
@@ -69,7 +70,10 @@ namespace DatenMeister.Runtime.ExtentStorage
                 }
 
                 var xmiProvider = new XmiProvider(document);
-                var extent = new MofUriExtent(xmiProvider);
+                var extent = new MofUriExtent(xmiProvider)
+                {
+                    Workspace = ExtentManager.WorkspaceLogic.GetDataWorkspace()
+                };
 
                 foreach (var element in extent.elements().OfType<IElement>())
                 {

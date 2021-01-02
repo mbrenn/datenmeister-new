@@ -161,7 +161,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         private object? ResolveInternal(string uri, ResolveType resolveType)
         {
-            if (resolveType != ResolveType.OnlyMetaClasses)
+            if (!resolveType.HasFlagFast(ResolveType.OnlyMetaClasses))
             {
                 var result = _navigator.element(uri);
                 if (result != null)
@@ -186,6 +186,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 // Now look into the explicit extents, if no specific constraint is given
                 foreach (var element in
                     MetaExtents
+                        .OfType<IUriExtent>()
                         .Select(metaExtent => metaExtent.element(uri))
                         .Where(element => element != null))
                 {
@@ -203,16 +204,13 @@ namespace DatenMeister.Core.EMOF.Implementation
                 && GiveMe.TryGetScope()?.WorkspaceLogic != null)
             {
                 var typesWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
-                if (typesWorkspace != null)
+                foreach (var result in
+                    typesWorkspace.extent
+                        .OfType<IUriExtent>()
+                        .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.NoWorkspace, false))
+                        .Where(result => result != null))
                 {
-                    foreach (var result in
-                        typesWorkspace.extent
-                            .OfType<IUriExtent>()
-                            .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.NoWorkspace, false))
-                            .Where(result => result != null))
-                    {
-                        return result;
-                    }
+                    return result;
                 }
             }
 

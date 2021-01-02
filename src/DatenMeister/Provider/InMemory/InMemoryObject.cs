@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.InMemory
 {
@@ -66,9 +67,16 @@ namespace DatenMeister.Provider.InMemory
         public static IElement CreateEmpty(IElement type)
         {
             var mofFactory = new MofFactory(InMemoryProvider.TemporaryExtent);
-            var element= mofFactory.create(type);
+            var element = mofFactory.create(type);
             if (element == null) throw new InvalidOperationException("factory.create returned null");
-            
+
+            // Adds the type as meta extent to the temporary provider, so it can be refound
+            var typeExtent = type.GetExtentOf();
+            if (typeExtent != null)
+            {
+                InMemoryProvider.TemporaryExtent.AddMetaExtent(typeExtent);
+            }
+
             return element;
         }
 

@@ -72,6 +72,8 @@ namespace DatenMeister.Integration
 
         public IDatenMeisterScope UseDatenMeister(ContainerBuilder kernel)
         {
+            MofExtent.GlobalSlimUmlEvaluation = true;
+            
             var scopeStorage = new ScopeStorage();
             kernel.RegisterInstance(scopeStorage).As<IScopeStorage>();
             
@@ -232,6 +234,9 @@ namespace DatenMeister.Integration
                 formsPlugin.GetInternalFormExtent(),
                 "DatenMeister");
 
+            // Deactivates the global slim evaluation since we now have all necessary types imported. 
+            MofExtent.GlobalSlimUmlEvaluation = false;
+            
             // Includes the extent for the helping extents
             ManagementProviderHelper.Initialize(dmScope);
             

@@ -117,7 +117,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement? getMetaClass()
+        IElement? IElement.getMetaClass()
+        {
+            return getMetaClass();
+        }
+
+        /// <inheritdoc />
+        public IElement? getMetaClass(bool traceFailing = true)
         {
             if (_cachedMetaClass != null)
             {
@@ -133,7 +139,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             var result =
                 (ReferencedExtent as IUriResolver)
-                ?.ResolveElement(uri, ResolveType.OnlyMetaClasses | ResolveType.AlsoTypeWorkspace)
+                ?.ResolveElement(uri, ResolveType.OnlyMetaClasses | ResolveType.AlsoTypeWorkspace, traceFailing)
                 ?? new MofObjectShadow(uri);
 
             _cachedMetaClass = result;

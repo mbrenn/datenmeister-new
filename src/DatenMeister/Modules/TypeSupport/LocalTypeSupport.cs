@@ -103,7 +103,7 @@ namespace DatenMeister.Modules.TypeSupport
             var extentTypes = new MofUriExtent(
                 new InMemoryProvider(),
                 WorkspaceNames.UriExtentInternalTypes);
-            extentTypes.SlimUmlEvaluation = true;
+            extentTypes.LocalSlimUmlEvaluation = true;
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
             extentTypes.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);

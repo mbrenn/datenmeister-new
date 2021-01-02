@@ -53,7 +53,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// and default value of properties. For certain extents, especially 'just getting loaded' extents,
         /// the slim evaluation might bring shorter execution times 
         /// </summary>
-        public bool SlimUmlEvaluation { get; set; }
+        public bool LocalSlimUmlEvaluation { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the flag whether the slim evaluation is activated globally
+        /// </summary>
+        public static bool GlobalSlimUmlEvaluation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the effective slim evaluation
+        /// </summary>
+        public bool SlimUmlEvaluation => LocalSlimUmlEvaluation || GlobalSlimUmlEvaluation;
 
         /// <summary>
         /// Gets or sets the Dynamic Function Manager which is used to retrieve the properties

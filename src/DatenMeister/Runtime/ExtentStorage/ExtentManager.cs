@@ -636,6 +636,9 @@ namespace DatenMeister.Runtime.ExtentStorage
                     }
                     else
                     {
+                        // Adds the type extents as meta extents
+                        (configuration as MofElement)?.ReferencedExtent.AddMetaExtents(WorkspaceLogic.GetTypesWorkspace().extent);
+                        
                         try
                         {
                             var extent = LoadExtent(configuration);

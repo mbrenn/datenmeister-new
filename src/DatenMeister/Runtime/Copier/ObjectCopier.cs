@@ -239,6 +239,12 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>Element being copied</returns>
         public static IObject CopyForTemporary(IObject value)
         {
+            if (value is MofObject mofObject)
+            {
+                InMemoryProvider.TemporaryExtent.AddMetaExtents((mofObject).ReferencedExtent.MetaExtents);
+            }
+            
+            // Adds the data workspaces
             return Copy(InMemoryObject.TemporaryFactory, value, CopyOptions.None);
         }
 

@@ -132,7 +132,6 @@ namespace DatenMeister.Core.EMOF.Implementation
                 {
                     _extent.Provider.AddElement(valueAsObject.ProviderObject, index);
                     valueAsObject.Extent = _extent;
-                    valueAsObject.ProviderObject.SetAsRoot();
 
                     _extent?.ChangeEventManager?.SendChangeEvent(valueAsObject);
                     UpdateContent();
@@ -183,8 +182,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             
             remove(index);
             set(index, value);
-            
-            (value as MofObject)?.ProviderObject.SetAsRoot();
 
             UpdateContent();
 

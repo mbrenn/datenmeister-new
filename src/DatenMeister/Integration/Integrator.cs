@@ -146,7 +146,6 @@ namespace DatenMeister.Integration
             var workspaceLoadingConfiguration = new WorkspaceLoaderConfig(PathWorkspaces);
             scopeStorage.Add(workspaceLoadingConfiguration);
             kernel.RegisterType<WorkspaceLoader>().As<WorkspaceLoader>();
-
             kernel.RegisterType<ExtentConfigurationLoader>().As<ExtentConfigurationLoader>();
 
             // Adds the view finder

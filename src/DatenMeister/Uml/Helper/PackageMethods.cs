@@ -68,8 +68,6 @@ namespace DatenMeister.Uml.Helper
             string packagePath,
             bool createIfNotFound)
         {
-            var extent = ((IHasExtent) rootElements).Extent ?? throw new InvalidOperationException("extent is not set");
-            
             var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
                 (rootElements as IHasExtent)?.GetExtentOf() ??
                 throw new InvalidOperationException("No Extent connected"));

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <item>
   <meta p2:id="fdebd604-a4f7-4c4f-8fd4-cdba0ee79bda" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///issuemeister.types" />
-  <package name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="350b6fa5-e449-4bbe-bb10-361288543fd0" p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package">
+  <package name="IssueMeister" xmlns:p1="http://www.omg.org/spec/XMI/20131001" p1:id="350b6fa5-e449-4bbe-bb10-361288543fd0" p1:type="dm:///_internal/model/uml#Package">
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="IssueMeister.Issue" name="Issue">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="id" isID="True" type-ref="dm:///_internal/model/primitivetypes#Integer" p1:id="99d466df-e6f2-4522-a626-b10eed4e3e5b" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="name" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="8ac22534-b3f7-4286-a527-4342255e3bd8" />

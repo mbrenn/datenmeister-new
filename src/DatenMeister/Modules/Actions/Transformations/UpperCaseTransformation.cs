@@ -1,4 +1,5 @@
-﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+﻿using System.Linq;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 
 namespace DatenMeister.Modules.Actions.Transformations
 {
@@ -11,7 +12,7 @@ namespace DatenMeister.Modules.Actions.Transformations
         {
             if (!(element is IObjectAllProperties asHasProperties)) return;
 
-            foreach (var property in asHasProperties.getPropertiesBeingSet())
+            foreach (var property in asHasProperties.getPropertiesBeingSet().ToList())
             {
                 if ((!element.isSet(property) ? null : element.get(property)) is string propertyAsString)
                 {

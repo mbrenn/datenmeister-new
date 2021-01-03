@@ -233,6 +233,7 @@ namespace DatenMeister.Runtime.ExtentStorage
             LoadedProviderInfo loadedProviderInfo;
             try
             {
+                Logger.Info("Loading Extent: " + configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));
                 loadedProviderInfo = extentLoader.LoadProvider(configuration, extentCreationFlags);
                 extentInformation.LoadingState =
                     _integrationSettings.IsReadOnly
@@ -635,6 +636,9 @@ namespace DatenMeister.Runtime.ExtentStorage
                     }
                     else
                     {
+                        // Adds the type extents as meta extents
+                        (configuration as MofElement)?.ReferencedExtent.AddMetaExtents(WorkspaceLogic.GetTypesWorkspace().extent);
+                        
                         try
                         {
                             var extent = LoadExtent(configuration);

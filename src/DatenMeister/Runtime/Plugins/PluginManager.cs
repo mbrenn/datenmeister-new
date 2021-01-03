@@ -53,6 +53,11 @@ namespace DatenMeister.Runtime.Plugins
         }
 
         /// <summary>
+        /// Stores the dictionary of instantiated plugins
+        /// </summary>
+        private Dictionary<Type, IDatenMeisterPlugin> _instantiatedPlugins = new();
+
+        /// <summary>
         /// Starts the plugins in all loaded assemblies by calling each class which has the implementation
         /// of the IDatenMeisterPlugin-Interface
         /// </summary>
@@ -65,8 +70,20 @@ namespace DatenMeister.Runtime.Plugins
             Logger.Debug("Starting Plugins" + loadingPosition);
             _pluginTypes ??= pluginLoader.GetPluginTypes();
             var pluginList = _pluginTypes
-                .Where(type => GetPluginEntry(type).HasFlag(loadingPosition))
-                .Select(type => (IDatenMeisterPlugin) kernel.Resolve(type))
+                .Where(type => GetPluginLoadingPosition(type).HasFlag(loadingPosition))
+                .Select(type =>
+                    {
+                        if (_instantiatedPlugins.TryGetValue(type, out var plugin))
+                        {
+                            return plugin;
+                        }
+                        else
+                        {
+                            var result = (IDatenMeisterPlugin) kernel.Resolve(type);
+                            _instantiatedPlugins[type] = result;
+                            return result;
+                        }
+                    })
                 .ToList();
             
             NoExceptionDuringLoading = true;
@@ -172,7 +189,7 @@ namespace DatenMeister.Runtime.Plugins
         private IEnumerable<Type> GetPluginDependencies(IDatenMeisterPlugin plugin) =>
             GetPluginDependencyAttribute(plugin).Select(x => x.DependentType);
 
-        private PluginLoadingPosition GetPluginEntry(Type plugin)
+        private PluginLoadingPosition GetPluginLoadingPosition(Type plugin)
         {
             var attribute = GetPluginLoadingAttribute(plugin);
             return attribute?.PluginLoadingPosition ?? PluginLoadingPosition.AfterLoadingOfExtents;

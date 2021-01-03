@@ -91,7 +91,17 @@ namespace DatenMeister.Runtime.Copier
             _sourceExtent = (element as IHasExtent)?.Extent ?? (element as MofElement)?.ReferencedExtent
                             ?? throw new InvalidOperationException("element is not IHasExtent and not MofElement");
 
-            var targetElement = _factory.create((element as IElement)?.getMetaClass());
+            IElement targetElement;
+            if (element is MofObject {IsSlimUmlEvaluation: true} asObject)
+            {
+                targetElement = _factory.create(
+                    asObject.ProviderObject.MetaclassUri == null ? null : new MofObjectShadow(asObject.ProviderObject.MetaclassUri));
+            }
+            else
+            {
+                targetElement = _factory.create((element as IElement)?.getMetaClass());
+            }
+
             CopyProperties(element, targetElement, copyOptions);
 
             return targetElement;
@@ -229,6 +239,12 @@ namespace DatenMeister.Runtime.Copier
         /// <returns>Element being copied</returns>
         public static IObject CopyForTemporary(IObject value)
         {
+            if (value is MofObject mofObject)
+            {
+                InMemoryProvider.TemporaryExtent.AddMetaExtents((mofObject).ReferencedExtent.MetaExtents);
+            }
+            
+            // Adds the data workspaces
             return Copy(InMemoryObject.TemporaryFactory, value, CopyOptions.None);
         }
 

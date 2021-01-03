@@ -21,6 +21,35 @@ namespace DatenMeister.Models
 
     public class _DatenMeister
     {
+        public class _UserManagement
+        {
+            public class _User
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @password = "password";
+                public IElement? @_password = null;
+
+            }
+
+            public _User @User = new _User();
+            public IElement @__User = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.User");
+
+            public class _UserManagementSettings
+            {
+                public static string @salt = "salt";
+                public IElement? @_salt = null;
+
+            }
+
+            public _UserManagementSettings @UserManagementSettings = new _UserManagementSettings();
+            public IElement @__UserManagementSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.UserManagementSettings");
+
+        }
+
+        public _UserManagement UserManagement = new _UserManagement();
+
         public class _CommonTypes
         {
             public class _Default
@@ -353,6 +382,9 @@ namespace DatenMeister.Models
                 public static string @path = "path";
                 public IElement? @_path = null;
 
+                public static string @excludeDescendents = "excludeDescendents";
+                public IElement? @_excludeDescendents = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 
@@ -362,7 +394,7 @@ namespace DatenMeister.Models
             }
 
             public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
-            public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#87db7ef0-f901-464f-83d5-fee6d43f58fd");
+            public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
 
         }
 
@@ -2327,35 +2359,6 @@ namespace DatenMeister.Models
         }
 
         public _DynamicRuntimeProvider DynamicRuntimeProvider = new _DynamicRuntimeProvider();
-
-        public class _UserManagement
-        {
-            public class _User
-            {
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-                public static string @password = "password";
-                public IElement? @_password = null;
-
-            }
-
-            public _User @User = new _User();
-            public IElement @__User = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.User");
-
-            public class _UserManagementSettings
-            {
-                public static string @salt = "salt";
-                public IElement? @_salt = null;
-
-            }
-
-            public _UserManagementSettings @UserManagementSettings = new _UserManagementSettings();
-            public IElement @__UserManagementSettings = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.UserManagement.UserManagementSettings");
-
-        }
-
-        public _UserManagement UserManagement = new _UserManagement();
 
         public static readonly _DatenMeister TheOne = new _DatenMeister();
 

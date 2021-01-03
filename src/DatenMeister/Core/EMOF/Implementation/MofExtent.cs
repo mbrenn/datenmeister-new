@@ -53,7 +53,17 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// and default value of properties. For certain extents, especially 'just getting loaded' extents,
         /// the slim evaluation might bring shorter execution times 
         /// </summary>
-        public bool SlimUmlEvaluation { get; set; }
+        public bool LocalSlimUmlEvaluation { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the flag whether the slim evaluation is activated globally
+        /// </summary>
+        public static bool GlobalSlimUmlEvaluation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the effective slim evaluation
+        /// </summary>
+        public bool SlimUmlEvaluation => LocalSlimUmlEvaluation || GlobalSlimUmlEvaluation;
 
         /// <summary>
         /// Gets or sets the Dynamic Function Manager which is used to retrieve the properties
@@ -81,7 +91,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Stores a list of other extents that shall also be considered as meta extents
         /// </summary>
-        private readonly List<IUriExtent> _metaExtents = new List<IUriExtent>();
+        private readonly List<IExtent> _metaExtents = new();
 
         /// <summary>
         /// Gets or sets the change event manager for the objects within
@@ -313,7 +323,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Adds an extent as a meta extent, so it will also be used to retrieve the element
         /// </summary>
         /// <param name="extent">Extent to be added</param>
-        public void AddMetaExtent(IUriExtent extent)
+        public void AddMetaExtent(IExtent extent)
         {
             if (extent == null)
             {
@@ -322,25 +332,46 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             lock (_metaExtents)
             {
-                if (_metaExtents.Any(x => x.contextURI() == extent.contextURI()))
+                if (extent is IUriExtent uriExtent)
                 {
-                    // Already in
+                    if (_metaExtents.OfType<IUriExtent>().Any(x => x.contextURI() == uriExtent.contextURI()))
+                    {
+                        // Already in
+                        return;
+                    }
+                }
+                
+                if ( _metaExtents.Any(x => x.Equals(extent)))
+                {
+                    // Already in 
                     return;
                 }
 
-                if (XmlMetaExtent != this && XmlMetaExtent != null)
+                if (XmlMetaExtent != this)
                 {
-                    XmlMetaExtent.AddMetaExtent(extent);
+                    XmlMetaExtent?.AddMetaExtent(extent);
                 }
 
                 _metaExtents.Add(extent);
+            }
+        }
+        
+        /// <summary>
+        /// Adds a number of extents as meta extent to the given extent
+        /// </summary>
+        /// <param name="extents"></param>
+        public void AddMetaExtents(IEnumerable<IExtent> extents)
+        {
+            foreach (var extent in extents.OfType<IUriExtent>())
+            {
+                AddMetaExtent(extent);
             }
         }
 
         /// <summary>
         /// Gets the meta extents
         /// </summary>
-        public IEnumerable<IUriExtent> MetaExtents
+        public IEnumerable<IExtent> MetaExtents
         {
             get
             {

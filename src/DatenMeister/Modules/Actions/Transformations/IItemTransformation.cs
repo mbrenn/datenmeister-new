@@ -2,6 +2,9 @@
 
 namespace DatenMeister.Modules.Actions.Transformations
 {
+    /// <summary>
+    /// This interface is implemented by the item transformation being callable via the corresponding action. 
+    /// </summary>
     public interface IItemTransformation
     {
         /// <summary>

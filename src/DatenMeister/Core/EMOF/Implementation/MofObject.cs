@@ -69,6 +69,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IProviderObject ProviderObject { get; }
 
         /// <summary>
+        /// Gets or sets the flag whether slim uml evaluation is activated
+        /// </summary>
+        public bool IsSlimUmlEvaluation =>
+            !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
+
+        /// <summary>
         /// Initializes a new instance of the MofObject class.
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
@@ -286,8 +292,9 @@ namespace DatenMeister.Core.EMOF.Implementation
                     SetContainer(ProviderObject, value, valueForSetting);
                 }
 
-                if (value is MofObject ofMofObject && valueForSetting is UriReference && 
-                    ofMofObject.ReferencedExtent is IUriExtent asUriExtent)
+                if (value is MofObject ofMofObject 
+                    && valueForSetting is UriReference 
+                    && ofMofObject.ReferencedExtent is IUriExtent asUriExtent)
                 {
                     _referencedExtent?.AddMetaExtent(asUriExtent);
                 }

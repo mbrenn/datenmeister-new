@@ -31,7 +31,7 @@ $project = "datenmeister-new.sln"
 $parameter = "/p:Configuration=Release"
 $switches = "-nologo"
 
-& $msBuild $switches -v:m $parameter $project
+& $msBuild $switches -v:m $parameter $project /restore
 
 cd ..
 

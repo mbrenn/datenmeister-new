@@ -543,10 +543,8 @@ namespace DatenMeister.Uml
             }
 
 
-            var umlExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlUml)), WorkspaceNames.UriExtentUml)
-            {
-                SlimUmlEvaluation = true
-            };
+            var umlExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlUml)), WorkspaceNames.UriExtentUml);
+            umlExtent.LocalSlimUmlEvaluation = true;
 
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001");
             umlExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/UML.xmi");
@@ -554,12 +552,12 @@ namespace DatenMeister.Uml
 
             var mofExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlMof)), WorkspaceNames.UriExtentMof);
             mofExtent.AddAlternativeUri("http://www.omg.org/spec/MOF/20131001");
-            mofExtent.SlimUmlEvaluation = true;
+            mofExtent.LocalSlimUmlEvaluation = true;
 
             var primitiveExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlPrimitiveTypes)), WorkspaceNames.UriExtentPrimitiveTypes);
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/PrimitiveTypes/20131001");
             primitiveExtent.AddAlternativeUri("http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi");
-            mofExtent.SlimUmlEvaluation = true;
+            primitiveExtent.LocalSlimUmlEvaluation = true;
 
             // Assigns the extents to the datalayer
             workspaceLogic.AddExtent(workspace, umlExtent);

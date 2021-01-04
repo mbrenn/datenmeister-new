@@ -396,6 +396,25 @@ namespace DatenMeister.Models
             public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
             public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
 
+            public class _SimpleReportAction
+            {
+                public static string @path = "path";
+                public IElement? @_path = null;
+
+                public static string @configuration = "configuration";
+                public IElement? @_configuration = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _SimpleReportAction @SimpleReportAction = new _SimpleReportAction();
+            public IElement @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179");
+
         }
 
         public _Actions Actions = new _Actions();

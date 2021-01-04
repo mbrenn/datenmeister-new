@@ -181,7 +181,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             (value as MofObject)?.ProviderObject.SetContainer(null);
             
             remove(index);
-            set(index, value);
+            add(index, value);
 
             UpdateContent();
 

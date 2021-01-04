@@ -44,7 +44,7 @@ namespace DatenMeister.Runtime
             var posQuestion = uri.IndexOf('?');
             var posHash = uri.IndexOf('#');
             var posExtentEnd = posQuestion == -1 ? posHash : posQuestion;
-            var extentUri = posExtentEnd == -1 ? string.Empty : uri.Substring(0, posExtentEnd);
+            var extentUri = posExtentEnd == -1 ? uri : uri.Substring(0, posExtentEnd);
 
             // Checks, if the extent itself is selected
             if (posQuestion == -1 && posHash == -1

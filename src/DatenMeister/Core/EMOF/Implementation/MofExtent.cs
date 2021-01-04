@@ -557,6 +557,14 @@ namespace DatenMeister.Core.EMOF.Implementation
                 return value;
             }
 
+            if (DotNetHelper.IsOfUriExtent(value))
+            {
+                if (!(value is IUriExtent ofUriExtent)) 
+                    throw new InvalidOperationException("Should not exist");
+                
+                return new UriReference(ofUriExtent.contextURI());
+            }
+
             if (DotNetHelper.IsOfMofObject(value))
             {
                 if (extent == null)

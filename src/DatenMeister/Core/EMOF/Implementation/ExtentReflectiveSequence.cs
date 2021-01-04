@@ -151,7 +151,6 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 _extent?.Provider.AddElement(convertedElement, index);
             }
-            
 
             UpdateContent();
             
@@ -179,9 +178,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             var result = get(index);
+            (value as MofObject)?.ProviderObject.SetContainer(null);
+            
             remove(index);
             set(index, value);
-            
+
             UpdateContent();
 
             return result;

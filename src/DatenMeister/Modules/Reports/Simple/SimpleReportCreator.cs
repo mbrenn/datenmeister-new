@@ -63,7 +63,7 @@ namespace DatenMeister.Modules.Reports.Simple
                 ? CreationMode.All
                 : CreationMode.All & ~CreationMode.AddMetaClass;
 
-            var rootElement = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.rootElement);
+            var rootElement = _reportConfiguration.getOrDefault<IObject>(_SimpleReportConfiguration.rootElement);
             if (rootElement == null)
                 throw new InvalidOperationException("rootElement is null");
 

@@ -114,6 +114,20 @@ namespace DatenMeister.Runtime
         public static bool IsOfMofElement(object? propertyValue) =>
             propertyValue is IElement;
 
+        /// <summary>
+        /// Evaluates whether the given value is of type IExtent 
+        /// </summary>
+        /// <param name="value">Value to be checked</param>
+        /// <returns>true, if the given value is an extent</returns>
+        public static bool IsOfExtent(object value) => value is IExtent;
+
+        /// <summary>
+        /// Evaluates whether the given value is of type IUriExtent
+        /// </summary>
+        /// <param name="value">Value to be checked</param>
+        /// <returns>true, if the given value is an extent</returns>
+        public static bool IsOfUriExtent(object value) => value is IUriExtent;
+
         public static bool IsOfNumber(object? property)
         {
             if (property == null) return false;

@@ -688,7 +688,7 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             return null;
         }
-
+        
         public void SetContainer(IProviderObject? value)
         {
             lock (_xmiProvider.LockObject)

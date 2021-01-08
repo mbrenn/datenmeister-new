@@ -404,6 +404,9 @@ namespace DatenMeister.Models
                 public static string @configuration = "configuration";
                 public IElement? @_configuration = null;
 
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

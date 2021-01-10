@@ -41,6 +41,7 @@ namespace DatenMeister.Modules.Actions
             logicState.AddActionHandler(new ClearCollectionActionHandler());
             logicState.AddActionHandler(new ActionSetActionHandler());
             logicState.AddActionHandler(new ItemTransformationActionHandler());
+            logicState.AddActionHandler(new SimpleReportActionHandler());
 
             return logicState;
         }

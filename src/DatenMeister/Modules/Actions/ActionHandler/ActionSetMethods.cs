@@ -10,6 +10,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
     {
         private static ILogger logger = new ClassLogger(typeof(ActionSetMethods));
         
+        
         /// <summary>
         /// Returns the item identified by path and workspace
         /// </summary>
@@ -17,7 +18,23 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         /// <param name="workspaceId">Workspace to be used</param>
         /// <param name="path">Path to be used</param>
         /// <returns>Found Item or null</returns>
-        public IElement GetItemByWorkspaceAndPath(
+        public static IObject? TryGetItemByWorkspaceAndPath(
+            ActionLogic actionLogic, string workspaceId, string path)
+        {
+            var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);
+            var sourceElement = workspace?.Resolve(path, ResolveType.NoMetaWorkspaces);
+            
+            return sourceElement is not IObject asElement ? null : asElement;
+        }
+        
+        /// <summary>
+        /// Returns the item identified by path and workspace
+        /// </summary>
+        /// <param name="actionLogic">Action Logic to be used</param>
+        /// <param name="workspaceId">Workspace to be used</param>
+        /// <param name="path">Path to be used</param>
+        /// <returns>Found Item or null</returns>
+        public static IElement GetItemByWorkspaceAndPath(
             ActionLogic actionLogic, string workspaceId, string path)
         {
             var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);
@@ -48,7 +65,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         /// <param name="workspaceId">Workspace to be used</param>
         /// <param name="path">Path to be used</param>
         /// <returns>Found Item or null</returns>
-        public IReflectiveCollection GetCollectionByWorkspaceAndPath(
+        public static IReflectiveCollection GetCollectionByWorkspaceAndPath(
             ActionLogic actionLogic, string workspaceId, string path)
         {
             var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);

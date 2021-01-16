@@ -13,6 +13,6 @@ namespace DatenMeister.Provider.DynamicRuntime
         /// </summary>
         /// <param name="configuration">Configuration element to be used to define the properties</param>
         /// <returns>Enumeration of provider objects</returns>
-        IEnumerable<IProviderObject> Get(DynamicRuntimeProviderWrapper wrapper, IElement configuration);
+        IEnumerable<IProviderObject> Get(DynamicRuntimeProviderWrapper wrapper, IElement? configuration);
     }
 }

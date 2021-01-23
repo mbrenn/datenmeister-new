@@ -26,6 +26,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Modules\HtmlExporter\Css\default_report.css" />
     <EmbeddedResource Include="XmiFiles\Types\DatenMeister.xmi" />
+    <None Remove="Modules\PublicSettings\publicSettings.example" />
+    <EmbeddedResource Include="Modules\PublicSettings\publicSettings.example" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XmiFiles\MOF.xmi" />
@@ -43,6 +45,7 @@
   <ItemGroup>
     <Folder Include="Models\EMOF" />
     <Folder Include="Models\Example" />
+    <Folder Include="Modules\Admin" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />

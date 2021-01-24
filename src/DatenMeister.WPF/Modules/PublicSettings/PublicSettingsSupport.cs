@@ -8,6 +8,7 @@ using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
+using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.PublicSettings
 {
@@ -34,8 +35,8 @@ namespace DatenMeister.WPF.Modules.PublicSettings
             if (applicationWindow != null)
             {
                 yield return new ApplicationMenuButtonDefinition(
-                    "Create Example Public Settings",
-                    () =>
+                "Create Example Public Settings",
+                () =>
                     {
                         var creator = new PublicSettingsCreator();
                         if (creator.DoesFileExist())
@@ -49,7 +50,23 @@ namespace DatenMeister.WPF.Modules.PublicSettings
 
                         DotNetHelper.OpenExplorer(PublicSettingsCreator.GetPublicSettingsPath());
                     },
-                    null, 
+                    null,
+                    "Admin");
+
+                yield return new ApplicationMenuButtonDefinition(
+                    "Open Public Settings",
+                    () =>
+                    {
+                        if (File.Exists(PublicSettingsCreator.GetPublicSettingsPath()))
+                        {
+                            DotNetHelper.OpenExplorer(PublicSettingsCreator.GetPublicSettingsPath());
+                        }
+                        else
+                        {
+                            MessageBox.Show("No Public Settings were loaded.");
+                        }
+                    },
+                    "",
                     "Admin");
             }
         }

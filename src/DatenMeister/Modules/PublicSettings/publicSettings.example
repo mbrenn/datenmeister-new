@@ -1,9 +1,8 @@
 ﻿ <xmi>
-    <!--
      <settings
  		windowTitle = "Der DatenMeister - Example" 
          databasePath="%LOCALAPPDATA%/DatenMester Example">
          <environnemtVariable key="import_path" value="c:\import-folder" />
      </settings>
-     -->
  </xmi>
+ 

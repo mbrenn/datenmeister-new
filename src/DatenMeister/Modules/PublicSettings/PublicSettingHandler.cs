@@ -82,6 +82,14 @@ namespace DatenMeister.Modules.PublicSettings
                         Environment.SetEnvironmentVariable(variable.key!, variable.value);
                         Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
                     }
+                    
+                    // Now set the default paths, if they are not set
+                    SetEnvironmentVariableToDesktopFolderIfNotExisting(
+                        "dm_ImportPath", "import");
+                    SetEnvironmentVariableToDesktopFolderIfNotExisting(
+                        "dm_ReportPath", "report");
+                    SetEnvironmentVariableToDesktopFolderIfNotExisting(
+                        "dm_ExportPath", "export");
 
                     return settings;
                 }
@@ -93,6 +101,19 @@ namespace DatenMeister.Modules.PublicSettings
 
             Logger.Info($"No Xmi-File for external configuration found in: {path}");
             return null;
+
+            void SetEnvironmentVariableToDesktopFolderIfNotExisting(string dmImportPath, string folderName)
+            {
+                var importPath = Environment.GetEnvironmentVariable(dmImportPath);
+                if (string.IsNullOrEmpty(importPath))
+                {
+                    Environment.SetEnvironmentVariable(
+                        dmImportPath,
+                        Path.Join(
+                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                            folderName));
+                }
+            }
         }
     }
 }

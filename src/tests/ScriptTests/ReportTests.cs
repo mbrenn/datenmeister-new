@@ -61,7 +61,7 @@ namespace ScriptTests
                         Path.Combine(GetScriptFolder(), "plz.csv"));
                 }
 
-                configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, testExtent);
+                configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, testExtent!.contextURI());
 
                 var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
                 Directory.CreateDirectory(targetPath);

@@ -270,7 +270,13 @@ namespace DatenMeister.WPF.Modules.ReportManager
                     .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showDescendents, true)
                     .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showRootElement, true)
                     .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showFullName, true)
-                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, rootElement);
+                    .SetProperty(
+                        _DatenMeister._Reports._SimpleReportConfiguration.rootElement,
+                        rootElement.GetUri() ??
+                        throw new InvalidOperationException("Uri of element could not be retrieved"))
+                    .SetProperty(
+                        _DatenMeister._Reports._SimpleReportConfiguration.workspaceId,
+                        rootElement.GetUriExtentOf()?.GetWorkspace()?.id ?? WorkspaceNames.WorkspaceData);
             
             string tmpPath;
             using (var streamWriter = GetRandomWriter(out tmpPath))

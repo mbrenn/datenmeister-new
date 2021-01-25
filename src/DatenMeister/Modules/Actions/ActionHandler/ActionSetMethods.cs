@@ -9,24 +9,8 @@ namespace DatenMeister.Modules.Actions.ActionHandler
     public class ActionSetMethods
     {
         private static ILogger logger = new ClassLogger(typeof(ActionSetMethods));
-        
-        
-        /// <summary>
-        /// Returns the item identified by path and workspace
-        /// </summary>
-        /// <param name="actionLogic">Action Logic to be used</param>
-        /// <param name="workspaceId">Workspace to be used</param>
-        /// <param name="path">Path to be used</param>
-        /// <returns>Found Item or null</returns>
-        public static IObject? TryGetItemByWorkspaceAndPath(
-            ActionLogic actionLogic, string workspaceId, string path)
-        {
-            var workspace = actionLogic.WorkspaceLogic.GetWorkspace(workspaceId);
-            var sourceElement = workspace?.Resolve(path, ResolveType.NoMetaWorkspaces);
-            
-            return sourceElement is not IObject asElement ? null : asElement;
-        }
-        
+
+
         /// <summary>
         /// Returns the item identified by path and workspace
         /// </summary>

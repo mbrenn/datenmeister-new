@@ -22,8 +22,9 @@ namespace DatenMeister.Modules.Actions.ActionHandler
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
-            var workspace = action.getOrDefault<string>(_DatenMeister._Actions._SimpleReportAction.workspaceId)
-                            ?? WorkspaceNames.WorkspaceData;
+            var workspace =
+                action.getOrDefault<string>(_DatenMeister._Actions._SimpleReportAction.workspaceId)
+                ?? WorkspaceNames.WorkspaceData;
             var path = action.getOrDefault<string>(_DatenMeister._Actions._SimpleReportAction.path);
             var filePath = action.getOrDefault<string>(_DatenMeister._Actions._SimpleReportAction.filePath);
             var configuration = action.getOrDefault<IElement>(_DatenMeister._Actions._SimpleReportAction.configuration);
@@ -51,8 +52,8 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             IObject? item = null;
             if (!string.IsNullOrEmpty(path))
             {
-                item = ActionSetMethods.TryGetItemByWorkspaceAndPath(
-                    actionLogic,
+                item = ExtentHelper.TryGetItemByWorkspaceAndPath(
+                    actionLogic.WorkspaceLogic,
                     workspace,
                     path);
             }
@@ -62,20 +63,24 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 // Set default item
                 configuration.SetProperty(
                     _DatenMeister._Reports._SimpleReportConfiguration.rootElement,
-                    item);
-            }
-            
-            // Some helper
-            if (configuration.getOrDefault<IObject>(
-                _DatenMeister._Reports._SimpleReportConfiguration.rootElement) == null)
-            {
-                throw new InvalidOperationException("No rootElement is set");
+                    path);
+                configuration.SetProperty(
+                    _DatenMeister._Reports._SimpleReportConfiguration.workspaceId,
+                    workspace);
             }
 
             var simpleReport = new SimpleReportCreator(
                 actionLogic.WorkspaceLogic,
                 configuration);
 
+            // Checks, if directory needs to be created
+            var directory = Path.GetDirectoryName(filePath);
+            if (directory != null && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            
+            // Writes the file
             using var writer = new StreamWriter(filePath);
             simpleReport.CreateReport(writer);
         }

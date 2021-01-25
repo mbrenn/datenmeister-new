@@ -743,13 +743,25 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.Simple.SimpleReportConfiguration" name="SimpleReportConfiguration">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="acc59dae-1597-4c1b-bb26-df392719d4b6" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="0cc895c6-3e43-4823-8c28-3cfbba78480f" name="showDescendents" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a151f306-0733-4eb2-bc67-972d6225d2ea" name="rootElement" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="a151f306-0733-4eb2-bc67-972d6225d2ea" name="rootElement" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="29f81646-01ef-4bc3-8e01-f84591c3d1ca" name="showRootElement" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1597d8e4-dd8b-4b9a-a41f-af68d8d0fafb" name="showMetaClasses" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3a96fd3c-5f38-4783-8465-611e77cd9e1c" name="showFullName" type-ref="dm:///_internal/model/primitivetypes#Boolean" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="cde7ab37-eeb1-4c01-84fa-abbfc3ad62c7" name="form" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f48cf6aa-77a6-466e-bd23-40bc02e9a6ba" name="descendentMode" type-ref="#DatenMeister.Models.Reports.Simple.DescendentMode" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="e027e9e1-1b86-4071-a972-dfa369e6d077" name="typeMode" type-ref="#DatenMeister.Models.Reports.Simple.ReportTableForTypeMode" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="1f01f853-aa5f-424a-991b-bca2064492c5" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String">
+        <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />
+        <isComposite href="dm:///_internal/model/uml#Property-isComposite-_defaultValue" />
+        <isDerived href="dm:///_internal/model/uml#Property-isDerived-_defaultValue" />
+        <isDerivedUnion href="dm:///_internal/model/uml#Property-isDerivedUnion-_defaultValue" />
+        <isID href="dm:///_internal/model/uml#Property-isID-_defaultValue" />
+        <isReadOnly href="dm:///_internal/model/uml#StructuralFeature-isReadOnly-_defaultValue" />
+        <isOrdered href="dm:///_internal/model/uml#MultiplicityElement-isOrdered-_defaultValue" />
+        <isUnique href="dm:///_internal/model/uml#MultiplicityElement-isUnique-_defaultValue" />
+        <isStatic href="dm:///_internal/model/uml#Feature-isStatic-_defaultValue" />
+        <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
+      </ownedAttribute>
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p1:id="958d7bee-ae1f-4f0c-84e1-dcd2b1ef3a0a" name="Elements">
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportElement" name="ReportElement">

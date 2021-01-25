@@ -742,6 +742,9 @@ namespace DatenMeister.Models
                 public static string @typeMode = "typeMode";
                 public IElement? @_typeMode = null;
 
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
             }
 
             public _SimpleReportConfiguration @SimpleReportConfiguration = new _SimpleReportConfiguration();

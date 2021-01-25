@@ -11,7 +11,7 @@ namespace DatenMeister.Provider.EnvironmentalVariableProvider
     // ReSharper disable once UnusedType.Global
     public class EnvironmentalVariablePlugin : IDatenMeisterPlugin
     {
-        public const string DefaultExtentUri = "dm:///_internal/environmentalvariables";
+        public const string DefaultExtentUri = "dm:///_internal/environmentalvariables/";
         
         private readonly IWorkspaceLogic _workspaceLogic;
 

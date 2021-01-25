@@ -171,14 +171,14 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
                 new HtmlTableCell("Field") {IsHeading = true},
                 new HtmlTableCell("Value") {IsHeading = true});
 
-            CreateRowForFields(item, detailForm, table);
+            CreateDetailRowsForFields(item, detailForm, table);
 
             var tabs = detailForm.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.tab);
             if (tabs != null)
             {
                 foreach (var tab in tabs.OfType<IElement>())
                 {
-                    CreateRowForFields(item, tab, table);
+                    CreateDetailRowsForFields(item, tab, table);
                 }
             }
 
@@ -192,9 +192,9 @@ namespace DatenMeister.Modules.HtmlExporter.Formatter
         /// <param name="item">Item to be shown</param>
         /// <param name="form">Form containing the field</param>
         /// <param name="table">The Html Table in which the fields will be include</param>
-        private static void CreateRowForFields(IObject item, IObject form, HtmlTable table)
+        private static void CreateDetailRowsForFields(IObject item, IObject form, HtmlTable table)
         {
-            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
             if (fields == null)
             {
                 throw new InvalidOperationException("Fields are null...");

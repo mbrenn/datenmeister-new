@@ -219,6 +219,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 foreach (var workspace in GiveMe.Scope.WorkspaceLogic.Workspaces)
                 {
+                    if (workspace.IsDynamicWorkspace) continue;
                     if (alreadyVisited.Contains(workspace))
                     {
                         continue;

@@ -26,7 +26,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var configuration = factory.create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
             var tempFileName = Path.GetTempFileName();
             
-            configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, extent);
+            configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, extent.contextURI());
             action.set(_DatenMeister._Actions._SimpleReportAction.configuration, configuration);
             action.set(
                 _DatenMeister._Actions._SimpleReportAction.filePath,

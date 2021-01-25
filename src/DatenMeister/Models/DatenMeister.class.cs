@@ -138,7 +138,7 @@ namespace DatenMeister.Models
                 }
 
                 public _EnvironmentalVariable @EnvironmentalVariable = new _EnvironmentalVariable();
-                public IElement @__EnvironmentalVariable = new MofObjectShadow("dm:///_internal/types/internal#65cf561d-3651-4137-b13b-3d4156f2fc46");
+                public IElement @__EnvironmentalVariable = new MofObjectShadow("dm:///_internal/types/internal#OSIntegration.EnvironmentalVariable");
 
             }
 

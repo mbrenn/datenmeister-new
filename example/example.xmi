@@ -2,5 +2,9 @@
 <xmi>
   <meta p2:id="0949c683-a13b-4b63-ba16-9bc96f2b8ac8" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///dm_example" />
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="478f7bc3-133a-4ae1-b952-74ef9cdfff36" name="Example Package" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
-  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e726b0aa-e902-4e25-be72-9c3cddd8700c" name="Action Examples" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e726b0aa-e902-4e25-be72-9c3cddd8700c" name="Action Examples" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
+    <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="7830bb57-9fe3-45fc-932c-0c861852abbe" name="Export SimpleReport">
+      <packagedElement p2:type="dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179" p2:id="c88bbebe-1398-4bdb-a0da-6a0cdd683ef9" name="Export EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" filePath="%dm_ExportPath%/environment.html" workspaceId="Management" />
+    </packagedElement>
+  </item>
 </xmi>

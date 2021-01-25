@@ -127,6 +127,19 @@ namespace DatenMeister.Models
                 public _CommandLineApplication @CommandLineApplication = new _CommandLineApplication();
                 public IElement @__CommandLineApplication = new MofObjectShadow("dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication");
 
+                public class _EnvironmentalVariable
+                {
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                    public static string @value = "value";
+                    public IElement? @_value = null;
+
+                }
+
+                public _EnvironmentalVariable @EnvironmentalVariable = new _EnvironmentalVariable();
+                public IElement @__EnvironmentalVariable = new MofObjectShadow("dm:///_internal/types/internal#65cf561d-3651-4137-b13b-3d4156f2fc46");
+
             }
 
             public _OSIntegration OSIntegration = new _OSIntegration();
@@ -1287,6 +1300,25 @@ namespace DatenMeister.Models
 
             public _ExcelColumn @ExcelColumn = new _ExcelColumn();
             public IElement @__ExcelColumn = new MofObjectShadow("dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a");
+
+            public class _EnvironmentalVariableLoaderConfig
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
+            }
+
+            public _EnvironmentalVariableLoaderConfig @EnvironmentalVariableLoaderConfig = new _EnvironmentalVariableLoaderConfig();
+            public IElement @__EnvironmentalVariableLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3");
 
         }
 

@@ -114,7 +114,7 @@ namespace DatenMeister.Modules.PublicSettings
                 {
                     Environment.SetEnvironmentVariable(
                         dmImportPath,
-                        Path.Join(
+                        Path.Combine(
                             Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                             folderName));
                 }

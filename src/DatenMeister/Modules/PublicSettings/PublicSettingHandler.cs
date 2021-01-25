@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -73,7 +74,7 @@ namespace DatenMeister.Modules.PublicSettings
 
                     if (!string.IsNullOrEmpty(settings.databasePath))
                     {
-                        Environment.SetEnvironmentVariable("dm_databasepath", settings.databasePath);
+                        Environment.SetEnvironmentVariable("dm_DatabasePath", settings.databasePath);
                     }
 
                     foreach (var variable in settings.environmentVariable
@@ -90,6 +91,10 @@ namespace DatenMeister.Modules.PublicSettings
                         "dm_ReportPath", "report");
                     SetEnvironmentVariableToDesktopFolderIfNotExisting(
                         "dm_ExportPath", "export");
+                    
+                    Environment.SetEnvironmentVariable(
+                        "dm_ApplicationPath",
+                        Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location));
 
                     return settings;
                 }

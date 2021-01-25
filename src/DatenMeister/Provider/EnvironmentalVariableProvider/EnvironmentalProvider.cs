@@ -16,7 +16,6 @@ namespace DatenMeister.Provider.EnvironmentalVariableProvider
     /// </summary>
     public class EnvironmentalProvider : IProviderLoader
     {
-
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
         public IScopeStorage? ScopeStorage { get; set; }
         

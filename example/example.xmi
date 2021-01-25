@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xmi>
+  <meta p2:id="0949c683-a13b-4b63-ba16-9bc96f2b8ac8" p2:type="dm:///_internal/types/internal#DatenMeister.Models.Runtime.ExtentProperties" xmlns:p2="http://www.omg.org/spec/XMI/20131001" xmlns="http://datenmeister.net/" __uri="dm:///dm_example" />
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="478f7bc3-133a-4ae1-b952-74ef9cdfff36" name="Example Package" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e726b0aa-e902-4e25-be72-9c3cddd8700c" name="Action Examples" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
+</xmi>

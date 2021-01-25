@@ -63,7 +63,7 @@
           <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
         </ownedAttribute>
       </packagedElement>
-      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="65cf561d-3651-4137-b13b-3d4156f2fc46" name="EnvironmentalVariable">
+      <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="OSIntegration.EnvironmentalVariable" name="EnvironmentalVariable">
         <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
         <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
         <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />

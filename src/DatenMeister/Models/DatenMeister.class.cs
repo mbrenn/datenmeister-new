@@ -2014,6 +2014,9 @@ namespace DatenMeister.Models
                 public static string @autoGenerateFields = "autoGenerateFields";
                 public IElement? @_autoGenerateFields = null;
 
+                public static string @duplicatePerType = "duplicatePerType";
+                public IElement? @_duplicatePerType = null;
+
                 public static string @name = "name";
                 public IElement? @_name = null;
 

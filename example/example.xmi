@@ -5,6 +5,8 @@
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e726b0aa-e902-4e25-be72-9c3cddd8700c" name="Action Examples" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="7830bb57-9fe3-45fc-932c-0c861852abbe" name="Export SimpleReport">
       <packagedElement p2:type="dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179" p2:id="c88bbebe-1398-4bdb-a0da-6a0cdd683ef9" name="Export EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" filePath="%dm_ExportPath%/environment.html" workspaceId="Management" />
+      <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration" p2:id="28e21930-3de4-4e35-8269-fc27c77596fe" name="SimpleReport EnvironmentalVariables" typeMode="AllTypes" rootElement="dm:///_internal/environmentalvariables/" workspaceId="Management" />
+      <packagedElement p2:type="dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179" p2:id="373e1863-c0aa-4eee-af40-52c24fdc2281" name="Export SimpleReport EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" configuration-ref="dm:///dm_example#28e21930-3de4-4e35-8269-fc27c77596fe" workspaceId="Management" filePath="%dm_ExportPath%/report_environmental.html" />
     </packagedElement>
   </item>
 </xmi>

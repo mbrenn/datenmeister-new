@@ -434,6 +434,22 @@ namespace DatenMeister.Models
             public _SimpleReportAction @SimpleReportAction = new _SimpleReportAction();
             public IElement @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179");
 
+            public class _DocumentOpenAction
+            {
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _DocumentOpenAction @DocumentOpenAction = new _DocumentOpenAction();
+            public IElement @__DocumentOpenAction = new MofObjectShadow("dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74");
+
         }
 
         public _Actions Actions = new _Actions();

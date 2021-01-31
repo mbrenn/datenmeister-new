@@ -48,7 +48,6 @@ namespace DatenMeister.Modules.Forms
             }
             
             return elements;
-
         }
 
         /// <summary>

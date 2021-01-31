@@ -1,0 +1,72 @@
+﻿using System.Linq;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Models;
+using DatenMeister.Runtime;
+using DatenMeister.Runtime.Copier;
+using DatenMeister.Runtime.Objects;
+
+namespace DatenMeister.Modules.Forms
+{
+    public static class FormDynamicModifier
+    {
+        /// <summary>
+        /// Modifies the form dependent on the selected item and the form definition
+        /// </summary>
+        /// <param name="form">The selected form</param>
+        /// <param name="selectedObject">The selected object to be used</param>
+        public static void ModifyFormDependingOnObject(IObject? form, IObject selectedObject)
+        {
+            if (form == null) return;
+            
+            var tabs = form.getOrDefault<IReflectiveSequence>(_DatenMeister._Forms._ExtentForm.tab);
+            if (tabs == null)
+            {
+                // No tabs, nothing to do
+                return;
+            }
+
+            IReflectiveCollection? collection = null;
+            
+            // Now go through the tabs of the form
+            var n = 0;
+            foreach (var tab in tabs.OfType<IElement>().ToList())
+            {
+                // Confirms the type of the listforms
+                if (tab.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                {
+                    var isDynamicList = tab.getOrDefault<bool>(_DatenMeister._Forms._ListForm.duplicatePerType);
+                    
+                    // Only when it is a dynamic list
+                    if (isDynamicList)
+                    {
+                        collection ??= ListFormCollectionCreator.GetCollection(form, selectedObject);
+
+                        // Now duplicate the tab
+                        var groups = ByMetaClassGrouper.Group(collection);
+                        foreach (var group in groups)
+                        {
+                            var copiesTab = ObjectCopier.Copy(new MofFactory(tab), tab);
+                            if (group.MetaClass == null)
+                            {
+                                copiesTab.set(_DatenMeister._Forms._ListForm.noItemsWithMetaClass, true);
+                            }
+                            else
+                            {
+                                copiesTab.set(_DatenMeister._Forms._ListForm.metaClass, group.MetaClass);
+                            }
+
+                            tabs.add(n + 1, copiesTab);
+                        }
+
+                        tabs.remove(n);
+                    }
+                }
+
+                n++;
+            }
+                    
+        }
+    }
+}

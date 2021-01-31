@@ -107,7 +107,7 @@ namespace DatenMeister.WPF.Forms.Lists
         }
 
         /// <summary>
-        ///     Creates the tab for the given items and the metaclass that shell be shown
+        /// Creates the tab for the given items and the metaclass that shell be shown
         /// </summary>
         private void CreateFormForItems()
         {

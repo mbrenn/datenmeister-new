@@ -367,18 +367,9 @@ namespace DatenMeister.WPF.Forms.Base
             IReflectiveCollection? container = null)
         {
             EffectiveForm = formDefinition.Element;
-
-            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
-            if (tabs == null)
-            {
-                // No tabs, nothing to do
-                return;
-            }
             
-            // Performs the form modifications if necessary
-
             // Creates the tabs to be used for showing  
-            CreateTabs(value, formDefinition, container, tabs);
+            CreateTabs(value, formDefinition, container);
 
             ViewExtensions = formDefinition.ViewExtensions;
             
@@ -395,9 +386,19 @@ namespace DatenMeister.WPF.Forms.Base
         private void CreateTabs(
             IObject value, 
             FormDefinition formDefinition, 
-            IReflectiveCollection? container,
-            IReflectiveCollection tabs)
+            IReflectiveCollection? container)
         {
+            // Creates the dynamic tabs depending on the content
+            FormDynamicModifier.ModifyFormDependingOnObject(formDefinition.Element, value);
+            
+            // Now gets the tabs
+            var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+            if (tabs == null)
+            {
+                // No tabs, nothing to do
+                return;
+            }
+            
             // Creates the tabs themselves
             foreach (var tab in tabs.OfType<IElement>())
             {

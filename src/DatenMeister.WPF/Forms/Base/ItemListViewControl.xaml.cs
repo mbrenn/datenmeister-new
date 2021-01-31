@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -18,7 +17,6 @@ using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -236,14 +234,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         private IReflectiveCollection GetFilteredAndSortedItems(IReflectiveCollection items, IReflectiveCollection fields)
         {
-            if (_effectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.includeDescendents))
-            {
-                items = items.GetAllDescendantsIncludingThemselves();
-            }
-
-            // Extent shall be shown
-            items = FilterByMetaClass(items).WhenElementIsObject();
-
+            if (_effectiveForm == null) return items;
+            items = FormElementFilter.FilterElements(_effectiveForm, items);
+            
             // Get the items and honor searching
             if (!string.IsNullOrEmpty(_searchText))
             {
@@ -280,54 +273,7 @@ namespace DatenMeister.WPF.Forms.Base
                 items = dataviewHandler.GetElementsForViewNode(viewNode);
             }
 
-            // Now performs the sorting
-            var sortingOrder =
-                _effectiveForm.getOrDefault<IReflectiveCollection>(
-                    _DatenMeister._Forms._ListForm.sortingOrder);
-            if (sortingOrder != null)
-            {
-                var sortingColumnNames =
-                    sortingOrder
-                        .OfType<IElement>()
-                        .Select(x =>
-                            (x.getOrDefault<bool>(_DatenMeister._Forms._SortingOrder.isDescending)
-                                ? "!"
-                                : "") +
-                            x.getOrDefault<string>(_DatenMeister._Forms._SortingOrder.name))
-                        .Where(x => !string.IsNullOrEmpty(x) && x != "!");
-                items = items.OrderElementsBy(sortingColumnNames);
-            }
-
             return items;
-        }
-
-        /// <summary>
-        /// Gets the collection and return the collection by the filtered metaclasses. If the metaclass
-        /// is not defined, then null is returned
-        /// </summary>
-        /// <param name="collection">Collection to be filtered</param>
-        /// <returns>The filtered metaclasses</returns>
-        private IReflectiveCollection FilterByMetaClass(IReflectiveCollection collection)
-        {
-            if (EffectiveForm == null) throw new InvalidOperationException("EffectiveForm == null");
-            
-            var noItemsWithMetaClass =
-                EffectiveForm.getOrDefault<bool>(_DatenMeister._Forms._ListForm.noItemsWithMetaClass);
-
-            // If form  defines constraints upon metaclass, then the filtering will occur here
-            var metaClass = EffectiveForm.getOrDefault<IElement?>(_DatenMeister._Forms._ListForm.metaClass);
-
-            if (metaClass != null)
-            {
-                return collection.WhenMetaClassIs(metaClass);
-            }
-
-            if (noItemsWithMetaClass)
-            {
-                return collection.WhenMetaClassIs(null);
-            }
-
-            return collection;
         }
 
         /// <summary>
@@ -476,16 +422,6 @@ namespace DatenMeister.WPF.Forms.Base
         {
         }
 
-        /// <summary>
-        ///     Called, if the user performs a double click on the given item
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
         private void RowButton_OnInitialized(object sender, RoutedEventArgs e)
         {
 
@@ -495,11 +431,6 @@ namespace DatenMeister.WPF.Forms.Base
         {
             _searchText = SearchField.Text;
             UpdateForm();
-        }
-
-        private void CommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            CopyToClipboardCommand.Execute(this, CopyType.Default);
         }
 
         /// <summary>

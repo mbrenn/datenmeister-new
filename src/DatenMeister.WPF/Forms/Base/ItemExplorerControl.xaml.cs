@@ -389,7 +389,7 @@ namespace DatenMeister.WPF.Forms.Base
             IReflectiveCollection? container)
         {
             // Creates the dynamic tabs depending on the content
-            FormDynamicModifier.ModifyFormDependingOnObject(formDefinition.Element, value);
+            FormDynamicModifier.ModifyFormDependingOnObject(EffectiveForm, value);
             
             // Now gets the tabs
             var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);

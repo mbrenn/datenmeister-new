@@ -6,6 +6,7 @@ using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Copier;
 using DatenMeister.Runtime.Objects;
+using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms
 {
@@ -41,20 +42,26 @@ namespace DatenMeister.Modules.Forms
                     // Only when it is a dynamic list
                     if (isDynamicList)
                     {
-                        collection ??= ListFormCollectionCreator.GetCollection(form, selectedObject);
+                        collection ??= ListFormCollectionCreator.GetCollection(tab, selectedObject);
 
                         // Now duplicate the tab
                         var groups = ByMetaClassGrouper.Group(collection);
                         foreach (var group in groups)
                         {
+                            var title = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.title);
+                            
                             var copiesTab = ObjectCopier.Copy(new MofFactory(tab), tab);
                             if (group.MetaClass == null)
                             {
                                 copiesTab.set(_DatenMeister._Forms._ListForm.noItemsWithMetaClass, true);
+                                copiesTab.set(_DatenMeister._Forms._ListForm.name, $"{title} - Unspecified");
                             }
                             else
                             {
                                 copiesTab.set(_DatenMeister._Forms._ListForm.metaClass, group.MetaClass);
+                                copiesTab.set(
+                                    _DatenMeister._Forms._ListForm.title,
+                                    $"{title} - {NamedElementMethods.GetName(group.MetaClass)}");
                             }
 
                             tabs.add(n + 1, copiesTab);

@@ -6,6 +6,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Modules.Actions;
 using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 
@@ -202,6 +203,22 @@ namespace DatenMeister.Runtime
                 testedId = requestedId + "-" + currentNr;
 
             } while (true);
+        }
+
+        /// <summary>
+        /// Returns the item identified by path and workspace
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace Logic to be used</param>
+        /// <param name="workspaceId">Workspace to be used</param>
+        /// <param name="path">Path to be used</param>
+        /// <returns>Found Item or null</returns>
+        public static IObject? TryGetItemByWorkspaceAndPath(
+            IWorkspaceLogic workspaceLogic, string workspaceId, string path)
+        {
+            var workspace = workspaceLogic.GetWorkspace(workspaceId);
+            var sourceElement = workspace?.Resolve(path, ResolveType.NoMetaWorkspaces);
+            
+            return sourceElement is not IObject asElement ? null : asElement;
         }
     }
 }

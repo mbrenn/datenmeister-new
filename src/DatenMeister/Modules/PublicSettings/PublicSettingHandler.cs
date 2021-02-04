@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -51,6 +52,8 @@ namespace DatenMeister.Modules.PublicSettings
         /// <exception cref="InvalidOperationException"></exception>
         private static PublicIntegrationSettings? LoadSettingsFromFile(string path)
         {
+            PublicIntegrationSettings? settings = null;
+            
             if (File.Exists(path))
             {
                 try
@@ -65,16 +68,11 @@ namespace DatenMeister.Modules.PublicSettings
                         throw new InvalidOperationException(message);
                     }
 
-                    var settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+                    settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
                     settings.settingsFilePath = path;
                     settings.databasePath = settings.databasePath != null
                         ? Environment.ExpandEnvironmentVariables(settings.databasePath)
                         : null;
-
-                    if (!string.IsNullOrEmpty(settings.databasePath))
-                    {
-                        Environment.SetEnvironmentVariable("dm_databasepath", settings.databasePath);
-                    }
 
                     foreach (var variable in settings.environmentVariable
                         .Where(variable => variable.key != null && variable.value != null))
@@ -82,17 +80,46 @@ namespace DatenMeister.Modules.PublicSettings
                         Environment.SetEnvironmentVariable(variable.key!, variable.value);
                         Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
                     }
-
-                    return settings;
                 }
                 catch (Exception exc)
                 {
                     Logger.Error($"Exception occured during Loading of Xmi: {exc.Message}");
                 }
             }
+            
+            // Now starts to set the set the environment according the public settings
+            if (!string.IsNullOrEmpty(settings?.databasePath))
+            {
+                Environment.SetEnvironmentVariable("dm_DatabasePath", settings?.databasePath);
+            }
+                                
+            // Now set the default paths, if they are not set
+            SetEnvironmentVariableToDesktopFolderIfNotExisting(
+                "dm_ImportPath", "import");
+            SetEnvironmentVariableToDesktopFolderIfNotExisting(
+                "dm_ReportPath", "report");
+            SetEnvironmentVariableToDesktopFolderIfNotExisting(
+                "dm_ExportPath", "export");
+                    
+            Environment.SetEnvironmentVariable(
+                "dm_ApplicationPath",
+                Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location));
 
             Logger.Info($"No Xmi-File for external configuration found in: {path}");
-            return null;
+            return settings;
+
+            void SetEnvironmentVariableToDesktopFolderIfNotExisting(string dmImportPath, string folderName)
+            {
+                var importPath = Environment.GetEnvironmentVariable(dmImportPath);
+                if (string.IsNullOrEmpty(importPath))
+                {
+                    Environment.SetEnvironmentVariable(
+                        dmImportPath,
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                            folderName));
+                }
+            }
         }
     }
 }

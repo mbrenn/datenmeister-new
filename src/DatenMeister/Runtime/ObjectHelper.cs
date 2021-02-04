@@ -525,6 +525,21 @@ namespace DatenMeister.Runtime
             return resultAsUriExtent;
         }
 
+        public static string? GetUri(this IObject objectElement)
+        {
+            if (objectElement is IUriExtent uriExtent)
+            {
+                return uriExtent.contextURI();
+            }
+
+            if (objectElement is IElement asElement)
+            {
+                return asElement.GetUri();
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Gets the uri of a certain element.
         /// </summary>

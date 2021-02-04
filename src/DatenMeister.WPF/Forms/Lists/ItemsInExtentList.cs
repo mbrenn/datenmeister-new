@@ -104,17 +104,10 @@ namespace DatenMeister.WPF.Forms.Lists
             if (ShowAllItemsInOneTab)
             {
             }
-
-            /*// Goes through the metaclasses and gets the one, that are not already in a tab
-            var metaClasses = SelectedItems.Select(x => (x as IElement)?.getMetaClass()).Distinct().ToList();
-            foreach (var metaClass in metaClasses.Where(x=> !_metaClasses.Contains(x)).ToArray())
-            {
-                CreateTabForMetaclass(metaClass);
-            }*/
         }
 
         /// <summary>
-        ///     Creates the tab for the given items and the metaclass that shell be shown
+        /// Creates the tab for the given items and the metaclass that shell be shown
         /// </summary>
         private void CreateFormForItems()
         {

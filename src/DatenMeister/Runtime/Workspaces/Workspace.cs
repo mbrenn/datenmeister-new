@@ -24,6 +24,12 @@ namespace DatenMeister.Runtime.Workspaces
 
         private readonly List<IExtent> _extent = new List<IExtent>();
 
+        /// <summary>
+        /// Gets or sets the information whether the workspace is a dynamic workspace
+        /// If it is so, then it is skipped during resolvings
+        /// </summary>
+        public bool IsDynamicWorkspace { get; set; }
+
         // ReSharper disable once CollectionNeverUpdated.Local
         private readonly List<ITag> _properties = new List<ITag>();
 

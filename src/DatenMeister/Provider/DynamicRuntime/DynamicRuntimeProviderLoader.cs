@@ -45,11 +45,11 @@ namespace DatenMeister.Provider.DynamicRuntime
 
             if (selectedType == null)
             {
-                var message = $"Selected Type is {runtimeClass} is not found";
+                var message = $"Selected .Net-Type to create {runtimeClass} is not found";
                 throw new InvalidOperationException(message);
             }
 
-            Logger.Info("InMemoryProvider is created");
+            Logger.Info($"InMemoryProvider {runtimeClass} is created");
 
             if (!(Activator.CreateInstance(selectedType) is T result))
             {

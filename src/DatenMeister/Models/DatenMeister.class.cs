@@ -127,6 +127,19 @@ namespace DatenMeister.Models
                 public _CommandLineApplication @CommandLineApplication = new _CommandLineApplication();
                 public IElement @__CommandLineApplication = new MofObjectShadow("dm:///_internal/types/internal#CommonTypes.OSIntegration.CommandLineApplication");
 
+                public class _EnvironmentalVariable
+                {
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                    public static string @value = "value";
+                    public IElement? @_value = null;
+
+                }
+
+                public _EnvironmentalVariable @EnvironmentalVariable = new _EnvironmentalVariable();
+                public IElement @__EnvironmentalVariable = new MofObjectShadow("dm:///_internal/types/internal#OSIntegration.EnvironmentalVariable");
+
             }
 
             public _OSIntegration OSIntegration = new _OSIntegration();
@@ -395,6 +408,47 @@ namespace DatenMeister.Models
 
             public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
             public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
+
+            public class _SimpleReportAction
+            {
+                public static string @path = "path";
+                public IElement? @_path = null;
+
+                public static string @configuration = "configuration";
+                public IElement? @_configuration = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _SimpleReportAction @SimpleReportAction = new _SimpleReportAction();
+            public IElement @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179");
+
+            public class _DocumentOpenAction
+            {
+                public static string @filePath = "filePath";
+                public IElement? @_filePath = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _DocumentOpenAction @DocumentOpenAction = new _DocumentOpenAction();
+            public IElement @__DocumentOpenAction = new MofObjectShadow("dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74");
 
         }
 
@@ -703,6 +757,9 @@ namespace DatenMeister.Models
 
                 public static string @typeMode = "typeMode";
                 public IElement? @_typeMode = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
 
             }
 
@@ -1262,6 +1319,25 @@ namespace DatenMeister.Models
 
             public _ExcelColumn @ExcelColumn = new _ExcelColumn();
             public IElement @__ExcelColumn = new MofObjectShadow("dm:///_internal/types/internal#6ff62c94-2eaf-4bd3-aa98-16e3d9b0be0a");
+
+            public class _EnvironmentalVariableLoaderConfig
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @extentUri = "extentUri";
+                public IElement? @_extentUri = null;
+
+                public static string @workspaceId = "workspaceId";
+                public IElement? @_workspaceId = null;
+
+                public static string @dropExisting = "dropExisting";
+                public IElement? @_dropExisting = null;
+
+            }
+
+            public _EnvironmentalVariableLoaderConfig @EnvironmentalVariableLoaderConfig = new _EnvironmentalVariableLoaderConfig();
+            public IElement @__EnvironmentalVariableLoaderConfig = new MofObjectShadow("dm:///_internal/types/internal#10151dfc-f18b-4a58-9434-da1be1e030a3");
 
         }
 
@@ -1937,6 +2013,9 @@ namespace DatenMeister.Models
 
                 public static string @autoGenerateFields = "autoGenerateFields";
                 public IElement? @_autoGenerateFields = null;
+
+                public static string @duplicatePerType = "duplicatePerType";
+                public IElement? @_duplicatePerType = null;
 
                 public static string @name = "name";
                 public IElement? @_name = null;

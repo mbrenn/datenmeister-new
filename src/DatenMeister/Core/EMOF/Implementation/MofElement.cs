@@ -26,7 +26,6 @@ namespace DatenMeister.Core.EMOF.Implementation
                     {
                         throw new InvalidOperationException("The ID is already set within the extent.");
                     }
-                    
                 }
                 
                 ProviderObject.Id = value;

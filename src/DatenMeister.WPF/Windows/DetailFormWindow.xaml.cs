@@ -290,6 +290,12 @@ namespace DatenMeister.WPF.Windows
             control.Measure(new Size(width, height - heightOffset));
             Width = Math.Ceiling(control.DesiredSize.Width) + 50;
             Height = Math.Ceiling(control.DesiredSize.Height) + 50 + heightOffset;
+
+            // Checks the height of the monitor (and reduces it by 10%)
+            Height =
+                Math.Min(
+                    Height,
+                    (int) Math.Ceiling(SystemParameters.WorkArea.Height * 0.9));
         }
 
         public void OnSaved(IObject? detailElement, IObject? attachedElement)

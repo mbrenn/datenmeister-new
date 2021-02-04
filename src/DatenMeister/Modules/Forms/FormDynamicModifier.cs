@@ -45,7 +45,10 @@ namespace DatenMeister.Modules.Forms
                         collection ??= ListFormCollectionCreator.GetCollection(tab, selectedObject);
 
                         // Now duplicate the tab
-                        var groups = ByMetaClassGrouper.Group(collection);
+                        var groups = 
+                            ByMetaClassGrouper
+                                .Group(collection)
+                                .OrderBy(x=>x.MetaClass?.ToString() ?? string.Empty);
                         foreach (var group in groups)
                         {
                             var title = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.title);

@@ -95,7 +95,7 @@ namespace DatenMeister.Runtime.Functions.Queries
                 {
                     propertyList =
                         ClassifierMethods.GetCompositingProperties(metaClass)
-                            .Select(NamedElementMethods.GetName);
+                            .Select(x => NamedElementMethods.GetName(x));
                 }
             }
             else

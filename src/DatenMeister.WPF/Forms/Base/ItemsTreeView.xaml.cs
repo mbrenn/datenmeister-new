@@ -14,6 +14,7 @@ using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Objects;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
@@ -36,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Just a configuration option which may be set during the development to recreate all items in treeview
         /// instead of reusing the existing items
         /// </summary>
-        private const bool ConfigurationAlwaysRefresh = false;
+        private const bool ConfigurationAlwaysRefresh = false; // TODO: true does not work with ShowTypeAsPackage
             
         /// <summary>
         /// Defines the logger being used
@@ -58,6 +59,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         public static readonly DependencyProperty ShowMetaClassesProperty = DependencyProperty.Register(
             "ShowMetaClasses", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(default(bool), OnShowMetaClassesChange));
+        
+        public static readonly DependencyProperty ShowTypeAsPackageProperty = DependencyProperty.Register(
+            "ShowTypeAsPackage", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(true, OnShowTypeAsPackageChange));
 
         private static void OnShowMetaClassesChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -80,6 +84,28 @@ namespace DatenMeister.WPF.Forms.Base
         {
             get => (bool) GetValue(ShowMetaClassesProperty);
             set => SetValue(ShowMetaClassesProperty, value);
+        }
+
+        public bool ShowTypeAsPackage
+        {
+            get => (bool) GetValue(ShowTypeAsPackageProperty);
+            set => SetValue(ShowTypeAsPackageProperty, value);
+        }
+        
+        private static void OnShowTypeAsPackageChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is ItemsTreeView itemsTreeView))
+            {
+                throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
+            }
+
+            var newValue = (bool) e.NewValue;
+            itemsTreeView.UpdateForm();
+
+            if (newValue != (itemsTreeView.ShowMetaClassesCheckBtn.IsChecked == true))
+            {
+                itemsTreeView.TypeAsPackageButton.IsChecked = newValue;
+            }
         }
 
         private bool _cacheShowMetaClasses;
@@ -123,7 +149,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private IEnumerable<IElement>? _filterMetaClasses;
 
-
+        /// <summary>
+        /// Determines whether the filter for the metaclasses are enabled. 
+        /// </summary>
         private bool _enableFilterMetaClasses = true;
 
         /// <summary>
@@ -164,7 +192,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Stores the item that shall be selected, after the items have been created
         /// </summary>
         private TreeViewItem? _newSelectedItem;
-
+        
         private INavigationHost? _navigationHost;
 
         public ItemsTreeView()
@@ -458,33 +486,57 @@ namespace DatenMeister.WPF.Forms.Base
         /// be listed. </param>
         private void CreateSubTreeItems(ItemsControl treeViewItem, TreeViewItemParameter itemParameter)
         {
+            if (itemParameter.Element == null) return;
+
             treeViewItem.Items.Clear();
-            
-            if (itemParameter.Element is IExtent extent)
+            var parentItem = treeViewItem;
+
+            if (!ShowTypeAsPackage)
+            {
+                var childItems =
+                    GetChildrenOfItem(itemParameter.Element)
+                        .Take(MaxItemsPerLevel);
+                parentItem.ItemsSource = CreateSubTree(childItems);
+            }
+            else
+            {
+                // Group the elements to 
+                var groupModels = new List<TreeViewItem>();
+                var childItems =
+                    GetChildrenOfItem(itemParameter.Element);
+                var groupedItems =
+                    ByMetaClassGrouper.Group(
+                            childItems,
+                            x => x.Element)
+                        .OrderBy(x => NamedElementMethods.GetName(x.MetaClass))
+                        .ToList();
+
+                if (groupedItems.Count == 1)
+                {
+                    parentItem.ItemsSource =
+                        CreateSubTree(groupedItems.First().Elements.Take(MaxItemsPerLevel));
+                }
+                else
+                {
+                    groupModels.AddRange(
+                        groupedItems.Select(
+                            @group => 
+                                new TreeViewItem
+                                {
+                                    Header = $"[{NamedElementMethods.GetName(@group.MetaClass)}]", 
+                                    ItemsSource = CreateSubTree(@group.Elements.Take(MaxItemsPerLevel)),
+                                }));
+
+                    parentItem.ItemsSource = groupModels;
+                }
+            }
+
+            List<ItemsTreeViewItem> CreateSubTree(IEnumerable<TreeViewItemParameter> treeViewItemParameters)
             {
                 var childModels = new List<ItemsTreeViewItem>();
-                var n = 0;
-                foreach (var element in GetChildrenOfItem(extent))
-                {
-                    if (element.Element == null) continue; // Skip the empty ones
-
-                    var created =
-                        CreateTreeViewItemLazy(element);
-                    if (created != null)
-                        childModels.Add(created);
-                    n++;
-                    if (n >= MaxItemsPerLevel) break;
-                }
-
-                treeViewItem.ItemsSource = childModels;
-            }
-            else if (itemParameter.Element is { } itemAsObject)
-            {
-                var n = 0;
 
                 // Gets the properties
-                var childModels = new List<ItemsTreeViewItem>();
-                foreach (var propertyValue in GetChildrenOfItem(itemAsObject))
+                foreach (var propertyValue in treeViewItemParameters)
                 {
                     var childTreeViewItem = CreateTreeViewItemLazy(propertyValue);
                     if (childTreeViewItem != null)
@@ -492,15 +544,11 @@ namespace DatenMeister.WPF.Forms.Base
                         childModels.Add(childTreeViewItem);
                     }
 
-                    n++;
-
                     childModels.Sort((x, y) =>
                         NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
-
-                    if (n >= MaxItemsPerLevel) break;
                 }
 
-                treeViewItem.ItemsSource = childModels;
+                return childModels;
             }
         }
 
@@ -808,15 +856,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             FilterMetaClassCheck.IsEnabled = true;
-
-            if (_enableFilterMetaClasses)
-            {
-                FilterMetaClassCheck.IsChecked = true;
-            }
-            else
-            {
-                FilterMetaClassCheck.IsChecked = false;
-            }
+            FilterMetaClassCheck.IsChecked = _enableFilterMetaClasses;
         }
 
         private void ShowMetaClassesCheckBtn_Click(object sender, RoutedEventArgs e)
@@ -827,14 +867,18 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void FilterMetaClassCheck_Click(object sender, RoutedEventArgs e)
         {
-            if (FilterMetaClassCheck.IsChecked == true)
-            {
-                _enableFilterMetaClasses = true;
-            }
-            else
-            {
-                _enableFilterMetaClasses = false;
-            }
+            _enableFilterMetaClasses =
+                FilterMetaClassCheck.IsChecked == true;
+
+            // Clear Complete Form
+            ClearForm();
+            UpdateForm(false);
+        }
+
+        private void TypeAsPackage_Click(object sender, RoutedEventArgs e)
+        {
+            ShowTypeAsPackage = 
+                TypeAsPackageButton.IsChecked == true;
 
             // Clear Complete Form
             ClearForm();

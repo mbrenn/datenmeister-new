@@ -150,19 +150,6 @@ namespace DatenMeister.Models
 
         public class _Actions
         {
-            public class _Action
-            {
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-                public static string @isDisabled = "isDisabled";
-                public IElement? @_isDisabled = null;
-
-            }
-
-            public _Action @Action = new _Action();
-            public IElement @__Action = new MofObjectShadow("dm:///_internal/types/internal#Actions.Action");
-
             public class _ActionSet
             {
                 public static string @action = "action";
@@ -409,31 +396,6 @@ namespace DatenMeister.Models
             public _TransformItemsAction @TransformItemsAction = new _TransformItemsAction();
             public IElement @__TransformItemsAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.ItemTransformationActionHandler");
 
-            public class _SimpleReportAction
-            {
-                public static string @path = "path";
-                public IElement? @_path = null;
-
-                public static string @configuration = "configuration";
-                public IElement? @_configuration = null;
-
-                public static string @workspaceId = "workspaceId";
-                public IElement? @_workspaceId = null;
-
-                public static string @filePath = "filePath";
-                public IElement? @_filePath = null;
-
-                public static string @name = "name";
-                public IElement? @_name = null;
-
-                public static string @isDisabled = "isDisabled";
-                public IElement? @_isDisabled = null;
-
-            }
-
-            public _SimpleReportAction @SimpleReportAction = new _SimpleReportAction();
-            public IElement @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179");
-
             public class _DocumentOpenAction
             {
                 public static string @filePath = "filePath";
@@ -449,6 +411,88 @@ namespace DatenMeister.Models
 
             public _DocumentOpenAction @DocumentOpenAction = new _DocumentOpenAction();
             public IElement @__DocumentOpenAction = new MofObjectShadow("dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74");
+
+            public class _Reports
+            {
+                public class _SimpleReportAction
+                {
+                    public static string @path = "path";
+                    public IElement? @_path = null;
+
+                    public static string @configuration = "configuration";
+                    public IElement? @_configuration = null;
+
+                    public static string @workspaceId = "workspaceId";
+                    public IElement? @_workspaceId = null;
+
+                    public static string @filePath = "filePath";
+                    public IElement? @_filePath = null;
+
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                    public static string @isDisabled = "isDisabled";
+                    public IElement? @_isDisabled = null;
+
+                }
+
+                public _SimpleReportAction @SimpleReportAction = new _SimpleReportAction();
+                public IElement @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.SimpleReportAction");
+
+                public class _AdocReportAction
+                {
+                    public static string @filePath = "filePath";
+                    public IElement? @_filePath = null;
+
+                    public static string @reportInstance = "reportInstance";
+                    public IElement? @_reportInstance = null;
+
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                    public static string @isDisabled = "isDisabled";
+                    public IElement? @_isDisabled = null;
+
+                }
+
+                public _AdocReportAction @AdocReportAction = new _AdocReportAction();
+                public IElement @__AdocReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.AdocReportAction");
+
+                public class _HtmlReportAction
+                {
+                    public static string @filePath = "filePath";
+                    public IElement? @_filePath = null;
+
+                    public static string @reportInstance = "reportInstance";
+                    public IElement? @_reportInstance = null;
+
+                    public static string @name = "name";
+                    public IElement? @_name = null;
+
+                    public static string @isDisabled = "isDisabled";
+                    public IElement? @_isDisabled = null;
+
+                }
+
+                public _HtmlReportAction @HtmlReportAction = new _HtmlReportAction();
+                public IElement @__HtmlReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.HtmlReportAction");
+
+            }
+
+            public _Reports Reports = new _Reports();
+
+            public class _Action
+            {
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @isDisabled = "isDisabled";
+                public IElement? @_isDisabled = null;
+
+            }
+
+            public _Action @Action = new _Action();
+            public IElement @__Action = new MofObjectShadow("dm:///_internal/types/internal#Actions.Action");
 
         }
 
@@ -651,8 +695,8 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
-                public static string @source = "source";
-                public IElement? @_source = null;
+                public static string @path = "path";
+                public IElement? @_path = null;
 
             }
 

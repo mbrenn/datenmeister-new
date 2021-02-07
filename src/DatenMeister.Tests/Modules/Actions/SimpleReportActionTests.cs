@@ -22,14 +22,14 @@ namespace DatenMeister.Tests.Modules.Actions
             /*
              * Performs the test
              */
-            var action = factory.create(_DatenMeister.TheOne.Actions.__SimpleReportAction);
+            var action = factory.create(_DatenMeister.TheOne.Actions.Reports.__SimpleReportAction);
             var configuration = factory.create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
             var tempFileName = Path.GetTempFileName();
             
             configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, extent.contextURI());
-            action.set(_DatenMeister._Actions._SimpleReportAction.configuration, configuration);
+            action.set(_DatenMeister._Actions._Reports._SimpleReportAction.configuration, configuration);
             action.set(
-                _DatenMeister._Actions._SimpleReportAction.filePath,
+                _DatenMeister._Actions._Reports._SimpleReportAction.filePath,
                 tempFileName);
 
             actionLogic.ExecuteAction(action).Wait();
@@ -50,15 +50,15 @@ namespace DatenMeister.Tests.Modules.Actions
             /*
              * Performs the test
              */
-            var action = factory.create(_DatenMeister.TheOne.Actions.__SimpleReportAction);
+            var action = factory.create(_DatenMeister.TheOne.Actions.Reports.__SimpleReportAction);
             var configuration = factory.create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration);
             var tempFileName = Path.GetTempFileName();
             
-            action.set(_DatenMeister._Actions._SimpleReportAction.path, "dm:///test");
-            action.set(_DatenMeister._Actions._SimpleReportAction.workspaceId, "Data");
-            action.set(_DatenMeister._Actions._SimpleReportAction.configuration, configuration);
+            action.set(_DatenMeister._Actions._Reports._SimpleReportAction.path, "dm:///test");
+            action.set(_DatenMeister._Actions._Reports._SimpleReportAction.workspaceId, "Data");
+            action.set(_DatenMeister._Actions._Reports._SimpleReportAction.configuration, configuration);
             action.set(
-                _DatenMeister._Actions._SimpleReportAction.filePath,
+                _DatenMeister._Actions._Reports._SimpleReportAction.filePath,
                 tempFileName);
 
             actionLogic.ExecuteAction(action).Wait();

@@ -13,7 +13,7 @@ namespace DatenMeister.Modules.DynamicRuntimeProviders
     // ReSharper disable once UnusedMember.Global
     public class NumberProvider : IDynamicRuntimeProvider
     {
-        public IEnumerable<IProviderObject> Get(DynamicRuntimeProviderWrapper wrapper, IElement configuration)
+        public IEnumerable<IProviderObject> Get(DynamicRuntimeProviderWrapper wrapper, IElement? configuration)
         {
             var begin =
                 configuration?.isSet(_NumberProviderSettings.start) == true

@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Modules.Reports
 
             var source = factory.create(_DatenMeister.TheOne.Reports.__ReportInstanceSource);
             source.set(_DatenMeister._Reports._ReportInstanceSource.name, "input");
-            source.set(_DatenMeister._Reports._ReportInstanceSource.source, "dm:///test");
+            source.set(_DatenMeister._Reports._ReportInstanceSource.path, "dm:///test");
             source.set(_DatenMeister._Reports._ReportInstanceSource.workspaceId, "Data");
             reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.sources, new[] {source});
             reportInstance.set(_DatenMeister._Reports._HtmlReportInstance.reportDefinition, reportDefinition);

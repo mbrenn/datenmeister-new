@@ -7,7 +7,7 @@ using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.Actions.ActionHandler
+namespace DatenMeister.Modules.Actions.ActionHandler.Reports
 {
     /// <summary>
     /// Defines the action handler for simple reports
@@ -17,17 +17,17 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         public bool IsResponsible(IElement node)
         {
             return node.getMetaClass()?.@equals(
-                _DatenMeister.TheOne.Actions.__SimpleReportAction) == true;
+                _DatenMeister.TheOne.Actions.Reports.__SimpleReportAction) == true;
         }
 
         public void Evaluate(ActionLogic actionLogic, IElement action)
         {
             var workspace =
-                action.getOrDefault<string>(_DatenMeister._Actions._SimpleReportAction.workspaceId)
+                action.getOrDefault<string>(_DatenMeister._Actions._Reports._SimpleReportAction.workspaceId)
                 ?? WorkspaceNames.WorkspaceData;
-            var path = action.getOrDefault<string>(_DatenMeister._Actions._SimpleReportAction.path);
-            var filePath = action.getOrDefault<string>(_DatenMeister._Actions._SimpleReportAction.filePath);
-            var configuration = action.getOrDefault<IElement>(_DatenMeister._Actions._SimpleReportAction.configuration);
+            var path = action.getOrDefault<string>(_DatenMeister._Actions._Reports._SimpleReportAction.path);
+            var filePath = action.getOrDefault<string>(_DatenMeister._Actions._Reports._SimpleReportAction.filePath);
+            var configuration = action.getOrDefault<IElement>(_DatenMeister._Actions._Reports._SimpleReportAction.configuration);
 
             if (configuration is null)
             {

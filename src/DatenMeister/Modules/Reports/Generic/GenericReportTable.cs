@@ -19,6 +19,7 @@ namespace DatenMeister.Modules.Reports.Generic
         {
             public string ColumnName { get; set; } = string.Empty;
         }
+        
         public class TableCellContent { 
             public string Content { get; set; } = string.Empty;
 
@@ -85,7 +86,7 @@ namespace DatenMeister.Modules.Reports.Generic
             StartTable(reportCreator, cssClass);
 
             var cellHeaders = new List<TableCellHeader>();
-            var fields = form.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
+            var fields = form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field);
             foreach (var field in fields.OfType<IElement>())
             {
                 cellHeaders.Add(
@@ -209,6 +210,17 @@ namespace DatenMeister.Modules.Reports.Generic
                     Content = cellInformation.isSet("text")
                         ? cellInformation.getOrDefault<string>("text")
                         : defaultText,
+                    CssClass = cssClassName
+                };
+            }
+
+            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+            {
+                var defaultText = NamedElementMethods.GetName((listElement as IElement)?.metaclass);
+                var cssClassName = listElement.getOrDefault<string>("cssClass") ?? string.Empty;
+                return new TableCellContent
+                {
+                    Content = defaultText,
                     CssClass = cssClassName
                 };
             }

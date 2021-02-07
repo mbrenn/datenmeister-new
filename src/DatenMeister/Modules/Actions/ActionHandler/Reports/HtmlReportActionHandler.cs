@@ -37,6 +37,12 @@ namespace DatenMeister.Modules.Actions.ActionHandler.Reports
                 throw new InvalidOperationException("reportInstance");
             }
 
+            var directoryPath = Path.GetDirectoryName(filePath);
+            if (directoryPath != null && !Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             using var fileStream = new StreamWriter(filePath);
 
             var htmlReport = new ReportLogic(

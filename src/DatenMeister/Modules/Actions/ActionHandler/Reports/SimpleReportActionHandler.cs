@@ -7,7 +7,7 @@ using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.Actions.ActionHandler
+namespace DatenMeister.Modules.Actions.ActionHandler.Reports
 {
     /// <summary>
     /// Defines the action handler for simple reports

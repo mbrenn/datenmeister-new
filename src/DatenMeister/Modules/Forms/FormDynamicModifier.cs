@@ -48,7 +48,9 @@ namespace DatenMeister.Modules.Forms
                         var groups = 
                             ByMetaClassGrouper
                                 .Group(collection)
-                                .OrderBy(x=>x.MetaClass?.ToString() ?? string.Empty);
+                                // Descending order since the tabs are inserted at a certain position
+                                .OrderByDescending(x=>NamedElementMethods.GetName(x.MetaClass))
+                                .ToList();
                         foreach (var group in groups)
                         {
                             var title = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.title);
@@ -67,6 +69,7 @@ namespace DatenMeister.Modules.Forms
                                     $"{title} - {NamedElementMethods.GetName(group.MetaClass)}");
                             }
 
+                            // That is the reason for the descending order
                             tabs.add(n + 1, copiesTab);
                         }
 

@@ -176,7 +176,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => ((XmiProviderObject) MetaXmiElement.ProviderObject).XmlNode = value;
         }
 
-        private static readonly MofExtent? XmlMetaExtent = new MofUriExtent(new XmiProvider()); 
+        private static readonly MofExtent XmlMetaExtent = new MofUriExtent(new XmiProvider()); 
 
         /// <summary>
         /// Initializes a new instance of the Extent
@@ -200,6 +200,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 MetaXmiElement = new MofElement(
                     rootProvider.CreateProviderObject(new XElement("meta")),
                     XmlMetaExtent);
+                XmlMetaExtent.AddMetaExtent(this);
             }
             else
             {
@@ -209,6 +210,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
             
             MetaXmiElement.SetMetaClass(_DatenMeister.TheOne.Management.__ExtentProperties);
+            
             ExtentConfiguration = new ExtentConfiguration(this);
         }
 
@@ -334,22 +336,14 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 if (extent is IUriExtent uriExtent)
                 {
-                    if (_metaExtents.OfType<IUriExtent>().Any(x => x.contextURI() == uriExtent.contextURI()))
-                    {
-                        // Already in
-                        return;
-                    }
+                    _metaExtents.RemoveAll(x => (x as IUriExtent)?.contextURI() == uriExtent.contextURI());
                 }
-                
-                if ( _metaExtents.Any(x => x.Equals(extent)))
-                {
-                    // Already in 
-                    return;
-                }
+
+                if (_metaExtents.Any(x => x.Equals(extent))) return;
 
                 if (XmlMetaExtent != this)
                 {
-                    XmlMetaExtent?.AddMetaExtent(extent);
+                    XmlMetaExtent.AddMetaExtent(extent);
                 }
 
                 _metaExtents.Add(extent);

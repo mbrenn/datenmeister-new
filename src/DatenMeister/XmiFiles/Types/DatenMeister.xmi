@@ -585,7 +585,7 @@
       </ownedAttribute>
     </packagedElement>
     <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="f77015a8-1d70-4f09-beb3-1e20e6303d40" name="Reports">
-      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="e5ba8c35-ed88-42d3-974c-97c188af9179" name="SimpleReportAction">
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.SimpleReportAction" name="SimpleReportAction">
         <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
         <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
         <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
@@ -641,7 +641,7 @@
           <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
         </ownedAttribute>
       </packagedElement>
-      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="13b37e2e-f18d-4c6a-a6ec-7fce447933fd" name="AdocReportAction">
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.AdocReportAction" name="AdocReportAction">
         <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
         <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
         <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
@@ -674,7 +674,7 @@
           <isLeaf href="dm:///_internal/model/uml#RedefinableElement-isLeaf-_defaultValue" />
         </ownedAttribute>
       </packagedElement>
-      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="22ab369c-81e2-4af4-a6ab-51c33694de99" name="HtmlReportAction">
+      <packagedElement p2:type="dm:///_internal/model/uml#Class" p2:id="Actions.HtmlReportAction" name="HtmlReportAction">
         <isAbstract href="dm:///_internal/model/uml#Class-isAbstract-_defaultValue" />
         <isActive href="dm:///_internal/model/uml#Class-isActive-_defaultValue" />
         <isFinalSpecialization href="dm:///_internal/model/uml#Classifier-isFinalSpecialization-_defaultValue" />
@@ -811,7 +811,7 @@
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportInstanceSource" name="ReportInstanceSource">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="eb054fbc-1f1a-4e0d-bf61-225bfb9b0c9f" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b23963e3-9230-4c38-b2e2-67ca0e9e5e33" name="workspaceId" type-ref="dm:///_internal/model/primitivetypes#String" />
-      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="49f1137a-d0d6-4629-a1bb-3ef06206ac21" name="source" type-ref="dm:///_internal/model/primitivetypes#String" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="49f1137a-d0d6-4629-a1bb-3ef06206ac21" name="path" type-ref="dm:///_internal/model/primitivetypes#String" />
     </packagedElement>
     <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportInstance" name="ReportInstance">
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="20cd683f-6e41-4f2a-9ff3-4d25ad9dc912" name="name" type-ref="dm:///_internal/model/primitivetypes#String" />
@@ -882,8 +882,8 @@
       <packagedElement p1:type="dm:///_internal/model/uml#Class" p1:id="DatenMeister.Models.Reports.ReportTable" name="ReportTable">
         <generalization p1:type="dm:///_internal/model/uml#Generalization" p1:id="a2ecfa1b-bbbe-4a4d-b0e0-26fbd27e03a1" general-ref="#DatenMeister.Models.Reports.ReportElement" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="b05d1f04-e0f7-4663-8df6-af177ed1292e" name="cssClass" type-ref="dm:///_internal/model/primitivetypes#String" />
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f4839848-ce7a-44f7-8422-1c780e57f63f" name="viewNode" />
-        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3278a8b3-8c6a-4545-bab0-9920ad8cf11c" name="form" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="f4839848-ce7a-44f7-8422-1c780e57f63f" name="viewNode" type-ref="dm:///_internal/types/internal#DatenMeister.Models.DataViews.ViewNode" />
+        <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="3278a8b3-8c6a-4545-bab0-9920ad8cf11c" name="form" type-ref="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" />
         <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="9f05554b-60df-4063-8d94-d63f191cb32a" name="evalProperties" type-ref="dm:///_internal/model/primitivetypes#String" />
       </packagedElement>
       <packagedElement p1:type="dm:///_internal/model/uml#Enumeration" p1:id="DatenMeister.Models.Reports.Simple.ReportTableForTypeMode" name="ReportTableForTypeMode">

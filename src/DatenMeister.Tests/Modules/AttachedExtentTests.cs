@@ -28,7 +28,7 @@ namespace DatenMeister.Tests.Modules
             extent.elements().add(type);
 
             // Create the attachedconfiguration
-            var attachedConfiguration = InMemoryObject.CreateEmpty(
+            var attachedConfiguration = factory.create(
                     _DatenMeister.TheOne.AttachedExtent.__AttachedExtentConfiguration)
                 .SetProperties(
                     new Dictionary<string, object>

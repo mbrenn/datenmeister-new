@@ -437,7 +437,7 @@ namespace DatenMeister.Models
                 }
 
                 public _SimpleReportAction @SimpleReportAction = new _SimpleReportAction();
-                public IElement @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179");
+                public IElement @__SimpleReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.SimpleReportAction");
 
                 public class _AdocReportAction
                 {
@@ -456,7 +456,7 @@ namespace DatenMeister.Models
                 }
 
                 public _AdocReportAction @AdocReportAction = new _AdocReportAction();
-                public IElement @__AdocReportAction = new MofObjectShadow("dm:///_internal/types/internal#13b37e2e-f18d-4c6a-a6ec-7fce447933fd");
+                public IElement @__AdocReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.AdocReportAction");
 
                 public class _HtmlReportAction
                 {
@@ -475,7 +475,7 @@ namespace DatenMeister.Models
                 }
 
                 public _HtmlReportAction @HtmlReportAction = new _HtmlReportAction();
-                public IElement @__HtmlReportAction = new MofObjectShadow("dm:///_internal/types/internal#22ab369c-81e2-4af4-a6ab-51c33694de99");
+                public IElement @__HtmlReportAction = new MofObjectShadow("dm:///_internal/types/internal#Actions.HtmlReportAction");
 
             }
 
@@ -695,8 +695,8 @@ namespace DatenMeister.Models
                 public static string @workspaceId = "workspaceId";
                 public IElement? @_workspaceId = null;
 
-                public static string @source = "source";
-                public IElement? @_source = null;
+                public static string @path = "path";
+                public IElement? @_path = null;
 
             }
 

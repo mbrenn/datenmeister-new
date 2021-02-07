@@ -4,13 +4,27 @@
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="478f7bc3-133a-4ae1-b952-74ef9cdfff36" name="Example Package" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
   <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="e726b0aa-e902-4e25-be72-9c3cddd8700c" name="Action Examples" xmlns:p2="http://www.omg.org/spec/XMI/20131001">
     <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="7830bb57-9fe3-45fc-932c-0c861852abbe" name="Export SimpleReport">
-      <packagedElement p2:type="dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179" p2:id="c88bbebe-1398-4bdb-a0da-6a0cdd683ef9" name="Export EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" workspaceId="Management" filePath="%dm_ExportPath%/report_environmental.html" />
+      <packagedElement p2:type="dm:///_internal/types/internal#Actions.SimpleReportAction" p2:id="c88bbebe-1398-4bdb-a0da-6a0cdd683ef9" name="Export EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" workspaceId="Management" filePath="%dm_ExportPath%/report_environmental.html" />
       <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration" p2:id="28e21930-3de4-4e35-8269-fc27c77596fe" name="SimpleReport EnvironmentalVariables" typeMode="AllTypes" rootElement="dm:///_internal/environmentalvariables/" workspaceId="Management" />
-      <packagedElement p2:type="dm:///_internal/types/internal#e5ba8c35-ed88-42d3-974c-97c188af9179" p2:id="373e1863-c0aa-4eee-af40-52c24fdc2281" name="Export SimpleReport EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" configuration-ref="dm:///dm_example#28e21930-3de4-4e35-8269-fc27c77596fe" workspaceId="Management" filePath="%dm_ExportPath%/report_environmental.html" />
+      <packagedElement p2:type="dm:///_internal/types/internal#Actions.SimpleReportAction" p2:id="373e1863-c0aa-4eee-af40-52c24fdc2281" name="Export SimpleReport EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" workspaceId="Management" filePath="%dm_ExportPath%/report_environmental.html" configuration-ref="dm:///dm_example#28e21930-3de4-4e35-8269-fc27c77596fe" />
       <packagedElement p2:type="dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74" p2:id="ddb79b40-b209-4c02-a8d0-61d843d0e604" name="Open SimpleReport" filePath="%dm_ExportPath%/report_environmental.html" />
       <packagedElement p2:type="dm:///_internal/types/internal#Actions.ActionSet" p2:id="30f2ca76-c415-45c3-ac17-c35fee52ad4a" name="Create and Open Environment Variables">
         <action href="dm:///dm_example#373e1863-c0aa-4eee-af40-52c24fdc2281" />
         <action href="dm:///dm_example#ddb79b40-b209-4c02-a8d0-61d843d0e604" />
+      </packagedElement>
+      <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="7fdaf8a9-19db-46df-a40d-933b93c93dee" name="HtmlReport">
+        <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.Html.HtmlReportInstance" p2:id="e78bfd81-38b2-4f6c-b4f5-89165c8d2e53" name="HtmlReport Instance" reportDefinition-ref="dm:///dm_example#cff7e105-9c9f-4d5d-b9ae-3e03269b0707">
+          <sources href="dm:///dm_example#35bb039d-25c8-4801-abb9-bbbbdf70e068" />
+        </packagedElement>
+        <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportDefinition" p2:id="cff7e105-9c9f-4d5d-b9ae-3e03269b0707" title="Environmental Variables" name="HtmlReport Definition">
+          <elements href="dm:///dm_example#21c1a6b4-240a-4933-a3f9-8ebab961ad50" />
+          <elements href="dm:///dm_example#f84534b6-d9d3-48f8-a885-57429b68fabd" />
+        </packagedElement>
+        <packagedElement p2:type="dm:///_internal/types/internal#Actions.HtmlReportAction" p2:id="a50ca4ce-8e2b-473b-985d-b23513cbfed1" name="Create Html Report" filePath="%dm_ExportPath%/html_report.html" reportInstance-ref="dm:///dm_example#e78bfd81-38b2-4f6c-b4f5-89165c8d2e53" />
+        <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportParagraph" p2:id="21c1a6b4-240a-4933-a3f9-8ebab961ad50" paragraph="This report lists all environmental variables" name="Paragraph Introduction" />
+        <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportTable" p2:id="f84534b6-d9d3-48f8-a885-57429b68fabd" name="Table Variables" />
+        <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.DataViews.DynamicSourceNode" p2:id="9931da3e-a3ae-40ac-ab81-70496279b3af" nodeName="input" name="ViewNode Input" />
+        <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.ReportInstanceSource" p2:id="35bb039d-25c8-4801-abb9-bbbbdf70e068" name="input" workspaceId="Management" path="dm:///_internal/environmentalvariables/" />
       </packagedElement>
     </packagedElement>
   </item>

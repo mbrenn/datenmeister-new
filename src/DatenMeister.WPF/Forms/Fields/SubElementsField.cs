@@ -210,7 +210,7 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <param name="items">The items to be removed</param>
         private static void RemoveItem(IReflectiveCollection reflectiveCollection, IList<IObject> items)
         {
-            var names = items.Select(NamedElementMethods.GetName).Join(", ");
+            var names = items.Select(x=>NamedElementMethods.GetName(x)).Join(", ");
             if (MessageBox.Show(
                     $"Are you sure to delete the item: " +
                     $"{names}?",

@@ -14,6 +14,7 @@ using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Objects;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
@@ -168,11 +169,11 @@ namespace DatenMeister.WPF.Forms.Base
         private TreeViewItem? _newSelectedItem;
         
         private INavigationHost? _navigationHost;
-        
+
         /// <summary>
         /// Indicates whether the type shall be shown as package
         /// </summary>
-        private bool _showTypeAsPackage;
+        private bool _showTypeAsPackage = true;
 
         public ItemsTreeView()
         {
@@ -468,32 +469,67 @@ namespace DatenMeister.WPF.Forms.Base
             if (itemParameter.Element == null) return;
 
             treeViewItem.Items.Clear();
+            var parentItem = treeViewItem;
 
-            var childModels = new List<ItemsTreeViewItem>();
-
-            var childItems = GetChildrenOfItem(itemParameter.Element);
-
-            var n = 0;
-
-            // Gets the properties
-            foreach (var propertyValue in childItems)
+            if (!_showTypeAsPackage)
             {
-                var childTreeViewItem = CreateTreeViewItemLazy(propertyValue);
-                if (childTreeViewItem != null)
+                var childItems =
+                    GetChildrenOfItem(itemParameter.Element)
+                        .Take(MaxItemsPerLevel);
+                parentItem.ItemsSource = CreateSubTree(childItems);
+            }
+            else
+            {
+                // Group the elements to 
+                var groupModels = new List<TreeViewItem>();
+                var childItems =
+                    GetChildrenOfItem(itemParameter.Element);
+                var groupedItems =
+                    ByMetaClassGrouper.Group(
+                            childItems,
+                            x => x.Element)
+                        .OrderBy(x => NamedElementMethods.GetName(x.MetaClass))
+                        .ToList();
+
+                if (groupedItems.Count == 1)
                 {
-                    childModels.Add(childTreeViewItem);
+                    parentItem.ItemsSource =
+                        CreateSubTree(groupedItems.First().Elements.Take(MaxItemsPerLevel));
                 }
+                else
+                {
+                    groupModels.AddRange(
+                        groupedItems.Select(
+                            @group => 
+                                new TreeViewItem
+                                {
+                                    Header = $"[{NamedElementMethods.GetName(@group.MetaClass)}]", 
+                                    ItemsSource = CreateSubTree(@group.Elements.Take(MaxItemsPerLevel)),
+                                }));
 
-                n++;
-                childModels.Sort((x, y) =>
-                    NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
-
-                // Maximum depth of iteration is reached
-                if (n >= MaxItemsPerLevel) return;
+                    parentItem.ItemsSource = groupModels;
+                }
             }
 
-            treeViewItem.ItemsSource = childModels;
+            List<ItemsTreeViewItem> CreateSubTree(IEnumerable<TreeViewItemParameter> treeViewItemParameters)
+            {
+                var childModels = new List<ItemsTreeViewItem>();
 
+                // Gets the properties
+                foreach (var propertyValue in treeViewItemParameters)
+                {
+                    var childTreeViewItem = CreateTreeViewItemLazy(propertyValue);
+                    if (childTreeViewItem != null)
+                    {
+                        childModels.Add(childTreeViewItem);
+                    }
+
+                    childModels.Sort((x, y) =>
+                        NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
+                }
+
+                return childModels;
+            }
         }
 
         /// <summary>

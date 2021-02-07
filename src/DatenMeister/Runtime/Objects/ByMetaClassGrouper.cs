@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.Xml;
 
 namespace DatenMeister.Runtime.Objects
 {
     /// <summary>
     /// Defines the metaclass 
     /// </summary>
-    public class MetaClassGroup
+    public class MetaClassGroup<T>
     {
         public MetaClassGroup(IElement? metaClass)
         {
@@ -24,7 +24,7 @@ namespace DatenMeister.Runtime.Objects
         /// <summary>
         /// Gets the elements
         /// </summary>
-        public HashSet<IObject> Elements { get; } = new();
+        public HashSet<T> Elements { get; } = new();
     }
 
     /// <summary>
@@ -32,9 +32,9 @@ namespace DatenMeister.Runtime.Objects
     /// </summary>
     public class ByMetaClassGrouper
     {
-        public static List<MetaClassGroup> Group(IReflectiveCollection collection)
+        public static List<MetaClassGroup<IObject>> Group(IReflectiveCollection collection)
         {
-            var result = new List<MetaClassGroup>();
+            var result = new List<MetaClassGroup<IObject>>();
 
             foreach (var item in collection.OfType<IObject>())
             {
@@ -43,7 +43,39 @@ namespace DatenMeister.Runtime.Objects
 
                 if (foundGroup == null)
                 {
-                    foundGroup = new MetaClassGroup(metaClass);
+                    foundGroup = new MetaClassGroup<IObject>(metaClass);
+                    result.Add(foundGroup);
+                }
+
+                foundGroup.Elements.Add(item);
+            }
+
+            return result;
+        }
+        
+        /// <summary>
+        /// Groups by the metaclasses
+        /// </summary>
+        /// <param name="collection">Collection </param>
+        /// <param name="conversionToObject">The method which converts the elements in the list</param>
+        /// <typeparam name="T">Type of the elements in the list which allows the conversion
+        /// </typeparam>
+        /// <returns>The grouped list</returns>
+        public static List<MetaClassGroup<T>> Group<T>(IEnumerable<T> collection, Func<T, IObject?> conversionToObject)
+        {
+            var result = new List<MetaClassGroup<T>>();
+
+            foreach (var item in collection)
+            {
+                var convertedElement = conversionToObject(item);
+                if (convertedElement == null) continue;
+                
+                var metaClass = (convertedElement as IElement)?.getMetaClass();
+                var foundGroup = result.FirstOrDefault(x => x.MetaClass == metaClass);
+
+                if (foundGroup == null)
+                {
+                    foundGroup = new MetaClassGroup<T>(metaClass);
                     result.Add(foundGroup);
                 }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Adoc;
@@ -22,11 +23,14 @@ namespace DatenMeister.Modules.Actions.ActionHandler.Reports
                 action.getOrDefault<IElement>(_DatenMeister._Actions._Reports._AdocReportAction.reportInstance);
             var filePath =
                 action.getOrDefault<string>(_DatenMeister._Actions._Reports._AdocReportAction.filePath);
-            
-            if ( string.IsNullOrEmpty(filePath))
+
+            if (string.IsNullOrEmpty(filePath))
             {
                 throw new InvalidOperationException("filePath is empty");
             }
+
+            var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
+            filePath = integrationSettings.NormalizeDirectoryPath(filePath);
 
             if (reportInstance == null)
             {

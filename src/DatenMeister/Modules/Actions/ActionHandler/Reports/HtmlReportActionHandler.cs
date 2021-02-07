@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Html;
@@ -27,6 +28,9 @@ namespace DatenMeister.Modules.Actions.ActionHandler.Reports
             {
                 throw new InvalidOperationException("filePath is empty");
             }
+            
+            var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
+            filePath = integrationSettings.NormalizeDirectoryPath(filePath);
 
             if (reportInstance == null)
             {

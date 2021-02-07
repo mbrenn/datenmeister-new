@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Just a configuration option which may be set during the development to recreate all items in treeview
         /// instead of reusing the existing items
         /// </summary>
-        private const bool ConfigurationAlwaysRefresh = true;
+        private const bool ConfigurationAlwaysRefresh = false; // TODO: true does not work with ShowTypeAsPackage
             
         /// <summary>
         /// Defines the logger being used
@@ -59,6 +59,9 @@ namespace DatenMeister.WPF.Forms.Base
 
         public static readonly DependencyProperty ShowMetaClassesProperty = DependencyProperty.Register(
             "ShowMetaClasses", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(default(bool), OnShowMetaClassesChange));
+        
+        public static readonly DependencyProperty ShowTypeAsPackageProperty = DependencyProperty.Register(
+            "ShowTypeAsPackage", typeof(bool), typeof(ItemsTreeView), new PropertyMetadata(true, OnShowTypeAsPackageChange));
 
         private static void OnShowMetaClassesChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -81,6 +84,28 @@ namespace DatenMeister.WPF.Forms.Base
         {
             get => (bool) GetValue(ShowMetaClassesProperty);
             set => SetValue(ShowMetaClassesProperty, value);
+        }
+
+        public bool ShowTypeAsPackage
+        {
+            get => (bool) GetValue(ShowTypeAsPackageProperty);
+            set => SetValue(ShowTypeAsPackageProperty, value);
+        }
+        
+        private static void OnShowTypeAsPackageChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is ItemsTreeView itemsTreeView))
+            {
+                throw new InvalidOperationException("Dependency object is not of type ItemsTreeView");
+            }
+
+            var newValue = (bool) e.NewValue;
+            itemsTreeView.UpdateForm();
+
+            if (newValue != (itemsTreeView.ShowMetaClassesCheckBtn.IsChecked == true))
+            {
+                itemsTreeView.TypeAsPackageButton.IsChecked = newValue;
+            }
         }
 
         private bool _cacheShowMetaClasses;
@@ -169,11 +194,6 @@ namespace DatenMeister.WPF.Forms.Base
         private TreeViewItem? _newSelectedItem;
         
         private INavigationHost? _navigationHost;
-
-        /// <summary>
-        /// Indicates whether the type shall be shown as package
-        /// </summary>
-        private bool _showTypeAsPackage = true;
 
         public ItemsTreeView()
         {
@@ -471,7 +491,7 @@ namespace DatenMeister.WPF.Forms.Base
             treeViewItem.Items.Clear();
             var parentItem = treeViewItem;
 
-            if (!_showTypeAsPackage)
+            if (!ShowTypeAsPackage)
             {
                 var childItems =
                     GetChildrenOfItem(itemParameter.Element)
@@ -836,9 +856,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             FilterMetaClassCheck.IsEnabled = true;
-
             FilterMetaClassCheck.IsChecked = _enableFilterMetaClasses;
-            TypeAsPackage.IsChecked = _showTypeAsPackage;
         }
 
         private void ShowMetaClassesCheckBtn_Click(object sender, RoutedEventArgs e)
@@ -849,14 +867,8 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void FilterMetaClassCheck_Click(object sender, RoutedEventArgs e)
         {
-            if (FilterMetaClassCheck.IsChecked == true)
-            {
-                _enableFilterMetaClasses = true;
-            }
-            else
-            {
-                _enableFilterMetaClasses = false;
-            }
+            _enableFilterMetaClasses =
+                FilterMetaClassCheck.IsChecked == true;
 
             // Clear Complete Form
             ClearForm();
@@ -865,14 +877,8 @@ namespace DatenMeister.WPF.Forms.Base
 
         private void TypeAsPackage_Click(object sender, RoutedEventArgs e)
         {
-            if (TypeAsPackage.IsChecked == true)
-            {
-                _showTypeAsPackage = true;
-            }
-            else
-            {
-                _showTypeAsPackage = false;
-            }
+            ShowTypeAsPackage = 
+                TypeAsPackageButton.IsChecked == true;
 
             // Clear Complete Form
             ClearForm();

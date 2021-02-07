@@ -8,7 +8,7 @@
       <packagedElement p2:type="dm:///_internal/types/internal#DatenMeister.Models.Reports.Simple.SimpleReportConfiguration" p2:id="28e21930-3de4-4e35-8269-fc27c77596fe" name="SimpleReport EnvironmentalVariables" typeMode="AllTypes" rootElement="dm:///_internal/environmentalvariables/" workspaceId="Management" />
       <packagedElement p2:type="dm:///_internal/types/internal#Actions.SimpleReportAction" p2:id="373e1863-c0aa-4eee-af40-52c24fdc2281" name="Export SimpleReport EnvironmentalVariables" path="dm:///_internal/environmentalvariables/" workspaceId="Management" filePath="%dm_ExportPath%/report_environmental.html" configuration-ref="dm:///dm_example#28e21930-3de4-4e35-8269-fc27c77596fe" />
       <packagedElement p2:type="dm:///_internal/types/internal#04878741-802e-4b7f-8003-21d25f38ac74" p2:id="ddb79b40-b209-4c02-a8d0-61d843d0e604" name="Open SimpleReport" filePath="%dm_ExportPath%/report_environmental.html" />
-      <packagedElement p2:type="dm:///_internal/types/internal#Actions.ActionSet" p2:id="30f2ca76-c415-45c3-ac17-c35fee52ad4a" name="Create and Open Environment Variables">
+      <packagedElement p2:type="dm:///_internal/types/internal#Actions.ActionSet" p2:id="30f2ca76-c415-45c3-ac17-c35fee52ad4a" name="ActionSet Environment Variables">
         <action href="dm:///dm_example#373e1863-c0aa-4eee-af40-52c24fdc2281" />
         <action href="dm:///dm_example#ddb79b40-b209-4c02-a8d0-61d843d0e604" />
       </packagedElement>

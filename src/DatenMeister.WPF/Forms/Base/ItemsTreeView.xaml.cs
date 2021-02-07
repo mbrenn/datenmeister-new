@@ -36,7 +36,7 @@ namespace DatenMeister.WPF.Forms.Base
         /// Just a configuration option which may be set during the development to recreate all items in treeview
         /// instead of reusing the existing items
         /// </summary>
-        private const bool ConfigurationAlwaysRefresh = false;
+        private const bool ConfigurationAlwaysRefresh = true;
             
         /// <summary>
         /// Defines the logger being used
@@ -123,7 +123,9 @@ namespace DatenMeister.WPF.Forms.Base
         /// </summary>
         private IEnumerable<IElement>? _filterMetaClasses;
 
-
+        /// <summary>
+        /// Determines whether the filter for the metaclasses are enabled. 
+        /// </summary>
         private bool _enableFilterMetaClasses = true;
 
         /// <summary>
@@ -164,8 +166,13 @@ namespace DatenMeister.WPF.Forms.Base
         /// Stores the item that shall be selected, after the items have been created
         /// </summary>
         private TreeViewItem? _newSelectedItem;
-
+        
         private INavigationHost? _navigationHost;
+        
+        /// <summary>
+        /// Indicates whether the type shall be shown as package
+        /// </summary>
+        private bool _showTypeAsPackage;
 
         public ItemsTreeView()
         {
@@ -458,50 +465,35 @@ namespace DatenMeister.WPF.Forms.Base
         /// be listed. </param>
         private void CreateSubTreeItems(ItemsControl treeViewItem, TreeViewItemParameter itemParameter)
         {
+            if (itemParameter.Element == null) return;
+
             treeViewItem.Items.Clear();
-            
-            if (itemParameter.Element is IExtent extent)
-            {
-                var childModels = new List<ItemsTreeViewItem>();
-                var n = 0;
-                foreach (var element in GetChildrenOfItem(extent))
-                {
-                    if (element.Element == null) continue; // Skip the empty ones
 
-                    var created =
-                        CreateTreeViewItemLazy(element);
-                    if (created != null)
-                        childModels.Add(created);
-                    n++;
-                    if (n >= MaxItemsPerLevel) break;
+            var childModels = new List<ItemsTreeViewItem>();
+
+            var childItems = GetChildrenOfItem(itemParameter.Element);
+
+            var n = 0;
+
+            // Gets the properties
+            foreach (var propertyValue in childItems)
+            {
+                var childTreeViewItem = CreateTreeViewItemLazy(propertyValue);
+                if (childTreeViewItem != null)
+                {
+                    childModels.Add(childTreeViewItem);
                 }
 
-                treeViewItem.ItemsSource = childModels;
+                n++;
+                childModels.Sort((x, y) =>
+                    NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
+
+                // Maximum depth of iteration is reached
+                if (n >= MaxItemsPerLevel) return;
             }
-            else if (itemParameter.Element is { } itemAsObject)
-            {
-                var n = 0;
 
-                // Gets the properties
-                var childModels = new List<ItemsTreeViewItem>();
-                foreach (var propertyValue in GetChildrenOfItem(itemAsObject))
-                {
-                    var childTreeViewItem = CreateTreeViewItemLazy(propertyValue);
-                    if (childTreeViewItem != null)
-                    {
-                        childModels.Add(childTreeViewItem);
-                    }
+            treeViewItem.ItemsSource = childModels;
 
-                    n++;
-
-                    childModels.Sort((x, y) =>
-                        NamedElementMethods.GetName(x)?.CompareTo(NamedElementMethods.GetName(y)) ?? 0);
-
-                    if (n >= MaxItemsPerLevel) break;
-                }
-
-                treeViewItem.ItemsSource = childModels;
-            }
         }
 
         /// <summary>
@@ -809,14 +801,8 @@ namespace DatenMeister.WPF.Forms.Base
 
             FilterMetaClassCheck.IsEnabled = true;
 
-            if (_enableFilterMetaClasses)
-            {
-                FilterMetaClassCheck.IsChecked = true;
-            }
-            else
-            {
-                FilterMetaClassCheck.IsChecked = false;
-            }
+            FilterMetaClassCheck.IsChecked = _enableFilterMetaClasses;
+            TypeAsPackage.IsChecked = _showTypeAsPackage;
         }
 
         private void ShowMetaClassesCheckBtn_Click(object sender, RoutedEventArgs e)
@@ -834,6 +820,22 @@ namespace DatenMeister.WPF.Forms.Base
             else
             {
                 _enableFilterMetaClasses = false;
+            }
+
+            // Clear Complete Form
+            ClearForm();
+            UpdateForm(false);
+        }
+
+        private void TypeAsPackage_Click(object sender, RoutedEventArgs e)
+        {
+            if (TypeAsPackage.IsChecked == true)
+            {
+                _showTypeAsPackage = true;
+            }
+            else
+            {
+                _showTypeAsPackage = false;
             }
 
             // Clear Complete Form

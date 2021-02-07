@@ -9,6 +9,7 @@
         <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
             <ToggleButton x:Name="ShowMetaClassesCheckBtn" Click="ShowMetaClassesCheckBtn_Click" >Show</ToggleButton>
             <ToggleButton x:Name="FilterMetaClassCheck" Click="FilterMetaClassCheck_Click" >Filter</ToggleButton>
+            <ToggleButton x:Name="TypeAsPackage" Click="TypeAsPackage_Click" >Pckg</ToggleButton>
 
         </StackPanel>
         <TreeView x:Name="TreeView" 

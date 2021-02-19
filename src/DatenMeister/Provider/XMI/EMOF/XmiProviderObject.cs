@@ -640,9 +640,14 @@ namespace DatenMeister.Provider.XMI.EMOF
 
             if (value is XmiProviderObject valueAsXmlElement)
             {
+                var xmiId = XmiId.Get(valueAsXmlElement.XmlNode);
+                if (xmiId == null) return null;
+                
                 foreach (var subElement in
                     XmlNode.Elements(normalizePropertyName)
-                        .Where(subElement => XmiId.Get(subElement) == XmiId.Get(valueAsXmlElement.XmlNode)))
+                        .Where(subElement =>
+                            XmiId.Get(subElement) == xmiId
+                            || XmiId.GetHref(subElement) == xmiId))
                 {
                     return subElement;
                 }

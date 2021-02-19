@@ -2,6 +2,7 @@
 using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Integration;
 using DatenMeister.Models;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Runtime;
@@ -46,7 +47,8 @@ namespace DatenMeister.Modules.Actions.ActionHandler.Reports
             }
             else
             {
-                filePath = Environment.ExpandEnvironmentVariables(filePath);
+                var integrationSettings = actionLogic.ScopeStorage.Get<IntegrationSettings>();
+                filePath = integrationSettings.NormalizeDirectoryPath(filePath);
             }
 
             IObject? item = null;

@@ -79,12 +79,14 @@ namespace DatenMeister.Integration
         /// <returns>The normalized directory path</returns>
         public string NormalizeDirectoryPath(string directoryPath)
         {
+            directoryPath = Environment.ExpandEnvironmentVariables(directoryPath);
+            
             if (!Path.IsPathRooted(directoryPath))
             {
                 directoryPath = Path.Combine(DatabasePath, directoryPath);
             }
 
-            return Environment.ExpandEnvironmentVariables(directoryPath);
+            return directoryPath;
         }
     }
 }

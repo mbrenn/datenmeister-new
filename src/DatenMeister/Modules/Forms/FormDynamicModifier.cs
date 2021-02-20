@@ -44,6 +44,7 @@ namespace DatenMeister.Modules.Forms
                     {
                         collection ??= ListFormCollectionCreator.GetCollection(tab, selectedObject);
 
+                        var foundOne = false;
                         // Now duplicate the tab
                         var groups = 
                             ByMetaClassGrouper
@@ -53,6 +54,7 @@ namespace DatenMeister.Modules.Forms
                                 .ToList();
                         foreach (var group in groups)
                         {
+                            foundOne = true;
                             var title = tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.title);
                             
                             var copiesTab = ObjectCopier.Copy(new MofFactory(tab), tab);
@@ -73,7 +75,10 @@ namespace DatenMeister.Modules.Forms
                             tabs.add(n + 1, copiesTab);
                         }
 
-                        tabs.remove(n);
+                        if (foundOne)
+                        {
+                            tabs.remove(n);
+                        }
                     }
                 }
 

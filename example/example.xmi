@@ -34,4 +34,5 @@
       </packagedElement>
     </packagedElement>
   </item>
+  <item p2:type="dm:///_internal/types/internal#DatenMeister.Models.DefaultTypes.Package" p2:id="fcccb94d-07f1-48b6-8bc3-8772c3e7ed6d" name="Report Examples" xmlns:p2="http://www.omg.org/spec/XMI/20131001" />
 </xmi>

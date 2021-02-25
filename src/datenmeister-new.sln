@@ -41,6 +41,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library - .Net Standard", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Benchmark", "tests\DatenMeister.Benchmark\DatenMeister.Benchmark.csproj", "{EC757E7B-C6F7-4BD0-88D2-F647CCF9E1E2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{2220B5AA-D22E-469B-96B7-BB70BF58BAD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.WebServer", "Web\DatenMeister.WebServer\DatenMeister.WebServer.csproj", "{A75C6B0F-2021-496B-A752-D0197FC6D693}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -306,6 +310,24 @@ Global
 		{EC757E7B-C6F7-4BD0-88D2-F647CCF9E1E2}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
 		{EC757E7B-C6F7-4BD0-88D2-F647CCF9E1E2}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
 		{EC757E7B-C6F7-4BD0-88D2-F647CCF9E1E2}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Debug|x64.Build.0 = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Debug|x86.Build.0 = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Release|x64.ActiveCfg = Release|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Release|x64.Build.0 = Release|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Release|x86.ActiveCfg = Release|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.Release|x86.Build.0 = Release|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.ViewLogicAdditionalInfo|x64.ActiveCfg = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
+		{A75C6B0F-2021-496B-A752-D0197FC6D693}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -325,6 +347,7 @@ Global
 		{263E74EC-019D-47FB-A653-362F84CCDE5D} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{581A5C15-979B-4EE9-9548-F55AD8F9EBBC} = {42691CE7-A35B-42C8-808B-7404528A4014}
 		{EC757E7B-C6F7-4BD0-88D2-F647CCF9E1E2} = {42691CE7-A35B-42C8-808B-7404528A4014}
+		{A75C6B0F-2021-496B-A752-D0197FC6D693} = {2220B5AA-D22E-469B-96B7-BB70BF58BAD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B2B6BA4-9AD3-43B6-B7D9-C1CC0860820C}

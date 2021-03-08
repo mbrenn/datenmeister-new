@@ -16,14 +16,16 @@ namespace DatenMeister.WebServer
         {
             InitializeLogging();
 
+            // Loads the DatenMeister
             var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
             defaultSettings.IsLockingActivated = true;
 
             GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
                 
+            // Starts the webserver
             CreateHostBuilder(args).Build().Run();
             
-            
+            // Unloads the Datenmeister
             GiveMe.TryGetScope()?.UnuseDatenMeister();
         }
 

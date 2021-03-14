@@ -1,11 +1,13 @@
 using System.IO;
 using System.Reflection;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
 using DatenMeister.Modules.ZipExample;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Workspaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.JSInterop;
 
 namespace ZipCodeWebsite
 {
@@ -23,6 +25,10 @@ namespace ZipCodeWebsite
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         
+        /// <summary>
+        /// Gets or sets the zipcode extent
+        /// </summary>
+        public static IUriExtent ZipCodeExtent { get; set; }
         
         /// <summary>
         /// Prepares the zipcode
@@ -37,10 +43,12 @@ namespace ZipCodeWebsite
                 dm.ScopeStorage);
 
             var foundExtent = 
-                dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///zipcodes/");
+                dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///zipcodes/")
+                as IUriExtent;
+            
             if (foundExtent == null)
             {
-                manager.AddZipCodeExample(
+                foundExtent = manager.AddZipCodeExample(
                     WorkspaceNames.WorkspaceData, 
                     "dm:///zipcodes/",
                     null,
@@ -49,6 +57,7 @@ namespace ZipCodeWebsite
                         "Loaded/zipcodes.csv"));
             }
 
+            ZipCodeExtent = foundExtent;
         }
     }
 }

@@ -41,7 +41,7 @@ namespace ZipCodeWebsite
             app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "htdocs"))
+                    Path.Combine(env.ContentRootPath, "wwwroot"))
             });
             
             app.UseStaticFiles(
@@ -49,7 +49,7 @@ namespace ZipCodeWebsite
                     new SharedOptions
                     {
                         FileProvider = new PhysicalFileProvider(
-                            Path.Combine(env.ContentRootPath, "htdocs"))
+                            Path.Combine(env.ContentRootPath, "wwwroot"))
                     }));
         }
     }

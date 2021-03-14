@@ -28,13 +28,12 @@ namespace ZipCodeWebsite
         /// <summary>
         /// Gets or sets the zipcode extent
         /// </summary>
-        public static IUriExtent ZipCodeExtent { get; set; }
+        public static IUriExtent? ZipCodeExtent { get; set; }
         
         /// <summary>
         /// Prepares the zipcode
         /// </summary>
         /// <param name="dm"></param>
-        /// <exception cref="NotImplementedException"></exception>
         private static void PrepareZipCode(IDatenMeisterScope dm)
         {
             var manager = new ZipCodeExampleManager(
@@ -53,7 +52,7 @@ namespace ZipCodeWebsite
                     "dm:///zipcodes/",
                     null,
                     Path.Combine(
-                        Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program))!.Location!),
+                        Path.GetDirectoryName(Assembly.GetAssembly(typeof(Program))!.Location!)!,
                         "Loaded/zipcodes.csv"));
             }
 

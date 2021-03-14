@@ -2,6 +2,7 @@
    
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,9 +14,8 @@
       <None Update="Examples\plz.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="htdocs\index.html">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <Wwwroot Include="wwwroot\**\*.*">
+      </Wwwroot>
     </ItemGroup>
 
     <ItemGroup>
@@ -29,4 +29,9 @@
       </PackageReference>
     </ItemGroup>
     
+    <Target Name="AfterBuid" AfterTargets="Build">
+        <Message Text="$(MSBuildProjectDirectory)/$(OutputPath)" Importance="high" />
+        <Message Text="@(Wwwroot)" Importance="high" />
+        <Copy SourceFiles="@(Wwwroot)" DestinationFolder="$(MSBuildProjectDirectory)/$(OutputPath)/wwwroot/%(RecursiveDir)"  /> 
+    </Target>    
 </Project>

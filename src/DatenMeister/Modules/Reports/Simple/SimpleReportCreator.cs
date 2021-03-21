@@ -62,106 +62,111 @@ namespace DatenMeister.Modules.Reports.Simple
             var creationMode = _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
                 ? CreationMode.All
                 : CreationMode.All & ~CreationMode.AddMetaClass;
-
-            var rootElement = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.rootElement);
+ 
+            var rootElementUrl = _reportConfiguration.getOrDefault<string>(_SimpleReportConfiguration.rootElement);
+            var workspaceId = _reportConfiguration.getOrDefault<string>(_SimpleReportConfiguration.workspaceId)
+                              ?? WorkspaceNames.WorkspaceData;
+            var rootElement = ExtentHelper.TryGetItemByWorkspaceAndPath(
+                _workspaceLogic,
+                workspaceId,
+                rootElementUrl);
             if (rootElement == null)
-                throw new InvalidOperationException("rootElement is null");
-
-            using (var report = new HtmlReport(textWriter))
             {
-                var itemFormatter = new ItemFormatter(report, _workspaceLogic);
+                throw new InvalidOperationException("rootElement is null");
+            }
 
-                report.SetDefaultCssStyle();
+            using var report = new HtmlReport(textWriter);
+            var itemFormatter = new ItemFormatter(report, _workspaceLogic);
 
-                if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showRootElement))
+            report.SetDefaultCssStyle();
+
+            if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showRootElement))
+            {
+                var name = NamedElementMethods.GetFullName(rootElement);
+                report.Add(new HtmlHeadline($"Reported Item '{name}'", 1));
+                var detailForm =
+                    _formCreator.CreateDetailForm(rootElement, creationMode);
+                itemFormatter.FormatItem(rootElement, detailForm);
+            }
+
+            // And now start the report
+            report.StartReport("Extent: " + NamedElementMethods.GetName(rootElement));
+
+            // First, gets the elements to be shown
+            IReflectiveCollection elements =
+                new TemporaryReflectiveCollection(_defaultClassifierHints.GetPackagedElements(rootElement));
+            if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showDescendents))
+            {
+                elements = elements.GetAllCompositesIncludingThemselves();
+            }
+
+            var first = (elements.FirstOrDefault(x => x is IElement) as IElement)?.metaclass;
+            Debug.WriteLine(first);
+
+            report.Add(new HtmlHeadline("Items in collection", 1));
+
+            var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
+            if (_reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == _Elements.___ReportTableForTypeMode.PerType)
+            {
+                // Splits them up by metaclasses 
+                var metaClasses =
+                    elements.GroupBy(
+                        x => x is IElement element ? element.metaclass : null,
+                        new MofObjectEqualityComparer()).ToList();
+
+                foreach (var metaClass in metaClasses)
                 {
-                    var name = NamedElementMethods.GetFullName(rootElement);
-                    report.Add(new HtmlHeadline($"Reported Item + '{name}'", 1));
-                    var detailForm =
-                        _formCreator.CreateDetailForm(rootElement, creationMode);
-                    itemFormatter.FormatItem(rootElement, detailForm);
-                }
+                    // Gets the name of the metaclass
+                    var metaClassName = metaClass.Key == null
+                        ? "Unclassified"
+                        : "Classifier: " + NamedElementMethods.GetName(metaClass.Key);
 
-                // And now start the report
-                report.StartReport("Extent: " + NamedElementMethods.GetName(rootElement));
+                    report.Add(new HtmlHeadline(metaClassName, 2));
 
-                // First, gets the elements to be shown
-                IReflectiveCollection elements =
-                    new TemporaryReflectiveCollection(_defaultClassifierHints.GetPackagedElements(rootElement));
-                if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showDescendents))
-                {
-                    elements = elements.GetAllCompositesIncludingThemselves();
-                }
+                    var collection = new TemporaryReflectiveCollection(metaClass);
 
-                var first = (elements.FirstOrDefault(x => x is IElement) as IElement)?.metaclass;
-                Debug.WriteLine(first);
-
-                report.Add(new HtmlHeadline("Items in collection", 1));
-
-                var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
-                if (_reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == _Elements.___ReportTableForTypeMode.PerType)
-                {
-                    // Splits them up by metaclasses 
-                    var metaClasses =
-                        elements.GroupBy(
-                            x => x is IElement element ? element.metaclass : null,
-                            new MofObjectEqualityComparer()).ToList();
-
-                    foreach (var metaClass in metaClasses)
-                    {
-                        // Gets the name of the metaclass
-                        var metaClassName = metaClass.Key == null
-                            ? "Unclassified"
-                            : "Classifier: " + NamedElementMethods.GetName(metaClass.Key);
-
-                        report.Add(new HtmlHeadline(metaClassName, 2));
-
-                        var collection = new TemporaryReflectiveCollection(metaClass);
-
-                        if (metaClass.Key == null)
-                        {
-                            foundForm = _formCreator.CreateListFormForElements(
-                                collection,
-                                creationMode);
-                        }
-                        else
-                        {
-                            foundForm = _formCreator.CreateListFormForMetaClass(metaClass.Key, creationMode);
-                        }
-
-                        AddFullNameColumnIfNecessary(foundForm);
-
-                        ReportItemCollection(collection, foundForm, itemFormatter);
-                    }
-                }
-                else
-                {
-                    if (foundForm == null)
+                    if (metaClass.Key == null)
                     {
                         foundForm = _formCreator.CreateListFormForElements(
-                            elements,
+                            collection,
                             creationMode);
-
-                        AddFullNameColumnIfNecessary(foundForm);
+                    }
+                    else
+                    {
+                        foundForm = _formCreator.CreateListFormForMetaClass(metaClass.Key, creationMode);
                     }
 
-                    ReportItemCollection(elements, foundForm, itemFormatter);
+                    AddFullNameColumnIfNecessary(foundForm);
+
+                    ReportItemCollection(collection, foundForm, itemFormatter);
+                }
+            }
+            else
+            {
+                if (foundForm == null)
+                {
+                    foundForm = _formCreator.CreateListFormForElements(
+                        elements,
+                        creationMode);
+
+                    AddFullNameColumnIfNecessary(foundForm);
                 }
 
-                report.EndReport();
+                ReportItemCollection(elements, foundForm, itemFormatter);
             }
+
+            report.EndReport();
         }
 
         private void AddFullNameColumnIfNecessary(IObject foundForm)
         {
             if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showFullName))
             {
-
                 // Create the metaclass as a field
                 var fullNamefield = MofFactory.Create(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
                 fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
                 fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
-                foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(fullNamefield);
+                foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, fullNamefield);
             }
         }
 

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+   
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+      <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Examples\plz.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <Wwwroot Include="wwwroot\**\*.*">
+      </Wwwroot>
+    </ItemGroup>
+
+    <ItemGroup>
+      <TypeScriptCompile Include="wwwroot\js\dm.zipcodefinder.ts" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+    
+    <Target Name="AfterBuid" AfterTargets="Build">
+        <Message Text="$(MSBuildProjectDirectory)/$(OutputPath)" Importance="high" />
+        <Message Text="@(Wwwroot)" Importance="high" />
+        <Copy SourceFiles="@(Wwwroot)" DestinationFolder="$(MSBuildProjectDirectory)/$(OutputPath)/wwwroot/%(RecursiveDir)"  /> 
+    </Target>    
+</Project>

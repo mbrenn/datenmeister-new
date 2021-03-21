@@ -69,6 +69,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         public IProviderObject ProviderObject { get; }
 
         /// <summary>
+        /// Gets or sets the flag whether slim uml evaluation is activated
+        /// </summary>
+        public bool IsSlimUmlEvaluation =>
+            !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
+
+        /// <summary>
         /// Initializes a new instance of the MofObject class.
         /// </summary>
         /// <param name="providedObject">The database abstraction of the object</param>
@@ -269,7 +275,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                     if (valueForSetting is IProviderObject valueAsProviderObject &&
                         !valueAsProviderObject.HasContainer())
                     {
-                        SetContainer(ProviderObject, child, valueForSetting);
+                        SetContainer(ProviderObject, valueForSetting);
                     }
                 }
             }
@@ -283,11 +289,12 @@ namespace DatenMeister.Core.EMOF.Implementation
                 if (valueForSetting is IProviderObject valueAsProviderObject &&
                     !valueAsProviderObject.HasContainer())
                 {
-                    SetContainer(ProviderObject, value, valueForSetting);
+                    SetContainer(ProviderObject, valueForSetting);
                 }
 
-                if (value is MofObject ofMofObject && valueForSetting is UriReference && 
-                    ofMofObject.ReferencedExtent is IUriExtent asUriExtent)
+                if (value is MofObject ofMofObject 
+                    && valueForSetting is UriReference 
+                    && ofMofObject.ReferencedExtent is IUriExtent asUriExtent)
                 {
                     _referencedExtent?.AddMetaExtent(asUriExtent);
                 }
@@ -300,13 +307,12 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Sets the container of the child object to the this instance
         /// </summary>
         /// <param name="parentProviderObject">The parent object containing the child after the allocation</param>
-        /// <param name="child">Child as potential IElement object</param>
-        /// <param name="childForProviders">Child as potential provider object</param>
-        internal static void SetContainer(IProviderObject parentProviderObject, object? child, object childForProviders)
+        /// <param name="childAsProviderObject">Child as potential provider object</param>
+        internal static void SetContainer(IProviderObject parentProviderObject, object childAsProviderObject)
         {
-            if (child is IElement childAsElement && childForProviders is IProviderObject childProviderObject)
+            if (childAsProviderObject is IProviderObject childProviderObject)
             {
-                if (childAsElement.GetExtentOf() == null && !childProviderObject.HasContainer())
+                if (!childProviderObject.IsRoot() && !childProviderObject.HasContainer())
                 {
                     SetContainer(parentProviderObject, childProviderObject);
                 }

@@ -9,6 +9,7 @@
         <StackPanel DockPanel.Dock="Right" Orientation="Vertical">
             <ToggleButton x:Name="ShowMetaClassesCheckBtn" Click="ShowMetaClassesCheckBtn_Click" >Show</ToggleButton>
             <ToggleButton x:Name="FilterMetaClassCheck" Click="FilterMetaClassCheck_Click" >Filter</ToggleButton>
+            <ToggleButton x:Name="TypeAsPackageButton" Click="TypeAsPackage_Click" >Pckg</ToggleButton>
 
         </StackPanel>
         <TreeView x:Name="TreeView" 
@@ -17,7 +18,8 @@
                   MouseRightButtonDown="TreeView_MouseRightButtonDown"
                   ContextMenuOpening="TreeView_ContextMenuOpening" 
                   HorizontalContentAlignment="Left"
-                  VerticalContentAlignment="Center">
+                  VerticalContentAlignment="Center"
+                  TreeViewItem.Expanded="TreeView_OnExpanded">
                 <TreeView.ContextMenu>
                     <ContextMenu x:Name="ItemContextMenu" Opened="ItemContextMenu_OnOpened"></ContextMenu>
                 </TreeView.ContextMenu>

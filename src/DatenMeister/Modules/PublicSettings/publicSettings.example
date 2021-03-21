@@ -1,0 +1,18 @@
+﻿ <xmi>
+     <!-- This is an example file... Remove the settings node below and remove the example notes -->
+     <settings />
+     
+     <!--
+        * Thw following chapter describes the example configuration with additional environmental 
+        * variable being recommended as import, report and export folders. 
+        * If these variables are not set, then these will be set to the desktop folder
+     <settings
+ 		windowTitle = "Der DatenMeister - Example" 
+        databasePath="%LOCALAPPDATA%/DatenMeister Example">
+         <environmentVariable key="dm_ImportPath" value="c:\import-folder" />
+         <environmentVariable key="dm_ReportPath" value="c:\report-folder" />
+         <environmentVariable key="dm_ExportPath" value="c:\export-folder" />
+     </settings>
+     -->
+ </xmi>
+ 

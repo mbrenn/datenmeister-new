@@ -301,5 +301,31 @@ namespace DatenMeister.Uml.Helper
         {
             return (element.getMetaClass() as IHasId)?.Id?.EndsWith("PrimitiveType") == true;
         }
+
+        /// <summary>
+        /// Gets the property type of a certain property within the element.
+        /// It can be null, if the property is not associated to the metaclass or
+        /// if the propertytype is not connected to a metaclass
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="propertyName"></param>
+        /// <returns>The propertytype of the property or nul, if not found. </returns>
+        public static IElement? GetPropertyTypeOfValuesProperty(IElement? element, string propertyName)
+        {
+            var metaClass = element?.getMetaClass();
+            if (element == null || metaClass == null)
+            {
+                return null;
+            }
+
+            var property = GetPropertyOfClassifier(metaClass, propertyName);
+            if (property == null)
+            {
+                return null;
+            }
+
+            var propertyType = PropertyMethods.GetPropertyType(property);
+            return propertyType;
+        }
     }
 }

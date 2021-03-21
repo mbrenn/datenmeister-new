@@ -118,7 +118,7 @@ namespace DatenMeister.Modules.Reports
                     workspaceId = WorkspaceNames.WorkspaceData;
                 }
 
-                var sourceRef = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.source);
+                var sourceRef = source.getOrDefault<string>(_DatenMeister._Reports._ReportInstanceSource.path);
 
                 IReflectiveCollection? sourceItems = null;
                 var workspace = WorkspaceLogic.GetWorkspace(workspaceId) ?? WorkspaceLogic.GetDataWorkspace();

@@ -22,7 +22,17 @@ namespace DatenMeister.Provider.DynamicRuntime
         public LoadedProviderInfo LoadProvider(IElement configuration, ExtentCreationFlags extentCreationFlags)
         {
             var runtimeClass = configuration.getOrDefault<string>(_DynamicRuntimeLoaderConfig.runtimeClass);
-            if (runtimeClass == null || string.IsNullOrEmpty(runtimeClass))
+            var provider = CreateInstanceByRuntimeClass<IDynamicRuntimeProvider>(runtimeClass);
+
+            var resultProvider = new DynamicRuntimeProviderWrapper(
+                provider,
+                configuration);
+            return new LoadedProviderInfo(resultProvider, configuration);
+        }
+
+        public static T CreateInstanceByRuntimeClass<T>(string runtimeClass) where T : class
+        {
+            if (string.IsNullOrEmpty(runtimeClass))
             {
                 Logger.Warn("No configuration is set");
             }
@@ -35,22 +45,19 @@ namespace DatenMeister.Provider.DynamicRuntime
 
             if (selectedType == null)
             {
-                var message = $"Selected Type is {runtimeClass} is not found";
+                var message = $"Selected .Net-Type to create {runtimeClass} is not found";
                 throw new InvalidOperationException(message);
             }
 
-            Logger.Info("InMemoryProvider is created");
+            Logger.Info($"InMemoryProvider {runtimeClass} is created");
 
-            if (!(Activator.CreateInstance(selectedType) is IDynamicRuntimeProvider provider))
+            if (!(Activator.CreateInstance(selectedType) is T result))
             {
                 var message = $"Selected Type is {runtimeClass} is not of type IDynamicRuntimeProvider";
                 throw new InvalidOperationException(message);
             }
 
-            var resultProvider = new DynamicRuntimeProviderWrapper(
-                provider,
-                configuration);
-            return new LoadedProviderInfo(resultProvider, configuration);
+            return result;
         }
 
         public void StoreProvider(IProvider extent, IElement configuration)

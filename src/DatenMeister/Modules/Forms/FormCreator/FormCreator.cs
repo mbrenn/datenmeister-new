@@ -172,6 +172,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 // Sets the information in cache, that the element was already added
                 cache.MetaClassAlreadyAdded = true;
             }
+            
+            // Sorts the field by important properties
+            SortFieldsByImportantProperties(form);
 
 #if DEBUG
             if (!FormMethods.ValidateForm(form))
@@ -268,6 +271,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                     column.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration) | DotNetHelper.IsEnumeration(propertyValue?.GetType()));
             }
             
+            SortFieldsByImportantProperties(form);
+            
 #if DEBUG
             if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");
@@ -337,6 +342,9 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 cache.MetaClassAlreadyAdded = true;
             }
 
+            // Sorts the field by important properties
+            SortFieldsByImportantProperties(form);
+            
 #if DEBUG
             if (!FormMethods.ValidateForm(form))
                 throw new InvalidOperationException("Something went wrong during creation of form");

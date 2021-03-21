@@ -52,7 +52,37 @@ namespace DatenMeister.Provider.XMI.Standards
         public static string? Get(XElement element)
         {
             var xmlIdAttribute = element.Attribute(Namespaces.Xmi + "id");
-            return xmlIdAttribute?.Value;
+            if (xmlIdAttribute?.Value != null)
+            {
+                return xmlIdAttribute.Value;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the href
+        /// </summary>
+        /// <param name="element">Element to be evaluated</param>
+        /// <returns>The found element</returns>
+        public static string? GetHref(XElement element)
+        {
+            // Ok, now checks the hrefs... 
+            var hrefAttribute = element.Attribute("href");
+            var hrefValue = hrefAttribute?.Value;
+
+            if (hrefValue != null)
+            {
+                var hash = hrefValue.IndexOf('#');
+                if (hash != -1)
+                {
+                    return hrefValue.Substring(hash + 1);
+                }
+
+                return hrefValue;
+            }
+
+            return null;
         }
 
         /// <summary>

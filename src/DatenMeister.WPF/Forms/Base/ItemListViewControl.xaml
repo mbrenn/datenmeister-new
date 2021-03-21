@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:base="clr-namespace:DatenMeister.WPF.Forms.Base"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
              Unloaded="ItemListViewControl_OnUnloaded">
@@ -38,16 +39,7 @@
                     Visibility="Collapsed"  HorizontalAlignment="Right" Margin="10">
         </StackPanel>
         <Grid x:Name="MainGrid">
-            <DataGrid Grid.Row="0" IsReadOnly="True"
-                x:Name="DataGrid" Margin="10,0,10,0" MouseDoubleClick="DataGrid_MouseDoubleClick"
-                EnableRowVirtualization="True">
-                <DataGrid.CommandBindings>
-                    <CommandBinding Command="Copy" Executed="CommandBinding_OnExecuted" />
-                </DataGrid.CommandBindings>
-                <DataGrid.InputBindings>
-                    <KeyBinding Key="C" Modifiers="Control" Command="Copy" />
-                </DataGrid.InputBindings>
-            </DataGrid>
+            <base:ItemListViewGridDm Grid.Row="0" x:Name="DataGrid2" />
         </Grid>
     </DockPanel>
 </UserControl>

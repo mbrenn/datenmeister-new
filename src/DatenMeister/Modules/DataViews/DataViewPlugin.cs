@@ -33,6 +33,7 @@ namespace DatenMeister.Modules.DataViews
             {
                 case PluginLoadingPosition.AfterBootstrapping:
                     var workspace = new Workspace(WorkspaceNames.WorkspaceViews, "Container of all views which are created dynamically.");
+                    workspace.IsDynamicWorkspace = true;
                     _workspaceLogic.AddWorkspace(workspace);
                     workspace.ExtentPlugins.Add(new DataViewExtentPlugin(_dataViewLogic));
                     break;

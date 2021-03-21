@@ -79,7 +79,8 @@ namespace DatenMeister.WPF.Navigation
 
             var navigateToItemConfig = new NavigateToItemConfig(element)
             {
-                Form = new FormDefinition(formPathToType)
+                Form = new FormDefinition(formPathToType),
+                Title = "Select Type"
             };
 
             var result = await Navigator.CreateDetailWindow(window, navigateToItemConfig);

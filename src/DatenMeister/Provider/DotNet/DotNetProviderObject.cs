@@ -156,6 +156,18 @@ namespace DatenMeister.Provider.DotNet
         public void SetContainer(IProviderObject? value)
         {
         }
+        
+        /// <inheritdoc />
+        public void SetAsRoot(IProvider provider)
+        {
+            Provider.AddElement(this);
+        }
+
+        /// <inheritdoc />
+        public bool IsRoot()
+        {
+            return Provider.GetRootObjects().Any(x => x.Equals(this));
+        }
 
         /// <inheritdoc />
         public void EmptyListForProperty(string property)

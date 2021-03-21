@@ -212,12 +212,13 @@ namespace DatenMeister.Uml.Helper
         /// </summary>
         /// <param name="element">Element whose name is requested</param>
         /// <param name="noReferences">Indicates whether the elements shall be dereferenced</param>
+        /// <param name="nullName">Defines the return value in case the given element is null</param>
         /// <returns>The found name or null, if not found</returns>
-        public static string GetName(IObject? element, bool noReferences = false)
+        public static string GetName(IObject? element, bool noReferences = false, string nullName = "null")
         {
             if (element == null)
             {
-                return "null";
+                return nullName;
             }
 
             // If the element is not uml induced or the property is empty, check by
@@ -255,12 +256,13 @@ namespace DatenMeister.Uml.Helper
         /// Gets the name of the given object
         /// </summary>
         /// <param name="element"></param>
-        /// <returns></returns>
-        public static string GetName(object element)
+        /// <param name="nullName">Defines the return value in case the given element is null</param>
+        /// <returns>The converted element</returns>
+        public static string GetName(object? element, string nullName="null")
         {
             if (element == null)
             {
-                throw new ArgumentNullException(nameof(element));
+                return nullName;
             }
 
             return

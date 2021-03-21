@@ -93,7 +93,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             {
                 var result = MofObject.ProviderObject.AddToProperty(PropertyName, valueToBeAdded);
 
-                MofObject.SetContainer(MofObject.ProviderObject, value, valueToBeAdded);
+                MofObject.SetContainer(MofObject.ProviderObject, valueToBeAdded);
 
                 UpdateContent();
 

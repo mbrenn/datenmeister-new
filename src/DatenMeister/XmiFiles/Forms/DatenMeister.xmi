@@ -121,7 +121,7 @@
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" isReadOnly="True" p1:id="e11ca04a-1244-4c17-bac4-06dcef0c7df2" />
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.MetaClassElementFieldData" name="Metaclass" p1:id="0a65b024-2880-4906-93f0-dd2ae32fcd28" />
         </tab>
-        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="packagedElement" name="packagedElement" property="packagedElement" p1:id="494ae4d1-e6cc-4d8e-b42c-9325a4d462f4" autoGenerateFields="True">
+        <tab p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.ListForm" title="packagedElement" name="packagedElement" property="packagedElement" p1:id="494ae4d1-e6cc-4d8e-b42c-9325a4d462f4" autoGenerateFields="True" duplicatePerType="True">
           <field p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.TextFieldData" name="name" title="name" p1:id="28fa89d2-d928-4f7c-849d-164225ab4802" />
           <defaultTypesForNewElements p1:type="dm:///_internal/types/internal#DatenMeister.Models.Forms.DefaultTypeForNewElement" name="null" p1:id="2e8fdeb0-4f06-4093-8e3b-0e9ed621543b" />
         </tab>

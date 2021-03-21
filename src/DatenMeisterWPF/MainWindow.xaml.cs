@@ -197,7 +197,7 @@ namespace DatenMeisterWPF
                     "Open Log",
                     OpenLog,
                     null,
-                    NavigationCategories.DatenMeister + ".Tool"),
+                    "Admin"),
                 new ApplicationMenuButtonDefinition(
                     "Close",
                     Close,
@@ -209,23 +209,7 @@ namespace DatenMeisterWPF
                         Owner = this
                     }.ShowDialog(),
                     "file-about",
-                    NavigationCategories.DatenMeister + ".Tool"),
-                new ApplicationMenuButtonDefinition(
-                    "Open Public Settings",
-                    () =>
-                    {
-                        var publicSettings = GiveMe.Scope.ScopeStorage.Get<PublicIntegrationSettings>();
-                        if (File.Exists(publicSettings.settingsFilePath))
-                        {
-                            DotNetHelper.OpenExplorer(publicSettings.settingsFilePath);
-                        }
-                        else
-                        {
-                            MessageBox.Show("No Public Settings were loaded.");
-                        }
-                    },
-                    "",
-                    NavigationCategories.DatenMeister + ".Tool"),
+                    "Admin")
             };
 
             // 2) The properties of the guest
@@ -281,20 +265,23 @@ namespace DatenMeisterWPF
             {
                 canUnregister.Unregister();
             }
-            
-            
+
             // Asks the user, if he was not already asked before
 
             if (!DoCloseWithoutAcknowledgement)
             {
-                var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
-                var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
-                if (MessageBox.Show(
-                    $"Are you sure, that you would like to close '{windowTitle}'",
-                    $"Close {windowTitle}?",
-                    MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                var scope = GiveMe.TryGetScope();
+                if (scope != null)
                 {
-                    e.Cancel = true;
+                    var integrationSettings = scope.ScopeStorage.Get<IntegrationSettings>();
+                    var windowTitle = integrationSettings.WindowTitle ?? "Der DatenMeister";
+                    if (MessageBox.Show(
+                        $"Are you sure, that you would like to close '{windowTitle}'",
+                        $"Close {windowTitle}?",
+                        MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                    {
+                        e.Cancel = true;
+                    }
                 }
             }
         }

@@ -108,11 +108,10 @@ namespace DatenMeister.WPF.Forms.Fields
             var panel = _referenceField.CreateElement(value, fieldData, detailForm, fieldFlags);
             _referenceRadioButton.IsEnabled = !isReadOnly;
             _referenceRadioButton.Content = panel;
-
-
+            
             stackPanel.Children.Add(_textRadioButton);
             stackPanel.Children.Add(_referenceRadioButton);
-            stackPanel.Margin = new Thickness(10);
+            stackPanel.Margin = new Thickness(0, 10, 0, 10);
 
             _textRadioButton.IsEnabled = !isReadOnly;
 

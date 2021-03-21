@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using BurnSystems;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
@@ -264,12 +265,19 @@ namespace DatenMeister.WPF.Modules.ReportManager
         private void CreateReportForExplorerView(IObject rootElement, IElement? simpleReportConfiguration = null)
         {
             simpleReportConfiguration ??=
-                InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration)
+                new MofFactory(rootElement)
+                    .create(_DatenMeister.TheOne.Reports.__SimpleReportConfiguration)
                     .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showDescendents, true)
                     .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showRootElement, true)
                     .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.showFullName, true)
-                    .SetProperty(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, rootElement);
-
+                    .SetProperty(
+                        _DatenMeister._Reports._SimpleReportConfiguration.rootElement,
+                        rootElement.GetUri() ??
+                        throw new InvalidOperationException("Uri of element could not be retrieved"))
+                    .SetProperty(
+                        _DatenMeister._Reports._SimpleReportConfiguration.workspaceId,
+                        rootElement.GetUriExtentOf()?.GetWorkspace()?.id ?? WorkspaceNames.WorkspaceData);
+            
             string tmpPath;
             using (var streamWriter = GetRandomWriter(out tmpPath))
             {

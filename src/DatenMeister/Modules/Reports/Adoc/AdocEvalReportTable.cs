@@ -23,6 +23,8 @@ namespace DatenMeister.Modules.Reports.Adoc
             {
                 reportCreator.TextWriter.Write("|" + header.ColumnName);
             }
+
+            reportCreator.TextWriter.WriteLine(string.Empty);
         }
 
         public override void WriteRow(AdocReportCreator reportCreator, IEnumerable<TableCellContent> cellContents)

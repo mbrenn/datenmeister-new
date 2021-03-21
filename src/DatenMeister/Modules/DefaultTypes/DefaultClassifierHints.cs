@@ -1,5 +1,3 @@
-#nullable enable
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -156,7 +154,7 @@ namespace DatenMeister.Modules.DefaultTypes
             return true;
         }
 
-        public IEnumerable<string> GetPackagingPropertyNames(IObject item)
+        public static IEnumerable<string> GetPackagingPropertyNames(IObject item)
         {
             var metaClass = (item as IElement)?.getMetaClass();
 
@@ -232,6 +230,17 @@ namespace DatenMeister.Modules.DefaultTypes
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the information whether the propertyname is a generic property
+        /// </summary>
+        /// <param name="element">Element to be handled</param>
+        /// <param name="propertyName">Name of the property</param>
+        /// <returns></returns>
+        public static bool IsPackagingProperty(IObject element, string propertyName)
+        {
+            return GetPackagingPropertyNames(element).Contains(propertyName);
         }
         
         /// <summary>

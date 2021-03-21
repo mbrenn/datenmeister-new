@@ -95,7 +95,7 @@ namespace DatenMeister.WPF.Forms.Lists
             }
         }
 
-        public override void OnMouseDoubleClick(IObject element)
+        public virtual void OnMouseDoubleClick(IObject element)
         {
             var uri = element.getOrDefault<string>("uri") ?? string.Empty;
 

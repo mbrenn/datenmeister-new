@@ -62,7 +62,8 @@ namespace DatenMeister.WPF.Forms.Fields
             {
                 var contentBlock = new TextBlock
                 {
-                    Text = _valueText
+                    Text = _valueText,
+                    TextWrapping = TextWrapping.Wrap
                 };
 
                 var copyToClipboardAdd = new MenuItem {Header = "Copy to Clipboard"};

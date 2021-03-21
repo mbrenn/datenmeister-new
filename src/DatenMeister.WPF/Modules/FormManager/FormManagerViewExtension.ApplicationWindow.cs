@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
@@ -14,13 +16,13 @@ namespace DatenMeister.WPF.Modules.FormManager
         /// </summary>
         /// <param name="viewExtensionInfo"></param>
         /// <returns></returns>
-        private static ViewExtension GetForApplicationWindow(
+        private static IEnumerable<ViewExtension> GetForApplicationWindow(
             ViewExtensionInfo viewExtensionInfo)
         {
             var navigationHost = viewExtensionInfo.NavigationHost ??
                                  throw new InvalidOperationException("navigationHost == null");
             
-            var result = new ApplicationMenuButtonDefinition(
+            yield return new ApplicationMenuButtonDefinition(
                 "Goto User Forms", async () => await NavigatorForItems.NavigateToItemsInExtent(
                     navigationHost,
                     WorkspaceNames.WorkspaceManagement,
@@ -28,7 +30,15 @@ namespace DatenMeister.WPF.Modules.FormManager
                 string.Empty,
                 NavigationCategories.DatenMeisterNavigation);
 
-            return result;
+
+
+            yield return new ApplicationMenuButtonDefinition(
+                "Goto Management", async () => await NavigatorForExtents.NavigateToExtentList(
+                    navigationHost,
+                    WorkspaceNames.WorkspaceManagement),
+                string.Empty,
+                NavigationCategories.DatenMeisterNavigation);
+
         }
     }
 }

@@ -10,7 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;
@@ -62,7 +62,7 @@ namespace DatenMeister.WPF.Forms.Fields
             _propertyName = _fieldData.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
             _panel = new DockPanel();
 
-            CreatePanelElement();
+            RefreshPanelElement();
 
             fieldFlags.CanBeFocused = true;
 
@@ -76,7 +76,7 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <summary>
         /// Creates the content for the panel element dependent on the item and its values
         /// </summary>
-        private void CreatePanelElement()
+        private void RefreshPanelElement()
         {
             if (_panel == null)
                 throw new InvalidOperationException("_panel == null");
@@ -87,13 +87,16 @@ namespace DatenMeister.WPF.Forms.Fields
             if (_fieldData == null)
                 throw new InvalidOperationException("_fieldData == null");
             
+            // First of all, clear the panel
             _panel.Children.Clear();
 
+            // Get the required information
             var valueOfElement = _element.getOrDefault<IReflectiveCollection>(_propertyName);
             var form = _fieldData.getOrDefault<IObject>(_DatenMeister._Forms._SubElementFieldData.form);
             var isReadOnly = _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.isReadOnly)
                 || _fieldFlags?.IsReadOnly == true;
-            
+
+            // Check whether specialized classes shall be included
             _includeSpecializationsForDefaultTypes =
                 !_fieldData.isSet(_DatenMeister._Forms._SubElementFieldData.includeSpecializationsForDefaultTypes)
                 || _fieldData.getOrDefault<bool>(
@@ -121,7 +124,9 @@ namespace DatenMeister.WPF.Forms.Fields
                 {
                     propertyType = PropertyMethods.GetPropertyType(property);
                 }
-                
+
+                // The form will be created by evaluating the name of the property
+                // and the type of the property
                 form = formsLogic.GetListFormForElementsProperty(
                            _element, 
                            _propertyName, 
@@ -205,7 +210,7 @@ namespace DatenMeister.WPF.Forms.Fields
         /// <param name="items">The items to be removed</param>
         private static void RemoveItem(IReflectiveCollection reflectiveCollection, IList<IObject> items)
         {
-            var names = items.Select(NamedElementMethods.GetName).Join(", ");
+            var names = items.Select(x=>NamedElementMethods.GetName(x)).Join(", ");
             if (MessageBox.Show(
                     $"Are you sure to delete the item: " +
                     $"{names}?",
@@ -221,7 +226,9 @@ namespace DatenMeister.WPF.Forms.Fields
         }
 
         /// <summary>
-        /// Creates the buttons for the manipulations
+        /// Creates the buttons for the manipulations which include the
+        /// moving of elements, the deletion of elements and the creation of new
+        /// elements
         /// </summary>
         private void CreateManipulationButtons(IReflectiveCollection collection)
         {
@@ -291,7 +298,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements);
             if (!allowOnlyExistingElements)
             {
-                var buttonNew = new Button {Content = "N"};
+                var buttonNew = new CreateNewInstanceButton() {Content = "N"};
                 SetStyle(buttonNew);
                 SetNewButton(buttonNew);
                 stackPanel.Children.Add(buttonNew);
@@ -322,7 +329,7 @@ namespace DatenMeister.WPF.Forms.Fields
                     if (collection.Count() == 1)
                     {
                         // When the first item is added, then the complete form must be regenerated. 
-                        CreatePanelElement();
+                        RefreshPanelElement();
                     }
                     else
                     {
@@ -346,182 +353,68 @@ namespace DatenMeister.WPF.Forms.Fields
         }
 
         /// <summary>
-        /// Creates a new button 
-        /// </summary>
-        private void CreateNewItemButton()
-        {
-            _ = _panel ?? throw new InvalidOperationException("_panel == null");
-
-            var createItemButton = new Button
-            {
-                Content = "Create new item",
-                HorizontalAlignment = HorizontalAlignment.Right
-            };
-
-            SetNewButton(createItemButton);
-
-            DockPanel.SetDock(createItemButton, Dock.Bottom);
-            _panel.Children.Add(createItemButton);
-        }
-
-        /// <summary>
         /// Sets the style and the interaction for a button to become a button which
         /// can create new elements
         /// </summary>
         /// <param name="createItemButton"></param>
-        private void SetNewButton(Button createItemButton)
+        private void SetNewButton(CreateNewInstanceButton createItemButton)
         {
             var navigationHost = _navigationHost ??
                                  throw new InvalidOperationException("_navigationHost == null");
             var panel = _panel ??
                         throw new InvalidOperationException("_panel == null");
-            var element = _element ??
-                          throw new InvalidOperationException("_element == null");
-
-            // If user clicks on the button, an empty reflective collection is created
-            createItemButton.Click += (x, y) =>
-            {
-                // Creates the default button
-                var listItems = new List<Tuple<string, Action>>
-                {
-                    new Tuple<string, Action>(
-                        "Select Type...",
-                        async () =>
-                        {
-                            var referencedExtent = (element as MofObject)?.ReferencedExtent;
-                            if (referencedExtent == null)
-                                throw new InvalidOperationException("referencedExtent == null");
-
-                            var result = await NavigatorForItems.NavigateToCreateNewItem(
-                                navigationHost,
-                                referencedExtent,
-                                null);
-
-                            if (result?.IsNewObjectCreated == true && result.NewObject != null)
-                            {
-                                var propertyCollection = element.getOrDefault<IReflectiveCollection>(_propertyName);
-                                if (propertyCollection != null)
-                                {
-                                    propertyCollection.add(result.NewObject);
-                                }
-                                else
-                                {
-                                    element.set(_propertyName, new List<object> {result.NewObject});
-                                }
-
-                                panel.Children.Clear();
-                                CreatePanelElement();
-                            }
-                        })
-                };
-
-                // Creates the button for the specializations
-                var getAllSpecializations = _includeSpecializationsForDefaultTypes;
-                
-                // Gets the buttons for specific types
-                if (!_fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements))
-                {
-                    // Only of new elements may be added
-                    if (_fieldData?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._SubElementFieldData
-                        .defaultTypesForNewElements) is { } defaultTypesForNewItems)
-                    {
-                        IEnumerable<IElement> specializedTypes;
-
-                        var typeList =
-                            defaultTypesForNewItems.OfType<IElement>().Select(
-                                innerType =>
-                                    innerType.isSet(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
-                                        ? innerType.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement
-                                            .metaClass)
-                                        : innerType);
-
-                        if (getAllSpecializations)
-                        {
-                            specializedTypes =
-                                (from type in typeList
-                                    from newSpecializationType in ClassifierMethods.GetSpecializations(type)
-                                    select newSpecializationType).Distinct();
-                        }
-                        else
-                        {
-                            specializedTypes = typeList;
-                        }
-
-                        listItems.AddRange(
-                            from btn in specializedTypes
-                            let button = CreateButtonForType(btn)
-                            orderby button.Item1
-                            select button
-                        );
-                    }
-                }
-
-                var menu = new ContextMenu();
-                var menuItems = new List<MenuItem>();
-
-                foreach (var item in listItems)
-                {
-                    var menuItem = new MenuItem
-                    {
-                        Header = item.Item1
-                    };
-                    menuItem.Click += (a, b) => item.Item2();
-                    menuItems.Add(menuItem);
-                }
-
-                menu.ItemsSource = menuItems;
-                menu.PlacementTarget = createItemButton;
-                menu.IsOpen = true;
-            };
-        }
+            var element = _element as IElement ??
+                          throw new InvalidOperationException("_element == null || as IElement");
 
 
-        /// <summary>
-        /// Creates a button for a certain type and add it to the panel
-        /// </summary>
-        /// <param name="type">Type which shall be added</param>
-        private Tuple<string, Action> CreateButtonForType(IElement type)
-        {
-            if (_element == null) throw new InvalidOperationException("_element == null");
-            if (_panel == null) throw new InvalidOperationException("_panel == null");
-            if (_navigationHost == null) throw new InvalidOperationException("_navigationHost == null");
+            // Gets the default types
+            var defaultTypesForNewItems = 
+                _fieldData?.getOrDefault<IReflectiveCollection>(
+                    _DatenMeister._Forms._SubElementFieldData.defaultTypesForNewElements);
             
-            var typeName = type.get(_UML._CommonStructure._NamedElement.name);
+            var typeList =
+                defaultTypesForNewItems?.OfType<IElement>().Select(
+                    innerType =>
+                        innerType.isSet(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass)
+                            ? innerType.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement
+                                .metaClass)
+                            : innerType);
 
-            var result = new Tuple<string, Action>(
-                $"New {typeName}",
-                async () =>
+            createItemButton.SetDefaultTypesForCreation(typeList);
+
+            // Sets the information whether the element will be generated as composite or not
+            createItemButton.ToolTip =
+                ObjectOperations.IsCompositeProperty(element, _propertyName)
+                    ? "Composite"
+                    : "Non-Composite";
+
+            // Reacts upon the click
+            // If user clicks on the button, an empty reflective collection is created
+            createItemButton.TypeSelected += async (x, y) =>
+            {
+                var referencedExtent = (element as MofObject)?.ReferencedExtent;
+                if (referencedExtent == null)
+                    throw new InvalidOperationException("referencedExtent == null");
+
+                var result =
+                    await NavigatorForItems.NavigateToCreateNewItem(
+                        navigationHost,
+                        referencedExtent,
+                        y.SelectedType);
+
+                if (result?.IsNewObjectCreated == true 
+                    && result.NewObject is IElement newElementAsIElement)
                 {
-                    var referencedExtent = (_element as MofObject)?.ReferencedExtent
-                                           ?? throw new InvalidOperationException("referencedExtent == null");
+                    ObjectOperations.AddItemReferenceToInstanceProperty(
+                        element,
+                        _propertyName,
+                        newElementAsIElement,
+                        true);
 
-                    var defaultWorkspace =
-                        _fieldData.getOrDefault<string>(_DatenMeister._Forms._SubElementFieldData
-                            .defaultWorkspaceOfNewElements);
-                    var defaultExtent =
-                        _fieldData.getOrDefault<string>(_DatenMeister._Forms._SubElementFieldData.defaultExtentOfNewElements);
-
-                    var elements =
-                        await NavigatorForItems.NavigateToCreateNewItem(
-                            _navigationHost, referencedExtent, type, defaultWorkspace, defaultExtent);
-                    
-                    if (elements?.IsNewObjectCreated == true && elements.NewObject != null)
-                    {
-                        var propertyCollection = _element.getOrDefault<IReflectiveCollection>(_propertyName); 
-                        if (propertyCollection != null)
-                        {
-                            propertyCollection.add(elements.NewObject);
-                        }
-                        else
-                        {
-                            _element.set(_propertyName, new List<object> {elements.NewObject});
-                        }
-
-                        CreatePanelElement();
-                    }
-                });
-
-            return result;
+                    panel.Children.Clear();
+                    RefreshPanelElement();
+                }
+            };
         }
     }
 }

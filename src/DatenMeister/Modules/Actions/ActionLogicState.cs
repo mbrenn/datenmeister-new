@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Modules.Actions.ActionHandler;
+using DatenMeister.Modules.Actions.ActionHandler.Reports;
+using DatenMeister.Modules.Actions.Transformations;
 
 namespace DatenMeister.Modules.Actions
 {
@@ -39,6 +41,11 @@ namespace DatenMeister.Modules.Actions
             logicState.AddActionHandler(new ExportToXmiActionHandler());
             logicState.AddActionHandler(new ClearCollectionActionHandler());
             logicState.AddActionHandler(new ActionSetActionHandler());
+            logicState.AddActionHandler(new ItemTransformationActionHandler());
+            logicState.AddActionHandler(new SimpleReportActionHandler());
+            logicState.AddActionHandler(new AdocReportActionHandler());
+            logicState.AddActionHandler(new HtmlReportActionHandler());
+            logicState.AddActionHandler(new OpenDocumentActionHandler());
 
             return logicState;
         }

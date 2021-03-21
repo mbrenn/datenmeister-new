@@ -103,7 +103,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
         }
 
-        public override void OnMouseDoubleClick(IObject element)
+        public virtual void OnMouseDoubleClick(IObject element)
         {
             var workspaceId = element.getOrDefault<string>("id");
             NavigatorForExtents.NavigateToExtentList(NavigationHost, workspaceId);

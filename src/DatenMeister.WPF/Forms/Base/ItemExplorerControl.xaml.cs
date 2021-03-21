@@ -13,12 +13,10 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
 using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Fields;
@@ -26,7 +24,6 @@ using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.ListViews;
-using DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
@@ -85,18 +82,8 @@ namespace DatenMeister.WPF.Forms.Base
             protected set => _extent = value;
         }
 
-        public IReflectiveCollection Collection
-        {
-            get
-            {
-                if (RootItem is IExtent extent)
-                {
-                    return extent.elements();
-                }
-
-                return GetPropertiesAsReflection(RootItem, null);
-            }
-        }
+        public IReflectiveCollection Collection => 
+            ListFormCollectionCreator.GetCollection(null, RootItem);
 
         public IObject Item => SelectedItem ?? Extent;
 
@@ -378,26 +365,54 @@ namespace DatenMeister.WPF.Forms.Base
             IReflectiveCollection? container = null)
         {
             EffectiveForm = formDefinition.Element;
+            
+            // Creates the tabs to be used for showing  
+            CreateTabs(value, formDefinition, container);
 
+            ViewExtensions = formDefinition.ViewExtensions;
+            
+            NavigationHost.RebuildNavigation();
+        }
+
+        /// <summary>
+        /// Creates the tabs according to the rules of the tab creation
+        /// </summary>
+        /// <param name="value">Value to be currently shown (may also be an extent9</param>
+        /// <param name="formDefinition">The form definition</param>
+        /// <param name="container">The container element being used for deletion</param>
+        /// <param name="tabs">Tabs to be shown</param>
+        private void CreateTabs(
+            IObject value, 
+            FormDefinition formDefinition, 
+            IReflectiveCollection? container)
+        {
+            // Creates the dynamic tabs depending on the content
+            FormDynamicModifier.ModifyFormDependingOnObject(EffectiveForm, value);
+            
+            // Now gets the tabs
             var tabs = EffectiveForm?.getOrDefault<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
             if (tabs == null)
             {
                 // No tabs, nothing to do
                 return;
             }
-
+            
+            // Creates the tabs themselves
             foreach (var tab in tabs.OfType<IElement>())
             {
+                // Goes through the tabs
+
+                // Creates the tab extensions
                 var tabViewExtensions = new List<ViewExtension>();
-                
+
                 // 1) Gets the form extensions as defined by the reportCreator of the form definition
                 if (formDefinition.TabViewExtensionsFunction != null)
                     tabViewExtensions = formDefinition.TabViewExtensionsFunction(tab).ToList();
 
                 // 2) Forwards the form definitions
-                if (formDefinition.ViewExtensions != null) 
+                if (formDefinition.ViewExtensions != null)
                     tabViewExtensions.AddRange(formDefinition.ViewExtensions);
-                
+
                 // 3) Queries the plugins
                 var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
                 var extentData = new ViewExtensionInfoTab(NavigationHost, this)
@@ -412,10 +427,6 @@ namespace DatenMeister.WPF.Forms.Base
 
                 AddTab(value, tab, tabViewExtensions, container);
             }
-
-            ViewExtensions = formDefinition.ViewExtensions;
-            
-            NavigationHost?.RebuildNavigation();
         }
 
         /// <summary>
@@ -500,8 +511,9 @@ namespace DatenMeister.WPF.Forms.Base
                 ?? new List<object?>();
 
             var createdUserControl = control;
-            
             var viewExtensionPlugins = GuiObjectCollection.TheOne.ViewExtensionFactories;
+
+            var listCollection = ListFormCollectionCreator.GetCollection(tabForm, value);
             
             // Sets the content for the tabs
             if (value is IExtent extent)
@@ -535,7 +547,7 @@ namespace DatenMeister.WPF.Forms.Base
                     CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, null);
                 }
                 
-                control.SetContent(extent.elements(), tabForm, usedViewExtensions);
+                control.SetContent(listCollection, tabForm, usedViewExtensions);
             }
             else
             {
@@ -587,10 +599,8 @@ namespace DatenMeister.WPF.Forms.Base
                     // Creates the menu and buttons for the default types. 
                     CreateMenuAndButtonsForDefaultTypes(defaultTypesForNewItems, usedViewExtensions, propertyName);
                 }
-
-                // The properties of a specific item shall be shown
-                var elements = GetPropertiesAsReflection(value, propertyName);
-                control.SetContent(elements, tabForm, usedViewExtensions);
+                
+                control.SetContent(listCollection, tabForm, usedViewExtensions);
             }
 
             return createdUserControl;
@@ -612,72 +622,6 @@ namespace DatenMeister.WPF.Forms.Base
             string? parentProperty)
         {
             if (usedViewExtensions == null) throw new ArgumentNullException(nameof(usedViewExtensions));
-
-            List<MenuItem> GetMenuItems()
-            {
-                // Stores the menu items for the context menu
-                var menuItems = new List<MenuItem>();
-                var menuItem = new MenuItem
-                {
-                    Header = "Select Type..."
-                };
-
-                menuItem.Click += async (x, y) => await CreateNewElementByUser(null, parentProperty);
-                menuItems.Add(menuItem);
-
-                var alreadyIncludedElements = new HashSet<IElement>();
-
-                // Sets the generic buttons to create the new types
-                foreach (var type in defaultTypesForNewItems.OfType<IElement>())
-                {
-                    // Check if type is a directly type or the DefaultTypeForNewElement
-                    if (type.metaclass?.equals(
-                        _DatenMeister.TheOne.Forms.__DefaultTypeForNewElement) == true)
-                    {
-                        var newType =
-                            type.getOrDefault<IElement>(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass);
-                        var tempParentProperty =
-                            type.getOrDefault<string>(_DatenMeister._Forms._DefaultTypeForNewElement.parentProperty)
-                            ?? parentProperty;
-
-                        if (newType != null)
-                        {
-                            Create(newType, tempParentProperty, alreadyIncludedElements);
-                        }
-                    }
-                    else
-                    {
-                        Create(type, parentProperty, alreadyIncludedElements);
-                    }
-
-                    void Create(IElement newType, string? innerParentProperty, HashSet<IElement> visitedElements)
-                    {
-                        var typeName = newType.get(_UML._CommonStructure._NamedElement.name);
-
-                        usedViewExtensions.Add(new GenericButtonDefinition(
-                            $"New {typeName}",
-                            async () => await CreateNewElementByUser(newType, innerParentProperty))
-                        {
-                            Tag = new TagCreateMetaClass(newType)
-                        });
-
-                        foreach (var newSpecializationType in ClassifierMethods.GetSpecializations(newType, visitedElements))
-                        {
-                            // Stores the menu items for the context menu
-                            menuItem = new MenuItem
-                            {
-                                Header = $"New {newSpecializationType}"
-                            };
-
-                            menuItem.Click += async (x, y) => await CreateNewElementByUser(newSpecializationType, innerParentProperty);
-                            menuItems.Add(menuItem);
-                        }
-                    }
-                }
-
-                menuItems = menuItems.OrderBy(x => x.Header.ToString()).ToList();
-                return menuItems;
-            }
 
             async Task CreateNewElementByUser(IElement? type, string? innerParentProperty)
             {
@@ -702,9 +646,19 @@ namespace DatenMeister.WPF.Forms.Base
 
             // Sets the button for the new item
             usedViewExtensions.Add(
-                new GenericButtonDefinition(
-                    "New Item...",
-                    () => _ = new ContextMenu {ItemsSource = GetMenuItems(), IsOpen = true}));
+                new FreeWpfElementDefinition
+                {
+                    ElementFactory = () =>
+                    {
+                        var result = new CreateNewInstanceButton();
+                        result.SetDefaultTypesForCreation(defaultTypesForNewItems.OfType<IElement>());
+                        result.TypeSelected += async (x, y) =>
+                        {
+                            await CreateNewElementByUser(y.SelectedType, parentProperty);
+                        };
+                        return result;
+                    }
+                });
         }
 
         /// <summary>
@@ -726,16 +680,6 @@ namespace DatenMeister.WPF.Forms.Base
             control.SetContent(value, tabForm, container, formParameter);
             control.ElementSaved += (x, y) => MessageBox.Show("Element saved.");
             return control;
-        }
-
-        private IReflectiveCollection GetPropertiesAsReflection(IObject value, string? propertyName)
-        {
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                return new PropertiesAsReflectiveCollection(value);
-            }
-
-            return value.get<IReflectiveCollection>(propertyName);
         }
 
         private void NavigationTreeView_OnItemChosen(object sender, ItemEventArgs e)
@@ -843,11 +787,6 @@ namespace DatenMeister.WPF.Forms.Base
         public void ClearTreeViewUiElement()
         {
             TreeViewButtonArea.Children.Clear();
-        }
-        
-        public virtual void OnMouseDoubleClick(IObject element)
-        {
-            NavigateToElement(element);
         }
 
         private void btnViewMode_OnClick(object sender, RoutedEventArgs e)

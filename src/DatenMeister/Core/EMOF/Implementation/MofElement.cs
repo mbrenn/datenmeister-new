@@ -26,7 +26,6 @@ namespace DatenMeister.Core.EMOF.Implementation
                     {
                         throw new InvalidOperationException("The ID is already set within the extent.");
                     }
-                    
                 }
                 
                 ProviderObject.Id = value;
@@ -74,12 +73,9 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         private IElement? _cachedMetaClass;
 
-        private bool IsSlimEvaluation =>
-            !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
-
         public override bool isSet(string property)
         {
-            if (!IsSlimEvaluation)
+            if (!IsSlimUmlEvaluation)
             {
                 // Checks whether we have a derived property 
                 var metaClass = getMetaClass();
@@ -97,7 +93,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         protected override (bool, object?) GetDynamicProperty(string property)
         {
-            if (!IsSlimEvaluation)
+            if (!IsSlimUmlEvaluation)
             {
                 var metaClass = getMetaClass();
                 if (!(metaclass?.GetExtentOf() is MofExtent extent))
@@ -117,7 +113,13 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public IElement? getMetaClass()
+        IElement? IElement.getMetaClass()
+        {
+            return getMetaClass();
+        }
+
+        /// <inheritdoc />
+        public IElement? getMetaClass(bool traceFailing = true)
         {
             if (_cachedMetaClass != null)
             {
@@ -133,7 +135,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
             var result =
                 (ReferencedExtent as IUriResolver)
-                ?.ResolveElement(uri, ResolveType.OnlyMetaClasses | ResolveType.AlsoTypeWorkspace)
+                ?.Resolve(uri, ResolveType.OnlyMetaClasses | ResolveType.AlsoTypeWorkspace, traceFailing) as IElement
                 ?? new MofObjectShadow(uri);
 
             _cachedMetaClass = result;

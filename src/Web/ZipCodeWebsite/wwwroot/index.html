@@ -10,11 +10,20 @@
     <script src="js/dm.zipcodefinder.js"></script>
 </head>
 <body>
+<div class="container-fluid">
     <h1>German Zipcode Finder</h1>
+</div>
 
-    <input type="text" name="searchtext" id="zipcode_searchtext" />
-
-    <div id="zipcode_resulttable">
+    <div class="container-fluid">
+    <form>
+        <div class="mb-3">
+    <label for="zipcode_searchtext" class="form-label">Search:</label>
+    <input type="text" name="searchtext" id="zipcode_searchtext" class="form-control" />
+        </div>
+    </form>
+    </div>
+    
+    <div id="zipcode_resulttable" class="container-fluid">
         
     </div>
 </body>

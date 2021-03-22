@@ -1,4 +1,4 @@
-/// <reference path="node_modules/@types/jquery/index.d.ts" />
+/// <reference path="../../node_modules/@types/jquery/index.d.ts" />
 $(function () {
     $("#zipcode_searchtext").on({
         keyup: function () {

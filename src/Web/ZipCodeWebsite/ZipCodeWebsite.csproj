@@ -41,5 +41,6 @@
         <Copy SourceFiles="@(Wwwroot)" DestinationFolder="$(MSBuildProjectDirectory)/$(OutputPath)/wwwroot/%(RecursiveDir)" />
         <Message Text="Copying 'WebAssembly' to Output-Directory" Importance="high" />
         <Copy SourceFiles="@(WebAssemblyCC)" DestinationFolder="$(MSBuildProjectDirectory)/$(OutputPath)/wwwroot/_framework/%(RecursiveDir)" />
+        <Copy SourceFiles="@(WebAssemblyCC)" DestinationFolder="$(MSBuildProjectDirectory)/wwwroot/_framework/%(RecursiveDir)" />
     </Target>
 </Project>

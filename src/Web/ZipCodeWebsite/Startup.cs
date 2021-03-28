@@ -1,12 +1,11 @@
-using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.StaticFiles.Infrastructure;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using ZipCodeWebsite.Models;
 
 namespace ZipCodeWebsite
 {
@@ -23,6 +22,9 @@ namespace ZipCodeWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddSingleton<ZipCodeHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,30 +36,29 @@ namespace ZipCodeWebsite
             }
 
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ServeUnknownFileTypes = true
+            });
 
             app.UseRouting();
+            app.UseAuthorization();
+
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapBlazorHub();
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });            
+            
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
-            
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-            
-            app.UseDefaultFiles(new DefaultFilesOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "wwwroot"))
-            });
-            
-            app.UseStaticFiles(
-                new StaticFileOptions(
-                    new SharedOptions
-                    {
-                        FileProvider = new PhysicalFileProvider(
-                            Path.Combine(env.ContentRootPath, "wwwroot"))
-                    }));
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿@inherits LayoutComponentBase
+@using ZipCodeWebAssembly.Pages
+
+<div class="container-fluid">
+    <h1>German Zipcode Finder</h1>
+</div>
+    
+<ul class="nav">
+    <li class="nav-item"><a class="nav-link active" href="index.html">Via Json</a></li>
+    <li class="nav-item"><a class="nav-link" href="/IndexRazor">Via Razor-Only</a></li>
+    <li class="nav-item"><a class="nav-link" href="/IndexBlazor">Via Blazor</a></li>   
+    <li class="nav-item"><a class="nav-link" href="/IndexBlazorClient">Via Blazor-Client</a></li>     
+</ul>
+
+<ZipCodeSearch />

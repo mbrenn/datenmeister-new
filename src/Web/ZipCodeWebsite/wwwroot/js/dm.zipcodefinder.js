@@ -25,7 +25,14 @@ var ZipCodeLoader = /** @class */ (function () {
         this.getZipCodes(searchText).done(function (data) {
             if (tthis.step != currentStep)
                 return;
-            var htmlResult = "<table class=\"table\">";
+            var htmlResult = "";
+            if (data.truncated === true) {
+                htmlResult += '<div class="alert alert-primary" role="alert">More than 100 items found!</div>';
+            }
+            if (data.noItemFound === true) {
+                htmlResult += '<div class="alert alert-danger" role="alert">No item found!</div>';
+            }
+            htmlResult += "<table class=\"table\">";
             htmlResult += "<tr><th>Zipcode</th><th>Name</th><th>Longitudinal</th><th>Latitude</th></tr>";
             for (var key in data.items) {
                 if (!data.items.hasOwnProperty(key)) {

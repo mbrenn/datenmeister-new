@@ -15,12 +15,12 @@ namespace ZipCodeWebsite.Pages
         
         public void OnGet()
         {
-            ZipCodes = ZipCodeHandler.GetZipCodes(searchtext);
+            ZipCodes = ZipCodeLogic.GetZipCodes(searchtext);
         }
 
         public void OnPost()
         {
-            ZipCodes = ZipCodeHandler.GetZipCodes(searchtext);
+            ZipCodes = ZipCodeLogic.GetZipCodes(searchtext);
         }
     }
 }

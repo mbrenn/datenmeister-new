@@ -15,7 +15,7 @@
     
     @if (Model == null)
     {
-        Model = ZipCodeHandler.GetZipCodes(null);
+        Model = ZipCodeLogic.GetZipCodes(null);
     }
 
     @if (Model.truncated)
@@ -62,6 +62,6 @@
     
     private void OnSearchTextChange()
     {
-        Model = ZipCodeHandler.GetZipCodes(searchtext);
+        Model = ZipCodeLogic.GetZipCodes(searchtext);
     }
 }

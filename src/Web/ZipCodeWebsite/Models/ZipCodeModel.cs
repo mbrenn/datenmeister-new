@@ -19,8 +19,10 @@ namespace ZipCodeWebsite.Models
     
     public class ZipCodeModel
     {
-        public List<ZipCodeData> items { get; set; } = new List<ZipCodeData>();
+        public List<ZipCodeData> items { get; set; } = new();
+        
         public bool truncated { get; set; }
+        
         public bool noItemFound { get; set; }
     }
 

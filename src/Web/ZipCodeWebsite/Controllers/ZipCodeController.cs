@@ -17,7 +17,7 @@ namespace ZipCodeWebsite.Controllers
     {
         public object Get(string? search)
         {
-            return ZipCodeHandler.GetZipCodes(search);
+            return ZipCodeLogic.GetZipCodes(search);
         }
     }
 }

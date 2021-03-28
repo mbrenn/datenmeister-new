@@ -8,9 +8,8 @@ using DatenMeister.Runtime.Functions.Queries;
 
 namespace ZipCodeWebsite.Models
 {
-    public class ZipCodeHandler
+    public class ZipCodeLogic
     {
-
         public static ZipCodeModel GetZipCodes(string? search)
         {
             if (Program.ZipCodeExtent == null)

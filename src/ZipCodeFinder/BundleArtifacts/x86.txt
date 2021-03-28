@@ -1,2 +1,0 @@
-MainPackage=C:\Projekte\datenmeister-new\src\ZipCodeFinder\bin\x86\Debug\ZipCodeFinder_1.3.0.0_x86_Debug.appx
-SymbolPackage=C:\Projekte\datenmeister-new\src\ZipCodeFinder\AppPackages\ZipCodeFinder_1.3.0.0_Debug_Test\ZipCodeFinder_1.3.0.0_x86_Debug.appxsym

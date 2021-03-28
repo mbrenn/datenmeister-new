@@ -1,6 +1,0 @@
-MainPackage=C:\Projekte\datenmeister-new\src\ZipCodeFinder\bin\x86\Debug\arm\ZipCodeFinder\ZipCodeFinder_1.3.0.0_ARM_Debug.appx
-SymbolPackage=C:\Projekte\datenmeister-new\src\ZipCodeFinder\AppPackages\ZipCodeFinder_1.3.0.0_Debug_Test\ZipCodeFinder_1.3.0.0_ARM_Debug.appxsym
-ResourcePack=C:\Projekte\datenmeister-new\src\ZipCodeFinder\bin\x86\Debug\arm\ZipCodeFinder\ZipCodeFinder_1.3.0.0_scale-100.appx
-ResourcePack=C:\Projekte\datenmeister-new\src\ZipCodeFinder\bin\x86\Debug\arm\ZipCodeFinder\ZipCodeFinder_1.3.0.0_scale-125.appx
-ResourcePack=C:\Projekte\datenmeister-new\src\ZipCodeFinder\bin\x86\Debug\arm\ZipCodeFinder\ZipCodeFinder_1.3.0.0_scale-150.appx
-ResourcePack=C:\Projekte\datenmeister-new\src\ZipCodeFinder\bin\x86\Debug\arm\ZipCodeFinder\ZipCodeFinder_1.3.0.0_scale-400.appx

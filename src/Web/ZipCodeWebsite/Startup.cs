@@ -38,16 +38,19 @@ namespace ZipCodeWebsite
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            
-            app.UseStaticFiles(new StaticFileOptions
+
+            var config = new StaticFileOptions
             {
                 ServeUnknownFileTypes = true
-            });
-
+            };
+            
+            var extensionProvider = new FileExtensionContentTypeProvider();
+            extensionProvider.Mappings.Add(".dll", "application/octet-stream");
+            config.ContentTypeProvider = extensionProvider;
+            
+            app.UseStaticFiles(config);
             app.UseRouting();
             app.UseAuthorization();
-
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();

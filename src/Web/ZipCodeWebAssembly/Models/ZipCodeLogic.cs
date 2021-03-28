@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using ZipCodeLibrary;
 
-namespace ZipCodeWebsite.Models
+namespace ZipCodeWebAssembly.Models
 {
-    public class ZipCodeHandler
+    public static class ZipCodeLogic
     {
         public static async Task<ZipCodeModel?> GetZipCodes(HttpClient httpClient, string? search)
         {

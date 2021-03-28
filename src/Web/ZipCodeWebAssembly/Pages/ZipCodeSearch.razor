@@ -1,7 +1,7 @@
 ﻿@page "/ZipCodeSearch"
 @inject HttpClient Http
-
-@using ZipCodeWebsite.Models
+@using ZipCodeLibrary
+@using ZipCodeWebAssembly.Models
 
 <div class="container-fluid">
     <form>
@@ -51,7 +51,7 @@
     
     protected override async Task OnInitializedAsync()
     {
-        Model = await ZipCodeHandler.GetZipCodes(Http, null);
+        Model = await ZipCodeLogic.GetZipCodes(Http, null);
         
         StateHasChanged();
     }
@@ -72,7 +72,7 @@
     
     private async void OnSearchTextChange()
     {
-        Model = await ZipCodeHandler.GetZipCodes(Http, searchtext);
+        Model = await ZipCodeLogic.GetZipCodes(Http, searchtext);
         
         StateHasChanged();
     }

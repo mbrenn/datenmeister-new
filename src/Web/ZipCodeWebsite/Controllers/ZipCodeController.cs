@@ -1,12 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ZipCodeWebsite.Models;
 
 namespace ZipCodeWebsite.Controllers

@@ -48,7 +48,5 @@ namespace DatenMeister.WebServer
                 endpoints.MapRazorPages();
             });
         }
-        
-        
     }
 }

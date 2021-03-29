@@ -1,10 +1,27 @@
-﻿@page
+﻿@page "/"
+@namespace DatenMeister.WebServer.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @model IndexModel
 @{
     ViewData["Title"] = "Der DatenMeister";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://datenmeister.net">Welcome to the DatenMeister</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Der DatenMeister</title>
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="text-center">
+        <component type="typeof(App)" render-mode="Server" />
+        <script src="_framework/blazor.server.js"></script>
+    </div>
+
+</body>
+</html>

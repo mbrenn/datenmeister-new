@@ -14,14 +14,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Der DatenMeister</title>
     <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-reboot.min.css" rel="stylesheet" />
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="text-center">
-        <component type="typeof(App)" render-mode="Server" />
-        <script src="_framework/blazor.server.js"></script>
-    </div>
-
+    <component type="typeof(App)" render-mode="Server" />
+    <script src="_framework/blazor.server.js"></script>
 </body>
 </html>

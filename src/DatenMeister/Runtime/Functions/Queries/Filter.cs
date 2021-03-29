@@ -86,6 +86,18 @@ namespace DatenMeister.Runtime.Functions.Queries
                 x => valuesAsList.Any(y => x?.Equals(y) == true));
         }
 
+        public static IReflectiveCollection WhenPropertyContains(
+            this IReflectiveCollection collection,
+            string property,
+            string value,
+            StringComparison comparer = StringComparison.CurrentCulture)
+            =>
+                new FilterOnMultipleProperties(
+                    collection,
+                    new[] {property},
+                    value,
+                    comparer);
+
         public static IReflectiveCollection WhenOneOfThePropertyContains(
             this IReflectiveCollection collection,
             IEnumerable<string> properties,

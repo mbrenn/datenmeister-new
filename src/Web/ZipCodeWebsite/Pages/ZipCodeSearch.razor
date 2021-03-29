@@ -1,0 +1,68 @@
+﻿@page "/ZipCodeSearch"
+
+@using ZipCodeWebsite.Models
+@using ZipCodeLibrary
+
+<div class="container-fluid">
+    <form>
+        <div class="mb-3">
+            <label class="form-label" for="zipcode_searchtext">Search via Blazor-Server:</label>
+            <input class="form-control" id="zipcode_searchtext" name="searchtext" type="text" @bind="searchtext" @bind:event="oninput" />
+        </div>
+    </form>
+</div>
+    
+<div class="container-fluid" id="zipcode_resulttable">
+    
+    @if (Model == null)
+    {
+        Model = ZipCodeLogic.GetZipCodes(null);
+    }
+
+    @if (Model.truncated)
+    {
+        <div class="alert alert-primary" role="alert">More than 100 items found!</div>
+    }
+
+    @if (Model.noItemFound)
+    {
+        <div class="alert alert-danger" role="alert">No item found!</div>
+    }
+
+    <table class="table">
+        <tbody>
+        <tr><th>Zipcode</th><th>Name</th><th>Longitudinal</th><th>Latitude</th></tr>
+        @foreach (var value in Model.items)
+        {
+            <tr>
+                <td>@value.zip</td>
+                <td>@value.name</td>
+                <td>@(Math.Round(value.positionLong * 1000) / 1000)</td>
+                <td>@(Math.Round(value.positionLat * 1000) / 1000)</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    private string? _searchText;
+
+    public string? searchtext
+    {
+        get => _searchText;
+        set
+        {
+            _searchText = value;
+            OnSearchTextChange();
+        }
+    }
+
+    public ZipCodeModel? Model;
+    
+    private void OnSearchTextChange()
+    {
+        Model = ZipCodeLogic.GetZipCodes(searchtext);
+    }
+}

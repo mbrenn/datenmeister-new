@@ -1,0 +1,79 @@
+﻿@page "/ZipCodeSearch"
+@inject HttpClient Http
+@using ZipCodeLibrary
+@using ZipCodeWebAssembly.Models
+
+<div class="container-fluid">
+    <form>
+        <div class="mb-3">
+            <label class="form-label" for="zipcode_searchtext">Search via Blazor-Client:</label>
+            <input class="form-control" id="zipcode_searchtext" name="searchtext" type="text" @bind="searchtext" @bind:event="oninput" />
+        </div>
+    </form>
+</div>
+    
+<div class="container-fluid" id="zipcode_resulttable">
+    
+    @if (Model == null)
+    {
+        <div>Loading</div>
+    }
+    else
+    {
+        @if (Model.truncated)
+        {
+            <div class="alert alert-primary" role="alert">More than 100 items found!</div>
+        }
+
+        @if (Model.noItemFound)
+        {
+            <div class="alert alert-danger" role="alert">No item found!</div>
+        }
+
+        <table class="table">
+            <tbody>
+            <tr><th>Zipcode</th><th>Name</th><th>Longitudinal</th><th>Latitude</th></tr>
+            @foreach (var value in Model.items)
+            {
+                <tr>
+                    <td>@value.zip</td>
+                    <td>@value.name</td>
+                    <td>@(Math.Round(value.positionLong * 1000) / 1000)</td>
+                    <td>@(Math.Round(value.positionLat * 1000) / 1000)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await ZipCodeLogic.GetZipCodes(Http, null);
+        
+        StateHasChanged();
+    }
+
+    private string? _searchText;
+
+    public string? searchtext
+    {
+        get => _searchText;
+        set
+        {
+            _searchText = value;
+            OnSearchTextChange();
+        }
+    }
+
+    public ZipCodeModel? Model;
+    
+    private async void OnSearchTextChange()
+    {
+        Model = await ZipCodeLogic.GetZipCodes(Http, searchtext);
+        
+        StateHasChanged();
+    }
+}

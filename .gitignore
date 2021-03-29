@@ -179,3 +179,4 @@ src/.idea/*
 /src/tests/ScriptTests/tmp/*
 /src/tests/ScriptTests/tmp2/*
 /scripts/cscript/tmp/*
+_framework/

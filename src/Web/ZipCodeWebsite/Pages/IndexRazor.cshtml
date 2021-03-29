@@ -1,0 +1,74 @@
+﻿@page
+@model ZipCodeWebsite.Pages.IndexRazorModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset=utf-8>
+    <title>German Zipcode Finder</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/zipcode.css" rel="stylesheet">
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    </head>
+<body>
+<div class="container-fluid">
+    <h1>German Zipcode Finder</h1>
+</div>
+    
+<ul class="nav">
+    <li class="nav-item"><a class="nav-link" href="index.html">Via Json</a></li>
+    <li class="nav-item"><a class="nav-link active" href="/IndexRazor">Via Razor-Only</a></li>
+    <li class="nav-item"><a class="nav-link" href="/IndexBlazor">Via Blazor</a></li>        
+    <li class="nav-item"><a class="nav-link" href="/IndexBlazorClient">Via Blazor-Client</a></li>        
+</ul>
+
+<div class="container-fluid">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label" for="zipcode_searchtext">Search via Razor:</label>
+            <input class="form-control" id="zipcode_searchtext" asp-for="searchtext" type="text"/>
+            <input type="submit" value="Search "/>
+        </div>
+    </form>
+</div>
+    
+<div class="container-fluid" id="zipcode_resulttable">
+    @if (Model.ZipCodes == null)
+    {
+        throw new InvalidOperationException("Not initialized");
+    }
+    
+    @if (Model.ZipCodes.truncated)
+    {
+        <div class="alert alert-primary" role="alert">More than 100 items found!</div>
+    }
+    
+    @if (Model.ZipCodes.noItemFound)
+    {
+        <div class="alert alert-danger" role="alert">No item found!</div>
+    }
+
+    <table class="table">
+        <tr><th>Zipcode</th><th>Name</th><th>Longitudinal</th><th>Latitude</th></tr>
+        @if (Model.ZipCodes != null)
+        {
+            @foreach (var value in Model.ZipCodes.items)
+            {
+                <tr>
+                    <td>@value.zip</td>
+                    <td>@value.name</td>
+                    <td>@(Math.Round(value.positionLong * 1000) / 1000)</td>
+                    <td>@(Math.Round(value.positionLat * 1000) / 1000)</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+</body>
+</html>

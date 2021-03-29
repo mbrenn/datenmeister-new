@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset=utf-8>
+    <title>German Zipcode Finder</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/zipcode.css" rel="stylesheet">
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/dm.zipcodefinder.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1>German Zipcode Finder</h1>
+    </div>
+    
+    <ul class="nav">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Via Json</a></li>
+        <li class="nav-item"><a class="nav-link" href="/IndexRazor">Via Razor-Only</a></li>
+        <li class="nav-item"><a class="nav-link" href="/IndexBlazor">Via Blazor</a></li>
+        <li class="nav-item"><a class="nav-link" href="/IndexBlazorClient">Via Blazor-Client</a></li>
+    </ul>
+
+    <div class="container-fluid">
+        <form>
+            <div class="mb-3">
+                <label class="form-label" for="zipcode_searchtext">Search via Json:</label>
+                <input class="form-control" id="zipcode_searchtext" name="searchtext" type="text"/>
+            </div>
+        </form>
+    </div>
+    
+    <div class="container-fluid" id="zipcode_resulttable">
+    
+    </div>
+</body>
+</html>

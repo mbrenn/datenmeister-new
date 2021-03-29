@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+        <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
+        <ProjectReference Include="..\ZipCodeLibrary\ZipCodeLibrary.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Examples\plz.csv">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <Wwwroot Include="wwwroot\**\*.html" />
+        <Wwwroot Include="wwwroot\**\*.js" />
+        <Wwwroot Include="wwwroot\**\*.js.map" />
+        <Wwwroot Include="wwwroot\**\*.png" />
+        <Wwwroot Include="wwwroot\**\*.jpg" />
+        <Wwwroot Include="wwwroot\**\*.css" />
+        
+        <WebAssemblyCC Include="../ZipCodeWebAssembly/$(OutputPath)/wwwroot/_framework/**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <TypeScriptCompile Include="wwwroot\js\dm.zipcodefinder.ts" />
+    </ItemGroup>
+    <Target Name="AfterBuid" AfterTargets="Build">
+        <Message Text="Copying 'wwwroot' to Output-Directory" Importance="high" />
+        <Copy SourceFiles="@(Wwwroot)" DestinationFolder="$(MSBuildProjectDirectory)/$(OutputPath)/wwwroot/%(RecursiveDir)" />
+        <Message Text="Copying 'WebAssembly' to Output-Directory" Importance="high" />
+        <Copy SourceFiles="@(WebAssemblyCC)" DestinationFolder="$(MSBuildProjectDirectory)/$(OutputPath)/wwwroot/_framework/%(RecursiveDir)" />
+        <Copy SourceFiles="@(WebAssemblyCC)" DestinationFolder="$(MSBuildProjectDirectory)/wwwroot/_framework/%(RecursiveDir)" />
+    </Target>
+</Project>

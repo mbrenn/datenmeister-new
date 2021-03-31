@@ -2,8 +2,8 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.DotNet;
 using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
@@ -37,7 +37,7 @@ namespace DatenMeister.WPF.Forms.Fields
             var hideDate = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideDate);
             var hideTime = fieldData.getOrDefault<bool>(_DatenMeister._Forms._DateTimeFieldData.hideTime);
 
-            _propertyValue = PrimitiveTypeHelper.TruncateToSecond(DateTime.Now);
+            _propertyValue = DateTimeHelper.TruncateToSecond(DateTime.Now);
             
             if (value.isSet(_name))
             {

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
+using BurnSystems;
 
 namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
 {
@@ -70,7 +71,7 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         /// </summary>
         public void SetDefaultCssStyle()
         {
-            CssStyleSheet = DotNet.ResourceHelper.LoadStringFromAssembly(
+            CssStyleSheet = ResourceHelper.LoadStringFromAssembly(
                 typeof(HtmlReport), 
                 "DatenMeister.Modules.HtmlExporter.Css.default_report.css");
         }

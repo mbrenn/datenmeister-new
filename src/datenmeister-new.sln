@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.SourcecodeGene
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Integration.DotNet", "DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj", "{79B3D02A-BFED-48FE-897C-9A000BAE3DD3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.WebServer.Library", "Web\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj", "{1332B714-907D-4F32-BD75-0946F0EF7309}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -432,6 +434,24 @@ Global
 		{79B3D02A-BFED-48FE-897C-9A000BAE3DD3}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
 		{79B3D02A-BFED-48FE-897C-9A000BAE3DD3}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
 		{79B3D02A-BFED-48FE-897C-9A000BAE3DD3}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Debug|x64.Build.0 = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Debug|x86.Build.0 = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Release|x64.ActiveCfg = Release|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Release|x64.Build.0 = Release|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Release|x86.ActiveCfg = Release|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.Release|x86.Build.0 = Release|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.ViewLogicAdditionalInfo|x64.ActiveCfg = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
+		{1332B714-907D-4F32-BD75-0946F0EF7309}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -459,6 +479,7 @@ Global
 		{C4E4C189-9C01-405F-8C5C-C0EF7E061BEB} = {2220B5AA-D22E-469B-96B7-BB70BF58BAD6}
 		{9CB2BC8E-9910-4B8C-BA82-0ADAD8748CD5} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{79B3D02A-BFED-48FE-897C-9A000BAE3DD3} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
+		{1332B714-907D-4F32-BD75-0946F0EF7309} = {C4E4C189-9C01-405F-8C5C-C0EF7E061BEB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B2B6BA4-9AD3-43B6-B7D9-C1CC0860820C}

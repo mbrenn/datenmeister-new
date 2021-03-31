@@ -1,3 +1,4 @@
+using DatenMeister.WebServer.Library;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -20,9 +21,14 @@ namespace DatenMeister.WebServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var appNavigation = new AppNavigationDefinition();
+            appNavigation.Items.Add(new AppNavigationItem {Title = "Home", Url = "/"});
+            appNavigation.Items.Add(new AppNavigationItem {Title = "About", Url = "/About"});
+
             services.AddControllers();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddSingleton(appNavigation);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

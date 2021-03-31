@@ -1,0 +1,16 @@
+﻿@using DatenMeister.WebServer.Library
+@inject AppNavigationDefinition AppNavigationDefinition
+
+<nav class="navbar fixed-left dm-sidebar">
+    <ul class="navbar-nav">
+        @foreach (var item in AppNavigationDefinition.Items)
+        {
+            <li class="navbar-item"><a href="@item.Url" class="nav-link">@item.Title</a></li>
+        }
+    </ul>
+</nav>
+
+@code {
+    
+}
+

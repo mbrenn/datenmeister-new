@@ -88,7 +88,7 @@ namespace DatenMeister.Integration
             return new IntegrationSettings
             {
                 EstablishDataEnvironment = true,
-                DatabasePath = DefaultDatabasePath,
+                DatabasePath = IntegrationSettings.DefaultDatabasePath,
 #if NET462
                 PluginLoader = new DefaultPluginLoader()
 #else
@@ -96,14 +96,6 @@ namespace DatenMeister.Integration
 #endif
             };
         }
-
-        /// <summary>
-        /// Gets the default database path
-        /// </summary>
-        public static string DefaultDatabasePath =>
-            Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "datenmeister/data");
 
         /// <summary>
         /// Drops the datenmeister settings

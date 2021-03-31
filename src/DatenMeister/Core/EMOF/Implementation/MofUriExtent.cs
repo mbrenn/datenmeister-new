@@ -60,6 +60,8 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => set("__uri", value);
         }
 
+        private IWorkspaceLogic? _cachedWorkspaceLogic = null;
+
         /// <inheritdoc />
         public MofUriExtent(
             IProvider provider, 
@@ -74,6 +76,11 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
             
             MetaXmiElement?.Extent?.AddMetaExtent(this);
+
+            if (scopeStorage != null)
+            {
+                _cachedWorkspaceLogic = new WorkspaceLogic(scopeStorage);
+            }
         }
 
 
@@ -201,23 +208,26 @@ namespace DatenMeister.Core.EMOF.Implementation
             }
 
             if (resolveType.HasFlagFast(ResolveType.AlsoTypeWorkspace)
-                && GiveMe.TryGetScope()?.WorkspaceLogic != null)
+                && _cachedWorkspaceLogic != null)
             {
-                var typesWorkspace = GiveMe.Scope.WorkspaceLogic.GetTypesWorkspace();
-                foreach (var result in
-                    typesWorkspace.extent
-                        .OfType<IUriExtent>()
-                        .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.NoWorkspace, false))
-                        .Where(result => result != null))
+                var typesWorkspace = _cachedWorkspaceLogic.TryGetTypesWorkspace();
+                if (typesWorkspace != null)
                 {
-                    return result;
+                    foreach (var result in
+                        typesWorkspace.extent
+                            .OfType<IUriExtent>()
+                            .Select(extent => extent.GetUriResolver().Resolve(uri, ResolveType.NoWorkspace, false))
+                            .Where(result => result != null))
+                    {
+                        return result;
+                    }
                 }
             }
 
             // If still not found, do a full search in every extent in every workspace
-            if (resolveType == ResolveType.Default && GiveMe.TryGetScope()?.WorkspaceLogic != null)
+            if (resolveType == ResolveType.Default && _cachedWorkspaceLogic != null)
             {
-                foreach (var workspace in GiveMe.Scope.WorkspaceLogic.Workspaces)
+                foreach (var workspace in _cachedWorkspaceLogic.Workspaces)
                 {
                     if (workspace.IsDynamicWorkspace) continue;
                     if (alreadyVisited.Contains(workspace))

@@ -64,10 +64,17 @@ namespace DatenMeister.Integration
 
         public IntegrationSettings()
         {
-            DatabasePath = GiveMe.DefaultDatabasePath;
+            DatabasePath = DefaultDatabasePath;
         }
 
-
+        /// <summary>
+        /// Gets the default database path
+        /// </summary>
+        public static string DefaultDatabasePath =>
+            Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "datenmeister/data");
+        
         /// <summary>
         /// Normalizes the directory path by using the integration settings.
         /// The normalization is done by using the following steps

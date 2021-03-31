@@ -336,6 +336,9 @@ namespace DatenMeister.Runtime.Workspaces
             logic.GetWorkspace(WorkspaceNames.WorkspaceTypes)
             ?? throw new InvalidOperationException("Types is not found");
 
+        public static Workspace? TryGetTypesWorkspace(this IWorkspaceLogic logic) =>
+            logic.GetWorkspace(WorkspaceNames.WorkspaceTypes);
+
         public static Workspace GetViewsWorkspace(this IWorkspaceLogic logic) =>
             logic.GetWorkspace(WorkspaceNames.WorkspaceViews)
             ?? throw new InvalidOperationException("Views is not found");

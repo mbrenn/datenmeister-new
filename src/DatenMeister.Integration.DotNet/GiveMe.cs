@@ -4,12 +4,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
-#if !NET462
-using DatenMeister.NetCore.Modules.PluginLoader;
-#endif
+using DatenMeister.Integration.DotNet.PluginLoader;
 using DatenMeister.Runtime.Plugins;
+#if !NET462
+#endif
 
-namespace DatenMeister.Integration
+namespace DatenMeister.Integration.DotNet
 {
     /// <summary>
     /// Returns a complete DatenMeister instance

@@ -6,6 +6,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Models;
 using DatenMeister.Provider.CSV;
 using DatenMeister.Provider.InMemory;

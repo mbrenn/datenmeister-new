@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Models.EMOF;
 using DatenMeister.Runtime;
 using NUnit.Framework;

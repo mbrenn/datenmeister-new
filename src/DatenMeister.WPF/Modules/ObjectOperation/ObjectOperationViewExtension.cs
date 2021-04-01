@@ -10,6 +10,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Xml;
 using DatenMeister.Provider.InMemory;

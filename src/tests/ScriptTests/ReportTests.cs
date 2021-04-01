@@ -5,6 +5,7 @@ using Autofac;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Models;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;

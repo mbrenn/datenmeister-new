@@ -4,6 +4,7 @@ using Autofac;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Workspaces;

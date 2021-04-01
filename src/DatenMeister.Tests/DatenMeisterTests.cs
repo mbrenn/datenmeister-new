@@ -4,8 +4,9 @@ using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
+using DatenMeister.Integration.DotNet.PluginLoader;
 #if !NET462
-using DatenMeister.NetCore.Modules.PluginLoader;
 #endif
 using DatenMeister.Runtime.Plugins;
 using NUnit.Framework;

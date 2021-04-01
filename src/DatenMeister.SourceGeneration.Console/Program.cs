@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;

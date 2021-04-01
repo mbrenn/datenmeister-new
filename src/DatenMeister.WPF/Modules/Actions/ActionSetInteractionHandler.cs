@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Models;
 using DatenMeister.Modules.Actions;
 using DatenMeister.WPF.Modules.UserInteractions;

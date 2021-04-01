@@ -9,7 +9,7 @@ using System.Runtime.Loader;
 using BurnSystems.Logging;
 using DatenMeister.Runtime.Plugins;
 
-namespace DatenMeister.NetCore.Modules.PluginLoader
+namespace DatenMeister.Integration.DotNet.PluginLoader
 {
     /// <summary>
     /// Defines the plugin-loader for .Net Core

@@ -3,6 +3,7 @@ using System.IO;
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Models;
 using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;

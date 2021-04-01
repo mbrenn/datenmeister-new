@@ -5,6 +5,7 @@ using BenchmarkDotNet.Attributes;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Benchmark.Integration

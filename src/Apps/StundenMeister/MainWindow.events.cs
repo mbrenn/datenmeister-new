@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;

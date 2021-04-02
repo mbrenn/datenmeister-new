@@ -2,12 +2,12 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Proxies;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Modules.DataViews.Evaluation
+namespace DatenMeister.Core.Modules.DataViews.Evaluation
 {
     public class FilterTypeNodeEvaluation : IDataViewNodeEvaluation
     {

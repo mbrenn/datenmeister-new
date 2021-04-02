@@ -2,12 +2,12 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Proxies;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Proxies;
+using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Modules.DataViews.Evaluation
+namespace DatenMeister.Core.Modules.DataViews.Evaluation
 {
     public class SelectByFullNameNodeEvaluation : IDataViewNodeEvaluation
     {

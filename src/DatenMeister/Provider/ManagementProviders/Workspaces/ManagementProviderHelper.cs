@@ -2,8 +2,9 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Integration;
-using DatenMeister.Runtime.Workspaces;
 using System;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {

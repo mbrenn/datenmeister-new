@@ -7,11 +7,11 @@ using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using DatenMeister.Provider.XMI.Standards;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+
 // ReSharper disable UnreachableCode
 
-namespace DatenMeister.Provider.XMI.EMOF
+namespace DatenMeister.Core.Provider.Xmi
 {
     /// <summary>
     /// Abstracts the IObject from EMOF

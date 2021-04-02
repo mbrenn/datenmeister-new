@@ -1,9 +1,11 @@
 using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.DefaultTypes
 {

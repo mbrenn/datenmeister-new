@@ -1,10 +1,11 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.FastViewFilter
 {

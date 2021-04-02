@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Provider
+namespace DatenMeister.Core.Provider
 {
     public class ProviderSupportFunctions
     {

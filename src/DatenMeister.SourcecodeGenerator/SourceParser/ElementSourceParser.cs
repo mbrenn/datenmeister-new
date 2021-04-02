@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 
 namespace DatenMeister.SourcecodeGenerator.SourceParser
 {

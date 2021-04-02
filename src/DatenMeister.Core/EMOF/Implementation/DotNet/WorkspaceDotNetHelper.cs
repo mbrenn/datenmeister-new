@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation.DotNet
 {

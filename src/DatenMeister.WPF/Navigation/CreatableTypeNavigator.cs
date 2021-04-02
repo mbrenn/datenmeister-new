@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Navigation

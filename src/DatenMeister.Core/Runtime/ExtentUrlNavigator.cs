@@ -7,14 +7,15 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.DataViews;
-using DatenMeister.Provider;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Modules.DataViews;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Uml.Helper;
 
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Runtime
+namespace DatenMeister.Core.Runtime
 {
     /// <summary>
     /// Caches the ids to improve navigation

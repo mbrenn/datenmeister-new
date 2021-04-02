@@ -4,9 +4,10 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.InMemory;
 
-namespace DatenMeister.Runtime.Copier
+namespace DatenMeister.Core.Runtime.Copier
 {
     public static class CopyOptions
     {

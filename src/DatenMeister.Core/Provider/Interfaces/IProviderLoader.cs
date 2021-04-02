@@ -1,9 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Provider;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Runtime.ExtentStorage.Interfaces
+namespace DatenMeister.Core.Provider.Interfaces
 {
     /// <summary>
     /// Defines the interface to store an extent persistently whether in a database or

@@ -1,9 +1,9 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.ChangeEvents
+namespace DatenMeister.Core.Runtime.ChangeEvents
 {
     public class RegisteredEventHandle : EventHandle
     {

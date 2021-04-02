@@ -1,6 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
 using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 

@@ -1,6 +1,7 @@
-﻿using DatenMeister.Excel.ProviderLoader;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.Models;
+using DatenMeister.Excel.ProviderLoader;
 using DatenMeister.Integration;
-using DatenMeister.Models;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 

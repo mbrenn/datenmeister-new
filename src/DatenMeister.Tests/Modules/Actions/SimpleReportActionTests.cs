@@ -2,10 +2,10 @@
 using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.Actions;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.Modules.Reports;
 using NUnit.Framework;
 

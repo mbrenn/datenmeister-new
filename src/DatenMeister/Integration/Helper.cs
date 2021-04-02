@@ -1,8 +1,9 @@
 ﻿#nullable enable
 
 using Autofac;
+using DatenMeister.Core.Runtime.Workspaces.Data;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces.Data;
 
 namespace DatenMeister.Integration
 {

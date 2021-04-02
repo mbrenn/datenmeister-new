@@ -2,16 +2,17 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
-using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Locking;
-using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi.Runtime

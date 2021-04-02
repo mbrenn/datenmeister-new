@@ -1,19 +1,21 @@
 using System;
 using System.IO;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.ChangeEvents;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Models;
-using DatenMeister.Modules.ChangeEvents;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Plugins;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using StundenMeister.Model;
 
 namespace StundenMeister.Logic

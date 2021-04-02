@@ -5,10 +5,10 @@ using System.Threading;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.ChangeEvents
+namespace DatenMeister.Core.Runtime.ChangeEvents
 {
     /// <summary>
     /// This class handles all events occuring due to changes, insertion or deletions of the objects

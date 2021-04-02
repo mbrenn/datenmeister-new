@@ -5,10 +5,10 @@ using System.Reflection;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.DotNet;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.DotNet;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Core.EMOF.Implementation.DotNet
 {

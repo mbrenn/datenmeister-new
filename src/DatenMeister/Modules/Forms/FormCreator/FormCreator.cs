@@ -4,20 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
-using _PrimitiveTypes = DatenMeister.Models.EMOF._PrimitiveTypes;
-using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
+using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
+using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {

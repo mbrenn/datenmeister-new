@@ -2,10 +2,12 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime;
 using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
 using NUnit.Framework;
 

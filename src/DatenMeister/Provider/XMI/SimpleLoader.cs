@@ -7,9 +7,10 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.XMI.Standards;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.XMI
 {

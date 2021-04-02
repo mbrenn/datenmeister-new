@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.CSV
 {

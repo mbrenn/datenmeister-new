@@ -1,7 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.Core.Provider.Interfaces
 {
     /// <summary>
     /// Defines the return information of the loading of a provider.

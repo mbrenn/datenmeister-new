@@ -5,8 +5,9 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Provider.CSV;
-using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Integration
 {

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Provider.XMI.UmlBootstrap;
 using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.SourcecodeGenerator
 {

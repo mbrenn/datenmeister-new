@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using BurnSystems.Logging;
 using BurnSystems.WPF;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Formatter;

@@ -2,10 +2,11 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Models;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
+using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {

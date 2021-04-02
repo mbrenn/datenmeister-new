@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.ExtentStorage.Interfaces
+namespace DatenMeister.Core.Provider.Interfaces
 {
     /// <summary>
     /// Performs the locking of the provider

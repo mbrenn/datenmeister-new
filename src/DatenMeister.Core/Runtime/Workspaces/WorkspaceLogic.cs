@@ -5,11 +5,11 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Runtime.DynamicFunctions;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime.ChangeEvents;
+using DatenMeister.Core.Runtime.DynamicFunctions;
 
-namespace DatenMeister.Runtime.Workspaces
+namespace DatenMeister.Core.Runtime.Workspaces
 {
     /// <summary>
     /// The logic defines the relationships between the layers and the metalayers.

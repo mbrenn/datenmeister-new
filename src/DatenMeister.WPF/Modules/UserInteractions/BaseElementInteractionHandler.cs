@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.WPF.Modules.UserInteractions
 {

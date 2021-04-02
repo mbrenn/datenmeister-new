@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 

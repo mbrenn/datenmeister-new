@@ -6,11 +6,12 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Uml.Helper;
+
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Runtime
+namespace DatenMeister.Core.Helper
 {
     public static class ObjectHelper
     {

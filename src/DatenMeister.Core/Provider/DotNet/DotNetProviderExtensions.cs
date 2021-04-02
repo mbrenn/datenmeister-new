@@ -7,9 +7,9 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
 
-namespace DatenMeister.Provider.DotNet
+namespace DatenMeister.Core.Provider.DotNet
 {
     public static class DotNetProviderExtensions
     {

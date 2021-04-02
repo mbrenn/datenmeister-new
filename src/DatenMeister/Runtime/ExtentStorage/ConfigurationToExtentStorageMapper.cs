@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Provider.Xml;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {

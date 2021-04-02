@@ -5,16 +5,19 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
-using static DatenMeister.Models._DatenMeister._Reports;
+using static DatenMeister.Core.Models._DatenMeister._Reports;
 
 namespace DatenMeister.Modules.Reports.Simple
 {

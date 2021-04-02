@@ -3,7 +3,8 @@
 using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.Integration

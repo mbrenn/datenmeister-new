@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Runtime.DynamicFunctions;
+using DatenMeister.Core.Runtime.DynamicFunctions;
 
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Runtime.Workspaces
+namespace DatenMeister.Core.Runtime.Workspaces
 {
     public interface IWorkspace
     {

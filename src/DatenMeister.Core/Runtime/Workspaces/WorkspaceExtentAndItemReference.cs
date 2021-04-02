@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DatenMeister.Runtime.Workspaces
+namespace DatenMeister.Core.Runtime.Workspaces
 {
     /// <summary>
     ///     This class is used to reference a single object within the database

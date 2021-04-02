@@ -2,8 +2,8 @@
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime.Copier;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.Runtime.Extents
 {

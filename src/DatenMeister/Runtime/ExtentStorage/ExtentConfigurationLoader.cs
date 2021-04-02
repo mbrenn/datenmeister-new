@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {

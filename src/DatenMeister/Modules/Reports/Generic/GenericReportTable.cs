@@ -4,12 +4,13 @@ using System.Globalization;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.TextTemplates;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Reports.Generic
 {

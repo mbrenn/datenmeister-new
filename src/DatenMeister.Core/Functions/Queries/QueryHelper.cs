@@ -2,8 +2,9 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
 
-namespace DatenMeister.Runtime.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries
 {
     public static class QueryHelper
     {

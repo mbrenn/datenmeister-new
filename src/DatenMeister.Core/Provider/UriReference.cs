@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Provider
+﻿namespace DatenMeister.Core.Provider
 {
     /// <summary>
     /// If the object reference is returned, an indirect reference to the object

@@ -3,15 +3,16 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Provider.DotNet;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.DotNet;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
-using static DatenMeister.Models._DatenMeister._FastViewFilters;
+using static DatenMeister.Core.Models._DatenMeister._FastViewFilters;
 
 namespace DatenMeister.Tests.Provider
 {

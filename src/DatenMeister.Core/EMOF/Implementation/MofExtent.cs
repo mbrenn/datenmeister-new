@@ -10,15 +10,14 @@ using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Modules.ChangeEvents;
-using DatenMeister.Provider;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.DynamicFunctions;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.ChangeEvents;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Runtime.DynamicFunctions;
+using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {

@@ -1,9 +1,10 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules

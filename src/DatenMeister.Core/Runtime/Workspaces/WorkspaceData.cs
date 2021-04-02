@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DatenMeister.Runtime.Workspaces
+namespace DatenMeister.Core.Runtime.Workspaces
 {
     /// <summary>
     /// Stores the data which is persistent within the process

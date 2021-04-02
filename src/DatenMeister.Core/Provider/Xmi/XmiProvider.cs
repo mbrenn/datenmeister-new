@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.XMI.Standards;
 
-namespace DatenMeister.Provider.XMI.EMOF
+namespace DatenMeister.Core.Provider.Xmi
 {
     /// <summary>
     /// Defines the provider for xml manipulation

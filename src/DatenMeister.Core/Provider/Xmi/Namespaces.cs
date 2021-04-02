@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace DatenMeister.Provider.XMI
+namespace DatenMeister.Core.Provider.Xmi
 {
     /// <summary>
     ///     Stores some Xmi, Uml and other namespaces

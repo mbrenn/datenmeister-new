@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 
-namespace DatenMeister.Runtime.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries
 {
     /// <summary>
     /// Performs a unionization of two reflective collections

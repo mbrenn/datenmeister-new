@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Integration;
-using DatenMeister.Models;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Html;
 using DatenMeister.Runtime;

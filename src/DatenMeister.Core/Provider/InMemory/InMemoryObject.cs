@@ -6,10 +6,9 @@ using DatenMeister.Core.EMOF.Exceptions;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
 
-namespace DatenMeister.Provider.InMemory
+namespace DatenMeister.Core.Provider.InMemory
 {
     /// <summary>
     ///     Describes the InMemory object, representing the Mof Object

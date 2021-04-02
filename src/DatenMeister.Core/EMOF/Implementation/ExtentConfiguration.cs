@@ -3,7 +3,7 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {

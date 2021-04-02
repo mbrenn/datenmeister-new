@@ -1,9 +1,10 @@
-﻿using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Provider.InMemory;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.EnvironmentalVariableProvider
 {

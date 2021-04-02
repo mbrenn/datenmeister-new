@@ -1,15 +1,16 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
 using DatenMeister.WPF.Forms.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.WPF.Commands
 {

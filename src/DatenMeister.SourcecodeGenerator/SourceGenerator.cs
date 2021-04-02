@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Provider.DotNet;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.DotNet;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.SourcecodeGenerator
 {

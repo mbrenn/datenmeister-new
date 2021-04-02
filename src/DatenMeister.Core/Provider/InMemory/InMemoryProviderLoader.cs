@@ -2,12 +2,10 @@
 
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Provider.InMemory
+namespace DatenMeister.Core.Provider.InMemory
 {
     public class InMemoryProviderLoader : IProviderLoader
     {

@@ -3,12 +3,12 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.Functions.Aggregation;
 using DatenMeister.Runtime.Functions.Interfaces;
 using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 using System.Collections.Generic;
+using DatenMeister.Core.Provider.InMemory;
 
 namespace DatenMeister.Tests.Runtime.Functions
 {

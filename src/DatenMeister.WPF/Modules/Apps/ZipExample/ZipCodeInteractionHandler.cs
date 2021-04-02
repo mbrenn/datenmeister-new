@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.Example.ZipCode;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.Example.ZipCode;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Modules.UserInteractions;
 

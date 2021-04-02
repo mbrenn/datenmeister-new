@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.DynamicFunctions
+namespace DatenMeister.Core.Runtime.DynamicFunctions
 {
     /// <summary>
     /// Defines the dynamic function manager which is allocated to a workspace

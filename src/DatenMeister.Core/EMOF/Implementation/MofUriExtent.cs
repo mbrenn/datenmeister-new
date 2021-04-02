@@ -4,11 +4,11 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Provider;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Proxies;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Proxies;
+using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.EMOF.Implementation
 {

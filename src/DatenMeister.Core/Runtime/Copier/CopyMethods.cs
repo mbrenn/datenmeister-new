@@ -5,9 +5,9 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Runtime.Copier
+namespace DatenMeister.Core.Runtime.Copier
 {
     /// <summary>
     /// Support class supporting the copying of elements

@@ -4,12 +4,12 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Proxies;
-using DatenMeister.Runtime.Proxies.ReadOnly;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Proxies;
+using DatenMeister.Core.Runtime.Proxies.ReadOnly;
 
-namespace DatenMeister.Modules.DataViews
+namespace DatenMeister.Core.Modules.DataViews
 {
     public class DataViewExtent : IUriExtent
     {

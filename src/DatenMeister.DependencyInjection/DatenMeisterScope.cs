@@ -6,9 +6,10 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Core.Lifetime;
 using Autofac.Core.Resolving;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Integration
+namespace DatenMeister.DependencyInjection
 {
     public class DatenMeisterScope : IDatenMeisterScope
     {

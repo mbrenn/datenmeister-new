@@ -6,11 +6,11 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Extension;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.DynamicFunctions;
+using DatenMeister.Core.Runtime.DynamicFunctions;
 
 // ReSharper disable InconsistentNaming
 
-namespace DatenMeister.Runtime.Workspaces
+namespace DatenMeister.Core.Runtime.Workspaces
 {
     /// <summary>
     /// Defines a workspace according to the Mof specification

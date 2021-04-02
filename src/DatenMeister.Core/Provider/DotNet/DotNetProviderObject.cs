@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DatenMeister.Provider.DotNet
+namespace DatenMeister.Core.Provider.DotNet
 {
     public class DotNetProviderObject : IProviderObject
     {

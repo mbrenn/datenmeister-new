@@ -1,12 +1,12 @@
 ﻿using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Proxies;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Proxies;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.DataViews.Evaluation
+namespace DatenMeister.Core.Modules.DataViews.Evaluation
 {
     public class SourceExtentNodeEvaluation : IDataViewNodeEvaluation
     {

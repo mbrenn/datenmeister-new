@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using System.Collections.Generic;
 
-namespace DatenMeister.Provider
+namespace DatenMeister.Core.Provider
 {
     /// <summary>
     /// An object representing an object or element in MOF space

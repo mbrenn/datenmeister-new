@@ -1,7 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.Proxies.ReadOnly
+namespace DatenMeister.Core.Runtime.Proxies.ReadOnly
 {
     public class ReadOnlyElement : ProxyMofElement
     {

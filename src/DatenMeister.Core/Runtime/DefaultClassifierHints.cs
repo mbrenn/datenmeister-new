@@ -7,13 +7,13 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Modules.DefaultTypes
+namespace DatenMeister.Core.Runtime
 {
     /// <summary>
     /// Stores the default classifier hints which allow a harmonized identification

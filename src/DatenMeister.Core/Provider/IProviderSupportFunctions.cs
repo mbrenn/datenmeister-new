@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Provider
+﻿namespace DatenMeister.Core.Provider
 {
     /// <summary>
     /// This interface is to be implemented by all providers which support additional

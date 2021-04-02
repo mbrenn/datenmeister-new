@@ -5,10 +5,11 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Runtime.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries
 {
     /// <summary>
     ///     This query returns all objects which are descendents (and sub-descendents)

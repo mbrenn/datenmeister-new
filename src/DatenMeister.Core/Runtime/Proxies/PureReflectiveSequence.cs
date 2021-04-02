@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Common;
 
-namespace DatenMeister.Runtime.Proxies
+namespace DatenMeister.Core.Runtime.Proxies
 {
     /// <summary>
     /// Defines a reflective sequence that is just a place holder for a list of objects which can be group

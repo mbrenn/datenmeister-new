@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 
-namespace DatenMeister.Runtime
+namespace DatenMeister.Core.Runtime
 {
     /// <summary>
     /// Is capable to load a instance of the given type T and stores it into a file as a serialized Xml.

@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace DatenMeister.Provider
+namespace DatenMeister.Core.Provider
 {
     /// <summary>
     /// Defines the flags self-describing the provider and its capabilities

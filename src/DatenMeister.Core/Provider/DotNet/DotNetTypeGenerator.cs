@@ -7,12 +7,12 @@ using System.Net;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Provider.DotNet
+namespace DatenMeister.Core.Provider.DotNet
 {
     /// <summary>
     /// Defines the options for the DotNet Type Generator

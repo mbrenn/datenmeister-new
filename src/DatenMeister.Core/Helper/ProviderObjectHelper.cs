@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using DatenMeister.Provider;
+using DatenMeister.Core.Provider;
 
-namespace DatenMeister.Runtime
+namespace DatenMeister.Core.Helper
 {
     public static class ProviderObjectHelper
     {

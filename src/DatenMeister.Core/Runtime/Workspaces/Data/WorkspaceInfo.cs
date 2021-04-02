@@ -1,5 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
-namespace DatenMeister.Runtime.Workspaces.Data
+namespace DatenMeister.Core.Runtime.Workspaces.Data
 {
     /// <summary>
     /// Stores the information for a workspace which can be stored as an xml file

@@ -3,13 +3,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Integration;
-using DatenMeister.Models;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Actions
 {

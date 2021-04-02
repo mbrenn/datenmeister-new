@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.DynamicFunctions;
+using DatenMeister.Core.Runtime.DynamicFunctions;
 
-namespace DatenMeister.Runtime.Workspaces
+namespace DatenMeister.Core.Runtime.Workspaces
 {
     /// <summary>
     /// Defines the workspace logic is used to organize the workspaces

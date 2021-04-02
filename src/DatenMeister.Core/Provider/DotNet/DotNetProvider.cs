@@ -1,11 +1,11 @@
-﻿#nullable enable 
+﻿#nullable enable
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 
-namespace DatenMeister.Provider.DotNet
+namespace DatenMeister.Core.Provider.DotNet
 {
     /// <summary>
     /// Implements the provider for the DotNet objects

@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
 using DatenMeister.Provider;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.Runtime.Locking;
-using DatenMeister.Runtime.Workspaces;
-using static DatenMeister.Models._DatenMeister._ExtentLoaderConfigs;
+using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 
 namespace DatenMeister.Runtime.ExtentStorage
 {

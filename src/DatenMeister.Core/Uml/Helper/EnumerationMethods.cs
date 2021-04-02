@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
 
-namespace DatenMeister.Uml.Helper
+namespace DatenMeister.Core.Uml.Helper
 {
     /// <summary>
     /// Defines the helper methods applicable to the Enumeration

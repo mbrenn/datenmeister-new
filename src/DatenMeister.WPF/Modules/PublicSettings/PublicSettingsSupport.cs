@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using DatenMeister.Core.Helper;
 using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Plugins;

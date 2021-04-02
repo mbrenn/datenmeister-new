@@ -3,10 +3,10 @@ using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Provider.XMI.Standards;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
 
 namespace DatenMeister.Provider.XMI
 {

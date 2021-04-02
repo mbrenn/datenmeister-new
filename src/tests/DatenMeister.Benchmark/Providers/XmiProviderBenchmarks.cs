@@ -4,7 +4,8 @@ using System.Xml.Linq;
 using BenchmarkDotNet.Attributes;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Runtime;
 
 namespace DatenMeister.Benchmark.Providers

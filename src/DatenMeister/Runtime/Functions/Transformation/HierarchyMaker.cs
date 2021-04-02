@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Copier;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime.Copier;
 
 namespace DatenMeister.Runtime.Functions.Transformation
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 
-namespace DatenMeister.Runtime.Proxies
+namespace DatenMeister.Core.Runtime.Proxies
 {
     /// <summary>
     /// Abstracts a reflective collection/sequence into a list

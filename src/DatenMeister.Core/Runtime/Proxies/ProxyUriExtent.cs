@@ -4,7 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.Proxies
+namespace DatenMeister.Core.Runtime.Proxies
 {
     public class ProxyUriExtent : IUriExtent
     {

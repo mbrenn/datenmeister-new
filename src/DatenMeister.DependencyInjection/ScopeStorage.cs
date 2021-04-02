@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 
-namespace DatenMeister.Integration
+namespace DatenMeister.DependencyInjection
 {
     /// <summary>
     /// Defines the scope storage engine being used to retrieve static data which is available

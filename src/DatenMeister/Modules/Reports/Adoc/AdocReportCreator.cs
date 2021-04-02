@@ -4,11 +4,11 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Integration;
-using DatenMeister.Models;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Reports.Adoc
 {

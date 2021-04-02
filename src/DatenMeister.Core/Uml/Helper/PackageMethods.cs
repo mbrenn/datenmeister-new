@@ -6,14 +6,14 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Uml.Helper
+namespace DatenMeister.Core.Uml.Helper
 {
     public class PackageMethods
     {

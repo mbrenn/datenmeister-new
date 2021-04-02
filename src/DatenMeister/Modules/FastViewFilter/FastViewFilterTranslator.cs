@@ -1,7 +1,8 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.FastViewFilter
 {

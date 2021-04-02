@@ -2,9 +2,10 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Proxies;
 using DatenMeister.Runtime;
-using DatenMeister.Runtime.Proxies;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Mof.Core

@@ -2,9 +2,10 @@
 
 using System;
 using Autofac;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Integration
+namespace DatenMeister.DependencyInjection
 {
     public interface IDatenMeisterScope : ILifetimeScope
     {

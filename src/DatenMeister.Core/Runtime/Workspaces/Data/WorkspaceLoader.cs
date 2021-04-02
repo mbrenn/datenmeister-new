@@ -1,8 +1,7 @@
 ﻿using System;
 using BurnSystems.Logging;
-using DatenMeister.Integration;
 
-namespace DatenMeister.Runtime.Workspaces.Data
+namespace DatenMeister.Core.Runtime.Workspaces.Data
 {
     public class WorkspaceLoader : ObjectFileStorage<WorkspaceFileData>
     {

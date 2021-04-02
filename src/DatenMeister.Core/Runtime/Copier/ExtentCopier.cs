@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.Copier
+namespace DatenMeister.Core.Runtime.Copier
 {
     /// <summary>
     /// Supports the copying of an extent

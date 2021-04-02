@@ -1,6 +1,6 @@
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.Models;
 using DatenMeister.Integration;
-using DatenMeister.Models;
 using DatenMeister.Modules.Forms;
 using NUnit.Framework;
 

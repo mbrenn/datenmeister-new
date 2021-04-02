@@ -4,12 +4,11 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.DataViews
+namespace DatenMeister.Core.Modules.DataViews
 {
     public class DataViewLogic
     {

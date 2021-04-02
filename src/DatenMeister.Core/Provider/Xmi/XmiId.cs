@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace DatenMeister.Provider.XMI.Standards
+namespace DatenMeister.Core.Provider.Xmi
 {
     /// <summary>
     /// Implements the standard as given in http://www.w3.org/TR/xml-id/

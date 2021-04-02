@@ -2,7 +2,8 @@
 using System.Windows;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 

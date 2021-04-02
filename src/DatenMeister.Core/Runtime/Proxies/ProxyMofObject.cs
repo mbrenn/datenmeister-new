@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.Proxies
+namespace DatenMeister.Core.Runtime.Proxies
 {
     public class ProxyMofObject : IHasProxiedObject, IObject, IObjectAllProperties
     {

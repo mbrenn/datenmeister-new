@@ -2,9 +2,9 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Proxies;
+using DatenMeister.Core.Runtime.Proxies;
 
-namespace DatenMeister.Runtime.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries
 {
     public class FilterOnMetaClass : ProxyReflectiveCollection
     {

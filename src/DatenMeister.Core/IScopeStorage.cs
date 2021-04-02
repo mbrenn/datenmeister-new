@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Integration
+﻿namespace DatenMeister.Core
 {
     public interface IScopeStorage
     {

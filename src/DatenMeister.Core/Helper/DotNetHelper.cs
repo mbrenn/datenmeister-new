@@ -10,9 +10,9 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider;
+using DatenMeister.Core.Provider;
 
-namespace DatenMeister.Runtime
+namespace DatenMeister.Core.Helper
 {
     /// <summary>
     /// This class stores a set of helper methods to access, evaluate and work on

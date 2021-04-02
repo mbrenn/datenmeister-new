@@ -5,9 +5,9 @@ using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Windows;
 
 namespace DatenMeister.WPF.Navigation

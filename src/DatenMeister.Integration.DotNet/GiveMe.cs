@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
+using DatenMeister.Core;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration.DotNet.PluginLoader;
 using DatenMeister.Runtime.Plugins;
 #if !NET462

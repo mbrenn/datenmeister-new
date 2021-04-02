@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Models;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
 

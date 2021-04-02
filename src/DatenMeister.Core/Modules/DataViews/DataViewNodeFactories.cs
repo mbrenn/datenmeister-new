@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DatenMeister.Modules.DataViews
+namespace DatenMeister.Core.Modules.DataViews
 {
     /// <summary>
     /// Stores the factories for the view nodes

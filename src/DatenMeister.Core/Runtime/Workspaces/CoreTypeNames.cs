@@ -1,4 +1,4 @@
-namespace DatenMeister.Runtime.Workspaces
+namespace DatenMeister.Core.Runtime.Workspaces
 {
     /// <summary>
     /// Stores a set of IDs representing the internal type names

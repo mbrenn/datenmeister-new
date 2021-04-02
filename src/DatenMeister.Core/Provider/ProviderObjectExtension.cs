@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DatenMeister.Provider
+namespace DatenMeister.Core.Provider
 {
     public static class ProviderObjectExtension
     {

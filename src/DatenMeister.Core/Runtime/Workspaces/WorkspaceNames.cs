@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Runtime.Workspaces
+﻿namespace DatenMeister.Core.Runtime.Workspaces
 {
     public static class WorkspaceNames
     {

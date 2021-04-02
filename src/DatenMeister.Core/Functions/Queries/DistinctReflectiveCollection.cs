@@ -3,7 +3,7 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.Functions.Queries
+namespace DatenMeister.Core.Functions.Queries
 {
     /// <summary>
     /// Returns a collection that only returns the distinct elements of a property

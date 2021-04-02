@@ -2,10 +2,10 @@
 using System.IO;
 using System.Reflection;
 using Autofac;
-using DatenMeister.Models;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using DatenMeister.Core;
+using DatenMeister.Core.Models.Example.ZipCode;
 using DatenMeister.Integration;
-using DatenMeister.Models.Example.ZipCode;
 using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;

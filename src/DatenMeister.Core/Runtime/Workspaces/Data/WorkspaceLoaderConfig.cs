@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Runtime.Workspaces.Data
+﻿namespace DatenMeister.Core.Runtime.Workspaces.Data
 {
     /// <summary>
     /// Defines the configuration for the workspace loader

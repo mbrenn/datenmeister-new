@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 
-namespace DatenMeister.Provider.InMemory
+namespace DatenMeister.Core.Provider.InMemory
 {
     /// <summary>
     /// Stores all elements in the memory

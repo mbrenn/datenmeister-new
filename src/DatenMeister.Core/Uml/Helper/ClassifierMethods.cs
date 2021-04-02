@@ -1,4 +1,4 @@
-﻿#nullable enable 
+﻿#nullable enable
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,12 +6,12 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Uml.Helper
+namespace DatenMeister.Core.Uml.Helper
 {
     public static class ClassifierMethods
     {

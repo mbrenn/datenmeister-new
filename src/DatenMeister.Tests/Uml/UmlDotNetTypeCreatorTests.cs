@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml

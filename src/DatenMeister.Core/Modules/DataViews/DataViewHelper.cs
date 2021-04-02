@@ -1,10 +1,10 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.DataViews
+namespace DatenMeister.Core.Modules.DataViews
 {
     public class DataViewHelper
     {

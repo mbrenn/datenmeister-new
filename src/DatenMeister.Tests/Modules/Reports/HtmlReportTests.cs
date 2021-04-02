@@ -2,14 +2,15 @@ using System.IO;
 using System.Text;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
-using DatenMeister.Models;
 using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Html;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Reports

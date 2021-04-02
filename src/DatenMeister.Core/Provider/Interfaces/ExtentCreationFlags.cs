@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.Runtime.ExtentStorage.Interfaces
+﻿namespace DatenMeister.Core.Provider.Interfaces
 {
     /// <summary>
     /// Defines the possible extent creation methods for the extent manager.

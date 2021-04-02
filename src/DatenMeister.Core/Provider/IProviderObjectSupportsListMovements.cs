@@ -1,6 +1,6 @@
 #nullable enable
 
-namespace DatenMeister.Provider
+namespace DatenMeister.Core.Provider
 {
     /// <summary>
     /// This interface shall be implemented by all provider objects which directly support the movement

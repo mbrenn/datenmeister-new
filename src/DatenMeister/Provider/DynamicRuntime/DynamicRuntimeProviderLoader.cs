@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
-using static DatenMeister.Models._DatenMeister._DynamicRuntimeProvider;
+using static DatenMeister.Core.Models._DatenMeister._DynamicRuntimeProvider;
 
 namespace DatenMeister.Provider.DynamicRuntime
 {

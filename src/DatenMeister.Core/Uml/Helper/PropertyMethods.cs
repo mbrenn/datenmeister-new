@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
 
-namespace DatenMeister.Uml.Helper
+namespace DatenMeister.Core.Uml.Helper
 {
     /// <summary>
     /// Defines some helper classes for property objects

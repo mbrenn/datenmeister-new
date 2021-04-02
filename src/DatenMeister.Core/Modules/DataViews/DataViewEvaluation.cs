@@ -4,11 +4,10 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Runtime.Proxies;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Runtime.Proxies;
+using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Modules.DataViews
+namespace DatenMeister.Core.Modules.DataViews
 {
     public class DataViewEvaluation
     {

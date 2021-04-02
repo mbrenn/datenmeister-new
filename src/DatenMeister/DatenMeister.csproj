@@ -23,15 +23,8 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Modules\HtmlExporter\Css\default_report.css" />
-    <EmbeddedResource Include="XmiFiles\Types\DatenMeister.xmi" />
     <None Remove="Modules\PublicSettings\publicSettings.example" />
     <EmbeddedResource Include="Modules\PublicSettings\publicSettings.example" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XmiFiles\MOF.xmi" />
-    <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
-    <EmbeddedResource Include="XmiFiles\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\DatenMeister.xmi" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />
@@ -41,10 +34,13 @@
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\EMOF" />
-    <Folder Include="Models\Example" />
+    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
+    <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <Folder Include="Provider\XMI\EMOF" />
+    <Folder Include="Provider\XMI\Standards" />
+    <Folder Include="Runtime\Proxies" />
   </ItemGroup>
 </Project>

@@ -46,8 +46,7 @@ namespace DatenMeister.Runtime.Workspaces
         public WorkspaceLogic(IScopeStorage scopeStorage)
         {
             _workspaceData = scopeStorage.Get<WorkspaceData>();
-            _changeEventManager = scopeStorage.Get<ChangeEventManager>();
-            
+            _changeEventManager = scopeStorage.Get<ChangeEventManager>(); 
         }
 
         /// <summary>

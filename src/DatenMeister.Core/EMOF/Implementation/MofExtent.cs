@@ -80,7 +80,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public Workspace? Workspace
         {
             get;
-            internal set;
+            set;
         }
 
         /// <summary>
@@ -681,7 +681,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// Indicates that the content of the extent is updated 
         /// </summary>
         /// <param name="isModified">true, if the modification flag shall be set to true</param>
-        internal void SignalUpdateOfContent(bool isModified = true)
+        public void SignalUpdateOfContent(bool isModified = true)
         {
             _itemCountCached = -1;
             IsModified = isModified;

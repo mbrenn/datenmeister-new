@@ -6,6 +6,7 @@ using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Models;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
 

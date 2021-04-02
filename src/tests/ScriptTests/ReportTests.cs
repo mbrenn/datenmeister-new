@@ -10,7 +10,6 @@ using DatenMeister.Models;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipExample;
-using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;

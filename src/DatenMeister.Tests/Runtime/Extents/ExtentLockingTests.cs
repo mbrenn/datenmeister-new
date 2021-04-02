@@ -5,6 +5,7 @@ using Autofac;
 using DatenMeister.Models;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.ExtentStorage.Interfaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents

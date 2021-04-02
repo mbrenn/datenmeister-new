@@ -1,15 +1,10 @@
 ﻿using System.IO;
-using System.Reflection;
-using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Excel.Models;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.NetCore;
 using DatenMeister.Provider.InMemory;
 using DatenMeister.Provider.XMI;
-using DatenMeister.Provider.XMI.EMOF;
 using DatenMeister.Runtime.Workspaces;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.SourcecodeGenerator.SourceParser;

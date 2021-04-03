@@ -5,7 +5,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Exceptions;
 using DatenMeister.Runtime.ExtentStorage;
 
@@ -15,15 +14,9 @@ namespace DatenMeister.Runtime.Extents
     {
         private readonly ExtentManager _extentManager;
 
-        /// <summary>
-        /// Stores the local type support
-        /// </summary>
-        private readonly LocalTypeSupport _localTypeSupport;
-
-        public ExtentImport(ExtentManager extentManager, LocalTypeSupport localTypeSupport)
+        public ExtentImport(ExtentManager extentManager)
         {
             _extentManager = extentManager;
-            _localTypeSupport = localTypeSupport;
         }
 
         /// <summary>
@@ -50,7 +43,7 @@ namespace DatenMeister.Runtime.Extents
 
                 if (resultingExtent.LoadingState == ExtentLoadingState.Failed)
                 {
-                    var exception = _localTypeSupport.CreateInternalType("#DatenMeister.Models.ExtentManager.ImportException");
+                    var exception = InMemoryObject.CreateEmpty("#DatenMeister.Models.ExtentManager.ImportException");
                     exception.set("message", "Loading did not succeed");
                     throw new DatenMeisterException(exception);
                 }
@@ -58,7 +51,7 @@ namespace DatenMeister.Runtime.Extents
                 return resultingExtent.Extent ?? throw new InvalidOperationException("Loading should have succeeded");
             }
 
-            var resultingException = _localTypeSupport.CreateInternalType("#DatenMeister.Models.ExtentManager.ImportException");
+            var resultingException = InMemoryObject.CreateEmpty("#DatenMeister.Models.ExtentManager.ImportException");
             resultingException.set("message", "Unknown file extension (.xmi and .xml are supported)");
             throw new DatenMeisterException(resultingException);
         }

@@ -49,8 +49,7 @@ namespace DatenMeister.Benchmark.Integration
                 EstablishDataEnvironment = true,
                 PerformSlimIntegration = false,
                 AllowNoFailOfLoading = false,
-                InitializeDefaultExtents = dropDatabase,
-                PluginLoader = new DefaultPluginLoader()
+                InitializeDefaultExtents = dropDatabase
             };
 
             return integrationSettings;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using DatenMeister.Runtime.Plugins;
 
 #nullable enable
 
@@ -51,11 +50,6 @@ namespace DatenMeister.Integration
         /// Gets or sets the flag indicating whether the locking is activated
         /// </summary>
         public bool IsLockingActivated { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the plugin loader to be used for the DatenMeister... If none is specified, the default loader will be used. 
-        /// </summary>
-        public IPluginLoader PluginLoader { get; set; } = new DefaultPluginLoader();
         
         /// <summary>
         /// Gets or sets the value that the DatenMeister is started in 'read-only' mode

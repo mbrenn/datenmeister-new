@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -286,6 +287,12 @@ namespace DatenMeister.Core.Uml.Helper
                 throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
             }
 
+            return ImportByStream(stream, sourcePackageName, targetExtent, targetPackageName, loadingRequired);
+        }
+
+        private IObject ImportByStream(Stream stream, string sourcePackageName, IExtent targetExtent, string targetPackageName,
+            bool loadingRequired)
+        {
             var document = XDocument.Load(stream);
             var pseudoProvider = new XmiProvider(document);
             var pseudoExtent = new MofUriExtent(pseudoProvider)
@@ -311,7 +318,7 @@ namespace DatenMeister.Core.Uml.Helper
                 if (loadingRequired)
                 {
                     throw new InvalidOperationException(
-                        $"sourcePackage == null. Probably {sourcePackageName} in {manifestName} not found");
+                        $"sourcePackage == null. Probably {sourcePackageName} not found");
                 }
                 else
                 {

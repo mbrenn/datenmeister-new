@@ -7,7 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Runtime.Extents
 {

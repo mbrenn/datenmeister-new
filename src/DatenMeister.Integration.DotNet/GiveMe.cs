@@ -56,16 +56,18 @@ namespace DatenMeister.Integration.DotNet
         /// </summary>
         /// <param name="settings">Integration settings for the initialization of DatenMeister</param>
         /// <returns>The initialized DatenMeister that can be used</returns>
-        public static IDatenMeisterScope DatenMeister(IntegrationSettings? settings = null)
+        public static IDatenMeisterScope DatenMeister(IntegrationSettings? settings = null,
+            PluginLoaderSettings? pluginLoaderSettings = null)
         {
             settings ??= GetDefaultIntegrationSettings();
+            pluginLoaderSettings ??= GetDefaultPluginLoaderSettings();
 
-            if (settings.PluginLoader is DefaultPluginLoader)
+            if (pluginLoaderSettings.PluginLoader is DefaultPluginLoader)
             {
 #if NET462
                 settings.PluginLoader = new DefaultPluginLoader();
 #else
-                settings.PluginLoader = new DotNetCorePluginLoader();
+                pluginLoaderSettings.PluginLoader = new DotNetCorePluginLoader();
 #endif
             }
 
@@ -87,15 +89,23 @@ namespace DatenMeister.Integration.DotNet
 
         public static IntegrationSettings GetDefaultIntegrationSettings()
         {
-            return new IntegrationSettings
+            return new()
             {
                 EstablishDataEnvironment = true,
                 DatabasePath = IntegrationSettings.DefaultDatabasePath,
-#if NET462
-                PluginLoader = new DefaultPluginLoader()
-#else
-                PluginLoader = new DotNetCorePluginLoader()
-#endif
+
+            };
+        }
+
+        public static PluginLoaderSettings GetDefaultPluginLoaderSettings()
+        {
+            return new()
+            {
+            #if NET462
+                            PluginLoader = new DefaultPluginLoader()
+            #else
+                            PluginLoader = new DotNetCorePluginLoader()
+            #endif
             };
         }
 

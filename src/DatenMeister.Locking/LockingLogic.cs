@@ -12,7 +12,7 @@ namespace DatenMeister.Runtime.Locking
     {
         private readonly LockingState _lockingState;
 
-        private bool _isReadOnly;
+        private readonly bool _isReadOnly;
         
         private static readonly ClassLogger Logger = new ClassLogger(typeof(LockingLogic));
 

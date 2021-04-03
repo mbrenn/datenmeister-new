@@ -68,12 +68,7 @@ namespace DatenMeister.Tests
                 EstablishDataEnvironment = true,
                 PerformSlimIntegration = false,
                 AllowNoFailOfLoading = false,
-                InitializeDefaultExtents = dropDatabase,
-#if NET462
-                PluginLoader = new DefaultPluginLoader()
-#else
-                PluginLoader = new DotNetCorePluginLoader()
-#endif
+                InitializeDefaultExtents = dropDatabase
             };
 
             return integrationSettings;

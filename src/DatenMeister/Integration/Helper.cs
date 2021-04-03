@@ -4,6 +4,7 @@ using Autofac;
 using DatenMeister.Core.Runtime.Workspaces.Data;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Integration
 {
@@ -12,9 +13,13 @@ namespace DatenMeister.Integration
     /// </summary>
     public static class Helper
     {
-        public static IDatenMeisterScope UseDatenMeister(this ContainerBuilder kernel, IntegrationSettings settings)
+        public static IDatenMeisterScope UseDatenMeister(
+            this ContainerBuilder kernel,
+            IntegrationSettings settings,
+            PluginLoaderSettings? pluginLoaderSettings = null)
         {
-            var integration = new Integrator(settings);
+            pluginLoaderSettings ??= new PluginLoaderSettings();
+            var integration = new Integrator(settings, pluginLoaderSettings);
             return integration.UseDatenMeister(kernel);
         }
 

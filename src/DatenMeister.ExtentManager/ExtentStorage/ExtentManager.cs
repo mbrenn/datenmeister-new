@@ -13,7 +13,6 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
-using DatenMeister.Provider;
 using DatenMeister.Runtime.Locking;
 using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 

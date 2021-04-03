@@ -38,6 +38,8 @@ namespace DatenMeister.Integration
         /// </summary>
         private IntegrationSettings _settings;
 
+        private readonly PluginLoaderSettings _pluginLoaderSettings;
+
         private string? _pathWorkspaces;
         private string? _pathExtents;
 
@@ -67,9 +69,10 @@ namespace DatenMeister.Integration
         public static string GetPathToExtents(IntegrationSettings settings)
             => Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
 
-        public Integrator(IntegrationSettings settings)
+        public Integrator(IntegrationSettings settings, PluginLoaderSettings pluginLoaderSettings)
         {
             _settings = settings;
+            _pluginLoaderSettings = pluginLoaderSettings;
         }
 
         public IDatenMeisterScope UseDatenMeister(ContainerBuilder kernel)
@@ -156,7 +159,7 @@ namespace DatenMeister.Integration
             var pluginManager = new PluginManager();
             scopeStorage.Add(pluginManager);
             
-            var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
+            var pluginLoader = _pluginLoaderSettings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(
                 Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location) 
                 ?? throw new InvalidOperationException("Path is null"));

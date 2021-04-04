@@ -15,6 +15,7 @@ using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Runtime.Workspaces.Data;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Core.XmiFiles;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -223,17 +224,15 @@ namespace DatenMeister.Integration
             var packageMethods = scope.Resolve<PackageMethods>();
             var internalUserExtent = localTypeSupport.InternalTypes;
 
-            packageMethods.ImportByManifest(
-                typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Types.DatenMeister.xmi",
+            packageMethods.ImportByStream(
+                XmiResources.GetDatenMeisterTypesStream(),
                 null,
                 internalUserExtent,
                 "DatenMeister");
 
             var formsPlugin = scope.Resolve<FormsPlugin>();
-            packageMethods.ImportByManifest(
-                typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
+            packageMethods.ImportByStream(
+                XmiResources.GetDatenMeisterFormsStream(),
                 null,
                 formsPlugin.GetInternalFormExtent(),
                 "DatenMeister");

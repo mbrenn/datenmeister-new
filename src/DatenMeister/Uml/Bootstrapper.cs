@@ -14,6 +14,7 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Core.XmiFiles;
 using DatenMeister.Provider.XMI;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Functions.Queries;
@@ -530,12 +531,12 @@ namespace DatenMeister.Uml
             
             if (paths?.LoadFromEmbeddedResources != false)
             {
-                xmlPrimitiveTypes = ResourceHelper.LoadStringFromAssembly(typeof(WorkspaceNames),
-                    "DatenMeister.XmiFiles.PrimitiveTypes.xmi");
-                xmlUml = ResourceHelper.LoadStringFromAssembly(typeof(WorkspaceNames),
-                    "DatenMeister.XmiFiles.UML.xmi");
-                xmlMof = ResourceHelper.LoadStringFromAssembly(typeof(WorkspaceNames),
-                    "DatenMeister.XmiFiles.MOF.xmi");
+                xmlPrimitiveTypes = XmiResources.GetStringFromStream(
+                    XmiResources.GetPrimitiveTypeStream);
+                xmlUml = XmiResources.GetStringFromStream(
+                    XmiResources.GetUmlStream);
+                xmlMof = XmiResources.GetStringFromStream(
+                    XmiResources.GetMofStream);
             }
             else
             {
@@ -543,7 +544,6 @@ namespace DatenMeister.Uml
                 xmlUml = File.ReadAllText(paths.PathUml ?? throw new InvalidOperationException("Path is null"));
                 xmlMof = File.ReadAllText(paths.PathMof ?? throw new InvalidOperationException("Path is null"));
             }
-
 
             var umlExtent = new MofUriExtent(new XmiProvider(XDocument.Parse(xmlUml)), WorkspaceNames.UriExtentUml);
             umlExtent.LocalSlimUmlEvaluation = true;

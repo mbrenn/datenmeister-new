@@ -31,7 +31,7 @@ namespace DatenMeister.Core.Uml.Helper
             var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
                 (rootElements as IHasExtent)?.GetExtentOf() ??
                 throw new InvalidOperationException("No Extent connected"));
-            
+
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
@@ -40,7 +40,7 @@ namespace DatenMeister.Core.Uml.Helper
                 packageClassifier,
                 false);
         }
-        
+
 
         /// <summary>
         /// Gets or creates a package by following the path.
@@ -72,7 +72,7 @@ namespace DatenMeister.Core.Uml.Helper
             var packageClassifier = DefaultClassifierHints.GetDefaultPackageClassifier(
                 (rootElements as IHasExtent)?.GetExtentOf() ??
                 throw new InvalidOperationException("No Extent connected"));
-            
+
             return GetOrCreatePackageStructure(
                 rootElements,
                 new MofFactory(rootElements),
@@ -233,7 +233,7 @@ namespace DatenMeister.Core.Uml.Helper
         public void ImportPackage(IObject sourcePackage, IReflectiveSequence target, string packagePath)
         {
             var targetPackage = GetOrCreatePackageStructure(target, packagePath);
-            
+
             // We got the package, import the elements
             ImportPackage(sourcePackage, targetPackage);
         }
@@ -251,7 +251,7 @@ namespace DatenMeister.Core.Uml.Helper
             var objectCopier = new ObjectCopier(new MofFactory(
                 targetPackage.GetExtentOf() ??
                 throw new InvalidOperationException("targetPackage does not belong to an extent")));
-            
+
             foreach (var subElement in GetPackagedObjects(sourcePackage).OfType<IObject>())
             {
                 var copiedObject = objectCopier.Copy(subElement, copyOptions);
@@ -272,7 +272,7 @@ namespace DatenMeister.Core.Uml.Helper
         /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
         /// in case the loading failed. </param>
         public IObject? ImportByManifest(
-            Type manifestType, 
+            Type manifestType,
             string manifestName,
             string? sourcePackageName,
             IExtent targetExtent,
@@ -281,7 +281,7 @@ namespace DatenMeister.Core.Uml.Helper
         {
             using var stream = manifestType.GetTypeInfo()
                 .Assembly.GetManifestResourceStream(manifestName);
-            
+
             if (stream == null)
             {
                 throw new InvalidOperationException($"The stream for {manifestName} could not be opened");
@@ -290,8 +290,22 @@ namespace DatenMeister.Core.Uml.Helper
             return ImportByStream(stream, sourcePackageName, targetExtent, targetPackageName, loadingRequired);
         }
 
-        private IObject ImportByStream(Stream stream, string sourcePackageName, IExtent targetExtent, string targetPackageName,
-            bool loadingRequired)
+        /// <summary>
+        /// Imports a package by a stream
+        /// </summary>
+        /// <param name="stream">Stream to be used for the importing</param>
+        /// <param name="sourcePackageName">Path of the package to be imported. Null, if the complete extent shall be imported</param>
+        /// <param name="targetExtent">Extent to which the extent shall be imported</param>
+        /// <param name="targetPackageName">Path within the extent that shall receive
+        /// the package</param>
+        /// <param name="loadingRequired">true, if the loading is required and shall throw an exception
+        /// in case the loading failed. </param>
+        public IObject? ImportByStream(
+            Stream stream,
+            string? sourcePackageName,
+            IExtent targetExtent,
+            string targetPackageName,
+            bool loadingRequired = true)
         {
             var document = XDocument.Load(stream);
             var pseudoProvider = new XmiProvider(document);

@@ -8,32 +8,47 @@ namespace DatenMeister.Core.XmiFiles
     {
         public static Stream GetMofStream()
         {
-            return typeof(XmiResources).GetTypeInfo()
-            .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.MOF.xmi");        
+            var stream = typeof(XmiResources).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.MOF.xmi");
+            if (stream == null)
+                throw new InvalidOperationException("Stream is not found");
+            return stream;
         }
 
         public static Stream GetUmlStream()
         {
-            return typeof(XmiResources).GetTypeInfo()
-            .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.UML.xmi");        
+            var stream = typeof(XmiResources).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.UML.xmi");
+            if (stream == null)
+                throw new InvalidOperationException("Stream is not found");
+            return stream;
         }
 
         public static Stream GetPrimitiveTypeStream()
         {
-            return typeof(XmiResources).GetTypeInfo()
-                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.PrimitiveTypes.xmi");        
+            var stream = typeof(XmiResources).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.PrimitiveTypes.xmi");
+            if (stream == null)
+                throw new InvalidOperationException("Stream is not found");
+            return stream;
         }
 
         public static Stream GetDatenMeisterFormsStream()
         {
-            return typeof(XmiResources).GetTypeInfo()
-                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.DatenMeister.Forms.xmi");        
+            var stream = typeof(XmiResources).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.Forms.DatenMeister.xmi");
+            if (stream == null)
+                throw new InvalidOperationException("Stream is not found");
+            return stream;
         }
 
         public static Stream GetDatenMeisterTypesStream()
         {
-            return typeof(XmiResources).GetTypeInfo()
-                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.DatemMeister.Types.xmi");
+            var stream = typeof(XmiResources).GetTypeInfo()
+                .Assembly.GetManifestResourceStream("DatenMeister.Core.XmiFiles.Types.DatenMeister.xmi");
+            if (stream == null)
+                throw new InvalidOperationException("Stream is not found");
+            return stream;
         }
 
         /// <summary>
@@ -45,7 +60,11 @@ namespace DatenMeister.Core.XmiFiles
         public static string GetStringFromStream(Func<Stream> streamFactory)
         {
             using var stream = streamFactory();
-            
+            if (stream == null)
+            {
+                throw new InvalidOperationException("No stream was returned.");
+            }
+
             using var reader = new StreamReader(stream ?? throw new InvalidOperationException("Stream is empty"));
             return reader.ReadToEnd();
         }

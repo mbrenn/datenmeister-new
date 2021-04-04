@@ -22,7 +22,7 @@ using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Modules.ZipExample;
+using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Runtime;

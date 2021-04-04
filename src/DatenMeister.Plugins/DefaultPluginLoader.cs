@@ -29,7 +29,9 @@ namespace DatenMeister.Runtime.Plugins
                     // Go through all types and check, if the type has implemented the interface for the pluging
                     pluginList.AddRange(
                         assembly.GetTypes()
-                            .Where(type => type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin))));
+                            .Where(type => 
+                                type.GetInterfaces().Any(x => x == typeof(IDatenMeisterPlugin))
+                                && !pluginList.Any (x=>x.FullName != null && x.FullName.Equals(type.FullName))));
                 }
                 catch (ReflectionTypeLoadException e)
                 {
@@ -37,6 +39,7 @@ namespace DatenMeister.Runtime.Plugins
                         $"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
                 }
             }
+            
 
             return pluginList;
         }

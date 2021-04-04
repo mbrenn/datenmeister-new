@@ -3,7 +3,6 @@ using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Modules.DataViews.Evaluation;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.DataViews
@@ -11,15 +10,13 @@ namespace DatenMeister.Modules.DataViews
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
     public class DataViewPlugin : IDatenMeisterPlugin
     {
-        private readonly LocalTypeSupport _localTypeSupport;
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly DataViewLogic _dataViewLogic;
         private readonly IScopeStorage _scopeStorage;
 
-        public DataViewPlugin(LocalTypeSupport localTypeSupport, IWorkspaceLogic workspaceLogic,
+        public DataViewPlugin(IWorkspaceLogic workspaceLogic,
             DataViewLogic dataViewLogic, IScopeStorage scopeStorage)
         {
-            _localTypeSupport = localTypeSupport;
             _workspaceLogic = workspaceLogic;
             _dataViewLogic = dataViewLogic;
             _scopeStorage = scopeStorage;

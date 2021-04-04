@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Models\Example" />
       <Folder Include="Modules" />
     </ItemGroup>
 

@@ -16,7 +16,7 @@ using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Modules.ZipExample;
+using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Runtime;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;

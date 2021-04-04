@@ -1,7 +1,7 @@
 ﻿// ReSharper disable InconsistentNaming
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace DatenMeister.Core.Models.Example.ZipCode
+namespace DatenMeister.Modules.ZipCodeExample.Model
 {
     /// <summary>
     /// Just a demo for the inheritance tests

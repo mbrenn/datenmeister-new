@@ -38,11 +38,12 @@
     <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
     <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
     <ProjectReference Include="..\DatenMeister.ExtentManager\DatenMeister.ExtentManager.csproj" />
+    <ProjectReference Include="..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
     <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     <ProjectReference Include="..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
+    <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Provider\XMI\EMOF" />
-    <Folder Include="Provider\XMI\Standards" />
+    <Folder Include="Modules\TypeSupport" />
   </ItemGroup>
 </Project>

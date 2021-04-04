@@ -7,14 +7,12 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Models.Example.ZipCode;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
-using DatenMeister.Runtime;
+using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Runtime.ExtentStorage;
 
-namespace DatenMeister.Modules.ZipExample
+namespace DatenMeister.Modules.ZipCodeExample
 {
     /// <summary>
     /// Supports some methods for the example

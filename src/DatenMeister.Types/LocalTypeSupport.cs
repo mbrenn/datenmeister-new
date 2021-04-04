@@ -58,6 +58,7 @@ namespace DatenMeister.Modules.TypeSupport
             _extentCreator = new ExtentCreator(workspaceLogic, scopeStorage);
             _integrationSettings = scopeStorage.Get<IntegrationSettings>();
         }
+        
         /// <summary>
         /// Initializes a new instance of the LocalTypeSupport class
         /// </summary>

@@ -1,8 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Runtime;
 
-namespace DatenMeister.Modules.ZipExample
+namespace DatenMeister.Modules.ZipCodeExample
 {
     public class ZipCodeModel
     {

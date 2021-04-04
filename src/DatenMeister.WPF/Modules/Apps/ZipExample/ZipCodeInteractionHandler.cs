@@ -2,7 +2,7 @@
 using System.Net;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models.Example.ZipCode;
+using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Runtime;
 using DatenMeister.WPF.Modules.UserInteractions;
 

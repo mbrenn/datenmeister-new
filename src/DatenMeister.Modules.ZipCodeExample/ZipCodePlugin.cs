@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Core.Models.Example.ZipCode;
-using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.Plugins;
 
-namespace DatenMeister.Modules.ZipExample
+namespace DatenMeister.Modules.ZipCodeExample
 {
     /// <summary>
     /// Integrates the zip code example into the DatenMeister framework

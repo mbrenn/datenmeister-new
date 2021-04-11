@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Provider;
 
 namespace DatenMeister.Runtime
 {

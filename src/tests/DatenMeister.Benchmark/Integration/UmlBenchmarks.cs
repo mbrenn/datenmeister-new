@@ -7,7 +7,6 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Benchmark.Integration
 {

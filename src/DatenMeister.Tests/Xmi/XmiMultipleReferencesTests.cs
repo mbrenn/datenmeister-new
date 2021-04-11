@@ -6,7 +6,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Provider.XMI;
-using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi

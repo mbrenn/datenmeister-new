@@ -4,7 +4,6 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Modules.DefaultTypes;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules

@@ -21,14 +21,12 @@ using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Modules.UserManagement;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Provider.Xml;
 using DatenMeister.Runtime.Extents.Configuration;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.Uml;
-using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Integration
 {

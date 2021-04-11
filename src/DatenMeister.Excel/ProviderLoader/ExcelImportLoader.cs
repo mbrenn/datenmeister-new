@@ -8,9 +8,6 @@ using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
-using DatenMeister.Provider;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.Excel.ProviderLoader

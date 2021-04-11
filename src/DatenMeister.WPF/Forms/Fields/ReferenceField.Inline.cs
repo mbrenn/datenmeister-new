@@ -6,9 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Runtime;
 using DatenMeister.WPF.Controls;
 
 namespace DatenMeister.WPF.Forms.Fields

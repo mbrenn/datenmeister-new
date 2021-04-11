@@ -2,7 +2,6 @@
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.FastViewFilter
 {

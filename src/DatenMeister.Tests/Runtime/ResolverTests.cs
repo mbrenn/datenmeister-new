@@ -8,9 +8,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Integration;
 using DatenMeister.Modules.DataViews;
-using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

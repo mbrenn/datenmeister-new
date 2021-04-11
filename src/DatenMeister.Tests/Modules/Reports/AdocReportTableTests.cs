@@ -7,7 +7,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Adoc;
-using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Reports

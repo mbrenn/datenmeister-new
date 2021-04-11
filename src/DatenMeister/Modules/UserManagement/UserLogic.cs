@@ -12,10 +12,8 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Functions.Algorithm;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.UserManagement

@@ -2,7 +2,6 @@
 using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Modules.DataViews.Evaluation;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
 using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Modules.DataViews

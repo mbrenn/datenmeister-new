@@ -10,10 +10,8 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Runtime;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 

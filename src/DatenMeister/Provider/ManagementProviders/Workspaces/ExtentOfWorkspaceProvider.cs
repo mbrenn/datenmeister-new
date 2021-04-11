@@ -5,7 +5,6 @@ using Autofac;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Integration;
 using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces

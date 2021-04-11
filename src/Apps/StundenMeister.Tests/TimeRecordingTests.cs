@@ -5,7 +5,6 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Runtime;
 using NUnit.Framework;
 using StundenMeister.Logic;
 using StundenMeister.Model;

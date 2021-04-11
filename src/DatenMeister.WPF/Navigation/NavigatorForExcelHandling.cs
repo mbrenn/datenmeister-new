@@ -4,7 +4,6 @@ using System.Windows;
 using Autofac;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.WPF.Windows;

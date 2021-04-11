@@ -11,14 +11,11 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Integration;
 using DatenMeister.Modules.Actions;
 using DatenMeister.Modules.Actions.ActionHandler;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Provider.Xml;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using NUnit.Framework;
 

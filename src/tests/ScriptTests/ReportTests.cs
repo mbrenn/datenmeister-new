@@ -13,7 +13,6 @@ using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipCodeExample;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 
 namespace ScriptTests

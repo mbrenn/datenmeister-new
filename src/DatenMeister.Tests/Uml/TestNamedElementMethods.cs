@@ -5,7 +5,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml

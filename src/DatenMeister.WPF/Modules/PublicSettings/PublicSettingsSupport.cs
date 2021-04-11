@@ -3,13 +3,11 @@ using System.IO;
 using System.Windows.Forms;
 using DatenMeister.Core.Helper;
 using DatenMeister.Modules.PublicSettings;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.Plugins;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
-using DatenMeister.WPF.Navigation;
 
 namespace DatenMeister.WPF.Modules.PublicSettings
 {

@@ -13,8 +13,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Provider.XMI;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml;
 using NUnit.Framework;
 

@@ -7,7 +7,6 @@ using BurnSystems.Logging.Provider;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Benchmark.Integration
 {

@@ -14,8 +14,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Runtime.Objects;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

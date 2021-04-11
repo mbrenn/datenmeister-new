@@ -9,7 +9,6 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime;
 using DatenMeister.Tests.Xmi;
 using NUnit.Framework;
 using static DatenMeister.Core.Models._DatenMeister._FastViewFilters;

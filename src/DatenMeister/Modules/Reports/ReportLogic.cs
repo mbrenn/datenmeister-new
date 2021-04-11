@@ -13,11 +13,8 @@ using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
-using DatenMeister.Modules.DataViews;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.TextTemplates;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports
 {

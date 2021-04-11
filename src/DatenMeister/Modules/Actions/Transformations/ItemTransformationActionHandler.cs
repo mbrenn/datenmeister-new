@@ -7,8 +7,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.DynamicRuntime;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Modules.Actions.Transformations
 {

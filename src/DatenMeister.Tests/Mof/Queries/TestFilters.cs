@@ -2,7 +2,6 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Mof.Queries

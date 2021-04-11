@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DatenMeister.Core.Provider;
 using DatenMeister.Excel.Helper;
-using DatenMeister.Provider;
 using NPOI.SS.UserModel;
 
 namespace DatenMeister.Excel.EMOF

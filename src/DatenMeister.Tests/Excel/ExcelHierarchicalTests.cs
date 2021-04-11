@@ -11,9 +11,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Runtime;
 using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 

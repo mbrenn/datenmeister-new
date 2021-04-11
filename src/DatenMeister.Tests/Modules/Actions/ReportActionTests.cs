@@ -5,7 +5,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Integration;
 using DatenMeister.Modules.Actions;
 using DatenMeister.Tests.Modules.Reports;
 using NUnit.Framework;

@@ -6,7 +6,6 @@ using BurnSystems.Logging.Provider;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Integration.DotNet.PluginLoader;
 #if !NET462
 #endif
 using DatenMeister.Runtime.Plugins;

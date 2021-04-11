@@ -4,7 +4,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Excel.EMOF;
 using DatenMeister.Excel.ProviderLoader;
-using DatenMeister.Integration;
 
 namespace DatenMeister.Excel.Integration
 {

@@ -6,7 +6,6 @@ using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Runtime;
 using DatenMeister.SourcecodeGenerator.SourceParser;
 
 namespace DatenMeister.SourcecodeGenerator

@@ -2,7 +2,6 @@
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Runtime.Workspaces.Data;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Integration;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

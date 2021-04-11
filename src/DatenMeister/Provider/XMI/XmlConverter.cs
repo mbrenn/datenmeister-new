@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Provider.XMI
 {

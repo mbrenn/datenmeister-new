@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -15,9 +14,6 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Core.XmiFiles;
-using DatenMeister.Provider.XMI;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Uml

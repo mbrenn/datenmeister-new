@@ -7,8 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Functions

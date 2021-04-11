@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.WebServer.Library
+﻿namespace DatenMeister.WebServer.Library
 {
     public class WebServerConfiguration
     {

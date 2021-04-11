@@ -4,7 +4,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Runtime.Proxies;
-using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Runtime.Functions.Transformation
 {

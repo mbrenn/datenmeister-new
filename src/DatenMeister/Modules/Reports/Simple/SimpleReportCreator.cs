@@ -11,12 +11,9 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlExporter.Formatter;
 using DatenMeister.Modules.HtmlExporter.HtmlEngine;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 using static DatenMeister.Core.Models._DatenMeister._Reports;
 
 namespace DatenMeister.Modules.Reports.Simple

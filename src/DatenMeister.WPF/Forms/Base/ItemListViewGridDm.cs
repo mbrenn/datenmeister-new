@@ -11,7 +11,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Modules.TextTemplates;
-using DatenMeister.Runtime;
 using DatenMeister.WPF.Controls;
 using DatenMeister.WPF.Controls.GridControl;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

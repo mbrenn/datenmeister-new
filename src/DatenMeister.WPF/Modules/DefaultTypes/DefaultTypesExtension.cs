@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Runtime;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

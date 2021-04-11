@@ -10,8 +10,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {

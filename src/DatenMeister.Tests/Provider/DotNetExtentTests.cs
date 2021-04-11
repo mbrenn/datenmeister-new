@@ -10,8 +10,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider

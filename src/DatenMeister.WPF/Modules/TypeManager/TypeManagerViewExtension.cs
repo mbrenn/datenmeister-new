@@ -4,7 +4,7 @@ using BurnSystems.Logging;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Uml.Plugin;
+using DatenMeister.Types.Plugin;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;

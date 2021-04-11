@@ -1,8 +1,8 @@
 ﻿using DatenMeister.Core;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.Plugins;
 
-namespace DatenMeister.Uml.Plugin
+namespace DatenMeister.Types.Plugin
 {
     // ReSharper disable once UnusedMember.Global
     public class UmlPlugin : IDatenMeisterPlugin

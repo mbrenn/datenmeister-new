@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.ExtentManager.ExtentStorage
 {
     /// <summary>
     /// Stores the configuration for the loaded extents during the runtime

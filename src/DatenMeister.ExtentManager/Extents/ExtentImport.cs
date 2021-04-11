@@ -2,19 +2,19 @@
 using System.IO;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Exceptions;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Runtime.Exceptions;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.ExtentManager.ExtentStorage;
 
-namespace DatenMeister.Runtime.Extents
+namespace DatenMeister.ExtentManager.Extents
 {
     public class ExtentImport
     {
-        private readonly ExtentManager _extentManager;
+        private readonly ExtentStorage.ExtentManager _extentManager;
 
-        public ExtentImport(ExtentManager extentManager)
+        public ExtentImport(ExtentStorage.ExtentManager extentManager)
         {
             _extentManager = extentManager;
         }

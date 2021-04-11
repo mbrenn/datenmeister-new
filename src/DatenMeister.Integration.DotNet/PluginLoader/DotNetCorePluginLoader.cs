@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.Loader;
 #endif
 using BurnSystems.Logging;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Integration.DotNet.PluginLoader
 {

@@ -6,7 +6,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.ExtentManager.ExtentStorage;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents
@@ -18,7 +18,7 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestLoadAndUnloading()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
-            var extentManager = dm.Resolve<ExtentManager>();
+            var extentManager = dm.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
             
             var loaderConfig =
                 InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig);

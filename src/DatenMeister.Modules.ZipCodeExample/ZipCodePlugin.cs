@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.Modules.TypeSupport;
+using DatenMeister.ExtentManager.Extents.Configuration;
 using DatenMeister.Modules.ZipCodeExample.Model;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
+using DatenMeister.Types;
 
 namespace DatenMeister.Modules.ZipCodeExample
 {

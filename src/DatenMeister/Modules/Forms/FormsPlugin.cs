@@ -19,13 +19,13 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Forms.FormModifications;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Modules.Forms
 {

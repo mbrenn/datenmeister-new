@@ -4,10 +4,10 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Models;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Provider.XMI;
 using DatenMeister.SourcecodeGenerator;
 using DatenMeister.SourcecodeGenerator.SourceParser;
+using DatenMeister.Types;
 
 namespace DatenMeister.SourceGeneration.Console
 {

@@ -9,8 +9,8 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Modules.ZipCodeExample.Model;
-using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.Modules.ZipCodeExample
 {
@@ -23,12 +23,12 @@ namespace DatenMeister.Modules.ZipCodeExample
         private static readonly ILogger Logger = new ClassLogger(typeof(ZipCodeExampleManager));
         
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly ExtentManager _extentManager;
+        private readonly ExtentManager.ExtentStorage.ExtentManager _extentManager;
         private readonly ZipCodeModel _zipCodeModel;
 
         public ZipCodeExampleManager(
             IWorkspaceLogic workspaceLogic,
-            ExtentManager extentManager,
+            ExtentManager.ExtentStorage.ExtentManager extentManager,
             IScopeStorage scopeStorage)
             : this(workspaceLogic, extentManager, scopeStorage.Get<ZipCodeModel>())
         {
@@ -37,7 +37,7 @@ namespace DatenMeister.Modules.ZipCodeExample
 
         private ZipCodeExampleManager(
             IWorkspaceLogic workspaceLogic,
-            ExtentManager extentManager,
+            ExtentManager.ExtentStorage.ExtentManager extentManager,
             ZipCodeModel zipCodeModel)
 
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DatenMeister.Runtime.Locking
+namespace DatenMeister.Locking
 {
     public class LockingState
     {

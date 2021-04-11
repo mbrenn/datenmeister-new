@@ -5,7 +5,6 @@ using Autofac;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Runtime.ExtentStorage;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
@@ -26,10 +25,10 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         public ExtentOfWorkspaceProvider(IDatenMeisterScope scope)
         {
             WorkspaceLogic = scope.WorkspaceLogic;
-            ExtentManager = scope.Resolve<ExtentManager>();
+            ExtentManager = scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
         }
 
-        public ExtentManager ExtentManager { get; set; }
+        public ExtentManager.ExtentStorage.ExtentManager ExtentManager { get; set; }
 
         /// <summary>
         /// Gets the workspace logic for the elements

@@ -6,7 +6,7 @@ using System.Reflection;
 using Autofac;
 using BurnSystems.Logging;
 
-namespace DatenMeister.Runtime.Plugins
+namespace DatenMeister.Plugins
 {
     public class PluginManager
     {

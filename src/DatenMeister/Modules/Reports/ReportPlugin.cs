@@ -2,7 +2,7 @@
 using DatenMeister.Modules.Reports.Adoc;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Modules.Reports
 {

@@ -17,15 +17,15 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.ExtentManager.Extents;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
-using DatenMeister.Runtime.Extents;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Types;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -265,7 +265,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     "Delete Extent",
                     MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
                     var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
 
                     var extentToBeDeleted =
@@ -320,7 +320,7 @@ namespace DatenMeister.WPF.Forms.Lists
                     await QueryExtentConfigurationByUserAsync(navigationHost);
                 if (extentLoaderConfig != null)
                 {
-                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
 
                     try
                     {
@@ -351,7 +351,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var uri = item.getOrDefault<string>(nameof(_DatenMeister._Management._Extent.uri));
                 var storeExtent = GiveMe.Scope.WorkspaceLogic.FindExtent(workspaceId, uri);
 
-                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
                 if (storeExtent != null)
                 {
                     extentManager.StoreExtent(storeExtent);
@@ -450,10 +450,10 @@ namespace DatenMeister.WPF.Forms.Lists
             var package =
                 packageMethods.GetPackageStructure(
                     extent.elements(), 
-                    ExtentManager.PackagePathTypesExtentLoaderConfig);
+                    ExtentManager.ExtentStorage.ExtentManager.PackagePathTypesExtentLoaderConfig);
             if (package == null)
             {
-                throw new InvalidOperationException(ExtentManager.PackagePathTypesExtentLoaderConfig + " not found");
+                throw new InvalidOperationException(ExtentManager.ExtentStorage.ExtentManager.PackagePathTypesExtentLoaderConfig + " not found");
             }
             
             dlg.SetAsRoot(extent /*package*/);

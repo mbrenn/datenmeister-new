@@ -8,8 +8,8 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Modules.ViewExtensions;
@@ -148,7 +148,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                 if (result != null)
                 {
                     // Now, we got the item extent...
-                    var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                    var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
                     var loadedExtent = new ExtentStorageData.LoadedExtentInformation(result);
                     extentManager.LoadExtentWithoutAdding(result, ref loadedExtent);
                     if (loadedExtent != null && loadedExtent.Extent != null &&
@@ -189,7 +189,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                             var workspaceLogic = GiveMe.Scope.WorkspaceLogic;
                             var scopeStorage = GiveMe.Scope.ScopeStorage;
                             
-                            var extentManager = new ExtentManager(workspaceLogic, scopeStorage);
+                            var extentManager = new ExtentManager.ExtentStorage.ExtentManager(workspaceLogic, scopeStorage);
                             var result = extentManager.LoadExtent(asElement, ExtentCreationFlags.LoadOrCreate);
 
                             if (result.LoadingState == ExtentLoadingState.Loaded)

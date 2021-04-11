@@ -21,7 +21,7 @@ using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Validators;
+using DatenMeister.Validators;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Fields;
 using DatenMeister.WPF.Modules.UserInteractions;

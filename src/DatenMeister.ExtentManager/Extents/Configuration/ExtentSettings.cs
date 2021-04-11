@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DatenMeister.Runtime.Extents.Configuration
+namespace DatenMeister.ExtentManager.Extents.Configuration
 {
     /// <summary>
     /// Stores the configurations for the extents themselves.

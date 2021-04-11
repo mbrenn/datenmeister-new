@@ -3,12 +3,13 @@ using System.IO;
 using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
+using DatenMeister.Plugins;
 #if !NET462
 #endif
-using DatenMeister.Runtime.Plugins;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests

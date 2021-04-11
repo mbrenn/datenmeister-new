@@ -10,7 +10,7 @@ using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime.Locking;
+using DatenMeister.Locking;
 
 namespace DatenMeister.Provider.XMI.ExtentStorage
 {

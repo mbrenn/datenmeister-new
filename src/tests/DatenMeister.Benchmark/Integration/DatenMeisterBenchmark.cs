@@ -4,6 +4,7 @@ using System.Reflection;
 using BenchmarkDotNet.Attributes;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;

@@ -1,5 +1,5 @@
 using DatenMeister.Core.Runtime;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.WPF.Modules.DefaultTypes
 {

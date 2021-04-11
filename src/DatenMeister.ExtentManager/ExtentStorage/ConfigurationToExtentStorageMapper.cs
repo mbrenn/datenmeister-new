@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.ExtentManager.ExtentStorage
 {
     /// <summary>
     /// Maps the extent storage type to a configuration type which is used by the logic to find out the best type

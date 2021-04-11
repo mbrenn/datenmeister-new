@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using BurnSystems.Logging;
 
-namespace DatenMeister.Runtime.Plugins
+namespace DatenMeister.Plugins
 {
     /// <summary>
     /// Loads the plugins

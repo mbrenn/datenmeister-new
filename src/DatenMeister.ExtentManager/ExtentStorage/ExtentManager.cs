@@ -12,11 +12,10 @@ using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
-using DatenMeister.Runtime.Locking;
+using DatenMeister.Locking;
 using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.ExtentManager.ExtentStorage
 {
 
     /// <summary>

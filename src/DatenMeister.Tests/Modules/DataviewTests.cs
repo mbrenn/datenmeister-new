@@ -11,7 +11,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
-using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Types;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules

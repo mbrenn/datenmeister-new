@@ -1,8 +1,8 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.Models;
 using DatenMeister.Excel.ProviderLoader;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Excel.Integration
 {

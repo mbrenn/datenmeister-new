@@ -3,7 +3,7 @@ using System.IO;
 
 #nullable enable
 
-namespace DatenMeister.Integration
+namespace DatenMeister.Core
 {
     public class IntegrationSettings
     {

@@ -2,7 +2,7 @@
 
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.Validators
+namespace DatenMeister.Validators
 {
     /// <summary>
     /// This interface is used to validate the state of an element.

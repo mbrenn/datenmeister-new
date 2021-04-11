@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler

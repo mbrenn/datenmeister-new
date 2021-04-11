@@ -13,13 +13,12 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.ExtentManager.Extents;
+using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.ExtentManager.ExtentStorage.Validators;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.ManagementProviders.View;
-using DatenMeister.Runtime.Extents;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Validators;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
 using MessageBox = System.Windows.MessageBox;
@@ -202,7 +201,7 @@ namespace DatenMeister.WPF.Navigation
                 configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                     workspaceId);
 
-                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
                 try
                 {
                     extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);

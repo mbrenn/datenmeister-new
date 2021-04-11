@@ -7,6 +7,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Exceptions;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.DotNet;
@@ -14,13 +15,11 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Integration;
-using DatenMeister.Runtime.Exceptions;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Plugins;
-using DatenMeister.Uml.Plugin;
+using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Plugins;
+using DatenMeister.Types.Plugin;
 
-namespace DatenMeister.Modules.TypeSupport
+namespace DatenMeister.Types
 {
     /// <summary>
     /// Support for local types. Local types are types that are initialized at start-up

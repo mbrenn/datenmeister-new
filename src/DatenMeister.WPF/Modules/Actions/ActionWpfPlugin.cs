@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Core;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.Actions

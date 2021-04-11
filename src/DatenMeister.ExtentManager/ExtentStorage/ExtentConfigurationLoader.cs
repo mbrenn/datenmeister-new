@@ -11,7 +11,7 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.ExtentManager.ExtentStorage
 {
     /// <summary>
     /// This loader is used to store and load the extent storage out of a file.

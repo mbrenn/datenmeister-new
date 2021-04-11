@@ -8,9 +8,8 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.ExtentManager.ExtentStorage
 {
     /// <summary>
     /// Implements some helper methods to create extents

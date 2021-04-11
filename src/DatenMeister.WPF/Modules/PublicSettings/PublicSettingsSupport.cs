@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using DatenMeister.Core.Helper;
 using DatenMeister.Modules.PublicSettings;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;

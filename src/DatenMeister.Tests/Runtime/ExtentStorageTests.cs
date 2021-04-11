@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -9,9 +10,9 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
 using DatenMeister.Tests.CSV;
 using NUnit.Framework;
 
@@ -36,7 +37,7 @@ namespace DatenMeister.Tests.Runtime
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(new IntegrationSettings());
             scopeStorage.Add(mapper);
-            var extentManager = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var extentManager = new ExtentManager.ExtentStorage.ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
             extentManager.OpenDecoupled();
             
             var setting =
@@ -91,7 +92,7 @@ namespace DatenMeister.Tests.Runtime
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(mapper);
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
+            var logic = new ExtentManager.ExtentStorage.ExtentManager(WorkspaceLogic.Create(dataLayers), scopeStorage);
             var settings = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvSettings);
             settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.hasHeader, false);
             settings.set(_DatenMeister._ExtentLoaderConfigs._CsvSettings.separator, ' ');

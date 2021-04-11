@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.ExtentManager.ExtentStorage;
 
 namespace DatenMeister.Integration
 {
@@ -37,7 +37,7 @@ namespace DatenMeister.Integration
             string uri,
             string filename)
         {
-            return scope.Resolve<ExtentManager>().CreateAndAddXmiExtent(uri, filename);
+            return scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>().CreateAndAddXmiExtent(uri, filename);
         }
     }
 }

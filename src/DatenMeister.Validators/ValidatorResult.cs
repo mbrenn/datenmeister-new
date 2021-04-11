@@ -2,7 +2,7 @@ using BurnSystems.Collections;
 
 #nullable enable
 
-namespace DatenMeister.Modules.Validators
+namespace DatenMeister.Validators
 {
     public enum ValidatorState
     {

@@ -10,11 +10,11 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Integration;
-using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Plugins;
 using DatenMeister.Runtime.Functions.Algorithm;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Types;
 
 namespace DatenMeister.Modules.UserManagement
 {

@@ -8,9 +8,8 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Integration;
 
-namespace DatenMeister.Modules.TypeSupport
+namespace DatenMeister.Types
 {
     /// <summary>
     /// The default type integrator performs the following actions:

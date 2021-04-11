@@ -3,17 +3,18 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Autofac;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipCodeExample;
-using DatenMeister.Runtime.ExtentStorage;
 
 namespace ScriptTests
 {

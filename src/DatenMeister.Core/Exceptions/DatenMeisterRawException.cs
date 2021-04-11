@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Runtime.Exceptions
+namespace DatenMeister.Core.Exceptions
 {
     /// <summary>
     /// Defines the exception that is used within DatenMeister containing and object with

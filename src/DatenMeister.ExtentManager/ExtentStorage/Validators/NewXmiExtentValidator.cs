@@ -8,9 +8,9 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Modules.Validators;
+using DatenMeister.Validators;
 
-namespace DatenMeister.Runtime.ExtentStorage.Validators
+namespace DatenMeister.ExtentManager.ExtentStorage.Validators
 {
     /// <summary>
     /// Defines the extent validator being used to create new extents

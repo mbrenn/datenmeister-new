@@ -2,8 +2,8 @@
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Provider.EnvironmentalVariableProvider
 {
@@ -39,7 +39,7 @@ namespace DatenMeister.Provider.EnvironmentalVariableProvider
                     var mgmtProvider = _workspaceLogic.GetManagementWorkspace();
                     if (mgmtProvider.FindExtent(DefaultExtentUri) == null)
                     {
-                        var extentLoader = new ExtentManager(_workspaceLogic, ScopeStorage);
+                        var extentLoader = new ExtentManager.ExtentStorage.ExtentManager(_workspaceLogic, ScopeStorage);
                         var loaderConfig = InMemoryObject.CreateEmpty(
                             _DatenMeister.TheOne.ExtentLoaderConfigs.__EnvironmentalVariableLoaderConfig);
                         loaderConfig.set(

@@ -13,13 +13,12 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
+using DatenMeister.ExtentManager.Extents.Configuration;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.TypeSupport;
 using DatenMeister.Modules.ZipCodeExample;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Uml.Plugin;
+using DatenMeister.Types;
+using DatenMeister.Types.Plugin;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents
@@ -76,7 +75,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                     File.Delete(path);
                 }
 
-                var extentLoader = dm.Resolve<ExtentManager>();
+                var extentLoader = dm.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
                 var loadedExtentInfo = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtentInfo.Extent, Is.Not.Null);
 
@@ -151,7 +150,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                     File.Delete(path);
                 }
 
-                var extentLoader = dm.Resolve<ExtentManager>();
+                var extentLoader = dm.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
                 var loadedExtent = extentLoader.LoadExtent(loaderConfig, ExtentCreationFlags.LoadOrCreate);
 
                 Assert.That(loadedExtent.Extent, Is.Not.Null);

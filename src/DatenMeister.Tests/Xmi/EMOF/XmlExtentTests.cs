@@ -13,7 +13,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Tests.CSV;
 using NUnit.Framework;
 
@@ -256,7 +256,7 @@ namespace DatenMeister.Tests.Xmi.EMOF
             storageConfiguration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
 
             // Creates the extent
-            var loader = scope.Resolve<ExtentManager>();
+            var loader = scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
             var loadedExtent = loader.LoadExtent(storageConfiguration, ExtentCreationFlags.LoadOrCreate);
             Assert.That(loadedExtent.Extent, Is.Not.Null);
 

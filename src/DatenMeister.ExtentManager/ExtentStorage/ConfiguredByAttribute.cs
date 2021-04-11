@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Runtime.ExtentStorage
+namespace DatenMeister.ExtentManager.ExtentStorage
 {
     /// <summary>
     /// This attribute is allocated the the classes implementing the interface IProviderLoader

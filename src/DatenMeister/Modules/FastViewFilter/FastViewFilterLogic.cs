@@ -4,7 +4,7 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Modules.TypeSupport;
+using DatenMeister.Types;
 
 namespace DatenMeister.Modules.FastViewFilter
 {

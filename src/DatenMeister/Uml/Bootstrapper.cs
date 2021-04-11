@@ -14,7 +14,7 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Core.XmiFiles;
-using DatenMeister.Uml.Plugin;
+using DatenMeister.Types.Plugin;
 
 namespace DatenMeister.Uml
 {

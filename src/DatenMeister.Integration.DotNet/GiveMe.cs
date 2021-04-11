@@ -7,7 +7,8 @@ using Autofac;
 using DatenMeister.Core;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Integration.DotNet.PluginLoader;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
+
 #if !NET462
 #endif
 

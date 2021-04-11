@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Excel.Properties;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.WPF.Modules.TypeManager
 {

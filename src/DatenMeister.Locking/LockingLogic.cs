@@ -4,9 +4,8 @@ using System.IO;
 using System.Threading.Tasks;
 using BurnSystems.Logging;
 using DatenMeister.Core;
-using DatenMeister.Integration;
 
-namespace DatenMeister.Runtime.Locking
+namespace DatenMeister.Locking
 {
     public class LockingLogic
     {

@@ -1,10 +1,10 @@
 ﻿#nullable enable
 
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces.Data;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Integration
 {
@@ -36,7 +36,7 @@ namespace DatenMeister.Integration
                 scope.Resolve<WorkspaceLoader>().Store();
             }
             
-            scope.Resolve<ExtentManager>().UnloadManager(true);
+            scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>().UnloadManager(true);
         }
     }
 }

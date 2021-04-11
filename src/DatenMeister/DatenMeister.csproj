@@ -11,9 +11,6 @@
     <LangVersion>9</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
-    <TargetFrameworks>netcoreapp3.1;net5.0;net462</TargetFrameworks>
-  </PropertyGroup>  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;VIEWLOGICINFO</DefineConstants>
     <Optimize>false</Optimize>
@@ -28,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Scriban" Version="2.1.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />

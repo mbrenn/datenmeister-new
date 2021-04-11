@@ -1,6 +1,6 @@
 #nullable enable
-using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.EMOF.Implementation;
 
 // ReSharper disable RedundantNameQualifier
 // Created by DatenMeister.SourcecodeGenerator.ClassTreeGenerator Version 1.2.0.0
@@ -2511,7 +2511,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _ZipCode @ZipCode = new _ZipCode();
-            public IElement @__ZipCode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCode");
+            public IElement @__ZipCode = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode");
 
             public class _ZipCodeWithState
             {
@@ -2536,7 +2536,7 @@ namespace DatenMeister.Core.Models
             }
 
             public _ZipCodeWithState @ZipCodeWithState = new _ZipCodeWithState();
-            public IElement @__ZipCodeWithState = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCodeWithState");
+            public IElement @__ZipCodeWithState = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCodeWithState");
 
         }
 

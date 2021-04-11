@@ -65,7 +65,7 @@ namespace DatenMeister.Integration.DotNet
             if (pluginLoaderSettings.PluginLoader is DefaultPluginLoader)
             {
 #if NET462
-                settings.PluginLoader = new DefaultPluginLoader();
+                pluginLoaderSettings.PluginLoader = new DefaultPluginLoader();
 #else
                 pluginLoaderSettings.PluginLoader = new DotNetCorePluginLoader();
 #endif

@@ -1,11 +1,13 @@
-#if !NET462
+
 
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+#if !NET462
 using System.Runtime.Loader;
+#endif
 using BurnSystems.Logging;
 using DatenMeister.Runtime.Plugins;
 
@@ -18,6 +20,7 @@ namespace DatenMeister.Integration.DotNet.PluginLoader
     {
         public List<Type> GetPluginTypes()
         {
+#if !NET462
             var pluginList = new List<Type>();
 
             foreach (var assembly in AssemblyLoadContext.Default.Assemblies)
@@ -37,6 +40,9 @@ namespace DatenMeister.Integration.DotNet.PluginLoader
             }
 
             return pluginList;
+#else
+            throw new NotImplementedException("DotNetCore Plugin Loader is not available for .Net Framework 4.6.2");
+#endif
         }
         
         /// <summary>
@@ -50,6 +56,7 @@ namespace DatenMeister.Integration.DotNet.PluginLoader
         /// <param name="path">Path to directory whose assemblies are loaded</param>
         public void LoadAssembliesFromFolder(string path)
         {
+#if !NET462
             if (!Path.IsPathRooted(path))
             {
                 path = Path.Combine(Environment.CurrentDirectory, path);
@@ -87,9 +94,9 @@ namespace DatenMeister.Integration.DotNet.PluginLoader
             {
                 Logger.Warn($"Directory does not exist: {path}");
             }
+#else
+            throw new NotImplementedException("DotNetCore Plugin Loader is not available for .Net Framework 4.6.2");
+#endif
         }
     }
 }
-
-
-#endif

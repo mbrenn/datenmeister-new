@@ -29,13 +29,12 @@ namespace DatenMeister.SourceGeneration.Console
             CreateSourceCodeForDatenMeisterAllTypes();
 
 #if !DEBUG
-            File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister/Models/EMOF/primitivetypes.cs", true);
-            File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister/Models/EMOF/mof.cs", true);
-            File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister/Models/EMOF/uml.cs", true);
+            File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);
+            File.Copy($"{R}/mof.cs", $"{R}/../DatenMeister.Core/Models/EMOF/mof.cs", true);
+            File.Copy($"{R}/uml.cs", $"{R}/../DatenMeister.Core/Models/EMOF/uml.cs", true);
             
             File.Copy($"./ExcelModels.class.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.class.cs", true);
-            File.Copy($"./ExcelModels.dotnet.cs", $"{R}/../DatenMeister.Excel/Models/ExcelModels.dotnet.cs", true);
-            File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister/Models/DatenMeister.class.cs", true);
+            File.Copy($"./DatenMeister.class.cs", $"{R}/../DatenMeister.Core/Models/DatenMeister.class.cs", true);
 #endif
         }
 
@@ -54,7 +53,7 @@ namespace DatenMeister.SourceGeneration.Console
             var sourceParser = new ElementSourceParser();
             var classTreeGenerator = new ClassTreeGenerator(sourceParser)
             {
-                Namespace = "DatenMeister.Models"
+                Namespace = "DatenMeister.Core.Models"
             };
 
             classTreeGenerator.Walk(pseudoExtent);
@@ -94,7 +93,7 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for UML
             var generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.Models.EMOF"
+                Namespace = "DatenMeister.Core.Models.EMOF"
             };
 
             generator.Walk(umlExtent);
@@ -112,7 +111,7 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for MOF
             generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.Models.EMOF"
+                Namespace = "DatenMeister.Core.Models.EMOF"
             };
             generator.Walk(mofExtent);
 
@@ -130,7 +129,7 @@ namespace DatenMeister.SourceGeneration.Console
             // Generates tree for PrimitiveTypes
             generator = new ClassTreeGenerator
             {
-                Namespace = "DatenMeister.Models.EMOF"
+                Namespace = "DatenMeister.Core.Models.EMOF"
             };
             generator.Walk(primitiveTypeExtent);
 

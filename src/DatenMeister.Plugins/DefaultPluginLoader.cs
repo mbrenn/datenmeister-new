@@ -38,8 +38,7 @@ namespace DatenMeister.Runtime.Plugins
                     Logger.Error(
                         $"PluginLoader: Exception during assembly loading of {assembly.FullName} [{assembly.Location}]: {e.Message}");
                 }
-            }
-            
+            }            
 
             return pluginList;
         }

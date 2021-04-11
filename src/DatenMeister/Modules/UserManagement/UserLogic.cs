@@ -22,6 +22,7 @@ namespace DatenMeister.Modules.UserManagement
     /// Implements the logic for the user
     /// </summary>
     [PluginLoading(PluginLoadingPosition.AfterBootstrapping | PluginLoadingPosition.AfterLoadingOfExtents)]
+    [PluginDependency(typeof(LocalTypeSupport))]
     public class UserLogic : IDatenMeisterPlugin
     {
         private static readonly ClassLogger Logger = new ClassLogger(typeof(UserLogic));
@@ -38,7 +39,7 @@ namespace DatenMeister.Modules.UserManagement
         private readonly ExtentCreator _extentCreator;
 
         private readonly IWorkspaceLogic _workspaceLogic;
-        
+
         private readonly IntegrationSettings _integrationSettings;
         private IList<IElement>? _types;
         private IElement? _settingsMetaClass;
@@ -74,7 +75,7 @@ namespace DatenMeister.Modules.UserManagement
             {
                 throw new InvalidOperationException("UserManagementSettings is not found");
             }
-            
+
             var globalSalt = settings.getOrDefault<string>(nameof(UserManagementSettings.salt));
 
             var totalPassword = salt + password + globalSalt;
@@ -84,12 +85,13 @@ namespace DatenMeister.Modules.UserManagement
 
         private IUriExtent GetUserDatabase()
         {
-            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)?.FindExtent(ExtentTypeName);
+            var userDatabase = _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
+                ?.FindExtent(ExtentTypeName);
             if (userDatabase == null)
             {
                 throw new InvalidOperationException("User Database was not found");
             }
-            
+
             return userDatabase;
         }
 
@@ -116,30 +118,34 @@ namespace DatenMeister.Modules.UserManagement
                     _settingsMetaClass = _localTypeSupport.GetMetaClassFor(typeof(UserManagementSettings));
 
                     break;
-                
+
                 case PluginLoadingPosition.AfterLoadingOfExtents:
                     _extent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
                         WorkspaceNames.WorkspaceManagement,
                         ExtentUri,
                         ExtentTypeName,
                         "",
-                        _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate);
-                    
+                        _integrationSettings.InitializeDefaultExtents
+                            ? ExtentCreationFlags.CreateOnly
+                            : ExtentCreationFlags.LoadOrCreate);
+
                     if (_extent == null)
                     {
                         throw new InvalidOperationException("Extent could not be created");
                     }
+
                     if (_types == null)
                     {
                         throw new InvalidOperationException($"_extent or _types are null");
                     }
-                    
+
                     if (!(_extent.elements().WhenMetaClassIs(_settingsMetaClass).FirstOrDefault() is IElement))
                     {
                         // Create new settings
                         var factory = new MofFactory(_extent);
                         var element = factory.create(_types[1]);
-                        element.set(nameof(UserManagementSettings.salt), RandomFunctions.GetRandomAlphanumericString(16));
+                        element.set(nameof(UserManagementSettings.salt),
+                            RandomFunctions.GetRandomAlphanumericString(16));
                         _extent.elements().add(element);
                         Logger.Info("UserLogic - Created Salt...");
                     }

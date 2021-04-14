@@ -26,4 +26,19 @@
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img" />
+  </ItemGroup>
+
+  <!-- Copies the files from the icons foldes to the wwwroot/img folder -->
+  <ItemGroup>
+    <IconPngFiles Include="../../../assets/icons/output/*.*"/>
+  </ItemGroup>
+
+  <Target Name="CopyIconPngFiles" BeforeTargets="Compile">
+    <Copy
+            SourceFiles="@(IconPngFiles)"
+            DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')"
+    />
+  </Target>
 </Project>

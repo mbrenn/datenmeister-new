@@ -22,8 +22,8 @@ namespace DatenMeister.WebServer
         public void ConfigureServices(IServiceCollection services)
         {
             var appNavigation = new AppNavigationDefinition();
-            appNavigation.Items.Add(new AppNavigationItem {Title = "Home", Url = "/"});
-            appNavigation.Items.Add(new AppNavigationItem {Title = "About", Url = "/About"});
+            appNavigation.Items.Add(new AppNavigationItem {Title = "Home", Url = "/", Image = "home"});
+            appNavigation.Items.Add(new AppNavigationItem {Title = "About", Url = "/About", Image="about"});
 
             services.AddControllers();
             services.AddRazorPages();

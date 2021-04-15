@@ -5,7 +5,9 @@
     <ul class="navbar-nav">
         @foreach (var item in AppNavigationDefinition.Items)
         {
-            <li class="navbar-item"><a href="@item.Url" class="nav-link">@item.Title</a></li>
+            <li class="navbar-item"><a href="@item.Url" class="nav-link">
+                <img src="img/@(item.Image)-64.png" alt="@item.Title" />
+            </a></li>
         }
     </ul>
 </nav>

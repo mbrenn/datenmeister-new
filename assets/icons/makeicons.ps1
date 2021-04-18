@@ -16,6 +16,7 @@ foreach($file in $files)
     & inkscape --export-type="png" --export-width=128 --export-filename="$filename-128.png" $file
     & inkscape --export-type="png" --export-width=64 --export-filename="$filename-64.png" $file
     & inkscape --export-type="png" --export-width=32 --export-filename="$filename-32.png" $file
+    & inkscape --export-type="png" --export-width=48 --export-filename="$filename-48.png" $file
 }
 
 # Waits until inkscape is closed

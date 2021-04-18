@@ -1,0 +1,15 @@
+﻿@page "/ItemsOverview/{workspace}/{extent}"
+
+<div class="dm-maincontent">
+<h3>Items Overview</h3>
+<p>Workspace: @Workspace</p>
+<p>Extent: @Extent</p>
+</div>
+
+@code {
+    [Parameter]
+    public string Workspace { get; set; }
+    
+    [Parameter]
+    public string Extent { get; set; }
+}

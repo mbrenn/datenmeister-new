@@ -4,13 +4,13 @@ for details on configuring this project to bundle and minify static web assets. 
 
 .dm-sidebar
 {
-  width: 80px;  
+  width: 64px;  
   position: absolute;
 }
 
 .dm-maincontent
 {
-  margin-left: 80px;
+  margin-left: 64px;
 }
 
 a.navbar-brand {

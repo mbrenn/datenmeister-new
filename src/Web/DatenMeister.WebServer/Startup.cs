@@ -1,3 +1,6 @@
+using System.Reflection;
+using DatenMeister.Integration.DotNet;
+using DatenMeister.WebServer.Controller;
 using DatenMeister.WebServer.Library;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,11 +28,18 @@ namespace DatenMeister.WebServer
             appNavigation.Items.Add(new AppNavigationItem {Title = "Home", Url = "/", Image = "home"});
             appNavigation.Items.Add(new AppNavigationItem {Title = "About", Url = "/About", Image="about"});
             appNavigation.Items.Add(new AppNavigationItem {Title = "Settings", Url = "/Settings", Image="settings"});
+            appNavigation.Items.Add(new AppNavigationItem
+            {
+                Title = "Workspaces", Url = "/ItemsOverview/Management/dm:%2F%2F%2F_internal%2Fworkspaces", Image = "workspaces"
+            });
 
             services.AddControllers();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton(appNavigation);
+
+            var extentController = new ExtentController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+            services.AddSingleton(extentController);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,6 @@
-﻿using DatenMeister.Core.EMOF.Interface.Identifiers;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.ExtentManager.ExtentStorage;
@@ -13,10 +15,10 @@ namespace DatenMeister.WebServer.Controller
     public class ExtentController
     {
         private readonly IWorkspaceLogic _workspaceLogic;
-        private readonly ScopeStorage _scopeStorage;
+        private readonly IScopeStorage _scopeStorage;
         private readonly FormsPlugin _formsPlugin;
 
-        public ExtentController(IWorkspaceLogic workspaceLogic, ScopeStorage scopeStorage)
+        public ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
@@ -27,19 +29,33 @@ namespace DatenMeister.WebServer.Controller
                     _scopeStorage);
         }
 
-        public ItemsOverviewModel GetItems(string workspaceId, string extentUrl)
+        public ItemsOverviewModel? GetItems(string workspaceId, string extentUrl)
         {
+            // Finds the specific items of the given extent
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl) as IUriExtent;
             if (extent == null)
             {
                 return null;
             }
 
+            // Create the result 
             var result = new ItemsOverviewModel();
+            
+            // Find the matching form
             var extentForm = _formsPlugin.GetExtentForm(
                 extent,
                 FormDefinitionMode.Default);
+            if (extentForm == null)
+            {
+                return null;
+            }
 
+            result.form = XmiHelper.ConvertToXmi(extentForm);
+            
+            // Gets the items
+            result.items = XmiHelper.ConvertToXmi(extent.elements());
+            
+            // Returns the result
             return result;
         }
     }

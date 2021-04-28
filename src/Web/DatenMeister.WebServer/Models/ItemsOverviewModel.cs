@@ -4,8 +4,8 @@ namespace DatenMeister.WebServer.Models
 {
     public class ItemsOverviewModel
     {
-        public string form;
+        public string form = string.Empty;
 
-        public string items;
+        public string items = string.Empty;
     }
 }

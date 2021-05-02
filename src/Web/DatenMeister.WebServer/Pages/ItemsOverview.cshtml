@@ -6,39 +6,41 @@
 @model ItemsOverviewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - Items Overview";
+}
 
-<div class="dm-maincontent">
-    <h3>Items Overview</h3>
-    <p>Workspace: @Model.Workspace</p>
-    <p>Extent: @Model.Extent</p>
-    
-    <div>
-        <table>
+<h3>Items Overview</h3>
+<p>Workspace: @Model.Workspace</p>
+<p>Extent: @Model.Extent</p>
+
+<div>
+    <table>
+        <tr>
+            @foreach (var field in Model.Fields)
+            {
+                <th>
+                    View
+                </th>
+                <th>
+                    @(field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title))
+                </th>
+            }
+        </tr>
+        @foreach (var item in Model.Items!.OfType<IObject>())
+        {
             <tr>
                 @foreach (var field in Model.Fields)
                 {
-                    <th>
-                        View
-                    </th>
-                    <th>
-                        @(field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title))
-                    </th>
+                    <td>
+                        <a href="#">View</a>
+                    </td>
+                    <td>@(item.getOrDefault<string>(field.getOrDefault<string>(
+                            _DatenMeister._Forms._FieldData.name)))
+                    </td>
                 }
             </tr>
-            @foreach (var item in Model.Items!.OfType<IObject>())
-            {
-                <tr>
-                    @foreach (var field in Model.Fields)
-                    {
-                        <td>
-                            <a href="#">View</a>
-                        </td>
-                        <td>@(item.getOrDefault<string>(field.getOrDefault<string>(
-                                _DatenMeister._Forms._FieldData.name)))
-                        </td>
-                    }
-                </tr>
-            }
-        </table>
-    </div>
+        }
+    </table>
 </div>

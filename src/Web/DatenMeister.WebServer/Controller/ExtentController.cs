@@ -31,7 +31,7 @@ namespace DatenMeister.WebServer.Controller
                     _scopeStorage);
         }
 
-        public ItemsOverviewModel? GetItems(string workspaceId, string extentUrl, string itemUrl)
+        public ItemsOverviewModel? GetItems(string workspaceId, string extentUrl, string? itemUrl)
         {
             // Finds the specific items of the given extent
             IObject? foundElement;

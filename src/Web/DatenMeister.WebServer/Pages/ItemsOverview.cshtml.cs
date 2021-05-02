@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -16,32 +17,32 @@ namespace DatenMeister.WebServer.Pages
     {
         private readonly ILogger<ItemsOverviewModel> _logger;
 
-        public ItemsOverviewModel(ILogger<ItemsOverviewModel> logger)
+        public ItemsOverviewModel(ILogger<ItemsOverviewModel> logger, ExtentController extentController)
         {
             _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
+            ExtentController = extentController;
         }
 
         [Parameter] public string Workspace { get; set; } = string.Empty;
 
         [Parameter] public string Extent { get; set; } = string.Empty;
 
-        [Parameter] public string Item { get; set; } = string.Empty;
+        [Parameter] public string? Item { get; set; } = string.Empty;
 
-        [Inject] public ExtentController? ExtentController { get; set; }
+        private ExtentController? ExtentController { get; set; }
 
         public IReflectiveCollection? Items { get; set; }
 
-        public IObject? Form { get; set; }
+        private IObject? Form { get; set; }
 
-        public List<IElement> Fields = new();
+        public readonly List<IElement> Fields = new();
 
-        protected void OnInitialized()
+        public void OnGet(string workspace, string extent, string? item)
         {
+            Workspace = WebUtility.UrlDecode(workspace);
+            Extent = WebUtility.UrlDecode(extent);
+            Item = WebUtility.UrlDecode(item);
+            
             if (ExtentController == null) throw new InvalidOperationException("ExtentController is not set");
 
             var result = ExtentController.GetItems(Workspace, Extent, Item);

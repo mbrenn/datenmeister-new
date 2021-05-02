@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
@@ -7,6 +8,7 @@ using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
+using DatenMeister.Modules.UserProperties;
 using DatenMeister.Provider.XMI;
 using DatenMeister.WebServer.Models;
 
@@ -29,11 +31,24 @@ namespace DatenMeister.WebServer.Controller
                     _scopeStorage);
         }
 
-        public ItemsOverviewModel? GetItems(string workspaceId, string extentUrl)
+        public ItemsOverviewModel? GetItems(string workspaceId, string extentUrl, string itemUrl)
         {
             // Finds the specific items of the given extent
+            IObject? foundElement;
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl) as IUriExtent;
             if (extent == null)
+            {
+                return null;
+            }
+
+            foundElement = extent;
+
+            if (!string.IsNullOrEmpty(itemUrl))
+            {
+                foundElement = extent.element(itemUrl);
+            }
+            
+            if (foundElement == null)
             {
                 return null;
             }
@@ -42,9 +57,10 @@ namespace DatenMeister.WebServer.Controller
             var result = new ItemsOverviewModel();
             
             // Find the matching form
-            var extentForm = _formsPlugin.GetExtentForm(
-                extent,
-                FormDefinitionMode.Default);
+            var extentForm = _formsPlugin.GetItemTreeFormForObject(
+                foundElement,
+                FormDefinitionMode.Default,
+                "Default");
             if (extentForm == null)
             {
                 return null;

@@ -35,7 +35,6 @@ namespace DatenMeister.WebServer
 
             services.AddControllers();
             services.AddRazorPages();
-            services.AddServerSideBlazor();
             services.AddSingleton(appNavigation);
 
             var extentController = new ExtentController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
@@ -51,7 +50,6 @@ namespace DatenMeister.WebServer
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseRouting();
 
             var config = new StaticFileOptions
@@ -59,7 +57,7 @@ namespace DatenMeister.WebServer
                 ServeUnknownFileTypes = true
             };
 
-            /*var extensionProvider = new FileExtensionContentTypeProvider();
+            var extensionProvider = new FileExtensionContentTypeProvider();
             extensionProvider.Mappings.Add(".dll", "application/octet-stream");
             config.ContentTypeProvider = extensionProvider;
 
@@ -67,9 +65,8 @@ namespace DatenMeister.WebServer
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapBlazorHub();
                 endpoints.MapControllers();
-                //endpoints.MapRazorPages();
+                endpoints.MapRazorPages();
                 endpoints.MapFallbackToPage("/Index");
             });
 

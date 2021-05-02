@@ -17,12 +17,17 @@
     <link href="~/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/bootstrap-reboot.min.css" rel="stylesheet" />
     <link href="~/css/datenmeister.css" rel="stylesheet" />
-    <link href="DatenMeister.WebServer.styles.css" rel="stylesheet" />
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <component type="typeof(App)" render-mode="Server" />
-    <script src="/_framework/blazor.server.js"></script>
+<partial name="Headline"/>
+<partial name="AppMenu"/>
+
+<div class="dm-maincontent">
+    <h3>Startpage</h3>
+
+    Welcome to DatenMeister!
+</div>
 </body>
 </html>

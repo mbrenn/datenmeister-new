@@ -1,8 +1,8 @@
 ﻿@page "/ItemsOverview/{workspace}/{extent}/{item?}"
 @namespace DatenMeister.WebServer.Pages
+@using System.Net
 @using DatenMeister.Core.Helper
-@using global::DatenMeister.Core.EMOF.Interface.Reflection
-@using global::DatenMeister.Core.Models
+@using DatenMeister.Core.Models
 @model ItemsOverviewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -18,26 +18,25 @@
 <div>
     <table>
         <tr>
+            <th>
+                View
+            </th>
             @foreach (var field in Model.Fields)
             {
-                <th>
-                    View
-                </th>
                 <th>
                     @(field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title))
                 </th>
             }
         </tr>
-        @foreach (var item in Model.Items!.OfType<IObject>())
+        @foreach (var item in Model.HtmlCells)
         {
             <tr>
+                <td>
+                    <a href="/ItemsOverview/@Html.Raw(WebUtility.UrlEncode(Model.Workspace))/@Html.Raw(WebUtility.UrlEncode(Model.Extent))/@Html.Raw(WebUtility.UrlEncode(@item.Id))">View</a>
+                </td>
                 @foreach (var field in Model.Fields)
                 {
-                    <td>
-                        <a href="#">View</a>
-                    </td>
-                    <td>@(item.getOrDefault<string>(field.getOrDefault<string>(
-                            _DatenMeister._Forms._FieldData.name)))
+                    <td>@Html.Raw(item.Cell[field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name)].HtmlRaw)
                     </td>
                 }
             </tr>

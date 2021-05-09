@@ -392,7 +392,7 @@ namespace DatenMeister.Modules.Forms
             return foundForm;
         }
 
-        public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
+        public IElement? GetExtentForm(IExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
         {
             IElement? foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
@@ -675,6 +675,13 @@ namespace DatenMeister.Modules.Forms
         /// <returns>Found extent form</returns>
         public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode, string viewModeId)
         {
+            // Checks if the item to which the extent form is requested is an extent
+            if (element is IExtent elementAsExtent)
+            {
+                return GetExtentForm(elementAsExtent, formDefinitionMode, viewModeId);
+            }
+            
+            // Ok, not an extent now do the right things
             IElement? foundForm = null;
 
             var extent = (element as IHasExtent)?.Extent;

@@ -1,15 +1,14 @@
-﻿using DatenMeister.Core;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.DependencyInjection;
 using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Modules.UserProperties;
-using DatenMeister.Provider.XMI;
 using DatenMeister.WebServer.Models;
 
 namespace DatenMeister.WebServer.Controller
@@ -31,7 +30,14 @@ namespace DatenMeister.WebServer.Controller
                     _scopeStorage);
         }
 
-        public ItemsOverviewModel? GetItems(string workspaceId, string extentUrl, string? itemUrl)
+        /// <summary>
+        /// Gets the items and forms
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUrl">Url of the extent</param>
+        /// <param name="itemId">Id of te item</param>
+        /// <returns>ID of the item</returns>
+        public ItemsOverviewModel? GetItemsAndForm(string workspaceId, string extentUrl, string? itemId)
         {
             // Finds the specific items of the given extent
             IObject? foundElement;
@@ -43,9 +49,9 @@ namespace DatenMeister.WebServer.Controller
 
             foundElement = extent;
 
-            if (!string.IsNullOrEmpty(itemUrl))
+            if (!string.IsNullOrEmpty(itemId))
             {
-                foundElement = extent.element(itemUrl);
+                foundElement = extent.element($"#{itemId}");
             }
             
             if (foundElement == null)
@@ -66,10 +72,21 @@ namespace DatenMeister.WebServer.Controller
                 return null;
             }
 
-            result.form = XmiHelper.ConvertToXmi(extentForm);
-            
+            result.form = XmiHelper.ConvertToXmiFromObject(extentForm);
+
+            if (foundElement is IExtent asExtent)
+            {
+                result.items = XmiHelper.ConvertToXmiFromCollection(
+                    asExtent.elements());
+            }
+            else
+            {
+                result.items = XmiHelper.ConvertToXmiFromCollection(
+                    DefaultClassifierHints.GetPackagedElements(foundElement));
+            }
+           
             // Gets the items
-            result.items = XmiHelper.ConvertToXmi(extent.elements());
+            
             
             // Returns the result
             return result;

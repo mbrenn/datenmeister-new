@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -12,12 +12,12 @@ namespace DatenMeister.Core.Helper
 {
     public class XmiHelper
     {
-        public static string ConvertToXmi(IObject value)
+        public static string ConvertToXmiFromObject(IObject value)
         {
             var provider = new XmiProvider();
             var extent = new MofUriExtent(provider);
 
-            var copiedResult = ObjectCopier.Copy(new MofFactory(extent), value);
+            var copiedResult = ObjectCopier.Copy(new MofFactory(extent), value, CopyOptions.CopyId);
             var providerObject = (copiedResult as MofObject)?.ProviderObject;
             var xml = (providerObject as XmiProviderObject)?.XmlNode;
 
@@ -35,14 +35,14 @@ namespace DatenMeister.Core.Helper
         /// <param name="collection">Collection to be reparsed</param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException">Thrown, if procedure failed</exception>
-        public static string ConvertToXmi(IReflectiveCollection collection)
+        public static string ConvertToXmiFromCollection(IEnumerable<object?> collection)
         {
             var provider = new XmiProvider();
             var extent = new MofUriExtent(provider);
 
             foreach (var item in collection.OfType<IObject>())
             {
-                var copiedResult = ObjectCopier.Copy(new MofFactory(extent), item);
+                var copiedResult = ObjectCopier.Copy(new MofFactory(extent), item, CopyOptions.CopyId);
                 extent.elements().add(copiedResult);
             }
 
@@ -67,7 +67,7 @@ namespace DatenMeister.Core.Helper
             var providerObject = new XmiProviderObject(XElement.Parse(xmi), provider);
             
             var extent = new MofUriExtent(provider);
-            return new MofObject(providerObject, extent);
+            return new MofElement(providerObject, extent);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace DatenMeister.Core.Helper
             var itemNode = rootNode!.Elements("item");
             foreach (XElement element in itemNode)
             {
-                collection.add(new MofObject(new XmiProviderObject(element, provider), extent));
+                collection.add(new MofElement(new XmiProviderObject(element, provider), extent));
             }
 
             return collection;

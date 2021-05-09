@@ -65,7 +65,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="extent">Extent to be parsed</param>
         /// <param name="creationMode">The creation mode being used</param>
         /// <returns>The created element</returns>
-        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
+        public IElement CreateExtentForm(IExtent extent, CreationMode creationMode)
         {
             var extentFormConfiguration = new ExtentFormConfiguration();
             var extentTypes = extent.GetConfiguration().ExtentTypes;

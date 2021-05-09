@@ -38,7 +38,6 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         {
             LoadedExtentInformation = loadedExtentInformation;
 
-
             AddMapping(
                 _DatenMeister._Management._Extent.workspaceId,
                 e => parentWorkspace.id,

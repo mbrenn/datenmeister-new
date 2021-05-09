@@ -206,16 +206,15 @@ namespace DatenMeister.Core.Provider.Xmi
         /// <inheritdoc />
         public IProviderObject? Get(string? id)
         {
+            if (id == null)
+            {
+                return CreateProviderObject(GetMetaNode());
+            }
+            
             lock (LockObject)
             {
-                if (id == null)
-                {
-                    return CreateProviderObject(GetMetaNode());
-                }
-
                 var result = FindById(id);
                 return result == null ? null : CreateProviderObject(result);
-
             }
         }
 

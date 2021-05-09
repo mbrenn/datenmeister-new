@@ -23,11 +23,6 @@ namespace DatenMeister.Modules.Reports.Simple
     /// </summary>
     public class SimpleReportCreator
     {
-        /// <summary>
-        /// Stores the default classifier hints
-        /// </summary>
-        private readonly DefaultClassifierHints _defaultClassifierHints;
-
         private readonly FormCreator _formCreator;
 
         /// <summary>
@@ -49,7 +44,6 @@ namespace DatenMeister.Modules.Reports.Simple
         {
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = simpleReportConfiguration;
-            _defaultClassifierHints = new DefaultClassifierHints();
             _formCreator = FormCreator.Create(workspaceLogic, null);
         }
 
@@ -94,7 +88,7 @@ namespace DatenMeister.Modules.Reports.Simple
 
             // First, gets the elements to be shown
             IReflectiveCollection elements =
-                new TemporaryReflectiveCollection(_defaultClassifierHints.GetPackagedElements(rootElement));
+                new TemporaryReflectiveCollection(DefaultClassifierHints.GetPackagedElements(rootElement));
             if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showDescendents))
             {
                 elements = elements.GetAllCompositesIncludingThemselves();

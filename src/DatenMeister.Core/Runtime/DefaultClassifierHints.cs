@@ -157,6 +157,10 @@ namespace DatenMeister.Core.Runtime
         public static IEnumerable<string> GetPackagingPropertyNames(IObject item)
         {
             var metaClass = (item as IElement)?.getMetaClass();
+            if (metaClass?.Equals(_DatenMeister.TheOne.Management.__Workspace) == true)
+            {
+                yield return _DatenMeister._Management._Workspace.extents;
+            }
 
             // Hard coded at the moment, will be replaced by composite property identification
             if (metaClass?.Equals(_UML.TheOne.StructuredClassifiers.__Class) == true)
@@ -194,7 +198,7 @@ namespace DatenMeister.Core.Runtime
             }
         }
 
-        public IEnumerable<IElement> GetPackagedElements(IObject item)
+        public static IEnumerable<IElement> GetPackagedElements(IObject item)
         {
             // Gets the items as elements
             if (item is IExtent asExtent)

@@ -17,6 +17,18 @@ namespace DatenMeister.WebServer.Pages
     {
         private readonly ILogger<ItemsOverviewModel> _logger;
 
+        public class RowItem
+        {
+            public string Id { get; set; } = string.Empty;
+
+            public Dictionary<string, CellItem> Cell { get; } = new();
+        }
+
+        public class CellItem
+        {
+            public string HtmlRaw { get; set; } = string.Empty;
+        }
+
         public ItemsOverviewModel(ILogger<ItemsOverviewModel> logger, ExtentController extentController)
         {
             _logger = logger;
@@ -37,15 +49,19 @@ namespace DatenMeister.WebServer.Pages
 
         public readonly List<IElement> Fields = new();
 
+        public readonly List<RowItem> HtmlCells = new();
+
         public void OnGet(string workspace, string extent, string? item)
         {
+            HtmlCells.Clear();
+            Fields.Clear();
             Workspace = WebUtility.UrlDecode(workspace);
             Extent = WebUtility.UrlDecode(extent);
             Item = WebUtility.UrlDecode(item);
-            
+
             if (ExtentController == null) throw new InvalidOperationException("ExtentController is not set");
 
-            var result = ExtentController.GetItems(Workspace, Extent, Item);
+            var result = ExtentController.GetItemsAndForm(Workspace, Extent, Item);
             if (result == null)
             {
                 throw new InvalidOperationException($"Items not found: {Workspace}/{Extent}");
@@ -56,6 +72,45 @@ namespace DatenMeister.WebServer.Pages
             Form = XmiHelper.ConvertItemFromXmi(result.form)
                    ?? throw new InvalidOperationException("Form is null. It may not be null");
 
+            // Gets the field items
+            ConsolidateFields();
+
+            // Converts the items to a useful HtmlRaw Collection
+            foreach (var rowItem in Items.OfType<IObject>())
+            {
+                var row = new RowItem
+                {
+                    Id = (rowItem as IHasId)?.Id ?? string.Empty
+                };
+                
+                foreach (var field in Fields)
+                {
+                    var content = new CellItem();
+                    var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+
+                    if (field.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+                    {
+                        content.HtmlRaw =
+                            WebUtility.HtmlEncode((rowItem as IElement)?.metaclass?.ToString() ?? "Unknown");
+                    }
+                    else
+                    {
+                        content.HtmlRaw = WebUtility.HtmlEncode(rowItem.getOrDefault<string>(name));
+                    }
+
+                    row.Cell[name] = content;
+                }
+
+                HtmlCells.Add(row);
+            }
+        }
+
+        /// <summary>
+        /// Consolidates all fields from tabs and and the extentform itself
+        /// </summary>
+        private void ConsolidateFields()
+        {
+            // Consolidate fields from tab and fields into the list of fields
             foreach (var field in
                 Form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field).OfType<IElement>())
             {

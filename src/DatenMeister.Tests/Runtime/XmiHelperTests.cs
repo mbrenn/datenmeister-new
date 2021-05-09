@@ -13,7 +13,7 @@ namespace DatenMeister.Tests.Runtime
             value.set("name", "Martin");
             value.set("lastname", "Brenn");
 
-            var result = XmiHelper.ConvertToXmi(value);
+            var result = XmiHelper.ConvertToXmiFromObject(value);
             Assert.That(result, Does.Contain("name"));
             Assert.That(result, Does.Contain("lastname"));
             Assert.That(result, Does.Contain("Martin"));

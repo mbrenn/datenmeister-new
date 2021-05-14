@@ -1,0 +1,25 @@
+﻿@page "/WorkspacesAndExtent"
+@namespace DatenMeister.WebServer.Pages
+@using System.Net
+@using DatenMeister.Core.Helper
+@using DatenMeister.Core.Models
+@model WorkspacesAndExtent
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - Workspaces and Extents";
+}
+
+<h3>Workspaces and Extents</h3>
+<ul>
+    @foreach (var workspace in Model.Workspaces)
+    {
+        <li>@workspace.id - @workspace.annotation</li>
+        <ul>
+            @foreach (var extent in workspace.extents)
+            {
+                <li>@extent.uri</li>
+
+            }
+        </ul>
+    }
+</ul>

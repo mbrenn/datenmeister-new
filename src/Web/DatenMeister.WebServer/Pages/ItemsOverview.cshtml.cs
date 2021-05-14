@@ -29,10 +29,10 @@ namespace DatenMeister.WebServer.Pages
             public string HtmlRaw { get; set; } = string.Empty;
         }
 
-        public ItemsOverviewModel(ILogger<ItemsOverviewModel> logger, ExtentController extentController)
+        public ItemsOverviewModel(ILogger<ItemsOverviewModel> logger, ExtentItemsController extentItemsController)
         {
             _logger = logger;
-            ExtentController = extentController;
+            ExtentItemsController = extentItemsController;
         }
 
         [Parameter] public string Workspace { get; set; } = string.Empty;
@@ -41,7 +41,7 @@ namespace DatenMeister.WebServer.Pages
 
         [Parameter] public string? Item { get; set; } = string.Empty;
 
-        private ExtentController? ExtentController { get; set; }
+        private ExtentItemsController? ExtentItemsController { get; set; }
 
         public IReflectiveCollection? Items { get; set; }
 
@@ -59,9 +59,9 @@ namespace DatenMeister.WebServer.Pages
             Extent = WebUtility.UrlDecode(extent);
             Item = WebUtility.UrlDecode(item);
 
-            if (ExtentController == null) throw new InvalidOperationException("ExtentController is not set");
+            if (ExtentItemsController == null) throw new InvalidOperationException("ExtentController is not set");
 
-            var result = ExtentController.GetItemsAndForm(Workspace, Extent, Item);
+            var result = ExtentItemsController.GetItemsAndForm(Workspace, Extent, Item);
             if (result == null)
             {
                 throw new InvalidOperationException($"Items not found: {Workspace}/{Extent}");

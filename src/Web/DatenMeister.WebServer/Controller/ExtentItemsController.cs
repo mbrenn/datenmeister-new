@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DatenMeister.Core;
+﻿using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -13,13 +11,13 @@ using DatenMeister.WebServer.Models;
 
 namespace DatenMeister.WebServer.Controller
 {
-    public class ExtentController
+    public class ExtentItemsController
     {
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
         private readonly FormsPlugin _formsPlugin;
 
-        public ExtentController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        public ExtentItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;

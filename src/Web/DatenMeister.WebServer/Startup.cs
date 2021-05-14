@@ -37,8 +37,11 @@ namespace DatenMeister.WebServer
             services.AddRazorPages();
             services.AddSingleton(appNavigation);
 
-            var extentController = new ExtentController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+            var extentController = new ExtentItemsController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
             services.AddSingleton(extentController);
+            
+            var workspaceController = new WorkspaceController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+            services.AddSingleton(workspaceController);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

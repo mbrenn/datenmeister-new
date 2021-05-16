@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
+namespace DatenMeister.HtmlEngine
 {
     /// <summary>
     /// Defines a small helper class to be sure that only well-defined types avoiding
@@ -10,12 +10,21 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
     public class HtmlElement
     {
         /// <summary>
+        /// Gets or sets the css class for the table
+        /// </summary>
+        public string CssClass { get; set; } = string.Empty;
+
+        protected string CssClassString => string.IsNullOrEmpty(CssClass)
+            ? string.Empty
+            : $" class=\"{WebUtility.HtmlEncode(CssClass)}\"";
+        
+        /// <summary>
         /// Initializes a new instance of the HtmlElement class
         /// </summary>
         protected HtmlElement()
         {
         }
-
+        
         /// <summary>
         /// Defines the implicit operator to convert a string to an HtmlElement class.
         /// Here, the string is taken and converted to an HtmlRawString containing the escaped variant of the string.
@@ -24,7 +33,7 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         /// <returns>The HtmlRawString</returns>
         public static implicit operator HtmlElement(string value)
         {
-            if (value == null)
+            if (string.IsNullOrEmpty(value))
             {
                 return new HtmlRawString("");
             }

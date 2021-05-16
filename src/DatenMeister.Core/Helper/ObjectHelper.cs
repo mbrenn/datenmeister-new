@@ -503,6 +503,17 @@ namespace DatenMeister.Core.Helper
         }
 
         /// <summary>
+        /// Gets the metaclass without triggering a trace logging message in case the element behind is not
+        /// found
+        /// </summary>
+        /// <param name="element">Element to be queried</param>
+        /// <returns>The element to be retrieved</returns>
+        public static IElement? getMetaClassWithoutTracing(this IElement element)
+        {
+            return element is MofElement asObject ? asObject.getMetaClass(false) : element.metaclass;
+        }
+
+        /// <summary>
         /// Gets the extent of the given object as IUriExtent interface object.
         /// If the uriextent cannot be retrieved due to object incompatibilities,
         /// an exception will be thrown

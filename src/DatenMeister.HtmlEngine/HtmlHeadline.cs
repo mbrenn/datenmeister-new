@@ -1,6 +1,6 @@
 using System;
 
-namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
+namespace DatenMeister.HtmlEngine
 {
     public class HtmlHeadline : HtmlElement
     {
@@ -28,6 +28,6 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         /// Converts the element to a string containing the html for the headline
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => $"<h{Level}>{Headline}</h{Level}>";
+        public override string ToString() => $"<h{Level}{CssClassString}>{Headline}</h{Level}>";
     }
 }

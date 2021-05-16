@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
+namespace DatenMeister.HtmlEngine
 {
     public class HtmlJumpTarget : HtmlElement
     {

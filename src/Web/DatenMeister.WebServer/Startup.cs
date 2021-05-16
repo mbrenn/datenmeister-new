@@ -27,6 +27,7 @@ namespace DatenMeister.WebServer
             var appNavigation = new AppNavigationDefinition();
             appNavigation.Items.Add(new AppNavigationItem {Title = "Home", Url = "/", Image = "home"});
             appNavigation.Items.Add(new AppNavigationItem {Title = "About", Url = "/About", Image="about"});
+            appNavigation.Items.Add(new AppNavigationItem {Title = "Actions", Url = "/Actions", Image="actions"});
             appNavigation.Items.Add(new AppNavigationItem {Title = "Settings", Url = "/Settings", Image="settings"});
             appNavigation.Items.Add(new AppNavigationItem
             {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
+namespace DatenMeister.HtmlEngine
 {
     public class HtmlTable : HtmlElement
     {
@@ -12,12 +12,7 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         /// <summary>
         /// Stores the list of cells
         /// </summary>
-        private readonly List<HtmlTableRow> _rows = new List<HtmlTableRow>();
-
-        /// <summary>
-        /// Gets or sets the css class for the table
-        /// </summary>
-        public string CssClass { get; set; } = string.Empty;
+        private readonly List<HtmlTableRow> _rows = new();
 
         public HtmlTableRow AddRow(params HtmlElement[] cells)
         {
@@ -34,7 +29,7 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.AppendLine("<table>");
+            builder.AppendLine($"<table{CssClassString}>");
 
             foreach (var row in _rows)
             {

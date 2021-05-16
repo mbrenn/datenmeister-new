@@ -1,4 +1,4 @@
-namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
+namespace DatenMeister.HtmlEngine
 {
     public class HtmlRawString : HtmlElement
     {
@@ -11,6 +11,11 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         /// Gets or sets a flag that spaces are converted to nbsp
         /// </summary>
         public bool ConvertSpaceToNbsp { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag that spaces are converted to nbsp
+        /// </summary>
+        public bool ConvertNewLineToBr { get; set; } = true;
 
         public HtmlRawString(string value)
         {
@@ -25,12 +30,18 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         /// file</returns>
         public string GetHtmlString()
         {
+            var value = Value ?? string.Empty;
             if (ConvertSpaceToNbsp)
             {
-                return Value.Replace(" ", "&nbsp;");
+                value = value.Replace(" ", "&nbsp;");
             }
 
-            return Value;
+            if (ConvertNewLineToBr)
+            {
+                value = value.Replace("\n", "<br />");
+            }
+
+            return value;
         }
 
         public override string ToString()

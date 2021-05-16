@@ -2,7 +2,7 @@
 
 namespace DatenMeister.WebServer.Models
 {
-    public class ItemsOverviewModel
+    public class CollectionAndFormModel
     {
         public string form = string.Empty;
 

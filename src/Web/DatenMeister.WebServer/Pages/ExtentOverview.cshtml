@@ -1,0 +1,21 @@
+﻿@page "/ItemsOverview/{workspace}/{extent}/{item?}"
+@namespace DatenMeister.WebServer.Pages
+@using System.Net
+@using DatenMeister.Core.Helper
+@using DatenMeister.Core.Models
+@model ExtentOverviewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - Items Overview";
+}
+
+<h1>Items Overview</h1>
+<p>Workspace: @Model.Workspace</p>
+<p>Extent: @Model.Extent</p>
+
+@foreach (var table in Model.Tables)
+{
+    @Html.Raw(table.ToString())
+}

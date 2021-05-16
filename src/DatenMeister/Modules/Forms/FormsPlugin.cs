@@ -392,6 +392,13 @@ namespace DatenMeister.Modules.Forms
             return foundForm;
         }
 
+        /// <summary>
+        /// Creates an Extent form for the given element 
+        /// </summary>
+        /// <param name="extent">Extent to which the form shall be created</param>
+        /// <param name="formDefinitionMode">The form definition mode being used</param>
+        /// <param name="viewModeId">The current view mode id</param>
+        /// <returns>The found element</returns>
         public IElement? GetExtentForm(IExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
         {
             IElement? foundForm = null;
@@ -549,7 +556,7 @@ namespace DatenMeister.Modules.Forms
         /// <returns>The found or created list form</returns>
         public IElement? GetListFormForExtentsItem(
             IExtent extent,
-            IElement metaClass,
+            IElement? metaClass,
             FormDefinitionMode formDefinitionMode)
         {
             IElement? foundForm = null;

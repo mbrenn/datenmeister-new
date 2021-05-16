@@ -69,8 +69,16 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Gets or sets the flag whether slim uml evaluation is activated
         /// </summary>
-        public bool IsSlimUmlEvaluation =>
-            !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;
+        public bool IsSlimUmlEvaluation
+        {
+            get
+            {
+                if (ReferencedExtent?.SlimUmlEvaluation == true) return true;
+                
+                return !(((IObject) this).GetExtentOf() as MofExtent)?.SlimUmlEvaluation == false;        
+            }
+        }
+        
 
         /// <summary>
         /// Initializes a new instance of the MofObject class.

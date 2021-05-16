@@ -60,13 +60,15 @@ namespace DatenMeister.Core.Helper
         /// Converts the given object back from a string-based xmi to a Mof Object
         /// </summary>
         /// <param name="xmi">Xmi to be converted</param>
+        /// <param name="slimEvaluation">true, if the slim evaluation shall be activated</param>
         /// <returns>The converted element</returns>
-        public static IObject ConvertItemFromXmi(string xmi)
+        public static IObject ConvertItemFromXmi(string xmi, bool slimEvaluation = true)
         {
             var provider = new XmiProvider();
             var providerObject = new XmiProviderObject(XElement.Parse(xmi), provider);
             
             var extent = new MofUriExtent(provider);
+            extent.LocalSlimUmlEvaluation = slimEvaluation;
             return new MofElement(providerObject, extent);
         }
 
@@ -74,11 +76,13 @@ namespace DatenMeister.Core.Helper
         /// Converts the given object back from a string-based xmi to a Mof Object
         /// </summary>
         /// <param name="xmi">Xmi to be converted</param>
+        /// <param name="slimEvaluation">true, if the slim evaluation shall be activated</param>
         /// <returns>The converted element</returns>
-        public static IReflectiveCollection ConvertCollectionFromXmi(string xmi)
+        public static IReflectiveCollection ConvertCollectionFromXmi(string xmi, bool slimEvaluation = true)
         {
             var provider = new XmiProvider();
             var extent = new MofUriExtent(provider);
+            extent.LocalSlimUmlEvaluation = slimEvaluation;
             var collection = new TemporaryReflectiveCollection();
 
             var document = XDocument.Parse(xmi) ?? throw new InvalidOperationException("document");

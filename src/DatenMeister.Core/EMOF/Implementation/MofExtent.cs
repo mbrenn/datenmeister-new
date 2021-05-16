@@ -12,6 +12,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.ChangeEvents;
@@ -227,6 +228,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <inheritdoc />
         public object? get(string property)
         {
+            if (property == _UML._Packages._Package.packagedElement)
+            {
+                return elements();
+            }
+            
             if (Provider.GetCapabilities().StoreMetaDataInExtent)
             {
                 var nullObject = Provider.Get(null) ??

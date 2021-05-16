@@ -32,6 +32,11 @@
   <ItemGroup>
     <IconPngFiles Include="../../../assets/icons/output/*.*" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\ExtentOverview.cshtml.cs">
+      <DependentUpon>ExtentOverview.cshtml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 
   <Target Name="CopyIconPngFiles" BeforeTargets="Compile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />

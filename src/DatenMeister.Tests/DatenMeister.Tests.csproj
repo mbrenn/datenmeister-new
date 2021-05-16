@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
+    <ProjectReference Include="..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
     <ProjectReference Include="..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>

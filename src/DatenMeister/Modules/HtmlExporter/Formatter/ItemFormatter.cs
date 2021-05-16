@@ -9,7 +9,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.HtmlEngine;
 
 namespace DatenMeister.Modules.HtmlExporter.Formatter
 {

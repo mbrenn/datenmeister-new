@@ -19,7 +19,6 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Modules\HtmlExporter\Css\default_report.css" />
     <None Remove="Modules\PublicSettings\publicSettings.example" />
     <EmbeddedResource Include="Modules\PublicSettings\publicSettings.example" />
   </ItemGroup>
@@ -36,6 +35,7 @@
     <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
     <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
     <ProjectReference Include="..\DatenMeister.ExtentManager\DatenMeister.ExtentManager.csproj" />
+    <ProjectReference Include="..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
     <ProjectReference Include="..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
     <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     <ProjectReference Include="..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />

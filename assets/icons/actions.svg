@@ -13,7 +13,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
-   sodipodi:docname="about.svg">
+   sodipodi:docname="actions.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -24,7 +24,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="214.98591"
+     inkscape:cx="150.20988"
      inkscape:cy="99.593889"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -67,33 +67,16 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:none;fill-rule:evenodd;stroke-width:1.05833333;fill-opacity:1;stroke:#0000ff;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;fill-rule:evenodd;stroke-width:1.05833334;fill-opacity:1;stroke:#0000ff;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect12"
        width="65.087502"
        height="65.087502"
        x="1.3229166"
        y="1.3229166"
        ry="6.6145835" />
-    <ellipse
-       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#ffff00;fill-opacity:0.30000001;stroke:#000000;stroke-width:0.73;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
-       id="path859"
-       cx="34.262196"
-       cy="34.008362"
-       rx="22.954815"
-       ry="22.679867" />
-    <rect
-       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#000004;fill-opacity:1;stroke:none;stroke-width:0.61057;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
-       id="rect861"
-       width="3.7041657"
-       height="19.84375"
-       x="32.014584"
-       y="19.84375" />
-    <ellipse
-       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.535804;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1"
-       id="path867"
-       cx="33.852493"
-       cy="46.384766"
-       rx="1.984375"
-       ry="1.9016926" />
+    <path
+       style="fill:#ffff00;stroke:#000000;stroke-width:1.05833334;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:0.30000001"
+       d="M 33.531723,7.7867255 H 50.625882 L 41.010417,23.8125 h 9.615465 L 16.437564,62.274357 29.258183,35.564733 H 20.711104 L 33.531723,7.7867255 v 0"
+       id="path1430" />
   </g>
 </svg>

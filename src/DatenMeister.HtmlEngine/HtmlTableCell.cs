@@ -1,4 +1,4 @@
-namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
+namespace DatenMeister.HtmlEngine
 {
     /// <summary>
     /// Defines a single html cell which is used in  a table row
@@ -7,27 +7,18 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
     {
         private readonly HtmlElement _content;
 
-        private readonly string _cssClass;
-
         public bool IsHeading { get; set; }
 
         public HtmlTableCell(HtmlElement content, string cssClass = "")
         {
             _content = content;
-            _cssClass = cssClass;
+            CssClass = cssClass;
         }
 
         public override string ToString()
         {
             var htmlTab = IsHeading ? "th" : "td";
-            if (_cssClass == null || string.IsNullOrEmpty(_cssClass))
-            {
-                return $"<{htmlTab}>{_content}</{htmlTab}>";
-            }
-            else
-            {
-                return $"<{htmlTab} class=\"{_cssClass}>{_content}</{htmlTab}>";
-            }
+            return $"<{htmlTab}{CssClassString}>{_content}</{htmlTab}>";
         }
     }
 }

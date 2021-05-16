@@ -79,6 +79,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Modules.ZipCod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Types", "DatenMeister.Types\DatenMeister.Types.csproj", "{33DECDC1-5268-4F41-844F-669C3629A05E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.HtmlEngine", "DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj", "{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -632,6 +634,24 @@ Global
 		{33DECDC1-5268-4F41-844F-669C3629A05E}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
 		{33DECDC1-5268-4F41-844F-669C3629A05E}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
 		{33DECDC1-5268-4F41-844F-669C3629A05E}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Debug|x64.Build.0 = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Debug|x86.Build.0 = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Release|x64.ActiveCfg = Release|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Release|x64.Build.0 = Release|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.Release|x86.Build.0 = Release|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|x64.ActiveCfg = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -669,6 +689,7 @@ Global
 		{D777FB11-E655-40BD-8111-1D2BDEDE06BA} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{BBEC58DC-0529-4E12-B85F-C191D9985B7C} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{33DECDC1-5268-4F41-844F-669C3629A05E} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
+		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B2B6BA4-9AD3-43B6-B7D9-C1CC0860820C}

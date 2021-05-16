@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using BurnSystems;
 
-namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
+namespace DatenMeister.HtmlEngine
 {
     /// <summary>
     /// Defines the class that allows the creation of an html report
@@ -73,7 +73,7 @@ namespace DatenMeister.Modules.HtmlExporter.HtmlEngine
         {
             CssStyleSheet = ResourceHelper.LoadStringFromAssembly(
                 typeof(HtmlReport), 
-                "DatenMeister.Modules.HtmlExporter.Css.default_report.css");
+                "DatenMeister.HtmlEngine.Css.default_report.css");
         }
 
         /// <summary>

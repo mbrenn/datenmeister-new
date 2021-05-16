@@ -2,6 +2,8 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.ExtentManager.ExtentStorage;
@@ -35,7 +37,7 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="extentUrl">Url of the extent</param>
         /// <param name="itemId">Id of te item</param>
         /// <returns>ID of the item</returns>
-        public ItemsOverviewModel? GetItemsAndForm(string workspaceId, string extentUrl, string? itemId)
+        public ItemAndFormModel? GetItemAndForm(string workspaceId, string extentUrl, string? itemId)
         {
             // Finds the specific items of the given extent
             IObject? foundElement;
@@ -58,7 +60,7 @@ namespace DatenMeister.WebServer.Controller
             }
 
             // Create the result 
-            var result = new ItemsOverviewModel();
+            var result = new ItemAndFormModel();
             
             // Find the matching form
             var extentForm = _formsPlugin.GetItemTreeFormForObject(
@@ -71,21 +73,47 @@ namespace DatenMeister.WebServer.Controller
             }
 
             result.form = XmiHelper.ConvertToXmiFromObject(extentForm);
-
-            if (foundElement is IExtent asExtent)
-            {
-                result.items = XmiHelper.ConvertToXmiFromCollection(
-                    asExtent.elements());
-            }
-            else
-            {
-                result.items = XmiHelper.ConvertToXmiFromCollection(
-                    DefaultClassifierHints.GetPackagedElements(foundElement));
-            }
+            result.item = XmiHelper.ConvertToXmiFromObject(foundElement);
            
             // Gets the items
             
             
+            // Returns the result
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the items and forms
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="extentUrl">Url of the extent</param>
+        /// <returns>ID of the item</returns>
+        public CollectionAndFormModel? GetItemsAndFormOfExtent(string workspaceId, string extentUrl)
+        {
+            // Finds the specific items of the given extent
+            var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl) as IUriExtent;
+            if (extent == null)
+            {
+                return null;
+            }
+
+            // Create the result 
+            var result = new CollectionAndFormModel();
+
+            // Find the matching form
+            var extentForm = _formsPlugin.GetExtentForm(
+                extent,
+                FormDefinitionMode.Default);
+            if (extentForm == null)
+            {
+                return null;
+            }
+
+            result.form = XmiHelper.ConvertToXmiFromObject(extentForm);
+
+            result.items = XmiHelper.ConvertToXmiFromCollection(
+                extent.elements());
+
             // Returns the result
             return result;
         }

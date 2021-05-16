@@ -32,10 +32,16 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             : base(
                 new Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>(uriExtent, loadedExtentInformation), 
                 provider, 
-                loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
-                ?? uriExtent?.contextURI() ?? throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"), 
+                string.Empty /*will be set below*/,  
                 MetaclassUriPath)
         {
+            Id = parentWorkspace.id + 
+                 "_" +
+                 (loadedExtentInformation?.Configuration.getOrDefault<string>(
+                      _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
+                  ?? uriExtent?.contextURI() ??
+                  throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"));
+            
             LoadedExtentInformation = loadedExtentInformation;
 
             AddMapping(

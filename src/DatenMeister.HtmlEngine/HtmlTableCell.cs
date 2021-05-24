@@ -18,7 +18,7 @@ namespace DatenMeister.HtmlEngine
         public override string ToString()
         {
             var htmlTab = IsHeading ? "th" : "td";
-            return $"<{htmlTab}{CssClassString}>{_content}</{htmlTab}>";
+            return $"<{htmlTab}{AttributeString}>{_content}</{htmlTab}>";
         }
     }
 }

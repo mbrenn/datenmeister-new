@@ -29,7 +29,7 @@ namespace DatenMeister.HtmlEngine
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.AppendLine($"<table{CssClassString}>");
+            builder.AppendLine($"<table{AttributeString}>");
 
             foreach (var row in _rows)
             {

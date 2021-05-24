@@ -2,16 +2,13 @@
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models.EMOF;
-using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.WebServer.Models;
 
-namespace DatenMeister.WebServer.Controller
+namespace DatenMeister.WebServer.InterfaceController
 {
     public class ExtentItemsController
     {

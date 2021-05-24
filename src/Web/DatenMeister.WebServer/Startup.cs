@@ -1,6 +1,6 @@
 using System.Reflection;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.WebServer.Controller;
+using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Library;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +38,9 @@ namespace DatenMeister.WebServer
             services.AddRazorPages();
             services.AddSingleton(appNavigation);
 
+            services.AddSingleton(GiveMe.Scope.WorkspaceLogic);
+            services.AddSingleton(GiveMe.Scope.ScopeStorage);
+            
             var extentController = new ExtentItemsController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
             services.AddSingleton(extentController);
             

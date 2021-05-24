@@ -14,10 +14,12 @@ namespace DatenMeister.HtmlEngine
         /// </summary>
         public string CssClass { get; set; } = string.Empty;
 
-        protected string CssClassString => string.IsNullOrEmpty(CssClass)
-            ? string.Empty
-            : $" class=\"{WebUtility.HtmlEncode(CssClass)}\"";
-        
+        public string Id { get; set; } = string.Empty;
+
+        protected string AttributeString =>
+            (string.IsNullOrEmpty(CssClass) ? string.Empty : $" class=\"{WebUtility.HtmlEncode(CssClass)}\"") +
+            (string.IsNullOrEmpty(Id) ? string.Empty : $" id=\"{WebUtility.HtmlEncode(Id)}\"");
+
         /// <summary>
         /// Initializes a new instance of the HtmlElement class
         /// </summary>

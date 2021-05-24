@@ -16,7 +16,7 @@ namespace DatenMeister.HtmlEngine
 
         public override string ToString()
         {
-            return $"<p{CssClassString}\">{Paragraph}</p>";
+            return $"<p{AttributeString}\">{Paragraph}</p>";
         }
     }
 }

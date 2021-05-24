@@ -1,8 +1,10 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Core.Helper
@@ -12,6 +14,29 @@ namespace DatenMeister.Core.Helper
     /// </summary>
     public static class WorkspaceHelper
     {
+        /// <summary>
+        /// Finds a certain object 
+        /// </summary>
+        /// <param name="workspaceLogic">Workspace logic to be queried</param>
+        /// <param name="workspace">Workspace in which it shall be looked into</param>
+        /// <param name="extentUri">Extent to be queried</param>
+        /// <param name="itemId">Id of the item</param>
+        /// <returns>The Found object or null if not found</returns>
+        public static IElement? FindObject(
+            this IWorkspaceLogic workspaceLogic, 
+            string workspace, 
+            string extentUri,
+            string itemId)
+        {
+            var extent = workspaceLogic.FindExtent(workspace, extentUri) as IUriExtent;
+            if (extent == null)
+            {
+                return null;
+            }
+
+            return extent.element(itemId);
+        }
+        
         /// <summary>
         /// Gets all root elements of all the extents within the workspace
         /// </summary>

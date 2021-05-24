@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -13,7 +14,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
-using DatenMeister.WebServer.Controller;
+using DatenMeister.WebServer.InterfaceController;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -39,6 +40,8 @@ namespace DatenMeister.WebServer.Pages
         /// Stores the enumeration of tables
         /// </summary>
         public readonly List<HtmlTable> Tables = new();
+
+        public readonly StringBuilder ScriptLines = new StringBuilder();
 
         public ItemModel(ExtentItemsController extentItemsController)
         {
@@ -102,7 +105,7 @@ namespace DatenMeister.WebServer.Pages
                     titleField = name;
                 }
                 
-                var value = GetStringOfValue(FoundItem, field);
+                var value = GetHtmlElementOfItemsField(FoundItem, field, ScriptLines);
 
                 var secondField = value ?? string.Empty;
 
@@ -121,12 +124,45 @@ namespace DatenMeister.WebServer.Pages
             Tables.Add(htmlTable);
         }
 
-        public static string GetStringOfValue(IObject foundItem, IElement field)
+        public static HtmlElement GetHtmlElementOfItemsField(IObject foundItem, IElement field, StringBuilder scriptLines)
         {
             // Gets the cell content of the second column
             var value = GetValueOfElement(foundItem, field);
+            return GetHtmlElementForValue(value, field, scriptLines);
+        }
+
+        /// <summary>
+        /// Gets the html element for a certain element within the the field
+        /// </summary>
+        /// <param name="value">Value to be evaluated</param>
+        /// <param name="field">Field definition for the value</param>
+        /// <param name="scriptLines">The JavaScript lines being usable</param>
+        /// <returns>The created Html Element</returns>
+        public static HtmlElement GetHtmlElementForValue(object? value, IElement field, StringBuilder scriptLines)
+        {
             var isEnumeration =
                 field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
+
+            if (value == null)
+            {
+                return new HtmlRawString("<em>null</em>");
+            }
+
+            if (value is MofObjectShadow mofObjectShadow)
+            {
+                var id = StringManipulation.RandomString(16);
+                var result = new HtmlDivElement("Loading")
+                {
+                    Id = id
+                };
+
+                scriptLines.Append(
+                    "DatenMeister.DomHelper.injectNameByUri($('#"+id + "')," + 
+                    "encodeURIComponent('" + HttpUtility.JavaScriptStringEncode(mofObjectShadow.Uri) + "')" + 
+                    ");\r\n");
+
+                return result;
+            }
 
             if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
             {

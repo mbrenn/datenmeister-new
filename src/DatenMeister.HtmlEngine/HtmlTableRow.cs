@@ -24,7 +24,7 @@ namespace DatenMeister.HtmlEngine
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.AppendLine($"<tr{CssClassString}>");
+            builder.AppendLine($"<tr{AttributeString}>");
             foreach (var cell in Cells)
             {
                 builder.AppendLine(cell.ToString());

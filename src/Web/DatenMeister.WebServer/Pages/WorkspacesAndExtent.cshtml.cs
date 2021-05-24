@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.WebServer.Controller;
+using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

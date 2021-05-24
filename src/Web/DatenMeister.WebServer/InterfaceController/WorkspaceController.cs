@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.WebServer.Models;
 
-namespace DatenMeister.WebServer.Controller
+namespace DatenMeister.WebServer.InterfaceController
 {
     /// <summary>
     /// This controller supports the export of the workspaces including extents

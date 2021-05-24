@@ -28,6 +28,6 @@ namespace DatenMeister.HtmlEngine
         /// Converts the element to a string containing the html for the headline
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => $"<h{Level}{CssClassString}>{Headline}</h{Level}>";
+        public override string ToString() => $"<h{Level}{AttributeString}>{Headline}</h{Level}>";
     }
 }

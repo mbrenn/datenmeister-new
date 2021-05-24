@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Text;
+using System.Web;
+using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.HtmlEngine;
-using DatenMeister.WebServer.Controller;
+using DatenMeister.WebServer.InterfaceController;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -30,6 +34,9 @@ namespace DatenMeister.WebServer.Pages
         /// </summary>
         public readonly List<HtmlTable> Tables = new();
 
+
+        public readonly StringBuilder ScriptLines = new();
+        
         [Parameter] public string Workspace { get; set; } = string.Empty;
 
         [Parameter] public string Extent { get; set; } = string.Empty;
@@ -93,7 +100,7 @@ namespace DatenMeister.WebServer.Pages
                 var tableRow = new HtmlTableRow();
                 var cell = new HtmlTableCell(
                     new HtmlRawString(
-                        $"<a href=\"~/ItemsOverview" +
+                        $"<a href=\"/Item" +
                         $"/{WebUtility.UrlEncode(Workspace)}" +
                         $"/{WebUtility.UrlEncode(Extent)}" +
                         $"/{WebUtility.UrlEncode((rowItem as IHasId)?.Id) ?? string.Empty}\">View</a>"));
@@ -102,18 +109,19 @@ namespace DatenMeister.WebServer.Pages
                 foreach (var field in Fields)
                 {
                     var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-                    string encode;
+                    HtmlElement cellContent;
 
                     if (field.getMetaClassWithoutTracing()?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
                     {
-                        encode = WebUtility.HtmlEncode((rowItem as MofElement)?.getMetaClass(false)?.ToString() ?? "Unknown");
+                        var element = (rowItem as MofElement)?.getMetaClass(false);
+                        cellContent = ItemModel.GetHtmlElementForValue(element, field, ScriptLines);
                     }
                     else
                     {
-                        encode = WebUtility.HtmlEncode(ItemModel.GetStringOfValue(rowItem, field as IElement));
+                        cellContent = ItemModel.GetHtmlElementOfItemsField(rowItem, field as IElement, ScriptLines);
                     }
 
-                    tableRow.Add(new HtmlTableCell(new HtmlRawString(encode)));
+                    tableRow.Add(new HtmlTableCell(cellContent));
                 }
 
                 table.AddRow(tableRow);

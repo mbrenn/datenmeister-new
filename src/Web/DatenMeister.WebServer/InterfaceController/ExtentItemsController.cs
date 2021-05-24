@@ -3,6 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.ExtentManager.ExtentStorage;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -71,8 +72,9 @@ namespace DatenMeister.WebServer.InterfaceController
 
             result.form = XmiHelper.ConvertToXmiFromObject(extentForm);
             result.item = XmiHelper.ConvertToXmiFromObject(foundElement);
-           
-            // Gets the items
+            result.workspace = workspaceId;
+            result.extentUri = extentUrl;
+            result.fullName = NamedElementMethods.GetFullName(foundElement);
             
             
             // Returns the result

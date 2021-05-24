@@ -1,8 +1,10 @@
 ﻿@page "/Item/{workspace}/{extent}/{item?}"
 @namespace DatenMeister.WebServer.Pages
 @using System.Net
+@using System.Web
 @using DatenMeister.Core.Helper
 @using DatenMeister.Core.Models
+@using DatenMeister.Core.Uml.Helper
 @model ItemModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -12,6 +14,14 @@
 }
 
 <h1>Item</h1>
+
+<div class="dm-breadcrump">
+    @{ var w = Model.ItemAndFormModel?.workspace ?? "No Workspace"; }
+    @{ var e = Model.ItemAndFormModel?.extentUri ?? "No Extent"; }
+    <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
+    <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w+ "_" + e))">@e</a> &lt;
+       @(Model.ItemAndFormModel?.fullName ?? "Unknown Element")
+</div>
 
 @foreach (var table in Model.Tables)
 {

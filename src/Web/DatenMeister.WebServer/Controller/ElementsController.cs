@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Web;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
@@ -35,15 +37,32 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/elements/get_name/{uri}")]
-        public ActionResult<object> GetName(string uri)
+        public ActionResult<object> GetName(string uri, string? workspace)
         {
-            var foundItem = _workspaceLogic.FindItem(HttpUtility.UrlDecode(uri));
+            IElement? foundItem;
+            if (string.IsNullOrEmpty(workspace))
+            {
+                foundItem = _workspaceLogic.FindItem(HttpUtility.UrlDecode(uri));
+            }
+            else
+            {
+                foundItem = 
+                    _workspaceLogic.GetWorkspace(workspace)?.Resolve(HttpUtility.UrlDecode(uri), ResolveType.Default)
+                    as IElement;   
+            }
+            
             if (foundItem == null)
             {
                 return NotFound();
             }
 
-            return new {name = NamedElementMethods.GetName(foundItem)};
+            return new
+            {
+                name = NamedElementMethods.GetName(foundItem),
+                extentUri = foundItem.GetUriExtentOf()?.contextURI() ?? string.Empty,
+                workspace = foundItem.GetUriExtentOf()?.GetWorkspace()?.id ?? string.Empty,
+                itemId = (foundItem as IHasId)?.Id ?? string.Empty
+            };
         }
     }
 }

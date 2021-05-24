@@ -15,6 +15,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
 using DatenMeister.WebServer.InterfaceController;
+using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -42,6 +43,7 @@ namespace DatenMeister.WebServer.Pages
         public readonly List<HtmlTable> Tables = new();
 
         public readonly StringBuilder ScriptLines = new StringBuilder();
+        public ItemAndFormModel? ItemAndFormModel;
 
         public ItemModel(ExtentItemsController extentItemsController)
         {
@@ -56,20 +58,20 @@ namespace DatenMeister.WebServer.Pages
             Extent = WebUtility.UrlDecode(extent);
             Item = WebUtility.UrlDecode(item);
             
-            var result = ExtentItemsController.GetItemAndForm(Workspace, Extent, Item);
-            if (result == null)
+            ItemAndFormModel = ExtentItemsController.GetItemAndForm(Workspace, Extent, Item);
+            if (ItemAndFormModel == null)
             {
                 throw new InvalidOperationException($"Items not found: {Workspace}/{Extent}/{Item}");
             }
 
-            if (result == null)
+            if (ItemAndFormModel == null)
             {
                 throw new InvalidOperationException($"Items not found: {Workspace}/{Extent}/{Item}");
             }
 
-            FoundItem = XmiHelper.ConvertItemFromXmi(result.item)
+            FoundItem = XmiHelper.ConvertItemFromXmi(ItemAndFormModel.item)
                         ?? throw new InvalidOperationException("Items are null. They may not be null");
-            Form = XmiHelper.ConvertItemFromXmi(result.form)
+            Form = XmiHelper.ConvertItemFromXmi(ItemAndFormModel.form)
                    ?? throw new InvalidOperationException("Form is null. It may not be null");
 
             ConsolidateFields(Fields, Form);
@@ -107,15 +109,12 @@ namespace DatenMeister.WebServer.Pages
                 
                 var value = GetHtmlElementOfItemsField(FoundItem, field, ScriptLines);
 
-                var secondField = value ?? string.Empty;
-
                 var rowItem = new HtmlTableRow(
                     new[]
                     {
                         new HtmlTableCell(new HtmlRawString(HttpUtility.HtmlEncode(titleField))
                             {ConvertSpaceToNbsp = true}),
-                        new HtmlTableCell(new HtmlRawString(HttpUtility.HtmlEncode(secondField))
-                            {ConvertSpaceToNbsp = true})
+                        new HtmlTableCell(value)
                     });
 
                 htmlTable.AddRow(rowItem);
@@ -203,12 +202,7 @@ namespace DatenMeister.WebServer.Pages
             var fieldMetaClass = field.getMetaClass();
             if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
             {
-                var elementAsElement = element as IElement;
-                var metaClass = elementAsElement?.getMetaClass();
-
-                return metaClass == null
-                    ? string.Empty
-                    : NamedElementMethods.GetFullName(metaClass);
+                return (element as MofElement)?.getMetaClass(false);
             }
 
             var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);

@@ -32,15 +32,26 @@ var DatenMeister;
         function DomHelper() {
         }
         DomHelper.injectName = function (domElement, elementPosition) {
-            domElement.text("YES");
             NameLoader.loadNameOf(elementPosition).done(function (x) {
                 domElement.text(x.name);
             });
         };
         DomHelper.injectNameByUri = function (domElement, elementUri) {
-            domElement.text("YES");
             NameLoader.loadNameByUri(elementUri).done(function (x) {
-                domElement.text(x.name);
+                if (x.extentUri !== undefined && x.workspace !== undefined
+                    && x.extentUri !== "" && x.workspace !== ""
+                    && x.itemId !== "" && x.itemId !== undefined) {
+                    var linkElement = $("<a></a>");
+                    linkElement.text(x.name);
+                    linkElement.attr("href", "/Item/" + encodeURIComponent(x.workspace) +
+                        "/" + encodeURIComponent(x.extentUri) +
+                        "/" + encodeURIComponent(x.itemId));
+                    domElement.empty();
+                    domElement.append(linkElement);
+                }
+                else {
+                    domElement.text(x.name);
+                }
             });
         };
         return DomHelper;

@@ -23,6 +23,9 @@ module ApiModels
     export namespace Out {
         export interface NamedElement {
             name: string;
+            extentUri?: string;
+            workspace?: string;
+            itemId?: string;
         }
     }
 }
@@ -48,7 +51,6 @@ class NameLoader {
 module DatenMeister {
     export class DomHelper {
         static injectName(domElement: JQuery<HTMLElement>, elementPosition: ApiModels.In.ElementPosition) {
-            domElement.text("YES");
 
             NameLoader.loadNameOf(elementPosition).done(x => {
                 domElement.text(x.name);
@@ -57,10 +59,26 @@ module DatenMeister {
 
 
         static injectNameByUri(domElement: JQuery<HTMLElement>, elementUri: string) {
-            domElement.text("YES");
 
             NameLoader.loadNameByUri(elementUri).done(x => {
-                domElement.text(x.name);
+                if(
+                    x.extentUri !== undefined && x.workspace !== undefined
+                    && x.extentUri !== "" && x.workspace !== ""
+                    && x.itemId !== "" && x.itemId !== undefined)
+                {
+                    var linkElement = $("<a></a>");
+                    linkElement.text(x.name);
+                    linkElement.attr(
+                        "href", 
+                        "/Item/" + encodeURIComponent(x.workspace) + 
+                        "/" + encodeURIComponent(x.extentUri) + 
+                        "/" + encodeURIComponent(x.itemId));
+                    domElement.empty();
+                    domElement.append(linkElement);
+                }
+                else {
+                    domElement.text(x.name);
+                }
             });
         }
     }

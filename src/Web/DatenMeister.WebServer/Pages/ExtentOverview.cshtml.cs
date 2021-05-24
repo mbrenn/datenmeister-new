@@ -108,19 +108,7 @@ namespace DatenMeister.WebServer.Pages
 
                 foreach (var field in Fields)
                 {
-                    var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-                    HtmlElement cellContent;
-
-                    if (field.getMetaClassWithoutTracing()?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
-                    {
-                        var element = (rowItem as MofElement)?.getMetaClass(false);
-                        cellContent = ItemModel.GetHtmlElementForValue(element, field, ScriptLines);
-                    }
-                    else
-                    {
-                        cellContent = ItemModel.GetHtmlElementOfItemsField(rowItem, field as IElement, ScriptLines);
-                    }
-
+                    var cellContent = ItemModel.GetHtmlElementOfItemsField(rowItem, field, ScriptLines);
                     tableRow.Add(new HtmlTableCell(cellContent));
                 }
 

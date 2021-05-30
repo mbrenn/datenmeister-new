@@ -108,7 +108,8 @@ namespace DatenMeister.WebServer.Pages
 
                 foreach (var field in Fields)
                 {
-                    var cellContent = ItemModel.GetHtmlElementOfItemsField(rowItem, field, ScriptLines);
+                    var cellContent = ItemModel.GetHtmlElementOfItemsField(
+                        rowItem, field, ScriptLines, Workspace, Extent);
                     tableRow.Add(new HtmlTableCell(cellContent));
                 }
 

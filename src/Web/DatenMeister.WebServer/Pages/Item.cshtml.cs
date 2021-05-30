@@ -11,6 +11,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
@@ -18,6 +19,7 @@ using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Scriban.Syntax;
 
 namespace DatenMeister.WebServer.Pages
 {
@@ -107,7 +109,7 @@ namespace DatenMeister.WebServer.Pages
                     titleField = name;
                 }
                 
-                var value = GetHtmlElementOfItemsField(FoundItem, field, ScriptLines);
+                var value = GetHtmlElementOfItemsField(FoundItem, field, ScriptLines,Workspace, Extent);
 
                 var rowItem = new HtmlTableRow(
                     new[]
@@ -123,11 +125,18 @@ namespace DatenMeister.WebServer.Pages
             Tables.Add(htmlTable);
         }
 
-        public static HtmlElement GetHtmlElementOfItemsField(IObject foundItem, IElement field, StringBuilder scriptLines)
+        public static HtmlElement GetHtmlElementOfItemsField(
+            IObject foundItem,
+            IElement field, 
+            StringBuilder scriptLines,
+            string contextWorkspace,
+            string contextExtent
+            )
         {
             // Gets the cell content of the second column
             var value = GetValueOfElement(foundItem, field);
-            return GetHtmlElementForValue(value, field, scriptLines);
+            return GetHtmlElementForValue(
+                value, field, scriptLines, contextWorkspace, contextExtent);
         }
 
         /// <summary>
@@ -137,10 +146,15 @@ namespace DatenMeister.WebServer.Pages
         /// <param name="field">Field definition for the value</param>
         /// <param name="scriptLines">The JavaScript lines being usable</param>
         /// <returns>The created Html Element</returns>
-        public static HtmlElement GetHtmlElementForValue(object? value, IElement field, StringBuilder scriptLines)
+        public static HtmlElement GetHtmlElementForValue(
+            object? value, 
+            IElement? field, 
+            StringBuilder scriptLines,
+            string contextWorkspace,
+            string contextExtent)
         {
             var isEnumeration =
-                field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
+                field?.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration) ?? false;
 
             if (value == null)
             {
@@ -149,46 +163,71 @@ namespace DatenMeister.WebServer.Pages
 
             if (value is MofObjectShadow mofObjectShadow)
             {
-                var id = StringManipulation.RandomString(16);
-                var result = new HtmlDivElement("Loading")
-                {
-                    Id = id
-                };
-
-                scriptLines.Append(
-                    "DatenMeister.DomHelper.injectNameByUri($('#"+id + "')," + 
-                    "encodeURIComponent('" + HttpUtility.JavaScriptStringEncode(mofObjectShadow.Uri) + "')" + 
-                    ");\r\n");
-
-                return result;
+                return CreateHtmlForObjectShadow(mofObjectShadow, scriptLines);
             }
 
-            if (isEnumeration || DotNetHelper.IsEnumeration(value?.GetType()))
+            if (isEnumeration || DotNetHelper.IsEnumeration(value.GetType()))
             {
-                var stringBuilder = new StringBuilder();
                 var valueAsList = DotNetHelper.AsEnumeration(value);
                 if (valueAsList != null)
                 {
                     var elementCount = 0;
-                    var nr = string.Empty;
+
+                    var htmlList = new HtmlListElement();
                     foreach (var valueElement in valueAsList)
                     {
-                        stringBuilder.Append(nr + NamedElementMethods.GetName(valueElement));
-                        nr = "\r\n";
+                        htmlList.Items.Add(
+                            GetHtmlElementForValue(
+                                valueElement, 
+                                null,
+                                scriptLines,
+                                contextWorkspace,
+                                contextExtent));
 
                         elementCount++;
                         if (elementCount > 10)
                         {
-                            stringBuilder.Append("\r\n... (more)");
+                            htmlList.Items.Add(new HtmlDivElement(new HtmlRawString("<em>(more)</em>")));
                             break;
                         }
                     }
+
+                    return htmlList;
                 }
 
-                value = stringBuilder.ToString();
+                value = new HtmlDivElement("Shall not occur.");
             }
 
-            return value?.ToString() ?? "null";
+            if (value is IElement and IHasId asHasId)
+            {
+
+                    return new HtmlDivElement(
+                        new HtmlLinkElement
+                        {
+                            Href = "/Item/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextWorkspace)) +
+                                   "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(contextExtent)) +
+                                   "/" + HttpUtility.HtmlAttributeEncode(WebUtility.UrlEncode(asHasId.Id)),
+                            Content = NamedElementMethods.GetName(value)
+                        });
+            }
+            
+            return new HtmlDivElement(NamedElementMethods.GetName(value));
+        }
+
+        private static HtmlElement CreateHtmlForObjectShadow(MofObjectShadow mofObjectShadow, StringBuilder scriptLines)
+        {
+            var id = StringManipulation.RandomString(16);
+            var result = new HtmlDivElement("Loading")
+            {
+                Id = id
+            };
+
+            scriptLines.Append(
+                "DatenMeister.DomHelper.injectNameByUri($('#" + id + "')," +
+                "encodeURIComponent('" + HttpUtility.JavaScriptStringEncode(mofObjectShadow.Uri) + "')" +
+                ");\r\n");
+
+            return result;
         }
 
         /// <summary>

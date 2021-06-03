@@ -12,6 +12,9 @@
     <TargetFrameworks>net5.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
     <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />

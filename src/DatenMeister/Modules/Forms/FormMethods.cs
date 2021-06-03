@@ -134,6 +134,40 @@ namespace DatenMeister.Modules.Forms
         }
 
         /// <summary>
+        /// Gets the enumeration of the detail forms which are in embedded into the tabs
+        /// </summary>
+        /// <param name="form">Form to be checked</param>
+        /// <returns>Enumeration of the detail forms</returns>
+        public static IEnumerable<IElement> GetDetailForms(IElement form)
+        {
+            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
+            {
+                if (tab is IElement asElement 
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
+                {
+                    yield return asElement;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumeration of the detail forms which are in embedded into the tabs
+        /// </summary>
+        /// <param name="form">Form to be checked</param>
+        /// <returns>Enumeration of the detail forms</returns>
+        public static IEnumerable<IElement> GetListForms(IElement form)
+        {
+            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
+            {
+                if (tab is IElement asElement 
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                {
+                    yield return asElement;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the list tab listing the items of the properties
         /// </summary>
         /// <param name="form">Form to be evaluated</param>

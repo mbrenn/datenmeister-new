@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
-using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -13,6 +10,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.HtmlEngine;
 using DatenMeister.WebServer.InterfaceController;
+using DatenMeister.WebServer.Library.HtmlControls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -108,7 +106,7 @@ namespace DatenMeister.WebServer.Pages
 
                 foreach (var field in Fields)
                 {
-                    var cellContent = ItemModel.GetHtmlElementOfItemsField(
+                    var cellContent = ControlFactory.GetHtmlElementForItemsField(
                         rowItem, field, ScriptLines, Workspace, Extent);
                     tableRow.Add(new HtmlTableCell(cellContent));
                 }

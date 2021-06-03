@@ -1,43 +1,41 @@
-var X = /** @class */ (function () {
-    function X() {
-    }
-    X.prototype.y = function () {
-    };
-    return X;
-}());
+// eslint-disable-next-line @typescript-eslint/no-namespace
+// eslint-disable-next-line @typescript-eslint/prefer-namespace-keyword
 var Settings;
 (function (Settings) {
     Settings.baseUrl = "/";
 })(Settings || (Settings = {}));
-var NameLoader = /** @class */ (function () {
-    function NameLoader() {
+class NameLoader {
+    static loadNameOf(elementPosition) {
+        return $.ajax(Settings.baseUrl +
+            "api/elements/get_name/" +
+            encodeURIComponent(elementPosition.workspace) + "/" +
+            encodeURIComponent(elementPosition.extentUri) + "/" +
+            encodeURIComponent(elementPosition.item));
     }
-    NameLoader.loadNameOf = function (elementPosition) {
+    static loadNameByUri(elementUri) {
         return $.ajax(Settings.baseUrl +
             "api/elements/get_name/" +
-            encodeURI(elementPosition.workspace) + "/" +
-            encodeURI(elementPosition.extentUri) + "/" +
-            encodeURI(elementPosition.item));
-    };
-    NameLoader.loadNameByUri = function (elementUri) {
-        return $.ajax(Settings.baseUrl +
-            "api/elements/get_name/" +
-            encodeURI(elementUri));
-    };
-    return NameLoader;
-}());
+            encodeURIComponent(elementUri));
+    }
+}
 var DatenMeister;
 (function (DatenMeister) {
-    var DomHelper = /** @class */ (function () {
-        function DomHelper() {
+    class FormActions {
+        static extentNavigateTo(workspace, extentUri) {
+            document.location.href = Settings.baseUrl + "ItemsOverview/" +
+                encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(extentUri);
         }
-        DomHelper.injectName = function (domElement, elementPosition) {
-            NameLoader.loadNameOf(elementPosition).done(function (x) {
+    }
+    DatenMeister.FormActions = FormActions;
+    class DomHelper {
+        static injectName(domElement, elementPosition) {
+            NameLoader.loadNameOf(elementPosition).done(x => {
                 domElement.text(x.name);
             });
-        };
-        DomHelper.injectNameByUri = function (domElement, elementUri) {
-            NameLoader.loadNameByUri(elementUri).done(function (x) {
+        }
+        static injectNameByUri(domElement, elementUri) {
+            NameLoader.loadNameByUri(elementUri).done(x => {
                 if (x.extentUri !== undefined && x.workspace !== undefined
                     && x.extentUri !== "" && x.workspace !== ""
                     && x.itemId !== "" && x.itemId !== undefined) {
@@ -53,8 +51,8 @@ var DatenMeister;
                     domElement.text(x.name);
                 }
             });
-        };
-        return DomHelper;
-    }());
+        }
+    }
     DatenMeister.DomHelper = DomHelper;
 })(DatenMeister || (DatenMeister = {}));
+//# sourceMappingURL=datenmeister.js.map

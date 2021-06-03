@@ -55,31 +55,40 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZipCodeLibrary", "Web\ZipCo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatenMeisterWeb", "DatenMeisterWeb", "{C4E4C189-9C01-405F-8C5C-C0EF7E061BEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.SourcecodeGenerator", "DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj", "{9CB2BC8E-9910-4B8C-BA82-0ADAD8748CD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.SourcecodeGenerator", "DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj", "{9CB2BC8E-9910-4B8C-BA82-0ADAD8748CD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Integration.DotNet", "DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj", "{79B3D02A-BFED-48FE-897C-9A000BAE3DD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Integration.DotNet", "DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj", "{79B3D02A-BFED-48FE-897C-9A000BAE3DD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.WebServer.Library", "Web\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj", "{1332B714-907D-4F32-BD75-0946F0EF7309}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.WebServer.Library", "Web\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj", "{1332B714-907D-4F32-BD75-0946F0EF7309}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.DependencyInjection", "DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj", "{9A56103E-7CCA-4E6F-9AAB-1CB53DFDCA6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.DependencyInjection", "DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj", "{9A56103E-7CCA-4E6F-9AAB-1CB53DFDCA6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Core", "DatenMeister.Core\DatenMeister.Core.csproj", "{8481C54C-3A7B-4FE3-938D-646DC3DE6F0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Core", "DatenMeister.Core\DatenMeister.Core.csproj", "{8481C54C-3A7B-4FE3-938D-646DC3DE6F0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Provider.CSV", "DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj", "{806E409E-8D40-401A-B0AF-93DA65E5ADEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Provider.CSV", "DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj", "{806E409E-8D40-401A-B0AF-93DA65E5ADEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Plugins", "DatenMeister.Plugins\DatenMeister.Plugins.csproj", "{947F91D6-4F12-49FF-8754-70C9B5817873}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Plugins", "DatenMeister.Plugins\DatenMeister.Plugins.csproj", "{947F91D6-4F12-49FF-8754-70C9B5817873}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Extent.Manager", "DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj", "{A4F718D3-B63A-42F7-AB26-E00ADE682EE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Extent.Manager", "DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj", "{A4F718D3-B63A-42F7-AB26-E00ADE682EE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Locking", "DatenMeister.Locking\DatenMeister.Locking.csproj", "{E09F4720-2E23-4738-ADC2-FBC8E1171CA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Locking", "DatenMeister.Locking\DatenMeister.Locking.csproj", "{E09F4720-2E23-4738-ADC2-FBC8E1171CA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Validators", "DatenMeister.Validators\DatenMeister.Validators.csproj", "{D777FB11-E655-40BD-8111-1D2BDEDE06BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Validators", "DatenMeister.Validators\DatenMeister.Validators.csproj", "{D777FB11-E655-40BD-8111-1D2BDEDE06BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Modules.ZipCodeExample", "DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj", "{BBEC58DC-0529-4E12-B85F-C191D9985B7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Modules.ZipCodeExample", "DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj", "{BBEC58DC-0529-4E12-B85F-C191D9985B7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Types", "DatenMeister.Types\DatenMeister.Types.csproj", "{33DECDC1-5268-4F41-844F-669C3629A05E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Types", "DatenMeister.Types\DatenMeister.Types.csproj", "{33DECDC1-5268-4F41-844F-669C3629A05E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.HtmlEngine", "DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj", "{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.HtmlEngine", "DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj", "{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Extent.Forms", "DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj", "{3F16251E-7E73-4C8A-B951-609FA4C2A098}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Forms", "DatenMeister.Forms\DatenMeister.Forms.csproj", "{9C25937F-480E-4077-9CFB-845F4CF869B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFD7C9B0-8B86-4ACF-919F-406442380F5C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -652,6 +661,42 @@ Global
 		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
 		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
 		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Debug|x64.Build.0 = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Debug|x86.Build.0 = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Release|x64.ActiveCfg = Release|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Release|x64.Build.0 = Release|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Release|x86.ActiveCfg = Release|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.Release|x86.Build.0 = Release|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.ViewLogicAdditionalInfo|x64.ActiveCfg = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Debug|x64.Build.0 = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Release|x64.ActiveCfg = Release|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Release|x64.Build.0 = Release|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.Release|x86.Build.0 = Release|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.ViewLogicAdditionalInfo|x64.ActiveCfg = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
+		{9C25937F-480E-4077-9CFB-845F4CF869B6}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -690,6 +735,8 @@ Global
 		{BBEC58DC-0529-4E12-B85F-C191D9985B7C} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{33DECDC1-5268-4F41-844F-669C3629A05E} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 		{AA44BAEF-0BC7-446B-95AC-BA538E0B0EE1} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
+		{3F16251E-7E73-4C8A-B951-609FA4C2A098} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
+		{9C25937F-480E-4077-9CFB-845F4CF869B6} = {3E364967-6E40-45BA-B2FF-39431F4461F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B2B6BA4-9AD3-43B6-B7D9-C1CC0860820C}

@@ -1480,6 +1480,34 @@ namespace DatenMeister.Core.Models
             public _CheckboxFieldData @CheckboxFieldData = new _CheckboxFieldData();
             public IElement @__CheckboxFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.CheckboxFieldData");
 
+            public class _ActionFieldData
+            {
+                public static string @actionName = "actionName";
+                public IElement? @_actionName = null;
+
+                public static string @isAttached = "isAttached";
+                public IElement? @_isAttached = null;
+
+                public static string @name = "name";
+                public IElement? @_name = null;
+
+                public static string @title = "title";
+                public IElement? @_title = null;
+
+                public static string @isEnumeration = "isEnumeration";
+                public IElement? @_isEnumeration = null;
+
+                public static string @defaultValue = "defaultValue";
+                public IElement? @_defaultValue = null;
+
+                public static string @isReadOnly = "isReadOnly";
+                public IElement? @_isReadOnly = null;
+
+            }
+
+            public _ActionFieldData @ActionFieldData = new _ActionFieldData();
+            public IElement @__ActionFieldData = new MofObjectShadow("dm:///_internal/types/internal#DatenMeister.Models.Forms.ActionFieldData");
+
             public class _DateTimeFieldData
             {
                 public static string @hideDate = "hideDate";

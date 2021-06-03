@@ -1,4 +1,5 @@
 using System.Net;
+using BurnSystems;
 
 namespace DatenMeister.HtmlEngine
 {
@@ -26,7 +27,14 @@ namespace DatenMeister.HtmlEngine
         protected HtmlElement()
         {
         }
-        
+
+        /// <summary>
+        /// Gets a random id for a new string
+        /// </summary>
+        /// <returns>The random id</returns>
+        public static string GetRandomId() =>
+            StringManipulation.RandomString(16);
+
         /// <summary>
         /// Defines the implicit operator to convert a string to an HtmlElement class.
         /// Here, the string is taken and converted to an HtmlRawString containing the escaped variant of the string.

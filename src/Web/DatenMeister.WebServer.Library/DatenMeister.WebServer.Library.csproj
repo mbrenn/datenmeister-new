@@ -2,6 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>9.0</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="HtmlControls\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\DatenMeister.Core\DatenMeister.Core.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
+    </ItemGroup>
 
 </Project>

@@ -1,11 +1,4 @@
 ﻿
-class X {
-
-    y(): void {
-
-    }
-}
-
 module Settings
 {
     export let baseUrl = "/";
@@ -14,14 +7,14 @@ module Settings
 module ApiModels
 {
     export namespace In {
-        export interface ElementPosition {
+        export interface IElementPosition {
             workspace: string;
             extentUri: string;
             item: string;
         }
     }
     export namespace Out {
-        export interface NamedElement {
+        export interface INamedElement {
             name: string;
             extentUri?: string;
             workspace?: string;
@@ -30,27 +23,36 @@ module ApiModels
     }
 }
 
-
 class NameLoader {
-    static loadNameOf(elementPosition: ApiModels.In.ElementPosition): JQuery.jqXHR<ApiModels.Out.NamedElement> {
+    static loadNameOf(elementPosition: ApiModels.In.IElementPosition): JQuery.jqXHR<ApiModels.Out.INamedElement> {
         return $.ajax(
             Settings.baseUrl + 
             "api/elements/get_name/" + 
-            encodeURI(elementPosition.workspace) + "/" +
-            encodeURI(elementPosition.extentUri) + "/" + 
-            encodeURI(elementPosition.item));
+            encodeURIComponent(elementPosition.workspace) + "/" +
+            encodeURIComponent(elementPosition.extentUri) + "/" +
+            encodeURIComponent(elementPosition.item));
     }
-    static loadNameByUri(elementUri:string): JQuery.jqXHR<ApiModels.Out.NamedElement> {
+    static loadNameByUri(elementUri:string): JQuery.jqXHR<ApiModels.Out.INamedElement> {
         return $.ajax(
             Settings.baseUrl +
             "api/elements/get_name/" +
-            encodeURI(elementUri));
+            encodeURIComponent(elementUri));
     }
 }
 
 module DatenMeister {
+
+    export class FormActions {
+        static extentNavigateTo(workspace: string, extentUri: string):void {
+            document.location.href = Settings.baseUrl + "ItemsOverview/" +
+                encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(extentUri);
+        }
+    }
+
+
     export class DomHelper {
-        static injectName(domElement: JQuery<HTMLElement>, elementPosition: ApiModels.In.ElementPosition) {
+        static injectName(domElement: JQuery<HTMLElement>, elementPosition: ApiModels.In.IElementPosition) {
 
             NameLoader.loadNameOf(elementPosition).done(x => {
                 domElement.text(x.name);

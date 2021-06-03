@@ -10,7 +10,7 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Plugins;
 using DatenMeister.Runtime.Functions.Algorithm;

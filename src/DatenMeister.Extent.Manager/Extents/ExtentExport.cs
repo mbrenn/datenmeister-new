@@ -5,7 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 
-namespace DatenMeister.ExtentManager.Extents
+namespace DatenMeister.Extent.Manager.Extents
 {
     /// <summary>
     /// Performs an export of an extent to an xmi structure which then ca be stored to disc

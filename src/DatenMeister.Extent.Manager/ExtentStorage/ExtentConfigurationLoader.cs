@@ -11,7 +11,7 @@ using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.ExtentManager.ExtentStorage
+namespace DatenMeister.Extent.Manager.ExtentStorage
 {
     /// <summary>
     /// This loader is used to store and load the extent storage out of a file.
@@ -20,7 +20,7 @@ namespace DatenMeister.ExtentManager.ExtentStorage
     /// </summary>
     public partial class ExtentConfigurationLoader
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentConfigurationLoader));
+        private static readonly ClassLogger Logger = new(typeof(ExtentConfigurationLoader));
 
         /// <summary>
         /// Gets the information about the loaded extents,

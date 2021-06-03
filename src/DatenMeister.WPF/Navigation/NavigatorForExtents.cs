@@ -13,9 +13,10 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.ExtentManager.Extents;
-using DatenMeister.ExtentManager.Extents.Configuration;
-using DatenMeister.ExtentManager.ExtentStorage.Validators;
+using DatenMeister.Extent.Manager.Extents;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage.Validators;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.ManagementProviders.View;
@@ -201,7 +202,7 @@ namespace DatenMeister.WPF.Navigation
                 configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                     workspaceId);
 
-                var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 try
                 {
                     extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);

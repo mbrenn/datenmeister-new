@@ -15,7 +15,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Locking;
 using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 
-namespace DatenMeister.ExtentManager.ExtentStorage
+namespace DatenMeister.Extent.Manager.ExtentStorage
 {
 
     /// <summary>
@@ -30,7 +30,7 @@ namespace DatenMeister.ExtentManager.ExtentStorage
 
         private readonly ExtentStorageData _extentStorageData;
 
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentManager));
+        private static readonly ClassLogger Logger = new(typeof(ExtentManager));
 
         /// <summary>
         /// Stores the mapping between configuration types and storage provider
@@ -344,7 +344,7 @@ namespace DatenMeister.ExtentManager.ExtentStorage
         public IEnumerable<ExtentStorageData.LoadedExtentInformation> GetLoadedExtentInformationForWorkspace(
             string workspaceId)
         {
-            List<ExtentStorageData.LoadedExtentInformation> list = new List<ExtentStorageData.LoadedExtentInformation>();
+            List<ExtentStorageData.LoadedExtentInformation> list = new();
             lock (_extentStorageData.LoadedExtents)
             {
                 list.AddRange(

@@ -8,7 +8,7 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.ExtentManager.Extents
+namespace DatenMeister.Extent.Manager.Extents
 {
     /// <summary>
     /// Helper function for extents

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.ExtentManager.Extents
+namespace DatenMeister.Extent.Manager.Extents
 {
     /// <summary>
     /// Defines a MofObject wrapper which returns all the properties being allocated to the extent

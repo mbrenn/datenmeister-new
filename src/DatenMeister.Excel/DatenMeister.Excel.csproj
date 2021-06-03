@@ -12,7 +12,7 @@
     <TargetFrameworks>net5.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DatenMeister.ExtentManager\DatenMeister.ExtentManager.csproj" />
+    <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
     <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>

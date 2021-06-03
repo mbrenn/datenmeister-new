@@ -4,6 +4,7 @@ using System.Windows;
 using Autofac;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.WPF.Windows;
 using Microsoft.Win32;
@@ -46,10 +47,10 @@ namespace DatenMeister.WPF.Navigation
                     switch (dlg.ImportType)
                     {
                         case ExcelImportType.AsCopy:
-                            GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>().LoadExtent(configurationObject, ExtentCreationFlags.LoadOrCreate);
+                            GiveMe.Scope.Resolve<ExtentManager>().LoadExtent(configurationObject, ExtentCreationFlags.LoadOrCreate);
                             break;
                         case ExcelImportType.AsReference:
-                            GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>().LoadExtent(configurationObject, ExtentCreationFlags.LoadOrCreate);
+                            GiveMe.Scope.Resolve<ExtentManager>().LoadExtent(configurationObject, ExtentCreationFlags.LoadOrCreate);
                             break;
                     }
 

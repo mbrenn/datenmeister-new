@@ -14,6 +14,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Runtime.Objects;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
@@ -625,12 +626,12 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 itemHeader = "Root";
                 
-                if (ExtentManager.ExtentStorage.ExtentManager.GetProviderCapabilities(extent).IsTemporaryStorage)
+                if (ExtentManager.GetProviderCapabilities(extent).IsTemporaryStorage)
                 {
                     itemHeader += " [Non-Permanent]";
                 }
                 
-                if (ExtentManager.ExtentStorage.ExtentManager.IsExtentModified(extent))
+                if (ExtentManager.IsExtentModified(extent))
                 {
                     itemHeader += "*";
                 }

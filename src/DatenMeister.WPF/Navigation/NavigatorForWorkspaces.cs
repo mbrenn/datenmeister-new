@@ -10,6 +10,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
@@ -103,7 +104,7 @@ namespace DatenMeister.WPF.Navigation
             // Collect all files...
             var files = new List<string>();
             var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
-            var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+            var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
             var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
             foreach (var workspace in workspaceLogic.Workspaces)
             {

@@ -10,7 +10,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Validators;
 
-namespace DatenMeister.ExtentManager.ExtentStorage.Validators
+namespace DatenMeister.Extent.Manager.ExtentStorage.Validators
 {
     /// <summary>
     /// Defines the extent validator being used to create new extents

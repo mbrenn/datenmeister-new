@@ -15,7 +15,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Types.Plugin;
 

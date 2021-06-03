@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.Models;
-using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
 
 

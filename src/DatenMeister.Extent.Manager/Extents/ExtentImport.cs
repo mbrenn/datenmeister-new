@@ -6,9 +6,9 @@ using DatenMeister.Core.Exceptions;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 
-namespace DatenMeister.ExtentManager.Extents
+namespace DatenMeister.Extent.Manager.Extents
 {
     public class ExtentImport
     {

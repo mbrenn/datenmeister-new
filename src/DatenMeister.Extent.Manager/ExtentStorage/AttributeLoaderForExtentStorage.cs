@@ -1,4 +1,4 @@
-﻿namespace DatenMeister.ExtentManager.ExtentStorage
+﻿namespace DatenMeister.Extent.Manager.ExtentStorage
 {
     /*
     public static class AttributeLoaderForExtentStorage

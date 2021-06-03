@@ -69,7 +69,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Provider.CSV",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Plugins", "DatenMeister.Plugins\DatenMeister.Plugins.csproj", "{947F91D6-4F12-49FF-8754-70C9B5817873}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.ExtentManager", "DatenMeister.ExtentManager\DatenMeister.ExtentManager.csproj", "{A4F718D3-B63A-42F7-AB26-E00ADE682EE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Extent.Manager", "DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj", "{A4F718D3-B63A-42F7-AB26-E00ADE682EE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Locking", "DatenMeister.Locking\DatenMeister.Locking.csproj", "{E09F4720-2E23-4738-ADC2-FBC8E1171CA3}"
 EndProject

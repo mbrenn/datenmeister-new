@@ -7,7 +7,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Navigation;
 
@@ -39,7 +40,7 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
             var extent = _workspaceLogic.GetExtentByManagementModel(asElement);
 
             // Adds a button to read the extent loading configuration
-            var extentManager = new ExtentManager.ExtentStorage.ExtentManager(_workspaceLogic, _scopeStorage);
+            var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
             var loadConfiguration = extentManager.GetLoadConfigurationFor(extent);
             if (loadConfiguration != null)
             {

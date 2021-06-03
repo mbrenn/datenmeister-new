@@ -12,6 +12,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Integration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using NUnit.Framework;
 
@@ -67,7 +68,7 @@ namespace DatenMeister.Tests.Excel
                 excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.sheetName,
                     "Tabelle1");
 
-                var extentManager = dm.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
                 Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));
@@ -120,7 +121,7 @@ namespace DatenMeister.Tests.Excel
             excelReferenceSettings.set(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig.skipEmptyRowsCount,
                 0);
 
-            var extentManager = dm.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+            var extentManager = dm.Resolve<ExtentManager>();
             var loadedExtent = extentManager.LoadExtent(excelReferenceSettings, ExtentCreationFlags.LoadOrCreate);
             Assert.That(loadedExtent.Extent, Is.Not.Null);
             Assert.That(loadedExtent.Extent!.elements().Count(), Is.LessThan(40));
@@ -170,7 +171,7 @@ namespace DatenMeister.Tests.Excel
                 excelImportLoaderConfig.set(_DatenMeister._ExtentLoaderConfigs._ExcelImportLoaderConfig.sheetName,
                     "Tabelle1");
                 
-                var extentManager = dm.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
                 var loadedExtent = extentManager.LoadExtent(excelImportLoaderConfig, ExtentCreationFlags.LoadOrCreate);
                 Assert.That(loadedExtent.Extent, Is.Not.Null);
                 Assert.That(loadedExtent.Extent!.elements().Count(), Is.GreaterThan(0));

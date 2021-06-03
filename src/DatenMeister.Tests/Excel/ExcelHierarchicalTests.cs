@@ -10,6 +10,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Types;
 using NUnit.Framework;
 using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
@@ -68,7 +69,7 @@ namespace DatenMeister.Tests.Excel
             loaderConfig.set(_ExcelHierarchicalLoaderConfig.hierarchicalColumns,
                 new[] {definition1, definition2});
             
-            var extentManager = new ExtentManager.ExtentStorage.ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
+            var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
             var inMemoryExtent = extentManager.LoadExtent(loaderConfig);
 
             Assert.That(inMemoryExtent, Is.Not.Null);

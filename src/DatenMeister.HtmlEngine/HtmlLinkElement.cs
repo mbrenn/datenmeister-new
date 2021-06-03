@@ -5,7 +5,7 @@
     /// </summary>
     public class HtmlLinkElement : HtmlElement
     {
-        public string Href { get; set; }
+        public string Href { get; set; } = string.Empty;
         
         public HtmlElement Content { get; set; }
         

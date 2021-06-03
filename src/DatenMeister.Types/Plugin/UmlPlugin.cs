@@ -1,5 +1,5 @@
 ﻿using DatenMeister.Core;
-using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.Types.Plugin

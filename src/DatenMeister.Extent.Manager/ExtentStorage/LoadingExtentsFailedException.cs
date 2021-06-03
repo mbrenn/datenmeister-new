@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace DatenMeister.ExtentManager.ExtentStorage
+namespace DatenMeister.Extent.Manager.ExtentStorage
 {
     public class LoadingExtentsFailedException : Exception
     {
         /// <summary>
         /// Gets the failed extents that could not be loaded
         /// </summary>
-        public List<string> FailedExtents { get; } = new List<string>();
+        public List<string> FailedExtents { get; } = new();
 
         public LoadingExtentsFailedException(List<string> failedExtents)
         {

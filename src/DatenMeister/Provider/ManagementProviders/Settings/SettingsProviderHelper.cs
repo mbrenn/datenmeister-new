@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.Provider.DotNet;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.Provider.ManagementProviders.Settings

@@ -6,7 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.ExtentManager.ExtentStorage
+namespace DatenMeister.Extent.Manager.ExtentStorage
 {
     /// <summary>
     /// Maps the extent storage type to a configuration type which is used by the logic to find out the best type
@@ -51,12 +51,12 @@ namespace DatenMeister.ExtentManager.ExtentStorage
             }
         }
 
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ConfigurationToExtentStorageMapper));
+        private static readonly ClassLogger Logger = new(typeof(ConfigurationToExtentStorageMapper));
 
         /// <summary>
         /// Stores the types being used for the mapping
         /// </summary>
-        private readonly List<ConfigurationInfo> _mapping = new List<ConfigurationInfo>();
+        private readonly List<ConfigurationInfo> _mapping = new();
 
         public void AddMapping(IElement typeConfigurationClass, Func<ExtentManager, IProviderLoader> factoryExtentStorage)
         {

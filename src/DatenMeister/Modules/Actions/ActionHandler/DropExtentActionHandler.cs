@@ -2,6 +2,7 @@
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
@@ -29,7 +30,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 throw new InvalidOperationException($"Workspace is not found {workspaceName}");
             }
             
-            var extentManager = new ExtentManager.ExtentStorage.ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+            var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             extentManager.RemoveExtent(workspaceName, extentUri);
         }
     }

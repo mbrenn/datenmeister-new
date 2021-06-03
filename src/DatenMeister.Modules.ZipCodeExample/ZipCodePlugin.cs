@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using DatenMeister.Core;
-using DatenMeister.ExtentManager.Extents.Configuration;
+using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Plugins;
 using DatenMeister.Types;

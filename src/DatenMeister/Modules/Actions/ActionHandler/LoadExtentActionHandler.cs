@@ -4,7 +4,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
@@ -34,7 +34,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
                 throw new InvalidOperationException("No configuration is set");
             }
             
-            var extentManager = new ExtentManager.ExtentStorage.ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
+            var extentManager = new ExtentManager(actionLogic.WorkspaceLogic, actionLogic.ScopeStorage);
             if (dropExisting)
             {
                 extentManager.RemoveExtent(workspaceId, extentUri);

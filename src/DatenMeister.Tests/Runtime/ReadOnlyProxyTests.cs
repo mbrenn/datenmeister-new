@@ -9,7 +9,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Proxies.ReadOnly;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Tests.CSV;
@@ -61,7 +61,7 @@ namespace DatenMeister.Tests.Runtime
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(mapper);
             scopeStorage.Add(new IntegrationSettings());
-            var logic = new ExtentManager.ExtentStorage.ExtentManager(WorkspaceLogic.Create(workspaceData), scopeStorage);
+            var logic = new ExtentManager(WorkspaceLogic.Create(workspaceData), scopeStorage);
             
             
             var settings =

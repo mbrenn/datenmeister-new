@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.ExtentManager.ExtentStorage
+namespace DatenMeister.Extent.Manager.ExtentStorage
 {
     /// <summary>
     /// Stores the configuration for the loaded extents during the runtime
@@ -42,7 +42,7 @@ namespace DatenMeister.ExtentManager.ExtentStorage
         /// <summary>
         /// Stores the loaded extents including the configuration of the storage for the extent
         /// </summary>
-        internal List<LoadedExtentInformation> LoadedExtents { get; } = new List<LoadedExtentInformation>();
+        internal List<LoadedExtentInformation> LoadedExtents { get; } = new();
 
         /// <summary>
         /// Gets or sets the path in which the extent loading info is stored

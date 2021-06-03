@@ -4,6 +4,7 @@ using Autofac;
 using DatenMeister.Core;
 using DatenMeister.Core.Runtime.Workspaces.Data;
 using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.Integration
@@ -36,7 +37,7 @@ namespace DatenMeister.Integration
                 scope.Resolve<WorkspaceLoader>().Store();
             }
             
-            scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>().UnloadManager(true);
+            scope.Resolve<ExtentManager>().UnloadManager(true);
         }
     }
 }

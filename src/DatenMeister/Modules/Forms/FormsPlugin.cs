@@ -19,8 +19,8 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.ExtentManager.Extents.Configuration;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -489,7 +489,8 @@ namespace DatenMeister.Modules.Forms
         }
 
         /// <summary>
-        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration
+        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration.
+        /// Each tab within the list form can require an autogeneration by setting the field 'autoGenerateFields'.
         /// </summary>
         /// <param name="element">The element to be used</param>
         /// <param name="foundForm">The element that has been found</param>

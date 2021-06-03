@@ -10,7 +10,7 @@ using BurnSystems;
 using DatenMeister.Core;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Locking;

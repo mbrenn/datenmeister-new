@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DatenMeister.ExtentManager.Extents.Configuration
+namespace DatenMeister.Extent.Manager.Extents.Configuration
 {
     /// <summary>
     /// Stores the configurations for the extents themselves.
@@ -17,9 +17,9 @@ namespace DatenMeister.ExtentManager.Extents.Configuration
         /// <summary>
         /// Stores the extent type setting
         /// </summary>
-        public List<ExtentType> extentTypeSettings { get; } = new List<ExtentType>();
+        public List<ExtentType> extentTypeSettings { get; } = new();
         
-        public List<ExtentPropertyDefinition> propertyDefinitions { get; } = new List<ExtentPropertyDefinition>();
+        public List<ExtentPropertyDefinition> propertyDefinitions { get; } = new();
 
         public ExtentType? GetExtentTypeSetting(string extentType)
         {

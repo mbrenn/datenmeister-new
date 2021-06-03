@@ -21,6 +21,7 @@
     <ItemGroup>
       <Folder Include="Models\Example" />
       <Folder Include="Modules" />
+      <Folder Include="Uml" />
     </ItemGroup>
 
 </Project>

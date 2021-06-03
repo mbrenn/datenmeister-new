@@ -15,7 +15,8 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.ExtentManager.Extents;
+using DatenMeister.Extent.Manager.Extents;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
@@ -272,7 +273,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             void OpenExtentFolder()
             {
-                var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+                var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 var uriExtent = Extent as IUriExtent ?? throw new InvalidOperationException("Extent as IUriExtent");
                 var loadConfiguration = extentManager.GetLoadConfigurationFor(uriExtent);
                 if (loadConfiguration != null && loadConfiguration.isSet(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath) == true)
@@ -316,7 +317,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void SaveExtent(IExtent extent)
         {
-            var extentManager = GiveMe.Scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+            var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
             extentManager.StoreExtent(extent);
             
             UpdateTreeContent();

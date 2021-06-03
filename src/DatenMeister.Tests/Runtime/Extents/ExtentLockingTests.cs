@@ -5,7 +5,7 @@ using Autofac;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents
@@ -43,7 +43,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                         extentSettings.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId,
                             "Data");
 
-                        var extentManager = dm.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+                        var extentManager = dm.Resolve<ExtentManager>();
                         extentManager.UnlockProvider(extentSettings);
 
                         var provider1 = extentManager.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
@@ -51,7 +51,7 @@ namespace DatenMeister.Tests.Runtime.Extents
                         Assert.That(provider1.LoadingState, Is.EqualTo(ExtentLoadingState.Loaded));
                         Assert.That(provider1.Extent, Is.Not.Null);
 
-                        var extentManager2 = dm2.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+                        var extentManager2 = dm2.Resolve<ExtentManager>();
                         var information = extentManager2.LoadExtent(extentSettings, ExtentCreationFlags.LoadOrCreate);
                         Assert.That(information.LoadingState, Is.EqualTo(ExtentLoadingState.Failed));
                         extentManager2.RemoveExtent(information);

@@ -4,6 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider
@@ -31,7 +32,7 @@ namespace DatenMeister.Tests.Provider
                 newUsers,
                 Is.Not.Null);
 
-            var extentManager = scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+            var extentManager = scope.Resolve<ExtentManager>();
             var newUserConfiguration = extentManager.GetLoadConfigurationFor((newUsers as IUriExtent)!);
             Assert.That(newUserConfiguration, Is.Not.Null);
             Assert.That(newUserConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri), Is.EqualTo("dm:///newusers"));

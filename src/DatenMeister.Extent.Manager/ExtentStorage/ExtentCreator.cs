@@ -9,14 +9,14 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 
-namespace DatenMeister.ExtentManager.ExtentStorage
+namespace DatenMeister.Extent.Manager.ExtentStorage
 {
     /// <summary>
     /// Implements some helper methods to create extents
     /// </summary>
     public class ExtentCreator
     {
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(ExtentCreator));
+        private static readonly ClassLogger Logger = new(typeof(ExtentCreator));
         private readonly IWorkspaceLogic _workspaceLogic;
         private readonly ExtentManager _extentManager;
         private readonly IntegrationSettings _integrationSettings;

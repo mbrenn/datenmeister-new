@@ -17,8 +17,8 @@ using DatenMeister.Core.Runtime.Workspaces.Data;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Core.XmiFiles;
 using DatenMeister.DependencyInjection;
-using DatenMeister.ExtentManager.Extents.Configuration;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.PublicSettings;
@@ -122,7 +122,7 @@ namespace DatenMeister.Integration
                 FilePath = PathExtents
             };
             scopeStorage.Add(extentStorageData);
-            kernel.RegisterType<ExtentManager.ExtentStorage.ExtentManager>().As<ExtentManager.ExtentStorage.ExtentManager>();
+            kernel.RegisterType<ExtentManager>().As<ExtentManager>();
 
             // Workspaces
             var workspaceData = WorkspaceLogic.InitDefault();
@@ -245,7 +245,7 @@ namespace DatenMeister.Integration
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
             // Boots up the typical DatenMeister Environment by loading the data
-            var extentManager = scope.Resolve<ExtentManager.ExtentStorage.ExtentManager>();
+            var extentManager = scope.Resolve<ExtentManager>();
             if (_settings.EstablishDataEnvironment)
             {
                 var workspaceLoader = scope.Resolve<WorkspaceLoader>();

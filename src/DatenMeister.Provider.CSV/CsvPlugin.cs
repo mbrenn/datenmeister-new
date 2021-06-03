@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core;
 using DatenMeister.Core.Models;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Plugins;
 using DatenMeister.Provider.CSV.Runtime;
 

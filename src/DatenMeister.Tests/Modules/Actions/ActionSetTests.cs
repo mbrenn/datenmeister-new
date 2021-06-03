@@ -11,7 +11,7 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.Actions;
 using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.CSV.Runtime;

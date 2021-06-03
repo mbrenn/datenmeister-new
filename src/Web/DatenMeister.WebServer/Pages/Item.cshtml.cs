@@ -11,7 +11,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
@@ -19,7 +18,6 @@ using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Scriban.Syntax;
 
 namespace DatenMeister.WebServer.Pages
 {
@@ -195,7 +193,7 @@ namespace DatenMeister.WebServer.Pages
                     return htmlList;
                 }
 
-                value = new HtmlDivElement("Shall not occur.");
+                return new HtmlDivElement("Shall not occur.");
             }
 
             if (value is IElement and IHasId asHasId)

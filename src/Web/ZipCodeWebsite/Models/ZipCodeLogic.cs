@@ -10,7 +10,7 @@ using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
-using DatenMeister.ExtentManager.ExtentStorage;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.ZipCodeExample;
 using ZipCodeLibrary;
 using ZipCodeModel = ZipCodeLibrary.ZipCodeModel;

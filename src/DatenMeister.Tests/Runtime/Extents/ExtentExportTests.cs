@@ -2,7 +2,7 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Provider.Xmi;
-using DatenMeister.ExtentManager.Extents;
+using DatenMeister.Extent.Manager.Extents;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents

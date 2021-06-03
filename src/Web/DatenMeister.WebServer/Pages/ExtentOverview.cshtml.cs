@@ -120,7 +120,7 @@ namespace DatenMeister.WebServer.Pages
         /// <summary>
         /// Consolidates all fields from tabs and and the extentform itself
         /// </summary>
-        /// <param name="fields">Field list that shall be filled with the consoldiated fields</param>
+        /// <param name="fields">Field list that shall be filled with the consolidated fields</param>
         /// <param name="form">Form to be parsed through and to consolidate the fields</param>
         public static void ConsolidateFields(List<MofElement> fields, IObject form)
         {

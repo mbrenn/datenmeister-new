@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.ExtentManager.Extents.Configuration
+namespace DatenMeister.Extent.Manager.Extents.Configuration
 {
     /// <summary>
     /// Stores the setting of the extent
@@ -23,6 +23,6 @@ namespace DatenMeister.ExtentManager.Extents.Configuration
         /// to the extent. Other metaclasses are also possible, but these one are actively offered
         /// by the tool
         /// </summary>
-        public List<IElement> rootElementMetaClasses { get; } = new List<IElement>(); 
+        public List<IElement> rootElementMetaClasses { get; } = new(); 
     }
 }

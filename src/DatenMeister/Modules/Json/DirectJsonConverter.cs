@@ -3,7 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Modules.Json
 {

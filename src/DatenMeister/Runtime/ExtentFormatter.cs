@@ -3,8 +3,9 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Runtime
 {

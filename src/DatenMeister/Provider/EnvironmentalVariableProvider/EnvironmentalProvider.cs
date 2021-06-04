@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage.Interfaces;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
 
 namespace DatenMeister.Provider.EnvironmentalVariableProvider
 {

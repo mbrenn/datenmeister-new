@@ -4,10 +4,11 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Modules.DataViews;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

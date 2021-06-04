@@ -6,11 +6,11 @@ using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms
 {
@@ -131,6 +131,40 @@ namespace DatenMeister.Modules.Forms
                 .WhenPropertyHasValue(_DatenMeister._Forms._FieldData.name, fieldName)
                 .OfType<IElement>()
                 .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the enumeration of the detail forms which are in embedded into the tabs
+        /// </summary>
+        /// <param name="form">Form to be checked</param>
+        /// <returns>Enumeration of the detail forms</returns>
+        public static IEnumerable<IElement> GetDetailForms(IElement form)
+        {
+            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
+            {
+                if (tab is IElement asElement 
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
+                {
+                    yield return asElement;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumeration of the detail forms which are in embedded into the tabs
+        /// </summary>
+        /// <param name="form">Form to be checked</param>
+        /// <returns>Enumeration of the detail forms</returns>
+        public static IEnumerable<IElement> GetListForms(IElement form)
+        {
+            foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
+            {
+                if (tab is IElement asElement 
+                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                {
+                    yield return asElement;
+                }
+            }
         }
 
         /// <summary>

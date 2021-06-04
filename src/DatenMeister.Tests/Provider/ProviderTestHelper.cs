@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using DatenMeister.Provider;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using DatenMeister.Runtime.Locking;
+using DatenMeister.Locking;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

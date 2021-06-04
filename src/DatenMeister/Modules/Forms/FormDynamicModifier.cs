@@ -2,11 +2,11 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Runtime.Objects;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms
 {

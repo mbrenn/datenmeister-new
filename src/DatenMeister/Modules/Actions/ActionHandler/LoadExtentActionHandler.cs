@@ -1,9 +1,10 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {

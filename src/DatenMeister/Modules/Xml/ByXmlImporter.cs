@@ -1,8 +1,8 @@
 ﻿using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Provider.XMI.EMOF;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime;
 
 namespace DatenMeister.Modules.Xml
 {

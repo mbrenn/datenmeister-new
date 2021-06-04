@@ -1,10 +1,13 @@
-﻿@page
-@model IndexModel
+﻿@page "/"
+@namespace DatenMeister.WebServer.Pages
+
 @{
+    Layout = "~/Shared/_Layout.cshtml";
     ViewData["Title"] = "Der DatenMeister";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://datenmeister.net">Welcome to the DatenMeister</a>.</p>
-</div>
+@model IndexModel
+
+<h1>Startpage</h1>
+
+Welcome to DatenMeister!

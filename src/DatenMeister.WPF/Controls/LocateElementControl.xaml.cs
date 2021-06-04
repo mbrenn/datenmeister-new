@@ -8,10 +8,10 @@ using System.Windows.Controls;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Integration.DotNet;
 
 namespace DatenMeister.WPF.Controls
 {

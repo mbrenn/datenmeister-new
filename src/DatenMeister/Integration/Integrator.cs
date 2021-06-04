@@ -7,25 +7,26 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Features.ResolveAnything;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Models;
-using DatenMeister.Modules.ChangeEvents;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.ChangeEvents;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Runtime.Workspaces.Data;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Core.XmiFiles;
+using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.PublicSettings;
-using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Modules.UserManagement;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Plugins;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Provider.Xml;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Plugins;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Runtime.Workspaces.Data;
+using DatenMeister.Types;
 using DatenMeister.Uml;
-using DatenMeister.Uml.Helper;
-using DatenMeister.Uml.Plugin;
 
 namespace DatenMeister.Integration
 {
@@ -35,6 +36,8 @@ namespace DatenMeister.Integration
         /// Settings being used for integration
         /// </summary>
         private IntegrationSettings _settings;
+
+        private readonly PluginLoaderSettings _pluginLoaderSettings;
 
         private string? _pathWorkspaces;
         private string? _pathExtents;
@@ -65,9 +68,10 @@ namespace DatenMeister.Integration
         public static string GetPathToExtents(IntegrationSettings settings)
             => Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
 
-        public Integrator(IntegrationSettings settings)
+        public Integrator(IntegrationSettings settings, PluginLoaderSettings pluginLoaderSettings)
         {
             _settings = settings;
+            _pluginLoaderSettings = pluginLoaderSettings;
         }
 
         public IDatenMeisterScope UseDatenMeister(ContainerBuilder kernel)
@@ -154,7 +158,7 @@ namespace DatenMeister.Integration
             var pluginManager = new PluginManager();
             scopeStorage.Add(pluginManager);
             
-            var pluginLoader = _settings.PluginLoader ?? new DefaultPluginLoader();
+            var pluginLoader = _pluginLoaderSettings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(
                 Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location) 
                 ?? throw new InvalidOperationException("Path is null"));
@@ -218,17 +222,15 @@ namespace DatenMeister.Integration
             var packageMethods = scope.Resolve<PackageMethods>();
             var internalUserExtent = localTypeSupport.InternalTypes;
 
-            packageMethods.ImportByManifest(
-                typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Types.DatenMeister.xmi",
+            packageMethods.ImportByStream(
+                XmiResources.GetDatenMeisterTypesStream(),
                 null,
                 internalUserExtent,
                 "DatenMeister");
 
             var formsPlugin = scope.Resolve<FormsPlugin>();
-            packageMethods.ImportByManifest(
-                typeof(UmlPlugin),
-                "DatenMeister.XmiFiles.Forms.DatenMeister.xmi",
+            packageMethods.ImportByStream(
+                XmiResources.GetDatenMeisterFormsStream(),
                 null,
                 formsPlugin.GetInternalFormExtent(),
                 "DatenMeister");

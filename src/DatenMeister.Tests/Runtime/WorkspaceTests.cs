@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using DatenMeister.Integration;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Runtime.Workspaces.Data;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Runtime.Workspaces.Data;
+using DatenMeister.DependencyInjection;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

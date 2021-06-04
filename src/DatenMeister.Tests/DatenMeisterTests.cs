@@ -3,11 +3,13 @@ using System.IO;
 using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
+using DatenMeister.Plugins;
 #if !NET462
-using DatenMeister.NetCore.Modules.PluginLoader;
 #endif
-using DatenMeister.Runtime.Plugins;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests
@@ -66,12 +68,7 @@ namespace DatenMeister.Tests
                 EstablishDataEnvironment = true,
                 PerformSlimIntegration = false,
                 AllowNoFailOfLoading = false,
-                InitializeDefaultExtents = dropDatabase,
-#if NET462
-                PluginLoader = new DefaultPluginLoader()
-#else
-                PluginLoader = new DotNetCorePluginLoader()
-#endif
+                InitializeDefaultExtents = dropDatabase
             };
 
             return integrationSettings;

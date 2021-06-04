@@ -2,10 +2,10 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Extent.Manager.ExtentStorage;
+using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
@@ -32,12 +32,17 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             : base(
                 new Tuple<IUriExtent?, ExtentStorageData.LoadedExtentInformation?>(uriExtent, loadedExtentInformation), 
                 provider, 
-                loadedExtentInformation?.Configuration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
-                ?? uriExtent?.contextURI() ?? throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"), 
+                string.Empty /*will be set below*/,  
                 MetaclassUriPath)
         {
+            Id = parentWorkspace.id + 
+                 "_" +
+                 (loadedExtentInformation?.Configuration.getOrDefault<string>(
+                      _DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig.extentUri)
+                  ?? uriExtent?.contextURI() ??
+                  throw new InvalidOperationException("uriExtent and loadedExtentInformation is null"));
+            
             LoadedExtentInformation = loadedExtentInformation;
-
 
             AddMapping(
                 _DatenMeister._Management._Extent.workspaceId,

@@ -1,8 +1,8 @@
-﻿using DatenMeister.Integration;
-using DatenMeister.Models;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.Models;
+using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Plugins;
 using DatenMeister.Provider.XMI.ExtentStorage;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Plugins;
 
 namespace DatenMeister.Provider.XMI
 {

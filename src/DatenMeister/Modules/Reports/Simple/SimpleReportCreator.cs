@@ -5,16 +5,16 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.HtmlExporter.Formatter;
-using DatenMeister.Modules.HtmlExporter.HtmlEngine;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
-using static DatenMeister.Models._DatenMeister._Reports;
+using static DatenMeister.Core.Models._DatenMeister._Reports;
 
 namespace DatenMeister.Modules.Reports.Simple
 {
@@ -23,11 +23,6 @@ namespace DatenMeister.Modules.Reports.Simple
     /// </summary>
     public class SimpleReportCreator
     {
-        /// <summary>
-        /// Stores the default classifier hints
-        /// </summary>
-        private readonly DefaultClassifierHints _defaultClassifierHints;
-
         private readonly FormCreator _formCreator;
 
         /// <summary>
@@ -49,7 +44,6 @@ namespace DatenMeister.Modules.Reports.Simple
         {
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = simpleReportConfiguration;
-            _defaultClassifierHints = new DefaultClassifierHints();
             _formCreator = FormCreator.Create(workspaceLogic, null);
         }
 
@@ -94,7 +88,7 @@ namespace DatenMeister.Modules.Reports.Simple
 
             // First, gets the elements to be shown
             IReflectiveCollection elements =
-                new TemporaryReflectiveCollection(_defaultClassifierHints.GetPackagedElements(rootElement));
+                new TemporaryReflectiveCollection(DefaultClassifierHints.GetPackagedElements(rootElement));
             if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showDescendents))
             {
                 elements = elements.GetAllCompositesIncludingThemselves();

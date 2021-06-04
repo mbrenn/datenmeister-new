@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.WPF.Modules.UserInteractions;
 using DatenMeister.WPF.Navigation;
 

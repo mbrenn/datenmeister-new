@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml
@@ -15,12 +15,12 @@ namespace DatenMeister.Tests.Uml
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var typeWorkspace = dm.WorkspaceLogic.GetTypesWorkspace();
             var zipCodes = typeWorkspace.ResolveElement(
-                "dm:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCode",
+                "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCode",
                 ResolveType.Default,
                 false);
 
             var zipCodesWithState = typeWorkspace.ResolveElement(
-                "dm:///_internal/types/internal#DatenMeister.Models.Example.ZipCode.ZipCodeWithState",
+                "dm:///_internal/types/internal#DatenMeister.Modules.ZipCodeExample.Model.ZipCodeWithState",
                 ResolveType.Default,
                 false);
 

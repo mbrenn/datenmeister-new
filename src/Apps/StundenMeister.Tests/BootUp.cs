@@ -1,9 +1,12 @@
 using System;
 using System.IO;
 using Autofac;
+using DatenMeister.Core;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Runtime;
+using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
 using StundenMeister.Logic;
 using StundenMeister.Model;

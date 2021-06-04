@@ -1,8 +1,8 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {

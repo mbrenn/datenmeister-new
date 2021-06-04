@@ -1,6 +1,7 @@
 using System;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
 namespace StundenMeister.Model

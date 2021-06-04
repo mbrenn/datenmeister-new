@@ -2,8 +2,8 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 
 namespace DatenMeister.Excel.Helper
 {

@@ -4,26 +4,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Modules.DefaultTypes;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.Forms.FormModifications;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Plugins;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Modules.Forms
 {
@@ -390,7 +392,14 @@ namespace DatenMeister.Modules.Forms
             return foundForm;
         }
 
-        public IElement? GetExtentForm(IUriExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
+        /// <summary>
+        /// Creates an Extent form for the given element 
+        /// </summary>
+        /// <param name="extent">Extent to which the form shall be created</param>
+        /// <param name="formDefinitionMode">The form definition mode being used</param>
+        /// <param name="viewModeId">The current view mode id</param>
+        /// <returns>The found element</returns>
+        public IElement? GetExtentForm(IExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
         {
             IElement? foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
@@ -480,7 +489,8 @@ namespace DatenMeister.Modules.Forms
         }
 
         /// <summary>
-        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration
+        /// Goes through the tabs the extent form and checks whether the listform required an autogeneration.
+        /// Each tab within the list form can require an autogeneration by setting the field 'autoGenerateFields'.
         /// </summary>
         /// <param name="element">The element to be used</param>
         /// <param name="foundForm">The element that has been found</param>
@@ -547,7 +557,7 @@ namespace DatenMeister.Modules.Forms
         /// <returns>The found or created list form</returns>
         public IElement? GetListFormForExtentsItem(
             IExtent extent,
-            IElement metaClass,
+            IElement? metaClass,
             FormDefinitionMode formDefinitionMode)
         {
             IElement? foundForm = null;
@@ -673,6 +683,13 @@ namespace DatenMeister.Modules.Forms
         /// <returns>Found extent form</returns>
         public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode, string viewModeId)
         {
+            // Checks if the item to which the extent form is requested is an extent
+            if (element is IExtent elementAsExtent)
+            {
+                return GetExtentForm(elementAsExtent, formDefinitionMode, viewModeId);
+            }
+            
+            // Ok, not an extent now do the right things
             IElement? foundForm = null;
 
             var extent = (element as IHasExtent)?.Extent;

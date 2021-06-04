@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime.Copier;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Copier;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

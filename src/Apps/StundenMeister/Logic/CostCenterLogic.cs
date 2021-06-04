@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Core.Functions.Queries;
 
 namespace StundenMeister.Logic
 {

@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml

@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 

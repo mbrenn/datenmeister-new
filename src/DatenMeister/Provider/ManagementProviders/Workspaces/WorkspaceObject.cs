@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using static DatenMeister.Models._DatenMeister._ExtentLoaderConfigs;
-using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
+using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {

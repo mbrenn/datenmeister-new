@@ -6,12 +6,12 @@ using System.Windows.Input;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Navigation;
 

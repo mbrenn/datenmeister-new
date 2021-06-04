@@ -1,7 +1,7 @@
 using DatenMeister.Core.EMOF.Implementation.DotNet;
-using DatenMeister.Models;
-using DatenMeister.Provider.DotNet;
-using DatenMeister.Runtime.Extents.Configuration;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.DotNet;
+using DatenMeister.Extent.Manager.Extents.Configuration;
 
 namespace DatenMeister.Provider.ManagementProviders.Settings
 {

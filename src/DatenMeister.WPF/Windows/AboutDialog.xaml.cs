@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Navigation;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
 
 namespace DatenMeister.WPF.Windows
 {

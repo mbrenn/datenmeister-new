@@ -4,20 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
-using _PrimitiveTypes = DatenMeister.Models.EMOF._PrimitiveTypes;
-using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
+using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
+using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {
@@ -354,6 +354,32 @@ namespace DatenMeister.Modules.Forms.FormCreator
         }
 
         /// <summary>
+        /// Defines a small helper enumeration which can be used to define the type of the
+        /// umlElement for the method AddToFormByUmlElement. 
+        /// </summary>
+        public enum FormUmlElementType
+        {
+            /// <summary>
+            /// Definition is not givne
+            /// </summary>
+            Unknown, 
+            /// <summary>
+            /// The element is a property 
+            /// </summary>
+            Property, 
+            
+            /// <summary>
+            /// The element is a class
+            /// </summary>
+            Class,
+            
+            /// <summary>
+            /// The element is an enumeration
+            /// </summary>
+            Enumeration
+        }
+
+        /// <summary>
         /// Takes the given uml item and includes it into the form.
         /// The element can be of type enumeration, class or property.
         ///
@@ -363,7 +389,11 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="umlElement">The uml element, property, class or type that will be added</param>
         /// <param name="creationMode">The creation mode</param>
         /// <returns>true, if an element was created</returns>
-        public bool AddToFormByUmlElement(IElement form, IElement umlElement, CreationMode creationMode)
+        public bool AddToFormByUmlElement(
+            IElement form,
+            IElement umlElement,
+            CreationMode creationMode,
+            FormUmlElementType umlElementType = FormUmlElementType.Unknown)
         {
             if (form == null) throw new ArgumentNullException(nameof(form));
             if (umlElement == null) throw new ArgumentNullException(nameof(umlElement));
@@ -371,12 +401,15 @@ namespace DatenMeister.Modules.Forms.FormCreator
             var noDuplicate = creationMode.HasFlagFast(CreationMode.NoDuplicate);
             
             // First, select the type of the form
-            var isDetailForm = 
-                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _DatenMeister.TheOne.Forms.__DetailForm);
-            var isListForm = 
-                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _DatenMeister.TheOne.Forms.__ListForm);
-            var isExtentForm = 
-                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), _DatenMeister.TheOne.Forms.__ExtentForm);
+            var isDetailForm =
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(),
+                    _DatenMeister.TheOne.Forms.__DetailForm);
+            var isListForm =
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(), 
+                    _DatenMeister.TheOne.Forms.__ListForm);
+            var isExtentForm =
+                ClassifierMethods.IsSpecializedClassifierOf(form.getMetaClass(),
+                    _DatenMeister.TheOne.Forms.__ExtentForm);
             var isNoneOfTheForms = !(isDetailForm || isListForm || isExtentForm);
             if (isNoneOfTheForms)
             {
@@ -385,11 +418,20 @@ namespace DatenMeister.Modules.Forms.FormCreator
 
             // Second, select the type of the umlElement
             var isPropertyUml =
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), _UML.TheOne.Classification.__Property);
+                (umlElementType == FormUmlElementType.Unknown &&
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(),
+                    _UML.TheOne.Classification.__Property))
+                || umlElementType == FormUmlElementType.Property;
             var isClassUml =
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), _UML.TheOne.StructuredClassifiers.__Class);
+                (umlElementType == FormUmlElementType.Unknown &&
+                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(),
+                    _UML.TheOne.StructuredClassifiers.__Class))
+                || umlElementType == FormUmlElementType.Class;
             var isEnumerationUml =
-                ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(), _UML.TheOne.SimpleClassifiers.__Enumeration);
+                (umlElementType == FormUmlElementType.Unknown &&
+                 ClassifierMethods.IsSpecializedClassifierOf(umlElement.getMetaClass(),
+                     _UML.TheOne.SimpleClassifiers.__Enumeration))
+                || umlElementType == FormUmlElementType.Enumeration;
             var isNoneOfTheUml = !(isPropertyUml || isClassUml || isEnumerationUml);
             if (isNoneOfTheUml)
             {

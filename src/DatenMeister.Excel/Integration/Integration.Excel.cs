@@ -1,9 +1,9 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Excel.EMOF;
 using DatenMeister.Excel.ProviderLoader;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Provider.InMemory;
 
 namespace DatenMeister.Excel.Integration
 {

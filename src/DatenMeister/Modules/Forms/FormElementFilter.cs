@@ -2,9 +2,9 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 
 namespace DatenMeister.Modules.Forms
 {

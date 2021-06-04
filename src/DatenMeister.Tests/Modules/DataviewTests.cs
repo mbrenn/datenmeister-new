@@ -3,14 +3,15 @@ using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Modules.DataViews;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Modules.DataViews;
-using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Types;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules

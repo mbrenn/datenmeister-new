@@ -1,8 +1,8 @@
 ﻿using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.WPF.Modules.ImportExtentManager
 {

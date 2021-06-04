@@ -4,10 +4,10 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
-using static DatenMeister.Models._DatenMeister._AttachedExtent;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime.Workspaces;
+using static DatenMeister.Core.Models._DatenMeister._AttachedExtent;
 
 namespace DatenMeister.Modules.AttachedExtent
 {

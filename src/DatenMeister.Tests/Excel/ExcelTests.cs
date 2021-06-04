@@ -5,14 +5,15 @@ using System.Linq;
 using System.Reflection;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Integration;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Provider;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Excel

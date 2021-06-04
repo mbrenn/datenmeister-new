@@ -2,11 +2,44 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
-    <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
+    <TypeScriptCompile Remove="wwwroot\js\datenmeister.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="wwwroot\js\datenmeister.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+    <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
+    <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
+  </ItemGroup>
+
+
+  <!-- Copies the files from the icons foldes to the wwwroot/img folder -->
+  <ItemGroup>
+    <IconPngFiles Include="../../../assets/icons/output/*.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Pages\ItemsOverview.cshtml.cs">
+      <DependentUpon>ItemsOverview.cshtml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <Target Name="CopyIconPngFiles" BeforeTargets="Compile">
+    <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
+  </Target>
 </Project>

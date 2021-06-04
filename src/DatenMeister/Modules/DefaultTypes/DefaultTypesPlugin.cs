@@ -1,6 +1,6 @@
-﻿using DatenMeister.Integration;
+﻿using DatenMeister.Core;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Modules.DefaultTypes
 {

@@ -3,9 +3,9 @@ using System;
 using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Modules.Reports.Generic
 {

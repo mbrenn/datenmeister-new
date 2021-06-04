@@ -1,10 +1,10 @@
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
-using DatenMeister.Integration;
-using DatenMeister.Provider.DotNet;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.Plugins;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Provider.DotNet;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Provider.ManagementProviders.Settings
 {

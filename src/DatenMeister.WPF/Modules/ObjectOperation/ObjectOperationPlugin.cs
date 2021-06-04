@@ -1,4 +1,4 @@
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.WPF.Modules.ObjectOperation
 {

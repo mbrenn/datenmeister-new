@@ -6,12 +6,12 @@ using System.Reflection;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Modules.ZipExample;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Modules.ZipCodeExample;
 using ZipCodeLibrary;
 using ZipCodeModel = ZipCodeLibrary.ZipCodeModel;
 

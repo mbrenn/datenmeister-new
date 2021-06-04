@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Modules.DataViews;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Modules.DataViews;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Copier;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.TextTemplates;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Copier;
-using DatenMeister.Runtime.Workspaces;
 
 namespace DatenMeister.Modules.Reports
 {

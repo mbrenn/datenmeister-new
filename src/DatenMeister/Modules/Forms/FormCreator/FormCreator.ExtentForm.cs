@@ -7,12 +7,11 @@ using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Modules.DefaultTypes;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {
@@ -66,7 +65,7 @@ namespace DatenMeister.Modules.Forms.FormCreator
         /// <param name="extent">Extent to be parsed</param>
         /// <param name="creationMode">The creation mode being used</param>
         /// <returns>The created element</returns>
-        public IElement CreateExtentForm(IUriExtent extent, CreationMode creationMode)
+        public IElement CreateExtentForm(IExtent extent, CreationMode creationMode)
         {
             var extentFormConfiguration = new ExtentFormConfiguration();
             var extentTypes = extent.GetConfiguration().ExtentTypes;

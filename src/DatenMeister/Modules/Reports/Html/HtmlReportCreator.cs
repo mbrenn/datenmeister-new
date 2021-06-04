@@ -5,10 +5,10 @@ using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.Reports.Generic;
-using DatenMeister.Runtime;
 
 namespace DatenMeister.Modules.Reports.Html
 {

@@ -2,8 +2,8 @@
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Proxies;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Runtime.Proxies;
 
 namespace DatenMeister.Runtime.Functions.Transformation
 {

@@ -2,9 +2,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Actions

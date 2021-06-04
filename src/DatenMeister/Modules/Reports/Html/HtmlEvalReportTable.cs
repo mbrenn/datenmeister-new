@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using DatenMeister.Modules.HtmlExporter.HtmlEngine;
+using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.Reports.Generic;
 
 namespace DatenMeister.Modules.Reports.Html

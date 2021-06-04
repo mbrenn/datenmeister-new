@@ -1,14 +1,14 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using Autofac;
+using DatenMeister.Core;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Generic;
 using DatenMeister.Modules.Reports.Html;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
-using DatenMeister.Runtime.Workspaces;
 using DatenMeister.WPF.Navigation;
 using StundenMeister.Logic;
 

@@ -1,8 +1,8 @@
 ﻿using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime.Extents;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Extent.Manager.Extents;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents

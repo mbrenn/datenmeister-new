@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Provider

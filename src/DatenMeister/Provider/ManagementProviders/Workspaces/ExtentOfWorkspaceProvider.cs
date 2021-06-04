@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using DatenMeister.Integration;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Provider;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.ExtentStorage;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {

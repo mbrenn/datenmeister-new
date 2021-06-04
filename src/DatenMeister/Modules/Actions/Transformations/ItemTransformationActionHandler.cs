@@ -2,11 +2,11 @@
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.DynamicRuntime;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Functions.Queries;
 
 namespace DatenMeister.Modules.Actions.Transformations
 {

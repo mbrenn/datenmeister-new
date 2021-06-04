@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
 
 namespace DatenMeister.Provider.XMI.UmlBootstrap
 {

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="XmiFiles\Forms\DatenMeister.xmi" />
+      <EmbeddedResource Include="XmiFiles\MOF.xmi" />
+      <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
+      <EmbeddedResource Include="XmiFiles\Types\DatenMeister.xmi" />
+      <EmbeddedResource Include="XmiFiles\UML.xmi" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\Example" />
+      <Folder Include="Modules" />
+      <Folder Include="Uml" />
+    </ItemGroup>
+
+</Project>

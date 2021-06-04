@@ -2,12 +2,12 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Models;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.Reports;
 using DatenMeister.Modules.Reports.Html;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Reports

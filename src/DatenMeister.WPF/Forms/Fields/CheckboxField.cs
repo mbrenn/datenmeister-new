@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.WPF.Forms.Base;
 
 namespace DatenMeister.WPF.Forms.Fields

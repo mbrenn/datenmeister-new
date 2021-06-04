@@ -1,4 +1,4 @@
-using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using ZipCodeWebsite.Models;

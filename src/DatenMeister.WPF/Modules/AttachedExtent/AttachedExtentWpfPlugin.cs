@@ -1,6 +1,6 @@
-﻿using DatenMeister.Integration;
+﻿using DatenMeister.Core;
 using DatenMeister.Modules.AttachedExtent;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Plugins;
 using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.AttachedExtent

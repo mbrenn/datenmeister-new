@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Models;
+using DatenMeister.Core.Models;
 using DatenMeister.Modules.Forms;
 using NUnit.Framework;
 

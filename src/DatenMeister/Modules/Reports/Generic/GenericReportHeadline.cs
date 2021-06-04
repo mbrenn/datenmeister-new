@@ -1,6 +1,6 @@
-﻿using DatenMeister.Runtime;
-using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
+﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 
 namespace DatenMeister.Modules.Reports.Generic
 {

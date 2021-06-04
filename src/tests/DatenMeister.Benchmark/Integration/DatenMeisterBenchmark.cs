@@ -4,8 +4,10 @@ using System.Reflection;
 using BenchmarkDotNet.Attributes;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.Core;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
-using DatenMeister.Runtime.Plugins;
+using DatenMeister.Integration.DotNet;
 
 namespace DatenMeister.Benchmark.Integration
 {
@@ -47,8 +49,7 @@ namespace DatenMeister.Benchmark.Integration
                 EstablishDataEnvironment = true,
                 PerformSlimIntegration = false,
                 AllowNoFailOfLoading = false,
-                InitializeDefaultExtents = dropDatabase,
-                PluginLoader = new DefaultPluginLoader()
+                InitializeDefaultExtents = dropDatabase
             };
 
             return integrationSettings;

@@ -5,19 +5,21 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
+using DatenMeister.Core;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
-using DatenMeister.Models;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Forms;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Provider.ManagementProviders.View;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
-using Workspace = DatenMeister.Runtime.Workspaces.Workspace;
+using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.WPF.Navigation
 {

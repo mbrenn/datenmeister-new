@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Uml.Helper;
 
 // ReSharper disable HeuristicUnreachableCode
 

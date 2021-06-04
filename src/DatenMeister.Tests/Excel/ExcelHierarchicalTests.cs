@@ -5,15 +5,15 @@ using System.Reflection;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Functions.Queries;
+using DatenMeister.Core.Functions.Queries;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Types;
 using NUnit.Framework;
-using static DatenMeister.Models._DatenMeister._ExtentLoaderConfigs;
+using static DatenMeister.Core.Models._DatenMeister._ExtentLoaderConfigs;
 
 namespace DatenMeister.Tests.Excel
 {

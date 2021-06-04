@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using DatenMeister.Core;
+using DatenMeister.DependencyInjection;
 using DatenMeister.Integration;
 using DatenMeister.Provider.CSV;
 using NUnit.Framework;

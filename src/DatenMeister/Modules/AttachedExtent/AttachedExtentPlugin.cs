@@ -1,7 +1,7 @@
-﻿using DatenMeister.Runtime.Plugins;
-using DatenMeister.Integration;
-using DatenMeister.Models;
-using DatenMeister.Runtime.Extents.Configuration;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.Models;
+using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Plugins;
 
 
 namespace DatenMeister.Modules.AttachedExtent

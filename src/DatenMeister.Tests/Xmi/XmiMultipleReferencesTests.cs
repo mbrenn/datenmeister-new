@@ -2,10 +2,10 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Provider.Xmi;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Provider.XMI;
-using DatenMeister.Provider.XMI.EMOF;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi

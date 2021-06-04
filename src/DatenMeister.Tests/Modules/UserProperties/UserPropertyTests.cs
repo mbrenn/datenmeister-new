@@ -1,5 +1,5 @@
+using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Modules.UserProperties;
-using DatenMeister.Provider.InMemory;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.UserProperties

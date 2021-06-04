@@ -1,5 +1,5 @@
-﻿using DatenMeister.Integration;
-using DatenMeister.Runtime.Plugins;
+﻿using DatenMeister.Core;
+using DatenMeister.Plugins;
 using DatenMeister.WPF.Modules.UserInteractions;
 
 namespace DatenMeister.WPF.Modules.Actions

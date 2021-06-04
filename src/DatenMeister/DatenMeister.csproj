@@ -9,13 +9,8 @@
     <Configurations>Debug;Release;ViewLogicAdditional</Configurations>
     <Nullable>enable</Nullable>
     <LangVersion>9</LangVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
-    <TargetFrameworks>netcoreapp3.1;net5.0;net462</TargetFrameworks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TargetFrameworks>net5.0</TargetFrameworks>
-  </PropertyGroup>  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;VIEWLOGICINFO</DefineConstants>
     <Optimize>false</Optimize>
@@ -24,30 +19,26 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Modules\HtmlExporter\Css\default_report.css" />
-    <EmbeddedResource Include="XmiFiles\Types\DatenMeister.xmi" />
     <None Remove="Modules\PublicSettings\publicSettings.example" />
     <EmbeddedResource Include="Modules\PublicSettings\publicSettings.example" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XmiFiles\MOF.xmi" />
-    <EmbeddedResource Include="XmiFiles\PrimitiveTypes.xmi" />
-    <EmbeddedResource Include="XmiFiles\UML.xmi" />
-    <EmbeddedResource Include="XmiFiles\Forms\DatenMeister.xmi" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Scriban" Version="2.1.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\EMOF" />
-    <Folder Include="Models\Example" />
-    <Folder Include="Modules\Admin" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
+    <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
+    <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
+    <ProjectReference Include="..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
+    <ProjectReference Include="..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
+    <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+    <ProjectReference Include="..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
+    <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
   </ItemGroup>
 </Project>

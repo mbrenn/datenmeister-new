@@ -1,5 +1,5 @@
-﻿using DatenMeister.Integration;
-using DatenMeister.Runtime.Plugins;
+﻿using DatenMeister.Core;
+using DatenMeister.Plugins;
 
 namespace DatenMeister.Modules.Actions
 {

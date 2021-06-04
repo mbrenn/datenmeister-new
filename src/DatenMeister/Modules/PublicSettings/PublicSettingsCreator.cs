@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using DatenMeister.DotNet;
+using BurnSystems;
 
 namespace DatenMeister.Modules.PublicSettings
 {

@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Runtime;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Uml.Helper;
 
 namespace DatenMeister.Modules.Forms.FormCreator
 {
@@ -59,7 +59,8 @@ namespace DatenMeister.Modules.Forms.FormCreator
                 AddToFormByUmlElement(
                     result,
                     _UML.TheOne.CommonStructure.NamedElement._name, 
-                    CreationMode.ForListForms | CreationMode.ByMetaClass);
+                    CreationMode.ForListForms | CreationMode.ByMetaClass,
+                    FormUmlElementType.Property);
             }
 
             return result;

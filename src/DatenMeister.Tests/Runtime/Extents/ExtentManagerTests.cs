@@ -1,11 +1,12 @@
 #nullable enable
 
 using Autofac;
-using DatenMeister.Models;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Provider.Interfaces;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime.Extents

@@ -1,7 +1,7 @@
 ﻿using System;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Provider.InMemory;
+using DatenMeister.Core.Provider.InMemory;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Mof.Core

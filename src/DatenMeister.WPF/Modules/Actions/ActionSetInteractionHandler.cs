@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Integration;
-using DatenMeister.Models;
+using DatenMeister.Core.Models;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Actions;
 using DatenMeister.WPF.Modules.UserInteractions;
 

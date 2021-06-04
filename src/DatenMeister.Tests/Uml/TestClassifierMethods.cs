@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Integration;
-using DatenMeister.Models.EMOF;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.Workspaces;
-using DatenMeister.Uml.Helper;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Uml

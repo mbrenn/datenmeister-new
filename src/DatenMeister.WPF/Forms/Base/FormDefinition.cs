@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models.EMOF;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Modules.Validators;
-using DatenMeister.Runtime;
+using DatenMeister.Validators;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 
 namespace DatenMeister.WPF.Forms.Base

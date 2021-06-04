@@ -1,9 +1,9 @@
-﻿using DatenMeister.Integration;
+﻿using DatenMeister.Core;
+using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.TypeSupport;
-using DatenMeister.Runtime.Extents.Configuration;
-using DatenMeister.Runtime.Plugins;
-using DatenMeister.Uml.Helper;
+using DatenMeister.Plugins;
+using DatenMeister.Types;
 
 namespace IssueMeisterLib
 {

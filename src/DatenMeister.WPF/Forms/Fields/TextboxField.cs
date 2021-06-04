@@ -5,8 +5,8 @@ using System.Windows.Controls;
 using BurnSystems;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Models;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
 using DatenMeister.WPF.Forms.Base;
 using VerticalAlignment = System.Windows.VerticalAlignment;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Runtime;
+using DatenMeister.Core.Helper;
 
 namespace DatenMeister.Modules.Formatter
 {

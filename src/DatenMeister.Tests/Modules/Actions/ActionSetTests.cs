@@ -5,15 +5,18 @@ using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
-using DatenMeister.Integration;
-using DatenMeister.Models;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Modules.Actions;
 using DatenMeister.Modules.Actions.ActionHandler;
-using DatenMeister.Modules.DefaultTypes;
-using DatenMeister.Provider.InMemory;
-using DatenMeister.Runtime;
-using DatenMeister.Runtime.ExtentStorage;
-using DatenMeister.Runtime.Workspaces;
+using DatenMeister.Provider.CSV.Runtime;
+using DatenMeister.Provider.XMI.ExtentStorage;
+using DatenMeister.Provider.Xml;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Actions
@@ -85,12 +88,23 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(workspaceLogic.Workspaces.Any(x => x.annotation == "I'm the workspace"), Is.False);
         }
 
+
+        public static ConfigurationToExtentStorageMapper GetDefaultMapper()
+        {
+            var result = new ConfigurationToExtentStorageMapper();
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__InMemoryLoaderConfig, manager => new InMemoryProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__CsvExtentLoaderConfig, manager => new CsvProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig, manager => new XmiProviderLoader());
+            result.AddMapping(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmlReferenceLoaderConfig, manager => new XmlReferenceLoader());
+            return result;
+        }
+        
         [Test]
         public void TestCreateExtent()
         {
             var scopeStorage = new ScopeStorage();
             scopeStorage.Add(ActionLogicState.GetDefaultLogicState());
-            scopeStorage.Add(ConfigurationToExtentStorageMapper.GetDefaultMapper());
+            scopeStorage.Add(GetDefaultMapper());
             scopeStorage.Add(WorkspaceLogic.InitDefault());
 
             var workspaceLogic = new WorkspaceLogic(scopeStorage);

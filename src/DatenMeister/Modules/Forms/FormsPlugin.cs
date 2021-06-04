@@ -21,10 +21,11 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Forms;
+using DatenMeister.Forms.FormModifications;
 using DatenMeister.Integration;
 using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.Modules.Forms.FormFinder;
-using DatenMeister.Modules.Forms.FormModifications;
 using DatenMeister.Plugins;
 
 namespace DatenMeister.Modules.Forms

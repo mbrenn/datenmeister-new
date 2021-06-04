@@ -1,8 +1,7 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Models;
-using DatenMeister.Modules.Forms.FormFinder;
 
-namespace DatenMeister.Modules.Forms.FormModifications
+namespace DatenMeister.Forms.FormModifications
 {
     /// <summary>
     /// The additional information for which the form was created

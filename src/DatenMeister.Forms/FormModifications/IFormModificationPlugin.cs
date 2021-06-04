@@ -1,6 +1,6 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
 
-namespace DatenMeister.Modules.Forms.FormModifications
+namespace DatenMeister.Forms.FormModifications
 {
     /// <summary>
     /// Defines the interface to modify the form, depending on the context

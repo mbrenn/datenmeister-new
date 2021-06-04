@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using DatenMeister.Modules.Forms.FormModifications;
+using DatenMeister.Forms.FormModifications;
 
-namespace DatenMeister.Modules.Forms
+namespace DatenMeister.Forms
 {
     public class FormsPluginState
     {

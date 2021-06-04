@@ -6,8 +6,9 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms;
+using DatenMeister.Forms.FormModifications;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormModifications;
 
 namespace DatenMeister.Modules.DefaultTypes
 {

@@ -5,8 +5,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Forms;
+using DatenMeister.Forms.FormModifications;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormModifications;
 
 namespace DatenMeister.Extent.Forms
 {
@@ -29,7 +29,7 @@ namespace DatenMeister.Extent.Forms
                 var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
                 actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, ViewNavigationActionType);
                 actionField.set(_DatenMeister._Forms._ActionFieldData.title, "View Extent");
-                actionField.set(_DatenMeister._Forms._ActionFieldData.name, "Extent.NavigateTo");
+                actionField.set(_DatenMeister._Forms._ActionFieldData.name, ViewNavigationActionType);
                 fields.add(actionField);
             }
         }

@@ -12,6 +12,7 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Forms;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
+using DatenMeister.Modules.ZipCodeExample;
 
 namespace DatenMeister.WebServer.Library.HtmlControls
 {
@@ -51,13 +52,22 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 };
 
                 var actionType = field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName);
-                if (actionType == ExtentFormExtension.ViewNavigationActionType && item is IElement itemAsElement)
+                var itemAsElement = item as IElement;
+                if (actionType == ExtentFormExtension.ViewNavigationActionType && itemAsElement is not null)
                 {
                     scriptLines.AppendLine(
                         $"$('#{id}').click(function() " +
                         $"{{DatenMeister.FormActions.extentNavigateTo(" +
                         $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId))}', " +
                         $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri))}');}});");
+                }
+
+                if (actionType == ZipCodePlugin.CreateZipExample && itemAsElement is not null)
+                {
+                    scriptLines.AppendLine(
+                        $"$('#{id}').click(function() " +
+                        $"{{DatenMeister.FormActions.createZipExample(" +
+                        $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Workspace.id))}');}});");
                 }
 
                 return button;

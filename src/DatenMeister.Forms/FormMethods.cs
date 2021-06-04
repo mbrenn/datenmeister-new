@@ -12,7 +12,7 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.Modules.Forms
+namespace DatenMeister.Forms
 {
     /// <summary>
     /// Contains some helper methods for forms

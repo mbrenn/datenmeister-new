@@ -48,6 +48,14 @@ module DatenMeister {
                 encodeURIComponent(workspace) + "/" +
                 encodeURIComponent(extentUri);
         }
+        
+        static createZipExample(workspace:string)
+        {
+            $.post(Settings.baseUrl + "api/zip/create", {workspace: workspace},
+                function(data) {
+                    document.location.reload();
+                });
+        }
     }
 
 

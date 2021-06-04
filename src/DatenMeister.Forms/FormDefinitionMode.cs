@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DatenMeister.Modules.Forms.FormFinder
+namespace DatenMeister.Forms
 {
     /// <summary>
     /// Defines possible types of the list view control type

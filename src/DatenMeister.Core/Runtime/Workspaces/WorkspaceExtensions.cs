@@ -291,7 +291,19 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 .FirstOrDefault(x => x != null);
         }
 
-        public static (Workspace worksspace, IUriExtent extent, IElement element) FindItem(
+        public static IElement? FindItem(
+            this IWorkspaceLogic workspaceLogic,
+            string workspace,
+            string extentUri,
+            string itemId)
+        {
+            var result = FindItem(
+                workspaceLogic,
+                new WorkspaceExtentAndItemReference(workspace, extentUri, itemId));
+            return result.element;
+        }
+
+        public static (Workspace workspace, IUriExtent extent, IElement element) FindItem(
             this IWorkspaceLogic collection,
             WorkspaceExtentAndItemReference model)
         {

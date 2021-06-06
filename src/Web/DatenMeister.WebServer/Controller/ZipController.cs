@@ -19,12 +19,17 @@ namespace DatenMeister.WebServer.Controller
             _scopeStorage = scopeStorage;
         }
         
+        public class CreateZipExampleParam
+        {
+            public string Workspace { get; set; } = string.Empty;
+        }
+        
         [HttpPost("api/zip/create")]
-        public ActionResult<object> CreateZipExample([FromForm] string workspace)
+        public ActionResult<object> CreateZipExample([FromBody] CreateZipExampleParam param)
         {
             var zipExample = new ZipCodeExampleManager(_workspaceLogic,
                 new ExtentManager(_workspaceLogic, _scopeStorage), _scopeStorage);
-            zipExample.AddZipCodeExample(workspace);
+            zipExample.AddZipCodeExample(param.Workspace);
 
             return new {success = true};
         }

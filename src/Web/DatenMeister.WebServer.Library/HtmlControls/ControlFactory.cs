@@ -20,7 +20,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
     /// The control factory creates the Html Elements dependent on the
     /// content and value of the items and the field information
     /// </summary>
-    public class ControlFactory
+    public static class ControlFactory
     {
         /// <summary>
         /// Gets the html element for a certain value and the field information itself is also evaluated
@@ -53,13 +53,39 @@ namespace DatenMeister.WebServer.Library.HtmlControls
 
                 var actionType = field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName);
                 var itemAsElement = item as IElement;
-                if (actionType == ExtentFormExtension.ViewNavigationActionType && itemAsElement is not null)
+                if (actionType == ExtentFormExtensionPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
                 {
                     scriptLines.AppendLine(
                         $"$('#{id}').click(function() " +
                         $"{{DatenMeister.FormActions.extentNavigateTo(" +
                         $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId))}', " +
-                        $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri))}');}});");
+                        $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri))}'" +
+                        $");}});");
+                }
+
+                if (actionType == ExtentFormExtensionPlugin.NavigationItemDelete && itemAsElement is not null)
+                {
+                    var extent = itemAsElement.GetUriExtentOf();
+                    var workspace = extent?.GetWorkspace();
+                    var itemId = (itemAsElement as IHasId)?.Id ?? string.Empty;
+                    
+                    scriptLines.AppendLine(
+                        $"$('#{id}').click(function() " +
+                        $"{{DatenMeister.FormActions.deleteItem(" +
+                        $"'{HttpUtility.JavaScriptStringEncode(workspace?.id ?? string.Empty)}', " +
+                        $"'{HttpUtility.JavaScriptStringEncode(extent?.contextURI() ?? string.Empty)}', " +
+                        $"'{HttpUtility.JavaScriptStringEncode(itemId)}'" +
+                        $");}});");
+                }
+
+                if (actionType == ExtentFormExtensionPlugin.NavigationItemNew && itemAsElement is not null)
+                {
+                    scriptLines.AppendLine(
+                        $"$('#{id}').click(function() " +
+                        $"{{DatenMeister.FormActions.createItem(" +
+                        $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId))}', " +
+                        $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri))}'" +
+                        $");}});");
                 }
 
                 if (actionType == ZipCodePlugin.CreateZipExample && itemAsElement is not null)

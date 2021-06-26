@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
+using DatenMeister.Forms;
 using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Validators;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

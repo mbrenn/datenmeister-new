@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using System.Net.Mime;
 using System.Text;
 using System.Web;
+using Autofac.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Forms;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.TextTemplates;
+using DatenMeister.Modules.ZipCodeExample;
 
 namespace DatenMeister.WebServer.Library.HtmlControls
 {
@@ -19,7 +22,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
     /// The control factory creates the Html Elements dependent on the
     /// content and value of the items and the field information
     /// </summary>
-    public class ControlFactory
+    public static class ControlFactory
     {
         /// <summary>
         /// Gets the html element for a certain value and the field information itself is also evaluated
@@ -37,6 +40,47 @@ namespace DatenMeister.WebServer.Library.HtmlControls
             string contextWorkspace,
             string contextExtent)
         {
+            void WriteScriptLineFunction(string htmlId, string functionName, params string?[] parameters)
+            {
+                var notFirst = false;
+                scriptLines.Append(
+                    $"$('#{htmlId}').click(function() " +
+                    $"{{DatenMeister.FormActions.{functionName}(");
+
+                foreach (var parameter in parameters)
+                {
+                    if (notFirst)
+                    {
+                        scriptLines.Append(", ");
+                    }
+
+                    scriptLines.Append($"'{HttpUtility.JavaScriptStringEncode(parameter ?? string.Empty)}'");
+                    notFirst = true;
+                }
+                
+                scriptLines.AppendLine($");}});");
+            }
+            
+            void WriteScriptLines(string htmlId, string functionName, IWorkspace? workspace, IUriExtent? extent, string? itemId)
+            {
+                WriteScriptLineFunction(
+                    htmlId, functionName, workspace?.id, extent?.contextURI(), itemId);
+            }
+            
+            void WriteScriptLinesWithContext(string htmlId, string functionName, string? itemId)
+            {
+                WriteScriptLineFunction(
+                    htmlId, functionName, contextWorkspace, contextExtent, itemId);
+            }
+
+            (IWorkspace? workspace, IUriExtent? extent, string? itemId) GetWorkspaceExtentAndItemId(IObject item)
+            {
+                var extent = item?.GetUriExtentOf();
+                var workspace = extent?.GetWorkspace();
+                var itemId = (item as IHasId)?.Id ?? string.Empty;
+                return (workspace, extent, itemId);
+            }
+
             var isEnumeration =
                 field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
 
@@ -47,17 +91,49 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 var button = new HtmlButtonElement(
                     field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.title))
                 {
-                    Id = id
+                    Id = id,
+                    CssClass = "btn btn-secondary"
                 };
 
                 var actionType = field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName);
-                if (actionType == ExtentFormExtension.ViewNavigationActionType && item is IElement itemAsElement)
+                var itemAsElement = item as IElement;
+                if (actionType == ExtentFormExtensionPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
                 {
-                    scriptLines.AppendLine(
-                        $"$('#{id}').click(function() " +
-                        $"{{DatenMeister.FormActions.extentNavigateTo(" +
-                        $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId))}', " +
-                        $"'{HttpUtility.JavaScriptStringEncode(itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri))}');}});");
+                    WriteScriptLineFunction(id, "extentNavigateTo",
+                        itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
+                        itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
+                }
+
+                if (actionType == ExtentFormExtensionPlugin.NavigationItemDelete && itemAsElement is not null)
+                {
+                    var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
+                    WriteScriptLines(id, "itemDelete", workspace, extent, itemId);
+                }
+
+                if (actionType == ExtentFormExtensionPlugin.NavigationItemNew && itemAsElement is not null)
+                {
+                    WriteScriptLineFunction(id, "itemNew",
+                        itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
+                        itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
+                }
+
+                if (actionType == ExtentFormExtensionPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
+                {
+                    var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
+                    WriteScriptLinesWithContext(id, "extentsListViewItem", itemId);
+                }
+
+                if (actionType == ExtentFormExtensionPlugin.NavigationExtentsListDeleteItem &&
+                    itemAsElement is not null)
+                {
+                    var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
+                    WriteScriptLinesWithContext(id, "extentsListDeleteItem", itemId);
+                }
+
+                if (actionType == ZipCodePlugin.CreateZipExample && itemAsElement is not null)
+                {
+                    WriteScriptLineFunction(id, "createZipExample",
+                        itemAsElement.getOrDefault<string>(_DatenMeister._Management._Workspace.id));
                 }
 
                 return button;
@@ -170,7 +246,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
             scriptLines.AppendLine(
                 "DatenMeister.DomHelper.injectNameByUri($('#" + id + "')," +
                 "encodeURIComponent('" + HttpUtility.JavaScriptStringEncode(mofObjectShadow.Uri) + "')" +
-                ");\r\n");
+                ");");
 
             return result;
         }

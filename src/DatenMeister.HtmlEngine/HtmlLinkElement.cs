@@ -6,8 +6,8 @@
     public class HtmlLinkElement : HtmlElement
     {
         public string Href { get; set; } = string.Empty;
-        
-        public HtmlElement Content { get; set; }
+
+        public HtmlElement Content { get; set; } = string.Empty;
         
         public override string ToString()
         {

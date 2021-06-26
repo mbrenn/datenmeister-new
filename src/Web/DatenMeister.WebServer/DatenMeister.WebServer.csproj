@@ -4,9 +4,15 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <PropertyGroup>
+    <TypeScriptTarget>ES6</TypeScriptTarget>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
+    <TypeScriptESModuleInterop>True</TypeScriptESModuleInterop>
+  </PropertyGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Remove="wwwroot\js\datenmeister.ts" />
+
+    <TypeScriptCompile Remove="node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,8 +44,19 @@
       <DependentUpon>ItemsOverview.cshtml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Examples\plz.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\js\DatenMeister" />
+  </ItemGroup>
+  
 
   <Target Name="CopyIconPngFiles" BeforeTargets="Compile">
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties wwwroot_4js_4package_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

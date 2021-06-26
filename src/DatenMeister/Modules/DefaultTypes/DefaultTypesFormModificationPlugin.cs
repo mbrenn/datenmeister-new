@@ -6,8 +6,9 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms;
+using DatenMeister.Forms.FormModifications;
 using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormModifications;
 
 namespace DatenMeister.Modules.DefaultTypes
 {
@@ -19,7 +20,7 @@ namespace DatenMeister.Modules.DefaultTypes
         public void ModifyForm(FormCreationContext context, IElement form)
         {
             if (context.MetaClass?.Equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true
-                && context.FormType == _DatenMeister._Forms.___FormType.TreeItemDetail
+                && context.FormType == _DatenMeister._Forms.___FormType.Detail
                 && context.ParentPropertyName == string.Empty
                 && context.DetailElement != null)
             {

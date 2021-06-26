@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using DatenMeister.Core;
+using DatenMeister.Core.Models;
 using DatenMeister.Extent.Manager.Extents.Configuration;
+using DatenMeister.Forms;
+using DatenMeister.Forms.Helper;
 using DatenMeister.Modules.ZipCodeExample.Model;
 using DatenMeister.Plugins;
 using DatenMeister.Types;
@@ -14,6 +17,8 @@ namespace DatenMeister.Modules.ZipCodeExample
     public class ZipCodePlugin : IDatenMeisterPlugin
     {
         public const string ExtentType = "DatenMeister.Example.ZipCodes";
+        
+        public const string CreateZipExample = "ZipExample.CreateExample";
         
         private readonly LocalTypeSupport _localTypeSupport;
         private readonly IScopeStorage _scopeStorage;
@@ -49,6 +54,14 @@ namespace DatenMeister.Modules.ZipCodeExample
                         new[] {typeof(ZipCode), typeof(ZipCodeWithState)});
                     zipCodeModel.ZipCode = types.ElementAt(0);
                     zipCodeModel.ZipCodeWithState = types.ElementAt(1);
+                    
+                    ActionButtonToFormAdder.AddActionButton(
+                        _scopeStorage.Get<FormsPluginState>(),
+                        new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
+                        {
+                            MetaClass = _DatenMeister.TheOne.Management.__Workspace,
+                            FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
+                        });
                     
                     break;
                 }

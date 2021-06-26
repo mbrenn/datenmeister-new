@@ -180,3 +180,5 @@ src/.idea/*
 /src/tests/ScriptTests/tmp2/*
 /scripts/cscript/tmp/*
 _framework/
+
+node_modules/

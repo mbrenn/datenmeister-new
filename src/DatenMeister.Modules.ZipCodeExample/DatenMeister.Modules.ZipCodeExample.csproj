@@ -10,6 +10,7 @@
       <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
+      <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
       <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
       <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
     </ItemGroup>

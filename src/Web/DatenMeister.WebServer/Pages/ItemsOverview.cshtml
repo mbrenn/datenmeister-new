@@ -22,6 +22,11 @@
 
 <script type="application/javascript">
 
-@Html.Raw(Model.ScriptLines)
+requirejs(['datenmeister'], function(dm) {
+
+    var DatenMeister = dm.DatenMeister;
+    @Html.Raw(Model.ScriptLines)
+
+});
 
 </script>

@@ -13,6 +13,20 @@
   <ItemGroup>
 
     <TypeScriptCompile Remove="node_modules\**" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ApiModels.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Mof.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\NameLoader.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Navigator.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Settings.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,9 +62,6 @@
     <None Update="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\js\DatenMeister" />
   </ItemGroup>
   
 

@@ -92,3 +92,7 @@ a
 {
   font-size: 80%
 }
+
+.dm-table-nofullwidth {
+  width: auto !important;
+}

@@ -11,7 +11,6 @@ namespace DatenMeister.Forms.FormModifications
         public _DatenMeister._Forms.___FormType FormType { get; set; }
 
         public FormDefinitionMode DefinitionMode { get; set; }
-
         /// <summary>
         /// Gets or sets the view mode.
         /// </summary>

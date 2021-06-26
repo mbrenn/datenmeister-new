@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -37,6 +38,25 @@ namespace DatenMeister.WebServer.Controller
 
             throw new InvalidOperationException("Deletion is not possible from the subitem");
             // return new {success = true};
+        }
+
+        /// <summary>
+        /// Deletes an item from the extent itself
+        /// </summary>
+        /// <param name="param">Parameter of the deletion</param>
+        /// <returns>the value indicating the success or not</returns>
+        [HttpPost("api/items/delete_from_extent")]
+        public ActionResult<object> DeleteFromExtent(
+            [FromBody] DeleteItemParams param)
+        {
+            var extent = _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri)
+                         ?? throw new InvalidOperationException("Extent is not found");
+
+            var found = extent.elements().FirstOrDefault(x => (x as IHasId)?.Id == param.ItemId)
+                        ?? throw new InvalidOperationException("Item is not found");
+
+            extent.elements().remove(found);
+            return new {success = true};
         }
 
         public class CreateNewObjectForExtentParams

@@ -1,4 +1,5 @@
 ﻿using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Models;
 
 namespace DatenMeister.Forms.Helper
 {
@@ -17,6 +18,11 @@ namespace DatenMeister.Forms.Helper
         /// The view mode to which the action button shall be added
         /// </summary>
         public string ViewMode { get; set; } = ViewModes.Default;
+
+        /// <summary>
+        /// Gets or sets the form type to be used for the extension
+        /// </summary>
+        public _DatenMeister._Forms.___FormType? FormType { get; set; } = null;
 
         /// <summary>
         /// The action name being used. 

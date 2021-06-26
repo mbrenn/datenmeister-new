@@ -37,21 +37,34 @@ namespace DatenMeister.Forms.Helper
             public void ModifyForm(FormCreationContext context, IElement form)
             {
                 if (
-                    (_parameter.MetaClass == null || context.MetaClass?.@equals(_parameter.MetaClass) == true)
-                    && context.ViewMode == _parameter.ViewMode)
+                    (_parameter.MetaClass == null || context.MetaClass?.@equals(_parameter.MetaClass) == true) &&
+                    (_parameter.FormType == null || context.FormType == _parameter.FormType) &&
+                    (string.IsNullOrEmpty(context.ViewMode) || context.ViewMode == _parameter.ViewMode))
                 {
-                    var detailForm = FormMethods.GetDetailForms(form).FirstOrDefault();
-                    if (detailForm == null)
+                    IElement? formWithFields = null;
+                    var formMetaClass = form.getMetaClass();
+                    if (formMetaClass?.@equals(_DatenMeister.TheOne.Forms.__ExtentForm) == true)
                     {
-                        return;
+                        formWithFields = FormMethods.GetDetailForms(form).FirstOrDefault();
+                        if (formWithFields == null)
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        formWithFields = form;
                     }
 
-                    var fields = detailForm.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
-                    var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, _parameter.ActionName);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);
-                    actionField.set(_DatenMeister._Forms._ActionFieldData.name,  _parameter.ActionName);
-                    fields.add(actionField);
+                    if (formWithFields is not null)
+                    {
+                        var fields = formWithFields.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field);
+                        var actionField = MofFactory.Create(form, _DatenMeister.TheOne.Forms.__ActionFieldData);
+                        actionField.set(_DatenMeister._Forms._ActionFieldData.actionName, _parameter.ActionName);
+                        actionField.set(_DatenMeister._Forms._ActionFieldData.title, _parameter.Title);
+                        actionField.set(_DatenMeister._Forms._ActionFieldData.name, _parameter.ActionName);
+                        fields.add(actionField);
+                    }
                 }
             }
         }

@@ -19,7 +19,7 @@
     @{ var w = Model.ItemAndFormModel?.workspace ?? "No Workspace"; }
     @{ var e = Model.ItemAndFormModel?.extentUri ?? "No Extent"; }
     <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
-    <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w+ "_" + e))">@e</a> &lt;
+    <a href="/ItemsOverview/@(HttpUtility.UrlEncode(w))/@(HttpUtility.UrlEncode(e))">@e</a> &lt;
        @(Model.ItemAndFormModel?.fullName ?? "Unknown Element")
 </div>
 
@@ -30,6 +30,12 @@
 
 <script type="application/javascript">
 
-@Html.Raw(Model.ScriptLines)
+
+requirejs(['datenmeister'], function(dm) {
+
+    var DatenMeister = dm.DatenMeister;
+    @Html.Raw(Model.ScriptLines)
+
+});
 
 </script>

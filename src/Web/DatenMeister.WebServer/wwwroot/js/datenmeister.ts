@@ -1,21 +1,41 @@
 ﻿
+
+import {ApiConnection} from "./DatenMeister/ApiConnection";
+
 module Settings
 {
     export let baseUrl = "/";
 }
 
-module ApiConnection {
-    export function post<T>(uri: string, data: object): JQuery.jqXHR<T>
+module Mof
+{
+    export class DmObject
     {
-        return $.ajax(
-            {
-                url: uri,
-                data: JSON.stringify(data), 
-                dataType: "json",
-                contentType: "application/json",
-                method: "POST"
-            }
-        );
+        _values: Array<object>;
+        
+        constructor() {
+            this._values = new Array<object>();
+        }
+        
+        set(key: string, value: object): void
+        {
+            this._values[key] = value;
+        }
+        
+        get(key: string): object
+        {
+            return this._values[key];
+        }
+        
+        isSet(key:string): boolean
+        {
+            return this._values[key] !== undefined;
+        }
+        
+        unset(key:string): void
+        {
+            this._values[key] = undefined;
+        }
     }
 }
 
@@ -56,7 +76,7 @@ module ApiModels
     }
 }
 
-class NameLoader {
+export class NameLoader {
     static loadNameOf(elementPosition: ApiModels.In.IElementPosition): JQuery.jqXHR<ApiModels.Out.INamedElement> {
         return $.ajax(
             Settings.baseUrl + 
@@ -74,7 +94,7 @@ class NameLoader {
     }
 }
 
-module DatenMeister {
+export module DatenMeister {
 
     export class FormActions {
         static extentNavigateTo(workspace: string, extentUri: string):void {
@@ -93,7 +113,7 @@ module DatenMeister {
                     });
         }
         
-        static createItem(workspace: string, extentUri: string) {
+        static itemNew(workspace: string, extentUri: string) {
             ApiConnection.post(
                 Settings.baseUrl + "api/items/create",
                 {
@@ -106,17 +126,38 @@ module DatenMeister {
                     });
         }
         
-        static deleteItem(workspace:string, extentUri: string, itemId:string) {
+        static itemDelete(workspace:string, extentUri: string, itemId:string) {
             ApiConnection.post(
                 Settings.baseUrl + "api/items/delete",
                 {
                     workspace: workspace,
                     extentUri: extentUri,
-                    item: itemId
+                    itemId: itemId
                 })
                 .done(
                     function (data) {
                         Navigator.navigateToExtent(workspace, extentUri);
+                    });
+        }
+
+        static extentsListViewItem(workspace:string, extentUri: string, itemId:string) {
+            document.location.href = Settings.baseUrl + "Item/" +
+                encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(extentUri) + "/" +
+                encodeURIComponent(itemId);
+        }
+    
+        static extentsListDeleteItem(workspace:string, extentUri: string, itemId:string) {            
+            ApiConnection.post(
+                Settings.baseUrl + "api/items/delete_from_extent",
+                {
+                    workspace: workspace,
+                    extentUri: extentUri,
+                    itemId: itemId
+                })
+                .done(
+                    function (data) {
+                        document.location.reload();
                     });
         }
     }
@@ -147,6 +188,44 @@ module DatenMeister {
                 encodeURIComponent(workspace) + "/" +
                 encodeURIComponent(extentUri) + "/" +
                 encodeURIComponent(itemId);
+        }
+    }
+    
+    export namespace Forms{
+        import DmObject = Mof.DmObject;
+
+        export class Form
+        {
+            
+        }
+        
+        export interface IFormField
+        {
+            // Defines the field to be used to create the dom for the field
+            Field: DmObject;
+            
+            // Creates the dom depending on the given field and the internal object
+            createDom(parent:JQuery<HTMLElement>, dmElement: DmObject);
+            
+            // Evaluates the result of the user and injects it into the given element
+            evaluateDom(dmElement:DmObject);          
+            
+        }
+        
+        export class TextField implements IFormField
+        {
+            _textBox: JQuery<HTMLInputElement>;
+
+            Field: Mof.DmObject;
+
+            createDom(parent: JQuery<HTMLElement>, dmElement: Mof.DmObject) {
+                var fieldName = this.Field['name'];
+                this._textBox = $("<input />");
+                this._textBox.val(dmElement.get(fieldName).toString());
+            }
+
+            evaluateDom(dmElement: Mof.DmObject) {
+            }
         }
     }
 
@@ -184,4 +263,3 @@ module DatenMeister {
         }
     }
 }
-

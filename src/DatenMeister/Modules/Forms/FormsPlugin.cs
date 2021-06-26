@@ -379,7 +379,7 @@ namespace DatenMeister.Modules.Forms
             {
                 foundForm = CloneForm(foundForm);
                 
-                CallFormsModificationPlugins(new FormCreationContext()
+                CallFormsModificationPlugins(new FormCreationContext
                     {
                         DefinitionMode = formDefinitionMode,
                         MetaClass = (element as IElement)?.getMetaClass(),

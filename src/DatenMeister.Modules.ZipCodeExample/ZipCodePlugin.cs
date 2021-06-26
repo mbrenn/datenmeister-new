@@ -59,7 +59,8 @@ namespace DatenMeister.Modules.ZipCodeExample
                         _scopeStorage.Get<FormsPluginState>(),
                         new ActionButtonAdderParameter(CreateZipExample, "Create Zip-Example")
                         {
-                            MetaClass = _DatenMeister.TheOne.Management.__Workspace
+                            MetaClass = _DatenMeister.TheOne.Management.__Workspace,
+                            FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
                         });
                     
                     break;

@@ -5,8 +5,8 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Integration;
-using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Html;
+using DatenMeister.Reports;
+using DatenMeister.Reports.Html;
 
 namespace DatenMeister.Modules.Actions.ActionHandler.Reports
 {

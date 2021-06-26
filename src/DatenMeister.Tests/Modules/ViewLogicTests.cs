@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Models;
-using DatenMeister.Modules.Forms;
+using DatenMeister.Forms;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules

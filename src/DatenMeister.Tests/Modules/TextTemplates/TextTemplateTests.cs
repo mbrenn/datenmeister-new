@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Modules.TextTemplates;
+using DatenMeister.TextTemplates;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.TextTemplates

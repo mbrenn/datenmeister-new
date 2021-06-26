@@ -12,9 +12,9 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipCodeExample;
+using DatenMeister.Reports;
+using DatenMeister.Reports.Simple;
 
 namespace ScriptTests
 {

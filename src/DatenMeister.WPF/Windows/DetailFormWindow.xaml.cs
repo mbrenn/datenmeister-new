@@ -16,8 +16,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

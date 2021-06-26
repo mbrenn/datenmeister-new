@@ -8,8 +8,8 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.HtmlEngine;
 using DatenMeister.Modules.DataViews;
-using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Html;
+using DatenMeister.Reports;
+using DatenMeister.Reports.Html;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules.Reports

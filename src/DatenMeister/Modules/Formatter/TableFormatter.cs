@@ -10,7 +10,7 @@ namespace DatenMeister.Modules.Formatter
 {
     public class TableFormatter
     {
-        private StringBuilder _result = new StringBuilder();
+        private readonly StringBuilder _result = new();
 
         /// <summary>
         /// Converts an enumeration of elements to a table like text

@@ -7,8 +7,8 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Html;
+using DatenMeister.Reports;
+using DatenMeister.Reports.Html;
 using DatenMeister.WPF.Navigation;
 using StundenMeister.Logic;
 

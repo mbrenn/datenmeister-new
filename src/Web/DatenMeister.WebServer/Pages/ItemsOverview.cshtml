@@ -1,8 +1,5 @@
 ﻿@page "/ItemsOverview/{workspace}/{extent}/{item?}"
 @namespace DatenMeister.WebServer.Pages
-@using System.Net
-@using DatenMeister.Core.Helper
-@using DatenMeister.Core.Models
 @model ExtentOverviewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -19,6 +16,11 @@
 {
     @Html.Raw(table.ToString())
 }
+
+<div>
+    <div>Form Information:</div>
+    <div>@Model.</div>
+</div>
 
 <script type="application/javascript">
 

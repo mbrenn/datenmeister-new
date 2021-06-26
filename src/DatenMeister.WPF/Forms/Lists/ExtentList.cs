@@ -8,8 +8,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;

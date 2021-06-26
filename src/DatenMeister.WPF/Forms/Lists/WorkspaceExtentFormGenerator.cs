@@ -21,8 +21,6 @@ using DatenMeister.Extent.Manager.Extents;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Provider.ManagementProviders.Workspaces;

@@ -11,7 +11,6 @@ using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

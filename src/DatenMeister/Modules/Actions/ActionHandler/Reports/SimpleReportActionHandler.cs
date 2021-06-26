@@ -7,7 +7,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Integration;
-using DatenMeister.Modules.Reports.Simple;
+using DatenMeister.Reports.Simple;
 
 namespace DatenMeister.Modules.Actions.ActionHandler.Reports
 {

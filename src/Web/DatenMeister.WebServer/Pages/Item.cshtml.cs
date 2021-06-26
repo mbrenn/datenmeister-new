@@ -14,7 +14,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Forms;
 using DatenMeister.HtmlEngine;
-using DatenMeister.Modules.TextTemplates;
 using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Library.HtmlControls;
 using DatenMeister.WebServer.Models;

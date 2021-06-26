@@ -17,7 +17,6 @@ using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.FastViewFilter;
-using DatenMeister.Modules.Forms;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;

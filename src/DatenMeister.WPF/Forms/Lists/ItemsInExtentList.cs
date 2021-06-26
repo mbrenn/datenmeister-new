@@ -19,8 +19,6 @@ using DatenMeister.Extent.Manager.Extents;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules;

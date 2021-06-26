@@ -13,8 +13,8 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Forms;
 using DatenMeister.HtmlEngine;
-using DatenMeister.Modules.TextTemplates;
 using DatenMeister.Modules.ZipCodeExample;
+using DatenMeister.TextTemplates;
 
 namespace DatenMeister.WebServer.Library.HtmlControls
 {

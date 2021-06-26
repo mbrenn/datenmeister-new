@@ -80,7 +80,7 @@ namespace DatenMeister.WebServer.Pages
 
             var htmlTable = new HtmlTable
             {
-                CssClass = "table table-striped table-bordered table-sm align-top"
+                CssClass = "table table-striped table-bordered dm-table-nofullwidth align-top"
             };
 
             htmlTable.AddRow(

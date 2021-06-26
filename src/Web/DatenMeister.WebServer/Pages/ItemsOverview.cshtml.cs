@@ -75,7 +75,7 @@ namespace DatenMeister.WebServer.Pages
             ConsolidateFields(Fields, Form);
             var table = new HtmlTable
             {
-                CssClass = "table table-striped table-bordered table-sm align-top"
+                CssClass = "table table-striped table-bordered table-sm align-top dm-table-nofullwidth"
             };
             
             Tables.Add(table);

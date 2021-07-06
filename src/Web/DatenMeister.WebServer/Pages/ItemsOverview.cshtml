@@ -1,5 +1,6 @@
 ﻿@page "/ItemsOverview/{workspace}/{extent}/{item?}"
 @namespace DatenMeister.WebServer.Pages
+@using DatenMeister.Html
 @model ExtentOverviewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -17,17 +18,20 @@
     @Html.Raw(table.ToString())
 }
 
-<div>
-    <div>Form Information:</div>
-    <div>@Model.</div>
-</div>
-
 <script type="application/javascript">
 
-requirejs(['datenmeister'], function(DatenMeister) {
-
-    @Html.Raw(Model.ScriptLines)
-
+$(function() 
+{
+    requirejs(['datenmeister'], function(DatenMeister) {
+    
+        @Html.Raw(Model.ScriptLines)
+    
+    })
 });
 
 </script>
+
+<div>
+    <a class="btn" data-bs-toggle="collapse" href="#forminformation" role="button">Form Information</a>
+    <div class="collapse" id="forminformation">@(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.Form)))</div>
+</div>

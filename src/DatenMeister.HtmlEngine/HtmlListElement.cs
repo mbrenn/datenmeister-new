@@ -7,14 +7,14 @@ namespace DatenMeister.HtmlEngine
     /// Describes an html list element describing a list.
     /// An ordered and an non-ordered list is supported by this implementation
     /// </summary>
-    public class HtmlListElement: HtmlElement
+    public class HtmlListElement: HtmlElement, IHtmlElementWithMultipleItems
     {
-        public bool OrderedList { get; set; }
+        public bool IsOrderedList { get; set; }
 
         public List<HtmlElement> Items { get; } = new(); 
 
         private string HtmlTag =>
-            OrderedList ? "ol" : "ul";
+            IsOrderedList ? "ol" : "ul";
 
         public override string ToString()
         {
@@ -27,7 +27,7 @@ namespace DatenMeister.HtmlEngine
                 builder.Append($"<li {AttributeString}>{item}</li>");
             }
 
-            builder.Append($"</{HtmlTag}");
+            builder.AppendLine($"</{HtmlTag}>");
 
             return builder.ToString();
         }

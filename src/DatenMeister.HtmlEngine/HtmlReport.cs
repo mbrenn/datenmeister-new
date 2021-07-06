@@ -9,7 +9,7 @@ namespace DatenMeister.HtmlEngine
     /// <summary>
     /// Defines the class that allows the creation of an html report
     /// </summary>
-    public class HtmlReport : IDisposable
+    public class HtmlReport : IDisposable, IHtmlReport
     {
         /// <summary>
         /// Stores the stream writer instance being used to write the content of the

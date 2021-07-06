@@ -45,7 +45,7 @@ namespace DatenMeister.WebServer.Pages
 
         public IReflectiveCollection? Items { get; set; }
 
-        private IObject? Form { get; set; }
+        public IObject? Form { get; set; }
 
         public readonly List<MofElement> Fields = new();
 

@@ -1,6 +1,7 @@
 ﻿@page "/Item/{workspace}/{extent}/{item?}"
 @namespace DatenMeister.WebServer.Pages
 @using System.Web
+@using DatenMeister.Html
 @model ItemModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -14,23 +15,77 @@
 <div class="dm-breadcrump">
     @{ var w = Model.ItemAndFormModel?.workspace ?? "No Workspace"; }
     @{ var e = Model.ItemAndFormModel?.extentUri ?? "No Extent"; }
+    @{ var i = Model.Item ?? "No Item"; }
     <a href="/Item/Management/dm%3A%2F%2F%2F_internal%2Fworkspaces/@(HttpUtility.UrlEncode(w))">@w</a> &lt;
     <a href="/ItemsOverview/@(HttpUtility.UrlEncode(w))/@(HttpUtility.UrlEncode(e))">@e</a> &lt;
-       @(Model.ItemAndFormModel?.fullName ?? "Unknown Element")
+    @(Model.ItemAndFormModel?.fullName ?? "Unknown Element")
 </div>
+
+<div><a class="btn btn-primary" click="EditItem()">Edit Item</a></div>
 
 @foreach (var table in Model.Tables)
 {
     @Html.Raw(table.ToString())
 }
 
+<div id="form_edit">
+    <button type="button" onclick="LoadByWei()">TEST: @Model.Workspace , @Model.Extent , @Model.Item</button>
+    <button type="button" onclick="LoadByWi()">TEST Url: @Model.ItemUrl</button>
+</div>
+
 <script type="application/javascript">
 
+    function LoadByWei()
+    {
+        requirejs(['DatenMeister/DataLoader'], function(dataLoader) {
 
-requirejs(['datenmeister'], function(DatenMeister) {
+            var objLoader = new dataLoader.ObjectLoader();
+            objLoader.loadObject(
+                "@HttpUtility.JavaScriptStringEncode(w)",
+                "@HttpUtility.JavaScriptStringEncode(e)",
+                "@HttpUtility.JavaScriptStringEncode(i)")
+                .done(o => alert(o.toString()));
+        });
+    }
 
-    @Html.Raw(Model.ScriptLines)
+    function LoadByWi()
+    {
+        requirejs(['DatenMeister/DataLoader'], function(dataLoader) {
 
+            var objLoader = new dataLoader.ObjectLoader();
+            objLoader.loadObjectByUri(
+                "@HttpUtility.JavaScriptStringEncode(w)",
+                "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)")
+                .done(o => alert(o.toString()));
+        });
+    }
+
+    function EditItem()
+    {
+        requirejs(['datenmeister'], function(DatenMeister) {
+
+            @Html.Raw(Model.ScriptLines)
+
+        });
+        alert('EditItem')
+    }
+
+$(function()
+{
+    requirejs(['datenmeister'], function(DatenMeister) {
+
+        @Html.Raw(Model.ScriptLines)
+
+    });
 });
 
 </script>
+
+<div>
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#forminformation" role="button">Form Information</a>
+    <div class="collapse" id="forminformation">
+        <div class="card card-body">
+            @(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.Form)))
+        </div>
+    </div>
+</div>

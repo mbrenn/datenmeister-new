@@ -32,6 +32,10 @@ $(function()
 </script>
 
 <div>
-    <a class="btn" data-bs-toggle="collapse" href="#forminformation" role="button">Form Information</a>
-    <div class="collapse" id="forminformation">@(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.Form)))</div>
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#forminformation" role="button">Show Form Information</a>
+    <div class="collapse" id="forminformation">
+        <div class="card card-body">
+            @(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.Form)))
+        </div>
+    </div>
 </div>

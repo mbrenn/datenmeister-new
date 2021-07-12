@@ -77,7 +77,7 @@ namespace DatenMeister.Html
 
                     parent.Items.Add(
                         new HtmlContent(
-                            new HtmlSpanElement($"{NamedElementMethods.GetName(propertyValue)}{metaClass}"),
+                            new HtmlSpanElement($"{property}: {NamedElementMethods.GetName(propertyValue)}{metaClass}"),
                             new HtmlBrElement(),
                             ConvertToHtmlList(asObject, currentRecursion + 1)));
                 }
@@ -85,7 +85,7 @@ namespace DatenMeister.Html
             else if (DotNetHelper.IsOfEnumeration(propertyValue) && propertyValue is IEnumerable enumerable)
             {
                 var n = 0;
-                
+
                 var contentElement = new HtmlListElement {IsOrderedList = true};
                 foreach (var element in enumerable)
                 {

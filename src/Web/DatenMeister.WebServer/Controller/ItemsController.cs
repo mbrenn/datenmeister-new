@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Modules.Json;
+using DatenMeister.Modules.PublicSettings;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -93,6 +97,61 @@ namespace DatenMeister.WebServer.Controller
             extent.elements().add(newElement);
             
             return new {success = true};
+        }
+
+        [HttpGet("api/items/get/{workspace}/{extentUri}/{item}")]
+        public ActionResult<object> GetItem(string workspace, string extentUri, string item)
+        {
+            workspace = HttpUtility.UrlDecode(workspace);
+            extentUri = HttpUtility.UrlDecode(extentUri);
+            item = HttpUtility.UrlDecode(item);
+
+            var extent = _workspaceLogic.FindExtent(workspace, extentUri) as IUriExtent;
+            if (extent == null)
+            {
+                throw new InvalidOperationException("Extent is not found");
+            }
+
+            var foundElement = extent.element("#" + item);
+            if (foundElement == null)
+            {
+                throw new InvalidOperationException("Element is not found");
+            }
+
+            var converter = new DirectJsonConverter();
+            var convertedElement = converter.ConvertToJson(foundElement);
+
+            return new
+            {
+                item = convertedElement
+            };
+        }
+
+        [HttpGet("api/items/get/{workspaceId}/{itemUri}")]
+        public ActionResult<object> GetItem(string workspaceId, string itemUri)
+        {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUri = HttpUtility.UrlDecode(itemUri);
+
+            var workspace = _workspaceLogic.GetWorkspace(workspaceId);
+            if (workspace == null)
+            {
+                throw new InvalidOperationException("Extent is not found");
+            }
+
+            var foundElement = workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) as IObject;
+            if (foundElement == null)
+            {
+                throw new InvalidOperationException("Element is not found");
+            }
+
+            var converter = new DirectJsonConverter();
+            var convertedElement = converter.ConvertToJson(foundElement);
+
+            return new
+            {
+                item = convertedElement
+            };
         }
     }
 }

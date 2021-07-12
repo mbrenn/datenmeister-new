@@ -11,3 +11,13 @@ export function post<T>(uri: string, data: object): JQuery.jqXHR<T>
         }
     );
 }
+
+export function get<T>(uri: string): JQuery.jqXHR<T> {
+    return $.ajax(
+        {
+            url: uri,
+            method: "GET"
+        }
+    );
+}
+

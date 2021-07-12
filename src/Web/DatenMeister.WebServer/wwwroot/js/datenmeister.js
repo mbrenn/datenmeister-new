@@ -33,7 +33,7 @@ define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Se
         }
         static createZipExample(workspace) {
             ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: workspace })
-                .done(function (data) {
+                .done(data => {
                 document.location.reload();
             });
         }
@@ -42,7 +42,7 @@ define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Se
                 workspace: workspace,
                 extentUri: extentUri
             })
-                .done(function (data) {
+                .done(data => {
                 document.location.reload();
             });
         }
@@ -52,7 +52,7 @@ define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Se
                 extentUri: extentUri,
                 itemId: itemId
             })
-                .done(function (data) {
+                .done(data => {
                 Navigator.navigateToExtent(workspace, extentUri);
             });
         }
@@ -68,7 +68,7 @@ define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Se
                 extentUri: extentUri,
                 itemId: itemId
             })
-                .done(function (data) {
+                .done(data => {
                 document.location.reload();
             });
         }

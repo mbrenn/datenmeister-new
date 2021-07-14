@@ -4,7 +4,7 @@ define(["require", "exports"], function (require, exports) {
     exports.createObjectFromJson = exports.DmObject = void 0;
     class DmObject {
         constructor() {
-            this.values = new Array();
+            this.values = new Object();
         }
         set(key, value) {
             this.values[key] = value;
@@ -19,15 +19,37 @@ define(["require", "exports"], function (require, exports) {
             this.values[key] = undefined;
         }
         toString() {
+            let values = this.values;
+            return DmObject.valueToString(values);
+        }
+        static valueToString(item, indent = "") {
             var result = "";
             var komma = "";
-            let values = this.values;
-            for (var key in values) {
-                if (Object.prototype.hasOwnProperty.call(values, key)) {
-                    var value = this.values[key];
-                    result += komma + "[" + key + "]: " + value;
-                    komma = ", ";
+            if (Array.isArray(item)) {
+                result = `\r\n${indent}[`;
+                for (let n in item) {
+                    if (Object.prototype.hasOwnProperty.call(item, n)) {
+                        const value = item[n];
+                        result += `${komma}${this.valueToString(value, indent + "  ")}`;
+                        komma = ", ";
+                    }
                 }
+                result += "]";
+            }
+            else if ((typeof item === "object" || typeof item === "function") && (item !== null)) {
+                for (let key in item) {
+                    if (Object.prototype.hasOwnProperty.call(item, key)) {
+                        const value = item[key];
+                        result += `${komma}\r\n${indent}${key}: ${DmObject.valueToString(value, indent + "  ")}`;
+                        komma = ", ";
+                    }
+                }
+            }
+            else if (typeof item === "string" || item instanceof String) {
+                result = `"${item.toString()}"`;
+            }
+            else {
+                result = item.toString();
             }
             return result;
         }

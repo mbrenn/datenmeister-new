@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.SourceGenerati
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{42691CE7-A35B-42C8-808B-7404528A4014}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Tests", "DatenMeister.Tests\DatenMeister.Tests.csproj", "{39F63BEF-AF5E-4C02-B35D-534DF6AF3E04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Tests", "Tests\DatenMeister.Tests\DatenMeister.Tests.csproj", "{39F63BEF-AF5E-4C02-B35D-534DF6AF3E04}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeisterWPF", "DatenMeisterWPF\DatenMeisterWPF.csproj", "{A2E5712E-E3F5-4FD9-B6EF-E1B44B7CC300}"
 EndProject
@@ -35,11 +35,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StundenMeister.Tests", "App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueMeisterLib", "Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj", "{263E74EC-019D-47FB-A653-362F84CCDE5D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptTests", "tests\ScriptTests\ScriptTests.csproj", "{581A5C15-979B-4EE9-9548-F55AD8F9EBBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScriptTests", "Tests\ScriptTests\ScriptTests.csproj", "{581A5C15-979B-4EE9-9548-F55AD8F9EBBC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library - .Net Standard", "Library - .Net Standard", "{3E364967-6E40-45BA-B2FF-39431F4461F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Benchmark", "tests\DatenMeister.Benchmark\DatenMeister.Benchmark.csproj", "{EC757E7B-C6F7-4BD0-88D2-F647CCF9E1E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Benchmark", "Tests\DatenMeister.Benchmark\DatenMeister.Benchmark.csproj", "{EC757E7B-C6F7-4BD0-88D2-F647CCF9E1E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{2220B5AA-D22E-469B-96B7-BB70BF58BAD6}"
 EndProject

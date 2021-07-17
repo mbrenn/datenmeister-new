@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DatenMeister.Core;
@@ -130,6 +131,26 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/items/get/{workspaceId}/{itemUri}")]
         public ActionResult<object> GetItem(string workspaceId, string itemUri)
         {
+            var foundElement = GetItemByUriParameter(workspaceId, itemUri);
+
+            var converter = new DirectJsonConverter();
+            var convertedElement = converter.ConvertToJson(foundElement);
+
+            return new
+            {
+                item = convertedElement
+            };
+        }
+
+        /// <summary>
+        /// Gets the items by the uri parameter.
+        /// The parameter themselves are expected to be uriencoded, so a decoding via HttpUtility.UrlDecode will be performed
+        /// </summary>
+        /// <param name="workspaceId">Id of the workspace</param>
+        /// <param name="itemUri">Uri of the item</param>
+        /// <returns>The found object</returns>
+        private IObject GetItemByUriParameter(string workspaceId, string itemUri)
+        {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             itemUri = HttpUtility.UrlDecode(itemUri);
 
@@ -145,13 +166,58 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Element is not found");
             }
 
-            var converter = new DirectJsonConverter();
-            var convertedElement = converter.ConvertToJson(foundElement);
+            return foundElement;
+        }
+
+        /// <summary>
+        /// Defines the property for the set property
+        /// </summary>
+        public class SetPropertyParams
+        {
+            /// <summary>
+            /// Gets or sets the key
+            /// </summary>
+            public string Key { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the value
+            /// </summary>
+            public string Value { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Defines the properties for the set properties
+        /// </summary>
+        public class SetPropertiesParams
+        {
+            public List<SetPropertyParams> Properties = new();
+        }
+
+        [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
+        public ActionResult<object> SetProperty (string workspaceId, string itemUri, [FromBody] SetPropertyParams propertyParams)
+        {
+
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri);
+            foundItem.set(propertyParams.Key, propertyParams.Value);
 
             return new
             {
-                item = convertedElement
+                success = true
             };
+        }
+
+        [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
+        public ActionResult<object> SetProperties(string workspaceId, string itemUri,
+            [FromBody] SetPropertiesParams propertiesParams)
+        {
+
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri);
+            foreach (var propertyParam in propertiesParams.Properties)
+            {
+                foundItem.set(propertyParam.Key, propertyParam.Value);
+            }
+
+            return new {success = true};
         }
     }
 }

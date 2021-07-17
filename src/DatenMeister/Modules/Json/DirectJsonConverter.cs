@@ -33,6 +33,16 @@ namespace DatenMeister.Modules.Json
         }
 
         /// <summary>
+        /// Converts the given element to a json object
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <returns>The converted value</returns>
+        public static string ConvertToJsonWithDefaultParameter(IObject value)
+        {
+            return new DirectJsonConverter().ConvertToJson(value);
+        }
+
+        /// <summary>
         /// Converts the given value to a Json object by using the string builder
         /// </summary>
         /// <param name="builder">The string builder to be used</param>

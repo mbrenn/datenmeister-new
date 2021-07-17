@@ -78,6 +78,16 @@ namespace DatenMeister.Forms
         }
 
         /// <summary>
+        /// Initializes a new instance of the FormLogic class
+        /// </summary>
+        /// <param name="workspaceLogic">The workspace being used</param>
+        /// <param name="scopeStorage">The settings that had been used for integration</param>
+        public FormsPlugin(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+            : this(workspaceLogic, new ExtentCreator(workspaceLogic, scopeStorage), scopeStorage)
+        {
+        }
+
+        /// <summary>
         /// Integrates the the view logic into the workspace.
         /// </summary>
         public void Start(PluginLoadingPosition position)

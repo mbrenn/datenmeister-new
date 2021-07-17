@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/",
@@ -46,7 +46,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/",
@@ -74,7 +74,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/",
@@ -101,7 +101,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
@@ -127,7 +127,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",
@@ -161,7 +161,7 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement),
                 Is.EqualTo("packagedElement"));
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._CopyElementsAction.sourcePath] =
@@ -195,7 +195,7 @@ namespace DatenMeister.Tests.Modules.Actions
             Assert.That(DefaultClassifierHints.GetDefaultPackagePropertyName(sourceElement),
                 Is.EqualTo("packagedElement"));
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__CopyElementsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._CopyElementsAction.sourcePath] = "dm:///source/?fn=source1",

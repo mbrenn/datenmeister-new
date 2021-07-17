@@ -82,7 +82,7 @@ namespace DatenMeister.Core.Provider.Xmi
         {
             _supportFunctions = new ProviderSupportFunctions
             {
-                QueryById = (id) =>
+                QueryById = id =>
                 {
                     var result = FindById(id);
                     if (result == null) return null;
@@ -143,11 +143,8 @@ namespace DatenMeister.Core.Provider.Xmi
                     return result;
                 }
             }
-            else
-            {
-                return XmiProviderObject.Create(xmlElement, this);
-                
-            }
+
+            return XmiProviderObject.Create(xmlElement, this);
 #pragma warning restore 162
         }
 

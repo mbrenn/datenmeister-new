@@ -109,9 +109,9 @@ namespace DatenMeister.Tests.Provider
 
             var factory = new MofFactory(extent);
             var value = factory.create(_DatenMeister.TheOne.FastViewFilters.__PropertyComparisonFilter);
-            value.set(_DatenMeister._FastViewFilters._PropertyComparisonFilter.Property, "Test");
-            value.set(_DatenMeister._FastViewFilters._PropertyComparisonFilter.Value, "Content");
-            value.set(_DatenMeister._FastViewFilters._PropertyComparisonFilter.ComparisonType, ___ComparisonType.GreaterThan);
+            value.set(_PropertyComparisonFilter.Property, "Test");
+            value.set(_PropertyComparisonFilter.Value, "Content");
+            value.set(_PropertyComparisonFilter.ComparisonType, ___ComparisonType.GreaterThan);
 
             Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Value), Is.EqualTo("Content"));
             Assert.That(value.getOrDefault<string>(_PropertyComparisonFilter.Property), Is.EqualTo("Test"));

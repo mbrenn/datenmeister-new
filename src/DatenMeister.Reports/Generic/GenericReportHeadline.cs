@@ -10,7 +10,7 @@ namespace DatenMeister.Reports.Generic
         public bool IsRelevant(IElement element)
         {
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportHeadline) == true;
+            return metaClass?.equals(_DatenMeister.TheOne.Reports.Elements.__ReportHeadline) == true;
         }
 
         /// <summary>

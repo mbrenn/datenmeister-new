@@ -17,7 +17,6 @@ using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Forms.FormFinder;
 using _PrimitiveTypes = DatenMeister.Core.Models.EMOF._PrimitiveTypes;
-using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Forms.FormCreator
 {
@@ -471,23 +470,21 @@ namespace DatenMeister.Forms.FormCreator
                     var detailForm = GetOrCreateDetailFormIntoExtentForm(form);
                     return AddToFormByUmlElement(detailForm, umlElement, creationMode);
                 }
-                else
+
+                var propertyName = umlElement.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
+                if (noDuplicate && FormMethods.GetListTabForPropertyName(form, propertyName) != null )
                 {
-                    var propertyName = umlElement.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
-                    if (noDuplicate && FormMethods.GetListTabForPropertyName(form, propertyName) != null )
-                    {
-                        // List form is already existing
-                        return false;
-                    }
-                    
-                    // Property is a collection, so a list form is created for the property
-                    var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
-                    
-                    // Now try to figure out the metaclass
-                    var listForm = CreateListFormForProperty(umlElement, CreationMode.ByMetaClass);
-                    tabs.add(listForm);
-                    return true;
+                    // List form is already existing
+                    return false;
                 }
+                    
+                // Property is a collection, so a list form is created for the property
+                var tabs = form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab);
+                    
+                // Now try to figure out the metaclass
+                var listForm = CreateListFormForProperty(umlElement, CreationMode.ByMetaClass);
+                tabs.add(listForm);
+                return true;
             }
             
             // Now, let's parse the enumerations
@@ -548,12 +545,12 @@ namespace DatenMeister.Forms.FormCreator
             var propertyTypeMetaClass = propertyType?.metaclass; // The type of the type (enum, class, struct, etc)
             if (propertyTypeMetaClass != null && propertyType != null)
             {
-                if (propertyTypeMetaClass.@equals(_UML.TheOne.SimpleClassifiers.__Enumeration) && !isForListForm)
+                if (propertyTypeMetaClass.equals(_UML.TheOne.SimpleClassifiers.__Enumeration) && !isForListForm)
                 {
                     return CreateFieldForEnumeration(propertyName, propertyType, creationMode);
                 }
 
-                if (propertyType.@equals(_booleanType) && !isForListForm)
+                if (propertyType.equals(_booleanType) && !isForListForm)
                 {
                     // If we have a boolean and the field is not for a list form
                     var checkbox = _factory.create(_DatenMeister.TheOne.Forms.__CheckboxFieldData);
@@ -563,7 +560,7 @@ namespace DatenMeister.Forms.FormCreator
                     return checkbox;
                 }
 
-                if (propertyType.@equals(_dateTimeType) && !isForListForm)
+                if (propertyType.equals(_dateTimeType) && !isForListForm)
                 {
                     var dateTimeField= _factory.create(_DatenMeister.TheOne.Forms.__DateTimeFieldData);
                     dateTimeField.set(_DatenMeister._Forms._CheckboxFieldData.name, propertyName);
@@ -573,10 +570,10 @@ namespace DatenMeister.Forms.FormCreator
                 }
 
                 if (
-                    !propertyType.@equals(_stringType) &&
-                    !propertyType.@equals(_integerType) &&
-                    !propertyType.@equals(_realType) &&
-                    !propertyType.@equals(_dateTimeType) &&
+                    !propertyType.equals(_stringType) &&
+                    !propertyType.equals(_integerType) &&
+                    !propertyType.equals(_realType) &&
+                    !propertyType.equals(_dateTimeType) &&
                     !isForListForm)
                 {
                     // If we have something else than a primitive type and it is not for a list form
@@ -682,7 +679,7 @@ namespace DatenMeister.Forms.FormCreator
             column.set(_DatenMeister._Forms._TextFieldData.isReadOnly, isReadOnly);
 
             // If propertyType is an integer, the field can be smaller
-            if (propertyType.@equals(_integerType))
+            if (propertyType.equals(_integerType))
             {
                 column.set(_DatenMeister._Forms._TextFieldData.width, 10);
             }

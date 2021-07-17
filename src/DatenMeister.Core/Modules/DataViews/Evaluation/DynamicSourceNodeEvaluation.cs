@@ -15,7 +15,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
+                   metaClass.equals(_DatenMeister.TheOne.DataViews.__DynamicSourceNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
@@ -26,7 +26,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
             nodeName = string.IsNullOrEmpty(nodeName) ? name : nodeName;
             if (nodeName == null)
             {
-                Logger.Warn($"Input node not found");
+                Logger.Warn("Input node not found");
                 return new PureReflectiveSequence();
             }
 

@@ -19,7 +19,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements
 
         public override string ToString()
         {
-            return $"InfoLineDefinition";
+            return "InfoLineDefinition";
         }
     }
 }

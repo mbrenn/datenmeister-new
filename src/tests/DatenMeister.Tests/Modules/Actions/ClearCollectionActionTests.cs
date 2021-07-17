@@ -19,7 +19,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._ClearCollectionAction.path] = "dm:///source/",
@@ -36,7 +36,7 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, _) = ActionSetTests.CreateExtents(actionLogic);
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ClearCollectionAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._ClearCollectionAction.path] =

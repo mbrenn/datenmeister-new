@@ -19,7 +19,6 @@ using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.WPF.Forms;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
-using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -117,8 +116,7 @@ namespace DatenMeister.WPF.Navigation
                 {
                     var loadConfiguration = extentManager.GetLoadConfigurationFor(extent);
                     var extentStoragePath =
-                        loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
-                            ._ExtentFileLoaderConfig.filePath);
+                        loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
                     
                     if (extentStoragePath != null)
                     {

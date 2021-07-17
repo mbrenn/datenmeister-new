@@ -31,7 +31,7 @@ namespace DatenMeister.TextTemplates
             {
                 var asElement = _value as IElement;
                 var container = asElement?.container();
-                value = container == null ? (object) new NullDmObject() : new TemplateDmObject(container);
+                value = container == null ? new NullDmObject() : new TemplateDmObject(container);
                 return true;
             }
 

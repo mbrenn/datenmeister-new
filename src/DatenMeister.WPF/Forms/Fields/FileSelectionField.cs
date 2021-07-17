@@ -5,6 +5,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.WPF.Forms.Base;
+using Microsoft.Win32;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
@@ -86,7 +87,7 @@ namespace DatenMeister.WPF.Forms.Fields
 
                 if (isSaving)
                 {
-                    var dlg = new Microsoft.Win32.SaveFileDialog
+                    var dlg = new SaveFileDialog
                     {
                         DefaultExt = defaultExtension,
                         InitialDirectory = _valueText ?? initialDirectory ?? string.Empty,
@@ -107,7 +108,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 }
                 else /* !isSaving */
                 {
-                    var dlg = new Microsoft.Win32.OpenFileDialog
+                    var dlg = new OpenFileDialog
                     {
                         DefaultExt = defaultExtension,
                         InitialDirectory = _valueText ?? string.Empty,

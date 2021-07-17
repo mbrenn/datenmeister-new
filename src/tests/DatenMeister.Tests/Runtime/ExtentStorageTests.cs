@@ -11,7 +11,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Tests.CSV;
 using NUnit.Framework;

@@ -1,4 +1,5 @@
 using System;
+using System.Windows;
 
 #nullable enable
 
@@ -16,7 +17,7 @@ namespace DatenMeister.WPF.Navigation.ProgressBox
         /// <returns>The created progress box</returns>
         public static IProgressBox CreateProgressBox(INavigationHost navigationHost)
         {
-            if (navigationHost is System.Windows.Window window)
+            if (navigationHost is Window window)
             {
                 var newWindow = new WpfProgressBox
                 {

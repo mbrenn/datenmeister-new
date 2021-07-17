@@ -22,12 +22,6 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 using DatenMeister.WPF.Navigation;
-using Clipboard = System.Windows.Clipboard;
-using ContextMenu = System.Windows.Controls.ContextMenu;
-using MenuItem = System.Windows.Controls.MenuItem;
-using UserControl = System.Windows.Controls.UserControl;
-
-
 
 namespace DatenMeister.WPF.Forms.Base
 {

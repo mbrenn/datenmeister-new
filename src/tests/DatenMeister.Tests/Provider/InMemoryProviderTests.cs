@@ -48,7 +48,7 @@ namespace DatenMeister.Tests.Provider
             var element = MofFactory.Create(mofExtent, null);
             mofExtent.elements().add(element);
 
-            var list = new List<string>() {"ABC", "DEF", "GHI", "JKL"};
+            var list = new List<string> {"ABC", "DEF", "GHI", "JKL"};
             element.set("test", list);
 
 

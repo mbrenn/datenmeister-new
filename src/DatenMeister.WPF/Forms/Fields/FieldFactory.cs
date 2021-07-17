@@ -35,27 +35,27 @@ namespace DatenMeister.WPF.Forms.Fields
             }
 
             var id = (metaClass as IHasId)?.Id;
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__AnyDataFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__AnyDataFieldData))
                 return new AnyDataField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__SeparatorLineFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__SeparatorLineFieldData))
                 return new SeparatorLineField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__SubElementFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__SubElementFieldData))
                 return new SubElementsField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__DropDownFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__DropDownFieldData))
                 return new DropdownField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__CheckboxFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__CheckboxFieldData))
                 return new CheckboxField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData))
                 return new DateTimeField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__ReferenceFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__ReferenceFieldData))
                 return new ReferenceField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__TextFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__TextFieldData))
                 return new TextboxField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData))
                 return new MetaClassElementField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__FileSelectionFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__FileSelectionFieldData))
                 return new FileSelectionField();
-            if (metaClass.@equals(_DatenMeister.TheOne.Forms.__CheckboxListTaggingFieldData))
+            if (metaClass.equals(_DatenMeister.TheOne.Forms.__CheckboxListTaggingFieldData))
                 return new CheckboxListTaggingField();
 
             Logger.Warn("Unknown FieldData type for field creation: " + metaClass);

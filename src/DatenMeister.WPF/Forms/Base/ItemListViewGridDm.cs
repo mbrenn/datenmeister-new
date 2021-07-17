@@ -205,7 +205,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-            if (fieldMetaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+            if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
                 var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;

@@ -22,7 +22,6 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.ObjectOperation
 {
@@ -40,21 +39,21 @@ namespace DatenMeister.WPF.Modules.ObjectOperation
             {
                 yield return new TreeViewItemCommandDefinition(
                     "New Object...",
-                    async (x) => { await NewItem(viewExtensionInfo.NavigationHost, x.Element); }
+                    async x => { await NewItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
                 
                 yield return new TreeViewItemCommandDefinition(
                     "Move Object...",
-                    async (x) => { await MoveItem(viewExtensionInfo.NavigationHost, x.Element); }
+                    async x => { await MoveItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                     "Copy Object...",
-                    async (x) => { await CopyItem(viewExtensionInfo.NavigationHost, x.Element); }
+                    async x => { await CopyItem(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                        "Edit Object...", (x) => { EditItem(viewExtensionInfo.NavigationHost, x.Element); }
+                        "Edit Object...", x => { EditItem(viewExtensionInfo.NavigationHost, x.Element); }
                     ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
@@ -62,12 +61,12 @@ namespace DatenMeister.WPF.Modules.ObjectOperation
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
-                    "Export as Xmi...", (x) => { CopyAsXmi(viewExtensionInfo.NavigationHost, x.Element); }
+                    "Export as Xmi...", x => { CopyAsXmi(viewExtensionInfo.NavigationHost, x.Element); }
                 ) {CategoryName = "Item"};
 
                 yield return new TreeViewItemCommandDefinition(
                         "Import By Xmi...", 
-                        async (x) =>
+                        async x =>
                         {
                             await ImportByXmi(viewExtensionInfo.NavigationHost, x.Element);
                         }

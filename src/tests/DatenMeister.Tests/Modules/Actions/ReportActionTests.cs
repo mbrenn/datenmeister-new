@@ -80,7 +80,7 @@ namespace DatenMeister.Tests.Modules.Actions
 
             var tempFileName = Path.GetTempFileName();
 
-            var action = (IElement) factory.create(_DatenMeister.TheOne.Actions.Reports.__HtmlReportAction);
+            var action = factory.create(_DatenMeister.TheOne.Actions.Reports.__HtmlReportAction);
 
             action.set(_DatenMeister._Actions._Reports._HtmlReportAction.filePath, tempFileName);
             action.set(_DatenMeister._Actions._Reports._HtmlReportAction.reportInstance, reportInstance);
@@ -100,7 +100,7 @@ namespace DatenMeister.Tests.Modules.Actions
 
             var tempFileName = Path.GetTempFileName();
 
-            var action = (IElement) factory.create(_DatenMeister.TheOne.Actions.Reports.__AdocReportAction);
+            var action = factory.create(_DatenMeister.TheOne.Actions.Reports.__AdocReportAction);
                 
                 
             action.set(_DatenMeister._Actions._Reports._HtmlReportAction.filePath, tempFileName);

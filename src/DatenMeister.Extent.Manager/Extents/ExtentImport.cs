@@ -12,9 +12,9 @@ namespace DatenMeister.Extent.Manager.Extents
 {
     public class ExtentImport
     {
-        private readonly ExtentStorage.ExtentManager _extentManager;
+        private readonly ExtentManager _extentManager;
 
-        public ExtentImport(ExtentStorage.ExtentManager extentManager)
+        public ExtentImport(ExtentManager extentManager)
         {
             _extentManager = extentManager;
         }

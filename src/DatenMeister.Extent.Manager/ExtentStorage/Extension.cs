@@ -18,13 +18,14 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         /// <param name="extentManager">Extent Manager to be used</param>
         /// <param name="uri"></param>
         /// <param name="filename"></param>
+        /// <param name="workspace">Name of the workspace</param>
         /// <returns></returns>
-        public static ExtentStorageData.LoadedExtentInformation CreateAndAddXmiExtent(this ExtentManager extentManager, string uri, string filename)
+        public static ExtentStorageData.LoadedExtentInformation CreateAndAddXmiExtent(this ExtentManager extentManager, string uri, string filename, string workspace = WorkspaceNames.WorkspaceData)
         {
             var configuration = InMemoryObject.CreateEmpty(
                 _DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, uri);
-            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, WorkspaceNames.WorkspaceData);
+            configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.workspaceId, workspace);
             configuration.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, filename);
 
             return extentManager.LoadExtent(configuration, ExtentCreationFlags.LoadOrCreate);

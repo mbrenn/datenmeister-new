@@ -218,7 +218,7 @@ namespace DatenMeister.Forms.FormCreator
 
                         foreach (var type in childItems.OfType<IElement>())
                         {
-                            if (type.@equals(_UML.TheOne.StructuredClassifiers.__Class))
+                            if (type.equals(_UML.TheOne.StructuredClassifiers.__Class))
                             {
                                 var defaultType = _factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
                                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, package);

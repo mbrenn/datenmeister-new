@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace DatenMeister.HtmlEngine
 {
     public class HtmlParagraph : HtmlElement

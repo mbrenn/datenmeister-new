@@ -171,7 +171,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
                 return null;
             }
 
-            if (itemMetaClass.@equals(metaclass)
+            if (itemMetaClass.equals(metaclass)
                 || followGeneralizations
                    && ClassifierMethods.IsSpecializedClassifierOf(itemMetaClass, metaclass))
             {
@@ -264,7 +264,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Information
 
                 // Checks the metaclasses
                 if (metaClasses != null 
-                    && !metaClasses.Any(x => x.@equals(selectedItem.getMetaClass())))
+                    && !metaClasses.Any(x => x.equals(selectedItem.getMetaClass())))
                 {
                     return false;
                 }

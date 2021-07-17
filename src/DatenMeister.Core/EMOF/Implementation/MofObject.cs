@@ -104,7 +104,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public override bool Equals(object? obj)
-            => @equals(obj);
+            => equals(obj);
 
         /// <summary>
         /// Verifies if the two elements reference to the same instance
@@ -166,7 +166,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object? other)
+        public bool equals(object? other)
             => AreEqual(this, other as IObject);
 
         /// <inheritdoc />

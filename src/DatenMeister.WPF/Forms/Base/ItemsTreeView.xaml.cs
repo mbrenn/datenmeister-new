@@ -20,11 +20,7 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.TreeView;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using Clipboard = System.Windows.Clipboard;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.Forms.MessageBox;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -365,7 +361,7 @@ namespace DatenMeister.WPF.Forms.Base
                     // ReSharper disable once RedundantLogicalConditionalExpressionOperand
                     var found = childrenOfItem
                         .FirstOrDefault(
-                            x => viewChild.TreeViewItemParameter.Element?.@equals(x.Element) == true);
+                            x => viewChild.TreeViewItemParameter.Element?.equals(x.Element) == true);
                     
                     // ReSharper disable once RedundantLogicalConditionalExpressionOperand
                     if (found?.Element is { } foundItem && !ConfigurationAlwaysRefresh)
@@ -520,11 +516,11 @@ namespace DatenMeister.WPF.Forms.Base
                 {
                     groupModels.AddRange(
                         groupedItems.Select(
-                            @group => 
+                            group => 
                                 new TreeViewItem
                                 {
-                                    Header = $"[{NamedElementMethods.GetName(@group.MetaClass)}]", 
-                                    ItemsSource = CreateSubTree(@group.Elements.Take(MaxItemsPerLevel)),
+                                    Header = $"[{NamedElementMethods.GetName(group.MetaClass)}]", 
+                                    ItemsSource = CreateSubTree(group.Elements.Take(MaxItemsPerLevel)),
                                 }));
 
                     parentItem.ItemsSource = groupModels;

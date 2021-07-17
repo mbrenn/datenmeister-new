@@ -191,7 +191,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 NavigationCategories.DatenMeister + ".Navigation");
 
             yield return new ExtentMenuButtonDefinition(
-                "Extent Properties", async (x) => await NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
+                "Extent Properties", async x => await NavigatorForExtents.OpenPropertiesOfExtent(navigationHost, x),
                 null,
                 NavigationCategories.Extents + ".Info");
 
@@ -275,7 +275,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
                 var uriExtent = Extent as IUriExtent ?? throw new InvalidOperationException("Extent as IUriExtent");
                 var loadConfiguration = extentManager.GetLoadConfigurationFor(uriExtent);
-                if (loadConfiguration != null && loadConfiguration.isSet(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath) == true)
+                if (loadConfiguration != null && loadConfiguration.isSet(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath))
                 {
                     var filePath = loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
                     

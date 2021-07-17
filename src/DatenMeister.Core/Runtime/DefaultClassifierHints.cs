@@ -26,10 +26,6 @@ namespace DatenMeister.Core.Runtime
         /// </summary>
         private static readonly ILogger Logger = new ClassLogger(typeof(DefaultClassifierHints));
 
-        public DefaultClassifierHints()
-        {
-        }
-
         /// <summary>
         /// Gets the default package classifier for a given extent
         /// </summary>

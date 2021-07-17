@@ -21,7 +21,6 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.FormManager
 {

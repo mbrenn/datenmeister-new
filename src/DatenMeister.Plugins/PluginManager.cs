@@ -72,18 +72,16 @@ namespace DatenMeister.Plugins
             var pluginList = _pluginTypes
                 .Where(type => GetPluginLoadingPosition(type).HasFlag(loadingPosition))
                 .Select(type =>
-                    {
-                        if (_instantiatedPlugins.TryGetValue(type, out var plugin))
+                {
+                    if (_instantiatedPlugins.TryGetValue(type, out var plugin))
                         {
                             return plugin;
                         }
-                        else
-                        {
-                            var result = (IDatenMeisterPlugin) kernel.Resolve(type);
-                            _instantiatedPlugins[type] = result;
-                            return result;
-                        }
-                    })
+
+                    var result = (IDatenMeisterPlugin) kernel.Resolve(type);
+                    _instantiatedPlugins[type] = result;
+                    return result;
+                })
                 .ToList();
             
             NoExceptionDuringLoading = true;

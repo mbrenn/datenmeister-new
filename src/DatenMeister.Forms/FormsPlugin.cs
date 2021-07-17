@@ -472,7 +472,7 @@ namespace DatenMeister.Forms
             {
                 var tabMetaClass = tab.getMetaClass();
                 if (tabMetaClass == null ||
-                    !tabMetaClass.@equals(_DatenMeister.TheOne.Forms.__ListForm))
+                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
                 {
                     // Not a list tab
                     continue;
@@ -501,7 +501,7 @@ namespace DatenMeister.Forms
             {
                 var tabMetaClass = tab.getMetaClass();
                 if (tabMetaClass == null ||
-                    !tabMetaClass.@equals(_DatenMeister.TheOne.Forms.__ListForm))
+                    !tabMetaClass.equals(_DatenMeister.TheOne.Forms.__ListForm))
                 {
                     // Not a list tab
                     continue;

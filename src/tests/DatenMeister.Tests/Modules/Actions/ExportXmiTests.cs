@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
@@ -20,7 +19,7 @@ namespace DatenMeister.Tests.Modules.Actions
 
             var temporaryStorage = DatenMeisterTests.GetPathForTemporaryStorage("export.xmi");
 
-            var action = (IElement) InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ExportToXmiAction)
+            var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__ExportToXmiAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._ExportToXmiAction.sourcePath] = "dm:///source/",

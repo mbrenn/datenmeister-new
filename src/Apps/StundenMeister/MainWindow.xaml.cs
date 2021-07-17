@@ -10,7 +10,6 @@ using BurnSystems.WPF;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.Formatter;
 using StundenMeister.Logic;
@@ -239,8 +238,8 @@ namespace StundenMeister
 
                 // Checks, if the user already has selected a cost center or
                 // if there is an active cost center due to active time recording
-                if (costCenter.@equals(selectedCostCenter)
-                    || selectedCostCenter == null && currentCostCenter?.@equals(costCenter) == true)
+                if (costCenter.equals(selectedCostCenter)
+                    || selectedCostCenter == null && currentCostCenter?.equals(costCenter) == true)
                 {
                     selectItem = item;
                 }

@@ -143,7 +143,7 @@ namespace DatenMeister.WebServer.Pages
             foreach (var tab in
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).OfType<MofElement>())
             {
-                if (tab.getMetaClassWithoutTracing()?.@equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                if (tab.getMetaClassWithoutTracing()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
                 {
                     fields.Add(
                         InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__TextFieldData)

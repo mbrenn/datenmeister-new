@@ -26,12 +26,10 @@ namespace DatenMeister.Forms
             {
                 return extent.elements();
             }
-            else
-            {
-                var propertyName = listForm?.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
+
+            var propertyName = listForm?.getOrDefault<string>(_DatenMeister._Forms._ListForm.property);
                 
-                return GetPropertiesAsReflection(value, propertyName);
-            }
+            return GetPropertiesAsReflection(value, propertyName);
         }
 
         /// <summary>

@@ -144,7 +144,7 @@ namespace DatenMeister.Tests.Xmi
             Assert.That(firstElement,Is.Not.Null);
             var generalContent = firstElement.getOrDefault<IElement>(generalProperty);
             Assert.That(generalContent,Is.InstanceOf<IElement>());
-            Assert.That(generalContent.@equals(_UML.TheOne.CommonStructure.__PackageableElement));
+            Assert.That(generalContent.equals(_UML.TheOne.CommonStructure.__PackageableElement));
         }
         /// <summary>
         /// Creates a filled MOF and UML instance which can be used for further testing

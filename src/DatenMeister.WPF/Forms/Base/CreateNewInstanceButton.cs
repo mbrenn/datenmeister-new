@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
@@ -49,11 +50,11 @@ namespace DatenMeister.WPF.Forms.Base
             }
             else
             {
-                this._typesForCreation = new []{types};
+                _typesForCreation = new []{types};
             }
         }
 
-        private void NewTypeButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void NewTypeButton_Click(object sender, RoutedEventArgs e)
         {
             _ = new ContextMenu {ItemsSource = GetMenuItems(), IsOpen = true};
         }

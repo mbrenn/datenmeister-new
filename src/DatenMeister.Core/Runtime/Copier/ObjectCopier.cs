@@ -187,11 +187,9 @@ namespace DatenMeister.Core.Runtime.Copier
                         // The element will be copied.
                         return Copy(valueAsElement, copyOptions);
                     }
-                    else
-                    {
-                        // See above... Don't copy the elements which are references by another extent
-                        return value;
-                    }
+
+                    // See above... Don't copy the elements which are references by another extent
+                    return value;
                 }
                 case IReflectiveCollection _ when noRecursion:
                     return null;

@@ -38,7 +38,7 @@ namespace StundenMeister.Logic
                 _plugin.Data.Extent,
                 (x,y) =>
                 {
-                    if ((y as IElement)?.getMetaClass()?.@equals(_plugin.Data.ClassCostCenter) == true)
+                    if ((y as IElement)?.getMetaClass()?.equals(_plugin.Data.ClassCostCenter) == true)
                     {
                         action(x, y);
                     }

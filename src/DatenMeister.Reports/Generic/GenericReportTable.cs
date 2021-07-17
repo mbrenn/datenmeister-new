@@ -29,7 +29,7 @@ namespace DatenMeister.Reports.Generic
         public bool IsRelevant(IElement element)
         {
             var metaClass = element.getMetaClass();
-            return metaClass?.@equals(_DatenMeister.TheOne.Reports.Elements.__ReportTable) == true;
+            return metaClass?.equals(_DatenMeister.TheOne.Reports.Elements.__ReportTable) == true;
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace DatenMeister.Reports.Generic
             var property = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
             var metaClass = field.getMetaClass();
             var isPropertySet = listElement.isSet(property);
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData) == true)
+            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__DateTimeFieldData) == true)
             {
                 if (isPropertySet)
                 {
@@ -162,7 +162,7 @@ namespace DatenMeister.Reports.Generic
                 return new TableCellContent {Content = "-"};
             }
 
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__NumberFieldData) == true)
+            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__NumberFieldData) == true)
             {
                 var format = field.getOrDefault<string>(_DatenMeister._Forms._NumberFieldData.format) ?? "";
                 var isInteger = field.getOrDefault<bool>(_DatenMeister._Forms._NumberFieldData.isInteger);
@@ -185,7 +185,7 @@ namespace DatenMeister.Reports.Generic
                 return new TableCellContent { Content = "0"};
             }
 
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
                 var defaultText = listElement.getOrDefault<string>(property);
@@ -214,7 +214,7 @@ namespace DatenMeister.Reports.Generic
                 };
             }
 
-            if (metaClass?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+            if (metaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
             {
                 var defaultText = NamedElementMethods.GetName((listElement as IElement)?.metaclass);
                 var cssClassName = listElement.getOrDefault<string>("cssClass") ?? string.Empty;

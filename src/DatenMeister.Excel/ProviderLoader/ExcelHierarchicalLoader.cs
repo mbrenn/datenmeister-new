@@ -167,9 +167,6 @@ namespace DatenMeister.Excel.ProviderLoader
                 {
                     current.add(item);
                 }
-                else
-                {
-                }
             }
 
             return new LoadedProviderInfo(provider);

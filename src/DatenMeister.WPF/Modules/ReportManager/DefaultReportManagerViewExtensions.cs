@@ -60,7 +60,7 @@ namespace DatenMeister.WPF.Modules.ReportManager
                 yield return
                     new ItemMenuButtonDefinition(
                         "As Html",
-                        (x) => CreateReportForDetailElement(effectiveForm, x),
+                        x => CreateReportForDetailElement(effectiveForm, x),
                         null,
                         "Item"
                     );

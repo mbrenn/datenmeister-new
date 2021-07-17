@@ -93,13 +93,13 @@ namespace DatenMeister.Html
                     }
                     
                     HtmlElement value;
-                    if (field.metaclass?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+                    if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
                     {
                         value = item is IElement element && element.metaclass != null
-                            ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
+                            ? NamedElementMethods.GetFullName(element.metaclass)
                             : new HtmlRawString("<i>unset</i>");
                     } 
-                    else if (field.metaclass?.@equals(_DatenMeister.TheOne.Forms.__FullNameFieldData) == true)
+                    else if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__FullNameFieldData) == true)
                     {
                         var result = NamedElementMethods.GetFullNameWithoutElementId(item);
                         if (result == null || string.IsNullOrEmpty(result))
@@ -206,11 +206,11 @@ namespace DatenMeister.Html
                 var title = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
                 
                 HtmlElement content;
-                if (field.metaclass?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
+                if (field.metaclass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
                 {
                     title = "Metaclass";
                     content = item is IElement element && element.metaclass != null
-                        ? (HtmlElement) NamedElementMethods.GetFullName(element.metaclass)
+                        ? NamedElementMethods.GetFullName(element.metaclass)
                         : new HtmlRawString("<i>unset</i>");
                 }
                 else

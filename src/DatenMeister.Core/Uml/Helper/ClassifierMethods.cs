@@ -192,7 +192,7 @@ namespace DatenMeister.Core.Uml.Helper
                 foreach (var elementInExtent in
                     AllDescendentsQuery.GetDescendents(workspace.GetAllElements())
                         .OfType<IElement>()
-                        .Where(elementInExtent => classInstance.@equals(elementInExtent.getMetaClass()))
+                        .Where(elementInExtent => classInstance.equals(elementInExtent.getMetaClass()))
                         .Where(elementInExtent => !visitedElements.Contains(elementInExtent)))
                 {
                     var generalizations = GetGeneralizations(elementInExtent).ToList();
@@ -249,7 +249,7 @@ namespace DatenMeister.Core.Uml.Helper
                 return false;
             }
 
-            if (specializedClassifier.@equals(generalizedClassifier))
+            if (specializedClassifier.equals(generalizedClassifier))
             {
                 return true;
             }

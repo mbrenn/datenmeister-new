@@ -2,7 +2,6 @@
 using System.Net;
 using System.Text;
 using System.Web;
-using Autofac.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -58,7 +57,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                     notFirst = true;
                 }
                 
-                scriptLines.AppendLine($");}});");
+                scriptLines.AppendLine(");});");
             }
             
             void WriteScriptLines(string htmlId, string functionName, IWorkspace? workspace, IUriExtent? extent, string? itemId)
@@ -85,7 +84,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
                 field.getOrDefault<bool>(_DatenMeister._Forms._FieldData.isEnumeration);
 
             // Checks, if the value is an action field
-            if (field.getMetaClassWithoutTracing()?.@equals(_DatenMeister.TheOne.Forms.__ActionFieldData) == true)
+            if (field.getMetaClassWithoutTracing()?.equals(_DatenMeister.TheOne.Forms.__ActionFieldData) == true)
             {
                 var id = HtmlElement.GetRandomId();
                 var button = new HtmlButtonElement(
@@ -266,7 +265,7 @@ namespace DatenMeister.WebServer.Library.HtmlControls
             }
 
             var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-            if (fieldMetaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+            if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
                 var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;

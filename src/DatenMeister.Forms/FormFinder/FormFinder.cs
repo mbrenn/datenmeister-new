@@ -152,7 +152,7 @@ namespace DatenMeister.Forms.FormFinder
                 // MetaClass
                 if (associationMetaClass != null)
                 {
-                    if (query.metaClass != null && query.metaClass?.@equals(associationMetaClass) == true)
+                    if (query.metaClass != null && query.metaClass?.equals(associationMetaClass) == true)
                     {
                         InternalDebug("-- MATCH: metaClass: " + NamedElementMethods.GetName(query.metaClass) +
                                       ", FormAssociation innerMetaClass: " +
@@ -183,7 +183,7 @@ namespace DatenMeister.Forms.FormFinder
                 // ´ParentMetaClass
                 if (associationParentMetaclass != null)
                 {
-                    if (query.parentMetaClass != null && query.parentMetaClass?.@equals(associationParentMetaclass) == true)
+                    if (query.parentMetaClass != null && query.parentMetaClass?.equals(associationParentMetaclass) == true)
                     {
                         InternalDebug("-- MATCH: parentMetaClass: " + NamedElementMethods.GetName(query.parentMetaClass) +
                                       ", FormAssociation parentMetaClass: " +

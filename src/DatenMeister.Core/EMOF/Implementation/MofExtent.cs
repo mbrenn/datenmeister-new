@@ -1,4 +1,4 @@
-﻿#nullable enable 
+﻿#nullable enable
 
 using System;
 using System.Collections;
@@ -215,7 +215,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object? other)
+        public bool equals(object? other)
         {
             if (other is MofExtent otherAsExtent)
             {
@@ -295,10 +295,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                                      "Provider does not support setting of extent properties");
                 return nullObject.IsPropertySet(property);
             }
-            else
-            {
-                return MetaXmiElement.isSet(property);
-            }
+
+            return MetaXmiElement.isSet(property);
         }
 
         /// <inheritdoc />
@@ -674,10 +672,8 @@ namespace DatenMeister.Core.EMOF.Implementation
                                      "Provider does not support setting of extent properties");
                 return nullObject.GetProperties();
             }
-            else
-            {
-                return MetaXmiElement.getPropertiesBeingSet();
-            }
+
+            return MetaXmiElement.getPropertiesBeingSet();
         }
         
         public IExtent Extent => this;

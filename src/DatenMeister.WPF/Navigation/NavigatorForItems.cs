@@ -18,6 +18,7 @@ using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Windows;
+
 // ReSharper disable IdentifierTypo
 
 namespace DatenMeister.WPF.Navigation

@@ -20,7 +20,7 @@ namespace DatenMeister.Modules.FastViewFilter
                 return new PropertyComparison(element);
             }
 
-            if (element.getMetaClass()?.Equals(_DatenMeister.TheOne.FastViewFilters.@__PropertyContainsFilter) == true)
+            if (element.getMetaClass()?.Equals(_DatenMeister.TheOne.FastViewFilters.__PropertyContainsFilter) == true)
             {
                 return new PropertyContains(element);
             }

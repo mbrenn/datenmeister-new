@@ -22,8 +22,8 @@ namespace DatenMeister.Core.Modules.DataViews
             _dataViewLogic = dataViewLogic ?? throw new ArgumentNullException(nameof(dataViewLogic));
         }
 
-        public bool @equals(object? other) =>
-            _dataViewElement.@equals(other);
+        public bool equals(object? other) =>
+            _dataViewElement.equals(other);
 
         public object? get(string property) =>
             _dataViewElement.get(property);
@@ -53,10 +53,8 @@ namespace DatenMeister.Core.Modules.DataViews
             {
                 return result;
             }
-            else
-            {
-                return new TemporaryReflectiveSequence(_dataViewLogic.GetElementsForViewNode(viewNode));
-            }
+
+            return new TemporaryReflectiveSequence(_dataViewLogic.GetElementsForViewNode(viewNode));
         }
 
         public string contextURI() =>

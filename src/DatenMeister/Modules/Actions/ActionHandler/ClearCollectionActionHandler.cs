@@ -13,7 +13,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
     {
         public bool IsResponsible(IElement node)
         {
-            return node.getMetaClass()?.@equals(
+            return node.getMetaClass()?.equals(
                 _DatenMeister.TheOne.Actions.__ClearCollectionAction) == true;
         }
 

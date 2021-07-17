@@ -19,10 +19,6 @@ using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
-using Button = System.Windows.Controls.Button;
-using HorizontalAlignment = System.Windows.HorizontalAlignment;
-using MessageBox = System.Windows.MessageBox;
-using Orientation = System.Windows.Controls.Orientation;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
@@ -210,7 +206,7 @@ namespace DatenMeister.WPF.Forms.Fields
         {
             var names = items.Select(x=>NamedElementMethods.GetName(x)).Join(", ");
             if (MessageBox.Show(
-                    $"Are you sure to delete the item: " +
+                    "Are you sure to delete the item: " +
                     $"{names}?",
                     "Confirmation",
                     MessageBoxButton.YesNo) ==
@@ -296,7 +292,7 @@ namespace DatenMeister.WPF.Forms.Fields
                 _fieldData.getOrDefault<bool>(_DatenMeister._Forms._SubElementFieldData.allowOnlyExistingElements);
             if (!allowOnlyExistingElements)
             {
-                var buttonNew = new CreateNewInstanceButton() {Content = "N"};
+                var buttonNew = new CreateNewInstanceButton {Content = "N"};
                 SetStyle(buttonNew);
                 SetNewButton(buttonNew);
                 stackPanel.Children.Add(buttonNew);

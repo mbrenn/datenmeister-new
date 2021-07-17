@@ -7,7 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.WPF.Forms.Base;
-using Orientation = System.Windows.Controls.Orientation;
 
 namespace DatenMeister.WPF.Forms.Fields
 {

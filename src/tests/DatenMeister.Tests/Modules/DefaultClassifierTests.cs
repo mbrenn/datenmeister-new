@@ -28,9 +28,9 @@ namespace DatenMeister.Tests.Modules
             var typePackage = defaultClassifier.GetDefaultPackageClassifier(typeExtent);
             var umlPackage = defaultClassifier.GetDefaultPackageClassifier(umlExtent);
 
-            Assert.That(dataPackage?.@equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true);
-            Assert.That(typePackage?.@equals(_UML.TheOne.Packages.__Package) == true);
-            Assert.That(umlPackage?.@equals(_UML.TheOne.Packages.__Package) == true);
+            Assert.That(dataPackage?.equals(_DatenMeister.TheOne.CommonTypes.Default.__Package) == true);
+            Assert.That(typePackage?.equals(_UML.TheOne.Packages.__Package) == true);
+            Assert.That(umlPackage?.equals(_UML.TheOne.Packages.__Package) == true);
         }
     }
 }

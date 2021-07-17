@@ -32,7 +32,7 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
                 yield break;
             }
 
-            if (asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Management.__Extent) != true)
+            if (asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
             {
                 yield break;
             }
@@ -85,7 +85,7 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
                         var foundElementMetaClass = foundElement.getMetaClass();
                         var propertyMetaClass = property.metaClass;
                         if (foundElementMetaClass != null && propertyMetaClass != null &&
-                            !foundElementMetaClass.@equals(property.metaClass))
+                            !foundElementMetaClass.equals(property.metaClass))
                         {
                             var resolvedElementMetaClass =
                                 _workspaceLogic.GetTypesWorkspace().ResolveElement(
@@ -102,7 +102,7 @@ namespace DatenMeister.WPF.Modules.ExtentPropertyElementHandler
                             if (MessageBox.Show(
                                 $"The type of the configuration item is: {resolvedElementMetaClass}.\r\n\r\n" +
                                 $"The type of the configuration item should be {resolvedPropertyMetaClass}.\r\n\r\n" +
-                                $"Shall the type be converted?",
+                                "Shall the type be converted?",
                                 "Mismatch of type",
                                 MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                             {

@@ -72,8 +72,7 @@ namespace DatenMeister.Provider.CSV.Runtime
             
             var provider = new CsvLoader(WorkspaceLogic ?? throw new InvalidOperationException("WorkspaceLogic == null"));
 
-            var settings = configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs
-                ._CsvExtentLoaderConfig.settings);
+            var settings = configuration.getOrDefault<IElement>(_DatenMeister._ExtentLoaderConfigs._CsvExtentLoaderConfig.settings);
             
             provider.Save(extent, filePath, settings);
         }

@@ -16,7 +16,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
             
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__SourceExtentNode);
+                   metaClass.equals(_DatenMeister.TheOne.DataViews.__SourceExtentNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)

@@ -237,7 +237,8 @@ namespace DatenMeister.Core.Uml.Helper
         }
 
         /// <summary>
-        /// Gets the information whether the specialized classifier can be generalized to the generalizedClassifier
+        /// Gets the information whether the specialized classifier can be generalized to the generalizedClassifier.
+        /// The classifier itself is also considered as valid
         /// </summary>
         /// <param name="specializedClassifier">Special class which is checked</param>
         /// <param name="generalizedClassifier">The class against the specialized will be checked against. </param>

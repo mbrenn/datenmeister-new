@@ -44,6 +44,12 @@ namespace DatenMeister.Core.Functions.Queries
             =>
                 new FilterOnMetaClass(collection, metaClass);
 
+        public static IReflectiveCollection WhenMetaClassIsOrSpecialized(
+            this IReflectiveCollection collection,
+            IElement? metaClass)
+            =>
+                new FilterOnMetaClassOrSpecialized(collection, metaClass);
+
         public static IReflectiveCollection WhenMetaClassIsOneOf(
             this IReflectiveCollection collection,
             params IElement[] metaClasses)

@@ -23,7 +23,8 @@ namespace DatenMeister.Tests.Web
                 WorkspaceNames.WorkspaceData,
                 zipExtent.contextURI(),
                 ViewModes.Default);
-            Assert.That(foundForm.Value.IndexOf("tab") != -1);
+            Assert.That(foundForm, Is.Not.Null);
+            Assert.That(foundForm.Value.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
         
         
@@ -32,11 +33,15 @@ namespace DatenMeister.Tests.Web
         {
             var (zipExtent, formsController) = CreateZipExtent();
             var firstElement = zipExtent.elements().First() as IElement;
+            Assert.That(firstElement, Is.Not.Null);
             var foundForm = formsController.GetDefaultFormForItem(
                 WorkspaceNames.WorkspaceData,
-                firstElement.GetUri(),
+                firstElement!.GetUri()!,
                 ViewModes.Default);
-            Assert.That(foundForm.Value.IndexOf("tab") != -1);
+            
+            Assert.That(foundForm, Is.Not.Null);
+            Assert.That(foundForm.Value, Is.Not.Null);
+            Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
 
         /// <summary>
@@ -44,7 +49,7 @@ namespace DatenMeister.Tests.Web
         /// </summary>
         /// <returns>Tuple of zipExtent and corresponding Forms Controller</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        private static (IUriExtent? zipExtent, FormsController formsController) CreateZipExtent()
+        private static (IUriExtent zipExtent, FormsController formsController) CreateZipExtent()
         {
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
 
@@ -65,7 +70,7 @@ namespace DatenMeister.Tests.Web
                 .FirstOrDefault();
 
             var formsController = new FormsController(dm.WorkspaceLogic, dm.ScopeStorage);
-            return (zipExtent, formsController);
+            return (zipExtent!, formsController);
         }
     }
 }

@@ -1,9 +1,19 @@
-﻿export class DmObject
+﻿export interface ItemWithNameAndId
+{
+    name: string;
+    extentUri: string;
+    fullName: string;
+    id: string;
+}
+
+export class DmObject
 {
     values: Object;
+    
+    metaClass: ItemWithNameAndId;
 
     constructor() {
-        this.values = new Object();
+        this.values = {};
     }
 
     set(key: string, value: object): void
@@ -67,7 +77,7 @@
 }
 
 // Creates the given object from the included json
-export function createObjectFromJson(json: string): DmObject {
+export function createObjectFromJson(json: string, metaClass?: ItemWithNameAndId): DmObject {
     var result = new DmObject();
 
     var converted = JSON.parse(json);
@@ -76,6 +86,11 @@ export function createObjectFromJson(json: string): DmObject {
             var value = converted[key];
             result.set(key, value);
         }
+    }
+    
+    if (metaClass !== undefined && metaClass !== null)
+    {
+        result.metaClass = metaClass;
     }
 
     return result;

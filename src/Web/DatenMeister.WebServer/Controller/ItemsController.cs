@@ -9,6 +9,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Modules.Json;
+using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -144,7 +145,9 @@ namespace DatenMeister.WebServer.Controller
         /// <summary>
         /// Deletes an item from the extent itself
         /// </summary>
+        /// <param name="extentUri">Uri of the extent</param>
         /// <param name="param">Parameter of the deletion</param>
+        /// <param name="workspaceId">Id of the workspace</param>
         /// <returns>the value indicating the success or not</returns>
         [HttpPost("api/items/delete_from_extent/{workspaceId}/{extentUri}")]
         public ActionResult<object> DeleteFromExtent(
@@ -236,9 +239,12 @@ namespace DatenMeister.WebServer.Controller
             var converter = new DirectJsonConverter();
             var convertedElement = converter.ConvertToJson(foundElement);
 
+            var metaClass = (foundElement as IElement)?.getMetaClass();
+
             return new
             {
-                item = convertedElement
+                item = convertedElement,
+                metaClass = ItemWithNameAndId.Create(metaClass)
             };
         }
 

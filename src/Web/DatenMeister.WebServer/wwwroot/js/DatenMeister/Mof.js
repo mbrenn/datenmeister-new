@@ -4,7 +4,7 @@ define(["require", "exports"], function (require, exports) {
     exports.createObjectFromJson = exports.DmObject = void 0;
     class DmObject {
         constructor() {
-            this.values = new Object();
+            this.values = {};
         }
         set(key, value) {
             this.values[key] = value;
@@ -56,7 +56,7 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.DmObject = DmObject;
     // Creates the given object from the included json
-    function createObjectFromJson(json) {
+    function createObjectFromJson(json, metaClass) {
         var result = new DmObject();
         var converted = JSON.parse(json);
         for (var key in converted) {
@@ -64,6 +64,9 @@ define(["require", "exports"], function (require, exports) {
                 var value = converted[key];
                 result.set(key, value);
             }
+        }
+        if (metaClass !== undefined && metaClass !== null) {
+            result.metaClass = metaClass;
         }
         return result;
     }

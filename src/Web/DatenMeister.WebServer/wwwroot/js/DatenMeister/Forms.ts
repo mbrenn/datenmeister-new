@@ -1,11 +1,54 @@
 ﻿import * as Mof from "./Mof";
+import * as DataLoader from "./DataLoader";
 
 
 import DmObject = Mof.DmObject;
+import * as ApiConnection from "./ApiConnection";
+import * as ApiModels from "./ApiModels";
+import * as Settings from "./Settings";
 
 export class Form
 {
+    viewMode: string;
+    
+    
+}
 
+export class DetailForm
+{
+    createViewForm ( parent: JQuery<HTMLElement>, workspace: string, uri: string) {
+        DataLoader.loadObjectByUri(workspace, uri).done(
+            element => this.createViewFormByObject(parent, element, null)
+        );
+        
+        parent.empty();
+        parent.text("createViewForm");
+        
+    }
+    
+    createViewFormByObject ( parent: JQuery<HTMLElement>, element: DmObject, form: DmObject) {
+        parent.text("createViewFormByObject");
+    }
+}
+
+export function getDefaultFormForItem(workspace: string, item: string,  viewMode: string): JQuery.Deferred<Mof.DmObject, never, never> {
+    var r = jQuery.Deferred<Mof.DmObject, never, never>();
+
+    ApiConnection.get<ApiModels.Out.IItem>(
+        Settings.baseUrl +
+        "api/default_for_item/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(item) +
+        "/" +
+        encodeURIComponent(viewMode)
+    ).done(x => {
+        const dmObject =
+            Mof.createObjectFromJson(x.item, x.metaClass);
+        r.resolve(dmObject);
+    });
+
+    return r;
 }
 
 export interface IFormField

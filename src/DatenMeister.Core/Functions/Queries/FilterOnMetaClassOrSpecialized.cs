@@ -66,8 +66,7 @@ namespace DatenMeister.Core.Functions.Queries
                 isIn = true;
             }
             else
-            {
-                
+            {                
                 if (metaClass != null 
                     && _filteredMetaClass
                         ?.Any(x => ClassifierMethods.IsSpecializedClassifierOf(metaClass, x))

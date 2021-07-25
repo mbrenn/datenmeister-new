@@ -26,6 +26,19 @@ export namespace In {
     }
 }
 
+
+/* The interface being the equivalent to DatenMeister.WebServer.Models.ItemWithNameAndId 
+   To allow proxying of element 
+ */
+
+export interface ItemWithNameAndId
+{
+    name: string;
+    extentUri: string;
+    fullName: string;
+    id: string;
+}
+
 // Defines the interfaces which are returned by the server
 export namespace Out {
     export interface INamedElement {
@@ -38,5 +51,6 @@ export namespace Out {
     export interface IItem {
         found: boolean,
         item: string
+        metaClass?: ItemWithNameAndId;
     }
 }

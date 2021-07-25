@@ -34,10 +34,9 @@ namespace DatenMeister.WebServer.Controller
             var allTypes = _localTypeSupport.GetAllTypes();
             
             result.AddRange(
-                allTypes.OfType<IObject>().Select(ItemWithNameAndId.Create));
+                allTypes.OfType<IObject>().Select(o => ItemWithNameAndId.Create(o)!));
             
             return result;
         }
-
     }
 }

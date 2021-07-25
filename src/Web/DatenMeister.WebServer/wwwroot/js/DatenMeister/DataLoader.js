@@ -20,38 +20,37 @@ var __importStar = (this && this.__importStar) || function (mod) {
 define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], function (require, exports, Mof, Settings, ApiConnection) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ObjectLoader = void 0;
+    exports.loadObjectByUri = exports.loadObject = void 0;
     Mof = __importStar(Mof);
     Settings = __importStar(Settings);
     ApiConnection = __importStar(ApiConnection);
-    class ObjectLoader {
-        loadObject(workspace, extent, id) {
-            var r = jQuery.Deferred();
-            ApiConnection.get(Settings.baseUrl +
-                "api/items/get/" +
-                encodeURIComponent(workspace) +
-                "/" +
-                encodeURIComponent(extent) +
-                "/" +
-                encodeURIComponent(id)).done(x => {
-                var dmObject = Mof.createObjectFromJson(x.item);
-                r.resolve(dmObject);
-            });
-            return r;
-        }
-        loadObjectByUri(workspace, item) {
-            var r = jQuery.Deferred();
-            ApiConnection.get(Settings.baseUrl +
-                "api/items/get/" +
-                encodeURIComponent(workspace) +
-                "/" +
-                encodeURIComponent(item)).done(x => {
-                var dmObject = Mof.createObjectFromJson(x.item);
-                r.resolve(dmObject);
-            });
-            return r;
-        }
+    function loadObject(workspace, extent, id) {
+        var r = jQuery.Deferred();
+        ApiConnection.get(Settings.baseUrl +
+            "api/items/get/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(extent) +
+            "/" +
+            encodeURIComponent(id)).done(x => {
+            var dmObject = Mof.createObjectFromJson(x.item);
+            r.resolve(dmObject);
+        });
+        return r;
     }
-    exports.ObjectLoader = ObjectLoader;
+    exports.loadObject = loadObject;
+    function loadObjectByUri(workspace, item) {
+        var r = jQuery.Deferred();
+        ApiConnection.get(Settings.baseUrl +
+            "api/items/get/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(item)).done(x => {
+            var dmObject = Mof.createObjectFromJson(x.item, x.metaClass);
+            r.resolve(dmObject);
+        });
+        return r;
+    }
+    exports.loadObjectByUri = loadObjectByUri;
 });
 //# sourceMappingURL=DataLoader.js.map

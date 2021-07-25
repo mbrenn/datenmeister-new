@@ -21,6 +21,5 @@ namespace DatenMeister.Tests.Web
             Assert.That(types.Any(x=>x.name == "Package"),Is.True);
             Assert.That(types.Any(x=>x.name == "CopyElementAction"), Is.True);
         }
-        
     }
 }

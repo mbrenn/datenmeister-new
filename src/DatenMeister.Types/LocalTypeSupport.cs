@@ -395,13 +395,13 @@ namespace DatenMeister.Types
         /// <returns>Enumeration of all types within the</returns>
         public IReflectiveCollection GetAllTypes(string? workspace = null)
         {
-            var workspaceManagement = _workspaceLogic.GetWorkspace(workspace ?? WorkspaceNames.WorkspaceTypes)
+            var workspaceTypes = _workspaceLogic.GetWorkspace(workspace ?? WorkspaceNames.WorkspaceTypes)
                                       ?? throw new InvalidOperationException("Workspace is not found");
             
-            var elements = workspaceManagement.GetAllDescendents();
+            var elements = workspaceTypes.GetAllDescendents(false);
             var foundElements = 
                 elements.WhenMetaClassIsOrSpecialized(
-                _UML.TheOne.CommonStructure.__Type);
+                _UML.TheOne.Classification.__Classifier);
 
             return foundElements;
         }

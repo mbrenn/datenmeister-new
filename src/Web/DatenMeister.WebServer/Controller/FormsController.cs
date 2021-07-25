@@ -8,6 +8,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Modules.Json;
+using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -26,7 +27,7 @@ namespace DatenMeister.WebServer.Controller
         }
         
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
-        public ActionResult<string> GetDefaultFormForItem(string workspaceId, string itemUrl, string viewMode)
+        public ActionResult<IItem> GetDefaultFormForItem(string workspaceId, string itemUrl, string viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
 
@@ -38,12 +39,16 @@ namespace DatenMeister.WebServer.Controller
             {
                 throw new InvalidOperationException("Form is not defined");
             }
-            
-            return DirectJsonConverter.ConvertToJsonWithDefaultParameter(form);
+
+            return new IItem
+            {
+                item = DirectJsonConverter.ConvertToJsonWithDefaultParameter(form),
+                metaClass = ItemWithNameAndId.Create(form.getMetaClass())
+            };
         }
         
-        [HttpGet("api/forms/default_for_Extent/{workspaceId}/{extentUrl}/{viewMode?}")]
-        public ActionResult<string> GetDefaultFormForExtent(string workspaceId, string extentUrl, string viewMode)
+        [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUrl}/{viewMode?}")]
+        public ActionResult<IItem> GetDefaultFormForExtent(string workspaceId, string extentUrl, string viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);
@@ -58,8 +63,12 @@ namespace DatenMeister.WebServer.Controller
             {
                 throw new InvalidOperationException("Form is not defined");
             }
-            
-            return DirectJsonConverter.ConvertToJsonWithDefaultParameter(form);
+
+            return new IItem
+            {
+                item = DirectJsonConverter.ConvertToJsonWithDefaultParameter(form),
+                metaClass = ItemWithNameAndId.Create(form.getMetaClass())
+            };
         }
 
         /// <summary>

@@ -35,12 +35,12 @@
 
 <script type="application/javascript">
 
+    // Just a temporary function which shows that we can laod the given item
     function LoadByWei()
     {
         requirejs(['DatenMeister/DataLoader'], function(dataLoader) {
 
-            var objLoader = new dataLoader.ObjectLoader();
-            objLoader.loadObject(
+            dataLoader.loadObject(
                 "@HttpUtility.JavaScriptStringEncode(w)",
                 "@HttpUtility.JavaScriptStringEncode(e)",
                 "@HttpUtility.JavaScriptStringEncode(i)")
@@ -48,12 +48,12 @@
         });
     }
 
+    // Just a temporary function which shows that we can laod the given item
     function LoadByWi()
     {
         requirejs(['DatenMeister/DataLoader'], function(dataLoader) {
 
-            var objLoader = new dataLoader.ObjectLoader();
-            objLoader.loadObjectByUri(
+            dataLoader.loadObjectByUri(
                 "@HttpUtility.JavaScriptStringEncode(w)",
                 "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)")
                 .done(o => alert(o.toString()));
@@ -69,6 +69,19 @@
         });
         alert('EditItem')
     }
+    
+    function CreateViewForm()
+    {
+        requirejs(['DatenMeister/Forms'], function(Form) {
+            var detailForm = new Form.DetailForm();
+            detailForm.createViewForm(
+                $("#form_view"),
+                "@HttpUtility.JavaScriptStringEncode(w)",
+                "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
+            
+
+        });
+    }
 
 $(function()
 {
@@ -77,10 +90,12 @@ $(function()
         @Html.Raw(Model.ScriptLines)
 
     });
+    
+    CreateViewForm();
 });
 
 </script>
-
+<div id="form_view">VIEW FORM</div>
 <div>
     <a class="btn btn-primary" data-bs-toggle="collapse" href="#forminformation" role="button">Form Information</a>
     <div class="collapse" id="forminformation">

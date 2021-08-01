@@ -1,5 +1,6 @@
 ﻿using DatenMeister.Excel.Helper;
 using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 
 namespace DatenMeister.Excel.Spreadsheet
 {
@@ -22,7 +23,36 @@ namespace DatenMeister.Excel.Spreadsheet
         /// <returns>The found object as object. Null, if not exist</returns>
         public string GetCellContent(int row, int column)
         {
-            return _sheet?.GetRow(row)?.GetCell(column)?.GetStringContent();
+            var cell = GetFirstCellInMergedRegionContainingCell(
+                _sheet?.GetRow(row)?.GetCell(column));
+            return cell?.GetStringContent() ?? string.Empty;
+        }
+        
+        /// <summary>
+        /// Gets the merged cell, if merged
+        /// https://stackoverflow.com/questions/61013362/using-npoi-to-retrieve-the-value-of-a-merged-cell-from-an-excel-spreadsheet
+        /// </summary>
+        /// <param name="cell">Cell to be checked</param>
+        /// <returns>The merged cell or the cell itself</returns>
+        private static ICell GetFirstCellInMergedRegionContainingCell(ICell cell)
+        {
+            if (cell != null && cell.IsMergedCell)
+            {
+                ISheet sheet = cell.Sheet;
+                for (int i = 0; i < sheet.NumMergedRegions; i++)
+                {
+                    CellRangeAddress region = sheet.GetMergedRegion(i);
+                    if (region.ContainsRow(cell.RowIndex) && 
+                        region.ContainsColumn(cell.ColumnIndex))
+                    {
+                        IRow row = sheet.GetRow(region.FirstRow);
+                        ICell firstCell = row?.GetCell(region.FirstColumn);
+                        return firstCell;
+                    }
+                }
+                return null;
+            }
+            return cell;
         }
 
         public SsCell GetCell(int row, int column)

@@ -23,7 +23,6 @@ namespace DatenMeister.Excel.Integration
                 url);
             settings.set(_DatenMeister._ExtentLoaderConfigs._ExcelExtentLoaderConfig.filePath,
                 filePath);
-
             
             return ExcelFileProviderLoader.LoadProvider(settings);
         }

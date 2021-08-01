@@ -2,6 +2,7 @@
 using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -48,7 +49,7 @@ namespace DatenMeister.Excel.ProviderLoader
         /// </summary>
         /// <param name="extent"></param>
         /// <param name="loaderConfig">Element of ExcelLoaderConfig</param>
-        public static void ImportExcelIntoExtent(MofExtent extent, IElement loaderConfig)
+        public static void ImportExcelIntoExtent(IExtent extent, IElement loaderConfig)
         {
             loaderConfig = ObjectCopier.CopyForTemporary(loaderConfig) as IElement
                 ?? throw new InvalidOperationException("Element is not of type IElement");
@@ -57,6 +58,9 @@ namespace DatenMeister.Excel.ProviderLoader
             var fixColumnCount =
                 loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                     .fixColumnCount);
+            var onlySetColumns =
+                loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
+                    .onlySetColumns);
             var fixRowCount =
                 loaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelReferenceLoaderConfig
                     .fixRowCount);
@@ -70,7 +74,7 @@ namespace DatenMeister.Excel.ProviderLoader
             var excelImporter = new ExcelImporter(loaderConfig);
             excelImporter.LoadExcel();
 
-            var columnNames = excelImporter.GetColumnNames().ToList();
+            var columnNames = excelImporter.GetOriginalColumnNames().ToList();
             if (!fixColumnCount) countRows = excelImporter.GuessRowCount();
             if (!fixRowCount) countColumns = excelImporter.GuessColumnCount();
 
@@ -92,8 +96,15 @@ namespace DatenMeister.Excel.ProviderLoader
                     {
                         contentInElement = true;
                     }
-                    
-                    item.set(columnName, excelImporter.GetCellContent(r, c));
+
+                    var usedColumnName =
+                        onlySetColumns
+                            ? excelImporter.ColumnTranslator.TranslateHeaderOrNull(columnName)
+                            : excelImporter.ColumnTranslator.TranslateHeader(columnName);
+                    if (usedColumnName != null)
+                    {
+                        item.set(usedColumnName, excelImporter.GetCellContent(r, c));
+                    }
                 }
 
                 if (contentInElement)

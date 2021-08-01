@@ -48,5 +48,23 @@ namespace DatenMeister.Excel.Helper
             // Gets the original name
             return headerName;
         }
+
+        /// <summary>
+        /// Translates the header into a name. If the given translation entry is not found, 
+        /// then a null value is returned.
+        /// </summary>
+        /// <param name="headerName">Name of the header</param>
+        /// <returns>Translated Header NAme</returns>
+        public string? TranslateHeaderOrNull(string headerName)
+        {
+            var found = _translateColumnNames.FirstOrDefault(x => x.Header == headerName);
+            if (found != null)
+            {
+                // Gets the translated header name
+                return found.Name;
+            }
+
+            return null;
+        }
     }
 }

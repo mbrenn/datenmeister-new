@@ -40,7 +40,12 @@ namespace DatenMeister.Excel.Helper
         /// </summary>
         public IElement LoaderConfig { get; set; }
         
-        private ExcelColumnTranslator _columnTranslator = new ExcelColumnTranslator();
+        private readonly ExcelColumnTranslator _columnTranslator = new ExcelColumnTranslator();
+        
+        /// <summary>
+        /// Gets the column translator being used to figure out internal column name
+        /// </summary>
+        public ExcelColumnTranslator ColumnTranslator => _columnTranslator;
 
         private SSDocument? _excelDocument;
 
@@ -144,6 +149,8 @@ namespace DatenMeister.Excel.Helper
                 LoaderConfig.getOrDefault<int>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.offsetColumn);
             var hasHeader =
                 LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.hasHeader);
+            var tryMergedHeaderCells =
+                LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.tryMergedHeaderCells);
 
             if (selectedSheet == null) return new List<string>();
             
@@ -162,6 +169,19 @@ namespace DatenMeister.Excel.Helper
                 for (var c = 0; c < columnCount; c++)
                 {
                     var columnName = selectedSheet.GetCellContent(offsetRow, c + offsetColumn);
+                    
+                    if (tryMergedHeaderCells)
+                    {
+                        // If header rows might be merged with the cell above, it is tried
+                        // to get the cell value above the currently selected header cell
+                        var row = offsetRow;
+                        while (string.IsNullOrEmpty(columnName) && row > 0)
+                        {
+                            row--;
+                            columnName = selectedSheet.GetCellContent(row, c + offsetColumn);
+                        }
+                    }
+                    
                     if (string.IsNullOrEmpty(columnName) || columnNames.Contains(columnName))
                     {
                         columnNames.Add(null);
@@ -179,13 +199,28 @@ namespace DatenMeister.Excel.Helper
         /// <summary>
         /// Gets the column names including the translation 
         /// </summary>
+        /// <param name="forceAll">Flag, whether all parameter shall be forced to be returned</param>
         /// <returns>Enumeration of column names</returns>
-        public IEnumerable<string> GetColumnNames()
+        public IEnumerable<string> GetColumnNames(bool forceAll = false)
         {
+            var onlySetColumn =
+                LoaderConfig.getOrDefault<bool>(_DatenMeister._ExtentLoaderConfigs._ExcelLoaderConfig.onlySetColumns);
+            
             var list = GetOriginalColumnNames();
             foreach (var headerName in list)
             {
-                yield return _columnTranslator.TranslateHeader(headerName);
+                if (onlySetColumn && !forceAll)
+                {
+                    var result = _columnTranslator.TranslateHeaderOrNull(headerName);
+                    if (result != null)
+                    {
+                        yield return result;
+                    }
+                }
+                else
+                {
+                    yield return _columnTranslator.TranslateHeader(headerName);    
+                }
             }
         }
 

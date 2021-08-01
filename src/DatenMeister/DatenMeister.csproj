@@ -44,7 +44,4 @@
     <ProjectReference Include="..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
     <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Runtime\Objects" />
-  </ItemGroup>
 </Project>

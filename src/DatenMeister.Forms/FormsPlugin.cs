@@ -713,6 +713,8 @@ namespace DatenMeister.Forms
             {
                 packageViewMode = element.getOrDefault<string>(_DatenMeister._CommonTypes._Default._Package.defaultViewMode);
             }
+
+            packageViewMode ??= ViewModes.Default;
             
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
             {
@@ -752,7 +754,7 @@ namespace DatenMeister.Forms
                         extentType = extent.GetConfiguration().ExtentType,
                         metaClass = (element as IElement)?.getMetaClass(),
                         FormType = _DatenMeister._Forms.___FormType.TreeItemDetailExtension,
-                        viewModeId = viewModeId
+                        viewModeId = viewModeId ?? ViewModes.Default
                     });
 
                 if (element is IElement asElement)
@@ -765,7 +767,7 @@ namespace DatenMeister.Forms
                         DefinitionMode = formDefinitionMode,
                         FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
                         MetaClass = (element as IElement)?.metaclass,
-                        ViewMode = viewModeId,
+                        ViewMode = viewModeId ?? ViewModes.Default,
                         DetailElement = element
                     },
                     ref foundForm);

@@ -965,6 +965,7 @@
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countRows" type-ref="dm:///_internal/model/primitivetypes#Integer" p1:id="ec3b4a93-19db-4a59-9103-b711a714154e" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="countColumns" type-ref="dm:///_internal/model/primitivetypes#Integer" p1:id="efabc4fa-73b6-469a-b73e-40fe051325ea" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="hasHeader" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="c009b374-b6cc-4fb9-b3ee-7b2bc1ef9cc2" />
+      <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="tryMergedHeaderCells" type-ref="dm:///_internal/model/primitivetypes#Boolean" p1:id="c329b374-b6cc-4fb9-b3ee-7b2bc1ef9cc2" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" name="idColumnName" type-ref="dm:///_internal/model/primitivetypes#String" p1:id="3f3be2dc-3f46-414d-bfe4-9c3403c32d36" />
       <ownedAttribute p1:type="dm:///_internal/model/uml#Property" p1:id="88f22e39-88fe-484f-b969-f98286500ce8" name="skipEmptyRowsCount" type-ref="dm:///_internal/model/primitivetypes#Integer">
         <aggregation href="dm:///_internal/model/uml#Property-aggregation-_defaultValue" />

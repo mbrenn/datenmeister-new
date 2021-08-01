@@ -45,8 +45,6 @@
     <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Modules\Forms" />
-    <Folder Include="Modules\Json" />
     <Folder Include="Runtime\Objects" />
   </ItemGroup>
 </Project>

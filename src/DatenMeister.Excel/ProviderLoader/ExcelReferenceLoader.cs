@@ -48,7 +48,7 @@ namespace DatenMeister.Excel.ProviderLoader
         /// </summary>
         /// <param name="extent"></param>
         /// <param name="loaderConfig">Element of ExcelLoaderConfig</param>
-        internal static void ImportExcelIntoExtent(MofExtent extent, IElement loaderConfig)
+        public static void ImportExcelIntoExtent(MofExtent extent, IElement loaderConfig)
         {
             loaderConfig = ObjectCopier.CopyForTemporary(loaderConfig) as IElement
                 ?? throw new InvalidOperationException("Element is not of type IElement");

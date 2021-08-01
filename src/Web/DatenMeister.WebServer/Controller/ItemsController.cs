@@ -8,7 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Modules.Json;
+using DatenMeister.Json;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -222,7 +222,7 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Element is not found");
             }
 
-            var converter = new DirectJsonConverter();
+            var converter = new MofJsonConverter();
             var convertedElement = converter.ConvertToJson(foundElement);
 
             return new
@@ -236,7 +236,7 @@ namespace DatenMeister.WebServer.Controller
         {
             var foundElement = GetItemByUriParameter(workspaceId, itemUri);
 
-            var converter = new DirectJsonConverter();
+            var converter = new MofJsonConverter();
             var convertedElement = converter.ConvertToJson(foundElement);
 
             var metaClass = (foundElement as IElement)?.getMetaClass();

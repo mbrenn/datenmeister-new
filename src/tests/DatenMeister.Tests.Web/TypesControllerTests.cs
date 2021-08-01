@@ -17,7 +17,7 @@ namespace DatenMeister.Tests.Web
             Assert.That(types, Is.Not.Null);
             Assert.That(types.Count, Is.GreaterThan(0));
             Assert.That(types.Any(x=>x.name == "DateTime"), Is.True);
-            //Assert.That(types.Any(x=>x.name == "String"), Is.True);
+            Assert.That(types.Any(x=>x.name == "String"), Is.True);
             Assert.That(types.Any(x=>x.name == "Package"),Is.True);
             Assert.That(types.Any(x=>x.name == "CopyElementAction"), Is.True);
         }

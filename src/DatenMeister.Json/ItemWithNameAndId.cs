@@ -3,7 +3,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Uml.Helper;
 
-namespace DatenMeister.WebServer.Models
+namespace DatenMeister.Json
 {
     /// <summary>
     /// Defines some standard information about name, extentUri, fullName and id
@@ -18,7 +18,7 @@ namespace DatenMeister.WebServer.Models
         public string fullName { get; set; } = string.Empty;
 
         public string id { get; set; } = string.Empty;
-
+        
         /// <summary>
         /// Creates the element out of the attached object 
         /// </summary>

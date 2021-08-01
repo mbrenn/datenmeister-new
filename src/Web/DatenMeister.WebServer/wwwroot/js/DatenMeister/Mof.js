@@ -48,6 +48,12 @@ define(["require", "exports"], function (require, exports) {
             else if (typeof item === "string" || item instanceof String) {
                 result = `"${item.toString()}"`;
             }
+            else if (item === null) {
+                return "null";
+            }
+            else if (item === undefined) {
+                return "undefined";
+            }
             else {
                 result = item.toString();
             }
@@ -56,19 +62,50 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.DmObject = DmObject;
     // Creates the given object from the included json
+    // The corresponding C# class is DatenMeister.Modules.Json.DirectJsonConverter.Convert
     function createObjectFromJson(json, metaClass) {
-        var result = new DmObject();
-        var converted = JSON.parse(json);
-        for (var key in converted) {
-            if (Object.prototype.hasOwnProperty.call(converted, key)) {
-                var value = converted[key];
-                result.set(key, value);
+        const converted = JSON.parse(json);
+        function convertJsonToDmObject(element) {
+            const result = new DmObject();
+            const elementValues = element["v"];
+            if (elementValues !== undefined && elementValues !== null) {
+                for (let key in elementValues) {
+                    if (Object.prototype.hasOwnProperty.call(elementValues, key)) {
+                        let value = elementValues[key];
+                        if (Array.isArray(value)) {
+                            // Converts array
+                            const finalValue = [];
+                            for (const m in value) {
+                                if (!(value.hasOwnProperty(m))) {
+                                    continue;
+                                }
+                                let arrayValue = value[m];
+                                if ((typeof arrayValue === "object" || typeof arrayValue === "function") && (arrayValue !== null)) {
+                                    arrayValue = convertJsonToDmObject(arrayValue);
+                                }
+                                finalValue.push(arrayValue);
+                            }
+                            value = finalValue;
+                        }
+                        else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+                            // Converts to DmObject, if item is an object
+                            value = convertJsonToDmObject(value);
+                        }
+                        result.set(key, value);
+                    }
+                }
             }
+            const elementMetaClass = element["m"];
+            if (elementMetaClass !== undefined && elementMetaClass !== null) {
+                result.metaClass = elementMetaClass;
+            }
+            return result;
         }
+        let result2 = convertJsonToDmObject(converted);
         if (metaClass !== undefined && metaClass !== null) {
-            result.metaClass = metaClass;
+            result2.metaClass = metaClass;
         }
-        return result;
+        return result2;
     }
     exports.createObjectFromJson = createObjectFromJson;
 });

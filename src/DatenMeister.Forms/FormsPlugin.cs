@@ -408,7 +408,7 @@ namespace DatenMeister.Forms
         /// <param name="formDefinitionMode">The form definition mode being used</param>
         /// <param name="viewModeId">The current view mode id</param>
         /// <returns>The found element</returns>
-        public IElement? GetExtentForm(IExtent extent, FormDefinitionMode formDefinitionMode, string viewModeId = "")
+        public IElement? GetExtentForm(IExtent extent, FormDefinitionMode formDefinitionMode, string? viewModeId)
         {
             IElement? foundForm = null;
             if (formDefinitionMode.HasFlag(FormDefinitionMode.ViaFormFinder))
@@ -419,7 +419,7 @@ namespace DatenMeister.Forms
                     {
                         extentType = extent.GetConfiguration().ExtentType,
                         FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
-                        viewModeId = viewModeId
+                        viewModeId = viewModeId ?? ""
                     }).FirstOrDefault();
 
                 if (foundForm != null)
@@ -446,7 +446,7 @@ namespace DatenMeister.Forms
                     {
                         extentType = extent.GetConfiguration().ExtentType,
                         FormType = _DatenMeister._Forms.___FormType.TreeItemExtentExtension,
-                        viewModeId = viewModeId
+                        viewModeId = viewModeId ?? ""
                     });
             }
             
@@ -690,7 +690,7 @@ namespace DatenMeister.Forms
         /// <param name="formDefinitionMode">Defines the method how to retrieve the form</param>
         /// <param name="viewModeId">Defines the id of the view mode in which the user currently is</param>
         /// <returns>Found extent form</returns>
-        public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode, string viewModeId)
+        public IElement? GetItemTreeFormForObject(IObject element, FormDefinitionMode formDefinitionMode, string? viewModeId)
         {
             // Checks if the item to which the extent form is requested is an extent
             if (element is IExtent elementAsExtent)
@@ -722,7 +722,7 @@ namespace DatenMeister.Forms
                     extentType = extent.GetConfiguration().ExtentType,
                     metaClass = (element as IElement)?.getMetaClass(),
                     FormType = _DatenMeister._Forms.___FormType.TreeItemDetail,
-                    viewModeId = packageViewMode ?? viewModeId
+                    viewModeId = viewModeId ?? packageViewMode
                 }).FirstOrDefault();
 
                 if (foundForm != null)

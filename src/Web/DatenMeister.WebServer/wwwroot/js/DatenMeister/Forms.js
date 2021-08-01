@@ -30,19 +30,49 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     exports.Form = Form;
     class DetailForm {
         createViewForm(parent, workspace, uri) {
-            DataLoader.loadObjectByUri(workspace, uri).done(element => this.createViewFormByObject(parent, element, null));
+            var tthis = this;
+            // Load the object
+            var defer1 = DataLoader.loadObjectByUri(workspace, uri);
+            // Load the form
+            var defer2 = getDefaultFormForItem(workspace, uri, "");
+            // Wait for both
+            $.when(defer1, defer2).then(function (element, form) {
+                tthis.createViewFormByObject(parent, element, form);
+            });
             parent.empty();
             parent.text("createViewForm");
         }
         createViewFormByObject(parent, element, form) {
+            var _a, _b;
             parent.text("createViewFormByObject");
+            var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+            const tabs = form.get("tab");
+            for (let n in tabs) {
+                if (!tabs.hasOwnProperty(n)) {
+                    continue;
+                }
+                const tab = tabs[n];
+                var fields = tab.get("field");
+                for (let m in fields) {
+                    var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+                    if (!fields.hasOwnProperty(m)) {
+                        continue;
+                    }
+                    var field = fields[m];
+                    const name = field.get("name");
+                    $(".key", tr).text(name);
+                    $(".value", tr).text((_b = (_a = element.get(name)) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "unknown");
+                    parent.append(tr);
+                }
+            }
+            parent.append(table);
         }
     }
     exports.DetailForm = DetailForm;
     function getDefaultFormForItem(workspace, item, viewMode) {
         var r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
-            "api/default_for_item/" +
+            "api/forms/default_for_item/" +
             encodeURIComponent(workspace) +
             "/" +
             encodeURIComponent(item) +

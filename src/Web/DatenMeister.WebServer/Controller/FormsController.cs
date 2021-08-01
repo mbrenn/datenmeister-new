@@ -3,11 +3,9 @@ using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
-using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
-using DatenMeister.Modules.Json;
+using DatenMeister.Json;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +25,7 @@ namespace DatenMeister.WebServer.Controller
         }
         
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
-        public ActionResult<IItem> GetDefaultFormForItem(string workspaceId, string itemUrl, string viewMode)
+        public ActionResult<IItem> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
 
@@ -42,13 +40,13 @@ namespace DatenMeister.WebServer.Controller
 
             return new IItem
             {
-                item = DirectJsonConverter.ConvertToJsonWithDefaultParameter(form),
+                item = MofJsonConverter.ConvertToJsonWithDefaultParameter(form),
                 metaClass = ItemWithNameAndId.Create(form.getMetaClass())
             };
         }
         
         [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUrl}/{viewMode?}")]
-        public ActionResult<IItem> GetDefaultFormForExtent(string workspaceId, string extentUrl, string viewMode)
+        public ActionResult<IItem> GetDefaultFormForExtent(string workspaceId, string extentUrl, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);
@@ -66,7 +64,7 @@ namespace DatenMeister.WebServer.Controller
 
             return new IItem
             {
-                item = DirectJsonConverter.ConvertToJsonWithDefaultParameter(form),
+                item = MofJsonConverter.ConvertToJsonWithDefaultParameter(form),
                 metaClass = ItemWithNameAndId.Create(form.getMetaClass())
             };
         }

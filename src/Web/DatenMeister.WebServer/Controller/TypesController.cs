@@ -4,6 +4,7 @@ using System.Linq;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Json;
 using DatenMeister.Types;
 using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;

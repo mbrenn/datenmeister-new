@@ -73,7 +73,7 @@ namespace DatenMeister.WebServer
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapFallbackToPage("/Index");
+                // endpoints.MapFallbackToPage("/Index");
             });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions

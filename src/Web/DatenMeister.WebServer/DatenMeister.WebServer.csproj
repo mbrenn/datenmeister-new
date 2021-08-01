@@ -44,6 +44,7 @@
     <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
   </ItemGroup>

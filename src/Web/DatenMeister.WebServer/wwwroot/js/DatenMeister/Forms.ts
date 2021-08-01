@@ -17,17 +17,59 @@ export class Form
 export class DetailForm
 {
     createViewForm ( parent: JQuery<HTMLElement>, workspace: string, uri: string) {
-        DataLoader.loadObjectByUri(workspace, uri).done(
-            element => this.createViewFormByObject(parent, element, null)
-        );
+        var tthis = this;
+        
+        // Load the object
+        var defer1 = DataLoader.loadObjectByUri(workspace, uri);
+        
+        // Load the form
+        var defer2 = getDefaultFormForItem(workspace, uri, "");
+        
+        // Wait for both
+        $.when(defer1,  defer2).then(function (element, form) {
+            tthis.createViewFormByObject(parent, element,form);
+        });
         
         parent.empty();
         parent.text("createViewForm");
-        
     }
     
     createViewFormByObject ( parent: JQuery<HTMLElement>, element: DmObject, form: DmObject) {
         parent.text("createViewFormByObject");
+        
+        var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+
+        const tabs = form.get("tab");
+        for (let n in tabs)
+        {
+            if (!tabs.hasOwnProperty(n)) {
+                continue;
+            }
+            
+            const tab = tabs[n] as DmObject;
+                       
+            
+            var fields = tab.get("field");
+            for (let m in fields) {
+                var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+                
+                if (!fields.hasOwnProperty(m)) {
+                    continue;
+                }
+
+                var field = fields[m];
+                
+                const name = field.get("name") as any as string;                
+                $(".key", tr).text(name);
+                $(".value", tr).text(element.get(name)?.toString() ?? "unknown");
+                
+                parent.append(tr);
+            }
+            
+            
+        }
+        
+        parent.append(table);
     }
 }
 
@@ -36,7 +78,7 @@ export function getDefaultFormForItem(workspace: string, item: string,  viewMode
 
     ApiConnection.get<ApiModels.Out.IItem>(
         Settings.baseUrl +
-        "api/default_for_item/" +
+        "api/forms/default_for_item/" +
         encodeURIComponent(workspace) +
         "/" +
         encodeURIComponent(item) +

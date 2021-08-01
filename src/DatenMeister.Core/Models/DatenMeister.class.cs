@@ -978,6 +978,9 @@ namespace DatenMeister.Core.Models
                 public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
                 public IElement? @_tryMergedHeaderCells = null;
 
+                public static string @onlySetColumns = "onlySetColumns";
+                public IElement? @_onlySetColumns = null;
+
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
 
@@ -1035,6 +1038,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
                 public IElement? @_tryMergedHeaderCells = null;
+
+                public static string @onlySetColumns = "onlySetColumns";
+                public IElement? @_onlySetColumns = null;
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
@@ -1096,6 +1102,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
                 public IElement? @_tryMergedHeaderCells = null;
+
+                public static string @onlySetColumns = "onlySetColumns";
+                public IElement? @_onlySetColumns = null;
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;
@@ -1336,6 +1345,9 @@ namespace DatenMeister.Core.Models
 
                 public static string @tryMergedHeaderCells = "tryMergedHeaderCells";
                 public IElement? @_tryMergedHeaderCells = null;
+
+                public static string @onlySetColumns = "onlySetColumns";
+                public IElement? @_onlySetColumns = null;
 
                 public static string @idColumnName = "idColumnName";
                 public IElement? @_idColumnName = null;

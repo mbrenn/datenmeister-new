@@ -18,7 +18,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         
         public bool IsResponsible(IElement node)
         {
-            return node.getMetaClass()?.@equals(
+            return node.getMetaClass()?.equals(
                 _DatenMeister.TheOne.Actions.__PowershellExecutionAction) == true;
         }
 
@@ -32,7 +32,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
 
             File.WriteAllText(tempPath, script);
 
-            Logger.Info($"Powershell started");
+            Logger.Info("Powershell started");
             var startInfo = new ProcessStartInfo
             {
                 FileName = "powershell.exe", 
@@ -51,7 +51,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
             
             File.Delete(tempPath);
 
-            Logger.Info($"Powershell exited");
+            Logger.Info("Powershell exited");
         }
     }
 }

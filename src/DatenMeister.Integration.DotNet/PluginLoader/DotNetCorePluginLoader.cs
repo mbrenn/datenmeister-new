@@ -1,15 +1,13 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using BurnSystems.Logging;
+using DatenMeister.Plugins;
 #if !NET462
 using System.Runtime.Loader;
 #endif
-using BurnSystems.Logging;
-using DatenMeister.Plugins;
 
 namespace DatenMeister.Integration.DotNet.PluginLoader
 {

@@ -74,7 +74,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 var metaClass = configuration.getMetaClass()
                                 ?? throw new InvalidOperationException("MetaClass of configuration is not set");
 
-                var found = _mapping.FirstOrDefault(x => x.ConnectedMetaClass.@equals(metaClass));
+                var found = _mapping.FirstOrDefault(x => x.ConnectedMetaClass.equals(metaClass));
                 
                 if (found == null)
                 {
@@ -95,7 +95,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
         {
             lock (_mapping)
             {
-                return _mapping.Any(x=>x.ConnectedMetaClass.@equals(typeConfiguration));
+                return _mapping.Any(x=>x.ConnectedMetaClass.equals(typeConfiguration));
             }
         }
 

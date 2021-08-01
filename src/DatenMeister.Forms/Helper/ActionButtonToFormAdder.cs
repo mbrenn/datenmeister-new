@@ -37,13 +37,13 @@ namespace DatenMeister.Forms.Helper
             public void ModifyForm(FormCreationContext context, IElement form)
             {
                 if (
-                    (_parameter.MetaClass == null || context.MetaClass?.@equals(_parameter.MetaClass) == true) &&
+                    (_parameter.MetaClass == null || context.MetaClass?.equals(_parameter.MetaClass) == true) &&
                     (_parameter.FormType == null || context.FormType == _parameter.FormType) &&
                     (string.IsNullOrEmpty(context.ViewMode) || context.ViewMode == _parameter.ViewMode))
                 {
                     IElement? formWithFields = null;
                     var formMetaClass = form.getMetaClass();
-                    if (formMetaClass?.@equals(_DatenMeister.TheOne.Forms.__ExtentForm) == true)
+                    if (formMetaClass?.equals(_DatenMeister.TheOne.Forms.__ExtentForm) == true)
                     {
                         formWithFields = FormMethods.GetDetailForms(form).FirstOrDefault();
                         if (formWithFields == null)

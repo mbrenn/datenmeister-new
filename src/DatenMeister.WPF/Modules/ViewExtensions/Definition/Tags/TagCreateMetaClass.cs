@@ -15,7 +15,7 @@ namespace DatenMeister.WPF.Modules.ViewExtensions.Definition.Tags
         {
             if (obj is TagCreateMetaClass other)
             {
-                return MetaClass.@equals(other.MetaClass);
+                return MetaClass.equals(other.MetaClass);
             }
 
             return false;

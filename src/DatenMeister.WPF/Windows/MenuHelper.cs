@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Ribbon;
 using BurnSystems.Logging;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
-using Menu = System.Windows.Controls.Menu;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace DatenMeister.WPF.Windows
 {
@@ -106,13 +105,13 @@ namespace DatenMeister.WPF.Windows
             if (!string.IsNullOrEmpty(groupName))
             {
                 group = tab.Items.OfType<MenuItem>().FirstOrDefault(x => x.Header.ToString() == groupName);
-                if (@group == null)
+                if (group == null)
                 {
-                    @group = new MenuItem
+                    group = new MenuItem
                     {
                         Header = groupName
                     };
-                    tab.Items.Add(@group);
+                    tab.Items.Add(group);
                 }
             }
             else
@@ -148,7 +147,7 @@ namespace DatenMeister.WPF.Windows
                 }
             }
 
-            @group.Items.Add(button);
+            group.Items.Add(button);
         }
 
         private void ClearNavigationButtons()

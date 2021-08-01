@@ -12,12 +12,13 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime;
+using DatenMeister.Forms.FormCreator;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Windows;
+
 // ReSharper disable IdentifierTypo
 
 namespace DatenMeister.WPF.Navigation

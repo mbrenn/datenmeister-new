@@ -5,7 +5,6 @@ using DatenMeister.Core;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.DependencyInjection;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
 using StundenMeister.Logic;

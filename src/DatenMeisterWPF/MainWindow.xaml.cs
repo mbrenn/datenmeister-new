@@ -11,7 +11,6 @@ using DatenMeister.Core;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Locking;
 using DatenMeister.WPF;
@@ -68,7 +67,7 @@ namespace DatenMeisterWPF
             catch (IsLockedException exception)
             {
                 MessageBox.Show($"The following file is currently locked:\r\n\r\n{exception.FilePath}\r\n\r\n" +
-                                $"The Application will be closed. Please check whether another application is running.");
+                                "The Application will be closed. Please check whether another application is running.");
                 DoCloseWithoutAcknowledgement = true;
                 Close();
                 return;

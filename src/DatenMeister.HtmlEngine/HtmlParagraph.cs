@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace DatenMeister.HtmlEngine
 {
     public class HtmlParagraph : HtmlElement
@@ -16,7 +14,7 @@ namespace DatenMeister.HtmlEngine
 
         public override string ToString()
         {
-            return $"<p{AttributeString}\">{Paragraph}</p>";
+            return $"<p{AttributeString}>{Paragraph}</p>\r\n";
         }
     }
 }

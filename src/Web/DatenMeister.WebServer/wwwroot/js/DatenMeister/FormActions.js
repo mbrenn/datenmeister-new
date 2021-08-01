@@ -32,7 +32,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
         }
         static createZipExample(workspace) {
             ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: workspace })
-                .done(function (data) {
+                .done(data => {
                 document.location.reload();
             });
         }
@@ -41,7 +41,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 workspace: workspace,
                 extentUri: extentUri
             })
-                .done(function (data) {
+                .done(data => {
                 document.location.reload();
             });
         }
@@ -51,7 +51,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 extentUri: extentUri,
                 itemId: itemId
             })
-                .done(function (data) {
+                .done(data => {
                 Navigator.navigateToExtent(workspace, extentUri);
             });
         }
@@ -67,7 +67,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 extentUri: extentUri,
                 itemId: itemId
             })
-                .done(function (data) {
+                .done(data => {
                 document.location.reload();
             });
         }

@@ -155,7 +155,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
 
         public static IUriExtent GetExtentByManagementModel(this IWorkspaceLogic workspaceLogic, IElement modelElement)
         {
-            if (modelElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Management.__Extent) != true)
+            if (modelElement.getMetaClass()?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
             {
                 throw new InvalidOperationException(
                     $"The given element is not of type {_DatenMeister.TheOne.Management.__Extent}");

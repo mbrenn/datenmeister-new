@@ -29,9 +29,13 @@ namespace DatenMeister.WebServer.Controller
         {
             var zipExample = new ZipCodeExampleManager(_workspaceLogic,
                 new ExtentManager(_workspaceLogic, _scopeStorage), _scopeStorage);
-            zipExample.AddZipCodeExample(param.Workspace);
+            var result = zipExample.AddZipCodeExample(param.Workspace);
 
-            return new {success = true};
+            return new
+            {
+                success = true,
+                extentUri = result.contextURI()
+            };
         }
     }
 }

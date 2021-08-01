@@ -97,7 +97,7 @@ namespace DatenMeister.Forms
             return form
                 .get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field)
                 .OfType<IElement>()
-                .Any(x => x.getMetaClass()?.@equals(formAndFields.__MetaClassElementFieldData) ?? false);
+                .Any(x => x.getMetaClass()?.equals(formAndFields.__MetaClassElementFieldData) ?? false);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DatenMeister.Forms
 
             return fields
                 .OfType<IElement>()
-                .Any(x => x.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) ?? false);
+                .Any(x => x.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) ?? false);
         }
         
         /// <summary>
@@ -143,7 +143,7 @@ namespace DatenMeister.Forms
             foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
             {
                 if (tab is IElement asElement 
-                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
+                    && asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__DetailForm) == true)
                 {
                     yield return asElement;
                 }
@@ -160,7 +160,7 @@ namespace DatenMeister.Forms
             foreach (var tab in form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab))
             {
                 if (tab is IElement asElement 
-                    && asElement.getMetaClass()?.@equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                    && asElement.getMetaClass()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
                 {
                     yield return asElement;
                 }

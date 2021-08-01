@@ -45,7 +45,7 @@ namespace DatenMeister.WebServer.Pages
 
         public IReflectiveCollection? Items { get; set; }
 
-        private IObject? Form { get; set; }
+        public IObject? Form { get; set; }
 
         public readonly List<MofElement> Fields = new();
 
@@ -98,7 +98,7 @@ namespace DatenMeister.WebServer.Pages
                 var tableRow = new HtmlTableRow();
                 var cell = new HtmlTableCell(
                     new HtmlRawString(
-                        $"<a href=\"/Item" +
+                        "<a href=\"/Item" +
                         $"/{WebUtility.UrlEncode(Workspace)}" +
                         $"/{WebUtility.UrlEncode(Extent)}" +
                         $"/{WebUtility.UrlEncode((rowItem as IHasId)?.Id) ?? string.Empty}\">View</a>"));

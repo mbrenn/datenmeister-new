@@ -113,8 +113,8 @@ namespace DatenMeisterWPF
             {
                 MessageBox.Show(
                     $"An exception occured: \r\n\r\n{exception.Message}\r\n\r\nMore detail about " +
-                    $"the exception can be found in the log. " +
-                    $"Save your data and restart application. It might go well... or not...");
+                    "the exception can be found in the log. " +
+                    "Save your data and restart application. It might go well... or not...");
                 ClassLogger.Error(exception.ToString(), message);
             }
         }

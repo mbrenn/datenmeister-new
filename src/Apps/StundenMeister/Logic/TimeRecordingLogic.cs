@@ -99,7 +99,7 @@ namespace StundenMeister.Logic
                 var costCenter = recording.getOrDefault<IElement>(nameof(TimeRecording.costCenter));
                 if (costCenter != null)
                 {
-                    costCenterSet = list.FirstOrDefault(x=>x.CostCenter?.@equals(costCenter) == true);
+                    costCenterSet = list.FirstOrDefault(x=>x.CostCenter?.equals(costCenter) == true);
                     if (costCenterSet == null)
                     {
                         costCenterSet = new TimeRecordingSet

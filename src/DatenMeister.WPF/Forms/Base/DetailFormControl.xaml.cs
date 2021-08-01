@@ -21,7 +21,6 @@ using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
 using DatenMeister.Validators;
 using DatenMeister.WPF.Commands;
 using DatenMeister.WPF.Forms.Fields;
@@ -31,14 +30,6 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using Button = System.Windows.Controls.Button;
-using Clipboard = System.Windows.Clipboard;
-using ContextMenu = System.Windows.Controls.ContextMenu;
-using HorizontalAlignment = System.Windows.HorizontalAlignment;
-using MenuItem = System.Windows.Controls.MenuItem;
-using MessageBox = System.Windows.MessageBox;
-using TextBox = System.Windows.Controls.TextBox;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace DatenMeister.WPF.Forms.Base
 {
@@ -230,7 +221,7 @@ namespace DatenMeister.WPF.Forms.Base
             {
                 yield return new ItemButtonDefinition(
                     "Delete",
-                    (x) =>
+                    x =>
                     {
                         var name = NamedElementMethods.GetName(x);
                         if (
@@ -854,7 +845,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             // Calls the attached elements, if this method is not invoked 'externally'
-            if (element.@equals(DetailElement) && AttachedElement != null)
+            if (element.equals(DetailElement) && AttachedElement != null)
             {
                 foreach (var field in AttachedItemFields)
                 {

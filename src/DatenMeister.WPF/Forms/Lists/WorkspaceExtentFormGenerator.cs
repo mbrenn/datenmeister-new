@@ -21,8 +21,6 @@ using DatenMeister.Extent.Manager.Extents;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
@@ -34,8 +32,6 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using MessageBox = System.Windows.MessageBox;
-using PropertyValueChangedEventArgs = DatenMeister.WPF.Forms.Base.PropertyValueChangedEventArgs;
 
 namespace DatenMeister.WPF.Forms.Lists
 {
@@ -101,14 +97,14 @@ namespace DatenMeister.WPF.Forms.Lists
             formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Open Workspace-Folder",
-                    (x) => NavigatorForWorkspaces.OpenFolder(navigationHost),
+                    x => NavigatorForWorkspaces.OpenFolder(navigationHost),
                     null,
                     NavigationCategories.DatenMeister + ".Workspaces"));
 
             formDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Reset DatenMeister",
-                    (x) => NavigatorForWorkspaces.ResetDatenMeister(navigationHost),
+                    x => NavigatorForWorkspaces.ResetDatenMeister(navigationHost),
                     null,
                     NavigationCategories.DatenMeister + ".Workspaces"));
 
@@ -136,7 +132,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 
                 if (MessageBox.Show(
                         $"Are you sure to delete the workspace '{workspaceId}'? " +
-                        $"All included extents will also be deleted.", 
+                        "All included extents will also be deleted.", 
                         "Confirmation",
                         MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
@@ -183,7 +179,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             var viewDefinition = new FormDefinition("Extents", result)
             {
-                TabViewExtensionsFunction = (form) => new List<ViewExtension>
+                TabViewExtensionsFunction = form => new List<ViewExtension>
                 {
                     new RowItemButtonDefinition("Show Items", ShowItems, ItemListViewControl.ButtonPosition.Before),
                     new RowItemButtonDefinition("Save", SaveExtent),
@@ -232,7 +228,7 @@ namespace DatenMeister.WPF.Forms.Lists
             viewDefinition.ViewExtensions.Add(
                 new ItemMenuButtonDefinition(
                     "Load Extent",
-                    async (x) => await LoadExtentFromXmi(workspaceId, navigationHost, viewExtent),
+                    async x => await LoadExtentFromXmi(workspaceId, navigationHost, viewExtent),
                     Icons.ImportExcel,
                     NavigationCategories.DatenMeister + ".Extent"));
 

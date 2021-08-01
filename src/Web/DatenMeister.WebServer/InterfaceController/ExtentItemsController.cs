@@ -6,8 +6,6 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.WebServer.Models;
 
 namespace DatenMeister.WebServer.InterfaceController
@@ -87,8 +85,9 @@ namespace DatenMeister.WebServer.InterfaceController
         /// </summary>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="extentUrl">Url of the extent</param>
+        /// <param name="viewMode">View Mode to be used</param>
         /// <returns>ID of the item</returns>
-        public CollectionAndFormModel? GetItemsAndFormOfExtent(string workspaceId, string extentUrl)
+        public CollectionAndFormModel? GetItemsAndFormOfExtent(string workspaceId, string extentUrl, string? viewMode = null)
         {
             // Finds the specific items of the given extent
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl) as IUriExtent;
@@ -103,7 +102,8 @@ namespace DatenMeister.WebServer.InterfaceController
             // Find the matching form
             var extentForm = _formsPlugin.GetExtentForm(
                 extent,
-                FormDefinitionMode.Default);
+                FormDefinitionMode.Default,
+                viewMode ?? ViewModes.Default);
             if (extentForm == null)
             {
                 return null;

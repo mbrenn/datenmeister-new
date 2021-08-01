@@ -60,7 +60,7 @@ namespace DatenMeister.Core.EMOF.Implementation
             set => set("__uri", value);
         }
 
-        private IWorkspaceLogic? _cachedWorkspaceLogic = null;
+        private IWorkspaceLogic? _cachedWorkspaceLogic;
 
         /// <inheritdoc />
         public MofUriExtent(

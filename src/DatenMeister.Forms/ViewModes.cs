@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DatenMeister.Forms
+﻿namespace DatenMeister.Forms
 {
     /// <summary>
     /// Defines the default view node names and other static helper informations

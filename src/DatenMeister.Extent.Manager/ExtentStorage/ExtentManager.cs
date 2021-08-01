@@ -330,7 +330,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
                     (x.LoadingState == ExtentLoadingState.Loaded ||
                         x.LoadingState == ExtentLoadingState.LoadedReadOnly)
-                    && x.Extent?.@equals(extent) == true);
+                    && x.Extent?.equals(extent) == true);
             }
 
             return information;
@@ -369,7 +369,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             {
                 information = _extentStorageData.LoadedExtents.FirstOrDefault(x =>
                     x.LoadingState == ExtentLoadingState.Loaded &&
-                    x.Extent?.@equals(extent) == true);
+                    x.Extent?.equals(extent) == true);
             }
 
             return information?.Configuration;
@@ -444,7 +444,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                 if (doStore) StoreExtent(extent);
                 
                 var information = _extentStorageData.LoadedExtents.FirstOrDefault(x => 
-                    x.LoadingState == ExtentLoadingState.Loaded && x.Extent?.@equals(extent) == true);
+                    x.LoadingState == ExtentLoadingState.Loaded && x.Extent?.equals(extent) == true);
                 if (information != null)
                 {
                     _extentStorageData.LoadedExtents.Remove(information);
@@ -635,7 +635,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
                         catch (Exception exc)
                         {
                             Logger.Warn(
-                                $"Loading extent of " +
+                                "Loading extent of " +
                                 $"{configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri)} " +
                                 $"failed: {exc.Message}");
                             failedExtents.Add(configuration.getOrDefault<string>(_ExtentLoaderConfig.extentUri));

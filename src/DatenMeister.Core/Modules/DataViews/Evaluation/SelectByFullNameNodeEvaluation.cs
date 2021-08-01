@@ -17,7 +17,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
         {
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__SelectByFullNameNode);
+                   metaClass.equals(_DatenMeister.TheOne.DataViews.__SelectByFullNameNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
@@ -25,7 +25,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
             var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._SelectByFullNameNode.input);
             if (inputNode == null)
             {
-                Logger.Warn($"Input node not found");
+                Logger.Warn("Input node not found");
                 return new PureReflectiveSequence();
             }
 
@@ -34,7 +34,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
             var pathNode = viewNode.getOrDefault<string>(_DatenMeister._DataViews._SelectByFullNameNode.path);
             if (pathNode == null)
             {
-                Logger.Warn($"Path is not set");
+                Logger.Warn("Path is not set");
                 return new PureReflectiveSequence();
             }
 

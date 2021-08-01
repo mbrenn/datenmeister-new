@@ -10,7 +10,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Modules.TextTemplates;
+using DatenMeister.TextTemplates;
 using DatenMeister.WPF.Controls;
 using DatenMeister.WPF.Controls.GridControl;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
@@ -205,7 +205,7 @@ namespace DatenMeister.WPF.Forms.Base
             }
 
             var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-            if (fieldMetaClass?.@equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
+            if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__EvalTextFieldData) == true)
             {
                 var cellInformation = InMemoryObject.CreateEmpty();
                 var defaultText = name != null ? element.getOrDefault<string>(name) : string.Empty;

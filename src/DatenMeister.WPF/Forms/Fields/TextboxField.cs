@@ -8,7 +8,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.WPF.Forms.Base;
-using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace DatenMeister.WPF.Forms.Fields
 {
@@ -73,48 +72,46 @@ namespace DatenMeister.WPF.Forms.Fields
 
                 return contentBlock;
             }
+
+            _contentBlock = new TextBox
+            {
+                Text = _valueText,
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+
+            if (width > 0)
+            {
+                _contentBlock.Width = 10 * width;
+                _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
+            }
             else
             {
-                _contentBlock = new TextBox
-                {
-                    Text = _valueText,
-                    HorizontalAlignment = HorizontalAlignment.Stretch
-                };
-
-                if (width > 0)
-                {
-                    _contentBlock.Width = 10 * width;
-                    _contentBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                }
-                else
-                {
-                    _contentBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    _contentBlock.MinWidth = 200;
-                }
-
-                if (height > 0)
-                {
-                    _contentBlock.Height = 10 * height;
-                    _contentBlock.VerticalAlignment = VerticalAlignment.Top;
-                    _contentBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-                    _contentBlock.TextWrapping = TextWrapping.Wrap;
-                    _contentBlock.AcceptsReturn = true;
-                }
-                
-                _contentBlock.TextChanged += (x, y) =>
-                {
-                    var ev = PropertyValueChanged;
-                    ev?.Invoke(this,
-                        new PropertyValueChangedEventArgs(detailForm, _name)
-                        {
-                            NewValue = _contentBlock.Text
-                        });
-                };
-
-                fieldFlags.CanBeFocused = true;
-
-                return _contentBlock;
+                _contentBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                _contentBlock.MinWidth = 200;
             }
+
+            if (height > 0)
+            {
+                _contentBlock.Height = 10 * height;
+                _contentBlock.VerticalAlignment = VerticalAlignment.Top;
+                _contentBlock.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                _contentBlock.TextWrapping = TextWrapping.Wrap;
+                _contentBlock.AcceptsReturn = true;
+            }
+                
+            _contentBlock.TextChanged += (x, y) =>
+            {
+                var ev = PropertyValueChanged;
+                ev?.Invoke(this,
+                    new PropertyValueChangedEventArgs(detailForm, _name)
+                    {
+                        NewValue = _contentBlock.Text
+                    });
+            };
+
+            fieldFlags.CanBeFocused = true;
+
+            return _contentBlock;
         }
 
         public void CallSetAction(IObject element)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
@@ -8,8 +9,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormFinder;
 using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
@@ -29,7 +28,7 @@ namespace DatenMeister.WPF.Forms.Lists
             Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
         }
 
-        private void ExtentList_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void ExtentList_Loaded(object sender, RoutedEventArgs e)
         {
             SetContent(WorkspaceId);
         }
@@ -68,7 +67,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
             if (IsExtentSelectedInTreeview ||
                 SelectedItem is IElement selectedElement &&
-                selectedElement.metaclass?.@equals(_DatenMeister.TheOne.Management.__Workspace) == true)
+                selectedElement.metaclass?.equals(_DatenMeister.TheOne.Management.__Workspace) == true)
             {
                 var formDefinition =
                     overridingDefinition ??

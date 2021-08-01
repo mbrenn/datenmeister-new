@@ -8,7 +8,6 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
 
 namespace DatenMeister.Modules.Actions.ActionHandler
 {
@@ -18,7 +17,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler
         
         public bool IsResponsible(IElement node)
         {
-            return node.getMetaClass()?.@equals(
+            return node.getMetaClass()?.equals(
                 _DatenMeister.TheOne.Actions.__ExportToXmiAction) == true;
         }
 

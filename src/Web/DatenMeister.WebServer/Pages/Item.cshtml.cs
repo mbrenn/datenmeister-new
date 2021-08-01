@@ -4,17 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
-using BurnSystems;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Core.Uml.Helper;
-using DatenMeister.Extent.Forms;
 using DatenMeister.HtmlEngine;
-using DatenMeister.Modules.TextTemplates;
 using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Library.HtmlControls;
 using DatenMeister.WebServer.Models;
@@ -30,12 +26,17 @@ namespace DatenMeister.WebServer.Pages
         [Parameter] public string Extent { get; set; } = string.Empty;
 
         [Parameter] public string? Item { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the item url of the currently selected item
+        /// </summary>
+        public string ItemUrl => $"{Extent}#{Item}";
         
         private ExtentItemsController ExtentItemsController { get; set; }
 
         public IObject? FoundItem { get; set; }
 
-        private IObject? Form { get; set; }
+        public IObject? Form { get; set; }
 
         public readonly List<IElement> Fields = new();
 
@@ -142,7 +143,7 @@ namespace DatenMeister.WebServer.Pages
             foreach (var tab in
                 form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).OfType<MofElement>())
             {
-                if (tab.getMetaClassWithoutTracing()?.@equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
+                if (tab.getMetaClassWithoutTracing()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
                 {
                     fields.Add(
                         InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__TextFieldData)

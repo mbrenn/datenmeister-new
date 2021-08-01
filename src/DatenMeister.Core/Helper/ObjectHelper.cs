@@ -642,13 +642,23 @@ namespace DatenMeister.Core.Helper
         /// <returns>Enumeration of properties</returns>
         public static IEnumerable<string> GetPropertyNames(IObject value)
         {
-            return value switch
+            var list = new List<string>();
+
+            if (value is IElement element)
             {
-                IElement element when element.metaclass != null => ClassifierMethods.GetPropertyNamesOfClassifier(
-                    element.metaclass),
-                IObjectAllProperties knowsProperties => knowsProperties.getPropertiesBeingSet(),
-                _ => Array.Empty<string>()
-            };
+                var metaClass = element.getMetaClassWithoutTracing();
+                if (metaClass != null)
+                {
+                    list.AddRange(ClassifierMethods.GetPropertyNamesOfClassifier(metaClass));
+                }
+            }
+
+            if (value is IObjectAllProperties knowsProperties)
+            {
+                list.AddRange( knowsProperties.getPropertiesBeingSet());
+            }
+
+            return list.Distinct();
         }
     }
 }

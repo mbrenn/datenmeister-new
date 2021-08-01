@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Autofac;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -17,7 +18,6 @@ using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Information;
 using DatenMeister.WPF.Navigation;
-using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.ImportExtentManager
 {
@@ -101,7 +101,7 @@ namespace DatenMeister.WPF.Modules.ImportExtentManager
                     }
 
                     var metaClass = selectedExtent.getMetaClass();
-                    if (metaClass?.@equals(_DatenMeister.TheOne.Management.__Extent) != true)
+                    if (metaClass?.equals(_DatenMeister.TheOne.Management.__Extent) != true)
                     {
                         MessageBox.Show("Selected element does not reference an extent");
                         return;

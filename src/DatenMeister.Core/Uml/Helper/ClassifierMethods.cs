@@ -192,7 +192,7 @@ namespace DatenMeister.Core.Uml.Helper
                 foreach (var elementInExtent in
                     AllDescendentsQuery.GetDescendents(workspace.GetAllElements())
                         .OfType<IElement>()
-                        .Where(elementInExtent => classInstance.@equals(elementInExtent.getMetaClass()))
+                        .Where(elementInExtent => classInstance.equals(elementInExtent.getMetaClass()))
                         .Where(elementInExtent => !visitedElements.Contains(elementInExtent)))
                 {
                     var generalizations = GetGeneralizations(elementInExtent).ToList();
@@ -237,7 +237,8 @@ namespace DatenMeister.Core.Uml.Helper
         }
 
         /// <summary>
-        /// Gets the information whether the specialized classifier can be generalized to the generalizedClassifier
+        /// Gets the information whether the specialized classifier can be generalized to the generalizedClassifier.
+        /// The classifier itself is also considered as valid
         /// </summary>
         /// <param name="specializedClassifier">Special class which is checked</param>
         /// <param name="generalizedClassifier">The class against the specialized will be checked against. </param>
@@ -249,7 +250,7 @@ namespace DatenMeister.Core.Uml.Helper
                 return false;
             }
 
-            if (specializedClassifier.@equals(generalizedClassifier))
+            if (specializedClassifier.equals(generalizedClassifier))
             {
                 return true;
             }

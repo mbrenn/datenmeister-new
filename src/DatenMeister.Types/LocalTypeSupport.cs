@@ -8,6 +8,7 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Exceptions;
+using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Provider.DotNet;
@@ -104,8 +105,11 @@ namespace DatenMeister.Types
             // Creates the workspace and extent for the types layer which are belonging to the types
             var extentTypes = new MofUriExtent(
                 new InMemoryProvider(),
-                WorkspaceNames.UriExtentInternalTypes);
-            extentTypes.LocalSlimUmlEvaluation = true;
+                WorkspaceNames.UriExtentInternalTypes)
+            {
+                LocalSlimUmlEvaluation = true
+            };
+            
             var typeWorkspace = _workspaceLogic.GetTypesWorkspace();
             extentTypes.GetConfiguration().ExtentType = UmlPlugin.ExtentType;
             _workspaceLogic.AddExtent(typeWorkspace, extentTypes);
@@ -117,15 +121,18 @@ namespace DatenMeister.Types
         /// </summary>
         private void CreatesUserTypeExtent()
         {
-            var foundExtent = _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
-                WorkspaceNames.WorkspaceTypes,
-                WorkspaceNames.UriExtentUserTypes,
-                "DatenMeister.Types_User",
-                UmlPlugin.ExtentType,
-                _integrationSettings.InitializeDefaultExtents ? ExtentCreationFlags.CreateOnly : ExtentCreationFlags.LoadOrCreate
-            );
-            
-            if( foundExtent == null )
+            var foundExtent =
+                _extentCreator.GetOrCreateXmiExtentInInternalDatabase(
+                    WorkspaceNames.WorkspaceTypes,
+                    WorkspaceNames.UriExtentUserTypes,
+                    "DatenMeister.Types_User",
+                    UmlPlugin.ExtentType,
+                    _integrationSettings.InitializeDefaultExtents
+                        ? ExtentCreationFlags.CreateOnly
+                        : ExtentCreationFlags.LoadOrCreate
+                );
+
+            if (foundExtent == null)
                 throw new InvalidOperationException("Extent for users is not found");
 
             // Creates the user types, if not existing
@@ -379,6 +386,24 @@ namespace DatenMeister.Types
             }
 
             return (factory ?? InMemoryObject.TemporaryFactory).create(foundMetaClass);
+        }
+
+        /// <summary>
+        /// Gets all types within all extents
+        /// </summary>
+        /// <param name="workspace">Used workspace</param>
+        /// <returns>Enumeration of all types within the</returns>
+        public IReflectiveCollection GetAllTypes(string? workspace = null)
+        {
+            var workspaceTypes = _workspaceLogic.GetWorkspace(workspace ?? WorkspaceNames.WorkspaceTypes)
+                                      ?? throw new InvalidOperationException("Workspace is not found");
+            
+            var elements = workspaceTypes.GetAllDescendents(false);
+            var foundElements = 
+                elements.WhenMetaClassIsOrSpecialized(
+                _UML.TheOne.Classification.__Classifier);
+
+            return foundElements;
         }
     }
 }

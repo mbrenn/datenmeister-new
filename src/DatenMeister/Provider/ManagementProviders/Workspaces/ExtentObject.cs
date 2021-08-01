@@ -4,8 +4,8 @@ using DatenMeister.Core.EMOF.Implementation.AutoEnumerate;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using Workspace = DatenMeister.Core.Runtime.Workspaces.Workspace;
 
 namespace DatenMeister.Provider.ManagementProviders.Workspaces
 {
@@ -146,7 +146,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
                 (e, v) => throw new InvalidOperationException("state cannot be set"));
 
             AddContainerMapping(
-                (x) => new WorkspaceObject(provider, parentWorkspace),
+                x => new WorkspaceObject(provider, parentWorkspace),
                 (_, value) => { }
             );
         }

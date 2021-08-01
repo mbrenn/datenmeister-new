@@ -23,7 +23,7 @@ namespace DatenMeister.Excel.EMOF
         /// <summary>
         /// Gets the provider as a typed instance
         /// </summary>
-        public ExcelProvider ExcelProvider => (ExcelProvider)Provider;
+        public ExcelProvider ExcelProvider => Provider;
 
         /// <summary>
         /// Gets or sets the columns and their names

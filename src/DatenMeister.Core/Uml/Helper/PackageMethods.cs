@@ -216,10 +216,8 @@ namespace DatenMeister.Core.Uml.Helper
             {
                 return asExtent.elements();
             }
-            else
-            {
-                return package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
-            }
+
+            return package.get<IReflectiveCollection>(_UML._Packages._Package.packagedElement);
         }
 
         /// <summary>
@@ -334,10 +332,8 @@ namespace DatenMeister.Core.Uml.Helper
                     throw new InvalidOperationException(
                         $"sourcePackage == null. Probably {sourcePackageName} not found");
                 }
-                else
-                {
-                    return null;
-                }
+
+                return null;
             }
 
             if (string.IsNullOrEmpty(targetPackageName))

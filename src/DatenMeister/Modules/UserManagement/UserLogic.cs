@@ -11,7 +11,6 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration;
 using DatenMeister.Plugins;
 using DatenMeister.Runtime.Functions.Algorithm;
 using DatenMeister.Types;
@@ -136,7 +135,7 @@ namespace DatenMeister.Modules.UserManagement
 
                     if (_types == null)
                     {
-                        throw new InvalidOperationException($"_extent or _types are null");
+                        throw new InvalidOperationException("_extent or _types are null");
                     }
 
                     if (!(_extent.elements().WhenMetaClassIs(_settingsMetaClass).FirstOrDefault() is IElement))

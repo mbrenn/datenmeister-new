@@ -6,8 +6,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
-using DatenMeister.Integration;
-using DatenMeister.Modules.Reports.Simple;
+using DatenMeister.Reports.Simple;
 
 namespace DatenMeister.Modules.Actions.ActionHandler.Reports
 {
@@ -18,7 +17,7 @@ namespace DatenMeister.Modules.Actions.ActionHandler.Reports
     {
         public bool IsResponsible(IElement node)
         {
-            return node.getMetaClass()?.@equals(
+            return node.getMetaClass()?.equals(
                 _DatenMeister.TheOne.Actions.Reports.__SimpleReportAction) == true;
         }
 

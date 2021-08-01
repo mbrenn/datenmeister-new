@@ -163,13 +163,13 @@ namespace DatenMeister.WPF.Windows
             }
 
             var group = tab.Items.OfType<RibbonGroup>().FirstOrDefault(x => x.Header.ToString() == groupName);
-            if (@group == null)
+            if (group == null)
             {
-                @group = new RibbonGroup
+                group = new RibbonGroup
                 {
                     Header = groupName
                 };
-                tab.Items.Add(@group);
+                tab.Items.Add(group);
             }
 
             var button = new RibbonButton
@@ -204,7 +204,7 @@ namespace DatenMeister.WPF.Windows
                 }
             }
 
-            @group.Items.Add(button);
+            group.Items.Add(button);
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ export class FormActions {
             Settings.baseUrl + "api/zip/create",
             {workspace: workspace})
             .done(
-                function (data) {
+                data => {
                     document.location.reload();
                 });
     }
@@ -28,7 +28,7 @@ export class FormActions {
                 extentUri: extentUri
             })
             .done(
-                function (data) {
+                data => {
                     document.location.reload();
                 });
     }
@@ -42,7 +42,7 @@ export class FormActions {
                 itemId: itemId
             })
             .done(
-                function (data) {
+                data => {
                     Navigator.navigateToExtent(workspace, extentUri);
                 });
     }
@@ -63,7 +63,7 @@ export class FormActions {
                 itemId: itemId
             })
             .done(
-                function (data) {
+                data => {
                     document.location.reload();
                 });
     }

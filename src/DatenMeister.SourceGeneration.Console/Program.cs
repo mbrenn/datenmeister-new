@@ -27,6 +27,8 @@ namespace DatenMeister.SourceGeneration.Console
             //CreateSourceCodeForDatenMeister();
 
             CreateSourceCodeForDatenMeisterAllTypes();
+            
+            System.Console.WriteLine("Closing Source Code Generator");
 
 #if !DEBUG
             File.Copy($"{R}/primitivetypes.cs", $"{R}/../DatenMeister.Core/Models/EMOF/primitivetypes.cs", true);

@@ -108,7 +108,7 @@ namespace DatenMeister.Core.Modules.DataViews
             var metaClass = viewNode.getMetaClass();
             if (metaClass == null)
             {
-                Logger.Warn($"Unknown type of viewnode: null");
+                Logger.Warn("Unknown type of viewnode: null");
                 return new PureReflectiveSequence();
             }
 

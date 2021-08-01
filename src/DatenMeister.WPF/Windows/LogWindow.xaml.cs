@@ -3,6 +3,7 @@
 using System;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.WPF.Helper;
@@ -86,7 +87,7 @@ namespace DatenMeister.WPF.Windows
             MessageBox.Show("Text copied to clipboard");
         }
 
-        private void SelectedLogLevels_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void SelectedLogLevels_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (_firstSet)
             {

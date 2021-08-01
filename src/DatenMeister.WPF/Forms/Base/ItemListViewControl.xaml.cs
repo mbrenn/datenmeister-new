@@ -17,18 +17,11 @@ using DatenMeister.Core.Runtime.ChangeEvents;
 using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.FastViewFilter;
-using DatenMeister.Modules.Forms;
 using DatenMeister.WPF.Helper;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.GuiElements;
 using DatenMeister.WPF.Navigation;
-using Clipboard = System.Windows.Clipboard;
-using ContextMenu = System.Windows.Controls.ContextMenu;
-using MenuItem = System.Windows.Controls.MenuItem;
-using UserControl = System.Windows.Controls.UserControl;
-
-
 
 namespace DatenMeister.WPF.Forms.Base
 {

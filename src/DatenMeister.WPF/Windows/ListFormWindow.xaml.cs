@@ -35,23 +35,21 @@ namespace DatenMeister.WPF.Windows
             {
                 return await Navigator.NavigateByCreatingAWindow(this, factoryMethod, navigationMode);
             }
-            else
-            {
-                MainViewSet.Content = factoryMethod();
-                if (MainViewSet.Content is INavigationGuest navigationGuest)
-                {
-                    navigationGuest.NavigationHost = this;
-                }
 
-                var task = new TaskCompletionSource<NavigateToElementDetailResult?>();
-                task.SetResult(new NavigateToElementDetailResult
-                {
-                    NavigationGuest = MainViewSet as INavigationGuest,
-                    NavigationHost = this,
-                    Result = NavigationResult.None
-                });
-                return await task.Task;
+            MainViewSet.Content = factoryMethod();
+            if (MainViewSet.Content is INavigationGuest navigationGuest)
+            {
+                navigationGuest.NavigationHost = this;
             }
+
+            var task = new TaskCompletionSource<NavigateToElementDetailResult?>();
+            task.SetResult(new NavigateToElementDetailResult
+            {
+                NavigationGuest = MainViewSet as INavigationGuest,
+                NavigationHost = this,
+                Result = NavigationResult.None
+            });
+            return await task.Task;
         }
 
         public void AddNavigationButton(string name, Action clickMethod, string imageName, string categoryName)

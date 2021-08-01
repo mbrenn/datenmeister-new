@@ -66,7 +66,7 @@ namespace DatenMeister.Core.Functions.Queries
             }
             else
             {
-                if (metaClass != null && _filteredMetaClass?.Any(x => x.@equals(metaClass)) == true)
+                if (metaClass != null && _filteredMetaClass?.Any(x => x.equals(metaClass)) == true)
                 {
                     isIn = true;
                 }

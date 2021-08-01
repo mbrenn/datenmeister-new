@@ -186,7 +186,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
             yield return "id";
         }
 
-        public bool @equals(object? other) => throw new NotImplementedException();
+        public bool equals(object? other) => throw new NotImplementedException();
 
         public object get(string property)
         {

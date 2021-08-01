@@ -14,16 +14,15 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Copier;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Forms;
+using DatenMeister.Forms.FormCreator;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
-using DatenMeister.Modules.Forms.FormCreator;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition.Buttons;
 using DatenMeister.WPF.Navigation;
 using DatenMeister.WPF.Windows;
-using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Modules.FormManager
 {
@@ -261,26 +260,26 @@ namespace DatenMeister.WPF.Modules.FormManager
                 {
                     yield return new ItemMenuButtonDefinition(
                         "Create Extent Form by Classifier",
-                        (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ExtentForm),
+                        x => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ExtentForm),
                         null,
                         "Form.Form Manager");
 
                     yield return new ItemMenuButtonDefinition(
                         "Create Detail Form by Classifier",
-                        (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.DetailForm),
+                        x => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.DetailForm),
                         null,
                         "Form.Form Manager");
 
                     yield return new ItemMenuButtonDefinition(
                         "Create List Form by Classifier",
-                        (x) => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ListForm),
+                        x => AskUserAndCreateFormInstance(itemExplorerControl, CreateFormByClassifierType.ListForm),
                         null,
                         "Form.Form Manager");
 
 
                     yield return new ItemMenuButtonDefinition(
                         "Create Forms and Association",
-                        (x) => AskUserForFormsAndAssociation(itemExplorerControl),
+                        x => AskUserForFormsAndAssociation(itemExplorerControl),
                         null,
                         "Form.Form Manager");
                 }

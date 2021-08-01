@@ -128,27 +128,25 @@ namespace DatenMeister.Core.Provider.DotNet
                 {
                     return new UriReference(mofObjectShadow.Uri);
                 }
-                else
+
+                MofObject asMofObject = result as MofObject ??
+                                        throw new InvalidOperationException(
+                                            "asMofObject is not result");
+                var otherProvider = asMofObject?.ProviderObject.Provider;
+                if (asMofObject != null && otherProvider == provider)
                 {
-                    MofObject asMofObject = result as MofObject ??
-                                             throw new InvalidOperationException(
-                                                 "asMofObject is not result");
-                    var otherProvider = asMofObject?.ProviderObject.Provider;
-                    if (asMofObject != null && otherProvider == provider)
-                    {
-                        // Returns the given element itself, if it is an MofElement or MofObject
-                        return asMofObject.ProviderObject;
-                    }
-
-                    var uriExtent = asMofObject?.GetUriExtentOf()
-                                    ?? throw new InvalidOperationException("No UriExtent connected");
-                    var asElement = asMofObject as IElement
-                                    ?? throw new InvalidOperationException("Element is not an IElement");
-                    var uri = uriExtent.uri(asElement) ?? throw new InvalidOperationException("Uri not found");
-
-                    // It is from another provider, so we have to create a urireference
-                    return new UriReference(uri);
+                    // Returns the given element itself, if it is an MofElement or MofObject
+                    return asMofObject.ProviderObject;
                 }
+
+                var uriExtent = asMofObject?.GetUriExtentOf()
+                                ?? throw new InvalidOperationException("No UriExtent connected");
+                var asElement = asMofObject as IElement
+                                ?? throw new InvalidOperationException("Element is not an IElement");
+                var uri = uriExtent.uri(asElement) ?? throw new InvalidOperationException("Uri not found");
+
+                // It is from another provider, so we have to create a urireference
+                return new UriReference(uri);
             }
 
             var dotNetResult = provider.CreateDotNetProviderObject(result);

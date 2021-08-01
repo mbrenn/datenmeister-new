@@ -1,4 +1,4 @@
-﻿#nullable enable 
+﻿#nullable enable
 
 using System;
 using DatenMeister.Core.EMOF.Interface.Identifiers;

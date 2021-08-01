@@ -16,7 +16,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
             
             var metaClass = node.getMetaClass();
             return metaClass != null &&
-                   metaClass.@equals(_DatenMeister.TheOne.DataViews.__FlattenNode);
+                   metaClass.equals(_DatenMeister.TheOne.DataViews.__FlattenNode);
         }
 
         public IReflectiveCollection Evaluate(DataViewEvaluation evaluation, IElement viewNode)
@@ -24,7 +24,7 @@ namespace DatenMeister.Core.Modules.DataViews.Evaluation
             var inputNode = viewNode.getOrDefault<IElement>(_DatenMeister._DataViews._FlattenNode.input);
             if (inputNode == null)
             {
-                Logger.Warn($"Input node not found");
+                Logger.Warn("Input node not found");
                 return new PureReflectiveSequence();
             }
 

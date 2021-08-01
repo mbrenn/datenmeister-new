@@ -104,7 +104,7 @@ namespace DatenMeister.Core.EMOF.Implementation
 
         /// <inheritdoc />
         public override bool Equals(object? obj)
-            => @equals(obj);
+            => equals(obj);
 
         /// <summary>
         /// Verifies if the two elements reference to the same instance
@@ -166,7 +166,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         }
 
         /// <inheritdoc />
-        public bool @equals(object? other)
+        public bool equals(object? other)
             => AreEqual(this, other as IObject);
 
         /// <inheritdoc />
@@ -239,7 +239,7 @@ namespace DatenMeister.Core.EMOF.Implementation
                 case UriReference valueAsUriReference:
                 {
                     var extentResolver = container.Extent as IUriResolver ?? container.ReferencedExtent as IUriResolver;
-                    var resolved = extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default);
+                    var resolved = extentResolver?.Resolve(valueAsUriReference.Uri, ResolveType.Default, false);
                     return resolved ?? new MofObjectShadow(valueAsUriReference.Uri);
                 }
                 default:

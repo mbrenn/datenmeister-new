@@ -18,7 +18,7 @@ namespace DatenMeister.Extent.Manager.Extents
             _extent = extent ?? throw new ArgumentNullException(nameof(extent));
         }
 
-        public bool @equals(object? other) => other is IExtent extent && _extent.@equals(extent);
+        public bool equals(object? other) => other is IExtent extent && _extent.equals(extent);
 
         public object? get(string property) => _extent.get(property);
 

@@ -28,15 +28,13 @@ namespace DatenMeister.Core.Functions.Queries
                 var reflectiveCollection = element.get<IReflectiveCollection>(childrenProperty);
                 return GetChildWithProperty(reflectiveCollection, queryProperty, queryValue);
             }
-            else
-            {
-                var withProperties = element as IObjectAllProperties ??
-                                     throw new InvalidOperationException(
-                                         "Given element is not of IObjectAllProperties and no childrenProperty is set");
 
-                // No go through all
-                return withProperties.getPropertiesBeingSet().Select(property => GetChildWithProperty(element, property, queryProperty, queryValue)).FirstOrDefault(result => result != null);
-            }
+            var withProperties = element as IObjectAllProperties ??
+                                 throw new InvalidOperationException(
+                                     "Given element is not of IObjectAllProperties and no childrenProperty is set");
+
+            // No go through all
+            return withProperties.getPropertiesBeingSet().Select(property => GetChildWithProperty(element, property, queryProperty, queryValue)).FirstOrDefault(result => result != null);
         }
 
         /// <summary>

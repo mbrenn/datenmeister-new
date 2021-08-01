@@ -1,4 +1,3 @@
-using System.Reflection;
 using DatenMeister.Integration.DotNet;
 using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Library;
@@ -74,7 +73,7 @@ namespace DatenMeister.WebServer
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapFallbackToPage("/Index");
+                // endpoints.MapFallbackToPage("/Index");
             });
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions

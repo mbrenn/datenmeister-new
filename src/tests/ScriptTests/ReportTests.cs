@@ -2,19 +2,20 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using Autofac;
+using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.Core;
+using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Reports;
-using DatenMeister.Modules.Reports.Simple;
 using DatenMeister.Modules.ZipCodeExample;
+using DatenMeister.Reports;
+using DatenMeister.Reports.Simple;
 
 namespace ScriptTests
 {
@@ -31,8 +32,8 @@ namespace ScriptTests
 
         public static void TestReports(bool doIssues , IElement configuration)
         {
-            BurnSystems.Logging.TheLog.ClearProviders();
-            BurnSystems.Logging.TheLog.AddProvider(new ConsoleProvider());
+            TheLog.ClearProviders();
+            TheLog.AddProvider(new ConsoleProvider());
 
             var settings = new IntegrationSettings {DatabasePath = Path.Combine(GetScriptFolder(), "tmp")};
 
@@ -40,7 +41,7 @@ namespace ScriptTests
 
             using (var dm = GiveMe.DatenMeister(settings))
             {
-                DatenMeister.Core.EMOF.Interface.Identifiers.IUriExtent testExtent;
+                IUriExtent testExtent;
                 if (doIssues)
                 {
                     var extentManager = dm.Resolve<ExtentManager>();

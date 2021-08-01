@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows;
 using Autofac;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -17,12 +18,11 @@ using DatenMeister.Extent.Manager.Extents;
 using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Extent.Manager.ExtentStorage.Validators;
+using DatenMeister.Forms;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Forms;
 using DatenMeister.Provider.ManagementProviders.View;
 using DatenMeister.WPF.Forms.Base;
 using DatenMeister.WPF.Forms.Lists;
-using MessageBox = System.Windows.MessageBox;
 
 namespace DatenMeister.WPF.Navigation
 {
@@ -174,9 +174,9 @@ namespace DatenMeister.WPF.Navigation
 
             if (navigateToItemConfig.Form == null)
             {
-                var text = $"The Form Definition in " +
+                var text = "The Form Definition in " +
                            $"{ManagementViewDefinitions.IdNewXmiDetailForm} " +
-                           $"was not found";
+                           "was not found";
                 Logger.Error(text);
                 
                 MessageBox.Show(text);

@@ -35,6 +35,8 @@ namespace DatenMeister.Reports.Simple
         /// </summary>
         private readonly IElement _reportConfiguration;
 
+        private ItemFormatter? _itemFormatter;
+
         /// <summary>
         /// Initializes a new instance of the simple report reportCreator. 
         /// </summary>
@@ -45,6 +47,16 @@ namespace DatenMeister.Reports.Simple
             _workspaceLogic = workspaceLogic;
             _reportConfiguration = simpleReportConfiguration;
             _formCreator = FormCreator.Create(workspaceLogic, null);
+        }
+
+        /// <summary>
+        /// Creates the report in a file
+        /// </summary>
+        /// <param name="filePath">Path of the file that shall be created</param>
+        public void CreateReportInFile(string filePath)
+        {
+            using var writer = new StreamWriter(filePath);
+            CreateReport(writer);
         }
 
         /// <summary>
@@ -70,9 +82,12 @@ namespace DatenMeister.Reports.Simple
             }
 
             using var report = new HtmlReport(textWriter);
-            var itemFormatter = new ItemFormatter(report, _workspaceLogic);
+            _itemFormatter = new ItemFormatter(report, _workspaceLogic);
 
             report.SetDefaultCssStyle();
+            
+            // And now start the report
+            report.StartReport("Extent: " + NamedElementMethods.GetName(rootElement));
 
             if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showRootElement))
             {
@@ -80,12 +95,9 @@ namespace DatenMeister.Reports.Simple
                 report.Add(new HtmlHeadline($"Reported Item '{name}'", 1));
                 var detailForm =
                     _formCreator.CreateDetailForm(rootElement, creationMode);
-                itemFormatter.FormatItem(rootElement, detailForm);
+                _itemFormatter.FormatItem(rootElement, detailForm);
             }
-
-            // And now start the report
-            report.StartReport("Extent: " + NamedElementMethods.GetName(rootElement));
-
+            
             // First, gets the elements to be shown
             IReflectiveCollection elements =
                 new TemporaryReflectiveCollection(DefaultClassifierHints.GetPackagedElements(rootElement));
@@ -94,13 +106,63 @@ namespace DatenMeister.Reports.Simple
                 elements = elements.GetAllCompositesIncludingThemselves();
             }
 
-            var first = (elements.FirstOrDefault(x => x is IElement) as IElement)?.metaclass;
-            Debug.WriteLine(first);
+            WriteReportForCollection(report, elements, creationMode);
 
+            report.EndReport();
+        }
+
+        /// <summary>
+        /// Creates the report in a file
+        /// </summary>
+        /// <param name="filePath">Path of the file that shall be created</param>
+        /// <param name="collection">Collection to be used for the items to be shown</param>
+        public void CreateReportForCollection(string filePath, IReflectiveCollection collection)
+        {
+            using var writer = new StreamWriter(filePath);
+            CreateReportForCollection(writer, collection);
+        }
+
+        /// <summary>
+        /// Creates the report for a collection of items.
+        /// The items are directly retrieved from the field itself, so the
+        /// configuration to identify the root element is not used
+        /// </summary>
+        /// <param name="textWriter">Text writer to be used</param>
+        /// <param name="collection">Reflective collection of elements to be shown</param>
+        public void CreateReportForCollection(TextWriter textWriter, IReflectiveCollection collection)
+        {
+            var creationMode = _reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showMetaClasses)
+                ? CreationMode.All
+                : CreationMode.All & ~CreationMode.AddMetaClass;
+
+            using var report = new HtmlReport(textWriter);
+            _itemFormatter = new ItemFormatter(report, _workspaceLogic);
+            
+            report.SetDefaultCssStyle();
+            report.StartReport("DatenMeister - Report");
+            WriteReportForCollection(report, collection, creationMode);
+            
+            report.EndReport();
+        }
+
+        /// <summary>
+        /// Writes the report for the attached elements
+        /// </summary>
+        /// <param name="report"></param>
+        /// <param name="elements"></param>
+        /// <param name="creationMode"></param>
+        /// <param name="itemFormatter"></param>
+        private void WriteReportForCollection(
+            IHtmlReport report,
+            IReflectiveCollection elements,
+            CreationMode creationMode)
+        {
             report.Add(new HtmlHeadline("Items in collection", 1));
 
             var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
-            if (_reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(_SimpleReportConfiguration.typeMode) == _Elements.___ReportTableForTypeMode.PerType)
+            if (_reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(
+                    _SimpleReportConfiguration.typeMode)
+                == _Elements.___ReportTableForTypeMode.PerType)
             {
                 // Splits them up by metaclasses 
                 var metaClasses =
@@ -132,7 +194,7 @@ namespace DatenMeister.Reports.Simple
 
                     AddFullNameColumnIfNecessary(foundForm);
 
-                    ReportItemCollection(collection, foundForm, itemFormatter);
+                    ReportItemCollection(collection, foundForm);
                 }
             }
             else
@@ -146,10 +208,8 @@ namespace DatenMeister.Reports.Simple
                     AddFullNameColumnIfNecessary(foundForm);
                 }
 
-                ReportItemCollection(elements, foundForm, itemFormatter);
+                ReportItemCollection(elements, foundForm);
             }
-
-            report.EndReport();
         }
 
         private void AddFullNameColumnIfNecessary(IObject foundForm)
@@ -164,12 +224,13 @@ namespace DatenMeister.Reports.Simple
             }
         }
 
-        private void ReportItemCollection(IReflectiveCollection metaClass, IObject form, ItemFormatter itemFormatter)
+        private void ReportItemCollection(IReflectiveCollection metaClass, IObject form)
         {
             // Gets the reflective sequence for the name
             var collection = new TemporaryReflectiveSequence(metaClass);
 
-            itemFormatter.FormatCollectionOfItems(collection, form);
+            Debug.Assert(_itemFormatter != null, nameof(_itemFormatter) + " != null");
+            _itemFormatter!.FormatCollectionOfItems(collection, form);
         }
     }
 }

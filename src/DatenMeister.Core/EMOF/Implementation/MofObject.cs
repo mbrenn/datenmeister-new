@@ -114,6 +114,11 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <returns></returns>
         public static bool AreEqual(IObject? first, IObject? second)
         {
+            if (first == null && second == null)
+            {
+                return true;
+            }
+            
             if (first == null || second == null)
             {
                 // If one is at least null, it shall be

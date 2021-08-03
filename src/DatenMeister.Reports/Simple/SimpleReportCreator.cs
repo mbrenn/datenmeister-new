@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -82,7 +80,7 @@ namespace DatenMeister.Reports.Simple
             }
 
             using var report = new HtmlReport(textWriter);
-            _itemFormatter = new ItemFormatter(report, _workspaceLogic);
+            _itemFormatter = new ItemFormatter(report);
 
             report.SetDefaultCssStyle();
             
@@ -136,7 +134,7 @@ namespace DatenMeister.Reports.Simple
                 : CreationMode.All & ~CreationMode.AddMetaClass;
 
             using var report = new HtmlReport(textWriter);
-            _itemFormatter = new ItemFormatter(report, _workspaceLogic);
+            _itemFormatter = new ItemFormatter(report);
             
             report.SetDefaultCssStyle();
             report.StartReport("DatenMeister - Report");
@@ -151,7 +149,6 @@ namespace DatenMeister.Reports.Simple
         /// <param name="report"></param>
         /// <param name="elements"></param>
         /// <param name="creationMode"></param>
-        /// <param name="itemFormatter"></param>
         private void WriteReportForCollection(
             IHtmlReport report,
             IReflectiveCollection elements,
@@ -159,78 +156,24 @@ namespace DatenMeister.Reports.Simple
         {
             report.Add(new HtmlHeadline("Items in collection", 1));
 
+            var reportTableMode =
+                _reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(
+                    _SimpleReportConfiguration.typeMode);
             var foundForm = _reportConfiguration.getOrDefault<IElement>(_SimpleReportConfiguration.form);
-            if (_reportConfiguration.getOrDefault<_Elements.___ReportTableForTypeMode>(
-                    _SimpleReportConfiguration.typeMode)
-                == _Elements.___ReportTableForTypeMode.PerType)
+            var addFullNameColumn =
+                _reportConfiguration.getOrDefault<bool>(_DatenMeister._Reports._SimpleReportConfiguration.showFullName);
+            var collectionReporter = new SimpleReportForCollection(
+                _formCreator,
+                _itemFormatter ?? throw new InvalidOperationException("itemFormatter is null"), 
+                report)
             {
-                // Splits them up by metaclasses 
-                var metaClasses =
-                    elements.GroupBy(
-                        x => x is IElement element ? element.metaclass : null,
-                        new MofObjectEqualityComparer()).ToList();
+                TableForTypeMode = reportTableMode,
+                Form = foundForm,
+                AddFullNameColumn = addFullNameColumn
+            };
+            
+            collectionReporter.WriteReportForCollection(elements, creationMode);
 
-                foreach (var metaClass in metaClasses)
-                {
-                    // Gets the name of the metaclass
-                    var metaClassName = metaClass.Key == null
-                        ? "Unclassified"
-                        : "Classifier: " + NamedElementMethods.GetName(metaClass.Key);
-
-                    report.Add(new HtmlHeadline(metaClassName, 2));
-
-                    var collection = new TemporaryReflectiveCollection(metaClass);
-
-                    if (metaClass.Key == null)
-                    {
-                        foundForm = _formCreator.CreateListFormForElements(
-                            collection,
-                            creationMode);
-                    }
-                    else
-                    {
-                        foundForm = _formCreator.CreateListFormForMetaClass(metaClass.Key, creationMode);
-                    }
-
-                    AddFullNameColumnIfNecessary(foundForm);
-
-                    ReportItemCollection(collection, foundForm);
-                }
-            }
-            else
-            {
-                if (foundForm == null)
-                {
-                    foundForm = _formCreator.CreateListFormForElements(
-                        elements,
-                        creationMode);
-
-                    AddFullNameColumnIfNecessary(foundForm);
-                }
-
-                ReportItemCollection(elements, foundForm);
-            }
-        }
-
-        private void AddFullNameColumnIfNecessary(IObject foundForm)
-        {
-            if (_reportConfiguration.getOrDefault<bool>(_SimpleReportConfiguration.showFullName))
-            {
-                // Create the metaclass as a field
-                var fullNamefield = MofFactory.Create(foundForm, _DatenMeister.TheOne.Forms.__FullNameFieldData);
-                fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Path");
-                fullNamefield.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Path");
-                foundForm.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, fullNamefield);
-            }
-        }
-
-        private void ReportItemCollection(IReflectiveCollection metaClass, IObject form)
-        {
-            // Gets the reflective sequence for the name
-            var collection = new TemporaryReflectiveSequence(metaClass);
-
-            Debug.Assert(_itemFormatter != null, nameof(_itemFormatter) + " != null");
-            _itemFormatter!.FormatCollectionOfItems(collection, form);
         }
     }
 }

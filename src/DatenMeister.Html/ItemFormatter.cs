@@ -7,7 +7,6 @@ using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
 using DatenMeister.HtmlEngine;
 
@@ -15,7 +14,7 @@ namespace DatenMeister.Html
 {
     public class ItemFormatter
     {
-        private readonly HtmlReport _htmlEngine;
+        private readonly IHtmlReport _htmlEngine;
 
         /// <summary>
         /// Defines the logger being used for this class
@@ -26,8 +25,7 @@ namespace DatenMeister.Html
         /// Initializes a new instance of the ItemFormatter class
         /// </summary>
         /// <param name="htmlEngine">Html engine to be used</param>
-        /// <param name="workspaceLogic">Workspace logic to be added</param>
-        public ItemFormatter(HtmlReport htmlEngine, IWorkspaceLogic workspaceLogic)
+        public ItemFormatter(IHtmlReport htmlEngine)
         {
             _htmlEngine = htmlEngine;
         }
@@ -67,14 +65,18 @@ namespace DatenMeister.Html
             var listFields = new List<HtmlElement>();
             foreach (var field in fields.OfType<IObject>())
             {
-                var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
+                var fieldName = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
+
+                fieldName = string.IsNullOrEmpty(fieldName)
+                    ? field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name)
+                    : fieldName;
                 if (fieldName == null)
                 {
                     continue;
                 }
 
                 listFields.Add(
-                    new HtmlTableCell(field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title ?? "unset"))
+                    new HtmlTableCell(fieldName)
                         {IsHeading = true});
             }
 

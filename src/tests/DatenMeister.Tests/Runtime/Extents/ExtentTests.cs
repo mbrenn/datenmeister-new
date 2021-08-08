@@ -17,6 +17,7 @@ using DatenMeister.Extent.Manager.Extents.Configuration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using DatenMeister.Modules.ZipCodeExample;
 using DatenMeister.Types;
 using DatenMeister.Types.Plugin;

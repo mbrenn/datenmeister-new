@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
+using DatenMeister.BootStrap;
 using DatenMeister.Core;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;

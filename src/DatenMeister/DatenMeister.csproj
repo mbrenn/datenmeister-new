@@ -20,7 +20,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Modules\PublicSettings\publicSettings.example" />
-    <EmbeddedResource Include="Modules\PublicSettings\publicSettings.example" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />
@@ -41,7 +40,11 @@
     <ProjectReference Include="..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
     <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
     <ProjectReference Include="..\DatenMeister.Provider.CSV\DatenMeister.Provider.CSV.csproj" />
+    <ProjectReference Include="..\DatenMeister.Provider.DynamicRuntime\DatenMeister.Provider.DynamicRuntime.csproj" />
     <ProjectReference Include="..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
     <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modules\Actions" />
   </ItemGroup>
 </Project>

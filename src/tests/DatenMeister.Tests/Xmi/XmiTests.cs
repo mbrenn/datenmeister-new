@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using DatenMeister.BootStrap;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
@@ -13,7 +14,6 @@ using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Provider.XMI;
-using DatenMeister.Uml;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi

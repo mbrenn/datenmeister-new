@@ -14,6 +14,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Excel.Integration;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
+using DatenMeister.Integration.DotNet;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Excel

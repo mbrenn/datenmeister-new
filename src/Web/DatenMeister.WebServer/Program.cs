@@ -3,9 +3,9 @@ using System.IO;
 using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
+using DatenMeister.BootStrap.PublicSettings;
 using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.PublicSettings;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

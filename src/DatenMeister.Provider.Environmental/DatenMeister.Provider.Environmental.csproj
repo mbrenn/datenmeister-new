@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
+      <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
+      <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
+    </ItemGroup>
+
+</Project>

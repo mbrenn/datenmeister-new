@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using DatenMeister.BootStrap.PublicSettings;
 using DatenMeister.Core.Helper;
-using DatenMeister.Modules.PublicSettings;
 using DatenMeister.Plugins;
 using DatenMeister.WPF.Modules.ViewExtensions;
 using DatenMeister.WPF.Modules.ViewExtensions.Definition;

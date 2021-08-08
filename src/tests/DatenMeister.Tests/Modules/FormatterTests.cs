@@ -1,5 +1,5 @@
+using DatenMeister.Core.Formatter;
 using DatenMeister.Core.Provider.InMemory;
-using DatenMeister.Modules.Formatter;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules

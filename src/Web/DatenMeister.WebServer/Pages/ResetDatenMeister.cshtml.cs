@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using Autofac;
+using DatenMeister.BootStrap;
+using DatenMeister.Core;
+using DatenMeister.Core.Helper;
+using DatenMeister.Core.Models;
+using DatenMeister.Core.Runtime.Workspaces;
+using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.Integration.DotNet;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace DatenMeister.WebServer.Pages
+{
+    public class ResetDatenMeister : PageModel
+    {
+        public string Action { get; set; }
+        public void OnGet()
+        {
+        }
+        
+        public void OnPost(string action)
+        {
+            if (action != "reset")
+            {
+                return;
+            }
+            // Ok... what to do now?
+            // Collect all files...
+            var files = new List<string>();
+            var workspaceLogic = GiveMe.Scope.Resolve<IWorkspaceLogic>();
+            var extentManager = GiveMe.Scope.Resolve<ExtentManager>();
+            var integrationSettings = GiveMe.Scope.ScopeStorage.Get<IntegrationSettings>();
+            foreach (var workspace in workspaceLogic.Workspaces)
+            {
+                if (workspace.id == WorkspaceNames.WorkspaceData)
+                {
+                    continue;
+                }
+
+                foreach (var extent in workspaceLogic.GetExtentsForWorkspace(workspace))
+                {
+                    var loadConfiguration = extentManager.GetLoadConfigurationFor(extent);
+                    if (loadConfiguration != null)
+                    {
+                        var extentStoragePath =
+                            loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                                ._ExtentFileLoaderConfig.filePath);
+
+                        if (extentStoragePath != null)
+                        {
+                            files.Add(extentStoragePath);
+                        }
+                    }
+                }
+            }
+
+            GiveMe.Scope.UnuseDatenMeister();
+            GiveMe.Scope = null!;
+
+            foreach (var file in files)
+            {
+                System.IO.File.Delete(file);
+            }
+
+            System.IO.File.Delete(Integrator.GetPathToWorkspaces(integrationSettings));
+            System.IO.File.Delete(Integrator.GetPathToExtents(integrationSettings));
+            
+            // Loads the DatenMeister
+            var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
+            defaultSettings.IsLockingActivated = true;
+            GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
+        }
+    }
+}

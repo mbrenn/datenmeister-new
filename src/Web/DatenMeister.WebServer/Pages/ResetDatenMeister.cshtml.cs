@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Autofac;
 using DatenMeister.BootStrap;
 using DatenMeister.Core;
@@ -8,14 +7,17 @@ using DatenMeister.Core.Models;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration.DotNet;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DatenMeister.WebServer.Pages
 {
     public class ResetDatenMeister : PageModel
     {
-        public string Action { get; set; }
+        /// <summary>
+        /// Gets or sets the information whether the restart has been performed
+        /// </summary>
+        public bool IsRestarted { get; set; }
+        
         public void OnGet()
         {
         }
@@ -67,10 +69,10 @@ namespace DatenMeister.WebServer.Pages
             System.IO.File.Delete(Integrator.GetPathToWorkspaces(integrationSettings));
             System.IO.File.Delete(Integrator.GetPathToExtents(integrationSettings));
             
-            // Loads the DatenMeister
-            var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
-            defaultSettings.IsLockingActivated = true;
-            GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
+            // Reloads the DatenMeister
+            IsRestarted = true;
+            Program.Stop(true);
+            
         }
     }
 }

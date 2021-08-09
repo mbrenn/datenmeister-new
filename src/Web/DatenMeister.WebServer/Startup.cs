@@ -40,10 +40,14 @@ namespace DatenMeister.WebServer
             services.AddSingleton(GiveMe.Scope.WorkspaceLogic);
             services.AddSingleton(GiveMe.Scope.ScopeStorage);
             
-            var extentController = new ExtentItemsController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+            var extentController = new ExtentItemsController(
+                GiveMe.Scope.WorkspaceLogic,
+                GiveMe.Scope.ScopeStorage);
             services.AddSingleton(extentController);
             
-            var workspaceController = new WorkspaceController(GiveMe.Scope.WorkspaceLogic, GiveMe.Scope.ScopeStorage);
+            var workspaceController = new WorkspaceController(
+                GiveMe.Scope.WorkspaceLogic,
+                GiveMe.Scope.ScopeStorage);
             services.AddSingleton(workspaceController);
         }
 

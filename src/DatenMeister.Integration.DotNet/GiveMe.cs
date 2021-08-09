@@ -90,23 +90,22 @@ namespace DatenMeister.Integration.DotNet
 
         public static IntegrationSettings GetDefaultIntegrationSettings()
         {
-            return new()
+            return new IntegrationSettings
             {
                 EstablishDataEnvironment = true,
-                DatabasePath = IntegrationSettings.DefaultDatabasePath,
-
+                DatabasePath = IntegrationSettings.DefaultDatabasePath
             };
         }
 
         public static PluginLoaderSettings GetDefaultPluginLoaderSettings()
         {
-            return new()
+            return new PluginLoaderSettings
             {
-            #if NET462
-                            PluginLoader = new DefaultPluginLoader()
-            #else
-                            PluginLoader = new DotNetCorePluginLoader()
-            #endif
+#if NET462
+                PluginLoader = new DefaultPluginLoader()
+#else
+                PluginLoader = new DotNetCorePluginLoader()
+#endif
             };
         }
 

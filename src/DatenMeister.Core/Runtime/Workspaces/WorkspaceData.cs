@@ -14,7 +14,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <summary>
         /// Stores the workspaces
         /// </summary>
-        public List<Workspace> Workspaces { get; set; } = new List<Workspace>();
+        public List<Workspace> Workspaces { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the default layer that shall be assumed, if no information is considered as available.
@@ -24,7 +24,6 @@ namespace DatenMeister.Core.Runtime.Workspaces
             get => _default;
             set => _default = value;
         }
-
 
         public Workspace Data
         {

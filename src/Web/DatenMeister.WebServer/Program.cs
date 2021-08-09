@@ -13,20 +13,42 @@ namespace DatenMeister.WebServer
 {
     public class Program
     {
+        /// <summary>
+        /// Stops the program and performs a restart, if required
+        /// </summary>
+        /// <param name="restart">Flag, whether the application shall be restarted</param>
+        public static async void Stop(bool restart = false)
+        {
+            if (_host == null) return; // Nothing to do
+            
+            _performRestart = restart;
+            await _host.StopAsync();
+        }
+
+        private static volatile bool _performRestart;
+
+        private static IHost? _host;
+        
         public static void Main(string[] args)
         {
             InitializeLogging();
 
-            // Loads the DatenMeister
-            var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
-            defaultSettings.IsLockingActivated = true;
-
-            GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
                 
             // Starts the webserver
-            CreateHostBuilder(args).Build().Run();
+            do
+            {
+                // Loads the DatenMeister
+                var defaultSettings = GiveMe.GetDefaultIntegrationSettings();
+                defaultSettings.IsLockingActivated = true;
+
+                GiveMe.Scope = GiveMe.DatenMeister(defaultSettings);
+                
+                _performRestart = false;
+                _host = CreateHostBuilder(args).Build();
+                _host.Run();
+            } while (_performRestart);
             
-            // Unloads the Datenmeister
+            // Unloads the DatenMeister
             GiveMe.TryGetScope()?.UnuseDatenMeister();
         }
 

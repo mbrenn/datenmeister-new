@@ -87,18 +87,18 @@ namespace DatenMeister.Json
 
             if (value is IElement asElement)
             {
-                var item = ItemWithNameAndId.Create(asElement);
+                var item = ItemWithNameAndId.Create(asElement.getMetaClass());
                 if (item != null)
                 {
                     builder.Append(", \"m\": {");
                     
-                    builder.Append($"\"name\": ");
+                    builder.Append("\"name\": ");
                     ConvertValue(builder, item.name, 0);
-                    builder.Append($", \"id\": ");
+                    builder.Append(", \"id\": ");
                     ConvertValue(builder, item.id, 0);
-                    builder.Append($", \"extentUri\": ");
+                    builder.Append(", \"extentUri\": ");
                     ConvertValue(builder, item.extentUri, 0);
-                    builder.Append($", \"fullName\": ");
+                    builder.Append(", \"fullName\": ");
                     ConvertValue(builder, item.fullName, 0);
 
                     builder.Append("}");
@@ -150,7 +150,7 @@ namespace DatenMeister.Json
                     komma = ",";
                 }
 
-                builder.Append($"]");
+                builder.Append("]");
             }
             else
             {

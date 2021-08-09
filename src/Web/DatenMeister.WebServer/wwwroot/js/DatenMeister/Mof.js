@@ -62,7 +62,7 @@ define(["require", "exports"], function (require, exports) {
     }
     exports.DmObject = DmObject;
     // Creates the given object from the included json
-    // The corresponding C# class is DatenMeister.Modules.Json.DirectJsonConverter.Convert
+    // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
     function createObjectFromJson(json, metaClass) {
         const converted = JSON.parse(json);
         function convertJsonToDmObject(element) {

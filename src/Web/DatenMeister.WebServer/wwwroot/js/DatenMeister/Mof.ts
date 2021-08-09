@@ -81,7 +81,7 @@ export class DmObject
 }
 
 // Creates the given object from the included json
-// The corresponding C# class is DatenMeister.Modules.Json.DirectJsonConverter.Convert
+// The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
 export function createObjectFromJson(json: string, metaClass?: ItemWithNameAndId): DmObject {
     const converted = JSON.parse(json);
 

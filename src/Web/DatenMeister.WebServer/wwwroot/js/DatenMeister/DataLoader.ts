@@ -23,8 +23,6 @@ export function loadObject(workspace: string, extent: string, id: string): JQuer
     return r;
 }
 
-
-
 export function loadObjectByUri(workspace: string, item: string): JQuery.Deferred<Mof.DmObject, never, never> {
     var r = jQuery.Deferred<Mof.DmObject, never, never>();
 

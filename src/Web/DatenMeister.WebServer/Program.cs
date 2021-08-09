@@ -4,7 +4,6 @@ using System.Reflection;
 using BurnSystems.Logging;
 using BurnSystems.Logging.Provider;
 using DatenMeister.BootStrap.PublicSettings;
-using DatenMeister.Integration;
 using DatenMeister.Integration.DotNet;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +31,6 @@ namespace DatenMeister.WebServer
         public static void Main(string[] args)
         {
             InitializeLogging();
-
                 
             // Starts the webserver
             do
@@ -88,7 +86,7 @@ namespace DatenMeister.WebServer
             TheLog.AddProvider(new ConsoleProvider(), LogLevel.Debug);
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

@@ -1,7 +1,28 @@
 ﻿import * as Settings from "./Settings";
 import * as ApiConnection from "./ApiConnection";
-
 import * as Navigator from "./Navigator";
+import {DmObject} from "./Mof";
+import {IForm} from "./Forms";
+
+export module DetailFormActions {
+    export function execute(actionName: string, form: IForm, element: DmObject) {
+        switch (actionName) {
+            case "ZipExample.CreateExample":
+                var id = element.get('id');
+                ApiConnection.post(
+                    Settings.baseUrl + "api/zip/create",
+                    {workspace: id})
+                    .done(
+                        data => {
+                            document.location.reload();
+                        });
+                break;
+            default:
+                alert("Unknown action type: " + actionName);
+                break;
+        }
+    }
+}
 
 export class FormActions {
     static extentNavigateTo(workspace: string, extentUri: string):void {

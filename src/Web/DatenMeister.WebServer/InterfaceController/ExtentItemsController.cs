@@ -37,14 +37,13 @@ namespace DatenMeister.WebServer.InterfaceController
         public ItemAndFormModel? GetItemAndForm(string workspaceId, string extentUrl, string? itemId)
         {
             // Finds the specific items of the given extent
-            IObject? foundElement;
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl) as IUriExtent;
             if (extent == null)
             {
                 return null;
             }
 
-            foundElement = extent;
+            IObject? foundElement = extent;
 
             if (!string.IsNullOrEmpty(itemId))
             {

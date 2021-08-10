@@ -17,10 +17,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings"], function (require, exports, Mof, DataLoader, ApiConnection, Settings) {
+define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./FormActions"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, FormActions_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.MetaClassElementFieldData = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
+    exports.ActionField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
     Mof = __importStar(Mof);
     DataLoader = __importStar(DataLoader);
     ApiConnection = __importStar(ApiConnection);
@@ -37,52 +37,73 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             var defer2 = getDefaultFormForItem(workspace, uri, "");
             // Wait for both
             $.when(defer1, defer2).then(function (element, form) {
-                tthis.createFormByObject(parent, element, form, true);
+                tthis.element = element;
+                tthis.formElement = form;
+                tthis.workspace = workspace;
+                tthis.uri = workspace;
+                tthis.createFormByObject(parent, true);
             });
             parent.empty();
-            parent.text("createViewForm");
+            parent.text("Loading content and form...");
         }
-        createFormByObject(parent, element, form, isReadOnly) {
-            parent.text("createViewFormByObject");
-            var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-            const tabs = form.get("tab");
+        createFormByObject(parent, isReadOnly) {
+            var _a;
+            parent.empty();
+            const tabs = this.formElement.get("tab");
             for (let n in tabs) {
                 if (!tabs.hasOwnProperty(n)) {
                     continue;
                 }
                 const tab = tabs[n];
-                var fields = tab.get("field");
-                for (let m in fields) {
-                    var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
-                    if (!fields.hasOwnProperty(m)) {
-                        continue;
+                if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
+                    var fields = tab.get("field");
+                    var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+                    var tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
+                    table.append(tableBody);
+                    for (let m in fields) {
+                        var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+                        if (!fields.hasOwnProperty(m)) {
+                            continue;
+                        }
+                        var field = fields[m];
+                        const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
+                        $(".key", tr).text(name);
+                        var fieldMetaClassId = field.metaClass.id;
+                        let fieldElement = null; // The instance if IFormField allowing to create the dom
+                        let htmlElement; // The dom that had been created... 
+                        switch (fieldMetaClassId) {
+                            case "DatenMeister.Models.Forms.TextFieldData":
+                                fieldElement = new TextField();
+                                break;
+                            case "DatenMeister.Models.Forms.MetaClassElementFieldData":
+                                fieldElement = new MetaClassElementField();
+                                break;
+                            case "DatenMeister.Models.Forms.ActionFieldData":
+                                fieldElement = new ActionField();
+                                break;
+                        }
+                        if (fieldElement === null) {
+                            // No field element was created.
+                            htmlElement = $("<em></em>");
+                            htmlElement.text(fieldMetaClassId !== null && fieldMetaClassId !== void 0 ? fieldMetaClassId : "unknown");
+                            $(".value", tr).append(fieldElement);
+                        }
+                        else {
+                            fieldElement.field = field;
+                            fieldElement.isReadOnly = isReadOnly;
+                            fieldElement.form = this;
+                            htmlElement = fieldElement.createDom(this.element);
+                        }
+                        $(".value", tr).append(htmlElement);
+                        tableBody.append(tr);
                     }
-                    var field = fields[m];
-                    const name = field.get("name");
-                    $(".key", tr).text(name);
-                    var fieldMetaClassId = field.metaClass.id;
-                    let fieldElement;
-                    if (fieldMetaClassId === "DatenMeister.Models.Forms.TextFieldData") {
-                        fieldElement = new TextField();
-                    }
-                    else if (fieldMetaClassId === "DatenMeister.Models.Forms.MetaClassElementFieldData") {
-                        fieldElement = new MetaClassElementFieldData();
-                    }
-                    else {
-                        fieldElement = $("<em></em>");
-                        fieldElement.text(fieldMetaClassId !== null && fieldMetaClassId !== void 0 ? fieldMetaClassId : "unknown");
-                        $(".value", tr).append(fieldElement);
-                        table.append(tr);
-                        continue;
-                    }
-                    fieldElement.field = field;
-                    fieldElement.isReadOnly = isReadOnly;
-                    let htmlElement = fieldElement.createDom(element);
-                    $(".value", tr).append(htmlElement);
-                    table.append(tr);
+                } // DetailForm
+                else {
+                    table = $("<div>Unknown Formtype:<span class='id'></span></div> ");
+                    $(".id", table).text(tab.metaClass.id);
                 }
+                parent.append(table);
             }
-            parent.append(table);
         }
     }
     exports.DetailForm = DetailForm;
@@ -120,10 +141,14 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             }
         }
         evaluateDom(dmElement) {
+            if (this._textBox !== undefined && this._textBox !== null) {
+                var fieldName = this.field.get('name').toString();
+                dmElement.set(fieldName, this._textBox.val());
+            }
         }
     }
     exports.TextField = TextField;
-    class MetaClassElementFieldData extends BaseField {
+    class MetaClassElementField extends BaseField {
         createDom(dmElement) {
             const div = $("<div />");
             if (dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
@@ -137,6 +162,22 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         evaluateDom(dmElement) {
         }
     }
-    exports.MetaClassElementFieldData = MetaClassElementFieldData;
+    exports.MetaClassElementField = MetaClassElementField;
+    class ActionField extends BaseField {
+        createDom(dmElement) {
+            var tthis = this;
+            var title = this.field.get('title');
+            var action = this.field.get('actionName');
+            var result = $("<button class='btn btn-secondary' type='button'></button>");
+            result.text(title);
+            result.on('click', () => {
+                FormActions_1.DetailFormActions.execute(action, tthis.form, dmElement);
+            });
+            return result;
+        }
+        evaluateDom(dmElement) {
+        }
+    }
+    exports.ActionField = ActionField;
 });
 //# sourceMappingURL=Forms.js.map

@@ -4,7 +4,7 @@ define(["require", "exports"], function (require, exports) {
     exports.createObjectFromJson = exports.DmObject = void 0;
     class DmObject {
         constructor() {
-            this.values = {};
+            this.values = new Array();
         }
         set(key, value) {
             this.values[key] = value;
@@ -98,6 +98,10 @@ define(["require", "exports"], function (require, exports) {
             const elementMetaClass = element["m"];
             if (elementMetaClass !== undefined && elementMetaClass !== null) {
                 result.metaClass = elementMetaClass;
+            }
+            const elementUri = element["u"];
+            if (elementUri !== undefined && elementUri !== null) {
+                result.uri = elementUri;
             }
             return result;
         }

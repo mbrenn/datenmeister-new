@@ -28,45 +28,7 @@
     @Html.Raw(table.ToString())
 }
 
-<div id="form_edit">
-    <button type="button" onclick="LoadByWei()">TEST: @Model.Workspace , @Model.Extent , @Model.Item</button>
-    <button type="button" onclick="LoadByWi()">TEST Url: @Model.ItemUrl</button>
-</div>
-
 <script type="application/javascript">
-
-    // Just a temporary function which shows that we can laod the given item
-    function LoadByWei()
-    {
-        requirejs(['DatenMeister/DataLoader'], function(dataLoader) {
-
-            dataLoader.loadObject(
-                "@HttpUtility.JavaScriptStringEncode(w)",
-                "@HttpUtility.JavaScriptStringEncode(e)",
-                "@HttpUtility.JavaScriptStringEncode(i)")
-                .done(o => alert(o.toString()));
-        });
-    }
-
-    // Just a temporary function which shows that we can laod the given item
-    function LoadByWi()
-    {
-        requirejs(['DatenMeister/DataLoader'], function(dataLoader) {
-
-            dataLoader.loadObjectByUri(
-                "@HttpUtility.JavaScriptStringEncode(w)",
-                "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)")
-                .done(o => alert(o.toString()));
-        });
-    }
-
-    function EditItem()
-    {
-        requirejs(['datenmeister'], function(DatenMeister) {
-            @Html.Raw(Model.ScriptLines)
-        });
-        alert('EditItem')
-    }
     
     function CreateViewForm()
     {
@@ -83,20 +45,28 @@ $(function()
 {
     requirejs(['datenmeister'], function(DatenMeister) {
 
-        @Html.Raw(Model.ScriptLines)
-
+        @Html.Raw(Model.ScriptLines);
     });
     
     CreateViewForm();
 });
 
 </script>
-<div id="form_view">VIEW FORM</div>
+<div id="form_view">View Form</div>
 <div>
     <a class="btn btn-primary" data-bs-toggle="collapse" href="#forminformation" role="button">Form Information</a>
     <div class="collapse" id="forminformation">
         <div class="card card-body">
             @(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.Form)))
+        </div>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#objectinformation" role="button">Object Information</a>
+    <div class="collapse" id="objectinformation">
+        <div class="card card-body">
+            @(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.FoundItem)))
         </div>
     </div>
 </div>

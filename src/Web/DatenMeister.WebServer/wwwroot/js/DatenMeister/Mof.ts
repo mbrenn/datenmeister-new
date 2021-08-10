@@ -8,20 +8,22 @@
 
 export class DmObject
 {
-    values: Object;
+    values: Array<any>;
     
     metaClass: ItemWithNameAndId;
+    
+    uri: string;
 
     constructor() {
-        this.values = {};
+        this.values = new Array<any>();
     }
 
-    set(key: string, value: object): void
+    set(key: string, value: any): void
     {
         this.values[key] = value;
     }
 
-    get(key: string): object
+    get(key: string): any
     {
         return this.values[key];
     }
@@ -125,6 +127,11 @@ export function createObjectFromJson(json: string, metaClass?: ItemWithNameAndId
         const elementMetaClass = element["m"];
         if (elementMetaClass !== undefined && elementMetaClass !== null) {
             result.metaClass = elementMetaClass;
+        }
+        
+        const elementUri = element["u"];
+        if (elementUri !== undefined && elementUri !== null) {
+            result.uri = elementUri;
         }
 
         return result;

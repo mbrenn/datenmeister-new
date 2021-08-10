@@ -6,12 +6,25 @@ import DmObject = Mof.DmObject;
 import * as ApiConnection from "./ApiConnection";
 import * as ApiModels from "./ApiModels";
 import * as Settings from "./Settings";
+import {DetailFormActions} from "./FormActions";
 
 export class Form {
     viewMode: string;
 }
 
-export class DetailForm {
+export interface IForm
+{
+    workspace: string;
+    uri: string;
+    element: DmObject;
+    formElement: DmObject;
+}
+
+export class DetailForm implements IForm {
+    workspace: string;
+    uri: string;
+    element: DmObject;
+    formElement: DmObject;
     createViewForm(parent: JQuery<HTMLElement>, workspace: string, uri: string) {
         var tthis = this;
 
@@ -23,67 +36,88 @@ export class DetailForm {
 
         // Wait for both
         $.when(defer1, defer2).then(function (element, form) {
-            tthis.createFormByObject(parent, element, form, true);
+            tthis.element = element;
+            tthis.formElement = form;
+            tthis.workspace = workspace;
+            tthis.uri = workspace;
+            tthis.createFormByObject(parent, true);
         });
 
         parent.empty();
-        parent.text("createViewForm");
+        parent.text("Loading content and form...");
     }
 
-    createFormByObject(parent: JQuery<HTMLElement>, element: DmObject, form: DmObject, isReadOnly: boolean) {
-        parent.text("createViewFormByObject");
+    createFormByObject(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
 
-        var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+        parent.empty();
 
-        const tabs = form.get("tab");
+        const tabs = this.formElement.get("tab");
         for (let n in tabs) {
             if (!tabs.hasOwnProperty(n)) {
                 continue;
             }
 
             const tab = tabs[n] as DmObject;
+            if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
+                var fields = tab.get("field");
 
-            var fields = tab.get("field");
-            for (let m in fields) {
-                var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+                var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+                var tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
+                table.append(tableBody);
 
-                if (!fields.hasOwnProperty(m)) {
-                    continue;
+                for (let m in fields) {
+                    var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+
+                    if (!fields.hasOwnProperty(m)) {
+                        continue;
+                    }
+
+                    var field = fields[m] as DmObject;
+                    const name =
+                        field.get("title") as any as string ??    
+                        field.get("name") as any as string;
+
+                    $(".key", tr).text(name);
+
+                    var fieldMetaClassId = field.metaClass.id;
+                    let fieldElement = null; // The instance if IFormField allowing to create the dom
+                    let htmlElement; // The dom that had been created... 
+                    switch (fieldMetaClassId) {
+                        case "DatenMeister.Models.Forms.TextFieldData":
+                            fieldElement = new TextField();
+                            break;
+                        case "DatenMeister.Models.Forms.MetaClassElementFieldData":
+                            fieldElement = new MetaClassElementField();
+                            break;
+                        case "DatenMeister.Models.Forms.ActionFieldData":
+                            fieldElement = new ActionField();
+                            break;
+                    }
+
+                    if (fieldElement === null) {
+                        // No field element was created.
+                        htmlElement = $("<em></em>");
+                        htmlElement.text(fieldMetaClassId ?? "unknown");
+                        $(".value", tr).append(fieldElement);
+                    } else {
+                        fieldElement.field = field;
+                        fieldElement.isReadOnly = isReadOnly;
+                        fieldElement.form = this;
+
+                        htmlElement = fieldElement.createDom(this.element);
+                    }
+
+                    $(".value", tr).append(htmlElement);
+                    tableBody.append(tr);
                 }
-
-                var field = fields[m] as DmObject;
-                
-                const name = field.get("name") as any as string;
-
-                $(".key", tr).text(name);
-                
-                var fieldMetaClassId = field.metaClass.id;
-                let fieldElement;
-                if (fieldMetaClassId === "DatenMeister.Models.Forms.TextFieldData") {
-                    fieldElement = new TextField();
-                }
-                else if (fieldMetaClassId === "DatenMeister.Models.Forms.MetaClassElementFieldData") {
-                    fieldElement = new MetaClassElementFieldData();
-                }
-                else {
-                    fieldElement = $("<em></em>");
-                    fieldElement.text(fieldMetaClassId ?? "unknown");
-                    $(".value", tr).append(fieldElement);
-                    table.append(tr);
-                    continue;
-                }
-
-                fieldElement.field = field;
-                fieldElement.isReadOnly = isReadOnly;
-                
-                let htmlElement = fieldElement.createDom(element);
-                $(".value", tr).append(htmlElement);
-
-                table.append(tr);
+            } // DetailForm
+            else {
+                table = $("<div>Unknown Formtype:<span class='id'></span></div> ");
+                $(".id", table).text(tab.metaClass.id);
             }
+            
+            parent.append(table);
         }
-
-        parent.append(table);
     }
 }
 
@@ -113,6 +147,8 @@ export interface IFormField
     field: DmObject;
     
     isReadOnly: boolean;
+    
+    form: IForm;
 
     // Creates the dom depending on the given field and the internal object
     createDom(dmElement: DmObject) : JQuery<HTMLElement>;
@@ -125,6 +161,7 @@ export class BaseField
 {
     field: DmObject;
     isReadOnly: boolean;
+    form: IForm;
 }
 
 export class TextField extends BaseField implements IFormField
@@ -146,29 +183,50 @@ export class TextField extends BaseField implements IFormField
     }
 
     evaluateDom(dmElement: Mof.DmObject) {
+        if (this._textBox !== undefined && this._textBox !== null)
+        {
+            var fieldName = this.field.get('name').toString();
+            dmElement.set(fieldName, this._textBox.val());
+        }
     }
 }
 
-export class MetaClassElementFieldData extends BaseField implements IFormField
+export class MetaClassElementField extends BaseField implements IFormField
 {
     _textBox: JQuery<HTMLInputElement>;
 
     createDom(dmElement: Mof.DmObject) {
 
         const div = $("<div />");
-        if ( dmElement.metaClass !== undefined && dmElement.metaClass !== null)
-        {
+        if (dmElement.metaClass !== undefined && dmElement.metaClass !== null) {
             div.text(dmElement.metaClass.id);
-            
-        }
-        else
-        {
+        } else {
             div.text("unknown");
         }
         return div;
-        
     }
 
     evaluateDom(dmElement: Mof.DmObject) {
+    }
+}
+
+export class ActionField extends BaseField implements IFormField
+{
+    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+        var tthis = this;
+        var title = this.field.get('title');
+        var action = this.field.get('actionName');
+        
+        var result = $("<button class='btn btn-secondary' type='button'></button>");
+        result.text(title);
+        
+        result.on('click', () => { 
+            DetailFormActions.execute(action, tthis.form, dmElement);
+        });
+        
+        return result;
+    }
+
+    evaluateDom(dmElement: DmObject) {
     }
 }

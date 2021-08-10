@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./FormActions"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, FormActions_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ActionField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
+    exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
     Mof = __importStar(Mof);
     DataLoader = __importStar(DataLoader);
     ApiConnection = __importStar(ApiConnection);
@@ -77,6 +77,9 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                                 break;
                             case "DatenMeister.Models.Forms.MetaClassElementFieldData":
                                 fieldElement = new MetaClassElementField();
+                                break;
+                            case "DatenMeister.Models.Forms.CheckboxFieldData":
+                                fieldElement = new CheckboxField();
                                 break;
                             case "DatenMeister.Models.Forms.ActionFieldData":
                                 fieldElement = new ActionField();
@@ -163,6 +166,20 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         }
     }
     exports.MetaClassElementField = MetaClassElementField;
+    class CheckboxField extends BaseField {
+        createDom(dmElement) {
+            var tthis = this;
+            var result = $("<input type='checkbox'></input>");
+            var fieldName = this.field.get('name').toString();
+            if (dmElement.get(fieldName)) {
+                result.prop('checked', true);
+            }
+            return result;
+        }
+        evaluateDom(dmElement) {
+        }
+    }
+    exports.CheckboxField = CheckboxField;
     class ActionField extends BaseField {
         createDom(dmElement) {
             var tthis = this;

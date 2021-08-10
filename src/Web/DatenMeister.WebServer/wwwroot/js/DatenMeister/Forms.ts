@@ -89,6 +89,9 @@ export class DetailForm implements IForm {
                         case "DatenMeister.Models.Forms.MetaClassElementFieldData":
                             fieldElement = new MetaClassElementField();
                             break;
+                        case "DatenMeister.Models.Forms.CheckboxFieldData":
+                            fieldElement = new CheckboxField();
+                            break;
                         case "DatenMeister.Models.Forms.ActionFieldData":
                             fieldElement = new ActionField();
                             break;
@@ -207,6 +210,24 @@ export class MetaClassElementField extends BaseField implements IFormField
     }
 
     evaluateDom(dmElement: Mof.DmObject) {
+    }
+}
+
+export class CheckboxField extends BaseField implements IFormField {
+    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+        var tthis = this;
+
+        var result = $("<input type='checkbox'></input>");
+
+        var fieldName = this.field.get('name').toString();
+        if ( dmElement.get(fieldName)) {
+            result.prop('checked', true);
+        }
+
+        return result;
+    }
+
+    evaluateDom(dmElement: DmObject) {
     }
 }
 

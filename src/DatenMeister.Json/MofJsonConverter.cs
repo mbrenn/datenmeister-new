@@ -138,6 +138,10 @@ namespace DatenMeister.Json
             {
                 builder.Append("null");
             }
+            else if (DotNetHelper.IsOfBoolean(propertyValue))
+            {
+                builder.Append((bool)propertyValue ? "true": "false");
+            }
             else if (DotNetHelper.IsOfPrimitiveType(propertyValue))
             {
                 builder.Append($"\"{HttpUtility.JavaScriptStringEncode(propertyValue!.ToString())}\"");

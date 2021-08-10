@@ -36,7 +36,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                     });
                     break;
                 default:
-                    alert("Unknown action tyoe: " + actionName);
+                    alert("Unknown action type: " + actionName);
                     break;
             }
         }

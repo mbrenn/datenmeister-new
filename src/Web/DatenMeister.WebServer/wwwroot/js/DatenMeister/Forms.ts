@@ -92,6 +92,9 @@ export class DetailForm implements IForm {
                         case "DatenMeister.Models.Forms.CheckboxFieldData":
                             fieldElement = new CheckboxField();
                             break;
+                        case "DatenMeister.Models.Forms.DropDownFieldData":
+                            fieldElement = new DropDownField();
+                            break;
                         case "DatenMeister.Models.Forms.ActionFieldData":
                             fieldElement = new ActionField();
                             break;
@@ -214,40 +217,82 @@ export class MetaClassElementField extends BaseField implements IFormField
 }
 
 export class CheckboxField extends BaseField implements IFormField {
+    _checkbox: JQuery<HTMLElement>;
+
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
         var tthis = this;
 
-        var result = $("<input type='checkbox'></input>");
+        this._checkbox = $("<input type='checkbox'></input>");
 
         var fieldName = this.field.get('name').toString();
-        if ( dmElement.get(fieldName)) {
-            result.prop('checked', true);
+        if (dmElement.get(fieldName)) {
+            this._checkbox.prop('checked', true);
         }
 
-        return result;
+        if (this.isReadOnly) {
+            this._checkbox.prop('disabled', 'disabled');
+        }
+
+        return this._checkbox;
     }
 
     evaluateDom(dmElement: DmObject) {
+        if (this._checkbox !== undefined && this._checkbox !== null) {
+            var fieldName = this.field.get('name').toString();
+            dmElement.set(fieldName, this._checkbox.prop('checked'));
+        }
     }
 }
 
-export class ActionField extends BaseField implements IFormField
-{
+export class ActionField extends BaseField implements IFormField {
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
         var tthis = this;
         var title = this.field.get('title');
         var action = this.field.get('actionName');
-        
+
         var result = $("<button class='btn btn-secondary' type='button'></button>");
         result.text(title);
-        
-        result.on('click', () => { 
+
+        result.on('click', () => {
             DetailFormActions.execute(action, tthis.form, dmElement);
         });
-        
+
         return result;
     }
 
     evaluateDom(dmElement: DmObject) {
+
+    }
+}
+
+export class DropDownField extends BaseField implements IFormField {
+    _selectBox: JQuery<HTMLElement>;
+
+    createDom(dmElement: DmObject): JQuery<HTMLElement> {
+        var fieldName = this.field.get('name').toString();
+        var selectedValue = dmElement.get(fieldName);
+        var values = this.field.get('values') as Array<DmObject>;
+
+        this._selectBox = $("<select></select>");
+        for (var n in values) {
+            var o = values[n];
+            var option = $("<option></option>");
+            option.val(o.get('value').toString());
+            option.text(o.get('name').toString());
+            this._selectBox.append(option);
+        }
+
+        this._selectBox.val(selectedValue);
+        if (this.isReadOnly) {
+            this._selectBox.prop('disabled', 'disabled');
+        }
+
+        return this._selectBox;
+    }
+
+    evaluateDom(dmElement: DmObject) {
+
+        var fieldName = this.field.get('name').toString();
+        dmElement.set(fieldName, this._selectBox.val());
     }
 }

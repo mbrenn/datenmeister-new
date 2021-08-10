@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./FormActions"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, FormActions_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
+    exports.DropDownField = exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
     Mof = __importStar(Mof);
     DataLoader = __importStar(DataLoader);
     ApiConnection = __importStar(ApiConnection);
@@ -80,6 +80,9 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                                 break;
                             case "DatenMeister.Models.Forms.CheckboxFieldData":
                                 fieldElement = new CheckboxField();
+                                break;
+                            case "DatenMeister.Models.Forms.DropDownFieldData":
+                                fieldElement = new DropDownField();
                                 break;
                             case "DatenMeister.Models.Forms.ActionFieldData":
                                 fieldElement = new ActionField();
@@ -169,14 +172,21 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     class CheckboxField extends BaseField {
         createDom(dmElement) {
             var tthis = this;
-            var result = $("<input type='checkbox'></input>");
+            this._checkbox = $("<input type='checkbox'></input>");
             var fieldName = this.field.get('name').toString();
             if (dmElement.get(fieldName)) {
-                result.prop('checked', true);
+                this._checkbox.prop('checked', true);
             }
-            return result;
+            if (this.isReadOnly) {
+                this._checkbox.prop('disabled', 'disabled');
+            }
+            return this._checkbox;
         }
         evaluateDom(dmElement) {
+            if (this._checkbox !== undefined && this._checkbox !== null) {
+                var fieldName = this.field.get('name').toString();
+                dmElement.set(fieldName, this._checkbox.prop('checked'));
+            }
         }
     }
     exports.CheckboxField = CheckboxField;
@@ -196,5 +206,30 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         }
     }
     exports.ActionField = ActionField;
+    class DropDownField extends BaseField {
+        createDom(dmElement) {
+            var fieldName = this.field.get('name').toString();
+            var selectedValue = dmElement.get(fieldName);
+            var values = this.field.get('values');
+            this._selectBox = $("<select></select>");
+            for (var n in values) {
+                var o = values[n];
+                var option = $("<option></option>");
+                option.val(o.get('value').toString());
+                option.text(o.get('name').toString());
+                this._selectBox.append(option);
+            }
+            this._selectBox.val(selectedValue);
+            if (this.isReadOnly) {
+                this._selectBox.prop('disabled', 'disabled');
+            }
+            return this._selectBox;
+        }
+        evaluateDom(dmElement) {
+            var fieldName = this.field.get('name').toString();
+            dmElement.set(fieldName, this._selectBox.val());
+        }
+    }
+    exports.DropDownField = DropDownField;
 });
 //# sourceMappingURL=Forms.js.map

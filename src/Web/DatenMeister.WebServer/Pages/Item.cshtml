@@ -23,11 +23,6 @@
 
 <div><a class="btn btn-primary" click="EditItem()">Edit Item</a></div>
 
-@foreach (var table in Model.Tables)
-{
-    @Html.Raw(table.ToString())
-}
-
 <script type="application/javascript">
     
     function CreateViewForm()

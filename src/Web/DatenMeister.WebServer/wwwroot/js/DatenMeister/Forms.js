@@ -17,7 +17,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./FormActions"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, FormActions_1) {
+define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./FormActions", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, FormActions_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.DropDownField = exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
@@ -163,6 +163,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             else {
                 div.text("unknown");
             }
+            DomHelper_1.injectNameByUri(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
             return div;
         }
         evaluateDom(dmElement) {
@@ -171,7 +172,6 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     exports.MetaClassElementField = MetaClassElementField;
     class CheckboxField extends BaseField {
         createDom(dmElement) {
-            var tthis = this;
             this._checkbox = $("<input type='checkbox'></input>");
             var fieldName = this.field.get('name').toString();
             if (dmElement.get(fieldName)) {

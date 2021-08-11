@@ -17,13 +17,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Settings", "./DatenMeister/NameLoader", "./DatenMeister/Navigator"], function (require, exports, ApiConnection, Settings, NameLoader, Navigator) {
+define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Settings", "./DatenMeister/Navigator"], function (require, exports, ApiConnection, Settings, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DomHelper = exports.FormActions = void 0;
+    exports.FormActions = void 0;
     ApiConnection = __importStar(ApiConnection);
     Settings = __importStar(Settings);
-    NameLoader = __importStar(NameLoader);
     Navigator = __importStar(Navigator);
     class FormActions {
         static extentNavigateTo(workspace, extentUri) {
@@ -74,31 +73,5 @@ define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Se
         }
     }
     exports.FormActions = FormActions;
-    class DomHelper {
-        static injectName(domElement, elementPosition) {
-            NameLoader.loadNameOf(elementPosition).done(x => {
-                domElement.text(x.name);
-            });
-        }
-        static injectNameByUri(domElement, elementUri) {
-            NameLoader.loadNameByUri(elementUri).done(x => {
-                if (x.extentUri !== undefined && x.workspace !== undefined
-                    && x.extentUri !== "" && x.workspace !== ""
-                    && x.itemId !== "" && x.itemId !== undefined) {
-                    const linkElement = $("<a></a>");
-                    linkElement.text(x.name);
-                    linkElement.attr("href", "/Item/" + encodeURIComponent(x.workspace) +
-                        "/" + encodeURIComponent(x.extentUri) +
-                        "/" + encodeURIComponent(x.itemId));
-                    domElement.empty();
-                    domElement.append(linkElement);
-                }
-                else {
-                    domElement.text(x.name);
-                }
-            });
-        }
-    }
-    exports.DomHelper = DomHelper;
 });
 //# sourceMappingURL=datenmeister.js.map

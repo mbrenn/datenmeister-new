@@ -1,12 +1,11 @@
 ﻿import * as Mof from "./Mof";
 import * as DataLoader from "./DataLoader";
-
-
 import DmObject = Mof.DmObject;
 import * as ApiConnection from "./ApiConnection";
 import * as ApiModels from "./ApiModels";
 import * as Settings from "./Settings";
 import {DetailFormActions} from "./FormActions";
+import {injectNameByUri} from "./DomHelper";
 
 export class Form {
     viewMode: string;
@@ -209,6 +208,8 @@ export class MetaClassElementField extends BaseField implements IFormField
         } else {
             div.text("unknown");
         }
+
+        injectNameByUri(div, encodeURIComponent(dmElement.metaClass.extentUri + "#" + dmElement.metaClass.id));
         return div;
     }
 
@@ -220,7 +221,6 @@ export class CheckboxField extends BaseField implements IFormField {
     _checkbox: JQuery<HTMLElement>;
 
     createDom(dmElement: DmObject): JQuery<HTMLElement> {
-        var tthis = this;
 
         this._checkbox = $("<input type='checkbox'></input>");
 

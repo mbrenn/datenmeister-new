@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -302,26 +303,56 @@ namespace DatenMeister.WebServer.Controller
         [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
         public ActionResult<object> SetProperty (string workspaceId, string itemUri, [FromBody] SetPropertyParams propertyParams)
         {
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri);
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
             foundItem.set(propertyParams.Key, propertyParams.Value);
 
-            return new
-            {
-                success = true
-            };
+            return new { success = true };
         }
 
-        [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
+        [HttpPut("api/items/set_properties/{workspaceId}/{itemUri}")]
         public ActionResult<object> SetProperties(string workspaceId, string itemUri,
             [FromBody] SetPropertiesParams propertiesParams)
         {
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri);
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in propertiesParams.Properties)
             {
                 foundItem.set(propertyParam.Key, propertyParam.Value);
             }
 
             return new {success = true};
+        }
+
+        [HttpPost("api/items/set/{workspaceId}/{itemUri}")]
+        public ActionResult<object> Set(string workspaceId, string itemUri,
+            [FromBody] MofObjectAsJson jsonObject)
+        {
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+            foreach (var propertyParam in jsonObject.v)
+            {
+                var value = propertyParam.Value;
+                object? propertyValue = null;
+                if (value is JsonElement jsonElement)
+                {
+                    propertyValue = jsonElement.ValueKind switch
+                    {
+                        JsonValueKind.String => jsonElement.GetString(),
+                        JsonValueKind.Number => jsonElement.GetDouble(),
+                        JsonValueKind.True => true,
+                        JsonValueKind.False => false,
+                        _ => propertyValue
+                    };
+                }
+
+                if (propertyValue != null)
+                {
+                    foundItem.set(propertyParam.Key, propertyValue);
+                }
+            }
+
+            return new { success = true };
         }
     }
 }

@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./FormActions", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, FormActions_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DropDownField = exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.DetailForm = exports.Form = void 0;
+    exports.DropDownField = exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.MofDetailForm = exports.DetailForm = exports.Form = void 0;
     Mof = __importStar(Mof);
     DataLoader = __importStar(DataLoader);
     ApiConnection = __importStar(ApiConnection);
@@ -29,26 +29,11 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     }
     exports.Form = Form;
     class DetailForm {
-        createViewForm(parent, workspace, uri) {
-            var tthis = this;
-            // Load the object
-            var defer1 = DataLoader.loadObjectByUri(workspace, uri);
-            // Load the form
-            var defer2 = getDefaultFormForItem(workspace, uri, "");
-            // Wait for both
-            $.when(defer1, defer2).then(function (element, form) {
-                tthis.element = element;
-                tthis.formElement = form;
-                tthis.workspace = workspace;
-                tthis.uri = workspace;
-                tthis.createFormByObject(parent, true);
-            });
-            parent.empty();
-            parent.text("Loading content and form...");
-        }
         createFormByObject(parent, isReadOnly) {
             var _a;
+            const tthis = this;
             parent.empty();
+            this.fieldElements = new Array();
             const tabs = this.formElement.get("tab");
             for (let n in tabs) {
                 if (!tabs.hasOwnProperty(n)) {
@@ -60,12 +45,11 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
                     var tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
                     table.append(tableBody);
-                    for (let m in fields) {
-                        var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
-                        if (!fields.hasOwnProperty(m)) {
+                    for (let n in fields) {
+                        if (!fields.hasOwnProperty(n))
                             continue;
-                        }
-                        var field = fields[m];
+                        const field = fields[n];
+                        var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
                         const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
                         $(".key", tr).text(name);
                         var fieldMetaClassId = field.metaClass.id;
@@ -103,6 +87,29 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                         $(".value", tr).append(htmlElement);
                         tableBody.append(tr);
                     }
+                    if (!isReadOnly) {
+                        // Add the Cancel and Submit buttons at the end of the creation to the table
+                        // allowing the cancelling and setting of the properties
+                        tr = $("<tr><td></td><td><button class='btn btn-secondary'>Cancel" +
+                            "<button class='btn btn-primary'>Submit</button></td></tr>");
+                        tableBody.append(tr);
+                        $(".btn-secondary", tr).on('click', () => {
+                            if (tthis.onCancel !== undefined && tthis.onCancel !== null) {
+                                tthis.onCancel();
+                            }
+                        });
+                        $(".btn-primary", tr).on('click', () => {
+                            if (tthis.onChange !== undefined && tthis.onCancel !== null) {
+                                for (let m in tthis.fieldElements) {
+                                    if (!tthis.fieldElements.hasOwnProperty(m))
+                                        continue;
+                                    const fieldElement = tthis.fieldElements[m];
+                                    fieldElement.evaluateDom(tthis.element);
+                                }
+                                tthis.onChange(tthis.element);
+                            }
+                        });
+                    }
                 } // DetailForm
                 else {
                     table = $("<div>Unknown Formtype:<span class='id'></span></div> ");
@@ -113,6 +120,44 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
         }
     }
     exports.DetailForm = DetailForm;
+    /*
+    Describes the detailform including the connection to the webserver to download and upload forms.
+    It also includes the basic navigation to edit, view and submit the item changes
+     */
+    class MofDetailForm extends DetailForm {
+        createViewForm(parent, workspace, uri) {
+            this.createForm(parent, workspace, uri, true);
+        }
+        createEditForm(parent, workspace, uri) {
+            this.createForm(parent, workspace, uri, false);
+        }
+        createForm(parent, workspace, uri, isReadOnly) {
+            const tthis = this;
+            // Load the object
+            const defer1 = DataLoader.loadObjectByUri(workspace, uri);
+            // Load the form
+            const defer2 = getDefaultFormForItem(workspace, uri, "");
+            // Wait for both
+            $.when(defer1, defer2).then(function (element, form) {
+                tthis.element = element;
+                tthis.formElement = form;
+                tthis.workspace = workspace;
+                tthis.uri = workspace;
+                tthis.createFormByObject(parent, isReadOnly);
+            });
+            this.onCancel = () => {
+                tthis.createViewForm(parent, workspace, uri);
+            };
+            this.onChange = (element) => {
+                DataLoader.storeObjectByUri(workspace, uri, tthis.element).done(() => {
+                    tthis.createViewForm(parent, workspace, uri);
+                });
+            };
+            parent.empty();
+            parent.text("Loading content and form...");
+        }
+    }
+    exports.MofDetailForm = MofDetailForm;
     function getDefaultFormForItem(workspace, item, viewMode) {
         var r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
@@ -212,11 +257,10 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             var selectedValue = dmElement.get(fieldName);
             var values = this.field.get('values');
             this._selectBox = $("<select></select>");
-            for (var n in values) {
-                var o = values[n];
+            for (const value of values) {
                 var option = $("<option></option>");
-                option.val(o.get('value').toString());
-                option.text(o.get('name').toString());
+                option.val(value.get('value').toString());
+                option.text(value.get('name').toString());
                 this._selectBox.append(option);
             }
             this._selectBox.val(selectedValue);

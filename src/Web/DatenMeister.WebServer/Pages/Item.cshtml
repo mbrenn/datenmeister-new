@@ -21,14 +21,14 @@
     @(Model.ItemAndFormModel?.fullName ?? "Unknown Element")
 </div>
 
-<div><a class="btn btn-primary" click="EditItem()">Edit Item</a></div>
+<div><a class="btn btn-primary" onclick="EditItem()">Edit Item</a></div>
 
 <script type="application/javascript">
     
     function CreateViewForm()
     {
         requirejs(['DatenMeister/Forms'], function(Form) {
-            var detailForm = new Form.DetailForm();
+            var detailForm = new Form.MofDetailForm();
             detailForm.createViewForm(
                 $("#form_view"),
                 "@HttpUtility.JavaScriptStringEncode(w)",
@@ -45,6 +45,17 @@ $(function()
     
     CreateViewForm();
 });
+    
+    function EditItem()
+    {
+        requirejs(['DatenMeister/Forms'], function(Form) {
+            var detailForm = new Form.MofDetailForm();
+            detailForm.createEditForm(
+                $("#form_view"),
+                "@HttpUtility.JavaScriptStringEncode(w)",
+                "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
+        });
+    }        
 
 </script>
 <div id="form_view">View Form</div>

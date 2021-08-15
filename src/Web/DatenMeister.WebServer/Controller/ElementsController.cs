@@ -35,7 +35,7 @@ namespace DatenMeister.WebServer.Controller
             return new {name = NamedElementMethods.GetName(foundItem)};
         }
 
-        [HttpGet("api/elements/get_name/{uri}")]
+        [HttpGet("api/elements/get_name/{uri}/{workspace?}")]
         public ActionResult<object> GetName(string uri, string? workspace)
         {
             IElement? foundItem;

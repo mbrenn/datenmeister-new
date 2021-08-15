@@ -22,7 +22,7 @@ namespace DatenMeister.WebServer.Controller
             public string Workspace { get; set; } = string.Empty;
         }
         
-        [HttpDelete("api/workpsace/delete")]
+        [HttpDelete("api/workspace/delete")]
         public ActionResult<object> DeleteWorkspace([FromBody] DeleteWorkspaceParams workspace)
         {
             _workspaceLogic.RemoveWorkspace(workspace.Workspace);

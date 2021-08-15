@@ -69,8 +69,9 @@ namespace DatenMeister.Json
 
             builder.Append('{');
 
+            // Creates the values
             var komma = string.Empty;
-
+            
             builder.Append("\"v\": {");
             foreach (var property in allProperties.getPropertiesBeingSet())
             {
@@ -78,31 +79,40 @@ namespace DatenMeister.Json
                 builder.Append($"\"{HttpUtility.JavaScriptStringEncode(property)}\": ");
                 var propertyValue = value.get(property);
                 
-                ConvertValue(builder, propertyValue);
+                AppendValue(builder, propertyValue);
 
                 komma = ",";
             }
 
             builder.Append("}");
 
+            // Creates the metaclass
             if (value is IElement asElement)
             {
-                var item = ItemWithNameAndId.Create(asElement);
+                var item = ItemWithNameAndId.Create(asElement.getMetaClass());
                 if (item != null)
                 {
                     builder.Append(", \"m\": {");
                     
-                    builder.Append($"\"name\": ");
-                    ConvertValue(builder, item.name, 0);
-                    builder.Append($", \"id\": ");
-                    ConvertValue(builder, item.id, 0);
-                    builder.Append($", \"extentUri\": ");
-                    ConvertValue(builder, item.extentUri, 0);
-                    builder.Append($", \"fullName\": ");
-                    ConvertValue(builder, item.fullName, 0);
+                    builder.Append("\"name\": ");
+                    AppendValue(builder, item.name, 0);
+                    builder.Append(", \"id\": ");
+                    AppendValue(builder, item.id, 0);
+                    builder.Append(", \"extentUri\": ");
+                    AppendValue(builder, item.extentUri, 0);
+                    builder.Append(", \"fullName\": ");
+                    AppendValue(builder, item.fullName, 0);
 
                     builder.Append("}");
                 }
+            }
+            
+            // Creates the uri
+            var uri = value.GetUri();
+            if (uri != null)
+            {
+                builder.Append(", \"u\": ");
+                AppendValue(builder, uri);
             }
 
             builder.Append("}");
@@ -116,7 +126,7 @@ namespace DatenMeister.Json
         /// <param name="builder"></param>
         /// <param name="propertyValue"></param>
         /// <param name="recursionDepth">Defines the recursion Depth</param>
-        private void ConvertValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0)
+        private void AppendValue(StringBuilder builder, object? propertyValue, int recursionDepth = 0)
         {
             if (recursionDepth >= MaxRecursionDepth)
             {
@@ -127,6 +137,10 @@ namespace DatenMeister.Json
             if (DotNetHelper.IsNull(propertyValue) || propertyValue == null)
             {
                 builder.Append("null");
+            }
+            else if (DotNetHelper.IsOfBoolean(propertyValue))
+            {
+                builder.Append((bool)propertyValue ? "true": "false");
             }
             else if (DotNetHelper.IsOfPrimitiveType(propertyValue))
             {
@@ -146,11 +160,11 @@ namespace DatenMeister.Json
                 foreach (var innerValue in enumeration!)
                 {
                     builder.AppendLine(komma);
-                    ConvertValue(builder, innerValue, recursionDepth + 1);
+                    AppendValue(builder, innerValue, recursionDepth + 1);
                     komma = ",";
                 }
 
-                builder.Append($"]");
+                builder.Append("]");
             }
             else
             {

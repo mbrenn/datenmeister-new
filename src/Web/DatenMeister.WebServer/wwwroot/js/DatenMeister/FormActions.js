@@ -20,10 +20,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
 define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], function (require, exports, Settings, ApiConnection, Navigator) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.FormActions = void 0;
+    exports.FormActions = exports.DetailFormActions = void 0;
     Settings = __importStar(Settings);
     ApiConnection = __importStar(ApiConnection);
     Navigator = __importStar(Navigator);
+    var DetailFormActions;
+    (function (DetailFormActions) {
+        function execute(actionName, form, element) {
+            switch (actionName) {
+                case "ZipExample.CreateExample":
+                    var id = element.get('id');
+                    ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
+                        .done(data => {
+                        document.location.reload();
+                    });
+                    break;
+                default:
+                    alert("Unknown action type: " + actionName);
+                    break;
+            }
+        }
+        DetailFormActions.execute = execute;
+    })(DetailFormActions = exports.DetailFormActions || (exports.DetailFormActions = {}));
     class FormActions {
         static extentNavigateTo(workspace, extentUri) {
             document.location.href = Settings.baseUrl + "ItemsOverview/" +

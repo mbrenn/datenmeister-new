@@ -1,4 +1,6 @@
-﻿export interface ItemWithNameAndId
+﻿
+
+export interface ItemWithNameAndId
 {
     name: string;
     extentUri: string;
@@ -8,20 +10,22 @@
 
 export class DmObject
 {
-    values: Object;
+    values: Array<any>;
     
     metaClass: ItemWithNameAndId;
+    
+    uri: string;
 
     constructor() {
-        this.values = {};
+        this.values = new Array<any>();
     }
 
-    set(key: string, value: object): void
+    set(key: string, value: any): void
     {
         this.values[key] = value;
     }
 
-    get(key: string): object
+    get(key: string): any
     {
         return this.values[key];
     }
@@ -80,8 +84,37 @@ export class DmObject
     }
 }
 
+/*
+    Converts the given element to a json element that it can be used to send to the webserver
+    The receiving function is MofJsonDeconverter.Convert in which the retrieved
+    value is returned to MofObject
+ */
+export function createJsonFromObject(element: DmObject) {
+    const result = {v:{}};
+    const values = result.v; 
+    
+    for (const key in element.values) {
+        if (!element.values.hasOwnProperty(key)) {
+            continue;
+        }
+
+        var elementValue = element.get(key);
+        if (Array.isArray(elementValue)
+            || ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+            // Do not send out arrays or objects
+            continue;
+        }
+
+        values[key] = element.get(key);
+    }
+
+    return result;
+}
+
+/*
 // Creates the given object from the included json
-// The corresponding C# class is DatenMeister.Modules.Json.DirectJsonConverter.Convert
+// The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
+*/
 export function createObjectFromJson(json: string, metaClass?: ItemWithNameAndId): DmObject {
     const converted = JSON.parse(json);
 
@@ -125,6 +158,11 @@ export function createObjectFromJson(json: string, metaClass?: ItemWithNameAndId
         const elementMetaClass = element["m"];
         if (elementMetaClass !== undefined && elementMetaClass !== null) {
             result.metaClass = elementMetaClass;
+        }
+        
+        const elementUri = element["u"];
+        if (elementUri !== undefined && elementUri !== null) {
+            result.uri = elementUri;
         }
 
         return result;

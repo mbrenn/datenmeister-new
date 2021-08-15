@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -89,12 +90,12 @@ namespace DatenMeister.WebServer.Controller
         }
 
 
-        [HttpPost("api/items/create_child/{workspaceId}/{itemID}")]
+        [HttpPost("api/items/create_child/{workspaceId}/{itemUri}")]
         public ActionResult<object> CreateItemAsChild(
-            string workspaceId, string itemId,
+            string workspaceId, string itemUri,
             [FromBody] CreateChildParams createParams)
         {
-            var item = GetItemByUriParameter(workspaceId, itemId);
+            var item = GetItemByUriParameter(workspaceId, itemUri);
 
             var factory = new MofFactory(item);
 
@@ -121,19 +122,14 @@ namespace DatenMeister.WebServer.Controller
                 itemId = (child as IHasId)?.Id ?? string.Empty
             };
         }
-
-        public class DeleteItemParams
-        {
-            public string ItemId { get; set; } = string.Empty;
-        }
         
-        [HttpPost("api/items/delete/{workspaceId}/{extentUri}")]
-        public ActionResult<object> DeleteItem(string workspaceId, string extentUri, [FromBody] DeleteItemParams deleteParams)
+        [HttpDelete("api/items/delete/{workspaceId}/{extentUri}/{itemId}")]
+        public ActionResult<object> DeleteItem(string workspaceId, string extentUri, string itemId)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
 
-            var foundItem = _workspaceLogic.FindItem(workspaceId, extentUri, deleteParams.ItemId);
+            var foundItem = _workspaceLogic.FindItem(workspaceId, extentUri, itemId);
             if (foundItem != null)
             {
             }
@@ -149,66 +145,30 @@ namespace DatenMeister.WebServer.Controller
         /// <param name="param">Parameter of the deletion</param>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <returns>the value indicating the success or not</returns>
-        [HttpPost("api/items/delete_from_extent/{workspaceId}/{extentUri}")]
+        [HttpPost("api/items/delete_from_extent/{workspaceId}/{extentUri}/{itemId}")]
         public ActionResult<object> DeleteFromExtent(
             string workspaceId,
             string extentUri,
-            [FromBody] DeleteItemParams param)
+            string itemId)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
 
-            var found = extent.elements().FirstOrDefault(x => (x as IHasId)?.Id == param.ItemId)
+            var found = extent.elements().FirstOrDefault(x => (x as IHasId)?.Id == itemId)
                         ?? throw new InvalidOperationException("Item is not found");
 
             extent.elements().remove(found);
             return new {success = true};
         }
 
-        public class CreateNewObjectForExtentParams
-        {
-            public string Workspace { get; set; } = string.Empty;
-            public string ExtentUri { get; set; } = string.Empty;
-            public string? MetaClassUri { get; set; }
-        }
-
-        /// <summary>
-        /// Creates a new object for the extent and adds it
-        /// </summary>
-        /// <param name="param">Parameter of the creation</param>
-        /// <returns>the action result</returns>
-        [HttpPost("api/items/create")]
-        public ActionResult<object> CreateNewObjectForExtent([FromBody] CreateNewObjectForExtentParams param)
-        {
-            var extent = _workspaceLogic.FindExtent(param.Workspace, param.ExtentUri);
-            if (extent == null)
-            {
-                throw new InvalidOperationException("Extent is not found");
-            }
-
-            IElement? metaClass = null;
-            if (param.MetaClassUri != null)
-            {
-                metaClass = 
-                    _workspaceLogic.GetWorkspace(WorkspaceNames.WorkspaceManagement)
-                    ?.FindElementByUri(param.MetaClassUri) as IElement;
-            }
-            
-            var factory = new MofFactory(extent);
-            var newElement = factory.create(metaClass);
-            extent.elements().add(newElement);
-            
-            return new {success = true};
-        }
-
-        [HttpGet("api/items/get/{workspaceId}/{extentUri}/{item}")]
-        public ActionResult<object> GetItem(string workspaceId, string extentUri, string item)
+        [HttpGet("api/items/get/{workspaceId}/{extentUri}/{itemId}")]
+        public ActionResult<object> GetItem(string workspaceId, string extentUri, string itemId)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
             extentUri = HttpUtility.UrlDecode(extentUri);
-            item = HttpUtility.UrlDecode(item);
+            itemId = HttpUtility.UrlDecode(itemId);
 
             var extent = _workspaceLogic.FindExtent(workspaceId, extentUri) as IUriExtent;
             if (extent == null)
@@ -216,7 +176,7 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Extent is not found");
             }
 
-            var foundElement = extent.element("#" + item);
+            var foundElement = extent.element("#" + itemId);
             if (foundElement == null)
             {
                 throw new InvalidOperationException("Element is not found");
@@ -302,26 +262,56 @@ namespace DatenMeister.WebServer.Controller
         [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
         public ActionResult<object> SetProperty (string workspaceId, string itemUri, [FromBody] SetPropertyParams propertyParams)
         {
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri);
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
             foundItem.set(propertyParams.Key, propertyParams.Value);
 
-            return new
-            {
-                success = true
-            };
+            return new { success = true };
         }
 
-        [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
+        [HttpPut("api/items/set_properties/{workspaceId}/{itemUri}")]
         public ActionResult<object> SetProperties(string workspaceId, string itemUri,
             [FromBody] SetPropertiesParams propertiesParams)
         {
-            var foundItem = GetItemByUriParameter(workspaceId, itemUri);
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
             foreach (var propertyParam in propertiesParams.Properties)
             {
                 foundItem.set(propertyParam.Key, propertyParam.Value);
             }
 
             return new {success = true};
+        }
+
+        [HttpPost("api/items/set/{workspaceId}/{itemUri}")]
+        public ActionResult<object> Set(string workspaceId, string itemUri,
+            [FromBody] MofObjectAsJson jsonObject)
+        {
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri)
+                            ?? throw new InvalidOperationException("Item was not found");
+            foreach (var propertyParam in jsonObject.v)
+            {
+                var value = propertyParam.Value;
+                object? propertyValue = null;
+                if (value is JsonElement jsonElement)
+                {
+                    propertyValue = jsonElement.ValueKind switch
+                    {
+                        JsonValueKind.String => jsonElement.GetString(),
+                        JsonValueKind.Number => jsonElement.GetDouble(),
+                        JsonValueKind.True => true,
+                        JsonValueKind.False => false,
+                        _ => propertyValue
+                    };
+                }
+
+                if (propertyValue != null)
+                {
+                    foundItem.set(propertyParam.Key, propertyValue);
+                }
+            }
+
+            return new { success = true };
         }
     }
 }

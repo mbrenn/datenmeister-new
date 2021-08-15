@@ -38,14 +38,7 @@ namespace DatenMeister.WebServer.Pages
 
         public IObject? Form { get; set; }
 
-        public readonly List<IElement> Fields = new();
-
-        /// <summary>
-        /// Stores the enumeration of tables
-        /// </summary>
-        public readonly List<HtmlTable> Tables = new();
-
-        public readonly StringBuilder ScriptLines = new StringBuilder();
+        public readonly StringBuilder ScriptLines = new();
         public ItemAndFormModel? ItemAndFormModel;
 
         public ItemModel(ExtentItemsController extentItemsController)
@@ -54,9 +47,7 @@ namespace DatenMeister.WebServer.Pages
         }
 
         public void OnGet(string workspace, string extent, string? item)
-        {
-            Tables.Clear();
-            
+        {            
             Workspace = WebUtility.UrlDecode(workspace);
             Extent = WebUtility.UrlDecode(extent);
             Item = WebUtility.UrlDecode(item);
@@ -71,59 +62,12 @@ namespace DatenMeister.WebServer.Pages
             {
                 throw new InvalidOperationException($"Items not found: {Workspace}/{Extent}/{Item}");
             }
-
+            
             FoundItem = XmiHelper.ConvertItemFromXmi(ItemAndFormModel.item)
                         ?? throw new InvalidOperationException("Items are null. They may not be null");
             Form = XmiHelper.ConvertItemFromXmi(ItemAndFormModel.form)
                    ?? throw new InvalidOperationException("Form is null. It may not be null");
 
-            ConsolidateFields(Fields, Form);
-
-            var htmlTable = new HtmlTable
-            {
-                CssClass = "table table-striped table-bordered dm-table-nofullwidth align-top"
-            };
-
-            htmlTable.AddRow(
-                new HtmlTableRow(
-                    new[]
-                    {
-                        new HtmlTableCell("Key") {IsHeading = true},
-                        new HtmlTableCell("Value") {IsHeading = true}
-                    })
-            );
-            
-            foreach (var field in Fields)
-            {
-                var name = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.name);
-                
-                // Gets the cell content of the first column
-                var titleField = field.getOrDefault<string>(_DatenMeister._Forms._FieldData.title);
-                
-                var fieldMetaClass = field.getMetaClassWithoutTracing();
-                if (fieldMetaClass?.equals(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData) == true)
-                {
-                    titleField = "Metaclass";
-                }
-                if (string.IsNullOrEmpty(titleField))
-                {
-                    titleField = name;
-                }
-                
-                var value = ControlFactory.GetHtmlElementForItemsField(FoundItem, field, ScriptLines, Workspace, Extent);
-
-                var rowItem = new HtmlTableRow(
-                    new[]
-                    {
-                        new HtmlTableCell(new HtmlRawString(HttpUtility.HtmlEncode(titleField))
-                            {ConvertSpaceToNbsp = true}),
-                        new HtmlTableCell(value)
-                    });
-
-                htmlTable.AddRow(rowItem);
-            }
-            
-            Tables.Add(htmlTable);
         }
 
         /// <summary>

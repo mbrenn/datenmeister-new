@@ -96,33 +96,33 @@ namespace DatenMeister.WebServer.Library.HtmlControls
 
                 var actionType = field.getOrDefault<string>(_DatenMeister._Forms._ActionFieldData.actionName);
                 var itemAsElement = item as IElement;
-                if (actionType == ExtentFormExtensionPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
+                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentNavigateTo && itemAsElement is not null)
                 {
                     WriteScriptLineFunction(id, "extentNavigateTo",
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
                 }
 
-                if (actionType == ExtentFormExtensionPlugin.NavigationItemDelete && itemAsElement is not null)
+                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationItemDelete && itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
                     WriteScriptLines(id, "itemDelete", workspace, extent, itemId);
                 }
 
-                if (actionType == ExtentFormExtensionPlugin.NavigationItemNew && itemAsElement is not null)
+                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationItemNew && itemAsElement is not null)
                 {
                     WriteScriptLineFunction(id, "itemNew",
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.workspaceId),
                         itemAsElement.getOrDefault<string>(_DatenMeister._Management._Extent.uri));
                 }
 
-                if (actionType == ExtentFormExtensionPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
+                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListViewItem && itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);
                     WriteScriptLinesWithContext(id, "extentsListViewItem", itemId);
                 }
 
-                if (actionType == ExtentFormExtensionPlugin.NavigationExtentsListDeleteItem &&
+                if (actionType == BasicNavigationForFormsAndItemsPlugin.NavigationExtentsListDeleteItem &&
                     itemAsElement is not null)
                 {
                     var (workspace, extent, itemId) = GetWorkspaceExtentAndItemId(itemAsElement);

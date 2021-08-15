@@ -16,6 +16,8 @@
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\ApiModels.ts" />
 
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\DomHelper.ts" />
+
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts" />
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts" />

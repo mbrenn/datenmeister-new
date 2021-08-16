@@ -256,17 +256,6 @@ namespace DatenMeister.WebServer.Controller
             return new { success = true };
         }
 
-
-        [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
-        public ActionResult<object> GetComposites(string? workspaceId = "", string? itemUrl = "")
-        {
-            if (workspaceId == null)
-            {
-            }
-
-            throw new InvalidOperationException();
-        }
-
         /// <summary>
         /// Parameters to create an item within an extent
         /// </summary>

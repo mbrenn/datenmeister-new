@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Web;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
@@ -6,6 +7,7 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Json;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -62,6 +64,16 @@ namespace DatenMeister.WebServer.Controller
                 workspace = foundItem.GetUriExtentOf()?.GetWorkspace()?.id ?? string.Empty,
                 itemId = (foundItem as IHasId)?.Id ?? string.Empty
             };
+        }
+
+        [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
+        public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId = "", string? itemUrl = "")
+        {
+            if (workspaceId == null)
+            {
+            }
+
+            throw new InvalidOperationException();
         }
     }
 }

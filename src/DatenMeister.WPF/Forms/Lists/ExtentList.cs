@@ -25,18 +25,18 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             Loaded += ExtentList_Loaded;
 
-            Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
-        }
-
-        private void ExtentList_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetContent(WorkspaceId);
+            Extent = ManagementProviderPlugin.GetExtentsForWorkspaces(GiveMe.Scope.WorkspaceLogic);
         }
 
         /// <summary>
         /// Gets or sets the id to be shown in the workspace
         /// </summary>
         public string WorkspaceId { get; set; } = string.Empty;
+
+        private void ExtentList_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetContent(WorkspaceId);
+        }
 
         /// <summary>
         /// Shows the workspaces of the DatenMeister
@@ -45,7 +45,7 @@ namespace DatenMeister.WPF.Forms.Lists
         public void SetContent(string workspaceId)
         {
             WorkspaceId = workspaceId;
-            
+
             if (Extent.elements().WhenPropertyHasValue("id", WorkspaceId).FirstOrDefault() is IElement workspace)
             {
                 SetRootItem(workspace);
@@ -82,8 +82,8 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 var viewLogic = GiveMe.Scope.Resolve<FormsPlugin>();
                 var form = viewLogic.GetItemTreeFormForObject(
-                               SelectedItem, 
-                               FormDefinitionMode.Default, 
+                               SelectedItem,
+                               FormDefinitionMode.Default,
                                CurrentViewModeId)
                            ?? throw new InvalidOperationException("form == null");
                 var formDefinition = overridingDefinition ??

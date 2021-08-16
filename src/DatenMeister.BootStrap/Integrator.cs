@@ -23,7 +23,6 @@ using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Forms;
 using DatenMeister.Forms.FormFinder;
 using DatenMeister.Plugins;
-using DatenMeister.Provider.ManagementProviders.Workspaces;
 using DatenMeister.Provider.Xml;
 using DatenMeister.Types;
 
@@ -31,15 +30,24 @@ namespace DatenMeister.BootStrap
 {
     public class Integrator
     {
+        private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
+
+        private readonly PluginLoaderSettings _pluginLoaderSettings;
+        private string? _pathExtents;
+
+        private string? _pathWorkspaces;
+        private PublicIntegrationSettings? _publicSettings;
+
         /// <summary>
         /// Settings being used for integration
         /// </summary>
         private IntegrationSettings _settings;
 
-        private readonly PluginLoaderSettings _pluginLoaderSettings;
-
-        private string? _pathWorkspaces;
-        private string? _pathExtents;
+        public Integrator(IntegrationSettings settings, PluginLoaderSettings pluginLoaderSettings)
+        {
+            _settings = settings;
+            _pluginLoaderSettings = pluginLoaderSettings;
+        }
 
         public string PathWorkspaces
         {
@@ -49,12 +57,9 @@ namespace DatenMeister.BootStrap
 
         public string PathExtents
         {
-            get => _pathExtents?? throw new InvalidOperationException("PathExtents is not set");
+            get => _pathExtents ?? throw new InvalidOperationException("PathExtents is not set");
             private set => _pathExtents = value;
         }
-
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(Integrator));
-        private PublicIntegrationSettings? _publicSettings;
 
         public static string GetPathToWorkspaces(IntegrationSettings settings)
             => Path.Combine(settings.DatabasePath, "DatenMeister.Workspaces.xml");
@@ -67,19 +72,13 @@ namespace DatenMeister.BootStrap
         public static string GetPathToExtents(IntegrationSettings settings)
             => Path.Combine(settings.DatabasePath, "DatenMeister.Extents.xml");
 
-        public Integrator(IntegrationSettings settings, PluginLoaderSettings pluginLoaderSettings)
-        {
-            _settings = settings;
-            _pluginLoaderSettings = pluginLoaderSettings;
-        }
-
         public IDatenMeisterScope UseDatenMeister(ContainerBuilder kernel)
         {
             MofExtent.GlobalSlimUmlEvaluation = true;
-            
+
             var scopeStorage = new ScopeStorage();
             kernel.RegisterInstance(scopeStorage).As<IScopeStorage>();
-            
+
             PrepareSettings();
             if (_publicSettings != null)
             {
@@ -127,10 +126,10 @@ namespace DatenMeister.BootStrap
             var workspaceData = WorkspaceLogic.InitDefault();
             scopeStorage.Add(workspaceData);
             kernel.RegisterType<WorkspaceLogic>().As<IWorkspaceLogic>();
-            
+
             var extentSettings = new ExtentSettings();
             scopeStorage.Add(extentSettings);
-            
+
             // Extent Manager
             var mapper = new ConfigurationToExtentStorageMapper();
             scopeStorage.Add(mapper);
@@ -156,17 +155,17 @@ namespace DatenMeister.BootStrap
 
             var pluginManager = new PluginManager();
             scopeStorage.Add(pluginManager);
-            
+
             var pluginLoader = _pluginLoaderSettings.PluginLoader ?? new DefaultPluginLoader();
             pluginLoader.LoadAssembliesFromFolder(
-                Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location) 
+                Path.GetDirectoryName(typeof(DatenMeisterScope).Assembly.Location)
                 ?? throw new InvalidOperationException("Path is null"));
-            
+
             Logger.Debug("Building Dependency Injector");
             var builder = kernel.Build();
             var scope = builder.BeginLifetimeScope();
             var dmScope = new DatenMeisterScope(scope);
-            
+
             // Creates the content
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.BeforeBootstrapping);
 
@@ -236,10 +235,7 @@ namespace DatenMeister.BootStrap
 
             // Deactivates the global slim evaluation since we now have all necessary types imported. 
             MofExtent.GlobalSlimUmlEvaluation = false;
-            
-            // Includes the extent for the helping extents
-            ManagementProviderHelper.Initialize(dmScope);
-            
+
             // Finally loads the plugin
             pluginManager.StartPlugins(scope, pluginLoader, PluginLoadingPosition.AfterInitialization);
 
@@ -271,7 +267,7 @@ namespace DatenMeister.BootStrap
             ResetUpdateFlagsOfExtent(workspaceLogic);
             watch.Stop();
             Logger.Debug($"Elapsed time for bootstrap: {watch.Elapsed}");
-            
+
             return dmScope;
         }
 
@@ -312,7 +308,8 @@ namespace DatenMeister.BootStrap
                 var path = Assembly.GetEntryAssembly()?.Location;
                 if (path != null)
                 {
-                    _publicSettings = PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(path) ?? throw new InvalidOperationException("Path is null"));
+                    _publicSettings = PublicSettingHandler.LoadSettingsFromDirectory(Path.GetDirectoryName(path) ??
+                        throw new InvalidOperationException("Path is null"));
                     if (_publicSettings != null)
                     {
                         if (_publicSettings.databasePath != null && !string.IsNullOrEmpty(_publicSettings.databasePath))

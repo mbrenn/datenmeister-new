@@ -10,7 +10,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Json;
-using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -19,24 +18,13 @@ namespace DatenMeister.WebServer.Controller
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly IWorkspaceLogic _workspaceLogic;
         private readonly IScopeStorage _scopeStorage;
+        private readonly IWorkspaceLogic _workspaceLogic;
 
         public ItemsController(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
         {
             _workspaceLogic = workspaceLogic;
             _scopeStorage = scopeStorage;
-        }
-
-        /// <summary>
-        /// Parameters to create an item within an extent
-        /// </summary>
-        public class CreateItemInExtentParams
-        {
-            /// <summary>
-            /// Gets or sets the metaclass
-            /// </summary>
-            public string? metaClass { get; set; }
         }
 
         [HttpPost("api/items/create_in_extent/{workspaceId}/{extentUri}")]
@@ -67,28 +55,6 @@ namespace DatenMeister.WebServer.Controller
             };
         }
 
-        /// <summary>
-        /// Parameters to create an item within an extent
-        /// </summary>
-        public class CreateChildParams
-        {
-            /// <summary>
-            /// Gets or sets the metaclass
-            /// </summary>
-            public string metaClass { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Property in which the item shall be added
-            /// </summary>
-            public string property { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Gets or sets whether the child shall be added as a list item or
-            /// shall be directly set to the property
-            /// </summary>
-            public bool asList { get; set; }
-        }
-
 
         [HttpPost("api/items/create_child/{workspaceId}/{itemUri}")]
         public ActionResult<object> CreateItemAsChild(
@@ -102,9 +68,8 @@ namespace DatenMeister.WebServer.Controller
             IElement? metaClass =
                 string.IsNullOrEmpty(createParams.metaClass)
                     ? null
-                    : 
-                        (item.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver"))
-                        .Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
+                    : (item.GetUriResolver() ?? throw new InvalidOperationException("No UriResolver"))
+                    .Resolve(createParams.metaClass, ResolveType.OnlyMetaClasses) as IElement;
 
             var child = factory.create(metaClass);
             if (createParams.asList)
@@ -122,7 +87,7 @@ namespace DatenMeister.WebServer.Controller
                 itemId = (child as IHasId)?.Id ?? string.Empty
             };
         }
-        
+
         [HttpDelete("api/items/delete/{workspaceId}/{extentUri}/{itemId}")]
         public ActionResult<object> DeleteItem(string workspaceId, string extentUri, string itemId)
         {
@@ -160,7 +125,7 @@ namespace DatenMeister.WebServer.Controller
                         ?? throw new InvalidOperationException("Item is not found");
 
             extent.elements().remove(found);
-            return new {success = true};
+            return new { success = true };
         }
 
         [HttpGet("api/items/get/{workspaceId}/{extentUri}/{itemId}")]
@@ -235,32 +200,9 @@ namespace DatenMeister.WebServer.Controller
             return foundElement;
         }
 
-        /// <summary>
-        /// Defines the property for the set property
-        /// </summary>
-        public class SetPropertyParams
-        {
-            /// <summary>
-            /// Gets or sets the key
-            /// </summary>
-            public string Key { get; set; } = string.Empty;
-
-            /// <summary>
-            /// Gets or sets the value
-            /// </summary>
-            public string Value { get; set; } = string.Empty;
-        }
-
-        /// <summary>
-        /// Defines the properties for the set properties
-        /// </summary>
-        public class SetPropertiesParams
-        {
-            public List<SetPropertyParams> Properties = new();
-        }
-
         [HttpPut("api/items/set_property/{workspaceId}/{itemUri}")]
-        public ActionResult<object> SetProperty (string workspaceId, string itemUri, [FromBody] SetPropertyParams propertyParams)
+        public ActionResult<object> SetProperty(string workspaceId, string itemUri,
+            [FromBody] SetPropertyParams propertyParams)
         {
             var foundItem = GetItemByUriParameter(workspaceId, itemUri)
                             ?? throw new InvalidOperationException("Item was not found");
@@ -280,7 +222,7 @@ namespace DatenMeister.WebServer.Controller
                 foundItem.set(propertyParam.Key, propertyParam.Value);
             }
 
-            return new {success = true};
+            return new { success = true };
         }
 
         [HttpPost("api/items/set/{workspaceId}/{itemUri}")]
@@ -312,6 +254,74 @@ namespace DatenMeister.WebServer.Controller
             }
 
             return new { success = true };
+        }
+
+
+        [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
+        public ActionResult<object> GetComposites(string? workspaceId = "", string? itemUrl = "")
+        {
+            if (workspaceId == null)
+            {
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        /// <summary>
+        /// Parameters to create an item within an extent
+        /// </summary>
+        public class CreateItemInExtentParams
+        {
+            /// <summary>
+            /// Gets or sets the metaclass
+            /// </summary>
+            public string? metaClass { get; set; }
+        }
+
+        /// <summary>
+        /// Parameters to create an item within an extent
+        /// </summary>
+        public class CreateChildParams
+        {
+            /// <summary>
+            /// Gets or sets the metaclass
+            /// </summary>
+            public string metaClass { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Property in which the item shall be added
+            /// </summary>
+            public string property { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets whether the child shall be added as a list item or
+            /// shall be directly set to the property
+            /// </summary>
+            public bool asList { get; set; }
+        }
+
+        /// <summary>
+        /// Defines the property for the set property
+        /// </summary>
+        public class SetPropertyParams
+        {
+            /// <summary>
+            /// Gets or sets the key
+            /// </summary>
+            public string Key { get; set; } = string.Empty;
+
+            /// <summary>
+            /// Gets or sets the value
+            /// </summary>
+            public string Value { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Defines the properties for the set properties
+        /// </summary>
+        public class SetPropertiesParams
+        {
+            public List<SetPropertyParams> Properties = new();
         }
     }
 }

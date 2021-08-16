@@ -29,7 +29,7 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            Extent = ManagementProviderPlugin.GetExtentsForWorkspaces(GiveMe.Scope.WorkspaceLogic);
+            Extent = ManagementProviderPlugin.GetExtentForWorkspaces(GiveMe.Scope.WorkspaceLogic);
             SetRootItem(Extent);
 
             var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();

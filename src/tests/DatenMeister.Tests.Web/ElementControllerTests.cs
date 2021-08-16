@@ -29,7 +29,7 @@ namespace DatenMeister.Tests.Web
             
             // Check, that the workspaces are in... 
             Assert.That(result.Value.Any(x => x.name == "Data"));
-            Assert.That(result.Value.Any(x => x.id == WorkspaceNames.UriExtentWorkspaces +  "#Data"));
+            Assert.That(result.Value.Any(x => x.id == "Data"));
             Assert.That(result.Value.Any(x => x.name == "Management"));
             
             dm.Dispose();
@@ -47,7 +47,7 @@ namespace DatenMeister.Tests.Web
             
             // Check, that the workspaces are in... 
             Assert.That(result.Value.Any(x => x.name == "Test Extent"));
-            Assert.That(result.Value.Any(x => x.id == "dm:///temp"));
+            Assert.That(result.Value.Any(x => x.id == "Data_dm:///temp"));
             
             dm.Dispose();
         }
@@ -77,7 +77,6 @@ namespace DatenMeister.Tests.Web
             var scopeStorage = dm.ScopeStorage;
 
             var elementsController = new ElementsController(workspaceLogic, scopeStorage);
-
 
             var firstElement =
                 extent.elements()

@@ -25,7 +25,7 @@ namespace DatenMeister.WPF.Forms.Lists
         {
             Loaded += ExtentList_Loaded;
 
-            Extent = ManagementProviderPlugin.GetExtentsForWorkspaces(GiveMe.Scope.WorkspaceLogic);
+            Extent = ManagementProviderPlugin.GetExtentForWorkspaces(GiveMe.Scope.WorkspaceLogic);
         }
 
         /// <summary>

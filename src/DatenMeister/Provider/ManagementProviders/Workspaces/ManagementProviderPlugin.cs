@@ -40,7 +40,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         /// </summary>
         /// <param name="workspaceLogic">Logic for the workspace to be used</param>
         /// <returns>The found uri extent</returns>
-        public static IUriExtent GetExtentsForWorkspaces(IWorkspaceLogic workspaceLogic)
+        public static IUriExtent GetExtentForWorkspaces(IWorkspaceLogic workspaceLogic)
         {
             return workspaceLogic.GetManagementWorkspace().FindExtent(WorkspaceNames.UriExtentWorkspaces)
                    ?? throw new InvalidOperationException("Extent for uri extents not found");

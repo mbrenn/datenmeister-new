@@ -5,7 +5,7 @@ import * as ApiModels from "./ApiModels"
 import {DmObject} from "./Mof";
 
 export function loadObject(workspace: string, extent: string, id: string): JQuery.Deferred<Mof.DmObject, never, never> {
-    var r = jQuery.Deferred<Mof.DmObject, never, never>();
+    const r = jQuery.Deferred<Mof.DmObject, never, never>();
 
     ApiConnection.get<ApiModels.Out.IItem>(
         Settings.baseUrl +

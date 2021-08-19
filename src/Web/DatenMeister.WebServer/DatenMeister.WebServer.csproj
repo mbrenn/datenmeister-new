@@ -18,7 +18,11 @@
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\DomHelper.ts" />
 
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ElementsLoader.ts" />
+
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts" />
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts" />
 

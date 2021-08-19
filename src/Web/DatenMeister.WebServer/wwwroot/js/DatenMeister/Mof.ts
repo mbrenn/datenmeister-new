@@ -1,12 +1,4 @@
-﻿
-
-export interface ItemWithNameAndId
-{
-    name: string;
-    extentUri: string;
-    fullName: string;
-    id: string;
-}
+﻿import {ItemWithNameAndId} from "./ApiModels";
 
 export class DmObject
 {

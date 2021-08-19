@@ -11,4 +11,17 @@
 
 <p>Currently, we have no settings</p>
 
+<div id="selectForm"></div>
 
+<script>
+
+$(function ()
+{
+    requirejs(['datenmeister/Forms.SelectItemControl'], function(formControl)
+    {
+        const r = new formControl.SelectItemControl();
+        r.init($("#selectForm"));        
+    });
+ });
+ 
+</script>

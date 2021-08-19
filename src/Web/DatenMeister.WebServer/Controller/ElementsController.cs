@@ -72,8 +72,11 @@ namespace DatenMeister.WebServer.Controller
         }
 
         [HttpGet("api/elements/get_composites/{workspaceId?}/{itemUrl?}")]
-        public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId = "", string? itemUrl = "")
+        public ActionResult<ItemWithNameAndId[]> GetComposites(string? workspaceId, string? itemUrl)
         {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUrl = HttpUtility.UrlDecode(itemUrl);
+            
             if (workspaceId == null)
             {
                 var extent = ManagementProviderPlugin.GetExtentForWorkspaces(_workspaceLogic);
@@ -110,6 +113,7 @@ namespace DatenMeister.WebServer.Controller
                             var realExtent = _workspaceLogic.FindExtent(
                                 workspaceId,
                                 t.get<string>(_DatenMeister._Management._Extent.uri));
+                            x.extentUri = (realExtent as IUriExtent)?.contextURI() ?? string.Empty;
                             if (t.isSet(_UML._CommonStructure._NamedElement.name))
                             {
                                 x.name = realExtent.get<string>(_UML._CommonStructure._NamedElement.name);
@@ -131,8 +135,7 @@ namespace DatenMeister.WebServer.Controller
                 return NotFound();
             }
 
-            var foundItem = workspace.Resolve(itemUrl, ResolveType.NoMetaWorkspaces) as IObject;
-            if (foundItem == null)
+            if (workspace.Resolve(itemUrl, ResolveType.NoMetaWorkspaces) is not IObject foundItem)
             {
                 return NotFound();
             }

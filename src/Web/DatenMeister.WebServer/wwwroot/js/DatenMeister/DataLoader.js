@@ -25,7 +25,7 @@ define(["require", "exports", "./Mof", "./Settings", "./ApiConnection"], functio
     Settings = __importStar(Settings);
     ApiConnection = __importStar(ApiConnection);
     function loadObject(workspace, extent, id) {
-        var r = jQuery.Deferred();
+        const r = jQuery.Deferred();
         ApiConnection.get(Settings.baseUrl +
             "api/items/get/" +
             encodeURIComponent(workspace) +

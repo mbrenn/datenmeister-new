@@ -45,7 +45,7 @@ define(["require", "exports", "./ApiConnection"], function (require, exports, Ap
             url += '/' + encodeURIComponent(workspaceId);
             if (extent !== undefined && extent !== null) {
                 if (itemId !== undefined && itemId !== null) {
-                    url += '/' + encodeURIComponent(extent) + '#' + encodeURIComponent(itemId);
+                    url += '/' + encodeURIComponent(extent + '#' + itemId);
                 }
                 else {
                     url += '/' + encodeURIComponent(extent);

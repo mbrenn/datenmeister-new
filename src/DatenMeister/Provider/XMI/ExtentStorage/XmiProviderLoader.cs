@@ -118,10 +118,8 @@ namespace DatenMeister.Provider.XMI.ExtentStorage
                 File.Delete(filePath);
 
             // Loads existing file
-            using (var fileStream = File.OpenWrite(filePath))
-            {
-                xmlExtent.Document.Save(fileStream);
-            }
+            using var fileStream = File.OpenWrite(filePath);
+            xmlExtent.Document.Save(fileStream);
         }
 
         /// <summary>

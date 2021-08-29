@@ -12,7 +12,7 @@
 
 <h1>Item</h1>
 
-<div class="dm-breadcrump">
+<div class="dm-breadcrumb">
     @{ var w = Model.ItemAndFormModel?.workspace ?? "No Workspace"; }
     @{ var e = Model.ItemAndFormModel?.extentUri ?? "No Extent"; }
     @{ var i = Model.Item ?? "No Item"; }
@@ -27,7 +27,7 @@
     
     function CreateViewForm()
     {
-        requirejs(['DatenMeister/Forms'], function(Form) {
+        requirejs(['Datenmeister/Forms'], function(Form) {
             var detailForm = new Form.MofDetailForm();
             detailForm.createViewForm(
                 $("#form_view"),
@@ -48,7 +48,7 @@ $(function()
     
     function EditItem()
     {
-        requirejs(['DatenMeister/Forms'], function(Form) {
+        requirejs(['Datenmeister/Forms'], function(Form) {
             var detailForm = new Form.MofDetailForm();
             detailForm.createEditForm(
                 $("#form_view"),

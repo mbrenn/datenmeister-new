@@ -26,7 +26,7 @@ function load(workspaceId: string, extent: string, itemId: string): JQueryPromis
 
         if (extent !== undefined && extent !== null) {
             if (itemId !== undefined && itemId !== null) {
-                url += '/' + encodeURIComponent(extent) + '#' + encodeURIComponent(itemId);
+                url += '/' + encodeURIComponent(extent+ '#' + itemId);
             } else {
                 url += '/' + encodeURIComponent(extent);
             }

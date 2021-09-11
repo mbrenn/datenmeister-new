@@ -49,6 +49,20 @@ namespace DatenMeister.Tests.Xmi.EMOF
         }
 
         [Test]
+        public void TestXmlMetaClassFromElementName()
+        {
+            var xmlExtent = new XmiProvider();
+            var uriExtent = new MofUriExtent(xmlExtent, "dm:///test/" );
+            var mofFactory = new MofFactory(uriExtent);
+            var mofObject = mofFactory.create(null);
+            var provider = (mofObject as MofObject)!.ProviderObject as XmiProviderObject;
+            provider!.XmlNode.Name = "demo";
+            
+            mofObject.set("test", "testvalue");
+            Assert.That((mofObject.getMetaClass() as MofObjectShadow)!.Uri, Is.EqualTo("dm:///_xmi/node/demo"));
+        }
+
+        [Test]
         public void TestXmlMofObjectWithElementSet()
         {
             var tempExtent = new MofUriExtent(new InMemoryProvider(), "dm:///temp/");

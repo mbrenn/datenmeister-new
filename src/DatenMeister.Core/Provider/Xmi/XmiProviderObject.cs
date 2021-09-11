@@ -52,7 +52,7 @@ namespace DatenMeister.Core.Provider.Xmi
 
                 value = property == "href"
                     ? "_href"
-                    : XmlConvert.EncodeLocalName(property);
+                    : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
 
                 _xmiProvider.NormalizationCache[property] = value;
                 return value;
@@ -62,7 +62,7 @@ namespace DatenMeister.Core.Provider.Xmi
             {
                 var value = property == "href"
                     ? "_href"
-                    : XmlConvert.EncodeLocalName(property);
+                    : XmlConvert.EncodeLocalName(property) ?? throw new InvalidOperationException("Should not happen");
 
                 return value;
             }
@@ -82,7 +82,8 @@ namespace DatenMeister.Core.Provider.Xmi
                 return "href";
             }
 
-            return XmlConvert.DecodeName(property);
+            return XmlConvert.DecodeName(property)
+                ?? throw new InvalidOperationException("Should not happen");
         }
 
         public static readonly XName TypeAttribute = Namespaces.Xmi + "type";
@@ -301,27 +302,47 @@ namespace DatenMeister.Core.Provider.Xmi
             }
         }
 
+        /// <summary>
+        /// Gets the uri of the metaclass.
+        /// If there is no metaclass defined, then a pseudo-metaclass will be created. 
+        /// </summary>
+        /// <returns>The string describing the metaclass or null if not found</returns>
         private string? GetMetaClassUri()
         {
             var result = XmlNode.Attribute(TypeAttribute)?.Value;
-            if (result == null) return null;
+            if (result == null)
+            {
+                // Ok, we don't have a type, so return a pseudo-type dependent on the name of the xml
+                // node or null, if it is the default element node
+                var element = XmlNode.Name;
+                return
+                    ((XmiProvider)Provider).ElementName == element
+                        ? null
+                        : $"dm:///_xmi/node/{XmlNode.Name}";
+            }
 
+            // Checks, if there is a colon within the metaclass
             var posColon = result.IndexOf(':');
             if (posColon == -1)
             {
                 return result;
             }
 
+            // If there is a colon, get the value before the colon and use this to figure out the real namespace.
+            // Like: xmi:type="uml:Package": uml is the namespace. 
             var xmlNamespace = result.Substring(0, posColon);
             var type = result.Substring(posColon + 1);
 
+            // The first part before the colon is the namespace
             var navigator = XmlNode.CreateNavigator();
             navigator.MoveToFollowing(XPathNodeType.Element);
+            
+            // Resolves the namespace
             var foundNamespace = navigator.GetNamespace(xmlNamespace);
             if (foundNamespace != null && !string.IsNullOrEmpty(foundNamespace))
             {
                 // We have found something, let's combine the url
-                return foundNamespace + "#" + type;
+                return $"{foundNamespace}#{type}";
             }
 
             return result;

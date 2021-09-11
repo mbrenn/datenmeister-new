@@ -12,7 +12,7 @@ namespace DatenMeister.Core
         /// <summary>
         /// Defines the XmiFileName
         /// </summary>
-        public static string XmiFileName = "DatenMeister.Settings.xmi";
+        public const string XmiFileName = "DatenMeister.Settings.xmi";
         
         /// <summary>
         /// Defines the class logger

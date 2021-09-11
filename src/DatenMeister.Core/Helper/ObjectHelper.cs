@@ -379,6 +379,22 @@ namespace DatenMeister.Core.Helper
         }
 
         /// <summary>
+        /// Sets the id and returns the element itself to allow chaining
+        /// </summary>
+        /// <param name="element">Element to be updated</param>
+        /// <param name="id">Id to be set </param>
+        /// <returns>The element itself</returns>
+        public static IObject SetId(this IObject element, string id)
+        {
+            if (element is ICanSetId elementAsHasId)
+            {
+                elementAsHasId.Id = id;
+            }
+
+            return element;
+        }
+
+        /// <summary>
         /// Gets a certain property value as a reflective sequence.
         /// If the value is not a reflective sequence, an exception is thrown
         /// </summary>

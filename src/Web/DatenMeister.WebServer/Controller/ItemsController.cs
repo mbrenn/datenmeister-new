@@ -248,6 +248,24 @@ namespace DatenMeister.WebServer.Controller
             };
         }
 
+        [HttpPut("api/items/get_container/{workspaceId}/{itemUri}")]
+        public ActionResult<object> GetParents(string workspaceId, string itemUri)
+        {
+            var foundItem = GetItemByUriParameter(workspaceId, itemUri) as IElement
+                            ?? throw new InvalidOperationException("Item was not found");
+
+            var result = new List<ItemWithNameAndId>();
+            var container = foundItem;
+            do
+            {
+                container = container.container();
+                result.Add(ItemWithNameAndId.Create(container)
+                           ?? throw new InvalidOperationException("Should not happen"));
+            } while (container != null);
+
+            return result;
+        }
+
         /// <summary>
         /// Gets the items by the uri parameter.
         /// The parameter themselves are expected to be uriencoded, so a decoding via HttpUtility.UrlDecode will be performed

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using BurnSystems.Logging;
+using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Implementation.DotNet;
 using DatenMeister.Core.EMOF.Interface.Reflection;
@@ -59,26 +60,22 @@ namespace DatenMeister.Modules.PublicSettings
                 try
                 {
                     Logger.Info($"Loading public integration from {path}");
-                    var provider = new XmiProvider(XDocument.Load(path));
-                    var extent = new MofExtent(provider);
-                    if (!(extent.elements().FirstOrDefault() is IObject element))
+                    var extent = ConfigurationLoader.LoadSetting(path);
+                    // Goes through all elements
+                    foreach (var element in extent.elements().OfType<IElement>())
                     {
-                        var message = "The given extent does not contain an element being usable for conversion";
-                        Logger.Warn(message);
-                        throw new InvalidOperationException(message);
-                    }
+                        settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
+                        settings.settingsFilePath = path;
+                        settings.databasePath = settings.databasePath != null
+                            ? Environment.ExpandEnvironmentVariables(settings.databasePath)
+                            : null;
 
-                    settings = DotNetConverter.ConvertToDotNetObject<PublicIntegrationSettings>(element);
-                    settings.settingsFilePath = path;
-                    settings.databasePath = settings.databasePath != null
-                        ? Environment.ExpandEnvironmentVariables(settings.databasePath)
-                        : null;
-
-                    foreach (var variable in settings.environmentVariable
-                        .Where(variable => variable.key != null && variable.value != null))
-                    {
-                        Environment.SetEnvironmentVariable(variable.key!, variable.value);
-                        Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
+                        foreach (var variable in settings.environmentVariable
+                            .Where(variable => variable.key != null && variable.value != null))
+                        {
+                            Environment.SetEnvironmentVariable(variable.key!, variable.value);
+                            Logger.Info($"Setting Environmental Variable: {variable.key} = {variable.value}");
+                        }
                     }
                 }
                 catch (Exception exc)

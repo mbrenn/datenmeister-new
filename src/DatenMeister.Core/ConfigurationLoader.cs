@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Xml.Linq;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Implementation;
@@ -28,6 +29,17 @@ namespace DatenMeister.Core
         public static MofExtent LoadSetting(string? path = null)
         {
             path ??= XmiFileName;
+
+            if (!Path.IsPathRooted(path))
+            {
+                var assembly = Assembly.GetEntryAssembly() ??
+                               throw new InvalidOperationException("Entry assembly is null");
+
+                var assemblyDirectoryName = Path.GetDirectoryName(assembly.Location) ??
+                                            throw new InvalidOperationException("Assembly Directory Name is null");
+
+                path = Path.Combine(assemblyDirectoryName, path);
+            }
 
             try
             {

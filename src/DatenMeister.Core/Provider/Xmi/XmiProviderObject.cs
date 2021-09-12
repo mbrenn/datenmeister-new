@@ -19,6 +19,11 @@ namespace DatenMeister.Core.Provider.Xmi
     public class XmiProviderObject : IProviderObject, IProviderObjectSupportsListMovements
     {
         /// <summary>
+        /// Sets the name of the metaclass prefix
+        /// </summary>
+        public const string NodeMetaClassPrefix = "dm:///_xmi/node/";
+
+        /// <summary>
         /// Stores the configuration whether a cache shall be used for the normalization function for the
         /// xmiProviders
         /// </summary>
@@ -318,7 +323,7 @@ namespace DatenMeister.Core.Provider.Xmi
                 return
                     ((XmiProvider)Provider).ElementName == element
                         ? null
-                        : $"dm:///_xmi/node/{XmlNode.Name}";
+                        : $"{NodeMetaClassPrefix}{XmlNode.Name}";
             }
 
             // Checks, if there is a colon within the metaclass

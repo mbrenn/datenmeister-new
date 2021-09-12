@@ -216,13 +216,14 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <param name="collection">Collection to be evaluated</param>
         /// <param name="extentUri">Uri, which needs to be retrieved</param>
         /// <returns>Found extent or null if not found</returns>
-        public static IExtent? FindExtent(
+        public static IUriExtent? FindExtent(
             this IWorkspaceLogic collection,
             string extentUri)
         {
             return collection.Workspaces
                 .SelectMany(x => x.extent)
-                .FirstOrDefault(x => (x as IUriExtent)?.contextURI() == extentUri);
+                .OfType<IUriExtent>()
+                .FirstOrDefault(x => x.contextURI() == extentUri);
         }
 
         /// <summary>

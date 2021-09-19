@@ -7,7 +7,11 @@ using DatenMeister.Plugins;
 namespace DatenMeister.Extent.Forms
 {
     // ReSharper disable once UnusedType.Global
-    public class ExtentFormExtensionPlugin  : IDatenMeisterPlugin
+    /// <summary>
+    /// Defines the default form extensions which are used to navigate through the
+    /// items, extens and also offers the simple creation and deletion of items. 
+    /// </summary>
+    public class BasicNavigationForFormsAndItemsPlugin  : IDatenMeisterPlugin
     {
         public const string NavigationExtentNavigateTo = "Extent.NavigateTo";
         public const string NavigationItemDelete = "Item.Delete";
@@ -17,7 +21,7 @@ namespace DatenMeister.Extent.Forms
         
         private readonly IScopeStorage _scopeStorage;
 
-        public ExtentFormExtensionPlugin(IScopeStorage scopeStorage)
+        public BasicNavigationForFormsAndItemsPlugin(IScopeStorage scopeStorage)
         {
             _scopeStorage = scopeStorage;
         }
@@ -36,7 +40,6 @@ namespace DatenMeister.Extent.Forms
             {
                 FormType = _DatenMeister._Forms.___FormType.TreeItemDetail
             });
-            
             
             ActionButtonToFormAdder.AddActionButton(
                 formsPlugin, new ActionButtonAdderParameter(NavigationItemNew, "New Item")

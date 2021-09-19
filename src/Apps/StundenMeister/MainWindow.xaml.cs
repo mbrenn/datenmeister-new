@@ -9,9 +9,9 @@ using BurnSystems.Logging;
 using BurnSystems.WPF;
 using DatenMeister.Core;
 using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Core.Formatter;
 using DatenMeister.Core.Helper;
 using DatenMeister.Integration.DotNet;
-using DatenMeister.Modules.Formatter;
 using StundenMeister.Logic;
 using StundenMeister.Model;
 

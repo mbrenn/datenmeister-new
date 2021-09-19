@@ -29,12 +29,12 @@ namespace DatenMeister.WPF.Forms.Lists
 
         private void WorkspaceList_Loaded(object sender, RoutedEventArgs e)
         {
-            Extent = ManagementProviderHelper.GetExtentsForWorkspaces(GiveMe.Scope);
+            Extent = ManagementProviderPlugin.GetExtentForWorkspaces(GiveMe.Scope.WorkspaceLogic);
             SetRootItem(Extent);
 
             var eventManager = GiveMe.Scope.ScopeStorage.Get<ChangeEventManager>();
             EventHandle = eventManager.RegisterFor(Extent,
-                (x,y) =>
+                (x, y) =>
                     Tabs.FirstOrDefault()?.ControlAsNavigationGuest.UpdateForm());
         }
 
@@ -48,10 +48,10 @@ namespace DatenMeister.WPF.Forms.Lists
             if (OverridingViewDefinition?.Mode == FormDefinitionMode.Specific)
             {
                 form = OverridingViewDefinition;
-                
+
                 // Checks, if the given form is correct
                 if (!ClassifierMethods.IsSpecializedClassifierOf(
-                    (OverridingViewDefinition.Element as IElement)?.getMetaClass(), 
+                    (OverridingViewDefinition.Element as IElement)?.getMetaClass(),
                     _DatenMeister.TheOne.Forms.__ExtentForm))
                 {
                     MessageBox.Show("Overriding form is not of type ExtentForm.");
@@ -64,7 +64,8 @@ namespace DatenMeister.WPF.Forms.Lists
                 var selectedItemMetaClass = (SelectedItem as IElement)?.getMetaClass();
                 var extent = Extent ?? throw new InvalidOperationException("Extent == null");
                 if (selectedItemMetaClass != null && SelectedItem != null
-                    && NamedElementMethods.GetFullName(selectedItemMetaClass)?.Contains("Workspace") == true)
+                                                  && NamedElementMethods.GetFullName(selectedItemMetaClass)
+                                                      ?.Contains("Workspace") == true)
                 {
                     var workspaceId = SelectedItem.getOrDefault<string>("id");
                     form = WorkspaceExtentFormGenerator.RequestFormForExtents(extent, workspaceId, NavigationHost);
@@ -81,7 +82,7 @@ namespace DatenMeister.WPF.Forms.Lists
                 MessageBox.Show("None");
                 return;
             }
-            
+
             EvaluateForm(SelectedItem, form);
         }
 
@@ -94,12 +95,11 @@ namespace DatenMeister.WPF.Forms.Lists
             {
                 Inlines =
                 {
-                    new Bold {Inlines = {new Run("All Workspaces")}}
+                    new Bold { Inlines = { new Run("All Workspaces") } }
                 }
             });
-            
-            foreach (var extension in base.GetViewExtensions()) yield return extension;
 
+            foreach (var extension in base.GetViewExtensions()) yield return extension;
         }
 
         public virtual void OnMouseDoubleClick(IObject element)

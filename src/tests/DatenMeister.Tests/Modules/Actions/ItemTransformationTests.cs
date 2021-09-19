@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DatenMeister.Actions.Transformations;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -18,13 +19,17 @@ namespace DatenMeister.Tests.Modules.Actions
             var actionLogic = ActionSetTests.CreateActionLogic();
             var (source, target) = ActionSetTests.CreateExtents(actionLogic);
 
+            // This is only required to let the right reflection type working
+            var temp = new UpperCaseTransformation();
+            Assert.That(temp is IItemTransformation);
+
             var action = InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Actions.__TransformItemsAction)
                 .SetProperties(new Dictionary<string, object>
                 {
                     [_DatenMeister._Actions._TransformItemsAction.path] = "dm:///source/",
                     [_DatenMeister._Actions._TransformItemsAction.workspace] = "Data",
                     [_DatenMeister._Actions._TransformItemsAction.runtimeClass] =
-                        "DatenMeister.Modules.Actions.Transformations.UpperCaseTransformation"
+                        "DatenMeister.Actions.Transformations.UpperCaseTransformation"
                 });
 
             var found = source.elements().OfType<IElement>()

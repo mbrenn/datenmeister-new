@@ -8,7 +8,7 @@
         public const string WorkspaceUml = "UML";
         public const string WorkspaceMof = "MOF";
         public const string WorkspaceViews = "Views";
-        
+
         public const string UriExtentUml = "dm:///_internal/model/uml";
         public const string UriExtentMof = "dm:///_internal/model/mof";
         public const string UriExtentPrimitiveTypes = "dm:///_internal/model/primitivetypes";
@@ -28,12 +28,11 @@
         /// </summary>
         public const string UriExtentUserForm = "dm:///_internal/forms/user";
 
-
         /// <summary>
         /// Gets the uri of the extent which contains the workspaces
         /// </summary>
         public const string UriExtentWorkspaces = "dm:///_internal/workspaces";
-        
+
         /// <summary> 
         /// Gets the uri of the extent which contains the workspaces
         /// </summary>
@@ -45,7 +44,8 @@
 
 
         public const string StandardPrimitiveTypeNamespace = "http://www.omg.org/spec/PrimitiveTypes/20131001";
-        public const string StandardPrimitiveTypeNamespaceAlternative = "http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi";
+
+        public const string StandardPrimitiveTypeNamespaceAlternative =
+            "http://www.omg.org/spec/UML/20131001/PrimitiveTypes.xmi";
     }
 }
- 

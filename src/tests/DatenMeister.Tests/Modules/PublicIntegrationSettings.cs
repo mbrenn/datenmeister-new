@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using DatenMeister.Modules.PublicSettings;
+using DatenMeister.BootStrap.PublicSettings;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Modules

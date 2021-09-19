@@ -46,7 +46,7 @@ namespace DatenMeister.Integration.DotNet.PluginLoader
         /// <summary>
         /// The class logger being used
         /// </summary>
-        private static readonly ClassLogger Logger = new ClassLogger(typeof(DotNetCorePluginLoader));
+        private static readonly ClassLogger Logger = new(typeof(DotNetCorePluginLoader));
 
         /// <summary>
         /// Loads all assemblies from the specific folder into the current context

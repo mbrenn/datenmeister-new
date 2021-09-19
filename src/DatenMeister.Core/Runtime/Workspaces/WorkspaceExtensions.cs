@@ -37,10 +37,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
 
             return element;
         }
+
         public static IObject? FindElementByUri(this Workspace workspace, string uri)
         {
             return FindElementByUri(
-                workspace.extent.Select(x => x as IUriExtent )
+                workspace.extent.Select(x => x as IUriExtent)
                     .Where(x => x != null)!,
                 uri);
         }
@@ -75,7 +76,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <returns>The found extent or null, if not found</returns>
         public static IUriExtent? FindExtent(this IWorkspace workspace, string extentUri)
         {
-            return (IUriExtent?) workspace.extent.FirstOrDefault(
+            return (IUriExtent?)workspace.extent.FirstOrDefault(
                 x => (x as IUriExtent)?.contextURI() == extentUri
                      || (x as MofUriExtent)?.AlternativeUris.Contains(extentUri) == true);
         }
@@ -87,7 +88,8 @@ namespace DatenMeister.Core.Runtime.Workspaces
         /// <param name="workspaceLogic">Workspacelogic being used</param>
         /// <param name="extent">Extent being added</param>
         /// <returns>true, if addition was succesfsul</returns>
-        public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic, IUriExtent extent)
+        public static bool AddExtentNoDuplicate(this Workspace workspace, IWorkspaceLogic workspaceLogic,
+            IUriExtent extent)
         {
             var contextUri = extent.contextURI();
 
@@ -139,11 +141,11 @@ namespace DatenMeister.Core.Runtime.Workspaces
             this IWorkspaceLogic workspaceLogic, string? ws, string? extent)
         {
             if (ws == null) return (null, null);
-            
+
             var foundWorkspace = workspaceLogic.Workspaces.FirstOrDefault(x => x.id == ws);
             if (foundWorkspace == null) return (null, null);
             if (extent == null) return (foundWorkspace, null);
-            
+
             var foundExtent = foundWorkspace.extent.Cast<IUriExtent>().FirstOrDefault(x => x.contextURI() == extent);
             if (foundExtent == null)
             {
@@ -243,7 +245,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 // If the workspace is empty return it itself
                 var workspace = collection.GetDefaultWorkspace();
                 if (workspace == null) return null;
-                
+
                 workspaceId = workspace.id;
             }
 
@@ -335,6 +337,7 @@ namespace DatenMeister.Core.Runtime.Workspaces
                 }
             }
         }
+
         public static Workspace? TryGetManagementWorkspace(this IWorkspaceLogic logic) =>
             logic.GetWorkspace(WorkspaceNames.WorkspaceManagement);
 
@@ -361,14 +364,14 @@ namespace DatenMeister.Core.Runtime.Workspaces
         {
             var mgmt = GetManagementWorkspace(logic);
             return mgmt.FindExtent(WorkspaceNames.UriExtentUserForm)
-                ?? throw new InvalidOperationException("User Forms not Found");
+                   ?? throw new InvalidOperationException("User Forms not Found");
         }
 
         public static IUriExtent GetInternalFormsExtent(this IWorkspaceLogic logic)
         {
             var mgmt = GetManagementWorkspace(logic);
             return mgmt.FindExtent(WorkspaceNames.UriExtentInternalForm)
-                ?? throw new InvalidOperationException("Internal Forms not Found");
+                   ?? throw new InvalidOperationException("Internal Forms not Found");
         }
 
         public static Workspace GetUmlWorkspace(this IWorkspaceLogic logic) =>

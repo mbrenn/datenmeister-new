@@ -1,5 +1,6 @@
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Models;
+using DatenMeister.Extent.Manager;
 using DatenMeister.Forms;
 using DatenMeister.Integration;
 using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace DatenMeister.Tests.Modules.Form
         {
             using var scope = DatenMeisterTests.GetDatenMeisterScope();
 
-            var extent = scope.CreateXmiExtent("dm:///test");
+            var extent = XmiExtensions.CreateXmiExtent("dm:///test");
 
             var factory = new MofFactory(extent);
 

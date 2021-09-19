@@ -16,7 +16,13 @@
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\ApiModels.ts" />
 
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\DomHelper.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\ElementsLoader.ts" />
+
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\FormActions.ts" />
+
+    <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.SelectItemControl.ts" />
 
     <TypeScriptCompile Include="wwwroot\js\DatenMeister\Forms.ts" />
 
@@ -42,9 +48,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.SourcecodeGenerator\DatenMeister.SourcecodeGenerator.csproj" />
     <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
     <ProjectReference Include="..\DatenMeister.WebServer.Library\DatenMeister.WebServer.Library.csproj" />
   </ItemGroup>

@@ -36,13 +36,13 @@ namespace DatenMeister.WebServer.Controller
             public string ExtentUri { get; set; } = string.Empty;
         }
 
-        [HttpPost("api/extent/create_xmi/{workspaceId}")]
-        public ActionResult<object> CreateXmi(string workspaceId, [FromBody] CreateXmiExtentParams createXmi)
+        [HttpPost("api/extent/create_xmi/{workspace}")]
+        public ActionResult<object> CreateXmi(string workspace, [FromBody] CreateXmiExtentParams createXmi)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            workspace = HttpUtility.UrlDecode(workspace);
 
             var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
-            var loaded = extentManager.CreateAndAddXmiExtent(createXmi.ExtentUri, createXmi.FilePath, workspaceId);
+            var loaded = extentManager.CreateAndAddXmiExtent(createXmi.ExtentUri, createXmi.FilePath, workspace);
             return new {success = loaded.LoadingState == ExtentLoadingState.Loaded};
         }
         
@@ -52,10 +52,9 @@ namespace DatenMeister.WebServer.Controller
             public string ExtentUri { get; set; } = string.Empty;
         }
         
-        [HttpGet("api/extent/delete")]
+        [HttpDelete("api/extent/delete")]
         public ActionResult<object> DeleteExtent([FromBody] DeleteExtentParams param)
         {
-
             var extentManager = new ExtentManager(_workspaceLogic, _scopeStorage);
             var result = extentManager.RemoveExtent(param.Workspace, param.ExtentUri);
             return new {success = result};

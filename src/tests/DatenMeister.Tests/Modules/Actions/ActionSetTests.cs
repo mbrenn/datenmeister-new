@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DatenMeister.Actions;
+using DatenMeister.Actions.ActionHandler;
 using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -12,8 +14,6 @@ using DatenMeister.Core.Runtime;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Modules.Actions;
-using DatenMeister.Modules.Actions.ActionHandler;
 using DatenMeister.Provider.CSV.Runtime;
 using DatenMeister.Provider.XMI.ExtentStorage;
 using DatenMeister.Provider.Xml;

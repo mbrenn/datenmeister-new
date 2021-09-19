@@ -45,14 +45,14 @@ namespace DatenMeister.WebServer.Controller
             };
         }
         
-        [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUrl}/{viewMode?}")]
-        public ActionResult<IItem> GetDefaultFormForExtent(string workspaceId, string extentUrl, string? viewMode)
+        [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
+        public ActionResult<IItem> GetDefaultFormForExtent(string workspaceId, string extentUri, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);
-            extentUrl = HttpUtility.UrlDecode(extentUrl);
+            extentUri = HttpUtility.UrlDecode(extentUri);
 
-            var extent = _workspaceLogic.FindExtent(workspaceId, extentUrl)
+            var extent = _workspaceLogic.FindExtent(workspaceId, extentUri)
                          ?? throw new InvalidOperationException("Extent is not found");
                 
             var formLogic = new FormsPlugin(_workspaceLogic, _scopeStorage);

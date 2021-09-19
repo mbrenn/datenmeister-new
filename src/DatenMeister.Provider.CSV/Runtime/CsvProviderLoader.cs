@@ -18,6 +18,7 @@ namespace DatenMeister.Provider.CSV.Runtime
     public class CsvProviderLoader : IProviderLoader
     {
         public IWorkspaceLogic? WorkspaceLogic { get; set; }
+        
         public IScopeStorage? ScopeStorage { get; set; }
 
         /// <summary>

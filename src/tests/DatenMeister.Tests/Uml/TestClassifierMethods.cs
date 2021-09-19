@@ -5,6 +5,7 @@ using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Core.Uml.Helper;
+using DatenMeister.Extent.Manager;
 using DatenMeister.Integration;
 using NUnit.Framework;
 
@@ -39,7 +40,7 @@ namespace DatenMeister.Tests.Uml
             using var dm = DatenMeisterTests.GetDatenMeisterScope();
             var classifier = dm.WorkspaceLogic.GetUmlWorkspace().Resolve(_UML.TheOne.Classification.__Classifier.GetUri()!, ResolveType.Default)
                 as IElement;
-            var extent = dm.CreateXmiExtent("dm:///test");
+            var extent = XmiExtensions.CreateXmiExtent("dm:///test");
             var factory = new MofFactory(extent);
             var classSpecialized = factory.create(classifier);
             var classGeneralized = factory.create(classifier);

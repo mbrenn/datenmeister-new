@@ -41,7 +41,6 @@ namespace DatenMeister.Core.Uml.Helper
                 false);
         }
 
-
         /// <summary>
         /// Gets or creates a package by following the path.
         /// </summary>

@@ -1,0 +1,39 @@
+﻿@page "/ResetDatenMeister"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@namespace DatenMeister.WebServer.Pages
+@model DatenMeister.WebServer.Pages.ResetDatenMeister
+
+@{
+    Layout = "~/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Der DatenMeister - Rest Database";
+}
+
+@if (Model.IsRestarted)
+{
+    <h1>Restart ongoing</h1>
+    <div>
+        <p>
+            The webserver is now in restart.
+            This means that it might not available for the next few seconds.
+        </p>
+        <p>
+            After some seconds, you can start to work on a fresh and new server.
+        </p>
+    </div>
+}
+else
+{
+    <h1>Confirmation</h1>
+    <div>
+        <p>Are you sure, you want to reset the complete DatenMeister.
+            This will delete the complete extent database. The database files themselves will not
+            be removed and could be reloaded after the reset. </p>
+        <p>If you are sure to delete the complete database, press the button below.</p>
+        <form method="POST">
+            <p>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="action" value="reset"/>
+                <input type="submit" value="Reset Database"/>
+            </p>
+        </form></div>
+}

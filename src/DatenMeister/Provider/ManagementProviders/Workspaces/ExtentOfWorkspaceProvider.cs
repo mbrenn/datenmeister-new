@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using DatenMeister.Core;
 using DatenMeister.Core.Provider;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
@@ -20,6 +21,16 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         public const string WorkspaceTypeUri = WorkspaceNames.UriExtentInternalTypes;
 
         /// <summary>
+        /// Stores the capabilities of the provider
+        /// </summary>
+        /// <returns></returns>
+        private readonly ProviderCapability _providerCapability = new ProviderCapability
+        {
+            IsTemporaryStorage = true,
+            CanCreateElements = false
+        };
+
+        /// <summary>
         /// Initializes a new instance of the ExtentOfWorkspaces
         /// </summary>
         /// <param name="scope">The dependency inject</param>
@@ -27,6 +38,17 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
         {
             WorkspaceLogic = scope.WorkspaceLogic;
             ExtentManager = scope.Resolve<ExtentManager>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ExtentOfWorkspaceProvider
+        /// </summary>
+        /// <param name="workspaceLogic">The logic of the workspace</param>
+        /// <param name="scopeStorage">The scope storage</param>
+        public ExtentOfWorkspaceProvider(IWorkspaceLogic workspaceLogic, IScopeStorage scopeStorage)
+        {
+            ExtentManager = new ExtentManager(workspaceLogic, scopeStorage);
+            WorkspaceLogic = workspaceLogic;
         }
 
         public ExtentManager ExtentManager { get; set; }
@@ -41,6 +63,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             throw new InvalidOperationException("The creation of new elements is not supported via MOF." +
                                                 "Use WorkspaceLogic to create new extents");
         }
+
         public void AddElement(IProviderObject? valueAsObject, int index = -1)
         {
             throw new NotImplementedException();
@@ -75,16 +98,6 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             var workspaces = WorkspaceLogic.Workspaces;
             return workspaces.Select(x => new WorkspaceObject(this, x));
         }
-
-        /// <summary>
-        /// Stores the capabilities of the provider
-        /// </summary>
-        /// <returns></returns>
-        private readonly ProviderCapability _providerCapability = new ProviderCapability
-        {
-            IsTemporaryStorage = true,
-            CanCreateElements = false
-        };
 
         /// <summary>
         /// Gets the capabilities of the provider

@@ -10,6 +10,8 @@ using DatenMeister.Core.Modules.DataViews;
 using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
+using DatenMeister.Extent.Manager;
+using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Integration;
 using DatenMeister.Types;
 using NUnit.Framework;
@@ -123,7 +125,8 @@ namespace DatenMeister.Tests.Modules
             userTypeExtent.elements().add(secondClass);
 
             // Ok, now add the data
-            var extent = dm.CreateAndAddXmiExtent("dm:///testdata", "testdata.xmi").Extent!;
+            var extent = XmiExtensions
+                .CreateAndAddXmiExtent(dm.Resolve<ExtentManager>(), "dm:///testdata", "testdata.xmi").Extent!;
             Assert.That(extent, Is.Not.Null);
             var factory = new MofFactory(extent);
             var element1 = factory.create(createdClass);

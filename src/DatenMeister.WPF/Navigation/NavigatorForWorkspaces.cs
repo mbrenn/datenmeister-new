@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
+using DatenMeister.BootStrap;
 using DatenMeister.Core;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Models;
@@ -115,12 +116,16 @@ namespace DatenMeister.WPF.Navigation
                 foreach (var extent in workspaceLogic.GetExtentsForWorkspace(workspace))
                 {
                     var loadConfiguration = extentManager.GetLoadConfigurationFor(extent);
-                    var extentStoragePath =
-                        loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentFileLoaderConfig.filePath);
-                    
-                    if (extentStoragePath != null)
+                    if (loadConfiguration != null)
                     {
-                        files.Add(extentStoragePath);
+                        var extentStoragePath =
+                            loadConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs
+                                ._ExtentFileLoaderConfig.filePath);
+
+                        if (extentStoragePath != null)
+                        {
+                            files.Add(extentStoragePath);
+                        }
                     }
                 }
             }

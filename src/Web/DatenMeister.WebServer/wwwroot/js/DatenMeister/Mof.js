@@ -1,10 +1,10 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createObjectFromJson = exports.DmObject = void 0;
+    exports.createObjectFromJson = exports.createJsonFromObject = exports.DmObject = void 0;
     class DmObject {
         constructor() {
-            this.values = {};
+            this.values = new Array();
         }
         set(key, value) {
             this.values[key] = value;
@@ -61,8 +61,33 @@ define(["require", "exports"], function (require, exports) {
         }
     }
     exports.DmObject = DmObject;
+    /*
+        Converts the given element to a json element that it can be used to send to the webserver
+        The receiving function is MofJsonDeconverter.Convert in which the retrieved
+        value is returned to MofObject
+     */
+    function createJsonFromObject(element) {
+        const result = { v: {} };
+        const values = result.v;
+        for (const key in element.values) {
+            if (!element.values.hasOwnProperty(key)) {
+                continue;
+            }
+            var elementValue = element.get(key);
+            if (Array.isArray(elementValue)
+                || ((typeof elementValue === "object" || typeof elementValue === "function") && (elementValue !== null))) {
+                // Do not send out arrays or objects
+                continue;
+            }
+            values[key] = element.get(key);
+        }
+        return result;
+    }
+    exports.createJsonFromObject = createJsonFromObject;
+    /*
     // Creates the given object from the included json
-    // The corresponding C# class is DatenMeister.Modules.Json.DirectJsonConverter.Convert
+    // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
+    */
     function createObjectFromJson(json, metaClass) {
         const converted = JSON.parse(json);
         function convertJsonToDmObject(element) {
@@ -98,6 +123,10 @@ define(["require", "exports"], function (require, exports) {
             const elementMetaClass = element["m"];
             if (elementMetaClass !== undefined && elementMetaClass !== null) {
                 result.metaClass = elementMetaClass;
+            }
+            const elementUri = element["u"];
+            if (elementUri !== undefined && elementUri !== null) {
+                result.uri = elementUri;
             }
             return result;
         }

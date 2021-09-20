@@ -8,10 +8,10 @@
     <PropertyGroup>
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
+        <PackageVersion>1.1.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
       <ProjectReference Include="..\DatenMeister.BootStrap\DatenMeister.BootStrap.csproj" />
       <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
       <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
@@ -19,6 +19,8 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+
+        <PackageReference Include="BurnSystems" Version="1.1.0" />
     </ItemGroup>
 
 </Project>

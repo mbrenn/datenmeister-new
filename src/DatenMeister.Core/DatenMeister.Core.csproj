@@ -4,6 +4,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>9</LangVersion>
         <Nullable>enable</Nullable>
+        <PackageVersion>1.1.0</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,12 +16,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+      <Folder Include="Modules" />
+      <Folder Include="Uml" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Modules" />
-      <Folder Include="Uml" />
+      <PackageReference Include="BurnSystems" Version="1.1.0" />
     </ItemGroup>
 
 </Project>

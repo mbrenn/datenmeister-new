@@ -14,7 +14,7 @@
 
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+        <PackageReference Include="BurnSystems" Version="1.1.0" />
         <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
         <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
         <ProjectReference Include="..\ZipCodeLibrary\ZipCodeLibrary.csproj" />

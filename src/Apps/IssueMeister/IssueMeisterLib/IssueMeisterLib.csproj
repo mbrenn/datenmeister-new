@@ -6,13 +6,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TargetFrameworks>net5.0</TargetFrameworks>
   </PropertyGroup>
-  
+  <PropertyGroup>
+    <PackageVersion>1.1.0</PackageVersion>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="Xmi\IssueMeister.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <PackageReference Include="BurnSystems" Version="1.1.0" />
     <ProjectReference Include="..\..\..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
     <ProjectReference Include="..\..\..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>

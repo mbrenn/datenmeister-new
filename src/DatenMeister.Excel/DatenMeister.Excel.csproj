@@ -4,6 +4,7 @@
     <Nullable>annotations</Nullable>
     <LangVersion>8</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <PackageVersion>1.1.0</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
     <TargetFrameworks>netcoreapp3.1;net5.0;net462</TargetFrameworks>

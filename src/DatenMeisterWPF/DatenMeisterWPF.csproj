@@ -21,7 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj" />
-    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <PackageReference Include="BurnSystems" Version="1.1.0" />
     <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj" />
     <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />

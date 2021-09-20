@@ -26,7 +26,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
+    <PackageReference Include="BurnSystems" Version="1.1.0" />
     <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
     <ProjectReference Include="..\..\DatenMeister.BootStrap\DatenMeister.BootStrap.csproj" />

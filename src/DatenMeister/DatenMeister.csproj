@@ -10,6 +10,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>9</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageVersion>1.1.0</PackageVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ViewLogicAdditional|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;VIEWLOGICINFO</DefineConstants>
@@ -30,7 +31,6 @@
     <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\BurnSystems\src\BurnSystems\BurnSystems.csproj" />
     <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
     <ProjectReference Include="..\DatenMeister.DependencyInjection\DatenMeister.DependencyInjection.csproj" />
     <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
@@ -43,5 +43,7 @@
     <ProjectReference Include="..\DatenMeister.Provider.DynamicRuntime\DatenMeister.Provider.DynamicRuntime.csproj" />
     <ProjectReference Include="..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
     <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
+
+    <PackageReference Include="BurnSystems" Version="1.1.0" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,3 @@
 [submodule "modules/burnsystems.wpf"]
 	path = modules/burnsystems.wpf
 	url = https://github.com/mbrenn/burnsystems.wpf.git
-[submodule "modules/BurnSystems"]
-	path = modules/BurnSystems
-	url = https://github.com/mbrenn/BurnSystems
-	branch = master

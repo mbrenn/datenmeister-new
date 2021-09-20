@@ -21,8 +21,8 @@
     <Page Remove="Navigation\Validators\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj" />
     <PackageReference Include="BurnSystems" Version="1.1.0" />
+    <PackageReference Include="BurnSystems.WPF" Version="1.0.0" />
     <ProjectReference Include="..\DatenMeister.Actions\DatenMeister.Actions.csproj" />
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />

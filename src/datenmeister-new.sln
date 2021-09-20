@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library - WPF", "Library - 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.WPF", "DatenMeister.WPF\DatenMeister.WPF.csproj", "{D4696DF0-4FB2-494A-9541-6B993DF77798}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BurnSystems.WPF", "..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj", "{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Icons", "..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj", "{C2BC0E95-4D38-4584-B6A0-B08DEC6DE504}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StundenMeister", "Apps\StundenMeister\StundenMeister.csproj", "{88FFF1F8-36E1-4923-AE58-FDB002E73702}"
@@ -88,29 +86,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Html", "DatenMeister.Html\DatenMeister.Html.csproj", "{93D50213-207A-402B-9B28-0CE3EE88473D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Html", "DatenMeister.Html\DatenMeister.Html.csproj", "{93D50213-207A-402B-9B28-0CE3EE88473D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Reports", "DatenMeister.Reports\DatenMeister.Reports.csproj", "{340E6B3C-E2DC-4753-A661-CE12A98114E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Reports", "DatenMeister.Reports\DatenMeister.Reports.csproj", "{340E6B3C-E2DC-4753-A661-CE12A98114E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Core.Extensions", "DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj", "{042FA7A1-E3FE-4AB1-906B-2CCB375B635B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Core.Extensions", "DatenMeister.Core.Extensions\DatenMeister.Core.Extensions.csproj", "{042FA7A1-E3FE-4AB1-906B-2CCB375B635B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.TextTemplates", "DatenMeister.TextTemplates\DatenMeister.TextTemplates.csproj", "{B1C0E1B3-E5D1-4A63-8D7C-C0FA963C54BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.TextTemplates", "DatenMeister.TextTemplates\DatenMeister.TextTemplates.csproj", "{B1C0E1B3-E5D1-4A63-8D7C-C0FA963C54BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Tests.Web", "Tests\DatenMeister.Tests.Web\DatenMeister.Tests.Web.csproj", "{A53D4460-E1E3-42FE-AD83-BCB970555A5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Tests.Web", "Tests\DatenMeister.Tests.Web\DatenMeister.Tests.Web.csproj", "{A53D4460-E1E3-42FE-AD83-BCB970555A5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Json", "DatenMeister.Json\DatenMeister.Json.csproj", "{D29D993F-2FB4-408D-B3E6-26A2D1BF0D90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Json", "DatenMeister.Json\DatenMeister.Json.csproj", "{D29D993F-2FB4-408D-B3E6-26A2D1BF0D90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.BootStrap", "DatenMeister.BootStrap\DatenMeister.BootStrap.csproj", "{1A1C39EE-FA25-49CA-BB3C-D71D9E4C71FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.BootStrap", "DatenMeister.BootStrap\DatenMeister.BootStrap.csproj", "{1A1C39EE-FA25-49CA-BB3C-D71D9E4C71FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.FastViewFilter", "DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj", "{9C2FF59F-8762-4278-8BCB-28CFE0B2B85B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.FastViewFilter", "DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj", "{9C2FF59F-8762-4278-8BCB-28CFE0B2B85B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Provider.NumberProvider", "DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj", "{8A9684FE-F288-4AFD-AF4C-755A84B5F1BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Provider.NumberProvider", "DatenMeister.Provider.NumberProvider\DatenMeister.Provider.NumberProvider.csproj", "{8A9684FE-F288-4AFD-AF4C-755A84B5F1BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Provider.DynamicRuntime", "DatenMeister.Provider.DynamicRuntime\DatenMeister.Provider.DynamicRuntime.csproj", "{620A7F53-C16F-4B0F-9412-F68688F6F82D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Provider.DynamicRuntime", "DatenMeister.Provider.DynamicRuntime\DatenMeister.Provider.DynamicRuntime.csproj", "{620A7F53-C16F-4B0F-9412-F68688F6F82D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Provider.Environmental", "DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj", "{8677381E-953C-4BB5-8652-69D7461D217F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Provider.Environmental", "DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj", "{8677381E-953C-4BB5-8652-69D7461D217F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatenMeister.Actions", "DatenMeister.Actions\DatenMeister.Actions.csproj", "{FD14E1BC-975E-4DA1-907A-1427EF11A4FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenMeister.Actions", "DatenMeister.Actions\DatenMeister.Actions.csproj", "{FD14E1BC-975E-4DA1-907A-1427EF11A4FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -233,24 +231,6 @@ Global
 		{D4696DF0-4FB2-494A-9541-6B993DF77798}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
 		{D4696DF0-4FB2-494A-9541-6B993DF77798}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
 		{D4696DF0-4FB2-494A-9541-6B993DF77798}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Debug|x64.Build.0 = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Debug|x86.Build.0 = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Release|x64.ActiveCfg = Release|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Release|x64.Build.0 = Release|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Release|x86.ActiveCfg = Release|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.Release|x86.Build.0 = Release|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.ViewLogicAdditionalInfo|Any CPU.ActiveCfg = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.ViewLogicAdditionalInfo|Any CPU.Build.0 = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.ViewLogicAdditionalInfo|x64.ActiveCfg = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.ViewLogicAdditionalInfo|x64.Build.0 = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.ViewLogicAdditionalInfo|x86.ActiveCfg = Debug|Any CPU
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2}.ViewLogicAdditionalInfo|x86.Build.0 = Debug|Any CPU
 		{C2BC0E95-4D38-4584-B6A0-B08DEC6DE504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C2BC0E95-4D38-4584-B6A0-B08DEC6DE504}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2BC0E95-4D38-4584-B6A0-B08DEC6DE504}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -928,7 +908,6 @@ Global
 		{39F63BEF-AF5E-4C02-B35D-534DF6AF3E04} = {42691CE7-A35B-42C8-808B-7404528A4014}
 		{A2E5712E-E3F5-4FD9-B6EF-E1B44B7CC300} = {6D336344-E680-4130-8495-0D31D4A82105}
 		{D4696DF0-4FB2-494A-9541-6B993DF77798} = {50126D29-BEBA-426F-992D-6215936A4100}
-		{F052CE44-4F75-4A9A-B0F2-AF7BE3B880C2} = {50126D29-BEBA-426F-992D-6215936A4100}
 		{C2BC0E95-4D38-4584-B6A0-B08DEC6DE504} = {50126D29-BEBA-426F-992D-6215936A4100}
 		{88FFF1F8-36E1-4923-AE58-FDB002E73702} = {6D336344-E680-4130-8495-0D31D4A82105}
 		{18F0E058-EBCC-4E6A-9E8E-E94A8304453C} = {42691CE7-A35B-42C8-808B-7404528A4014}

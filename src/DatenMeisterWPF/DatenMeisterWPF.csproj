@@ -20,8 +20,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\burnsystems.wpf\src\BurnSystems.WPF\BurnSystems.WPF.csproj" />
     <PackageReference Include="BurnSystems" Version="1.1.0" />
+    <PackageReference Include="BurnSystems.WPF" Version="1.0.0" />
     <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj" />
     <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\DatenMeister.Excel\DatenMeister.Excel.csproj" />

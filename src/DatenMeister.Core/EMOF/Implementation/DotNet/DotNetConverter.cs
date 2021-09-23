@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using BurnSystems.Logging;
 using DatenMeister.Core.EMOF.Interface.Identifiers;
@@ -260,6 +261,19 @@ namespace DatenMeister.Core.EMOF.Implementation.DotNet
                     else if (reflectedProperty.PropertyType == typeof(bool))
                     {
                         reflectedProperty.SetValue(result, DotNetHelper.AsBoolean(propertyValue));
+                    }
+                    else if (reflectedProperty.PropertyType == typeof(DateTime))
+                    {
+                        if (!DateTime.TryParse(propertyValue.ToString()
+                                              ?? DateTime.MinValue.ToString(CultureInfo.InvariantCulture),
+                            CultureInfo.InvariantCulture,
+                            DateTimeStyles.None,
+                            out var dateResult))
+                        {
+                            dateResult = DateTime.MinValue;
+                        }
+
+                        reflectedProperty.SetValue(result, dateResult);
                     }
                     else if (reflectedProperty.PropertyType == typeof(IObject) ||
                              reflectedProperty.PropertyType == typeof(IElement))

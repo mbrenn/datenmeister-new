@@ -182,3 +182,7 @@ src/.idea/*
 _framework/
 
 node_modules/
+
+
+nugets/*.snupkg
+nugets/*.nupkg

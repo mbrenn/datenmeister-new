@@ -52,7 +52,7 @@ namespace DatenMeister.Extent.Manager.ExtentStorage
             var workspaceLogic = asExtentManager.WorkspaceLogic;
             var workspace = workspaceLogic.GetWorkspace(
                 loaderConfiguration.getOrDefault<string>(_DatenMeister._ExtentLoaderConfigs._ExtentLoaderConfig
-                    .workspaceId));
+                    .workspaceId) ?? WorkspaceNames.WorkspaceData);
 
             var foundExtent = workspace?.extent.OfType<IUriExtent>().FirstOrDefault(
                 x => x.contextURI() ==

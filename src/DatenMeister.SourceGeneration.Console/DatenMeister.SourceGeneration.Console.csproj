@@ -21,13 +21,7 @@
     <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
-    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="System.Reflection.TypeExtensions" Version="4.4.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />

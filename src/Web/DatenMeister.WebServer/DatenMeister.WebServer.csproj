@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -47,11 +47,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BurnSystems" Version="1.1.0" />
     <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Excel\DatenMeister.Excel.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
     <ProjectReference Include="..\..\DatenMeister.FastViewFilter\DatenMeister.FastViewFilter.csproj" />
+    <ProjectReference Include="..\..\DatenMeister.Html\DatenMeister.Html.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Json\DatenMeister.Json.csproj" />
     <ProjectReference Include="..\..\DatenMeister.Provider.Environmental\DatenMeister.Provider.Environmental.csproj" />

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,10 +8,6 @@
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
-    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="5.2.0" />

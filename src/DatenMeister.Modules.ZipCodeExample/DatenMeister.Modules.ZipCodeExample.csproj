@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -15,8 +15,6 @@
       <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
       <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
       <ProjectReference Include="..\DatenMeister.Types\DatenMeister.Types.csproj" />
-
-      <PackageReference Include="BurnSystems" Version="1.1.0" />
     </ItemGroup>
 
 </Project>

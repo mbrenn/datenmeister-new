@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
         <PackageVersion>1.1.0</PackageVersion>
@@ -15,6 +15,8 @@
       <ProjectReference Include="..\..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Extent.Forms\DatenMeister.Extent.Forms.csproj" />
       <ProjectReference Include="..\..\DatenMeister.HtmlEngine\DatenMeister.HtmlEngine.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.TextTemplates\DatenMeister.TextTemplates.csproj" />
     </ItemGroup>
 
 </Project>

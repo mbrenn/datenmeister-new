@@ -6,9 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BurnSystems" Version="1.1.0" />
       <ProjectReference Include="..\..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj" />
       <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
+      <ProjectReference Include="..\..\DatenMeister.Reports\DatenMeister.Reports.csproj" />
       <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
     </ItemGroup>
 
@@ -16,10 +17,6 @@
       <None Update="plz.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None> 
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

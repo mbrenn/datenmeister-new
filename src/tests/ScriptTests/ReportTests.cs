@@ -39,49 +39,47 @@ namespace ScriptTests
 
             GiveMe.DropDatenMeisterStorage(settings);
 
-            using (var dm = GiveMe.DatenMeister(settings))
+            using var dm = GiveMe.DatenMeister(settings);
+            IUriExtent testExtent;
+            if (doIssues)
             {
-                IUriExtent testExtent;
-                if (doIssues)
-                {
-                    var extentManager = dm.Resolve<ExtentManager>();
+                var extentManager = dm.Resolve<ExtentManager>();
 
-                    var loaderConfig =
-                        InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
-                    loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///");
-                    loaderConfig.set(
-                        _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, 
-                        "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi");
+                var loaderConfig =
+                    InMemoryObject.CreateEmpty(_DatenMeister.TheOne.ExtentLoaderConfigs.__XmiStorageLoaderConfig);
+                loaderConfig.set(_DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.extentUri, "dm:///");
+                loaderConfig.set(
+                    _DatenMeister._ExtentLoaderConfigs._XmiStorageLoaderConfig.filePath, 
+                    "E:\\OneDrive - Office365\\OneDrive - Martin Brenn\\issues.xmi");
                     
-                    testExtent = extentManager.LoadExtent(loaderConfig).Extent;
-                }
-                else
-                {
-                    var zipCodeManager = dm.Resolve<ZipCodeExampleManager>();
-                    testExtent = zipCodeManager.AddZipCodeExample(
-                        WorkspaceNames.WorkspaceData,
-                        Path.Combine(GetScriptFolder(), "plz.csv"));
-                }
-
-                configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, testExtent!.contextURI());
-
-                var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
-                Directory.CreateDirectory(targetPath);
-
-                var reportCreator = new SimpleReportCreator(dm.WorkspaceLogic, configuration);
-
-                using (var writer = ReportHelper.CreateRandomFile(out var fileName, targetPath))
-                {
-                    reportCreator.CreateReport(writer);
-
-                    var absolutePath = Path.Combine(GetScriptFolder(), fileName);
-                    Console.WriteLine(absolutePath);
-
-                    DotNetHelper.CreateProcess(absolutePath);
-                }
-
-                Console.WriteLine(testExtent);
+                testExtent = extentManager.LoadExtent(loaderConfig).Extent;
             }
+            else
+            {
+                var zipCodeManager = dm.Resolve<ZipCodeExampleManager>();
+                testExtent = zipCodeManager.AddZipCodeExample(
+                    WorkspaceNames.WorkspaceData,
+                    Path.Combine(GetScriptFolder(), "plz.csv"));
+            }
+
+            configuration.set(_DatenMeister._Reports._SimpleReportConfiguration.rootElement, testExtent!.contextURI());
+
+            var targetPath = Path.Combine(GetScriptFolder(), "tmp2");
+            Directory.CreateDirectory(targetPath);
+
+            var reportCreator = new SimpleReportCreator(dm.WorkspaceLogic, configuration);
+
+            using (var writer = ReportHelper.CreateRandomFile(out var fileName, targetPath))
+            {
+                reportCreator.CreateReport(writer);
+
+                var absolutePath = Path.Combine(GetScriptFolder(), fileName);
+                Console.WriteLine(absolutePath);
+
+                DotNetHelper.CreateProcess(absolutePath);
+            }
+
+            Console.WriteLine(testExtent);
         }
     }
 }

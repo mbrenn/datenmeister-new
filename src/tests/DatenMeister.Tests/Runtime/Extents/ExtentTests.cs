@@ -224,10 +224,11 @@ namespace DatenMeister.Tests.Runtime.Extents
         public void TestExtentTypes()
         {
             var extent = new MofUriExtent(new InMemoryProvider());
-            var configuration = new ExtentConfiguration(extent);
+            var configuration = new ExtentConfiguration(extent)
+            {
+                ExtentType = "abc"
+            };
 
-            configuration.ExtentType = "abc";
-            
             var list = configuration.ExtentTypes.ToList();
             Assert.That(list, Is.Not.Null);
             Assert.That(list.Count, Is.EqualTo(1));

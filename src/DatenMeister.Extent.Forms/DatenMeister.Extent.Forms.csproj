@@ -12,7 +12,6 @@
     <ItemGroup>
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Forms\DatenMeister.Forms.csproj" />
-      <ProjectReference Include="..\DatenMeister\DatenMeister.csproj" />
     </ItemGroup>
 
 </Project>

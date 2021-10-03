@@ -79,11 +79,7 @@ namespace ZipCodeWebsite.Models
                 new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage), 
                 dm.ScopeStorage);
 
-            var foundExtent = 
-                dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///zipcodes/")
-                    as IUriExtent;
-            
-            if (foundExtent == null)
+            if (dm.WorkspaceLogic.FindExtent(WorkspaceNames.WorkspaceData, "dm:///zipcodes/") is not IUriExtent foundExtent)
             {
                 foundExtent = manager.AddZipCodeExample(
                     WorkspaceNames.WorkspaceData, 

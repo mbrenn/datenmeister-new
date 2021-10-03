@@ -13,8 +13,6 @@
       <ProjectReference Include="..\DatenMeister.Core\DatenMeister.Core.csproj" />
       <ProjectReference Include="..\DatenMeister.Extent.Manager\DatenMeister.Extent.Manager.csproj" />
       <ProjectReference Include="..\DatenMeister.Plugins\DatenMeister.Plugins.csproj" />
-
-      <PackageReference Include="BurnSystems" Version="1.1.0" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
@@ -14,8 +14,8 @@
 
 
     <ItemGroup>
-        <PackageReference Include="BurnSystems" Version="1.1.0" />
         <ProjectReference Include="..\..\DatenMeister.Integration.DotNet\DatenMeister.Integration.DotNet.csproj" />
+        <ProjectReference Include="..\..\DatenMeister.Modules.ZipCodeExample\DatenMeister.Modules.ZipCodeExample.csproj" />
         <ProjectReference Include="..\..\DatenMeister\DatenMeister.csproj" />
         <ProjectReference Include="..\ZipCodeLibrary\ZipCodeLibrary.csproj" />
     </ItemGroup>

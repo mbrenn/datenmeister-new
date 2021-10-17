@@ -6,6 +6,8 @@
 
         <PublishTrimmed>true</PublishTrimmed>
         <TrimMode>link</TrimMode>
+        <Configurations>Debug;Release;WPF</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

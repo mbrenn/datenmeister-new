@@ -17,9 +17,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj">
-      <TreatAsUsed>true</TreatAsUsed>
-    </ProjectReference>
     <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj">
       <TreatAsUsed>true</TreatAsUsed>
     </ProjectReference>

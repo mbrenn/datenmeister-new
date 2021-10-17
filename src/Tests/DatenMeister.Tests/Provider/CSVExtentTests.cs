@@ -12,7 +12,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Provider.CSV.Runtime;
 using NUnit.Framework;
 
-namespace DatenMeister.Tests.CSV
+namespace DatenMeister.Tests.Provider
 {
     [TestFixture]
     public class CSVExtentTests

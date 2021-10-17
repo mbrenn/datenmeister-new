@@ -48,6 +48,7 @@ namespace DatenMeister.Tests.Modules
         [Test]
         public void TestReadingXmiFileWithEnvironment()
         {
+            Environment.SetEnvironmentVariable("VARIABLE", "Test");
             var directory = Path.GetTempPath();
             var filename = Path.Combine(directory, PublicSettingHandler.XmiFileName);
 
@@ -57,12 +58,12 @@ namespace DatenMeister.Tests.Modules
             }
 
             File.WriteAllText(filename,
-                @"<xmi><settings databasePath=""%USERNAME%\test""></settings></xmi>");
+                @"<xmi><settings databasePath=""%VARIABLE%\test""></settings></xmi>");
 
             var settings = PublicSettingHandler.LoadSettingsFromDirectory(directory);
 
             Assert.That(settings, Is.Not.Null);
-            Assert.That(settings.databasePath, Is.EqualTo($"{Environment.UserName}\\test"));
+            Assert.That(settings.databasePath, Is.EqualTo($"Test\\test"));
         }
 
         [Test]

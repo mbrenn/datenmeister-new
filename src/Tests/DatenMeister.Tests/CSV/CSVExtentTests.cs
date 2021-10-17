@@ -63,7 +63,10 @@ namespace DatenMeister.Tests.CSV
             storage.StoreProvider(provider.Provider, storageConfiguration);
             var readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
 
-            Assert.That(readCsvFile, Is.EqualTo(csvFile));
+            // We need to change a bit the line endings since the tests are also required to within Linux 
+            Assert.That(
+                readCsvFile.Replace("\r\n", "\n").Replace("\n\n", "\n"), 
+                Is.EqualTo(csvFile.Replace("\r\n", "\n").Replace("\n\n", "\n")));
 
             var firstElement = extent.elements().ElementAt(0) as IObject;
             Assert.That(firstElement, Is.Not.Null);
@@ -79,7 +82,10 @@ namespace DatenMeister.Tests.CSV
 
             storage.StoreProvider(provider.Provider, storageConfiguration);
             readCsvFile = File.ReadAllText(PathForTemporaryDataFile);
-            Assert.That(readCsvFile, Is.EqualTo(csvOtherFile));
+            // We need to change a bit the line endings since the tests are also required to within Linux 
+            Assert.That(
+                readCsvFile.Replace("\r\n", "\n").Replace("\n\n", "\n"), 
+                Is.EqualTo(csvOtherFile.Replace("\r\n", "\n").Replace("\n\n", "\n")));
 
             File.Delete(PathForTemporaryDataFile);
         }

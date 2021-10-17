@@ -45,7 +45,6 @@ build/
 *.vssscc
 .builds
 *.pidb
-*.log
 *.scc
 
 # Visual C++ cache files
@@ -186,3 +185,4 @@ node_modules/
 
 nugets/*.snupkg
 nugets/*.nupkg
+/src/Web/DatenMeister.WebServer/package-lock.json

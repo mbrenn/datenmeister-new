@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>        
+        <TargetFramework>net5.0</TargetFramework>
+        <Configurations>Debug;Release;WPF</Configurations>
+        <Platforms>AnyCPU</Platforms>        
     </PropertyGroup>
     <PropertyGroup>
         <LangVersion>9.0</LangVersion>

@@ -12,7 +12,7 @@ using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.Provider.CSV.Runtime;
-using DatenMeister.Tests.CSV;
+using DatenMeister.Tests.Provider;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Runtime

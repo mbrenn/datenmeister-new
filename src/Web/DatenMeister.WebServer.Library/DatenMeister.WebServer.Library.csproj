@@ -5,6 +5,8 @@
         <LangVersion>9.0</LangVersion>
         <Nullable>enable</Nullable>
         <PackageVersion>1.1.0</PackageVersion>
+        <Configurations>Debug;Release;WPF</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

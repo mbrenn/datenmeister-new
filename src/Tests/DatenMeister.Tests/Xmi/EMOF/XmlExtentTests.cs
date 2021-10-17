@@ -14,7 +14,7 @@ using DatenMeister.Core.Provider.Interfaces;
 using DatenMeister.Core.Provider.Xmi;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
-using DatenMeister.Tests.CSV;
+using DatenMeister.Tests.Provider;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Xmi.EMOF

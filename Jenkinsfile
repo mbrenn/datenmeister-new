@@ -6,6 +6,12 @@ pipeline {
         {
             steps 
             {
+                sh """ 
+                    cd src/Web/DatenMeister.WebServer
+                    npm install 
+                    cd ../../..
+                """
+
  			    // Shell build step
                 dotnetBuild project: 'datenmeister-new.sln', workDirectory: 'src'
             }

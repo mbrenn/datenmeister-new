@@ -4,6 +4,8 @@
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
+    <Configurations>Debug;Release;WPF</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -17,9 +19,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\modules\DatenMeister.Icons\src\DatenMeister.Icons\DatenMeister.Icons.csproj">
-      <TreatAsUsed>true</TreatAsUsed>
-    </ProjectReference>
     <ProjectReference Include="..\Apps\IssueMeister\IssueMeisterLib\IssueMeisterLib.csproj">
       <TreatAsUsed>true</TreatAsUsed>
     </ProjectReference>

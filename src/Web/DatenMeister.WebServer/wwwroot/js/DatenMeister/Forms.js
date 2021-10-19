@@ -31,6 +31,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     class DetailForm {
         createFormByObject(parent, isReadOnly) {
             var _a;
+            let table;
             const tthis = this;
             parent.empty();
             this.fieldElements = new Array();
@@ -41,9 +42,9 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                 }
                 const tab = tabs[n];
                 if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
-                    var fields = tab.get("field");
-                    var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-                    var tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
+                    const fields = tab.get("field");
+                    table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+                    const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
                     table.append(tableBody);
                     for (let n in fields) {
                         if (!fields.hasOwnProperty(n))
@@ -52,7 +53,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                         var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
                         const name = (_a = field.get("title")) !== null && _a !== void 0 ? _a : field.get("name");
                         $(".key", tr).text(name);
-                        var fieldMetaClassId = field.metaClass.id;
+                        const fieldMetaClassId = field.metaClass.id;
                         let fieldElement = null; // The instance if IFormField allowing to create the dom
                         let htmlElement; // The dom that had been created... 
                         switch (fieldMetaClassId) {
@@ -125,32 +126,32 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     It also includes the basic navigation to edit, view and submit the item changes
      */
     class MofDetailForm extends DetailForm {
-        createViewForm(parent, workspace, uri) {
-            this.createForm(parent, workspace, uri, true);
+        createViewForm(parent, workspace, extentUri, uri) {
+            this.createForm(parent, workspace, extentUri, uri, true);
         }
-        createEditForm(parent, workspace, uri) {
-            this.createForm(parent, workspace, uri, false);
+        createEditForm(parent, workspace, extentUri, uri) {
+            this.createForm(parent, workspace, extentUri, uri, false);
         }
-        createForm(parent, workspace, uri, isReadOnly) {
+        createForm(parent, workspace, extentUri, itemId, isReadOnly) {
             const tthis = this;
             // Load the object
-            const defer1 = DataLoader.loadObjectByUri(workspace, uri);
+            const defer1 = DataLoader.loadObjectByUri(workspace, itemId);
             // Load the form
-            const defer2 = getDefaultFormForItem(workspace, uri, "");
+            const defer2 = getDefaultFormForItem(workspace, itemId, "");
             // Wait for both
             $.when(defer1, defer2).then(function (element, form) {
                 tthis.element = element;
                 tthis.formElement = form;
                 tthis.workspace = workspace;
-                tthis.uri = workspace;
+                tthis.itemId = itemId;
                 tthis.createFormByObject(parent, isReadOnly);
             });
             this.onCancel = () => {
-                tthis.createViewForm(parent, workspace, uri);
+                tthis.createViewForm(parent, workspace, extentUri, itemId);
             };
             this.onChange = (element) => {
-                DataLoader.storeObjectByUri(workspace, uri, tthis.element).done(() => {
-                    tthis.createViewForm(parent, workspace, uri);
+                DataLoader.storeObjectByUri(workspace, itemId, tthis.element).done(() => {
+                    tthis.createViewForm(parent, workspace, extentUri, itemId);
                 });
             };
             parent.empty();

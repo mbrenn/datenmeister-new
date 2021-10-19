@@ -88,13 +88,12 @@ namespace DatenMeister.WebServer.Controller
             };
         }
 
-        [HttpDelete("api/items/delete/{workspaceId}/{extentUri}/{itemId}")]
-        public ActionResult<object> DeleteItem(string workspaceId, string extentUri, string itemId)
+        [HttpDelete("api/items/delete/{workspaceId}/{itemId}")]
+        public ActionResult<object> DeleteItem(string workspaceId,  string itemId)
         {
             workspaceId = HttpUtility.UrlDecode(workspaceId);
-            extentUri = HttpUtility.UrlDecode(extentUri);
 
-            var foundItem = _workspaceLogic.FindItem(workspaceId, extentUri, itemId);
+            var foundItem = _workspaceLogic.FindItem(workspaceId, itemId);
             if (foundItem != null)
             {
             }

@@ -14,15 +14,46 @@ export class Form {
 export interface IForm
 {
     workspace: string;
-    uri: string;
+    extentUri: string;
+    itemId: string;
     element: DmObject;
     formElement: DmObject;
+}
+
+export class FormCreator implements IForm {
+
+    element: DmObject;
+    extentUri: string;
+    formElement: DmObject;
+    itemId: string;
+    workspace: string;
+
+    createFormByObject(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
+        let table;
+        const tthis = this;
+        parent.empty();
+
+        const tabs = this.formElement.get("tab");
+        for (let n in tabs) {
+            if (!tabs.hasOwnProperty(n)) {
+                continue;
+            }
+
+            const tab = tabs[n] as DmObject;
+            #
+                
+                if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
+
+            }
+        }
+    }
 }
 
 
 export class DetailForm implements IForm {
     workspace: string;
-    uri: string;
+    extentUri: string;
+    itemId: string;
     element: DmObject;
     formElement: DmObject;
     
@@ -32,6 +63,7 @@ export class DetailForm implements IForm {
     onChange: (element: DmObject) => void;
     
     createFormByObject(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
+        let table;
         const tthis = this;
         parent.empty();
         this.fieldElements = new Array<IFormField>();
@@ -44,10 +76,10 @@ export class DetailForm implements IForm {
 
             const tab = tabs[n] as DmObject;
             if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
-                var fields = tab.get("field");
+                const fields = tab.get("field");
 
-                var table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
-                var tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
+                table = $("<table class='table table-striped table-bordered dm-table-nofullwidth align-top'></table>");
+                const tableBody = $("<tbody><tr><th>Name</th><th>Value</th></tr>");
                 table.append(tableBody);
 
                 for (let n in fields) {
@@ -61,7 +93,7 @@ export class DetailForm implements IForm {
 
                     $(".key", tr).text(name);
 
-                    var fieldMetaClassId = field.metaClass.id;
+                    const fieldMetaClassId = field.metaClass.id;
                     let fieldElement = null; // The instance if IFormField allowing to create the dom
                     let htmlElement; // The dom that had been created... 
                     switch (fieldMetaClassId) {
@@ -94,6 +126,8 @@ export class DetailForm implements IForm {
 
                         htmlElement = fieldElement.createDom(this.element);
                     }
+                    
+                    this.fieldElements.push(fieldElement);
 
                     $(".value", tr).append(htmlElement);
                     tableBody.append(tr);
@@ -143,40 +177,40 @@ It also includes the basic navigation to edit, view and submit the item changes
  */
 export class MofDetailForm extends DetailForm implements IForm {
 
-    createViewForm(parent: JQuery<HTMLElement>, workspace: string, uri: string) {
-        this.createForm(parent, workspace, uri, true);
+    createViewForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
+        this.createForm(parent, workspace, extentUri, uri, true);
     }
 
-    createEditForm(parent: JQuery<HTMLElement>, workspace: string, uri: string) {
-        this.createForm(parent, workspace, uri, false);
+    createEditForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, uri: string) {
+        this.createForm(parent, workspace, extentUri, uri, false);
     }
 
-    createForm(parent: JQuery<HTMLElement>, workspace: string, uri: string, isReadOnly: boolean) {
+    createForm(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, itemId: string, isReadOnly: boolean) {
         const tthis = this;
 
         // Load the object
-        const defer1 = DataLoader.loadObjectByUri(workspace, uri);
+        const defer1 = DataLoader.loadObjectByUri(workspace, itemId);
 
         // Load the form
-        const defer2 = getDefaultFormForItem(workspace, uri, "");
+        const defer2 = getDefaultFormForItem(workspace, itemId, "");
 
         // Wait for both
         $.when(defer1, defer2).then(function (element, form) {
             tthis.element = element;
             tthis.formElement = form;
             tthis.workspace = workspace;
-            tthis.uri = workspace;
+            tthis.itemId = itemId;
             tthis.createFormByObject(parent, isReadOnly);
         });
         
         this.onCancel = () =>{
-            tthis.createViewForm(parent, workspace, uri);
+            tthis.createViewForm(parent, workspace, extentUri, itemId);
         }
         
         this.onChange = (element)=> {
-            DataLoader.storeObjectByUri(workspace, uri, tthis.element).done(
+            DataLoader.storeObjectByUri(workspace, itemId, tthis.element).done(
                 () => {
-                    tthis.createViewForm(parent, workspace, uri);
+                    tthis.createViewForm(parent, workspace, extentUri, itemId);
                 }
             );
         }

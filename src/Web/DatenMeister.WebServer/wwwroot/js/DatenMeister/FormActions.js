@@ -27,9 +27,21 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
     var DetailFormActions;
     (function (DetailFormActions) {
         function execute(actionName, form, element) {
+            let workspaceId;
+            let extentUri;
             switch (actionName) {
+                case "Extent.NavigateTo":
+                    extentUri = element.get('uri');
+                    workspaceId = element.get('workspaceId');
+                    FormActions.extentNavigateTo(workspaceId, extentUri);
+                    break;
+                case "Item.Delete":
+                    workspaceId = form.workspace;
+                    extentUri = form.itemId;
+                    FormActions.itemDelete(form.workspace, form.extentUri, form.itemId);
+                    break;
                 case "ZipExample.CreateExample":
-                    var id = element.get('id');
+                    const id = element.get('id');
                     ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: id })
                         .done(data => {
                         document.location.reload();
@@ -63,11 +75,10 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 document.location.reload();
             });
         }
-        static itemDelete(workspace, extentUri, itemId) {
+        static itemDelete(workspace, extentUri, itemUri) {
             ApiConnection.post(Settings.baseUrl + "api/items/delete", {
                 workspace: workspace,
-                extentUri: extentUri,
-                itemId: itemId
+                itemUri: itemUri
             })
                 .done(data => {
                 Navigator.navigateToExtent(workspace, extentUri);

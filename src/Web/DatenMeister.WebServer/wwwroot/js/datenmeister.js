@@ -17,61 +17,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-define(["require", "exports", "./DatenMeister/ApiConnection", "./DatenMeister/Settings", "./DatenMeister/Navigator"], function (require, exports, ApiConnection, Settings, Navigator) {
+define(["require", "exports", "./DatenMeister/DomHelper"], function (require, exports, dh) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.FormActions = void 0;
-    ApiConnection = __importStar(ApiConnection);
-    Settings = __importStar(Settings);
-    Navigator = __importStar(Navigator);
-    class FormActions {
-        static extentNavigateTo(workspace, extentUri) {
-            document.location.href = Settings.baseUrl + "ItemsOverview/" +
-                encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(extentUri);
-        }
-        static createZipExample(workspace) {
-            ApiConnection.post(Settings.baseUrl + "api/zip/create", { workspace: workspace })
-                .done(data => {
-                document.location.reload();
-            });
-        }
-        static itemNew(workspace, extentUri) {
-            ApiConnection.post(Settings.baseUrl + "api/items/create", {
-                workspace: workspace,
-                extentUri: extentUri
-            })
-                .done(data => {
-                document.location.reload();
-            });
-        }
-        static itemDelete(workspace, extentUri, itemId) {
-            ApiConnection.post(Settings.baseUrl + "api/items/delete", {
-                workspace: workspace,
-                extentUri: extentUri,
-                itemId: itemId
-            })
-                .done(data => {
-                Navigator.navigateToExtent(workspace, extentUri);
-            });
-        }
-        static extentsListViewItem(workspace, extentUri, itemId) {
-            document.location.href = Settings.baseUrl + "Item/" +
-                encodeURIComponent(workspace) + "/" +
-                encodeURIComponent(extentUri) + "/" +
-                encodeURIComponent(itemId);
-        }
-        static extentsListDeleteItem(workspace, extentUri, itemId) {
-            ApiConnection.post(Settings.baseUrl + "api/items/delete_from_extent", {
-                workspace: workspace,
-                extentUri: extentUri,
-                itemId: itemId
-            })
-                .done(data => {
-                document.location.reload();
-            });
-        }
-    }
-    exports.FormActions = FormActions;
+    exports.DomHelper = void 0;
+    dh = __importStar(dh);
+    exports.DomHelper = dh;
 });
 //# sourceMappingURL=datenmeister.js.map

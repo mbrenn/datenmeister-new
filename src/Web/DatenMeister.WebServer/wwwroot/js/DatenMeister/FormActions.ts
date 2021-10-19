@@ -6,9 +6,21 @@ import {IForm} from "./Forms";
 
 export module DetailFormActions {
     export function execute(actionName: string, form: IForm, element: DmObject) {
+        let workspaceId;
+        let extentUri;
         switch (actionName) {
+            case "Extent.NavigateTo":
+                extentUri = element.get('uri');
+                workspaceId = element.get('workspaceId');
+                FormActions.extentNavigateTo(workspaceId, extentUri);                
+                break;
+            case "Item.Delete":
+                workspaceId = form.workspace;
+                extentUri = form.itemId;
+                FormActions.itemDelete(form.workspace, form.extentUri, form.itemId);
+                break;
             case "ZipExample.CreateExample":
-                var id = element.get('id');
+                const id = element.get('id');
                 ApiConnection.post(
                     Settings.baseUrl + "api/zip/create",
                     {workspace: id})
@@ -54,13 +66,12 @@ export class FormActions {
                 });
     }
 
-    static itemDelete(workspace:string, extentUri: string, itemId:string) {
+    static itemDelete(workspace:string, extentUri: string, itemUri: string) {
         ApiConnection.post(
             Settings.baseUrl + "api/items/delete",
             {
                 workspace: workspace,
-                extentUri: extentUri,
-                itemId: itemId
+                itemUri: itemUri
             })
             .done(
                 data => {

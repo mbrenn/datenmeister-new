@@ -40,10 +40,15 @@ export class FormCreator implements IForm {
             }
 
             const tab = tabs[n] as DmObject;
-            #
+            if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
+                const detailForm = new DetailForm();
+                detailForm.workspace = this.workspace;
+                detailForm.extentUri = this.extentUri;
+                detailForm.itemId = this.itemId;
+                detailForm.formElement = tab;
+                detailForm.element = this.element;
                 
-                if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
-
+                detailForm.createFormByObject(parent, isReadOnly);
             }
         }
     }

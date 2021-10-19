@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./FormActions", "./DomHelper"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, FormActions_1, DomHelper_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.DropDownField = exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.MofDetailForm = exports.DetailForm = exports.Form = void 0;
+    exports.DropDownField = exports.ActionField = exports.CheckboxField = exports.MetaClassElementField = exports.TextField = exports.BaseField = exports.getDefaultFormForItem = exports.MofDetailForm = exports.DetailForm = exports.FormCreator = exports.Form = void 0;
     Mof = __importStar(Mof);
     DataLoader = __importStar(DataLoader);
     ApiConnection = __importStar(ApiConnection);
@@ -28,6 +28,30 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
     class Form {
     }
     exports.Form = Form;
+    class FormCreator {
+        createFormByObject(parent, isReadOnly) {
+            let table;
+            const tthis = this;
+            parent.empty();
+            const tabs = this.formElement.get("tab");
+            for (let n in tabs) {
+                if (!tabs.hasOwnProperty(n)) {
+                    continue;
+                }
+                const tab = tabs[n];
+                if (tab.metaClass.id == "DatenMeister.Models.Forms.DetailForm") {
+                    const detailForm = new DetailForm();
+                    detailForm.workspace = this.workspace;
+                    detailForm.extentUri = this.extentUri;
+                    detailForm.itemId = this.itemId;
+                    detailForm.formElement = tab;
+                    detailForm.element = this.element;
+                    detailForm.createFormByObject(parent, isReadOnly);
+                }
+            }
+        }
+    }
+    exports.FormCreator = FormCreator;
     class DetailForm {
         createFormByObject(parent, isReadOnly) {
             var _a;
@@ -85,6 +109,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                             fieldElement.form = this;
                             htmlElement = fieldElement.createDom(this.element);
                         }
+                        this.fieldElements.push(fieldElement);
                         $(".value", tr).append(htmlElement);
                         tableBody.append(tr);
                     }

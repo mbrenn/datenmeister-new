@@ -2,10 +2,10 @@
 import * as ApiConnection from "./ApiConnection";
 import * as Navigator from "./Navigator";
 import {DmObject} from "./Mof";
-import {IForm} from "./Forms";
+import IIForms = require("./Interfaces.Forms");
 
 export module DetailFormActions {
-    export function execute(actionName: string, form: IForm, element: DmObject) {
+    export function execute(actionName: string, form: IIForms.IForm, element: DmObject) {
         let workspaceId;
         let extentUri;
         switch (actionName) {
@@ -15,8 +15,6 @@ export module DetailFormActions {
                 FormActions.extentNavigateTo(workspaceId, extentUri);                
                 break;
             case "Item.Delete":
-                workspaceId = form.workspace;
-                extentUri = form.itemId;
                 FormActions.itemDelete(form.workspace, form.extentUri, form.itemId);
                 break;
             case "ZipExample.CreateExample":

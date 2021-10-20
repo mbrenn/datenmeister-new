@@ -47,7 +47,7 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
             AddMapping(
                 _DatenMeister._Management._Extent.workspaceId,
                 e => parentWorkspace.id,
-                (e, v) => throw new InvalidOperationException("Seeting of workspaces is not supported"));
+                (e, v) => throw new InvalidOperationException("Setting of workspaces is not supported"));
             
             AddMapping(
                 _DatenMeister._Management._Extent.uri,

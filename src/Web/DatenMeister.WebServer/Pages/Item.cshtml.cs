@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
-using DatenMeister.Core.EMOF.Implementation;
-using DatenMeister.Core.EMOF.Interface.Common;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models;
-using DatenMeister.Core.Provider.InMemory;
 using DatenMeister.HtmlEngine;
 using DatenMeister.WebServer.InterfaceController;
 using DatenMeister.WebServer.Library.HtmlControls;
@@ -67,44 +61,6 @@ namespace DatenMeister.WebServer.Pages
                         ?? throw new InvalidOperationException("Items are null. They may not be null");
             Form = XmiHelper.ConvertItemFromXmi(ItemAndFormModel.form)
                    ?? throw new InvalidOperationException("Form is null. It may not be null");
-
-        }
-
-        /// <summary>
-        /// Consolidates all fields from tabs and and the extentform itself
-        /// </summary>
-        /// <param name="fields">Field list that shall be filled with the consoldiated fields</param>
-        /// <param name="form">Form to be parsed through and to consolidate the fields</param>
-        public static void ConsolidateFields(List<IElement> fields, IObject form)
-        {
-            // Consolidate fields from tab and fields into the list of fields
-            foreach (var field in
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._ListForm.field).OfType<IElement>())
-            {
-                fields.Add(field);
-            }
-
-            foreach (var tab in
-                form.get<IReflectiveCollection>(_DatenMeister._Forms._ExtentForm.tab).OfType<MofElement>())
-            {
-                if (tab.getMetaClassWithoutTracing()?.equals(_DatenMeister.TheOne.Forms.__ListForm) == true)
-                {
-                    fields.Add(
-                        InMemoryObject.CreateEmpty(_DatenMeister.TheOne.Forms.__TextFieldData)
-                            .SetProperty(_DatenMeister._Forms._TextFieldData.name, tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.property))
-                            .SetProperty(_DatenMeister._Forms._TextFieldData.title, tab.getOrDefault<string>(_DatenMeister._Forms._ListForm.title))
-                            .SetProperty(_DatenMeister._Forms._TextFieldData.isEnumeration, true)
-                    );
-                }
-                else
-                {
-                    foreach (var field in
-                        tab.get<IReflectiveCollection>(_DatenMeister._Forms._DetailForm.field).OfType<IElement>())
-                    {
-                        fields.Add(field);
-                    }
-                }
-            }
         }
     }
 }

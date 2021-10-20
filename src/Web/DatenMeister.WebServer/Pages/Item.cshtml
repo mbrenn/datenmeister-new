@@ -28,7 +28,7 @@
     function CreateViewForm()
     {
         requirejs(['Datenmeister/Forms'], function(Form) {
-            var detailForm = new Form.MofDetailForm();
+            var detailForm = new Form.FormCreator();
             detailForm.createViewForm(
                 $("#form_view"),
                 "@HttpUtility.JavaScriptStringEncode(w)",

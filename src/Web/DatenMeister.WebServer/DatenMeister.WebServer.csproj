@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.2.3">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.4.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -78,6 +78,9 @@
     <None Update="Examples\plz.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\js\DatenMeister\Fields" />
   </ItemGroup>
   
 

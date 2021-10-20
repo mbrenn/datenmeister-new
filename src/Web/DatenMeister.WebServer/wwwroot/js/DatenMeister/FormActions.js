@@ -36,8 +36,6 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                     FormActions.extentNavigateTo(workspaceId, extentUri);
                     break;
                 case "Item.Delete":
-                    workspaceId = form.workspace;
-                    extentUri = form.itemId;
                     FormActions.itemDelete(form.workspace, form.extentUri, form.itemId);
                     break;
                 case "ZipExample.CreateExample":

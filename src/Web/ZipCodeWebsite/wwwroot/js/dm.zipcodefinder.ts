@@ -30,7 +30,7 @@ class ZipCodeLoader {
     constructor() {
     }
 
-    static getZipCodes(searchText?: string): JQuery.jqXHR {
+    static getZipCodes(searchText?: string): JQuery.jqXHR<ZipCodeData> {
         let uri = "/zipcode/";
         if (searchText && 0 !== searchText.length) {
             uri += "?search=" + encodeURIComponent(searchText);
@@ -45,11 +45,10 @@ class ZipCodeLoader {
 
         this.step++;
         const currentStep = this.step;
-        const tthis = this;
 
         this.getZipCodes(searchText).done(
-            function (data: ZipCodeData) {
-                if (tthis.step != currentStep) return;
+            (data: ZipCodeData) => {
+                if (this.step != currentStep) return;
                 
                 let htmlResult = "";
                 if (data.truncated === true)

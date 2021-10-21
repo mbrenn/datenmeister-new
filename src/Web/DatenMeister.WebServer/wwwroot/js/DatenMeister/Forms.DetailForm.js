@@ -84,4 +84,4 @@ define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", ".
     }
     exports.DetailForm = DetailForm;
 });
-//# sourceMappingURL=DetailForm.js.map
+//# sourceMappingURL=Forms.DetailForm.js.map

@@ -1,30 +1,7 @@
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./DetailForm"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm) {
+define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.getDefaultFormForItem = exports.FormCreator = exports.Form = void 0;
-    Mof = __importStar(Mof);
-    DataLoader = __importStar(DataLoader);
-    ApiConnection = __importStar(ApiConnection);
-    Settings = __importStar(Settings);
     class Form {
     }
     exports.Form = Form;
@@ -51,9 +28,9 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     detailForm.itemId = this.itemId;
                     detailForm.formElement = tab;
                     detailForm.element = this.element;
-                    detailForm.createFormByObject(parent, isReadOnly);
+                    detailForm.createFormByObject(form, isReadOnly);
                     detailForm.onCancel = () => {
-                        tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                        tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
                     };
                     detailForm.onChange = (element) => {
                         DataLoader.storeObjectByUri(tthis.workspace, tthis.itemId, tthis.element).done(() => {
@@ -62,8 +39,14 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     };
                 }
                 else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
+                    const listForm = new Forms_ListForm_1.ListForm();
+                    listForm.workspace = this.workspace;
+                    listForm.extentUri = this.extentUri;
+                    listForm.itemId = this.itemId;
+                    listForm.formElement = tab;
+                    listForm.elements = this.element.get(tab.get("property"));
+                    listForm.createFormByCollection(form, true);
                 }
-                // DetailForm
                 else {
                     form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
                     $(".id", form).text(tab.metaClass.id);

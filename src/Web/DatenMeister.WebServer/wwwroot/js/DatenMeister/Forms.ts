@@ -4,9 +4,9 @@ import DmObject = Mof.DmObject;
 import * as ApiConnection from "./ApiConnection";
 import * as ApiModels from "./ApiModels";
 import * as Settings from "./Settings";
-import IFields = require("./Interfaces.Fields");
-import DetailForm = require("./DetailForm");
+import DetailForm = require("./Forms.DetailForm");
 import IForm = require("./Interfaces.Forms");
+import {ListForm} from "./Forms.ListForm";
 
 export class Form {
     viewMode: string;
@@ -45,10 +45,10 @@ export class FormCreator implements IForm.IForm {
                 detailForm.formElement = tab;
                 detailForm.element = this.element;
 
-                detailForm.createFormByObject(parent, isReadOnly);
+                detailForm.createFormByObject(form, isReadOnly);
 
                 detailForm.onCancel = () => {
-                    tthis.createViewForm(parent, tthis.workspace, tthis.extentUri, tthis.itemId);
+                    tthis.createViewForm(form, tthis.workspace, tthis.extentUri, tthis.itemId);
                 }
 
                 detailForm.onChange = (element) => {
@@ -59,9 +59,15 @@ export class FormCreator implements IForm.IForm {
                     );
                 }
             } else if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
-
+                const listForm = new ListForm();
+                listForm.workspace = this.workspace;
+                listForm.extentUri = this.extentUri;
+                listForm.itemId = this.itemId;
+                listForm.formElement = tab;
+                listForm.elements = this.element.get(tab.get("property"));
+                
+                listForm.createFormByCollection(form, true);
             }
-            // DetailForm
             else {
                 form = $("<div>Unknown Formtype:<span class='id'></span></div> ");
                 $(".id", form).text(tab.metaClass.id);

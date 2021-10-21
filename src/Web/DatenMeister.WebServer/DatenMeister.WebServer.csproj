@@ -88,5 +88,5 @@
     <Copy SourceFiles="@(IconPngFiles)" DestinationFiles="@(IconPngFiles->'wwwroot/img/%(Filename)%(Extension)')" />
   </Target>
 
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties tsconfig_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

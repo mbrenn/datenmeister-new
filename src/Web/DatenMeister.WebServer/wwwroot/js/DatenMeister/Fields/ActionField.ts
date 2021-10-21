@@ -1,5 +1,5 @@
-import {DetailFormActions} from "../FormActions";
-import {BaseField, IFormField} from "../Interfaces.Fields";
+import { DetailFormActions } from "../FormActions";
+import { BaseField, IFormField } from "../Interfaces.Fields";
 import { DmObject } from "../Mof";
 
 export class Field extends BaseField implements IFormField {
@@ -11,9 +11,10 @@ export class Field extends BaseField implements IFormField {
         const result = $("<button class='btn btn-secondary' type='button'></button>");
         result.text(title);
 
-        result.on('click', () => {
-            DetailFormActions.execute(action, tthis.form, dmElement);
-        });
+        result.on('click',
+            () => {
+                DetailFormActions.execute(action, tthis.form, dmElement);
+            });
 
         return result;
     }

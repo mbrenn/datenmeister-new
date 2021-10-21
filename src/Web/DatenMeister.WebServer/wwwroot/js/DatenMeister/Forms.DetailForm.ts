@@ -1,12 +1,11 @@
-﻿import Forms = require("./Forms");
-import TextField = require("./Fields/TextField");
-import CheckboxField = require("./Fields/CheckboxField");
-import DropDownField = require("./Fields/DropDownField");
-import MetaClassElementField = require("./Fields/MetaClassElementField");
-import ActionField = require("./Fields/ActionField");
-import InterfacesForms = require("./Interfaces.Forms");
-import InterfacesFields = require("./Interfaces.Fields");
-import Mof = require("./Mof");
+﻿import * as TextField from "./Fields/TextField";
+import * as CheckboxField from "./Fields/CheckboxField";
+import * as DropDownField from "./Fields/DropDownField";
+import * as MetaClassElementField from "./Fields/MetaClassElementField";
+import * as ActionField from "./Fields/ActionField";
+import * as InterfacesForms from "./Interfaces.Forms";
+import * as InterfacesFields from "./Interfaces.Fields";
+import * as Mof from "./Mof";
 
 
 export class DetailForm implements InterfacesForms.IForm {

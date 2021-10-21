@@ -24,7 +24,7 @@
 <div><a class="btn btn-primary" onclick="EditItem()">Edit Item</a></div>
 
 <script type="application/javascript">
-    
+
     function CreateViewForm()
     {
         requirejs(['Datenmeister/Forms'], function(Form) {
@@ -43,20 +43,20 @@ $(function()
 
         @Html.Raw(Model.ScriptLines);
     });
-    
+
     CreateViewForm();
 });
-    
+
     function EditItem()
     {
-        requirejs(['Datenmeister/Forms'], function(Form) {
-            var detailForm = new Form.MofDetailForm();
+        requirejs(['Datenmeister/Forms.DetailForm'], function(Form) {
+            var detailForm = new Form.FormCreator();
             detailForm.createEditForm(
                 $("#form_view"),
                 "@HttpUtility.JavaScriptStringEncode(w)",
                 "@HttpUtility.JavaScriptStringEncode(Model.ItemUrl)");
         });
-    }        
+    }
 
 </script>
 <div id="form_view">View Form</div>

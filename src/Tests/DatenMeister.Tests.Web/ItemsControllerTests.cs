@@ -1,7 +1,18 @@
-﻿using DatenMeister.Core.EMOF.Implementation;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.Json.Serialization;
+using DatenMeister.Core.EMOF.Implementation;
 using DatenMeister.Core.Helper;
 using DatenMeister.Core.Runtime;
+using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Extent.Manager.ExtentStorage;
+using DatenMeister.WebServer.Controller;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace DatenMeister.Tests.Web
@@ -35,9 +46,34 @@ namespace DatenMeister.Tests.Web
             createdExtent.Extent.elements().add(item2);
             
             item4.set(propertyName, new[] { item6, item7 });
-            
-            
         }
-        
+
+        [Test]
+        public void TestRootElements()
+        {
+            var (dm, example) = ElementControllerTests.CreateExampleExtent();
+
+            var itemsController = new ItemsController(dm.WorkspaceLogic, dm.ScopeStorage);
+            var rootElements = itemsController.GetRootElements(WorkspaceNames.WorkspaceData, ElementControllerTests.UriTemporaryExtent).Value?.ToString()
+                               ?? throw new InvalidOperationException("Should not happen");
+            Assert.That(rootElements, Is.Not.Null);
+
+            object elements = JsonConvert.DeserializeObject(rootElements);
+            Assert.That(elements, Is.Not.Null);
+
+            var asEnumeration = (elements as IEnumerable<object>)?.ToArray();
+            Assert.That(asEnumeration, Is.Not.Null);
+
+            var found = false;
+            foreach (var item in asEnumeration!.OfType<JObject>())
+            {
+                if ((item.GetValue("v") as JObject)?.GetValue("name")?.ToString() == "name1")
+                {
+                    found = true;
+                }
+            }
+
+            Assert.That(found, Is.Not.Null);
+        }
     }
 }

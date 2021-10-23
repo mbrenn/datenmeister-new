@@ -1,5 +1,6 @@
 ﻿@page "/ItemsOverview/{workspace}/{extent}/{item?}"
 @namespace DatenMeister.WebServer.Pages
+@using System.Web
 @using DatenMeister.Html
 @model ExtentOverviewModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -10,32 +11,21 @@
 }
 
 <h1>Items Overview</h1>
-<p>Workspace: @Model.Workspace</p>
-<p>Extent: @Model.Extent</p>
 
-@foreach (var table in Model.Tables)
-{
-    @Html.Raw(table.ToString())
-}
+<div id="items"></div>
 
 <script type="application/javascript">
 
-$(function() 
+$(function()
 {
-    requirejs(['datenmeister'], function(DatenMeister) {
-    
-        @Html.Raw(Model.ScriptLines)
-    
-    })
+    requirejs(['DatenMeister/Forms'], function (Forms)
+    {
+        let listForm = new Forms.CollectionFormCreator();
+        listForm.createListForRootElements(
+            $("#items"),
+            "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
+            "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
+    });
 });
 
 </script>
-
-<div>
-    <a class="btn btn-primary" data-bs-toggle="collapse" href="#forminformation" role="button">Show Form Information</a>
-    <div class="collapse" id="forminformation">
-        <div class="card card-body">
-            @(Html.Raw(new ObjectToSimpleHtmlListConverter().ConvertToHtmlList(Model.Form)))
-        </div>
-    </div>
-</div>

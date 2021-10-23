@@ -1,11 +1,15 @@
-﻿using DatenMeister.Json;
+﻿using System;
+using DatenMeister.Core.EMOF.Interface.Reflection;
+using DatenMeister.Json;
 
 namespace DatenMeister.WebServer.Models
 {
-    public record IItem
+    [Obsolete]
+    public class IItem
     {
         public string item { get; set; } = string.Empty;
         
         public ItemWithNameAndId? metaClass { get; set; }
+
     }
 }

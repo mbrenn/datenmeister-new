@@ -7,7 +7,7 @@ import {DmObject} from "./Mof";
 export function loadObject(workspace: string, extent: string, id: string): JQuery.Deferred<Mof.DmObject, never, never> {
     const r = jQuery.Deferred<Mof.DmObject, never, never>();
 
-    ApiConnection.get<ApiModels.Out.IItem>(
+    ApiConnection.get<object>(
         Settings.baseUrl +
         "api/items/get/" +
         encodeURIComponent(workspace) +
@@ -17,7 +17,7 @@ export function loadObject(workspace: string, extent: string, id: string): JQuer
         encodeURIComponent(id)
     ).done(x => {
         var dmObject =
-            Mof.createObjectFromJson(x.item);
+            Mof.convertJsonObjectToDmObject(x);
         r.resolve(dmObject);
     });
 
@@ -27,7 +27,7 @@ export function loadObject(workspace: string, extent: string, id: string): JQuer
 export function loadObjectByUri(workspace: string, url: string): JQuery.Deferred<Mof.DmObject, never, never> {
     var r = jQuery.Deferred<Mof.DmObject, never, never>();
 
-    ApiConnection.get<ApiModels.Out.IItem>(
+    ApiConnection.get<object>(
         Settings.baseUrl +
         "api/items/get/" +
         encodeURIComponent(workspace) +
@@ -35,8 +35,33 @@ export function loadObjectByUri(workspace: string, url: string): JQuery.Deferred
         encodeURIComponent(url)
     ).done(x => {
         var dmObject =
-            Mof.createObjectFromJson(x.item, x.metaClass);
+            Mof.convertJsonObjectToDmObject(x);
         r.resolve(dmObject);
+    });
+
+    return r;
+}
+
+export function loadRootElementsFromExtent(workspace: string, extentUri: string): JQuery.Deferred<Array<Mof.DmObject>, never, never> {
+    var r = jQuery.Deferred<Array<Mof.DmObject>, never, never>();
+
+    ApiConnection.get<string>(
+        Settings.baseUrl +
+        "api/items/get_root_elements/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri)
+    ).done(text => {
+        const x = JSON.parse(text);
+        let result = new Array<Mof.DmObject>();
+        for (let n in x) {
+            if (Object.prototype.hasOwnProperty.call(x, n)) {
+                const v = x[n];
+                result.push(Mof.convertJsonObjectToDmObject(v));
+            }
+        }
+
+        r.resolve(result);
     });
 
     return r;
@@ -46,7 +71,7 @@ export function storeObjectByUri(workspace: string, url: string, element: DmObje
     var r = jQuery.Deferred<void, never, never>();
     var result = Mof.createJsonFromObject(element);
 
-    ApiConnection.put<ApiModels.Out.IItem>(
+    ApiConnection.put<string>(
         Settings.baseUrl +
         "api/items/set/" +
         encodeURIComponent(workspace) +

@@ -10,7 +10,7 @@ define(["require", "exports", "../FormActions", "../Interfaces.Fields"], functio
             const result = $("<button class='btn btn-secondary' type='button'></button>");
             result.text(title);
             result.on('click', () => {
-                FormActions_1.DetailFormActions.execute(action, tthis.form, dmElement);
+                FormActions_1.DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement);
             });
             return result;
         }

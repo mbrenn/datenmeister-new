@@ -50,6 +50,7 @@ define(["require", "exports", "./Fields/TextField", "./Fields/CheckboxField", ".
                     fieldElement.field = field;
                     fieldElement.isReadOnly = isReadOnly;
                     fieldElement.form = this;
+                    fieldElement.itemUrl = tthis.extentUri + "#" + tthis.itemId;
                     htmlElement = fieldElement.createDom(this.element);
                 }
                 this.fieldElements.push(fieldElement);

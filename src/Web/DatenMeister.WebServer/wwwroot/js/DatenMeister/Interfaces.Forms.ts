@@ -1,9 +1,12 @@
-﻿import Mof = require("./Mof");
+﻿import * as Mof from "./Mof";
 
 export interface IForm
 {
     workspace: string;
     extentUri: string;
-    itemId: string;
     formElement: Mof.DmObject;
+}
+
+export interface IDetailForm extends IForm {
+    itemId: string;
 }

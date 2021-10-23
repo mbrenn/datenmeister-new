@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Web;
 using DatenMeister.Core;
@@ -146,13 +147,10 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Element is not found");
             }
 
-            var converter = new MofJsonConverter();
+            var converter = new MofJsonConverter() { MaxRecursionDepth = 2 };
             var convertedElement = converter.ConvertToJson(foundElement);
 
-            return new
-            {
-                item = convertedElement
-            };
+            return convertedElement;
         }
 
         [HttpGet("api/items/get/{workspaceId}/{itemUri}")]
@@ -160,16 +158,40 @@ namespace DatenMeister.WebServer.Controller
         {
             var foundElement = GetItemByUriParameter(workspaceId, itemUri);
 
-            var converter = new MofJsonConverter();
+            var converter = new MofJsonConverter() { MaxRecursionDepth = 2 };
             var convertedElement = converter.ConvertToJson(foundElement);
 
             var metaClass = (foundElement as IElement)?.getMetaClass();
 
-            return new
+            return convertedElement;
+        }
+
+        [HttpGet("api/items/get_root_elements/{workspaceId}/{extentUri}")]
+        public ActionResult<object> GetRootElements(string workspaceId, string extentUri)
+        {
+            var foundElement = GetItemByUriParameter(workspaceId, extentUri);
+            if (foundElement is not IExtent extent)
             {
-                item = convertedElement,
-                metaClass = ItemWithNameAndId.Create(metaClass)
-            };
+                return NotFound();
+            }
+
+            var converter = new MofJsonConverter { MaxRecursionDepth = 2 };
+
+            var result = new StringBuilder();
+            result.Append("[");
+            var komma = string.Empty;
+
+            foreach (var item in extent.elements().OfType<IElement>())
+            {
+                result.Append(komma);
+                result.Append(converter.ConvertToJson(item));
+
+                komma = ", ";
+            }
+
+            result.Append("]");
+
+            return result.ToString();
         }
 
         [HttpPut("api/items/get_container/{workspaceId}/{itemUri}")]
@@ -208,8 +230,7 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Extent is not found");
             }
 
-            var foundElement = workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) as IObject;
-            if (foundElement == null)
+            if (workspace.Resolve(itemUri, ResolveType.NoMetaWorkspaces) is not IObject foundElement)
             {
                 throw new InvalidOperationException("Element is not found");
             }

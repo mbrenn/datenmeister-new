@@ -1,7 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.createObjectFromJson = exports.createJsonFromObject = exports.DmObject = void 0;
+    exports.convertJsonObjectToDmObject = exports.createJsonFromObject = exports.DmObject = void 0;
     class DmObject {
         constructor() {
             this.values = new Array();
@@ -88,54 +88,49 @@ define(["require", "exports"], function (require, exports) {
     // Creates the given object from the included json
     // The corresponding C# class is DatenMeister.Modules.Json.MofJsonConverter.Convert
     */
-    function createObjectFromJson(json, metaClass) {
-        const converted = JSON.parse(json);
-        function convertJsonToDmObject(element) {
-            const result = new DmObject();
-            const elementValues = element["v"];
-            if (elementValues !== undefined && elementValues !== null) {
-                for (let key in elementValues) {
-                    if (Object.prototype.hasOwnProperty.call(elementValues, key)) {
-                        let value = elementValues[key];
-                        if (Array.isArray(value)) {
-                            // Converts array
-                            const finalValue = [];
-                            for (const m in value) {
-                                if (!(value.hasOwnProperty(m))) {
-                                    continue;
-                                }
-                                let arrayValue = value[m];
-                                if ((typeof arrayValue === "object" || typeof arrayValue === "function") && (arrayValue !== null)) {
-                                    arrayValue = convertJsonToDmObject(arrayValue);
-                                }
-                                finalValue.push(arrayValue);
+    function convertJsonObjectToDmObject(element) {
+        if (typeof element === 'string' || element instanceof String) {
+            element = JSON.parse(element);
+        }
+        const result = new DmObject();
+        const elementValues = element["v"];
+        if (elementValues !== undefined && elementValues !== null) {
+            for (let key in elementValues) {
+                if (Object.prototype.hasOwnProperty.call(elementValues, key)) {
+                    let value = elementValues[key];
+                    if (Array.isArray(value)) {
+                        // Converts array
+                        const finalValue = [];
+                        for (const m in value) {
+                            if (!(value.hasOwnProperty(m))) {
+                                continue;
                             }
-                            value = finalValue;
+                            let arrayValue = value[m];
+                            if ((typeof arrayValue === "object" || typeof arrayValue === "function") && (arrayValue !== null)) {
+                                arrayValue = convertJsonObjectToDmObject(arrayValue);
+                            }
+                            finalValue.push(arrayValue);
                         }
-                        else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
-                            // Converts to DmObject, if item is an object
-                            value = convertJsonToDmObject(value);
-                        }
-                        result.set(key, value);
+                        value = finalValue;
                     }
+                    else if ((typeof value === "object" || typeof value === "function") && (value !== null)) {
+                        // Converts to DmObject, if item is an object
+                        value = convertJsonObjectToDmObject(value);
+                    }
+                    result.set(key, value);
                 }
             }
-            const elementMetaClass = element["m"];
-            if (elementMetaClass !== undefined && elementMetaClass !== null) {
-                result.metaClass = elementMetaClass;
-            }
-            const elementUri = element["u"];
-            if (elementUri !== undefined && elementUri !== null) {
-                result.uri = elementUri;
-            }
-            return result;
         }
-        let result2 = convertJsonToDmObject(converted);
-        if (metaClass !== undefined && metaClass !== null) {
-            result2.metaClass = metaClass;
+        const elementMetaClass = element["m"];
+        if (elementMetaClass !== undefined && elementMetaClass !== null) {
+            result.metaClass = elementMetaClass;
         }
-        return result2;
+        const elementUri = element["u"];
+        if (elementUri !== undefined && elementUri !== null) {
+            result.uri = elementUri;
+        }
+        return result;
     }
-    exports.createObjectFromJson = createObjectFromJson;
+    exports.convertJsonObjectToDmObject = convertJsonObjectToDmObject;
 });
 //# sourceMappingURL=Mof.js.map

@@ -6,7 +6,6 @@ using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.Forms;
 using DatenMeister.Json;
-using DatenMeister.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DatenMeister.WebServer.Controller
@@ -25,7 +24,7 @@ namespace DatenMeister.WebServer.Controller
         }
         
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
-        public ActionResult<IItem> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
+        public ActionResult<string> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
 
@@ -38,15 +37,11 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Form is not defined");
             }
 
-            return new IItem
-            {
-                item = MofJsonConverter.ConvertToJsonWithDefaultParameter(form),
-                metaClass = ItemWithNameAndId.Create(form.getMetaClass())
-            };
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
         
         [HttpGet("api/forms/default_for_extent/{workspaceId}/{extentUri}/{viewMode?}")]
-        public ActionResult<IItem> GetDefaultFormForExtent(string workspaceId, string extentUri, string? viewMode)
+        public ActionResult<string> GetDefaultFormForExtent(string workspaceId, string extentUri, string? viewMode)
         {
             viewMode = HttpUtility.UrlDecode(viewMode);
             workspaceId = HttpUtility.UrlDecode(workspaceId);
@@ -62,11 +57,7 @@ namespace DatenMeister.WebServer.Controller
                 throw new InvalidOperationException("Form is not defined");
             }
 
-            return new IItem
-            {
-                item = MofJsonConverter.ConvertToJsonWithDefaultParameter(form),
-                metaClass = ItemWithNameAndId.Create(form.getMetaClass())
-            };
+            return MofJsonConverter.ConvertToJsonWithDefaultParameter(form);
         }
 
         /// <summary>

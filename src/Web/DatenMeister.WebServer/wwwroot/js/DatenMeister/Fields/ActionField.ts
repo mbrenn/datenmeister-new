@@ -13,7 +13,7 @@ export class Field extends BaseField implements IFormField {
 
         result.on('click',
             () => {
-                DetailFormActions.execute(action, tthis.form, dmElement);
+                DetailFormActions.execute(action, tthis.form, tthis.itemUrl, dmElement);
             });
 
         return result;

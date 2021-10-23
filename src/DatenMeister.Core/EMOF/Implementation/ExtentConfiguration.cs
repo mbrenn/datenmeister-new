@@ -15,7 +15,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// <summary>
         /// Defines the name of the default type packages
         /// </summary>
-        public const string DatenmeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
+        public const string DatenMeisterDefaultTypePackage = "__DatenMeister.DefaultTypePackage";
 
         /// <summary>
         /// Saves the type of the extent
@@ -95,7 +95,7 @@ namespace DatenMeister.Core.EMOF.Implementation
         public void SetDefaultTypePackages(IEnumerable<IElement> defaultTypePackages)
         {
             _extent.set(
-                DatenmeisterDefaultTypePackage,
+                DatenMeisterDefaultTypePackage,
                 defaultTypePackages);
         }
 
@@ -120,6 +120,6 @@ namespace DatenMeister.Core.EMOF.Implementation
         /// </summary>
         /// <returns>The found element</returns>
         public IEnumerable<IElement> GetDefaultTypePackages() =>
-            _extent.get<IReflectiveCollection>(DatenmeisterDefaultTypePackage).OfType<IElement>();
+            _extent.get<IReflectiveCollection>(DatenMeisterDefaultTypePackage).OfType<IElement>();
     }
 }

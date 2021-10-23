@@ -23,7 +23,7 @@ namespace DatenMeister.Tests.Web
                 zipExtent.contextURI(),
                 ViewModes.Default);
             Assert.That(foundForm, Is.Not.Null);
-            Assert.That(foundForm.Value.item.IndexOf("tab", StringComparison.Ordinal) != -1);
+            Assert.That(foundForm.Value.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
         
         
@@ -40,7 +40,7 @@ namespace DatenMeister.Tests.Web
             
             Assert.That(foundForm, Is.Not.Null);
             Assert.That(foundForm.Value, Is.Not.Null);
-            Assert.That(foundForm!.Value!.item!.IndexOf("tab", StringComparison.Ordinal) != -1);
+            Assert.That(foundForm!.Value!.IndexOf("tab", StringComparison.Ordinal) != -1);
         }
 
         /// <summary>

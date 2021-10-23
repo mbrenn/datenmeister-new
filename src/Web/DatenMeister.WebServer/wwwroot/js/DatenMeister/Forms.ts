@@ -4,20 +4,78 @@ import DmObject = Mof.DmObject;
 import * as ApiConnection from "./ApiConnection";
 import * as ApiModels from "./ApiModels";
 import * as Settings from "./Settings";
-import DetailForm = require("./Forms.DetailForm");
-import IForm = require("./Interfaces.Forms");
+import * as DetailForm from "./Forms.DetailForm";
+import * as IForm from "./Interfaces.Forms";
 import {ListForm} from "./Forms.ListForm";
 
 export class Form {
     viewMode: string;
 }
 
+/*
+    Creates a form containing a collection of items. 
+    The input for this type is a collection of elements
+*/
+export class CollectionFormCreator implements IForm.IForm {
+    extentUri: string;
+    formElement: DmObject;
+    workspace: string;
+
+    createListForRootElements(parent: JQuery<HTMLElement>, workspace: string, extentUri: string, isReadOnly: boolean) {
+        const tthis = this;
+
+        // Load the object
+        const defer1 = DataLoader.loadRootElementsFromExtent(workspace, extentUri);
+
+        // Load the form
+        const defer2 = getDefaultFormForExtent(workspace, extentUri, "");
+
+        // Wait for both
+        $.when(defer1, defer2).then((elements, form) => {
+            tthis.formElement = form;
+            tthis.workspace = workspace;
+            tthis.extentUri = extentUri;
+
+            tthis.createFormByCollection(parent, elements, isReadOnly);
+            
+        });
+
+        parent.empty();
+        parent.text("Loading content and form...");
+    }
+
+    createFormByCollection(parent: JQuery<HTMLElement>, elements: Array<Mof.DmObject>, isReadOnly: boolean) {
+        const tthis = this;
+        parent.empty();
+
+        const tabs = this.formElement.get("tab");
+        for (let n in tabs) {
+            if (!tabs.hasOwnProperty(n)) {
+                continue;
+            }
+
+            let form = $("<div />");
+            const tab = tabs[n] as DmObject;
+            if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
+                const listForm = new ListForm();
+                listForm.elements = elements;
+                listForm.formElement = tab;
+                listForm.workspace = this.workspace;
+                listForm.createFormByCollection(form, isReadOnly);
+            }
+
+            parent.append(form);
+        }
+    }
+}
+
 /* 
     Defines the form creator which also performs the connect to the webserver itself. 
+    The input for this type of form is a single element
     
     This method handles all allowed form types.  
  */
-export class FormCreator implements IForm.IForm {
+export class DetailFormCreator implements IForm.IForm {
 
     element: DmObject;
     extentUri: string;
@@ -114,7 +172,7 @@ export class FormCreator implements IForm.IForm {
 export function getDefaultFormForItem(workspace: string, item: string,  viewMode: string): JQuery.Deferred<Mof.DmObject, never, never> {
     const r = jQuery.Deferred<Mof.DmObject, never, never>();
 
-    ApiConnection.get<ApiModels.Out.IItem>(
+    ApiConnection.get<object>(
         Settings.baseUrl +
         "api/forms/default_for_item/" +
         encodeURIComponent(workspace) +
@@ -124,7 +182,29 @@ export function getDefaultFormForItem(workspace: string, item: string,  viewMode
         encodeURIComponent(viewMode)
     ).done(x => {
         const dmObject =
-            Mof.createObjectFromJson(x.item, x.metaClass);
+            Mof.convertJsonObjectToDmObject(x);
+        r.resolve(dmObject);
+    });
+
+    return r;
+}
+/*
+    Gets the default form for an extent uri by the webserver
+ */
+export function getDefaultFormForExtent(workspace: string, extentUri: string, viewMode: string): JQuery.Deferred<Mof.DmObject, never, never> {
+    const r = jQuery.Deferred<Mof.DmObject, never, never>();
+
+    ApiConnection.get<object>(
+        Settings.baseUrl +
+        "api/forms/default_for_extent/" +
+        encodeURIComponent(workspace) +
+        "/" +
+        encodeURIComponent(extentUri) +
+        "/" +
+        encodeURIComponent(viewMode)
+    ).done(x => {
+        const dmObject =
+            Mof.convertJsonObjectToDmObject(x);
         r.resolve(dmObject);
     });
 

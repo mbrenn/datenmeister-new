@@ -4,7 +4,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
     exports.FormActions = exports.DetailFormActions = void 0;
     var DetailFormActions;
     (function (DetailFormActions) {
-        function execute(actionName, form, element) {
+        function execute(actionName, form, itemUrl, element) {
             let workspaceId;
             let extentUri;
             switch (actionName) {
@@ -14,7 +14,7 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                     FormActions.extentNavigateTo(workspaceId, extentUri);
                     break;
                 case "Item.Delete":
-                    FormActions.itemDelete(form.workspace, form.extentUri, form.itemId);
+                    FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                     break;
                 case "ZipExample.CreateExample":
                     const id = element.get('id');

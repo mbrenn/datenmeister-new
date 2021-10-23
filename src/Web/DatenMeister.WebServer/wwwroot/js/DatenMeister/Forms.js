@@ -1,16 +1,60 @@
 define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Settings", "./Forms.DetailForm", "./Forms.ListForm"], function (require, exports, Mof, DataLoader, ApiConnection, Settings, DetailForm, Forms_ListForm_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.getDefaultFormForItem = exports.FormCreator = exports.Form = void 0;
+    exports.getDefaultFormForExtent = exports.getDefaultFormForItem = exports.DetailFormCreator = exports.CollectionFormCreator = exports.Form = void 0;
     class Form {
     }
     exports.Form = Form;
     /*
+        Creates a form containing a collection of items.
+        The input for this type is a collection of elements
+    */
+    class CollectionFormCreator {
+        createListForRootElements(parent, workspace, extentUri, isReadOnly) {
+            const tthis = this;
+            // Load the object
+            const defer1 = DataLoader.loadRootElementsFromExtent(workspace, extentUri);
+            // Load the form
+            const defer2 = getDefaultFormForExtent(workspace, extentUri, "");
+            // Wait for both
+            $.when(defer1, defer2).then((elements, form) => {
+                tthis.formElement = form;
+                tthis.workspace = workspace;
+                tthis.extentUri = extentUri;
+                tthis.createFormByCollection(parent, elements, isReadOnly);
+            });
+            parent.empty();
+            parent.text("Loading content and form...");
+        }
+        createFormByCollection(parent, elements, isReadOnly) {
+            const tthis = this;
+            parent.empty();
+            const tabs = this.formElement.get("tab");
+            for (let n in tabs) {
+                if (!tabs.hasOwnProperty(n)) {
+                    continue;
+                }
+                let form = $("<div />");
+                const tab = tabs[n];
+                if (tab.metaClass.id === "DatenMeister.Models.Forms.ListForm") {
+                    const listForm = new Forms_ListForm_1.ListForm();
+                    listForm.elements = elements;
+                    listForm.formElement = tab;
+                    listForm.workspace = this.workspace;
+                    listForm.createFormByCollection(form, isReadOnly);
+                }
+                parent.append(form);
+            }
+        }
+    }
+    exports.CollectionFormCreator = CollectionFormCreator;
+    /*
         Defines the form creator which also performs the connect to the webserver itself.
+        The input for this type of form is a single element
         
         This method handles all allowed form types.
      */
-    class FormCreator {
+    class DetailFormCreator {
         createFormByObject(parent, isReadOnly) {
             const tthis = this;
             parent.empty();
@@ -78,7 +122,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             parent.text("Loading content and form...");
         }
     }
-    exports.FormCreator = FormCreator;
+    exports.DetailFormCreator = DetailFormCreator;
     /*
         Gets the default form for a certain item by the webserver
      */
@@ -91,11 +135,29 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
             encodeURIComponent(item) +
             "/" +
             encodeURIComponent(viewMode)).done(x => {
-            const dmObject = Mof.createObjectFromJson(x.item, x.metaClass);
+            const dmObject = Mof.convertJsonObjectToDmObject(x);
             r.resolve(dmObject);
         });
         return r;
     }
     exports.getDefaultFormForItem = getDefaultFormForItem;
+    /*
+        Gets the default form for an extent uri by the webserver
+     */
+    function getDefaultFormForExtent(workspace, extentUri, viewMode) {
+        const r = jQuery.Deferred();
+        ApiConnection.get(Settings.baseUrl +
+            "api/forms/default_for_extent/" +
+            encodeURIComponent(workspace) +
+            "/" +
+            encodeURIComponent(extentUri) +
+            "/" +
+            encodeURIComponent(viewMode)).done(x => {
+            const dmObject = Mof.convertJsonObjectToDmObject(x);
+            r.resolve(dmObject);
+        });
+        return r;
+    }
+    exports.getDefaultFormForExtent = getDefaultFormForExtent;
 });
 //# sourceMappingURL=Forms.js.map

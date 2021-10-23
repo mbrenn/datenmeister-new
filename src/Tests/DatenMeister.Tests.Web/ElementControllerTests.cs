@@ -4,9 +4,7 @@ using DatenMeister.Core.EMOF.Interface.Identifiers;
 using DatenMeister.Core.EMOF.Interface.Reflection;
 using DatenMeister.Core.Functions.Queries;
 using DatenMeister.Core.Helper;
-using DatenMeister.Core.Models.EMOF;
 using DatenMeister.Core.Runtime;
-using DatenMeister.Core.Runtime.Workspaces;
 using DatenMeister.DependencyInjection;
 using DatenMeister.Extent.Manager.ExtentStorage;
 using DatenMeister.WebServer.Controller;
@@ -17,6 +15,8 @@ namespace DatenMeister.Tests.Web
     [TestFixture]
     public class ElementControllerTests
     {
+        public const string UriTemporaryExtent = "dm:///temp";
+
         [Test]
         public void TestWorkspaces()
         {
@@ -120,7 +120,7 @@ namespace DatenMeister.Tests.Web
             var dm = DatenMeisterTests.GetDatenMeisterScope();
             var extentManager = new ExtentManager(dm.WorkspaceLogic, dm.ScopeStorage);
 
-            var createdExtent = extentManager.CreateAndAddXmiExtent("dm:///temp", "./test.xmi");
+            var createdExtent = extentManager.CreateAndAddXmiExtent(UriTemporaryExtent, "./test.xmi");
             createdExtent.Extent.set("name", "Test Extent");
 
             var factory = new MofFactory(createdExtent.Extent);

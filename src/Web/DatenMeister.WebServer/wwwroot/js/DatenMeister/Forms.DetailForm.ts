@@ -73,6 +73,7 @@ export class DetailForm implements InterfacesForms.IForm {
                 fieldElement.field = field;
                 fieldElement.isReadOnly = isReadOnly;
                 fieldElement.form = this;
+                fieldElement.itemUrl = tthis.extentUri + "#" + tthis.itemId;
 
                 htmlElement = fieldElement.createDom(this.element);
             }

@@ -27,8 +27,8 @@
 
     function CreateViewForm()
     {
-        requirejs(['Datenmeister/Forms'], function(Form) {
-            var detailForm = new Form.FormCreator();
+        requirejs(['DatenMeister/Forms'], function(Form) {
+            var detailForm = new Form.DetailFormCreator();
             detailForm.createViewForm(
                 $("#form_view"),
                 "@HttpUtility.JavaScriptStringEncode(w)",
@@ -49,7 +49,7 @@ $(function()
 
     function EditItem()
     {
-        requirejs(['Datenmeister/Forms.DetailForm'], function(Form) {
+        requirejs(['DatenMeister/Forms.DetailForm'], function(Form) {
             var detailForm = new Form.FormCreator();
             detailForm.createEditForm(
                 $("#form_view"),

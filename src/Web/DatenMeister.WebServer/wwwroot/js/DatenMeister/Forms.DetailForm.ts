@@ -1,11 +1,7 @@
-﻿import * as TextField from "./Fields/TextField";
-import * as CheckboxField from "./Fields/CheckboxField";
-import * as DropDownField from "./Fields/DropDownField";
-import * as MetaClassElementField from "./Fields/MetaClassElementField";
-import * as ActionField from "./Fields/ActionField";
-import * as InterfacesForms from "./Interfaces.Forms";
+﻿import * as InterfacesForms from "./Interfaces.Forms";
 import * as InterfacesFields from "./Interfaces.Fields";
 import * as Mof from "./Mof";
+import {createField} from "./Forms.FieldFactory";
 
 
 export class DetailForm implements InterfacesForms.IForm {
@@ -21,6 +17,7 @@ export class DetailForm implements InterfacesForms.IForm {
     onChange: (element: Mof.DmObject) => void;
 
     createFormByObject(parent: JQuery<HTMLElement>, isReadOnly: boolean) {
+        let tr;
         let table;
         const tthis = this;
         parent.empty();
@@ -35,7 +32,7 @@ export class DetailForm implements InterfacesForms.IForm {
         for (let n in fields) {
             if (!fields.hasOwnProperty(n)) continue;
             const field = fields[n] as Mof.DmObject;
-            var tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
+            tr = $("<tr><td class='key'></td><td class='value'></td></tr>");
 
             const name =
                 (field.get("title") as any as string) ??
@@ -46,24 +43,16 @@ export class DetailForm implements InterfacesForms.IForm {
             const fieldMetaClassId = field.metaClass.id;
             let fieldElement = null; // The instance if IFormField allowing to create the dom
             let htmlElement; // The dom that had been created... 
-            switch (fieldMetaClassId) {
-            case "DatenMeister.Models.Forms.TextFieldData":
-                fieldElement = new TextField.Field();
-                break;
-            case "DatenMeister.Models.Forms.MetaClassElementFieldData":
-                fieldElement = new MetaClassElementField.Field();
-                break;
-            case "DatenMeister.Models.Forms.CheckboxFieldData":
-                fieldElement = new CheckboxField.Field();
-                break;
-            case "DatenMeister.Models.Forms.DropDownFieldData":
-                fieldElement = new DropDownField.Field();
-                break;
-            case "DatenMeister.Models.Forms.ActionFieldData":
-                fieldElement = new ActionField.Field();
-                break;
-            }
-
+            
+            fieldElement = createField(
+                fieldMetaClassId,
+                {
+                    form: this,
+                    field: field,
+                    itemUrl: tthis.extentUri + "#" + tthis.itemId,
+                    isReadOnly: isReadOnly
+            });
+            
             if (fieldElement === null) {
                 // No field element was created.
                 htmlElement = $("<em></em>");

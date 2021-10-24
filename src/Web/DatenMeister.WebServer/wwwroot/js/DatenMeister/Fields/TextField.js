@@ -6,6 +6,21 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
         createDom(dmElement) {
             var _a, _b, _c, _d;
             const fieldName = this.field.get('name').toString();
+            /* Returns a list element in case an array is given */
+            const value = dmElement.get(fieldName);
+            if (Array.isArray(value)) {
+                let enumeration = $("<ul class='list-unstyled'></ul>");
+                for (let m in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, m)) {
+                        let innerValue = value[m];
+                        let item = $("<li></li>");
+                        item.text(innerValue.get('name'));
+                        enumeration.append(item);
+                    }
+                }
+                return enumeration;
+            }
+            /* Otherwise just create the correct field type. */
             if (this.isReadOnly) {
                 const div = $("<div />");
                 div.text((_b = (_a = dmElement.get(fieldName)) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : "unknown");

@@ -2,7 +2,6 @@
 import * as DataLoader from "./DataLoader";
 import DmObject = Mof.DmObject;
 import * as ApiConnection from "./ApiConnection";
-import * as ApiModels from "./ApiModels";
 import * as Settings from "./Settings";
 import * as DetailForm from "./Forms.DetailForm";
 import * as IForm from "./Interfaces.Forms";

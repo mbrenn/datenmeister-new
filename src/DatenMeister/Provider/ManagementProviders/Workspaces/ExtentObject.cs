@@ -91,7 +91,16 @@ namespace DatenMeister.Provider.ManagementProviders.Workspaces
 
             AddMapping(
                 _DatenMeister._Management._Extent.name,
-                e => (uriExtent as MofExtent)?.GetConfiguration().Name,
+                e =>
+                {
+                    var result = (uriExtent as MofExtent)?.GetConfiguration().Name;
+                    if (string.IsNullOrEmpty(result))
+                    {
+                        result = uriExtent?.contextURI();
+                    }
+
+                    return result;
+                },
                 (e, v) =>
                 {
                     if (uriExtent is MofExtent mofExtent)

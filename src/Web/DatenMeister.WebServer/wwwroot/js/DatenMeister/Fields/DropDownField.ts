@@ -12,7 +12,7 @@ export class Field extends BaseField implements IFormField {
 
         this._selectBox = $("<select></select>");
         for (const value of values) {
-            var option = $("<option></option>");
+            const option = $("<option></option>");
             option.val(value.get('value').toString());
             option.text(value.get('name').toString());
             this._selectBox.append(option);
@@ -28,7 +28,7 @@ export class Field extends BaseField implements IFormField {
 
     evaluateDom(dmElement: DmObject) {
 
-        var fieldName = this.field.get('name').toString();
+        const fieldName = this.field.get('name').toString();
         dmElement.set(fieldName, this._selectBox.val());
     }
 }

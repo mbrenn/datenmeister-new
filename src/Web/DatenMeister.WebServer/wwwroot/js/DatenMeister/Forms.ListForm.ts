@@ -2,6 +2,7 @@
 import * as InterfacesForms from "./Interfaces.Forms";
 import {DmObject} from "./Mof";
 import * as Mof from "./Mof";
+import {createField} from "./Forms.FieldFactory";
 
 export class ListForm implements InterfacesForms.IForm {
     elements: Array<DmObject>;
@@ -38,29 +39,20 @@ export class ListForm implements InterfacesForms.IForm {
 
                 for (let n in fields) {
                     if (!fields.hasOwnProperty(n)) continue;
-                    const field = fields[n] as Mof.DmObject;
-
-                    const name = field.get("name");
+                    const field = fields[n] as DmObject;
                     let cell = $("<td></td>");
-
-                    let value = element.get(name);
-                    if (Array.isArray(value)) {
-                        let enumeration = $("<ul class='list-unstyled'></ul>");
-                        for (let m in value) {
-                            if (Object.prototype.hasOwnProperty.call(value, m)) {
-                                let innerValue = value[m];
-
-                                let item = $("<li></li>");
-                                item.text(innerValue.get('name'));
-                                enumeration.append(item);
-                            }
-                        }
-
-                        cell.append(enumeration);
-                    } else {
-                        cell.text(element.get(name));
-                    }
-
+                    
+                    const fieldMetaClassId = field.metaClass.id;
+                    const fieldElement = createField(
+                        fieldMetaClassId,
+                        {
+                            form: this,
+                            field: field,
+                            itemUrl: element.uri,
+                            isReadOnly: isReadOnly
+                        });
+                    
+                    cell.append(fieldElement.createDom(element));
                     row.append(cell);
                 }
 

@@ -9,7 +9,7 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
             const values = this.field.get('values');
             this._selectBox = $("<select></select>");
             for (const value of values) {
-                var option = $("<option></option>");
+                const option = $("<option></option>");
                 option.val(value.get('value').toString());
                 option.text(value.get('name').toString());
                 this._selectBox.append(option);
@@ -21,7 +21,7 @@ define(["require", "exports", "../Interfaces.Fields"], function (require, export
             return this._selectBox;
         }
         evaluateDom(dmElement) {
-            var fieldName = this.field.get('name').toString();
+            const fieldName = this.field.get('name').toString();
             dmElement.set(fieldName, this._selectBox.val());
         }
     }

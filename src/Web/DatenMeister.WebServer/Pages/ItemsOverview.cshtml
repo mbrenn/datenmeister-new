@@ -24,7 +24,8 @@ $(function()
         listForm.createListForRootElements(
             $("#items"),
             "@HttpUtility.JavaScriptStringEncode(Model.Workspace)",
-            "@HttpUtility.JavaScriptStringEncode(Model.Extent)");
+            "@HttpUtility.JavaScriptStringEncode(Model.Extent)",
+            true);
     });
 });
 

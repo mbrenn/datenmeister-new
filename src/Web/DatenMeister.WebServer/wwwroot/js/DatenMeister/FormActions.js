@@ -13,6 +13,9 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                     workspaceId = element.get('workspaceId');
                     FormActions.extentNavigateTo(workspaceId, extentUri);
                     break;
+                case "ExtentsList.ViewItem":
+                    FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
+                    break;
                 case "Item.Delete":
                     FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                     break;
@@ -41,6 +44,13 @@ define(["require", "exports", "./Settings", "./ApiConnection", "./Navigator"], f
                 .done(data => {
                 document.location.reload();
             });
+        }
+        // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
+        static itemNavigateTo(workspace, extent, itemUrl) {
+            document.location.href = Settings.baseUrl + "Item/" +
+                encodeURIComponent(workspace) + "/" +
+                encodeURIComponent(extent) + "/" +
+                encodeURIComponent(itemUrl);
         }
         static itemNew(workspace, extentUri) {
             ApiConnection.post(Settings.baseUrl + "api/items/create", {

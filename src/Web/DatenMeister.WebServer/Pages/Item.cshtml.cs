@@ -24,7 +24,7 @@ namespace DatenMeister.WebServer.Pages
         /// <summary>
         /// Gets the item url of the currently selected item
         /// </summary>
-        public string ItemUrl => $"{Extent}#{Item}";
+        public string ItemUrl => Item?.Contains('#') == true ? Item : $"{Extent}#{Item}";
         
         private ExtentItemsController ExtentItemsController { get; set; }
 

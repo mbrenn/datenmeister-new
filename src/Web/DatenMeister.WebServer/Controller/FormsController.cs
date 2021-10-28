@@ -26,6 +26,8 @@ namespace DatenMeister.WebServer.Controller
         [HttpGet("api/forms/default_for_item/{workspaceId}/{itemUrl}/{viewMode?}")]
         public ActionResult<string> GetDefaultFormForItem(string workspaceId, string itemUrl, string? viewMode)
         {
+            workspaceId = HttpUtility.UrlDecode(workspaceId);
+            itemUrl = HttpUtility.UrlDecode(itemUrl);
             viewMode = HttpUtility.UrlDecode(viewMode);
 
             var item = GetItemByUriParameter(workspaceId, itemUrl);
@@ -62,16 +64,13 @@ namespace DatenMeister.WebServer.Controller
 
         /// <summary>
         /// Gets the items by the uri parameter.
-        /// The parameter themselves are expected to be uriencoded, so a decoding via HttpUtility.UrlDecode will be performed
+        /// The parameter themselves are expected to be uri-encoded, so a decoding via HttpUtility.UrlDecode will be performed
         /// </summary>
         /// <param name="workspaceId">Id of the workspace</param>
         /// <param name="itemUri">Uri of the item</param>
         /// <returns>The found object</returns>
         private IObject GetItemByUriParameter(string workspaceId, string itemUri)
         {
-            workspaceId = HttpUtility.UrlDecode(workspaceId);
-            itemUri = HttpUtility.UrlDecode(itemUri);
-
             var workspace = _workspaceLogic.GetWorkspace(workspaceId);
             if (workspace == null)
             {

@@ -45,9 +45,11 @@ namespace DatenMeister.WebServer.InterfaceController
 
             IObject? foundElement = extent;
 
-            if (!string.IsNullOrEmpty(itemId))
+            if (!string.IsNullOrEmpty(itemId) )
             {
-                foundElement = extent.element($"#{itemId}");
+                foundElement = 
+                    extent.element(
+                        itemId.Contains('#') ? itemId : $"#{itemId}");
             }
             
             if (foundElement == null)

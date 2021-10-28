@@ -41,6 +41,7 @@ define(["require", "exports", "./Mof", "./DataLoader", "./ApiConnection", "./Set
                     listForm.elements = elements;
                     listForm.formElement = tab;
                     listForm.workspace = this.workspace;
+                    listForm.extentUri = this.extentUri;
                     listForm.createFormByCollection(form, isReadOnly);
                 }
                 parent.append(form);

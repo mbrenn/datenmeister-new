@@ -14,6 +14,9 @@ export module DetailFormActions {
                 workspaceId = element.get('workspaceId');
                 FormActions.extentNavigateTo(workspaceId, extentUri);                
                 break;
+            case "ExtentsList.ViewItem":                
+                FormActions.itemNavigateTo(form.workspace, form.extentUri, element.uri);
+                break;
             case "Item.Delete":
                 FormActions.itemDelete(form.workspace, form.extentUri, itemUrl);
                 break;
@@ -49,6 +52,15 @@ export class FormActions {
                 data => {
                     document.location.reload();
                 });
+    }
+    
+    // Performs the navigation to the given item. The ItemUrl may be a uri or just the id
+    static itemNavigateTo(workspace: string, extent: string, itemUrl: string) {
+        document.location.href = Settings.baseUrl + "Item/" + 
+            encodeURIComponent(workspace) + "/" + 
+            encodeURIComponent(extent) + "/" + 
+            encodeURIComponent(itemUrl);
+        
     }
 
     static itemNew(workspace: string, extentUri: string) {

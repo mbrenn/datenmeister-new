@@ -31,7 +31,7 @@ namespace DatenMeister.Forms.FormCreator
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
             }
 
-            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var result = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             var realPropertyName = NamedElementMethods.GetName(property);
             var propertyName = property != null ? realPropertyName : "List";
             
@@ -48,7 +48,7 @@ namespace DatenMeister.Forms.FormCreator
             {
                 AddToFormByMetaclass(result, metaClass, creationMode);
                 
-                var defaultType = _factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
+                var defaultType = factory.create(_DatenMeister.TheOne.Forms.__DefaultTypeForNewElement);
                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.metaClass, metaClass);
                 defaultType.set(_DatenMeister._Forms._DefaultTypeForNewElement.name, NamedElementMethods.GetName(metaClass));
                 result.set(_DatenMeister._Forms._ListForm.defaultTypesForNewElements, new[] {defaultType});
@@ -75,7 +75,7 @@ namespace DatenMeister.Forms.FormCreator
         /// <returns>The created list form </returns>
         public IElement CreateListFormForElements(IReflectiveCollection elements, FormFactoryConfiguration creationMode)
         {
-            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var result = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             
             AddToListFormByElements(result, elements, creationMode);
 
@@ -130,7 +130,7 @@ namespace DatenMeister.Forms.FormCreator
                     cache.MetaClassAlreadyAdded = true;
 
                     // Create the metaclass as a field
-                    var metaClassField = _factory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
+                    var metaClassField = factory.create(_DatenMeister.TheOne.Forms.__MetaClassElementFieldData);
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.name, "Metaclass");
                     metaClassField.set(_DatenMeister._Forms._MetaClassElementFieldData.title, "Metaclass");
                     form.get<IReflectiveSequence>(_DatenMeister._Forms._ListForm.field).add(0, metaClassField);
@@ -262,7 +262,7 @@ namespace DatenMeister.Forms.FormCreator
                 throw new InvalidOperationException("The list form will only be created for the metaclass");
             }
 
-            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var result = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             AddToFormByMetaclass(result, metaClass, creationMode);
             result.set(_DatenMeister._Forms._ListForm.property, propertyName);
             result.set(_DatenMeister._Forms._ListForm.metaClass, metaClass);
@@ -287,7 +287,7 @@ namespace DatenMeister.Forms.FormCreator
             var propertyName = property.getOrDefault<string>(_UML._CommonStructure._NamedElement.name);
             var propertyType = PropertyMethods.GetPropertyType(property);
 
-            var result = _factory.create(_DatenMeister.TheOne.Forms.__ListForm);
+            var result = factory.create(_DatenMeister.TheOne.Forms.__ListForm);
             if (propertyType != null)
             {
                 AddToFormByMetaclass(result, propertyType, creationMode);

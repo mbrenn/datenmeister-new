@@ -136,7 +136,26 @@ namespace DatenMeister.Forms
         {
             if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
             {
-                throw new InvalidOperationException("The form extent is not found in the management");
+                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
+            }
+
+            return foundExtent;
+        }
+
+        /// <summary>
+        /// Gets the internal view extent being empty at each start-up
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent? GetInternalFormExtent(bool mayFail)
+        {
+            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentInternalForm) is not IUriExtent foundExtent)
+            {
+                if (mayFail)
+                {
+                    return null;
+                }
+                
+                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentInternalForm}");
             }
 
             return foundExtent;
@@ -150,7 +169,26 @@ namespace DatenMeister.Forms
         {
             if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
             {
-                throw new InvalidOperationException("The view extent is not found in the management");
+                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
+            }
+
+            return foundExtent;
+        }
+
+        /// <summary>
+        /// Gets the extent of the user being stored on permanent storage
+        /// </summary>
+        /// <returns></returns>
+        public IUriExtent? GetUserFormExtent(bool mayFail)
+        {
+            if (_workspaceLogic.FindExtent(WorkspaceNames.UriExtentUserForm) is not IUriExtent foundExtent)
+            {
+                if (mayFail)
+                {
+                    return null;
+                }
+                
+                throw new InvalidOperationException($"The form extent is not found in the management: {WorkspaceNames.UriExtentUserForm}");
             }
 
             return foundExtent;

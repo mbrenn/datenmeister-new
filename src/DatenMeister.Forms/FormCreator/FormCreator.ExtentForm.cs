@@ -176,7 +176,7 @@ namespace DatenMeister.Forms.FormCreator
                     // It will ask the form reportCreator, if there is no view association directly referencing
                     // to the element
                     var formCreator = new FormFactory(_formLogic, _scopeStorage);
-                    form = formCreator.GetExtentFormForCollection(
+                    form = formCreator.GetListFormForCollection(
                         extent.elements(),
                         new FormFactoryConfiguration()) ?? throw new InvalidOperationException("No form was found");
 

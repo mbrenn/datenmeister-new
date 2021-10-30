@@ -25,7 +25,7 @@ namespace DatenMeister.Forms
         /// <returns>The instance of the extent form</returns>
         IElement? GetExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration);
 
-        IElement? GetExtentFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
+        IElement? GetListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration);
 
         IElement? GetExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration);
 

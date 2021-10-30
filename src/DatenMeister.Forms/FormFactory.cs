@@ -196,12 +196,73 @@ namespace DatenMeister.Forms
 
         public IElement? GetExtentFormForItemsMetaClass(IElement metaClass, FormFactoryConfiguration configuration)
         {
-            throw new NotImplementedException();
+            
+            IElement? foundForm = null;
+
+            if (configuration.ViaFormFinder)
+            {
+                // Tries to find the form
+                var viewFinder = new FormFinder.FormFinder(_plugin);
+                foundForm = viewFinder.FindFormsFor(
+                    new FindFormQuery
+                    {
+                        metaClass = metaClass,
+                        FormType = _DatenMeister._Forms.___FormType.Detail,
+                        viewModeId = configuration.ViewModeId
+                    }).FirstOrDefault();
+
+                if (foundForm != null)
+                {
+                    Logger.Info("GetDetailForm: Found form: " + NamedElementMethods.GetFullName(foundForm));
+                }
+            }
+
+            if (foundForm == null && configuration.ViaFormCreator)
+            {
+                // Ok, we have not found the form. So create one
+                var formCreator = CreateFormCreator();
+                foundForm = formCreator.CreateDetailFormByMetaClass(metaClass);
+            }
+
+            if (foundForm != null)
+            {
+                foundForm = CloneForm(foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
+                    {
+                        Configuration = configuration,
+                        MetaClass = metaClass,
+                        FormType = _DatenMeister._Forms.___FormType.Detail
+                    },
+                    ref foundForm);
+            }
+
+            return foundForm;
         }
 
-        public IElement? GetExtentFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration)
+        public IElement? GetListFormForCollection(IReflectiveCollection collection, FormFactoryConfiguration configuration)
         {
-            throw new NotImplementedException();
+            IElement? foundForm = null;
+            if (configuration.ViaFormCreator)
+            {
+                // Ok, now perform the creation...
+                var formCreator = CreateFormCreator();
+                foundForm =  formCreator.CreateListFormForElements(collection, configuration);
+            }
+
+            if (foundForm != null)
+            {
+                foundForm = CloneForm(foundForm);
+                
+                CallFormsModificationPlugins(new FormCreationContext
+                    {
+                        Configuration = configuration,
+                        FormType = _DatenMeister._Forms.___FormType.TreeItemExtent,
+                    },
+                    ref foundForm);
+            }
+
+            return foundForm;
         }
 
         public IElement? GetExtentFormForExtent(IExtent extent, FormFactoryConfiguration configuration)
